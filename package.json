@@ -1,0 +1,14 @@
+{
+    "name": "datamonkey",
+    "description": "A free public server for comparative analysis of sequence alignments using state-of-the-art statistical models.",
+    "version": "0.0.1",
+    "private": true,
+    "dependencies": {
+        "express"   : "3.x"
+        "mongodb"   : "1.*"
+        "http"      : "*"
+        "mocha"     : "*"
+        "supertest" : "*"
+        "should"    : "*"
+    }
+}
