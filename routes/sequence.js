@@ -102,14 +102,14 @@ var populateDB = function() {
     //Need to define file, datatype, and genetic code
     var sequences = [
     {
-        sequence: "LAN RIOJA CRIANZA",
-        datatype: "Rioja",
-        geneticcode: "lan_rioja.jpg"
+        sequence: "ACTG",
+        datatype: 0,
+        geneticcode: 0 
     },
     {
-        sequence: "LAN RIOJA CRIANZA",
-        datatype: "Rioja",
-        geneticcode: "lan_rioja.jpg"
+        sequence: "ACTC",
+        datatype: 0,
+        geneticcode: 0
     }];
 
     db.collection('sequences', function(err, collection) {
