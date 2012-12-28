@@ -6,6 +6,7 @@
     "dependencies": {
         "express"   : "3.x"
         "mongodb"   : "1.*"
+        "mongoose"  : "3.*"
         "http"      : "*"
         "mocha"     : "*"
         "supertest" : "*"

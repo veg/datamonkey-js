@@ -1,3 +1,8 @@
+//A user has:
+// A name
+// Sequences
+// Analysis for sequences
+
 var mongo = require('mongodb');
 
 var Server = mongo.Server,
