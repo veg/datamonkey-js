@@ -1,6 +1,7 @@
+var dpl = require('datamonkey-pl');
 
 var mongoose = require('mongoose')
-  , Sequence = mongoose.model('Sequence');
+  , SequenceAlignmentFile = mongoose.model('SequenceAlignmentFile');
 
 //find sequence by id
 exports.findById = function(req, res) {
@@ -8,7 +9,7 @@ exports.findById = function(req, res) {
    var id = req.params.id;
    console.log('Retrieving sequence: ' + id);
 
-   Sequence.findOne({_id : id}, function(err, items) {
+   SequenceAlignmentFile.findOne({_id : id}, function(err, items) {
       if (err)
          res.send('There is no sequence with id of ' + id);
        else
@@ -20,7 +21,7 @@ exports.findById = function(req, res) {
 //return all sequences
 exports.findAll = function(req, res) {
 
-   Sequence.find({},function(err, items) {
+   SequenceAlignmentFile.find({},function(err, items) {
       if (err)
          res.send('There is no sequence with id of ' + id);
        else
@@ -30,25 +31,29 @@ exports.findAll = function(req, res) {
 };
 
 //upload a sequence
-exports.addSequence = function(req, res) {
+exports.addSequenceAlignmentFile = function(req, res) {
 
     postdata = req.query;
-    console.log('Adding sequence: ' + JSON.stringify(postdata));
+    postdata.contents = postdata.contents.join('')
 
     //Should check the postdata before
-    Sequence.create(postdata, function (err, result) {
+    SequenceAlignmentFile.create(postdata, function (err, result) {
         if (err) {
             res.send({'error':'An error has occurred'});
         } else {
-            console.log('Success: ' + JSON.stringify(result));
-            res.send(result);
+            //console.log('Success: ' + JSON.stringify(result));
+
+            //Upload to datamonkey
+            dpl.uploadToPerl(result);
+
+            //Ensure a 200 from datamonkey, and then send the result
+            //res.send(result);
         }
     });
-
 }
 
 //update a sequence
-exports.updateSequence = function(req, res) {
+exports.updateSequenceAlignmentFile = function(req, res) {
 
     var id = req.params.id;
     var postdata = req.body;
@@ -57,7 +62,7 @@ exports.updateSequence = function(req, res) {
     console.log(JSON.stringify(sequence));
 
     //Should check the postdata before
-    Sequence.update(postdata, function (err, result) {
+    SequenceAlignmentFile.update(postdata, function (err, result) {
         if (err) {
             res.send({'error':'An error has occurred'});
         } else {
@@ -69,12 +74,12 @@ exports.updateSequence = function(req, res) {
 }
 
 //delete a sequence
-exports.deleteSequence = function(req, res) {
+exports.deleteSequenceAlignmentFile = function(req, res) {
 
     var id = req.params.id;
     console.log('Deleting sequence: ' + id);
 
-    Sequence.remove({ _id: new BSON.ObjectID(id) }, function(err) {
+    SequenceAlignmentFile.remove({ _id: new BSON.ObjectID(id) }, function(err) {
         if (err) {
             res.send({'error':'An error has occurred - ' + err});
         }

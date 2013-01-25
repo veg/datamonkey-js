@@ -5,6 +5,7 @@ var Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId;
 
 // create Widget model
+
 var Analysis = new Schema({
   seqid : {type: String, require: true, trim: true, unique: true},
   method : Number,
@@ -22,3 +23,4 @@ var Analysis = new Schema({
 });
 
 module.exports = mongoose.model('Analysis', Analysis);
+

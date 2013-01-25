@@ -1,5 +1,8 @@
+
 var mongoose = require('mongoose')
-  , Analysis = mongoose.model('Analysis');
+  , Asr = mongoose.model('Asr');
+
+//Need to add sequence file
 
 //find sequence by id
 exports.findById = function(req, res) {
@@ -7,7 +10,7 @@ exports.findById = function(req, res) {
    var id = req.params.id;
    console.log('Retrieving sequence: ' + id);
 
-   Analysis.findOne({_id : id}, function(err, items) {
+   Asr.findOne({_id : id}, function(err, items) {
       if (err)
          res.send('There is no sequence with id of ' + id);
        else
@@ -19,7 +22,7 @@ exports.findById = function(req, res) {
 //return all sequences
 exports.findAll = function(req, res) {
 
-   Analysis.find({},function(err, items) {
+   Asr.find({},function(err, items) {
       if (err)
          res.send('There is no sequence with id of ' + id);
        else
@@ -29,13 +32,13 @@ exports.findAll = function(req, res) {
 };
 
 //upload a sequence
-exports.addAnalysis = function(req, res) {
+exports.addAsr = function(req, res) {
 
     postdata = req.query;
     console.log('Adding sequence: ' + JSON.stringify(postdata));
 
     //Should check the postdata before
-    Analysis.create(postdata, function (err, result) {
+    Asr.create(postdata, function (err, result) {
         if (err) {
             res.send({'error':'An error has occurred'});
         } else {
@@ -47,7 +50,7 @@ exports.addAnalysis = function(req, res) {
 }
 
 //update a sequence
-exports.updateAnalysis = function(req, res) {
+exports.updateAsr = function(req, res) {
 
     var id = req.params.id;
     var postdata = req.body;
@@ -56,7 +59,7 @@ exports.updateAnalysis = function(req, res) {
     console.log(JSON.stringify(sequence));
 
     //Should check the postdata before
-    Analysis.update(postdata, function (err, result) {
+    Asr.update(postdata, function (err, result) {
         if (err) {
             res.send({'error':'An error has occurred'});
         } else {
@@ -68,12 +71,12 @@ exports.updateAnalysis = function(req, res) {
 }
 
 //delete a sequence
-exports.deleteAnalysis = function(req, res) {
+exports.deleteAsr = function(req, res) {
 
     var id = req.params.id;
     console.log('Deleting sequence: ' + id);
 
-    Analysis.remove({ _id: new BSON.ObjectID(id) }, function(err) {
+    Asr.remove({ _id: new BSON.ObjectID(id) }, function(err) {
         if (err) {
             res.send({'error':'An error has occurred - ' + err});
         }
