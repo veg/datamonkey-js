@@ -6,7 +6,7 @@ var Schema = mongoose.Schema
 var SequenceAlignmentFile = new Schema({
     contents    : {type: String, require: true},  
     uploadfn    : String,
-    type        : Number,
+    datatype    : Number,
     partitions  : Number,
     sites       : Number,
     rawSites    : Number,

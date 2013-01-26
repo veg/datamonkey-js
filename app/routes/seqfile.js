@@ -36,15 +36,19 @@ exports.addSequenceAlignmentFile = function(req, res) {
     postdata = req.query;
     postdata.contents = postdata.contents.join('')
 
+    //Curate the postdata for fields we only want
+    datatype = 0 
+    genCodeId = 0 
+
     //Should check the postdata before
     SequenceAlignmentFile.create(postdata, function (err, result) {
+
         if (err) {
             res.send({'error':'An error has occurred'});
         } else {
-            //console.log('Success: ' + JSON.stringify(result));
 
             //Upload to datamonkey
-            dpl.uploadToPerl(result);
+            dpl.uploadToPerl(result,res);
 
             //Ensure a 200 from datamonkey, and then send the result
             //res.send(result);

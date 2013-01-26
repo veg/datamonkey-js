@@ -55,13 +55,6 @@ app.post('/seqfile/:seqid/asr', asr.addAsr);
 app.put('/seqfile/:seqid/asr', asr.updateAsr);
 app.delete('/seqfile/:seqid/asr/:id', asr.deleteAsr);
 
-//analysis = require('./app/routes/analysis');
-//app.get('sequence/:seqid/analysis/', analysis.findAll);
-//app.get('/sequence/:seqid/analysis/:id', analysis.findById);
-//app.post('/sequence/:seqid/analysis', analysis.addAnalysis);
-//app.put('/sequence/:seqid/analysis', analysis.updateAnalysis);
-//app.delete('/sequence/:seqid/analysis/:id', sequence.deleteAnalysis);
-
 app.listen(3000);
 console.log('Listening on port 3000...');
 module.exports = app;
