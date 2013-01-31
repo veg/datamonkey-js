@@ -46,12 +46,8 @@ exports.addSequenceAlignmentFile = function(req, res) {
         if (err) {
             res.send({'error':'An error has occurred'});
         } else {
-
             //Upload to datamonkey
             dpl.uploadToPerl(result,res);
-
-            //Ensure a 200 from datamonkey, and then send the result
-            //res.send(result);
         }
     });
 }
