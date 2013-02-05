@@ -1,4 +1,4 @@
-var dpl = require('datamonkey-pl');
+var dpl = require('../../lib/datamonkey-pl.js');
 
 var mongoose = require('mongoose')
   , SequenceAlignmentFile = mongoose.model('SequenceAlignmentFile');
@@ -34,11 +34,11 @@ exports.findAll = function(req, res) {
 exports.addSequenceAlignmentFile = function(req, res) {
 
     postdata = req.query;
-    postdata.contents = postdata.contents.join('')
+    postdata.contents = postdata.contents.join('');
 
     //Curate the postdata for fields we only want
-    datatype = 0 
-    genCodeId = 0 
+    datatype = 0;
+    genCodeId = 0;
 
     //Should check the postdata before
     SequenceAlignmentFile.create(postdata, function (err, result) {

@@ -1,8 +1,9 @@
+var dpl = require('../../lib/datamonkey-pl.js');
 var querystring = require('querystring');
-var http = require('http');
-var fs = require('fs');
+var globals = require('../../config/globals.js');
 
 var mongoose = require('mongoose')
+  , SequenceAlignmentFile = mongoose.model('SequenceAlignmentFile')
   , Meme = mongoose.model('Meme')
   , MemeParameters = mongoose.model('MemeParameters');
 
@@ -38,68 +39,49 @@ exports.findAll = function(req, res) {
 //upload a sequence
 exports.addMeme = function(req, res) {
 
-    //console.log('Adding meme analysis: ' + JSON.stringify(postdata));
-    postdata = req.query;
+  postdata = req.query;
+ 
+  seqid =  postdata.seqid;
+  delete postdata.seqid;
 
-    //TODO: Get Results working
-    //req.assert('seqid', 'No seqid').notEmpty();
-    //req.assert('treemode', 'No treemode').isInt();
-    //req.assert('modelstring', 'No model specified').notEmpty();
-    //req.assert('pvalue', 'No pvalue specified').isInt();
+  var meme = new Meme({
+    msafn : seqid,
+  });
+  
+  meme.save(function (err,result) {
+
+    if (err) return handleError(err);
+
+    console.log(globals.MEME);
+      
+    var parameters = new MemeParameters({
+      modelstring : postdata.modelstring,
+      treemode    : postdata.treemode,
+      pvalue      : postdata.pvalue,
+    });
     
-    seqid =  postdata.seqid;
-    delete postdata.seqid;
-
-   var meme = new Meme({
-          sequencefn : seqid,
-      });
-    
-    meme.save(function (err,result) {
-
+    parameters.save(function (err, meme_result) {
       if (err) return handleError(err);
-      
-      var parameters = new MemeParameters({
-          //_creator: meme._id,    // assign an ObjectId
-          modelstring : postdata.modelstring,
-          treemode    : postdata.treemode,
-          pvalue      : postdata.pvalue,
-      });
-      
-      parameters.save(function (err, result) {
-        if (err) return handleError(err);
-        else
-            console.log(result);
-            res.send(result);
-      });
+
+      else {
+        //Open Multiple Sequence Alignment File
+        SequenceAlignmentFile.findOne({_id : seqid}, function(err, msa) {
+          if (err)
+            res.send('There is no sequence with id of ' + id);
+
+           else {
+             //Dispatch the analysis to the perl scripts
+             debugger;
+             dpl.dispatchAnalysis(msa,meme_result,globals.MEME,res);
+            }
+        });
+      }
 
       meme.parameters.push(parameters);
       meme.save();
 
-    })
-
-    //Define the root for the meme param
-    //root = 
-
-    //Send JSON object to dispatch analysis
-    //Ensure a 200
-
-    var meme_params = querystring.stringify({
-        'seqfile' : seqid,
-        'method' : constants.MEME,
-        'treeMode' : meme.parameters.treemode,
-        'root' : root,
-        'modelString' : meme.parameters.modelstring,
-        'NamedModels' : "",
-        'rOptions' : 4,
-        'dNdS' : 1.0,
-        'ambChoice' : 0,
-        'pValue' : meme.parameters.pvalue,
-        'rateOption' : 0,
-        'rateClasses' : 2,
-        'rateOption2' : 1,
-        'rateClasses2' : 2,
     });
-
+  });
 }
 
 //update a sequence
@@ -141,4 +123,6 @@ exports.deleteMeme = function(req, res) {
     });
     
 }
+
+
 

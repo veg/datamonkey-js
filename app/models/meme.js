@@ -6,7 +6,7 @@ var Schema = mongoose.Schema
 
 //TODO: status needs to be a subdocument
 var Meme = new Schema({
-    sequencefn : { type: Schema.Types.ObjectId, ref: 'SequenceAlignmentFile' },
+    msafn : { type: Schema.Types.ObjectId, ref: 'SequenceAlignmentFile' },
     status     : String,
     parameters : [MemeParameters],
     results    : [MemeResults],
@@ -15,8 +15,6 @@ var Meme = new Schema({
 });
 
 var MemeParameters = new Schema({
-    //TODO: Check if creator is necessary
-    //_creator    : { type: Schema.Types.ObjectId, ref: 'Meme' },
     modelstring : String,
     treemode    : Number,
     pvalue      : Number,
