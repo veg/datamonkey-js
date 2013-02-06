@@ -79,3 +79,10 @@ define("None",0);
 define("General Discrete",1);
 define("Beta-Gamma",2);
 
+//Status Specific
+define("queue",0);
+define("running",1);
+define("finished",2);
+define("cancelled",3);
+
+

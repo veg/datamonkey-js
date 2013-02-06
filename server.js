@@ -36,19 +36,12 @@ app.post('/seqfile', seqfile.addSequenceAlignmentFile);
 app.put('/seqfile/:id', seqfile.updateSequenceAlignmentFile);
 app.delete('/seqfile/:id', seqfile.deleteSequenceAlignmentFile);
 
-
 //TODO: Update with a status route
 meme = require('./app/routes/meme');
-
-app.get('/seqfile/:seqid/meme/', meme.findAll);
-app.get('/seqfile/:seqid/meme/:id', meme.findById);
 app.post('/seqfile/:seqid/meme', meme.addMeme);
-app.put('/seqfile/:seqid/meme', meme.updateMeme);
-app.delete('/seqfile/:seqid/meme/:id', meme.deleteMeme);
-
+app.get('/seqfile/:seqid/meme/:memeid', meme.queryStatus);
 
 asr = require('./app/routes/asr');
-
 app.get('/seqfile/:seqid/asr/', asr.findAll);
 app.get('/seqfile/:seqid/asr/:id', asr.findById);
 app.post('/seqfile/:seqid/asr', asr.addAsr);
@@ -58,3 +51,6 @@ app.delete('/seqfile/:seqid/asr/:id', asr.deleteAsr);
 app.listen(3000);
 console.log('Listening on port 3000...');
 module.exports = app;
+
+
+

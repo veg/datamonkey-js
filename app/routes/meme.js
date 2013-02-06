@@ -1,5 +1,6 @@
-var dpl = require('../../lib/datamonkey-pl.js');
 var querystring = require('querystring');
+
+var dpl = require('../../lib/datamonkey-pl.js');
 var globals = require('../../config/globals.js');
 
 var mongoose = require('mongoose')
@@ -7,36 +8,7 @@ var mongoose = require('mongoose')
   , Meme = mongoose.model('Meme')
   , MemeParameters = mongoose.model('MemeParameters');
 
-//Need to add sequence file
-
-
-//find sequence by id
-exports.findById = function(req, res) {
-
-   var id = req.params.id;
-   console.log('Retrieving sequence: ' + id);
-
-   Meme.findOne({_id : id}, function(err, items) {
-      if (err)
-         res.send('There is no sequence with id of ' + id);
-       else
-         res.send(items);
-   });
-};
-
-//return all sequences
-exports.findAll = function(req, res) {
-
-   Meme.find({},function(err, items) {
-      if (err)
-         res.send('There is no sequence with id of ' + id);
-       else
-         res.send(items);
-   });
-
-};
-
-//upload a sequence
+//Start a Meme Analysis
 exports.addMeme = function(req, res) {
 
   postdata = req.query;
@@ -48,12 +20,11 @@ exports.addMeme = function(req, res) {
     msafn : seqid,
   });
   
+  //Save the Parent Meme
   meme.save(function (err,result) {
 
     if (err) return handleError(err);
 
-    console.log(globals.MEME);
-      
     var parameters = new MemeParameters({
       modelstring : postdata.modelstring,
       treemode    : postdata.treemode,
@@ -70,10 +41,32 @@ exports.addMeme = function(req, res) {
             res.send('There is no sequence with id of ' + id);
 
            else {
+
+             //Take the current parameters, and add MEME specific params
+             //MEME specific params should be in globals
+             var params = {
+                'method'        : globals.MEME,
+                'treeMode'      : meme_result.treemode,
+                'root'          : "SRC1",
+                'modelString'   : meme_result.modelstring,
+                'NamedModels'   : "",
+                'rOptions'      : 4,
+                'dNdS'          : 1.0,
+                'ambChoice'     : 0,
+                'pValue'        : meme_result.pvalue,
+                'rateOption'    : 0,
+                'rateClasses'   : 2,
+                'rateOption2'   : 1,
+                'rateClasses2'  : 2
+             };
+
              //Dispatch the analysis to the perl scripts
-             debugger;
-             dpl.dispatchAnalysis(msa,meme_result,globals.MEME,res);
-            }
+             dpl.dispatchAnalysis(meme._id,msa,params,res);
+
+             //TODO: We should return the status id ticket
+
+
+           }
         });
       }
 
@@ -84,45 +77,18 @@ exports.addMeme = function(req, res) {
   });
 }
 
-//update a sequence
-exports.updateMeme = function(req, res) {
+//Query A MEME Analysis
+exports.queryStatus = function(req, res) {
 
-    var id = req.params.id;
-    var postdata = req.body;
+   Meme.findOne({_id : req}, function(err, items) {
+      if (err)
+         res.send('There is no sequence with id of ' + id);
+       else
+         res.send(items);
+   });
 
-    console.log('Updating sequence: ' + id);
-    console.log(JSON.stringify(sequence));
-
-    //Should check the postdata before
-    Meme.update(postdata, function (err, result) {
-        if (err) {
-            res.send({'error':'An error has occurred'});
-        } else {
-            console.log('Success: ' + JSON.stringify(result));
-            res.send(postdata);
-        }
-    });
- 
+  //First parse current status
+  dpl.parseCurrentStatus( );
 }
-
-//delete a sequence
-exports.deleteMeme = function(req, res) {
-
-    var id = req.params.id;
-    console.log('Deleting sequence: ' + id);
-
-    Meme.remove({ _id: new BSON.ObjectID(id) }, function(err) {
-        if (err) {
-            res.send({'error':'An error has occurred - ' + err});
-        }
-
-        else {
-            console.log('' + result + ' document(s) deleted');
-            res.send(req.body);
-         }
-    });
-    
-}
-
 
 
