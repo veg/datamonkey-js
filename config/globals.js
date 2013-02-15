@@ -7,6 +7,11 @@ function define(name, value) {
 
 //We need to split each of the following into classes
 
+
+//Spool Directory
+define("spooldir","/var/lib/datamonkey/www/spool/")
+define("host","datamonkey-dev")
+
 //Data Type
 define("Codon",0);
 define("Nucleotide (DNA/RNA)",1);
@@ -80,9 +85,14 @@ define("General Discrete",1);
 define("Beta-Gamma",2);
 
 //Status Specific
-define("queue",0);
-define("running",1);
-define("finished",2);
-define("cancelled",3);
+define("pollingdelay",1000);
+define("queue","queueing");
+define("running","running");
+define("finished","finished");
+define("cancelled","cancelled");
 
+types = {
+meme: "meme"
+}
 
+define("types",types)

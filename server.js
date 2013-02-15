@@ -38,6 +38,7 @@ app.delete('/seqfile/:id', seqfile.deleteSequenceAlignmentFile);
 
 //TODO: Update with a status route
 meme = require('./app/routes/meme');
+app.get('/meme', meme.findAll);
 app.post('/seqfile/:seqid/meme', meme.addMeme);
 app.get('/seqfile/:seqid/meme/:memeid', meme.queryStatus);
 

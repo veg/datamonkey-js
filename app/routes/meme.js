@@ -1,12 +1,27 @@
 var querystring = require('querystring');
 
 var dpl = require('../../lib/datamonkey-pl.js');
+var dme = require('../../lib/datamonkey-event.js');
 var globals = require('../../config/globals.js');
 
 var mongoose = require('mongoose')
   , SequenceAlignmentFile = mongoose.model('SequenceAlignmentFile')
   , Meme = mongoose.model('Meme')
   , MemeParameters = mongoose.model('MemeParameters');
+
+
+//return all sequences
+exports.findAll = function(req, res) {
+
+   Meme.find({},function(err, items) {
+      if (err)
+         res.send('There is no sequence with id of ' + id);
+       else
+         res.send(items);
+   });
+
+};
+
 
 //Start a Meme Analysis
 exports.addMeme = function(req, res) {
@@ -17,7 +32,8 @@ exports.addMeme = function(req, res) {
   delete postdata.seqid;
 
   var meme = new Meme({
-    msafn : seqid,
+    msafn  : seqid,
+    status : globals.queue,
   });
   
   //Save the Parent Meme
@@ -65,7 +81,6 @@ exports.addMeme = function(req, res) {
 
              //TODO: We should return the status id ticket
 
-
            }
         });
       }
@@ -80,15 +95,18 @@ exports.addMeme = function(req, res) {
 //Query A MEME Analysis
 exports.queryStatus = function(req, res) {
 
-   Meme.findOne({_id : req}, function(err, items) {
-      if (err)
-         res.send('There is no sequence with id of ' + id);
-       else
-         res.send(items);
-   });
+  Meme.findOne({_id : req.params.memeid}, function(err, item) {
 
-  //First parse current status
-  dpl.parseCurrentStatus( );
+  if (err)
+     res.send('There is no sequence with id of ' + req.memeid);
+
+   else {
+      //This should eventually be its own polling task
+      //That pushes out to the user
+      var hello = dme.jobListener.start(globals.types.meme, item);
+   }
+
+  });
+
 }
-
 
