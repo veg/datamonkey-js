@@ -13,7 +13,7 @@ def post(method, **kwargs):
 
 def get(method, **kwargs):
     url = URL + method
-    r = requests.post(url, params=kwargs)
+    r = requests.get(url, params=kwargs)
     r.raise_for_status()
     return json.loads(r.text) if r.text else None
 
