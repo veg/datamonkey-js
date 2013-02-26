@@ -12,14 +12,12 @@ var mongoose = require('mongoose')
 
 //return all sequences
 exports.findAll = function(req, res) {
-
-   Meme.find({},function(err, items) {
-      if (err)
-         res.send('There is no sequence with id of ' + id);
-       else
-         res.send(items);
-   });
-
+  Meme.find({},function(err, items) {
+    if (err)
+      res.send('There is no sequence with id of ' + id);
+    else
+      res.send(items);
+  });
 };
 
 //Start a Meme Analysis
@@ -40,11 +38,9 @@ exports.addMeme = function(req, res) {
 
     //Create Meme Parameters
     var parameters = new MemeParameters({
-
       modelstring : postdata.modelstring,
       treemode    : postdata.treemode,
       pvalue      : postdata.pvalue,
-
     });
     
     //Save Meme Parameters to parent Meme object
@@ -52,7 +48,6 @@ exports.addMeme = function(req, res) {
       if (err) return handleError(err);
 
       else {
-
         // Open Multiple Sequence Alignment File to get all necessary parameters
         // for dispatching.
         SequenceAlignmentFile.findOne({_id : seqid}, function(err, msa) {
@@ -60,7 +55,6 @@ exports.addMeme = function(req, res) {
             res.send('There is no sequence with id of ' + id);
 
            else {
-
              //Take the current parameters, and add MEME specific params
              //TODO: MEME specific params should be in globals
              var params = {
@@ -100,16 +94,33 @@ exports.queryStatus = function(req, res) {
 
   Meme.findOne({_id : req.params.memeid}, function(err, item) {
 
-  if (err)
-     res.send('There is no sequence with id of ' + req.memeid);
+    if (err)
+      res.send('There is no sequence with id of ' + req.memeid);
 
-   else {
+    else {
       //This should eventually be its own polling task
       //That pushes out to the user
       dme.jobListener.start(globals.types.meme, item);
-   }
+    }
 
   });
 
+}
+
+//Query A MEME Analysis
+exports.parseResults = function(req, res) {
+
+  Meme.findOne({_id : req.params.memeid}, function(err, item) {
+
+  if (err)
+    res.send('There is no sequence with id of ' + req.memeid);
+
+   else {
+     //This should eventually be its own polling task
+     //That pushes out to the user
+     dpl.parseResults(item);
+   }
+
+  });
 }
 

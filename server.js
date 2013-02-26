@@ -29,7 +29,6 @@ fs.readdirSync(models_path).forEach(function (file) {
 
 //TODO: Put routes in different file
 seqfile = require('./app/routes/seqfile');
-
 app.get('/seqfile', seqfile.findAll);
 app.get('/seqfile/:id', seqfile.findById);
 app.post('/seqfile', seqfile.addSequenceAlignmentFile);
@@ -41,7 +40,10 @@ meme = require('./app/routes/meme');
 app.get('/meme', meme.findAll);
 app.post('/seqfile/:seqid/meme', meme.addMeme);
 app.get('/seqfile/:seqid/meme/:memeid', meme.queryStatus);
+app.get('/seqfile/:seqid/meme/:memeid/parse', meme.parseResults);
 
+
+//TODO: ASR
 asr = require('./app/routes/asr');
 app.get('/seqfile/:seqid/asr/', asr.findAll);
 app.get('/seqfile/:seqid/asr/:id', asr.findById);

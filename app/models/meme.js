@@ -6,49 +6,49 @@ var Schema = mongoose.Schema
 
 //TODO: status needs to be a subdocument
 var Meme = new Schema({
-    msafn : { type: Schema.Types.ObjectId, ref: 'SequenceAlignmentFile' },
-    status     : String,
-    parameters : [MemeParameters],
-    results    : [MemeResults],
-    mappings   : [MemeMappings],
-    summary    : [MemeSummary]
+  msafn : { type: Schema.Types.ObjectId, ref: 'SequenceAlignmentFile' },
+  status     : String,
+  parameters : [MemeParameters],
+  results    : [MemeResults],
+  mappings   : [MemeMappings],
+  summary    : [MemeSummary]
 });
 
 var MemeParameters = new Schema({
-    modelstring : String,
-    treemode    : Number,
-    pvalue      : Number,
+  modelstring : String,
+  treemode    : Number,
+  pvalue      : Number,
 });
 
 var MemeResults = new Schema({
-    _creator : { type: Schema.Types.ObjectId, ref: 'Meme' },
-    codon   : Number,
-    beta1   : Number,
-    p1      : Number,
-    beta2   : Number,
-    p2      : Number,
-    alpha   : Number,
-    lrt     : Number,
-    pvalue  : Number,
-    logl    : Number,
-    qvalue  : Number
+  _creator : { type: Schema.Types.ObjectId, ref: 'Meme' },
+  codon   : Number,
+  beta1   : Number,
+  p1      : Number,
+  beta2   : Number,
+  p2      : Number,
+  alpha   : Number,
+  lrt     : Number,
+  pvalue  : Number,
+  logl    : Number,
+  qvalue  : Number
 });
 
 var MemeMappings = new Schema({
-    _creator : { type: Schema.Types.ObjectId, ref: 'Meme' },
-    tree     : Number,
-    codon    : Number,
-    branch   : Number,
-    pp       : Number,
-    ebf      : Number,
-    syn      : Number,
-    nonsyn   : Number
+  _creator : { type: Schema.Types.ObjectId, ref: 'Meme' },
+  tree     : Number,
+  codon    : Number,
+  branch   : Number,
+  pp       : Number,
+  ebf      : Number,
+  syn      : Number,
+  nonsyn   : Number
 });
 
 var MemeSummary = new Schema({
-    _creator  : { type: Schema.Types.ObjectId, ref: 'Meme' },
-    col_key   : String,
-    col_value : String
+  _creator  : { type: Schema.Types.ObjectId, ref: 'Meme' },
+  col_key   : String,
+  col_value : String
 });
 
 module.exports = mongoose.model('Meme', Meme);
