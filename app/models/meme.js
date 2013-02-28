@@ -6,8 +6,9 @@ var Schema = mongoose.Schema
 
 //TODO: status needs to be a subdocument
 var Meme = new Schema({
-  msafn : { type: Schema.Types.ObjectId, ref: 'SequenceAlignmentFile' },
+  msafn      : { type: Schema.Types.ObjectId, ref: 'SequenceAlignmentFile' },
   status     : String,
+  sendmail   : Boolean,
   parameters : [MemeParameters],
   results    : [MemeResults],
   mappings   : [MemeMappings],

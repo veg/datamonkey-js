@@ -35,14 +35,19 @@ exports.addSequenceAlignmentFile = function(req, res) {
   postdata = req.query;
   postdata.contents = postdata.contents.join('');
 
-  //Curate the postdata for fields we only want
-  datatype = 0;
-  genCodeId = 0;
+  //response = dm.post(method,contents=fh, datatype=datatype, genCodeId=genCodeId, mail=mail)
 
-  //Should check the postdata before
-  SequenceAlignmentFile.create(postdata, function (err, result) {
+  //TODO: Clean postdata
+  var sequence_alignment = new SequenceAlignmentFile({
+    contents    : postdata.contents,  
+    datatype    : postdata.datatype,
+    genCodeId   : postdata.genCodeId,
+    mailaddr    : postdata.mailaddr,
+  });
+
+  sequence_alignment.save(function (err,result) {
     if (err) {
-      res.send({'error':'An error has occurred'});
+      res.send({'error':err});
     } 
     else {
       //Upload to datamonkey
@@ -70,7 +75,6 @@ exports.updateSequenceAlignmentFile = function(req, res) {
       res.send(postdata);
     }
   });
-
 }
 
 //delete a sequence

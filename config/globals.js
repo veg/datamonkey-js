@@ -7,7 +7,6 @@ function define(name, value) {
 
 //We need to split each of the following into classes
 
-
 //Spool Directory
 define("spooldir","/var/lib/datamonkey/www/spool/")
 define("host","datamonkey-dev")

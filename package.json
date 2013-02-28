@@ -6,10 +6,12 @@
     "dependencies": {
         "express"   : "3.x"
         "express-validator" : "0.3.*"
+        "email-templates" : "0.0.*"
         "mongodb"   : "1.*"
         "mongoose"  : "3.*"
         "http"      : "*"
         "mocha"     : "*"
+        "nodemailer": "0.*.*"
         "supertest" : "*"
         "should"    : "*"
     }

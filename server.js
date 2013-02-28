@@ -38,9 +38,11 @@ app.delete('/seqfile/:id', seqfile.deleteSequenceAlignmentFile);
 //TODO: Update with a status route
 meme = require('./app/routes/meme');
 app.get('/meme', meme.findAll);
-app.post('/seqfile/:seqid/meme', meme.addMeme);
+app.post('/seqfile/:seqid/meme', meme.invokeMemeJob);
 app.get('/seqfile/:seqid/meme/:memeid', meme.queryStatus);
 app.get('/seqfile/:seqid/meme/:memeid/parse', meme.parseResults);
+app.get('/seqfile/:seqid/meme/:memeid/results', meme.results);
+app.get('/seqfile/:seqid/meme/:memeid/mail', meme.mail);
 
 
 //TODO: ASR

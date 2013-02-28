@@ -3,7 +3,7 @@ import dm
 #We need to define datatypes and gencodes in the database
 
 #Need to create users
-def create_seqfile(fn,datatype,gencode):
+def create_seqfile(fn,datatype,gencode,mailaddr=""):
 
     #Need to add name
     #Sites and Sequences are to be added on the backend
@@ -13,7 +13,7 @@ def create_seqfile(fn,datatype,gencode):
     datatype = 0
     genCodeId = 0
 
-    response = dm.post(method,contents=fh, datatype=datatype, genCodeId=genCodeId)
+    response = dm.post(method,contents=fh, datatype=datatype, genCodeId=genCodeId, mailaddr=mailaddr)
 
     return response
 
@@ -24,5 +24,3 @@ def get_all_sequences():
 
 if __name__ == "__main__":
     print create_seqfile('/Users/sweaver/Documents/NexusFiles/HIV_gp120.nex',0,0)
-    #print get_all_sequences()
-
