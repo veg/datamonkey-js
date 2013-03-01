@@ -61,11 +61,11 @@ if __name__ == "__main__":
 
     #Start analysis. Receive ticket.
     meme = meme_analysis(msa["_id"],treemode,modelstring,pvalue,sendmail)
+    print meme
 
     #Can continue polling
-    #get_meme_status(msa["_id"],meme["id"])
+    for x in range(1000):
+      print get_meme_status(msa["_id"],meme["id"])
 
     #msaid  = '512bcd83ed8920b771000001'
     #memeid = '5126925b0ca89ba230000002'
-    #print parse_meme_results(msaid,memeid)
-    #print mail_meme_results(msaid, memeid)

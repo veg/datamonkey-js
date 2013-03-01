@@ -80,7 +80,6 @@ exports.invokeMemeJob = function(req, res) {
 
            else {
              //Take the current parameters, and add MEME specific params
-             //TODO: MEME specific params should be in globals
              var params = {
                 'method'        : globals.MEME,
                 'treeMode'      : meme_result.treemode,
@@ -100,7 +99,8 @@ exports.invokeMemeJob = function(req, res) {
              //Dispatch the analysis to the perl script
              dpl.dispatchAnalysis(meme._id,msa,params,res);
 
-             //TODO: We should return the status id ticket
+             // TODO: We should return the status id ticket here instead of
+             // inside dispatchAnalysis
            }
         });
       }
@@ -116,31 +116,13 @@ exports.invokeMemeJob = function(req, res) {
 exports.queryStatus = function(req, res) {
 
   Meme.findOne({_id : req.params.memeid}, function(err, item) {
-
     if (err)
       res.send('There is no sequence with id of ' + req.memeid);
 
     else {
       //This should eventually be its own polling task
-      //That pushes out to the user
-      dme.jobListener.start(globals.types.meme, item);
+      res.send({status:item.status});
     }
-  });
-}
-
-//Force parsing results
-exports.parseResults = function(req, res) {
-
-  Meme.findOne({_id : req.params.memeid}, function(err, item) {
-
-  if (err)
-    res.send('There is no sequence with id of ' + req.memeid);
-
-   else {
-     //This should eventually be its own polling task
-     //That pushes out to the user
-     dpl.parseResults(item);
-   }
   });
 }
 
@@ -149,29 +131,31 @@ exports.results = function(req, res) {
 
   //Return all results
   Meme.findOne({_id : req.params.memeid}, function(err, item) {
+
     if (err)
       res.send('There is no sequence with id of ' + id);
+
     else
     {
 
-      if(item.status != globals.cancelled || item.status != globals.finished)
+      if(item.status == globals.cancelled || item.status == globals.finished)
       {
 
         if(item.results)
-        {
           res.send(item.results);
-        }
 
         else
-        {
-          res.send('Something run happened with this job');
-        }
+          res.send('Something wrong happened with this job');
+
       }
     }
+
     res.send('Job still running!');
   });
+
 }
 
+//Dev purposes only
 exports.mail = function(req, res) {
   mailer.send();  
   res.send({response:'Mail Sent!'});

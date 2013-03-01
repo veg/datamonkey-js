@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId;
 
-var SequenceAlignmentFile = new Schema({
+var MSA = new Schema({
     contents    : {type: String, require: true},  
     uploadfn    : String,
     datatype    : Number,
@@ -18,10 +18,10 @@ var SequenceAlignmentFile = new Schema({
     timestamp   : { type: String, default: (new Date()).getTime() }
 });
 
-SequenceAlignmentFile.index( { "id": 1 } );
+MSA.index( { "id": 1 } );
 
 var PartitionInfo = new Schema({
-    _creator : { type: Schema.Types.ObjectId, ref: 'SequenceAlignmentFile' },
+    _creator : { type: Schema.Types.ObjectId, ref: 'MSA' },
     partition   : Number,
     startCodon  : Number,
     endCodon    : Number,
@@ -30,9 +30,9 @@ var PartitionInfo = new Schema({
 });
 
 var Sequences = new Schema({
-    _creator : { type: Schema.Types.ObjectId, ref: 'SequenceAlignmentFile' },
+    _creator : { type: Schema.Types.ObjectId, ref: 'MSA' },
     seqIndex : Number,
     name     : String
 });
 
-module.exports = mongoose.model('SequenceAlignmentFile', SequenceAlignmentFile);
+module.exports = mongoose.model('MSA', MSA);

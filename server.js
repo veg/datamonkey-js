@@ -28,34 +28,32 @@ fs.readdirSync(models_path).forEach(function (file) {
 });
 
 //TODO: Put routes in different file
-seqfile = require('./app/routes/seqfile');
-app.get('/seqfile', seqfile.findAll);
-app.get('/seqfile/:id', seqfile.findById);
-app.post('/seqfile', seqfile.addSequenceAlignmentFile);
-app.put('/seqfile/:id', seqfile.updateSequenceAlignmentFile);
-app.delete('/seqfile/:id', seqfile.deleteSequenceAlignmentFile);
+msa = require('./app/routes/msa');
+app.get('/msa', msa.findAll);
+app.get('/msa/:id', msa.findById);
+app.post('/msa', msa.uploadMsa);
+app.put('/msa/:id', msa.updateSequenceAlignmentFile);
+app.delete('/msa/:id', msa.deleteSequenceAlignmentFile);
 
 //TODO: Update with a status route
 meme = require('./app/routes/meme');
 app.get('/meme', meme.findAll);
-app.post('/seqfile/:seqid/meme', meme.invokeMemeJob);
-app.get('/seqfile/:seqid/meme/:memeid', meme.queryStatus);
-app.get('/seqfile/:seqid/meme/:memeid/parse', meme.parseResults);
-app.get('/seqfile/:seqid/meme/:memeid/results', meme.results);
-app.get('/seqfile/:seqid/meme/:memeid/mail', meme.mail);
+app.post('/msa/:seqid/meme', meme.invokeMemeJob);
+app.get('/msa/:seqid/meme/:memeid', meme.queryStatus);
+app.get('/msa/:seqid/meme/:memeid/results', meme.results);
+app.get('/msa/:seqid/meme/:memeid/mail', meme.mail);
 
 
 //TODO: ASR
 asr = require('./app/routes/asr');
-app.get('/seqfile/:seqid/asr/', asr.findAll);
-app.get('/seqfile/:seqid/asr/:id', asr.findById);
-app.post('/seqfile/:seqid/asr', asr.addAsr);
-app.put('/seqfile/:seqid/asr', asr.updateAsr);
-app.delete('/seqfile/:seqid/asr/:id', asr.deleteAsr);
+app.get('/msa/:seqid/asr/', asr.findAll);
+app.get('/msa/:seqid/asr/:id', asr.findById);
+app.post('/msa/:seqid/asr', asr.addAsr);
+app.put('/msa/:seqid/asr', asr.updateAsr);
+app.delete('/msa/:seqid/asr/:id', asr.deleteAsr);
 
 app.listen(3000);
 console.log('Listening on port 3000...');
 module.exports = app;
-
 
 

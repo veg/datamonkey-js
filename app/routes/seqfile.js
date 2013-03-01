@@ -30,7 +30,7 @@ exports.findAll = function(req, res) {
 };
 
 //upload a sequence
-exports.addSequenceAlignmentFile = function(req, res) {
+exports.uploadMsa = function(req, res) {
 
   postdata = req.query;
   postdata.contents = postdata.contents.join('');
@@ -57,7 +57,7 @@ exports.addSequenceAlignmentFile = function(req, res) {
 }
 
 //update a sequence
-exports.updateSequenceAlignmentFile = function(req, res) {
+exports.updateMsa = function(req, res) {
 
   var id = req.params.id;
   var postdata = req.body;
@@ -71,14 +71,15 @@ exports.updateSequenceAlignmentFile = function(req, res) {
       res.send({'error':'An error has occurred'});
     } 
     else {
-      console.log('Success: ' + JSON.stringify(result));
+      //TODO: Only should log when debugging
+      //console.log('Success: ' + JSON.stringify(result));
       res.send(postdata);
     }
   });
 }
 
 //delete a sequence
-exports.deleteSequenceAlignmentFile = function(req, res) {
+exports.deleteMsa = function(req, res) {
 
   var id = req.params.id;
   console.log('Deleting sequence: ' + id);
@@ -92,6 +93,7 @@ exports.deleteSequenceAlignmentFile = function(req, res) {
       console.log('' + result + ' document(s) deleted');
       res.send(req.body);
      }
+
   });
   
 }
