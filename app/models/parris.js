@@ -1,59 +1,67 @@
 //Also needs to include status, and results
-var mongoose = require('mongoose');
+var mongoose = require('mongoose')
+  , SlacResults   = mongoose.model('SlacResults')
+  , SlacMutation  = mongoose.model('SlacMutation')
+  , SlacSummary   = mongoose.model('SlacSummary')
+  , SlacTrees     = mongoose.model('SlacTrees')
+  , MemeResults   = mongoose.model('MemeResults')
+  , MemeMappings  = mongoose.model('MemeMappings')
+  , MemeSummary   = mongoose.model('MemeSummary')
+  , FubarResults  = mongoose.model('FubarResults')
+  , FubarGrid     = mongoose.model('FubarGrid')
+  , FubarSummary  = mongoose.model('FubarSummary')
+  , FubarSiteInfo = mongoose.model('FubarSiteInfo')
+  , FubarMcmcTrace= mongoose.model('FubarMcmcTrace');
+  
 
 var Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId;
 
 //TODO: status needs to be a subdocument
-var Meme = new Schema({
-  msafn      : { type: Schema.Types.ObjectId, ref: 'MSA' },
-  status     : String,
-  sendmail   : Boolean,
-  parameters : [MemeParameters],
-  results    : [MemeResults],
-  mappings   : [MemeMappings],
-  summary    : [MemeSummary]
+var Parris = new Schema({
+  msafn            : { type: Schema.Types.ObjectId, ref: 'MSA' },
+  status           : String,
+  sendmail         : Boolean,
+  parameters       : [ParrisParameters],
+  distributions    : [ParrisDistributions],
+  summary          : [ParrisSummary]
+  slac_results     : [SlacResults],
+  slac_mutation    : [SlacMutation],
+  slac_summary     : [SlacSummary],
+  slac_trees       : [SlacTrees],
+  meme_results     : [MemeResults],
+  meme_mappings    : [MemeMappings],
+  meme_summary     : [MemeSummary],
+  fubar_results    : [FubarResults],
+  fubar_grid       : [FubarGrid],
+  fubar_summary    : [FubarSummary],
+  fubar_site_info  : [FubarSiteInfo],
+  fubar_mcmc_trace : [FubarMcmcTrace],
 });
 
-var MemeParameters = new Schema({
+var ParrisParameters = new Schema({
+  //TODO: Find right parameters
   modelstring : String,
   treemode    : Number,
   pvalue      : Number,
 });
 
-var MemeResults = new Schema({
+var ParrisDistributions = new Schema({
   _creator : { type: Schema.Types.ObjectId, ref: 'Meme' },
-  codon   : Number,
-  beta1   : Number,
-  p1      : Number,
-  beta2   : Number,
-  p2      : Number,
-  alpha   : Number,
-  lrt     : Number,
-  pvalue  : Number,
-  logl    : Number,
-  qvalue  : Number
+  variable : String,
+  rate     : Number,
+  value    : Number,
+  prob     : Number
 });
 
-var MemeMappings = new Schema({
+var ParrisSummary = new Schema({
   _creator : { type: Schema.Types.ObjectId, ref: 'Meme' },
-  tree     : Number,
-  codon    : Number,
-  branch   : Number,
-  pp       : Number,
-  ebf      : Number,
-  syn      : Number,
-  nonsyn   : Number
-});
-
-var MemeSummary = new Schema({
-  _creator  : { type: Schema.Types.ObjectId, ref: 'Meme' },
   col_key   : String,
   col_value : String
 });
 
-module.exports = mongoose.model('Meme', Meme);
-module.exports = mongoose.model('MemeParameters', MemeParameters);
-module.exports = mongoose.model('MemeResults', MemeResults);
-module.exports = mongoose.model('MemeMappings', MemeMappings);
-module.exports = mongoose.model('MemeSummary', MemeSummary);
+module.exports = mongoose.model('Parris', Parris);
+module.exports = mongoose.model('ParrisParameters', ParrisParameters);
+module.exports = mongoose.model('ParrisDistributions', ParrisDistributions);
+module.exports = mongoose.model('ParrisSummary', ParrisSummary);
+

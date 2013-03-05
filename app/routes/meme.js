@@ -24,7 +24,6 @@ var meme_consts = {
   rateclasses2  : 2
 };
 
-
 //return all sequences
 exports.findAll = function(req, res) {
   Meme.find({},function(err, items) {
@@ -160,3 +159,4 @@ exports.mail = function(req, res) {
   mailer.send();  
   res.send({response:'Mail Sent!'});
 }
+
