@@ -1,8 +1,8 @@
-var express  = require('express'),
+var express          = require('express'),
     expressValidator = require('express-validator'),
-    fs = require('fs'),
-    path = require("path"),
-    mongoose = require('mongoose');
+    fs               = require('fs'),
+    path             = require("path"),
+    mongoose         = require('mongoose');
 
 //database
 mongoose.connect('mongodb://localhost/datamonkey');
@@ -32,8 +32,8 @@ msa = require('./app/routes/msa');
 app.get('/msa', msa.findAll);
 app.get('/msa/:id', msa.findById);
 app.post('/msa', msa.uploadMsa);
-app.put('/msa/:id', msa.updateSequenceAlignmentFile);
-app.delete('/msa/:id', msa.deleteSequenceAlignmentFile);
+app.put('/msa/:id', msa.updateMsa);
+app.delete('/msa/:id', msa.deleteMsa);
 
 //TODO: Update with a status route
 meme = require('./app/routes/meme');

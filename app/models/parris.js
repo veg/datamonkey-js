@@ -1,4 +1,7 @@
 //Also needs to include status, and results
+require(__dirname + '/meme');
+require(__dirname + '/fubar');
+
 var mongoose = require('mongoose')
   , SlacResults   = mongoose.model('SlacResults')
   , SlacMutation  = mongoose.model('SlacMutation')
@@ -19,12 +22,12 @@ var Schema = mongoose.Schema
 
 //TODO: status needs to be a subdocument
 var Parris = new Schema({
-  msafn            : { type: Schema.Types.ObjectId, ref: 'MSA' },
+  msafn            : { type: Schema.Types.ObjectId, ref: 'Msa' },
   status           : String,
   sendmail         : Boolean,
   parameters       : [ParrisParameters],
   distributions    : [ParrisDistributions],
-  summary          : [ParrisSummary]
+  summary          : [ParrisSummary],
   slac_results     : [SlacResults],
   slac_mutation    : [SlacMutation],
   slac_summary     : [SlacSummary],
@@ -47,7 +50,7 @@ var ParrisParameters = new Schema({
 });
 
 var ParrisDistributions = new Schema({
-  _creator : { type: Schema.Types.ObjectId, ref: 'Meme' },
+  _creator : { type: Schema.Types.ObjectId, ref: 'Parris' },
   variable : String,
   rate     : Number,
   value    : Number,
@@ -55,7 +58,7 @@ var ParrisDistributions = new Schema({
 });
 
 var ParrisSummary = new Schema({
-  _creator : { type: Schema.Types.ObjectId, ref: 'Meme' },
+  _creator : { type: Schema.Types.ObjectId, ref: 'Parris' },
   col_key   : String,
   col_value : String
 });

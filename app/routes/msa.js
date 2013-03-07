@@ -1,7 +1,7 @@
 var dpl = require('../../lib/datamonkey-pl.js');
 
 var mongoose = require('mongoose')
-  , SequenceAlignmentFile = mongoose.model('SequenceAlignmentFile');
+  , Msa = mongoose.model('Msa');
 
 //find sequence by id
 exports.findById = function(req, res) {
@@ -9,7 +9,7 @@ exports.findById = function(req, res) {
   var id = req.params.id;
   console.log('Retrieving sequence: ' + id);
 
-  SequenceAlignmentFile.findOne({_id : id}, function(err, items) {
+  Msa.findOne({_id : id}, function(err, items) {
     if (err)
       res.send('There is no sequence with id of ' + id);
     else
@@ -21,7 +21,7 @@ exports.findById = function(req, res) {
 //return all sequences
 exports.findAll = function(req, res) {
 
- SequenceAlignmentFile.find({},function(err, items) {
+ Msa.find({},function(err, items) {
    if (err)
      res.send('There is no sequence with id of ' + id);
     else
@@ -38,7 +38,7 @@ exports.uploadMsa = function(req, res) {
   //response = dm.post(method,contents=fh, datatype=datatype, genCodeId=genCodeId, mail=mail)
 
   //TODO: Clean postdata
-  var sequence_alignment = new SequenceAlignmentFile({
+  var sequence_alignment = new Msa({
     contents    : postdata.contents,  
     datatype    : postdata.datatype,
     genCodeId   : postdata.genCodeId,
@@ -66,7 +66,7 @@ exports.updateMsa = function(req, res) {
   console.log(JSON.stringify(sequence));
 
   //Should check the postdata before
-  SequenceAlignmentFile.update(postdata, function (err, result) {
+  Msa.update(postdata, function (err, result) {
     if (err) {
       res.send({'error':'An error has occurred'});
     } 
@@ -84,7 +84,7 @@ exports.deleteMsa = function(req, res) {
   var id = req.params.id;
   console.log('Deleting sequence: ' + id);
 
-  SequenceAlignmentFile.remove({ _id: new BSON.ObjectID(id) }, function(err) {
+  Msa.remove({ _id: new BSON.ObjectID(id) }, function(err) {
     if (err) {
       res.send({'error':'An error has occurred - ' + err});
     }

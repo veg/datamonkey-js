@@ -1,6 +1,11 @@
+require(__dirname + '/slac');
+require(__dirname + '/gard');
+
 var mongoose = require('mongoose')
-  , FelResults = mongoose.model('FelResults')
-  , FelSummary = mongoose.model('FelSummary');
+  , SlacModel = mongoose.model('SlacModel')
+  , GardSplits = mongoose.model('GardSplits')
+  , GardSummary = mongoose.model('GardSummary')
+  , GardDetails = mongoose.model('GardDetails');
 
 var Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId;
@@ -8,7 +13,7 @@ var Schema = mongoose.Schema
 //TODO: status needs to be a subdocument
 //TODO: Include SLAC
 var Sbp = new Schema({
-  msafn        : { type: Schema.Types.ObjectId, ref: 'MSA' },
+  msafn        : { type: Schema.Types.ObjectId, ref: 'Msa' },
   status       : String,
   sendmail     : Boolean,
   parameters   : [SbpParameters],
@@ -51,5 +56,6 @@ var SbpSummary = new Schema({
 
 module.exports = mongoose.model('Sbp', Sbp);
 module.exports = mongoose.model('SbpParameters', SbpParameters);
+module.exports = mongoose.model('SbpTrees', SbpTrees);
 module.exports = mongoose.model('SbpSummary', SbpSummary);
 

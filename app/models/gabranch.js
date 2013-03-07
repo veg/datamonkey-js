@@ -6,11 +6,18 @@ var Schema = mongoose.Schema
 
 //TODO: status needs to be a subdocument
 var GABranch = new Schema({
-  msafn      : { type: Schema.Types.ObjectId, ref: 'MSA' },
+  msafn      : { type: Schema.Types.ObjectId, ref: 'Msa' },
   status     : String,
   sendmail   : Boolean,
-  parameters : [GABranchParameters]
+  parameters : [GABranchParameters],
   summary    : [GABranchSummary]
+});
+
+var GABranchParameters = new Schema({
+  //TODO: Find this out
+  modelstring : String,
+  treemode    : Number,
+  pvalue      : Number,
 });
 
 var GABranchSummary = new Schema({

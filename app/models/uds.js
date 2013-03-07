@@ -3,33 +3,35 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId;
 
+var Mixed = mongoose.Schema.Types.Mixed;
 
 //TODO: status needs to be a subdocument
 //TODO: Include SLAC
 
 var Uds = new Schema({
-  msafn               : { type : Schema.Types.ObjectId, ref : 'MSA' },
+  msafn               : { type : Schema.Types.ObjectId, ref : 'Msa' },
   status              : String,
   sendmail            : Boolean,
-  aa_alignment        : [AaAlignment]
-  accessory_mutations : [AccessoryMutations]
-  accessory_test      : [AccessoryTest]
-  base_frequencies    : [BaseFrequencies]
-  diversity_sw        : [DiversitySw]
-  diversity_sws       : [DiversitySws]
-  dnds                : [Dnds]
-  legend              : [Legend]
-  mdr_summary         : [MdrSummary]
-  mdr_variants        : [MdrVariants]
-  mu_rate_classes     : [MuRateClasses]
-  nuc_alignment       : [NucAlignment]
-  sequences           : [Sequences]
-  settings            : [Settings]
-  site_dr_posteriors  : [SiteDrPosteriors]
-  site_mu_rates       : [SiteMuRates]
-  site_posteriors     : [SitePosteriors]
-  uds_file_info       : [UdsFileInfo]
-  uds_qc_stats        : [UdsQcStats]
+  parameters          : [UdsParameters],
+  aa_alignment        : [UdsAaAlignment],
+  accessory_mutations : [UdsAccessoryMutations],
+  accessory_test      : [UdsAccessoryTest],
+  base_frequencies    : [UdsBaseFrequencies],
+  diversity_sw        : [UdsDiversitySw],
+  diversity_sws       : [UdsDiversitySws],
+  dnds                : [UdsDnds],
+  legend              : [UdsLegend],
+  mdr_summary         : [UdsMdrSummary],
+  mdr_variants        : [UdsMdrVariants],
+  mu_rate_classes     : [UdsMuRateClasses],
+  nuc_alignment       : [UdsNucAlignment],
+  sequences           : [UdsSequences],
+  settings            : [UdsSettings],
+  site_dr_posteriors  : [UdsSiteDrPosteriors],
+  site_mu_rates       : [UdsSiteMuRates],
+  site_posteriors     : [UdsSitePosteriors],
+  uds_file_info       : [UdsFileInfo],
+  uds_qc_stats        : [UdsQcStats],
 });
 
 var UdsParameters = new Schema({
@@ -38,7 +40,7 @@ var UdsParameters = new Schema({
   pvalue      : Number,
 });
 
-var AaAlignment = new Schema({
+var UdsAaAlignment = new Schema({
   _creator       : { type   : Schema.Types.ObjectId, ref : 'Uds' },
   aaa            : Number,
   aac            : Number,
@@ -110,7 +112,7 @@ var AaAlignment = new Schema({
   ttt            : Number
 });
 
-var AccessoryMutations = new Schema({
+var UdsAccessoryMutations = new Schema({
   _creator        : { type   : Schema.Types.ObjectId, ref : 'Uds' },
   read_id         : String,
   primary_site    : Number,
@@ -127,7 +129,7 @@ var AccessoryMutations = new Schema({
   exp_per_base_sc : Number
 });
 
-var AccessoryTest = new Schema({
+var UdsAccessoryTest = new Schema({
   _creator     : { type   : Schema.Types.ObjectId, ref : 'Uds' },
   dr_acc       : String,
   notdr_acc    : Number,
@@ -136,12 +138,12 @@ var AccessoryTest = new Schema({
   p_val        : Number
 });
 
-var BaseFrequencies = new Schema({
+var UdsBaseFrequencies = new Schema({
   _creator    : { type   : Schema.Types.ObjectId, ref : 'Uds' },
   matrix      : String
 });
 
-var DiversitySw = new Schema({
+var UdsDiversitySw = new Schema({
   _creator              : { type   : Schema.Types.ObjectId, ref : 'Uds' },
   width                 : Number,
   stride                : Number,
@@ -153,7 +155,7 @@ var DiversitySw = new Schema({
   dual_infection        : Mixed
 });
 
-var DiversitySws = new Schema({
+var UdsDiversitySws = new Schema({
   _creator       : { type   : Schema.Types.ObjectId, ref : 'Uds' },
   start          : Number,
   end            : Number,
@@ -168,7 +170,7 @@ var DiversitySws = new Schema({
   nuc_align      : Number
 });
 
-var Dnds = new Schema({
+var UdsDnds = new Schema({
   _creator    : { type   : Schema.Types.ObjectId, ref : 'Uds' },
   pos          : Number,
   cons_aa      : String,
@@ -180,14 +182,14 @@ var Dnds = new Schema({
   pn_number    : Number
 });
 
-var Legend = new Schema({
+var UdsLegend = new Schema({
   _creator    : { type : Schema.Types.ObjectId, ref : 'Uds' },
   table_name  : String,
   field_name  : String,
   description : String
 });
 
-var MdrSummary = new Schema({
+var UdsMdrSummary = new Schema({
   _creator       : { type   : Schema.Types.ObjectId, ref : 'Uds' },
   ref_gene       : String,
   drug_class     : String,
@@ -197,7 +199,7 @@ var MdrSummary = new Schema({
   dr_coverage    : Number
 });
 
-var MdrVariants = new Schema({
+var UdsMdrVariants = new Schema({
   _creator         : { type   : Schema.Types.ObjectId, ref : 'Uds' },
   mdr_site         : Number,
   site_gene_start  : Number,
@@ -216,7 +218,7 @@ var MdrVariants = new Schema({
   mu_rnk_prctl     : Number
 });
 
-var MuRateClasses = new Schema({
+var UdsMuRateClasses = new Schema({
   _creator    : { type   : Schema.Types.ObjectId, ref : 'Uds' },
   num_rates  : Number,
   rate_class : Number,
@@ -226,7 +228,7 @@ var MuRateClasses = new Schema({
   aic        : Number
 });
 
-var NucAlignment = new Schema({
+var UdsNucAlignment = new Schema({
   _creator       : { type   : Schema.Types.ObjectId, ref : 'Uds' },
   a              : Number,
   ambig          : Number,
@@ -241,7 +243,7 @@ var NucAlignment = new Schema({
   t              : Number
 });
 
-var Sequences = new Schema({
+var UdsSequences = new Schema({
   _creator             : { type   : Schema.Types.ObjectId, ref : 'Uds' },
   aligned              : String,
   aligned_aa           : String,
@@ -258,7 +260,7 @@ var Sequences = new Schema({
   ref_pass2            : String,
   score                : Number,
   score_pass2          : Number,
-  sequence_id          : UNIQUE, //This needs to be changed to Index
+  sequence_id          : { type: Number , index: { unique: true }}, 
   span                 : Number,
   span_pass2           : Number,
   stage                : Number,
@@ -266,7 +268,7 @@ var Sequences = new Schema({
   tooshort             : Number
 });
 
-var Settings = new Schema({
+var UdsSettings = new Schema({
   _creator                 : { type   : Schema.Types.ObjectId, ref : 'Uds' },
   dual_infection_threshold : Number,
   exp_per_base_score       : Number,
@@ -275,7 +277,7 @@ var Settings = new Schema({
   min_coverage             : Number,
   min_dr_coverage          : Number,
   min_length               : String,
-  options                  : String,
+  uds_options              : String,
   prot_score_matrix        : String,
   reference                : String,
   reference_pass2          : String,
@@ -287,7 +289,7 @@ var Settings = new Schema({
   threshold_pass2          : Number
 });
 
-var SiteDrPosteriors = new Schema({
+var UdsSiteDrPosteriors = new Schema({
   _creator        : { type   : Schema.Types.ObjectId, ref : 'Uds' },
   mdr_site        : Number,
   site_gene_start : Number,
@@ -299,7 +301,7 @@ var SiteDrPosteriors = new Schema({
   posterior       : Number
 });
 
-var SiteMuRates = new Schema({
+var UdsSiteMuRates = new Schema({
   _creator          : { type   : Schema.Types.ObjectId, ref : 'Uds' },
   site              : Number,
   coverage          : Number,
@@ -309,7 +311,7 @@ var SiteMuRates = new Schema({
   mu_rnk_prcnt      : Number
 });
 
-var SitePosteriors = new Schema({
+var UdsSitePosteriors = new Schema({
   _creator   : { type   : Schema.Types.ObjectId, ref : 'Uds' },
   site       : Number,
   coverage   : Number,
@@ -342,4 +344,22 @@ var UdsQcStats = new Schema({
 
 module.exports = mongoose.model('Uds', Uds);
 module.exports = mongoose.model('UdsParameters', UdsParameters);
-
+module.exports = mongoose.model('UdsAaAlignment', UdsAaAlignment);
+module.exports = mongoose.model('UdsAccessoryMutations', UdsAccessoryMutations);
+module.exports = mongoose.model('UdsAccessoryTest', UdsAccessoryTest);
+module.exports = mongoose.model('UdsBaseFrequencies', UdsBaseFrequencies);
+module.exports = mongoose.model('UdsDiversitySw', UdsDiversitySw);
+module.exports = mongoose.model('UdsDiversitySws', UdsDiversitySws);
+module.exports = mongoose.model('UdsDnds', UdsDnds);
+module.exports = mongoose.model('UdsLegend', UdsLegend);
+module.exports = mongoose.model('UdsMdrSummary', UdsMdrSummary);
+module.exports = mongoose.model('UdsMdrVariants', UdsMdrVariants);
+module.exports = mongoose.model('UdsMuRateClasses', UdsMuRateClasses);
+module.exports = mongoose.model('UdsNucAlignment', UdsNucAlignment);
+module.exports = mongoose.model('UdsSequences', UdsSequences);
+module.exports = mongoose.model('UdsSettings', UdsSettings);
+module.exports = mongoose.model('UdsSiteDrPosteriors', UdsSiteDrPosteriors);
+module.exports = mongoose.model('UdsSiteMuRates', UdsSiteMuRates);
+module.exports = mongoose.model('UdsSitePosteriors', UdsSitePosteriors);
+module.exports = mongoose.model('UdsFileInfo', UdsFileInfo);
+module.exports = mongoose.model('UdsQcStats', UdsQcStats);

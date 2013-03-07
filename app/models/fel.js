@@ -5,23 +5,23 @@ var Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId;
 
 //TODO: status needs to be a subdocument
-var FEL = new Schema({
-  msafn      : { type: Schema.Types.ObjectId, ref: 'MSA' },
+var Fel = new Schema({
+  msafn      : { type: Schema.Types.ObjectId, ref: 'Msa' },
   status     : String,
   sendmail   : Boolean,
-  parameters : [FELParameters],
-  results    : [FELResults],
-  summary    : [FELSummary]
+  parameters : [FelParameters],
+  results    : [FelResults],
+  summary    : [FelSummary]
 });
 
-var FELParameters = new Schema({
+var FelParameters = new Schema({
   //TODO: Find this out
   modelstring : String,
   treemode    : Number,
   pvalue      : Number,
 });
 
-var FELResults = new Schema({
+var FelResults = new Schema({
   _creator   : { type: Schema.Types.ObjectId, ref: 'FEL' },
   codon      : Number,
   ds         : Number,
@@ -33,14 +33,14 @@ var FELResults = new Schema({
   scaleddnds : Number
 });
 
-var FELSummary = new Schema({
+var FelSummary = new Schema({
   _creator  : { type: Schema.Types.ObjectId, ref: 'FEL' },
   col_key   : String,
   col_value : String
 });
 
-module.exports = mongoose.model('FEL', FEL);
-module.exports = mongoose.model('FELParameters', FELParameters);
-module.exports = mongoose.model('FELResults', FELResults);
-module.exports = mongoose.model('FELSummary', FELSummary);
+module.exports = mongoose.model('Fel', Fel);
+module.exports = mongoose.model('FelParameters', FelParameters);
+module.exports = mongoose.model('FelResults', FelResults);
+module.exports = mongoose.model('FelSummary', FelSummary);
 

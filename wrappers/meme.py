@@ -1,5 +1,5 @@
 import dm
-import seqfile
+import msa
 
 def meme_analysis(seqid,treemode,modelstring,pvalue,sendmail=False,block=False):
     # We need to tell the API the method
@@ -16,33 +16,33 @@ def meme_analysis(seqid,treemode,modelstring,pvalue,sendmail=False,block=False):
 
     #TODO: Have url friendly sequence ids
 
-    method = "/seqfile/{0}/meme".format(seqid)
+    method = "/msa/{0}/meme".format(seqid)
     response = dm.post(method,seqid=seqid,treemode=treemode,modelstring=modelstring,
                        pvalue=pvalue,sendmail=sendmail,block=block)
     return response
 
 def get_meme_status(seqid,memeid):
-    method = "/seqfile/{0}/meme/{1}".format(seqid,memeid)
+    method = "/msa/{0}/meme/{1}".format(seqid,memeid)
     response = dm.get(method,params=None)
     return response
 
 def parse_meme_results(seqid,memeid):
-    method = "/seqfile/{0}/meme/{1}/parse".format(seqid,memeid)
+    method = "/msa/{0}/meme/{1}/parse".format(seqid,memeid)
     response = dm.get(method,params=None)
     return response
 
 def get_meme_results(seqid,memeid):
-    method = "/seqfile/{0}/meme/{1}/results".format(seqid,memeid)
+    method = "/msa/{0}/meme/{1}/results".format(seqid,memeid)
     response = dm.get(method,params=None)
     return response
 
 def mail_meme_results(seqid,memeid):
-    method = "/seqfile/{0}/meme/{1}/mail".format(seqid,memeid)
+    method = "/msa/{0}/meme/{1}/mail".format(seqid,memeid)
     response = dm.get(method,params=None)
     return response
 
 def get_all_meme():
-    method = "/seqfile/{0}/meme".format(seqid)
+    method = "/msa/{0}/meme".format(seqid)
     response = dm.get(method,params=None)
     return response
 
@@ -51,7 +51,7 @@ if __name__ == "__main__":
     mail = 'sweaver@ucsd.edu'
     fn   = '/home/sweaver/datamonkey-js/wrappers/res/HIV_gp120.nex'
 
-    msa = seqfile.create_seqfile(fn,0,0,mail)
+    msa = msa.create_msa(fn,0,0,mail)
 
     #Neighbor Joining
     modelstring = "010010"

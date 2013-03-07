@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId;
 
-var MSA = new Schema({
+var Msa = new Schema({
     contents    : {type: String, require: true},  
     uploadfn    : String,
     datatype    : Number,
@@ -18,10 +18,10 @@ var MSA = new Schema({
     timestamp   : { type: String, default: (new Date()).getTime() }
 });
 
-MSA.index( { "id": 1 } );
+Msa.index( { "id": 1 } );
 
 var PartitionInfo = new Schema({
-    _creator : { type: Schema.Types.ObjectId, ref: 'MSA' },
+    _creator : { type: Schema.Types.ObjectId, ref: 'Msa' },
     partition   : Number,
     startCodon  : Number,
     endCodon    : Number,
@@ -30,9 +30,9 @@ var PartitionInfo = new Schema({
 });
 
 var Sequences = new Schema({
-    _creator : { type: Schema.Types.ObjectId, ref: 'MSA' },
+    _creator : { type: Schema.Types.ObjectId, ref: 'Msa' },
     seqIndex : Number,
     name     : String
 });
 
-module.exports = mongoose.model('MSA', MSA);
+module.exports = mongoose.model('Msa', Msa);

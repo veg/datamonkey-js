@@ -5,8 +5,8 @@ var Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId;
 
 var Asr = new Schema({
-    _creator : { type: Schema.Types.ObjectId, ref: 'MSA' },
-    msafn      : { type: Schema.Types.ObjectId, ref: 'MSA' },
+    _creator : { type: Schema.Types.ObjectId, ref: 'Msa' },
+    msafn      : { type: Schema.Types.ObjectId, ref: 'Msa' },
     status     : String,
     sendmail   : Boolean,
     parameters : [AsrParameters],
@@ -62,7 +62,7 @@ var AsrSummary = new Schema({
 
 module.exports = mongoose.model('Asr', Asr);
 module.exports = mongoose.model('AsrResidues', AsrResidues);
-module.exports = mongoose.model('AsrMarginalDump', AsrMarginalDump);,
-module.exports = mongoose.model('AsrSampledDump', AsrSampledDump);,
+module.exports = mongoose.model('AsrMarginalDump', AsrMarginalDump);
+module.exports = mongoose.model('AsrSampledDump', AsrSampledDump);
 module.exports = mongoose.model('AsrSummary', AsrSummary);
 

@@ -1,6 +1,4 @@
-var mongoose = require('mongoose')
-  , FelResults = mongoose.model('FelResults')
-  , FelSummary = mongoose.model('FelSummary');
+var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId;
@@ -8,7 +6,7 @@ var Schema = mongoose.Schema
 //TODO: status needs to be a subdocument
 //TODO: Include SLAC
 var Scueal = new Schema({
-  msafn             : { type : Schema.Types.ObjectId, ref : 'MSA' },
+  msafn             : { type : Schema.Types.ObjectId, ref : 'Msa' },
   status            : String,
   sendmail          : Boolean,
   parameters        : [ScuealParameters],

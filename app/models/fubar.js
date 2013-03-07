@@ -1,16 +1,39 @@
 //Also needs to include status, and results
-var mongoose = require('mongoose')
-  , MemeResults = mongoose.model('MemeResults')
-  , MemeMappings = mongoose.model('MemeMappings')
-  , MemeSummary = mongoose.model('MemeSummary');
+require(__dirname + '/slac');
+require(__dirname + '/sbp');
+require(__dirname + '/fel');
+require(__dirname + '/meme');
+require(__dirname + '/rel');
+require(__dirname + '/evf');
+
+var mongoose            = require('mongoose')
+  , SbpSummary          = mongoose.model('SbpSummary')
+  , SbpTrees            = mongoose.model('SbpTrees')
+  , SlacModel           = mongoose.model('SlacModel')
+  , SlacResults         = mongoose.model('SlacResults')
+  , SlacMutation        = mongoose.model('SlacMutation')
+  , SlacSummary         = mongoose.model('SlacSummary')
+  , SlacTrees           = mongoose.model('SlacTrees')
+  , FelResults          = mongoose.model('FelResults')
+  , FelSummary          = mongoose.model('FelSummary')
+  , MemeResults         = mongoose.model('MemeResults')
+  , MemeMappings        = mongoose.model('MemeMappings')
+  , MemeSummary         = mongoose.model('MemeSummary')
+  , RelDistributions    = mongoose.model('RelDistributions')
+  , RelResults          = mongoose.model('RelResults')
+  , RelSummary          = mongoose.model('RelSummary')
+  , EvfSamples          = mongoose.model('EvfSamples')
+  , EvfPosteriorSamples = mongoose.model('EvfPosteriorSamples')
+  , EvfPosteriors       = mongoose.model('EvfPosteriors')
+  , EvfSummary          = mongoose.model('EvfSummary')
+  , EvfRateInfoSummary  = mongoose.model('EvfRateInfoSummary');
 
 var Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId;
 
 //TODO: status needs to be a subdocument
-//TODO: status needs to be a subdocument
 var Fubar = new Schema({
-  msafn                   : { type: Schema.Types.ObjectId, ref: 'MSA' },
+  msafn                   : { type: Schema.Types.ObjectId, ref: 'Msa' },
   status                  : String,
   sendmail                : Boolean,
   parameters              : [FubarParameters],
@@ -19,9 +42,9 @@ var Fubar = new Schema({
   summary                 : [FubarSummary],
   site_info               : [FubarSiteInfo],
   mcmc_trace              : [FubarMcmcTrace],
-  slac_model              : [SlacModel],
   sbp_summary             : [SbpSummary],
   sbp_trees               : [SbpTrees],
+  slac_model              : [SlacModel],
   slac_results            : [SlacResults],
   slac_mutation           : [SlacMutation],
   slac_summary            : [SlacSummary],
@@ -41,8 +64,8 @@ var Fubar = new Schema({
   evf_rate_info_summary   : [EvfRateInfoSummary],
 });
 
+//TODO: Figure out variables
 var FubarParameters = new Schema({
-  //TODO: Figure out variables
   modelstring : String,
   treemode    : Number,
   pvalue      : Number,
@@ -97,3 +120,4 @@ module.exports = mongoose.model('FubarParameters', FubarParameters);
 module.exports = mongoose.model('FubarMcmcTrace', FubarMcmcTrace);
 module.exports = mongoose.model('FubarSiteInfo', FubarSiteInfo);
 module.exports = mongoose.model('FubarGrid', FubarGrid);
+module.exports = mongoose.model('FubarResults', FubarResults);

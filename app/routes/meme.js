@@ -7,10 +7,10 @@ var mailer  = require('../../lib/mailer.js');
 
 var fs = require('fs');
 
-var mongoose = require('mongoose')
-  , SequenceAlignmentFile = mongoose.model('SequenceAlignmentFile')
-  , Meme = mongoose.model('Meme')
-  , MemeParameters = mongoose.model('MemeParameters');
+var mongoose              = require('mongoose')
+  , Msa = mongoose.model('Msa')
+  , Meme                  = mongoose.model('Meme')
+  , MemeParameters        = mongoose.model('MemeParameters');
 
 var meme_consts = {
   //TODO:Root has to be dynamically chosen
@@ -73,7 +73,7 @@ exports.invokeMemeJob = function(req, res) {
       else {
         // Open Multiple Sequence Alignment File to get all necessary parameters
         // for dispatching.
-        SequenceAlignmentFile.findOne({_id : seqid}, function(err, msa) {
+        Msa.findOne({_id : seqid}, function(err, msa) {
           if (err)
             res.send('There is no sequence with id of ' + id);
 

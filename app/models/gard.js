@@ -1,19 +1,22 @@
 //Also needs to include status, and results
-var mongoose = require('mongoose');
+require(__dirname + '/slac');
+
+var mongoose = require('mongoose')
+  , SlacModel = mongoose.model('SlacModel');
 
 var Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId;
 
 //TODO: status needs to be a subdocument
 var Gard = new Schema({
-  msafn      : { type: Schema.Types.ObjectId, ref: 'MSA' },
+  msafn      : { type: Schema.Types.ObjectId, ref: 'Msa' },
   status     : String,
   sendmail   : Boolean,
   parameters : [GardParameters],
-  slac_model : [SlacModel],
   splits     : [GardSplits],
   details    : [GardDetails],
-  summary    : [GardSummary]
+  summary    : [GardSummary],
+  slac_model : [SlacModel],
 });
 
 var GardParameters = new Schema({

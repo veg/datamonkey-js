@@ -1,7 +1,15 @@
 //Also needs to include status, and results
+require(__dirname + '/slac');
+require(__dirname + '/fel');
+
 var mongoose = require('mongoose')
-  , FelResults = mongoose.model('FelResults')
-  , FelSummary = mongoose.model('FelSummary');
+  , SlacModel    = mongoose.model('SlacModel')
+  , SlacResults  = mongoose.model('SlacResults')
+  , SlacMutation = mongoose.model('SlacMutation')
+  , SlacSummary  = mongoose.model('SlacSummary')
+  , SlacTrees    = mongoose.model('SlacTrees')
+  , FelResults   = mongoose.model('FelResults')
+  , FelSummary   = mongoose.model('FelSummary');
 
 var Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId;
@@ -9,7 +17,7 @@ var Schema = mongoose.Schema
 //TODO: status needs to be a subdocument
 //TODO: Include SLAC
 var ModelSelection = new Schema({
-  msafn         : { type: Schema.Types.ObjectId, ref: 'MSA' },
+  msafn         : { type: Schema.Types.ObjectId, ref: 'Msa' },
   status        : String,
   sendmail      : Boolean,
   parameters    : [ModelSelectionParameters],
