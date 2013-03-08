@@ -39,7 +39,7 @@ var MemeMappings = new Schema({
   _creator : { type: Schema.Types.ObjectId, ref: 'Meme' },
   tree     : Number,
   codon    : Number,
-  branch   : Number,
+  branch   : String,
   pp       : Number,
   ebf      : Number,
   syn      : Number,

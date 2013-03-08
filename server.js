@@ -36,14 +36,15 @@ app.put('/msa/:id', msa.updateMsa);
 app.delete('/msa/:id', msa.deleteMsa);
 
 analysis = require('./app/routes/analysis');
+app.get('/msa/:msaid/:type', analysis.findAll);
 app.post('/msa/:msaid/:type', analysis.invokeJob);
 app.get('/msa/:msaid/:type/:typeid', analysis.queryStatus);
 app.get('/msa/:msaid/:type/:typeid/results', analysis.getResults);
 app.get('/msa/:msaid/:type/:typeid/mail', analysis.sendMail);
+app.get('/msa/:msaid/:type/:typeid/parseresults', analysis.parseResults);
+
 
 //TODO: Update with a status route
-//meme = require('./app/routes/meme');
-//app.get('/meme', meme.findAll);
 //app.post('/msa/:msaid/meme', meme.invokeJob);
 //app.get('/msa/:msaid/meme/:memeid', meme.queryStatus);
 //app.get('/msa/:msaid/meme/:memeid/results', meme.getResults);

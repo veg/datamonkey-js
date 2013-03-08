@@ -92,7 +92,7 @@ exports.invokeJob = function(req, res) {
              };
 
              //Dispatch the analysis to the perl script
-             dpl.dispatchAnalysis(analysis._id,msa,params,res);
+             dpl.dispatchAnalysis(analysis._id,type,msa,params,res);
 
              // TODO: We should return the status id ticket here instead of
              // inside dispatchAnalysis
@@ -157,7 +157,6 @@ exports.getResults = function(req, res) {
 
       }
     }
-
     res.send('Job still running!');
   });
 
@@ -170,6 +169,30 @@ exports.sendMail = function(req, res) {
 
   mailer.send();  
   res.send({response:'Mail Sent!'});
+
+}
+
+exports.parseResults = function(req, res) {
+
+  type =  req.params.type;
+  console.log(req.params.type);
+  console.log(req.params.typeid);
+
+  var Analysis = mongoose.model(type.capitalize());
+
+  Analysis.findOne({_id : req.params.typeid}, function(err, item) {
+    if (err)
+      res.send('There is no sequence with id of ' + req.params.typeid);
+
+    else {
+
+      //This should eventually be its own polling task
+      dpl.parseResults(item);
+      res.send({status:item.msafn});
+
+    }
+
+  });
 
 }
 
