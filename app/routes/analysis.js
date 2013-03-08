@@ -4,16 +4,19 @@ var dpl     = require('../../lib/datamonkey-pl.js');
 var dme     = require('../../lib/datamonkey-event.js');
 var globals = require('../../config/globals.js');
 var mailer  = require('../../lib/mailer.js');
+var helpers = require('../../lib/helpers.js');
 
 var fs = require('fs');
 
-var mongoose              = require('mongoose')
+var mongoose = require('mongoose')
   , Msa = mongoose.model('Msa');
 
 //return all sequences
 exports.findAll = function(req, res) {
+  type =  req.params.type;
+
   //I need to query find based on type
-  var Analysis = mongoose.model('Meme');
+  var Analysis = mongoose.model(type.capitalize());
 
   Analysis.find({},function(err, items) {
     if (err)
@@ -27,8 +30,8 @@ exports.findAll = function(req, res) {
 exports.invokeJob = function(req, res) {
   type =  req.params.type;
 
-  var Analysis = mongoose.model('Meme');
-  var AnalysisParameters = mongoose.model('MemeParameters');
+  var Analysis = mongoose.model(type.capitalize());
+  var AnalysisParameters = mongoose.model(type.capitalize() + 'Parameters');
 
   //Create Analysis of respective type
   var postdata = req.query;
@@ -112,7 +115,8 @@ exports.invokeJob = function(req, res) {
 exports.queryStatus = function(req, res) {
   // Find the analysis
   // Return its status
-  var Analysis = mongoose.model('Meme');
+  var Analysis = mongoose.model(type.capitalize());
+
 
   Analysis.findOne({_id : req.params.typeid}, function(err, item) {
     if (err)
@@ -131,8 +135,7 @@ exports.getResults = function(req, res) {
   // Return its results
 
   type =  req.params.type;
-
-  var Analysis = mongoose.model('Meme');
+  var Analysis = mongoose.model(type.capitalize());
 
   //Return all results
   Analysis.findOne({_id : req.params.typeid}, function(err, item) {
