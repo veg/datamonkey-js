@@ -94,4 +94,19 @@ types = {
 meme: "meme"
 }
 
+var meme = {
+  root          : "SRC1",
+  namedmodels   : "",
+  roptions      : 4,
+  dnds          : 1.0,
+  ambchoice     : 0,
+  rateoption    : 0,
+  rateclasses   : 2,
+  rateoption2   : 1,
+  rateclasses2  : 2
+};
+
+
 define("types",types)
+define("meme",meme)
+

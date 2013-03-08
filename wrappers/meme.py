@@ -1,7 +1,7 @@
 import dm
 import msa
 
-def meme_analysis(seqid,treemode,modelstring,pvalue,sendmail=False,block=False):
+def meme_analysis(msaid,treemode,modelstring,pvalue,sendmail=False,block=False):
     # We need to tell the API the method
     # A meme analysis requires:
     # sequence
@@ -16,33 +16,33 @@ def meme_analysis(seqid,treemode,modelstring,pvalue,sendmail=False,block=False):
 
     #TODO: Have url friendly sequence ids
 
-    method = "/msa/{0}/meme".format(seqid)
-    response = dm.post(method,seqid=seqid,treemode=treemode,modelstring=modelstring,
+    method = "/msa/{0}/meme".format(msaid)
+    response = dm.post(method,msaid=msaid,treemode=treemode,modelstring=modelstring,
                        pvalue=pvalue,sendmail=sendmail,block=block)
     return response
 
-def get_meme_status(seqid,memeid):
-    method = "/msa/{0}/meme/{1}".format(seqid,memeid)
+def get_meme_status(msaid,memeid):
+    method = "/msa/{0}/meme/{1}".format(msaid,memeid)
     response = dm.get(method,params=None)
     return response
 
-def parse_meme_results(seqid,memeid):
-    method = "/msa/{0}/meme/{1}/parse".format(seqid,memeid)
+def parse_meme_results(msaid,memeid):
+    method = "/msa/{0}/meme/{1}/parse".format(msaid,memeid)
     response = dm.get(method,params=None)
     return response
 
-def get_meme_results(seqid,memeid):
-    method = "/msa/{0}/meme/{1}/results".format(seqid,memeid)
+def get_meme_results(msaid,memeid):
+    method = "/msa/{0}/meme/{1}/results".format(msaid,memeid)
     response = dm.get(method,params=None)
     return response
 
-def mail_meme_results(seqid,memeid):
-    method = "/msa/{0}/meme/{1}/mail".format(seqid,memeid)
+def mail_meme_results(msaid,memeid):
+    method = "/msa/{0}/meme/{1}/mail".format(msaid,memeid)
     response = dm.get(method,params=None)
     return response
 
 def get_all_meme():
-    method = "/msa/{0}/meme".format(seqid)
+    method = "/msa/{0}/meme".format(msaid)
     response = dm.get(method,params=None)
     return response
 

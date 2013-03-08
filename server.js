@@ -35,25 +35,28 @@ app.post('/msa', msa.uploadMsa);
 app.put('/msa/:id', msa.updateMsa);
 app.delete('/msa/:id', msa.deleteMsa);
 
-//TODO: Update with a status route
-meme = require('./app/routes/meme');
-app.get('/meme', meme.findAll);
-app.post('/msa/:seqid/meme', meme.invokeMemeJob);
-app.get('/msa/:seqid/meme/:memeid', meme.queryStatus);
-app.get('/msa/:seqid/meme/:memeid/results', meme.results);
-app.get('/msa/:seqid/meme/:memeid/mail', meme.mail);
+analysis = require('./app/routes/analysis');
+app.post('/msa/:msaid/:type', analysis.invokeJob);
+app.get('/msa/:msaid/:type/:typeid', analysis.queryStatus);
+app.get('/msa/:msaid/:type/:typeid/results', analysis.getResults);
+app.get('/msa/:msaid/:type/:typeid/mail', analysis.sendMail);
 
+//TODO: Update with a status route
+//meme = require('./app/routes/meme');
+//app.get('/meme', meme.findAll);
+//app.post('/msa/:msaid/meme', meme.invokeJob);
+//app.get('/msa/:msaid/meme/:memeid', meme.queryStatus);
+//app.get('/msa/:msaid/meme/:memeid/results', meme.getResults);
+//app.get('/msa/:msaid/meme/:memeid/mail', meme.sendMail);
 
 //TODO: ASR
-asr = require('./app/routes/asr');
-app.get('/msa/:seqid/asr/', asr.findAll);
-app.get('/msa/:seqid/asr/:id', asr.findById);
-app.post('/msa/:seqid/asr', asr.addAsr);
-app.put('/msa/:seqid/asr', asr.updateAsr);
-app.delete('/msa/:seqid/asr/:id', asr.deleteAsr);
+//asr = require('./app/routes/asr');
+//app.get('/msa/:msaid/asr/', asr.findAll);
+//app.get('/msa/:msaid/asr/:id', asr.findById);
+//app.post('/msa/:msaid/asr', asr.addAsr);
+//app.put('/msa/:msaid/asr', asr.updateAsr);
+//app.delete('/msa/:msaid/asr/:id', asr.deleteAsr);
 
 app.listen(3000);
 console.log('Listening on port 3000...');
 module.exports = app;
-
-

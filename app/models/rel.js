@@ -31,7 +31,6 @@ var mongoose             = require('mongoose')
   , EvfSummary           = mongoose.model('EvfSummary')
   , EvfRate_info_summary = mongoose.model('EvfRateInfoSummary');
 
-
 var Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId;
 
