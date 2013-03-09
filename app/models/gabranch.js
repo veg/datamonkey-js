@@ -14,10 +14,8 @@ var GABranch = new Schema({
 });
 
 var GABranchParameters = new Schema({
-  //TODO: Find this out
   modelstring : String,
-  treemode    : Number,
-  pvalue      : Number,
+  treemode    : Number
 });
 
 var GABranchSummary = new Schema({

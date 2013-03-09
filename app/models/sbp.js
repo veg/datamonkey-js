@@ -26,9 +26,11 @@ var Sbp = new Schema({
 });
 
 var SbpParameters = new Schema({
-  modelstring : String,
-  treemode    : Number,
-  pvalue      : Number,
+  ratematrix  : Mixed,  //Protein
+  frequencies : Number, //Protein
+  rateoption  : Number,
+  rateclasses : Number,
+  modelstring : String  //Non-protein
 });
 
 var SbpTrees = new Schema({

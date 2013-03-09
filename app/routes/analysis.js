@@ -1,12 +1,10 @@
 var querystring = require('querystring');
-
-var dpl     = require('../../lib/datamonkey-pl.js');
-var dme     = require('../../lib/datamonkey-event.js');
-var globals = require('../../config/globals.js');
-var mailer  = require('../../lib/mailer.js');
-var helpers = require('../../lib/helpers.js');
-
-var fs = require('fs');
+var dpl         = require('../../lib/datamonkey-pl.js');
+var dme         = require('../../lib/datamonkey-event.js');
+var globals     = require('../../config/globals.js');
+var mailer      = require('../../lib/mailer.js');
+var helpers     = require('../../lib/helpers.js');
+var fs          = require('fs');
 
 var mongoose = require('mongoose')
   , Msa = mongoose.model('Msa');
@@ -172,6 +170,7 @@ exports.sendMail = function(req, res) {
 
 }
 
+//Dev purposes only
 exports.parseResults = function(req, res) {
 
   type =  req.params.type;

@@ -9,10 +9,10 @@ var Msa = new Schema({
     datatype    : Number,
     partitions  : Number,
     sites       : Number,
-    rawSites    : Number,
+    rawsites    : Number,
     sequences   : Number,
-    genCodeId   : Number,
-    goodTree    : Number,
+    gencodeid   : Number,
+    goodtree    : Number,
     nj          : String,
     mailaddr    : String,
     timestamp   : { type: String, default: (new Date()).getTime() }

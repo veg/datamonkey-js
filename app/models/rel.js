@@ -67,7 +67,6 @@ var Rel = new Schema({
 });
 
 var RelParameters = new Schema({
-  //TODO: Find this out
   modelstring : String,
   treemode    : Number,
   pvalue      : Number,

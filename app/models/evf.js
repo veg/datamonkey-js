@@ -18,9 +18,7 @@ var Evf = new Schema({
 });
 
 var EvfParameters = new Schema({
-  modelstring : String,
   treemode    : Number,
-  pvalue      : Number,
 });
 
 var EvfSamples = new Schema({

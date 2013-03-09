@@ -15,7 +15,6 @@ var Fel = new Schema({
 });
 
 var FelParameters = new Schema({
-  //TODO: Find this out
   modelstring : String,
   treemode    : Number,
   pvalue      : Number,

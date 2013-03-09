@@ -18,9 +18,12 @@ var Slac = new Schema({
 });
 
 var SlacParameters = new Schema({
-  modelstring : String,
-  treemode    : Number,
+  roptions    : Number,
   pvalue      : Number,
+  dnds        : Number,
+  ambchoice   : Number,
+  modelstring : String,
+  treeMode    : Number
 });
 
 

@@ -43,7 +43,6 @@ var Parris = new Schema({
 });
 
 var ParrisParameters = new Schema({
-  //TODO: Find right parameters
   modelstring : String,
   treemode    : Number,
   pvalue      : Number,

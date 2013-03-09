@@ -64,9 +64,7 @@ var Fubar = new Schema({
   evf_rate_info_summary   : [EvfRateInfoSummary],
 });
 
-//TODO: Figure out variables
 var FubarParameters = new Schema({
-  modelstring : String,
   treemode    : Number,
   pvalue      : Number,
 });

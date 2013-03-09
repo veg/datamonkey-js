@@ -14,9 +14,7 @@ var Scueal = new Schema({
 });
 
 var ScuealParameters = new Schema({
-  modelstring : String,
-  treemode    : Number,
-  pvalue      : Number,
+  reference : String,
 });
 
 var ScuealSubtypingResults = new Schema({

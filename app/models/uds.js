@@ -35,9 +35,18 @@ var Uds = new Schema({
 });
 
 var UdsParameters = new Schema({
-  modelstring : String,
-  treemode    : Number,
-  pvalue      : Number,
+  minread             : Number,
+  scoreM              : Number,
+  mincoverage         : Number,
+  windowsize          : Number,
+  windowstride        : Number,
+  mincopycount        : Number,
+  nucdivthreshold     : Number,
+  dodr                : Number,
+  mindrugscore        : Number,
+  mindrugcoverage     : Number,
+  lovemelongtime      : String,
+  lovemelikeyouwantto : String
 });
 
 var UdsAaAlignment = new Schema({

@@ -4,6 +4,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId;
 
+var Mixed = mongoose.Schema.Types.Mixed;
+
 var Asr = new Schema({
     _creator : { type: Schema.Types.ObjectId, ref: 'Msa' },
     msafn      : { type: Schema.Types.ObjectId, ref: 'Msa' },
@@ -17,46 +19,52 @@ var Asr = new Schema({
 });
 
 var AsrParameters = new Schema({
-    //TODO: Find this out
     _creator : { type: Schema.Types.ObjectId, ref: 'Asr' },
+    ratematrix  : Mixed,  //For protein data
+    frequencies : Number, //For protein data
+    modelstring : String, //For non-protein data
+    rateoption  : Number, //Required 
+    rateclasses : Number, //Required
+    treemode    : Number,
+    root        : Number
 });
 
 var AsrResidues = new Schema({
-    _creator : { type: Schema.Types.ObjectId, ref: 'Asr' },
-    partition : Number, 
-    site : Number, 
-    joint : String,
-    marginal : String,
-    sampled : String,
+    _creator  : { type  : Schema.Types.ObjectId, ref : 'Asr' },
+    partition : Number,
+    site      : Number,
+    joint     : String,
+    marginal  : String,
+    sampled   : String,
     marginalP : Number,
-    sampledp : Number
+    sampledp  : Number
 });
 
 var AsrMarginalDump = new Schema({
-    _creator : { type: Schema.Types.ObjectId, ref: 'Asr' },
+    _creator  : { type  : Schema.Types.ObjectId, ref : 'Asr' },
     partition : Number,
-    sequence : Number,
-    site : Number,
-    a : Number,
-    c : Number,
-    g : Number,
-    t : Number
+    sequence  : Number,
+    site      : Number,
+    a         : Number,
+    c         : Number,
+    g         : Number,
+    t         : Number
 });
 
 var AsrSampledDump = new Schema({
-    _creator : { type: Schema.Types.ObjectId, ref: 'Asr' },
+    _creator  : { type  : Schema.Types.ObjectId, ref : 'Asr' },
     partition : Number,
-    sequence : Number,
-    site : Number,
-    a : Number,
-    c : Number,
-    g : Number,
-    t : Number
+    sequence  : Number,
+    site      : Number,
+    a         : Number,
+    c         : Number,
+    g         : Number,
+    t         : Number
 });
 
 var AsrSummary = new Schema({
-    _creator : { type: Schema.Types.ObjectId, ref: 'Asr' },
-    col_key : String,
+    _creator  : { type  : Schema.Types.ObjectId, ref : 'Asr' },
+    col_key   : String,
     col_value : String
 });
 
