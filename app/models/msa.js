@@ -5,7 +5,7 @@ var Schema = mongoose.Schema
 
 var Msa = new Schema({
     contents    : {type: String, require: true},  
-    uploadfn    : String,
+    msaid       : {type: String, index: {unique: true, dropDups: true}},
     datatype    : Number,
     partitions  : Number,
     sites       : Number,
@@ -23,15 +23,15 @@ Msa.index( { "id": 1 } );
 var PartitionInfo = new Schema({
     _creator : { type: Schema.Types.ObjectId, ref: 'Msa' },
     partition   : Number,
-    startCodon  : Number,
-    endCodon    : Number,
+    startcodon  : Number,
+    endcodon    : Number,
     span        : Number,
-    userTree    : String
+    usertree    : String
 });
 
 var Sequences = new Schema({
     _creator : { type: Schema.Types.ObjectId, ref: 'Msa' },
-    seqIndex : Number,
+    seqindex : Number,
     name     : String
 });
 

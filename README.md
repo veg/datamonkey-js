@@ -1,26 +1,44 @@
 Datamonkey API
 ========================
 
+<!--
+   -Neighbor Joining tree reconstruction   Nucleotide/Protein/Codon    TN93 distance is used for N and C data. Corrected p-distance is used for P data
+   -DEPS   Protein     Requires a rooted tree.
+   -Evolutionary Fingerprinting    Codon   
+   -
+   -->
 
 Multiple Sequence Alignment
 ===========================
 
-# Parameters
+## Parameters
 
-| Parameter | Description |
-| --------- | ----------: |
-| fn        |             |
-| datatype  |             |
-| gencode   |             |
+| Parameter | Description                                                                                                                                 |
+| --------- | ----------:                                                                                                                                 |
+| file      | A NEXUS, PHYLIP, Interleaved FASTA, or Sequential FASTA formatted file See http://datamonkey.org/help/dataformats.php for more information. |
+| datatype  | The datatype of the file. Can be "codon", "nucleotide", or "protein"                                                                        |
+| gencode   | The genetic code definition. See http://datamonkey.org/help/geneticcodes.php for more information.                                          |
 
-# Results
+## Results
 
+| Result          | Description                               |
+| ---------       | ----------:                               |
+| msaid           | The id of the multiple sequence alignment |
+| sequences       | The number of sequences                   |
+| codon_alignment | The number of codon alignment columns     |
+| partitions      | Number of partitions                      |
 
 
 Analyses
 ==============
 
 ## ASR
+
+Filetypes:
+Requires a rooted tree. Recombinant data are handled.
+* Nucleotide
+* Codon
+* Protein
 
 An implementation of the ancestral sequence reconstruction algorithms by 
 [Pupko et al. 2000]("http://mbe.oxfordjournals.org/cgi/content/full/17/6/890?view=long&pmid=10833195"),
@@ -86,7 +104,23 @@ separately identifible if on the boundary (i.e. when P_2 = 0 or 1 or when
 
 ### Results
 
+| Result                  | Description                                                       |
+| ---------               | ----------:                                                       |
+| Site                    | Position in the alignment.                                        |
+| Joint Reconstruction    | Character inferred at the site using joint maximum likelihood.    |
+| Marginal Reconstruction | Character inferred at the site using marginal maximum likelihood. |
+| Support                 | Marginal probability of having the inferred state at this node.   |
+| Sampled Reconstruction  | Mode of the posterior distributuion of characters at this node    |
+| Support                 | Probability associated with the mode.                             |
+
+
 ## BGM
+Filetypes:
+Recombinant data are not allowed.
+* Nucleotide - All substitutions are used
+* Codon      - Only non-synonymous substitutions are used
+* Protein    - All substitutions are used
+
 
 ### Parameters
 
@@ -98,9 +132,18 @@ separately identifible if on the boundary (i.e. when P_2 = 0 or 1 or when
 | ambchoice | Number      |
 
 ### Results
-TODO
+| Result         | Description                                                                                                            |
+| ---------      | ----------:                                                                                                            |
+| Site1          | First residue.                                                                                                         |
+| Site2          | Second residue.                                                                                                        |
+| Pr{S1&rarr;S2} | Posterior probability of having a network edge from Site1 to Site2, i.e. Site2 is conditionally dependent on Site1     |
+| Pr{S1&larr;S2} | Posterior probability of having a network edge from Site2 to Site1, i.e. Site1 is conditionally dependent on Site2     |
+| Pr{S1&harr;S2} | The sum of previous two quantities, i.e. the posterior probability of correlated substitutions between Site1 and Site2 |
+
 
 ## FEL
+Filetypes: 
+* Codon   
 
 Complete details can be found in our
 [MBE]('http://www.hyphy.org/sergei/pubs/2005-3.pdf') MBE paper (FEL) and
@@ -146,6 +189,17 @@ selection).
 | pvalue      | Number      |
 
 ### Results
+| Result           | Description                                                              |
+| ---------        | ----------:                                                              |
+| Codon            | Position in the alignment.                                               |
+| dS               | Synonymous substitution rate at the site.                                |
+| dN               | Non-synonymous substitution rate at the site.                            |
+| dN/dS            | The ratio of dN/dS (if computable).                                      |
+| Normalized dN-dS | dN-dS divided by the total length of the appropriate tree.               |
+| dS (when dS=dN)  | Synonymous substitution rate at the site under the null (neutral model). |
+| Log(L)           | Log-likelihood of the alternative model at that site.                    |
+| LRT              | Likelihood ratio test statistic for dS=dN versus dS!=dN at the  site     |
+| p-value          | For the dS=dN versus dS!=dN test.                                        |
 
 ## Fubar
 TODO
@@ -158,9 +212,24 @@ TODO
 | pvalue    | Number      |
 
 ### Results
+| Result                | Description                                                                                                                                                                                                                                   |
+| ---------             | ----------:                                                                                                                                                                                                                                   |
+| Codon                 | The index of the codon in the alignment                                                                                                                                                                                                       |
+| &alpha;               | The mean of the posterior distribution (with respect to the data set wide distribution of rates) of the empirical Bayes estimate (posterior mean) of the synonymous substitution rate &alpha;                                                 |
+| &beta;<sup>-</sup>    | Posterior mean of the non-synonymoys substitution rate &alpha;                                                                                                                                                                                |
+| &beta;-&alpha;        | The difference of the two above values                                                                                                                                                                                                        |
+| Pr[&beta;&gt;&alpha;] | Posterior mean of the site-level probability of positive selection.                                                                                                                                                                           |
+| Pr[&beta;&lt;&alpha;] | Posterior mean of the site-level probability of negative selection.                                                                                                                                                                           |
+| PSRF                  | Potential scale reduction factor <a href = 'http://www.stat.columbia.edu/~gelman/research/published/brooksgelman.pdf'>[ref]</a>. A value close to 1 indicates that the MCMC chain has converged. Values close to 1 indicate MCMC convergence. |
+| N<sub>eff</sub>       | The effective sample size (from pooled chains, see the above reference)                                                                                                                                                                       |
+| Variance</sub>        | The estimated variance of Pr[&beta;&gt;&alpha;]                                                                                                                                                                                               |
 
 ## GABranch
 Complete method details can be found in this [MBE paper]('http://mbe.oupjournals.org/cgi/content/full/msi031?ijkey=58b5TG2Kv933M&keytype=ref') 
+
+Filetypes:
+* Codon - Recombinant data are not allowed.
+
 
 ### Phases
 
@@ -205,6 +274,8 @@ are computed using model averaging.
 | treemode    | Number      |
 
 ### Results
+| Result    | Description |
+| --------- | ----------: |
 
 ### Note
 
@@ -221,6 +292,9 @@ version of GA branch does not easily accomodate site-to-site &omega; variation
 
 
 ## GARD 
+Filetypes:
+* Nucleotide
+* Protein
 
 ### Parameters
 
@@ -233,6 +307,13 @@ version of GA branch does not easily accomodate site-to-site &omega; variation
 | modelstring | String  //Non-protein |
 
 ### Results
+
+| Result                  | Description                                                        |
+| ---------               | ----------:                                                        |
+| Site                    | Position in the alignment.                                         |
+| Support for BP          | Model averaged support for placing a breakpoint at this given site |
+| Tree Length (subs/site) | Model averaged tree length for this site                           |
+
 
 ## MEME
 
@@ -274,7 +355,24 @@ paper
 
 ### Results
 
+| Result    | Description                                                                                                                                |
+| --------- | ----------:                                                                                                                                |
+| Codon     | The index of the codon in the alignment                                                                                                    |
+| α         | The maximum likelihood estimate (MLE) of the synonymoys substitution rate α                                                                |
+| β-        | The maximum likelihood estimate (MLE) of the non-synonymous rate for the branch class with β ≤ α                                           |
+| Pr[ω=ω-]  | The MLE of the proportion of sites evolving at β-.                                                                                         |
+| β+        | The MLE of the unconstrained β non-synonymous rate                                                                                         |
+| Pr[β=β+]  | The MLE of the proportion of sites evolving at β+.                                                                                         |
+| LRT       | Likelihood ratio test statistic for β+ = α (null) versus β+ unrestricted (alternative)                                                     |
+| p-value   | The p-value for the LRT test, using the mixture distribution : 0.33 χ20 + 0.30 χ21 + 0.37 χ22                                              |
+| q-value   | The q-value for independent tests (upper bound on the false discovery rate), derived from the corresponding p-value using Simes' procedure |
+
 ## Model Selection
+
+Filetypes:
+* Nucleotide - All 4x4 reversible 203 models are tried
+* Codon      - All 4x4 reversible 203 models are tried
+* Protein    - An a priori list of empirical models
 
 ### Parameters
 
@@ -285,7 +383,22 @@ paper
 
 ### Results
 
+| Result                 | Description                                                                             |
+| ---------              | ----------:                                                                             |
+| Codon                  | Position in the alignment.                                                              |
+| E[dS]                  | Posterior mean of the synonymous substitution rate at the site.                         |
+| E[dN]                  | Posterior mean of the non-synonymous substitution rate at the site.                     |
+| E[dN-dS]               | Posterior mean of the dN-dS difference                                                  |
+| Posterior Pr{dN&gt;dS} | Posterior probability for positive selection (dN&gt;dS) at the site.                    |
+| Bayes Factor{dN&gt;dS} | Bayes Factor (posterior odds/prior odds) for positive selection (dN&gt;dS) at the site. |
+| Posterior Pr{dN&lt;dS} | Posterior probability for negative selection (dN&lt;dS) at the site.                    |
+| Bayes Factor{dN&lt;dS} | Bayes Factor (posterior odds/prior odds) for negative selection (dN&lt;dS) at the site. |
+
+
 ## PARRIS
+
+Filetypes:
+* Codon 
 
 Complete method details can be found in this 
 [Bioinformatics page]('http://bioinformatics.oxfordjournals.org/cgi/content/short/22/20/2493')
@@ -344,8 +457,18 @@ separately identifible if on the boundary (i.e. when P_2 = 0 or 1 or when
 
 ### Results
 
+TODO: Information in:
+datamonkey/share/BFs/PARRIS_Processory
+datamonkey-js/app/models/parris.js
+
+| Result    | Description |
+| --------- | ----------: |
+
+
 
 ## REL
+Filetypes:
+* Codon
 
 Complete method details can be found in our 
 [MBE paper]('http://www.hyphy.org/sergei/pubs/2005-3.pdf')
@@ -393,6 +516,17 @@ FEL.
 
 ### Results
 
+| Result                 | Description                                                                             |
+| ---------              | ----------:                                                                             |
+| Codon                  | Position in the alignment.                                                              |
+| E[dS]                  | Posterior mean of the synonymous substitution rate at the site.                         |
+| E[dN]                  | Posterior mean of the non-synonymous substitution rate at the site.                     |
+| E[dN-dS]               | Posterior mean of the dN-dS difference                                                  |
+| Posterior Pr{dN&gt;dS} | Posterior probability for positive selection (dN&gt;dS) at the site.                    |
+| Bayes Factor{dN&gt;dS} | Bayes Factor (posterior odds/prior odds) for positive selection (dN&gt;dS) at the site. |
+| Posterior Pr{dN&lt;dS} | Posterior probability for negative selection (dN&lt;dS) at the site.                    |
+| Bayes Factor{dN&lt;dS} | Bayes Factor (posterior odds/prior odds) for negative selection (dN&lt;dS) at the site. |
+
 ### Note
 
 This method is a generalization of site-by-site positive selection analyses
@@ -439,9 +573,26 @@ paper
 
 ### Results
 
+| Result                          | Description                                                                                                                                                       |
+| ---------                       | ----------:                                                                                                                                                       |
+| Branch                          | The name of the branch (see tree plot on the main analysis page for the location of automatically named internal branches).                                       |
+| Mean &omega;                    | The &omega; ratio inferred under the MG94xREV model which permits lineage-to-lineage but no site-to-site &omega; variation.                                       |
+| &omega;<sup>-</sup>             | The maximum likelihood estimate (MLE) of the first rate class with &omega; &le; 1                                                                                 |
+| Pr[&omega;=&omega;<sup>-</sup>] | The MLE of the proportion of sites evolving at &omega;<sup>-</sup>.                                                                                               |
+| &omega;<sup>N</sup>             | The MLE of the second rate class with &omega; &le; 1                                                                                                              |
+| Pr[&omega;=&omega;<sup>N</sup>] | The MLE of the proportion of sites evolving at &omega;<sup>N</sup>.                                                                                               |
+| &omega;<sup>+</sup>             | The MLE of the rate class with unconstrained &omega;                                                                                                              |
+| Pr[&omega;=&omega;<sup>+</sup>] | The MLE of the proportion of sites evolving at &omega;<sup>+</sup>.                                                                                               |
+| LRT                             | Likelihood ratio test statistic for &omega;<sup>+</sup> = 1 (null) versus &omega;<sup>+</sup> unrestricted (alternative)                                          |
+| p-value                         | The uncorrected p-value for the LRT test.                                                                                                                         |
+| Corrected p-value               | The p-value corrected for multiple testing using the <a href = 'http://en.wikipedia.org/wiki/Holm-Bonferroni_method' target = '_blank'>Holm-Bonferroni</a> method |
+
 
 ## SBP
-TODO
+
+Filetypes:
+* Nucleotide
+* Protein
 
 ### Parameters
 
@@ -455,6 +606,20 @@ TODO
 
 ### Results
 
+| Result                    | Description                                                                                                                                                                                                                                                               |
+| ---------                 | ----------:                                                                                                                                                                                                                                                               |
+| Site                      | Position in the alignment.                                                                                                                                                                                                                                                |
+| Tree 1 Length (subs/site) | Tree length for the partition left of and including the breakpoint                                                                                                                                                                                                        |
+| Tree 2 Length (subs/site) | Tree length for the partition right of the breakpoint                                                                                                                                                                                                                     |
+| Splits identity           | How many taxon splits are identical between Tree 1 and Tree 2.                                                                                                                                                                                                            |
+| Robinson Foulds distance  | The Robinson-Foulds distances between Tree 1 and Tree 2.                                                                                                                                                                                                                  |
+| AIC                       | The AIC score for the model assuming a breakpoint at the current site.                                                                                                                                                                                                    |
+| AIC support               | The AIC Akaike Weight for the model assuming a breakpoint at the current site.                                                                                                                                                                                            |
+| AIC<sub>c</sub>           | The AIC<sub>c</sub> score for the model assuming a breakpoint at the current site. If listed N/A, then AIC<sub>c</sub> could not be used on the alignment, because it has too few sites per sequence (needs at least ~4N-5 sites for N sequences, depending on the model) |
+| AIC<sub>c</sub> support   | The AIC<sub>c</sub> Akaike Weight for the model assuming a breakpoint at the current site.                                                                                                                                                                                |
+| BIC                       | The BIC score for the model assuming a breakpoint at the current site.                                                                                                                                                                                                    |
+| BIC support               | The BIC Akaike Weight for the model assuming a breakpoint at the current site.                                                                                                                                                                                            |
+
 ## SCUEAL
 
 Complete method details can be found in this [PLoS Comp Biol]('http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1000581') paper
@@ -466,8 +631,15 @@ Complete method details can be found in this [PLoS Comp Biol]('http://www.plosco
 | reference | String      |
 
 ### Results
+TODO
+| Result    | Description |
+| --------- | ----------: |
+
+
 
 ## SLAC
+Filetypes:
+Codon   
 
 Complete method details can be found in our 
 [MBE paper]('http://www.hyphy.org/sergei/pubs/2005-3.pdf')
@@ -525,6 +697,20 @@ it is that given that <tt>P</tt>, NS out of NN+NS substitutuons are synonymous.
 | treeMode    | Number      |
 
 ### Results
+| Result                          | Description                                                       |
+| ---------                       | ----------:                                                       |
+| Codon                           | Position in the alignment.                                        |
+| Observed&nbsp;S&nbsp;Changes    | Number of synonymous changes observed at the site.                |
+| Observed&nbsp;NS&nbsp;Changes   | Number of non-synonymous changes observed at the site.            |
+| E[S&nbsp;Sites]                 | Normalized expected number of synonymous changes at the site.     |
+| E[NS&nbsp;Sites]                | Normalized expected number of non-synonymous changes at the site. |
+| Observed&nbsp;S.&nbsp;Prop.     | Proportion of synonymous changes among all observed changes.      |
+| P{S}                            | Expected proportion of synonymous changes.                        |
+| dS                              | Observed S Changes/E[S Sites]                                     |
+| dN                              | Observed NS Changes/E[NS Sites]                                   |
+| dN-dS                           | Observed NS Changes/E[NS Sites] - Observed S Changes/E[S Sites]   |
+| P{NS&nbsp;&#62;=&nbsp;observed} | <b>P{NS&nbsp;&#60;=&nbsp;observed}</b>                            |
+| Normalized dN-dS                | (dN-dS)/(Codon Tree Length)                                       |
 
 ## UDS
 
@@ -626,6 +812,82 @@ frequently than expected by chance.
 | lovemelikeyouwantto | String      |
 
 ### Results
+
+Comp
+
+| Result       | Description                                   |
+| ---------    | ----------:                                   |
+| dr_acc:      | Drug Resistant and Accessory mutation         |
+| notdr_acc    | NOT Drug Resistant and Accessory mutation     |
+| dr_notacc    | Drug Resistant and NOT Accessory mutation     |
+| notdr_notacc | NOT Drug Resistant and NOT Accessory mutation |
+
+Drug Sitewise Set Table
+
+| Result    | Description                                                                                                                                                                                                                          |
+| --------- | ----------:                                                                                                                                                                                                                          |
+| site:     | Amino Acid site indexed according to the start of the gene in HXB2 reference sequence                                                                                                                                                |
+| cvg:      | Coverage (depth) of reads at the site                                                                                                                                                                                                |
+| wt:       | Count of wildtype (HXB2) residues at a site                                                                                                                                                                                          |
+| wt %:     | Percent of wildtype (HXB2) residues at a site                                                                                                                                                                                        |
+| dr:       | Count of drug resistant residues at a site                                                                                                                                                                                           |
+| dr %:     | Percent drug resistant residues at a site                                                                                                                                                                                            |
+| CI %:     | 95% Confidence interval on percent drug resistant residues                                                                                                                                                                           |
+| oth:      | Count of other residues at a site                                                                                                                                                                                                    |
+| oth %:    | Percent other residues at a site                                                                                                                                                                                                     |
+| entropy:  | Measure of information content at the site. Entropy can be thought of as a measure of how much is learnt by looking at the data. Invariant sites have entropy = 0, whereas sites with equal amino acid frequencies have entropy = 1. |
+| mu:       | Mutation rate at a site estimated by comparison of all reads to the consensus assumimg non-consenus residues are mutations.                                                                                                          |
+| mu rank:  | The percent rank of the sites mutation rate with respect to the mutation rates at all other sites.                                                                                                                                   |
+| profile:  | Sequence Logo profile at the site and drug resistance report                                                                                                                                                                         |
+
+inddrsites
+
+| Result                  | Description                                                                                                                                                                                                                                 |
+| ---------               | ----------:                                                                                                                                                                                                                                 |
+| site:                   | Site indexed from start of protease for PI's and from reverse transcriptase for (N)NRTI's                                                                                                                                                   |
+| class:                  | Drug resistant class: PI = Protease Inhibitor, NRTI = Nucleoside Reverse Transcriptase Inhibitor, NNRTI = Non-Nucleoside Reverse Transcriptase Inhibitor                                                                                    |
+| residue:                | Observed amino acid residue                                                                                                                                                                                                                 |
+| drug:                   | Drug site is resistant to                                                                                                                                                                                                                   |
+| score:                  | Stanford Drug Resistance Scores where 0-9: susceptible, 10-14: potential low-level resistance, 15-29: low-level resistance, 30-59: intermediate resistance, >=60: high-level resistance                                                     |
+| additional information: | Link to Stanford Drug Resistance Database                                                                                                                                                                                                   |
+| count:                  | Count of each residue at a site                                                                                                                                                                                                             |
+| proportion:             | Proportion of each residue at a site                                                                                                                                                                                                        |
+| P:                      | Probability that 'count' or more mutations away from the consensus occur at a site given the background mutation rate estimated for the alignment. A low number indicates that the residue is unlikely to be explained by background noise. |
+
+indsites
+| Result      | Description                                                                                                                                                                                                                                 |
+| ---------   | ----------:                                                                                                                                                                                                                                 |
+| residue:    | Observed amino acid residue                                                                                                                                                                                                                 |
+| count:      | Count of each residue at a site                                                                                                                                                                                                             |
+| proportion: | Proportion of each residue at a site                                                                                                                                                                                                        |
+| P:          | Probability that 'count' or more mutations away from the consensus occur at a site given the background mutation rate estimated for the alignment. A low number indicates that the residue is unlikely to be explained by background noise. |
+
+neb
+| Result       | Description                                                                                            |
+| ---------    | ----------:                                                                                            |
+| site:        | Amino Acid site indexed according to the start of the gene in HXB2 reference sequence                  |
+| cons:        | Consensus amino acid residue at the site                                                               |
+| cvg:         | Coverage (depth) of reads at the site                                                                  |
+| posterior_X: | Posterior probability that site belongs to rate class X estimated using an empirical Bayesian approach |
+
+Sitewise Table
+
+| Result         | Description                                                                                                                                                                                                                          |
+| ---------      | ----------:                                                                                                                                                                                                                          |
+| bg:            | * indicate sites which are assigned to a mutation class with a rate greater than the background rate using an empirical bayes approach                                                                                               |
+| site:          | Amino Acid site indexed according to the start of the gene in HXB2 reference sequence                                                                                                                                                |
+| cons:          | Consensus amino acid residue at the site                                                                                                                                                                                             |
+| cvg:           | Coverage (depth) of reads at the site                                                                                                                                                                                                |
+| entropy:       | Measure of information content at the site. Entropy can be thought of as a measure of how much is learnt by looking at the data. Invariant sites have entropy = 0, whereas sites with equal amino acid frequencies have entropy = 1. |
+| mu rate:       | Mutation rate at a site estimated by comparison of all reads to the consensus assumimg non-consenus residues are mutations.                                                                                                          |
+| mu rank:       | The percent rank of the sites mutation rate with respect to the mutation rates at all other sites.                                                                                                                                   |
+| syn sites:     | The expected number of synonymous substitutions based on the codon frequencies at the site.                                                                                                                                          |
+| non-syn sites: | The expected number of non-synonymous substitutions based on the codon frequencies at the site.                                                                                                                                      |
+| syn subs:      | The number of synonymous substitutions observed at a site                                                                                                                                                                            |
+| non-syn subs:  | The number of non-synonymous substitutions observed at a site                                                                                                                                                                        |
+| P(div):        | p-value for a test of diversifying selection at the site                                                                                                                                                                             |
+| P(pur):        | p-value for a test of purifying selection at the site                                                                                                                                                                                |
+| profile:       | Sequence Logo profile at the site                                                                                                                                                                                                    |
 
 All results are presented online. Result databases are also available for each
 gene processed for subsequent analysis and processing. We are in the process of
