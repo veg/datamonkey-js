@@ -10,6 +10,8 @@ var mongoose = require('mongoose')
 var Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId;
 
+var Mixed = mongoose.Schema.Types.Mixed;
+
 //TODO: status needs to be a subdocument
 //TODO: Include SLAC
 var Sbp = new Schema({

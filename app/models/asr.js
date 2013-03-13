@@ -7,7 +7,7 @@ var Schema = mongoose.Schema
 var Mixed = mongoose.Schema.Types.Mixed;
 
 var Asr = new Schema({
-    _creator : { type: Schema.Types.ObjectId, ref: 'Msa' },
+    _creator   : { type: Schema.Types.ObjectId, ref: 'Msa' },
     msafn      : { type: Schema.Types.ObjectId, ref: 'Msa' },
     status     : String,
     sendmail   : Boolean,

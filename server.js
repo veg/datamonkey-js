@@ -38,10 +38,10 @@ app.delete('/msa/:id', msa.deleteMsa);
 analysis = require('./app/routes/analysis');
 app.get('/msa/:msaid/:type', analysis.findAll);
 app.post('/msa/:msaid/:type', analysis.invokeJob);
-app.get('/msa/:msaid/:type/:typeid', analysis.queryStatus);
-app.get('/msa/:msaid/:type/:typeid/results', analysis.getResults);
-app.get('/msa/:msaid/:type/:typeid/mail', analysis.sendMail);
-app.get('/msa/:msaid/:type/:typeid/parseresults', analysis.parseResults);
+app.get('/msa/:msaid/:type/:analysisid', analysis.queryStatus);
+app.get('/msa/:msaid/:type/:analysisid/results', analysis.getResults);
+app.get('/msa/:msaid/:type/:analysisid/mail', analysis.sendMail);
+app.get('/msa/:msaid/:type/:analysisid/parseresults', analysis.parseResults);
 
 
 //TODO: Update with a status route

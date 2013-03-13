@@ -57,25 +57,26 @@ if __name__ == "__main__":
     mail = 'sweaver@ucsd.edu'
     fn   = '/home/sweaver/datamonkey-js/wrappers/res/HIV_gp120.nex'
 
-    #msa = msa.create_msa(fn,0,0,mail)
+    msa = msa.create_msa(fn,0,0,mail)
+    #print msa
 
-    ##Neighbor Joining
-    #modelstring = "010010"
-    #treemode = 0
-    #pvalue = 0.5
-    #sendmail = True;
+    #Neighbor Joining
+    modelstring = "010010"
+    treemode = 0
+    pvalue = 0.5
+    sendmail = True;
 
-    ##Start analysis. Receive ticket.
-    #meme = meme_analysis(msa["_id"],treemode,modelstring,pvalue,sendmail)
-    #print meme
+    #Start analysis. Receive ticket.
+    meme = meme_analysis(msa["msaid"],treemode,modelstring,pvalue,sendmail)
+    print meme
 
     ##Can continue polling
     #for x in range(1000):
     #  print get_meme_status(msa["_id"],meme["id"])
 
     #'http://datamonkey-dev:3000/msa/51392f4a3f76634973000001/meme'
-    msaid  = '5137dbeb5aa2574628000001'
-    memeid = '5137dbeb5aa2574628000002'
+    #msaid  = '5137dbeb5aa2574628000001'
+    #memeid = '5137dbeb5aa2574628000002'
 
-    print parse_meme_results(msaid,memeid)
+    #print parse_meme_results(msaid,memeid)
 

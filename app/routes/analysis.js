@@ -35,38 +35,43 @@ exports.invokeJob = function(req, res) {
   var postdata = req.query;
   var msaid =  postdata.msaid;
 
-  //TODO: Start status as "initializing"
-  var analysis = new Analysis ({
-    msafn  : msaid,
-    status : globals.queue,
-  });
 
-  //TODO: Change to verify function
-  if (postdata.sendmail !== undefined) {
-    analysis.sendmail = postdata.sendmail;
-  }
+  Msa.findOne({msaid : msaid}, function(err, msa) {
+    console.log(msa);
 
-  analysis.save(function (err,result) {
-
-    if (err) return handleError(err);
-
-    //Create Analysis Parameters from postdata
-    //TODO: Verify parameters before committing them
-    var parameters = new AnalysisParameters({
-      modelstring : postdata.modelstring,
-      treemode    : postdata.treemode,
-      pvalue      : postdata.pvalue,
+    //TODO: Start status as "initializing"
+    var analysis = new Analysis ({
+      msafn  : msa._id,
+      status : globals.queue,
     });
 
-    //Save Meme Parameters to parent Meme object
-    parameters.save(function (err, aparams) {
-      if (err) return handleError(err);
+    //TODO: Change to verify function
+    if (postdata.sendmail !== undefined) {
+      analysis.sendmail = postdata.sendmail;
+    }
 
-      else {
+    analysis.save(function (err,result) {
 
-        // Open Multiple Sequence Alignment File to get all necessary parameters
-        // for dispatching.
-        Msa.findOne({_id : msaid}, function(err, msa) {
+      if (err)
+        console.log(err);
+
+      //Create Analysis Parameters from postdata
+      //TODO: Verify parameters before committing them
+      var parameters = new AnalysisParameters({
+        modelstring : postdata.modelstring,
+        treemode    : postdata.treemode,
+        pvalue      : postdata.pvalue,
+      });
+
+      //Save Meme Parameters to parent Meme object
+      parameters.save(function (err, aparams) {
+        if (err)
+          console.log(err);
+
+        else {
+
+          // Open Multiple Sequence Alignment File to get all necessary parameters
+          // for dispatching.
           if (err)
             res.send('There is no sequence with id of ' + id);
 
@@ -90,20 +95,19 @@ exports.invokeJob = function(req, res) {
              };
 
              //Dispatch the analysis to the perl script
-             dpl.dispatchAnalysis(analysis._id,type,msa,params,res);
+             dpl.dispatchAnalysis(analysis.id,type,msa,params,res);
 
              // TODO: We should return the status id ticket here instead of
              // inside dispatchAnalysis
            }
-        });
-      }
+        }
 
-      analysis.parameters.push(parameters);
-      analysis.save();
+        analysis.parameters.push(parameters);
+        analysis.save();
 
+      });
     });
   });
-
 // I want to post all analyses to here, 
 // based on what the type is, create
 // the correct type of object.
@@ -116,9 +120,9 @@ exports.queryStatus = function(req, res) {
   var Analysis = mongoose.model(type.capitalize());
 
 
-  Analysis.findOne({_id : req.params.typeid}, function(err, item) {
+  Analysis.findOne({id : req.params.analysisid}, function(err, item) {
     if (err)
-      res.send('There is no sequence with id of ' + req.params.typeid);
+      res.send('There is no sequence with id of ' + req.params.analysisid);
 
     else {
       //This should eventually be its own polling task
@@ -136,7 +140,7 @@ exports.getResults = function(req, res) {
   var Analysis = mongoose.model(type.capitalize());
 
   //Return all results
-  Analysis.findOne({_id : req.params.typeid}, function(err, item) {
+  Analysis.findOne({id : req.params.analysisid}, function(err, item) {
 
     if (err)
       res.send('There is no sequence with id of ' + id);
@@ -175,13 +179,13 @@ exports.parseResults = function(req, res) {
 
   type =  req.params.type;
   console.log(req.params.type);
-  console.log(req.params.typeid);
+  console.log(req.params.analysisid);
 
   var Analysis = mongoose.model(type.capitalize());
 
-  Analysis.findOne({_id : req.params.typeid}, function(err, item) {
+  Analysis.findOne({id : req.params.analysisid}, function(err, item) {
     if (err)
-      res.send('There is no sequence with id of ' + req.params.typeid);
+      res.send('There is no sequence with id of ' + req.params.analysisid);
 
     else {
 

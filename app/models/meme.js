@@ -7,7 +7,7 @@ var Schema = mongoose.Schema
 //TODO: status needs to be a subdocument
 var Meme = new Schema({
   id         : { type: Number, index: {unique: true, dropDups: true}},
-  msafn      : { type: Schema.Types.ObjectId, ref: 'Msa' },
+  msafn      : { type: Schema.Types.ObjectId, ref: 'Msa', require: true},
   status     : String,
   sendmail   : Boolean,
   parameters : [MemeParameters],

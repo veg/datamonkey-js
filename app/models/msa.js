@@ -5,7 +5,7 @@ var Schema = mongoose.Schema
 
 var Msa = new Schema({
     contents    : {type: String, require: true},  
-    msaid       : {type: String, index: {unique: true, dropDups: true}},
+    msaid       : {type: String},
     datatype    : Number,
     partitions  : Number,
     sites       : Number,
