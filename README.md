@@ -11,7 +11,11 @@ Datamonkey API
 Multiple Sequence Alignment
 ===========================
 
-## Parameters
+##Resources
+
+| POST /msa | Uploads new multiple sequence alignment |
+
+### Parameters
 
 | Parameter | Description                                                                                                                                 |
 | --------- | ----------:                                                                                                                                 |
@@ -19,11 +23,14 @@ Multiple Sequence Alignment
 | datatype  | The datatype of the file. Can be "codon", "nucleotide", or "protein"                                                                        |
 | gencode   | The genetic code definition. See http://datamonkey.org/help/geneticcodes.php for more information.                                          |
 
-## Results
+
+| GET /msa/:id | Retrieves all information for respective multiple sequence alignment |
+
+### Results
 
 | Result          | Description                               |
 | ---------       | ----------:                               |
-| msaid           | The id of the multiple sequence alignment |
+| id              | The id of the multiple sequence alignment |
 | sequences       | The number of sequences                   |
 | codon_alignment | The number of codon alignment columns     |
 | partitions      | Number of partitions                      |
