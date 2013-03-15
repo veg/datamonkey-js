@@ -1,3 +1,29 @@
+#  HyPhy - Hypothesis Testing Using Phylogenies.
+#
+#  Copyright (C) 2013
+#  Sergei L Kosakovsky Pond (spond@ucsd.edu)
+#  Steven Weaver (sweaver@ucsd.edu)
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a
+#  copy of this software and associated documentation files (the
+#  "Software"), to deal in the Software without restriction, including
+#  without limitation the rights to use, copy, modify, merge, publish,
+#  distribute, sublicense, and/or sell copies of the Software, and to
+#  permit persons to whom the Software is furnished to do so, subject to
+#  the following conditions:
+#
+#  The above copyright notice and this permission notice shall be included
+#  in all copies or substantial portions of the Software.
+#
+#  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+#  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+#  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+#  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+#  CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+#  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+#  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
 import dm
 import msa
 
@@ -54,10 +80,10 @@ def get_all_meme():
 
 if __name__ == "__main__":
 
-    mail = 'sweaver@ucsd.edu'
-    fn   = '/home/sweaver/datamonkey-js/wrappers/res/HIV_gp120.nex'
+    #mail = 'sweaver@ucsd.edu'
+    #fn   = '/home/sweaver/datamonkey-js/wrappers/res/HIV_gp120.nex'
+    #msa = msa.create_msa(fn,0,0,mail)
 
-    msa = msa.create_msa(fn,0,0,mail)
     #print msa
 
     #Neighbor Joining
@@ -67,7 +93,11 @@ if __name__ == "__main__":
     sendmail = True;
 
     #Start analysis. Receive ticket.
-    meme = meme_analysis(msa["msaid"],treemode,modelstring,pvalue,sendmail)
+    #meme = meme_analysis(msa["msaid"],treemode,modelstring,pvalue,sendmail)
+
+    msaid  = 'upload.410652109932063.1'
+
+    meme = meme_analysis(msaid,treemode,modelstring,pvalue,sendmail)
     print meme
 
     ##Can continue polling
@@ -75,7 +105,6 @@ if __name__ == "__main__":
     #  print get_meme_status(msa["_id"],meme["id"])
 
     #'http://datamonkey-dev:3000/msa/51392f4a3f76634973000001/meme'
-    #msaid  = '5137dbeb5aa2574628000001'
     #memeid = '5137dbeb5aa2574628000002'
 
     #print parse_meme_results(msaid,memeid)
