@@ -33,7 +33,12 @@ URL="http://datamonkey-dev:3000"
 #A Generic API POST call
 def post(method, **kwargs):
     url = URL + method
-    r = requests.post(url, params=kwargs)
+    if "files" in kwargs:
+        files = kwargs.pop("files")
+        r = requests.post(url, files, params=kwargs)
+    else:
+        r = requests.post(url, params=kwargs)
+    r.raise_for_status()
     return json.loads(r.text) if r.text else None
 
 def get(method, **kwargs):
@@ -47,7 +52,6 @@ def put(method, **kwargs):
     r = requests.put(url, params=kwargs)
     r.raise_for_status()
     return json.loads(r.text) if r.text else None
-
 
 def delete(method, **kwargs):
     url = URL + method

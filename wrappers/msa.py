@@ -33,14 +33,9 @@ def create_msa(fn,datatype,gencode,mailaddr=""):
 
     #Need to add name
     #Sites and Sequences are to be added on the backend
-
     method = "/msa"
-    fh = open(fn, 'rb')
-    datatype = 0
-    genCodeId = 0
-
-    response = dm.post(method,contents=fh, datatype=datatype, genCodeId=genCodeId, mailaddr=mailaddr)
-
+    fh = {"file":(fn, open(fn,'rb').read())}
+    response = dm.post(method,files=fh,datatype=datatype, genCodeId=gencode, mailaddr=mailaddr)
     return response
 
 def get_all_sequences():
@@ -49,5 +44,5 @@ def get_all_sequences():
     return response
 
 if __name__ == "__main__":
-    print create_msa('/Users/sweaver/Documents/NexusFiles/HIV_gp120.nex',0,0)
+    print(create_msa('/Users/sweaver/Documents/NexusFiles/HIV_gp120.nex',0,0))
 

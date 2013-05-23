@@ -79,14 +79,31 @@ def get_all_fubar():
 
 if __name__ == "__main__":
 
-    mail = 'sweaver@ucsd.edu'
-    fn   = '/Users/sweaver/Programming/datamonkey-js/wrappers/res/HIV_gp120.nex'
+    mail   = 'sweaver@ucsd.edu'
+    #fn    = './dnds_input/PF3D7_1470900.alignment.fasta.nostop'
+
+    filenames = [[dirpath + f for f in filenames] for (dirpath, dirname, filenames) in os.walk(mypath)][0]
+
     msa = msa.create_msa(fn,0,0,mail)
 
     #Neighbor Joining
     treemode = 0
     pvalue = 0.9
     sendmail = True;
-    fubar = fubar_analysis(msa["msaid"],treemode,pvalue,sendmail)
-    print fubar
+
+    fubar_collection = []
+    fubar_problem_children = []
+
+    if "msaid" in msa.keys():
+        fubar = fubar_analysis(msa["msaid"],treemode,pvalue,sendmail)
+        fubar_collection.append((fn,fubar))
+        print("succeeded fn: " + fn)
+        print("succeeded fn id: " + msa["msaid"])
+        #Add to collection of analyses that have successfully been run
+
+    else:
+        #Add to problematic collection
+        fubar_problem_children.append(fn)
+        print("failed fn: " + fn)
+
 
