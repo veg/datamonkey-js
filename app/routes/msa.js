@@ -65,7 +65,7 @@ exports.findAll = function(req, res) {
 exports.uploadMsa = function(req, res) {
 
   postdata = req.query;
-  postdata.contents = postdata.contents.join('');
+  postdata.contents = req.body["file"][1];
 
   //TODO: Clean postdata
   var sequence_alignment = new Msa({
@@ -82,10 +82,8 @@ exports.uploadMsa = function(req, res) {
     } 
 
     else {
-
       //Upload to datamonkey
       dpl.uploadToPerl(result,res);
-
     }
 
   });
