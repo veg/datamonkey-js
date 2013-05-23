@@ -45,10 +45,11 @@ mongoose.connection.on('open', function() {
 var app = express();
 
 app.configure(function () {
-    app.use(app.router);
     app.use(express.logger('dev'));     /* 'default', 'short', 'tiny', 'dev' */
     app.use(expressValidator);
     app.use(express.bodyParser());
+    app.use(express.limit('25mb'));
+    app.use(app.router);
 });
 
 // Bootstrap models
@@ -77,7 +78,7 @@ app.get('/msa/:msaid/:type/:analysisid/parseresults', analysis.parseResults);
 
 //Port to listen on
 app.listen(3000);
+
 console.log('Listening on port 3000...');
 module.exports = app;
-
 
