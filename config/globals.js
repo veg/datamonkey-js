@@ -8,8 +8,8 @@ function define(name, value) {
 //We need to split each of the following into classes
 
 //Spool Directory
-define("spooldir","/var/lib/datamonkey/www/spool/")
-define("host","datamonkey-dev")
+define("spooldir","/var/lib/datamonkey/www/spool/");
+define("host","datamonkey-dev");
 
 //Data Type
 define("Codon",0);
@@ -32,22 +32,22 @@ define("Blepharisma Nuclear code",11);
 
 
 //Methods
-define("SLAC",0);
-define("FEL",1);
-define("IFEL",2);
-define("REL",3);
-define("PARRIS",4);
-define("GA-Branch",5);
-define("Branch-site REL",9);
-define("MEME",12);
-define("FUBAR",13);
-define("Evolutionary Fingerprintng",42);
-define("GA-Codon Model Selector",55);
-define("TOGGLE Analysis",69);
-define("SPIDERMONKEY/BGM",6);
-define("SBP",20);
-define("GARD",21);
-define("ASR",22);
+//define("slac",0);
+//define("fel",1);
+//define("ifel",2);
+//define("rel",3);
+//define("parris",4);
+//define("gabranch",5);
+//define("bsr",9);
+//define("meme",12);
+//define("fubar",13);
+//define("evf",42);
+//define("ga",55);
+//define("toggleanalysis",69);
+//define("bgm",6);
+//define("sbp",20);
+//define("gard",21);
+//define("asr",22);
 
 //Trees
 define("Neighbor Joining Tree",0);
@@ -95,6 +95,7 @@ meme: "meme"
 }
 
 var meme = {
+  id            : 12,
   root          : "SRC1",
   namedmodels   : "",
   roptions      : 4,
@@ -106,7 +107,24 @@ var meme = {
   rateclasses2  : 2
 };
 
+var fubar = {
+  id                    : 13,
+  root                  : "SRC1",
+  namedmodels           : "",
+  modelstring           : "010010",
+  roptions              : 4,
+  dnds                  : 1.0,
+  prime_property_choice : 0,
+  ambchoice             : 0,
+  rateoption            : 0,
+  rateclasses           : 2,
+  rateoption2           : 1,
+  rateclasses2          : 2
+};
 
 define("types",types)
+
 define("meme",meme)
+define("fubar",fubar)
+
 

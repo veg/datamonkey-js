@@ -11,8 +11,10 @@ Datamonkey API
 Multiple Sequence Alignment
 ===========================
 
-##Resources
+##Resource Urls
 
+| URL       | Description                             |
+| --------- | ----------:                             |
 | POST /msa | Uploads new multiple sequence alignment |
 
 ### Parameters
@@ -23,7 +25,8 @@ Multiple Sequence Alignment
 | datatype  | The datatype of the file. Can be "codon", "nucleotide", or "protein"                                                                        |
 | gencode   | The genetic code definition. See http://datamonkey.org/help/geneticcodes.php for more information.                                          |
 
-
+| URL          | Description                                                          |
+| ---------    | ----------:                                                          |
 | GET /msa/:id | Retrieves all information for respective multiple sequence alignment |
 
 ### Results
@@ -52,50 +55,6 @@ An implementation of the ancestral sequence reconstruction algorithms by
 [Yang et al. 1995]("http://www.genetics.org/cgi/content/abstract/141/4/1641"), 
 and 
 [Nielsen 2002]("http://www.ncbi.nlm.nih.gov/pubmed/12396587").
-
-### Phases 
-
-#### Phase 1: Nucleotide model maximum likelihood (ML) fit
-
-A nucleotide model  (any model from the time-reversible class can be chosen) is
-fitted to the data and tree (either NJ or user supplied) using maximum
-likelihood <b>to obtain branch lengths and substitution rates</b>. If the input
-alignment contains multiple segments, base frequencies and substitution rates
-are inferred <b>jointly</b> from the entire alignment, while branch lengths are
-fitted to each segment separately.  The "best-fitting" model can be determined
-automatically by a model selection procedure or chosen by the user. 
-
-#### Phase 2: Null model M1 (no selection) fit
-
-Holding branch lengths proportional to and subsitution rate parameters constant
-at the values estimated in Phase 1, a codon model obtained by crossing MG94 and
-the nucleotide model of Phase 1 is fitted to the data to obtain <b>independent
-rate distributions</b> for &omega; (dN/dS) and dS. This methods allows for rate
-heterogeneity both in synonymous and non-synonymous rates, by fitting a 3 bin
-general discrete distribution to synonymous rates, and a 2 bin discrete
-distribution to &omega; yielding 6 possible values for the ratio dN. The &omega;
-distribution has the form: &omega;_1&lt;1 (weight P) and 1 (weight 1-P).
-
-#### Phase 3: Alternative model M2 (selection) fit
-
-Holding branch lengths proportional to and subsitution rate parameters constant
-at the values estimated in Phase 1, a codon model obtained by crossing MG94 and
-the nucleotide model of Phase 1 is fitted to the data to obtain <b>independent
-rate distributions</b> for &omega; (dN/dS) and dS. This methods allows for rate
-heterogeneity both in synonymous and non-synonymous rates, by fitting a 3 bin
-general discrete distribution to synonymous rates, and a 3 bin discrete
-distribution to &omega; yielding 3 possible values for the ratio dN. The &omega;
-distribution has the form: &omega;_1&lt;1 (weight P_1), 1 (weight (1-P_1)P_2)
-and &omega;_2&gt;1 (weight (1-P_1)(1-P_2)).
-
-#### Phase 4: LRT 
-
-Because model M1 is nested in M2 (set P_2 = 1 or &omega;_2 = 1), they can be
-tested against each other using a likelihood ratio test with 2 degrees of
-freedom (this is actually a conservative test because P_2 and &omega;_2 are not
-separately identifible if on the boundary (i.e. when P_2 = 0 or 1 or when
-&omega;_2 = 1).
-
 
 ### Parameters
 

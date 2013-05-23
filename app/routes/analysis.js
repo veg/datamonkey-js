@@ -52,12 +52,11 @@ exports.findAll = function(req, res) {
 
 };
 
-
 function createAnalysis(Analysis,AnalysisParameters,msa,count,postdata,res) {
   var an = new Analysis ({
     msafn  : msa._id,
     status : globals.queue,
-    countid : count,
+    id : count,
   });
 
   //TODO: Change to verify function
@@ -67,8 +66,9 @@ function createAnalysis(Analysis,AnalysisParameters,msa,count,postdata,res) {
 
   an.save(function (err,result) {
 
-    if (err)
+    if (err) {
       console.log(err);
+    }
 
     //Create Analysis Parameters from postdata
     //TODO: Verify parameters before committing them
@@ -80,8 +80,9 @@ function createAnalysis(Analysis,AnalysisParameters,msa,count,postdata,res) {
 
     //Save Meme Parameters to parent Meme object
     parameters.save(function (err, aparams) {
-      if (err)
+      if (err) {
         console.log(err);
+      }
 
       else {
 
@@ -94,10 +95,9 @@ function createAnalysis(Analysis,AnalysisParameters,msa,count,postdata,res) {
           an.parameters.push(parameters);
           an.save();
 
-
           //TODO: If not part of the model, then grab the constant
            var params = {
-              'method'        : globals[type],
+              'method'        : globals[type].id,
               'treeMode'      : aparams.treemode || globals[type].treemode,
               'root'          : aparams.root || globals[type].root,
               'modelstring'   : aparams.modelstring || globals[type].modelstring,
@@ -112,8 +112,8 @@ function createAnalysis(Analysis,AnalysisParameters,msa,count,postdata,res) {
               'rateclasses2'  : aparams.rateclasses2 || globals[type].rateclasses2
            };
 
-           //Dispatch the analysis to the perl script
-           dpl.dispatchAnalysis(an.id,type,msa,params,res);
+           // Dispatch the analysis to the perl script
+           dpl.dispatchAnalysis(an,type,msa,params,res);
 
            // TODO: We should return the status id ticket here instead of
            // inside dispatchAnalysis
@@ -135,7 +135,6 @@ exports.invokeJob = function(req, res) {
   var msaid =  postdata.msaid;
 
   Msa.findOne({msaid : msaid}, function(err, msa) {
-    //console.log(msa);
 
     var callback = function(err,result) {
       var highest_countid = 1;
@@ -144,7 +143,7 @@ exports.invokeJob = function(req, res) {
         console.log(err);
       }
 
-      if(result != ''){
+      if(result != '' && result != null){
         num = result.countid;
         highest_countid = result.countid + 1;
       }
@@ -156,8 +155,8 @@ exports.invokeJob = function(req, res) {
     //Get count of this analysis
     Analysis 
     .findOne({ msafn: msa._id })
-    .sort('-countid')
-    .select('countid')
+    .sort('-id')
+    .select('id')
     .exec(callback)
 
   });

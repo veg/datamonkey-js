@@ -67,8 +67,6 @@ exports.uploadMsa = function(req, res) {
   postdata = req.query;
   postdata.contents = postdata.contents.join('');
 
-  //response = dm.post(method,contents=fh, datatype=datatype, genCodeId=genCodeId, mail=mail)
-
   //TODO: Clean postdata
   var sequence_alignment = new Msa({
     contents    : postdata.contents,  
@@ -82,10 +80,14 @@ exports.uploadMsa = function(req, res) {
     if (err) {
       res.send({'error':err});
     } 
+
     else {
+
       //Upload to datamonkey
       dpl.uploadToPerl(result,res);
+
     }
+
   });
 
 }

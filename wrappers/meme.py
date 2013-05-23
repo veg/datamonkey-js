@@ -1,4 +1,5 @@
-#  HyPhy - Hypothesis Testing Using Phylogenies.
+#  Datamonkey - An API for comparative analysis of sequence alignments using
+#  state-of-the-art statistical models.
 #
 #  Copyright (C) 2013
 #  Sergei L Kosakovsky Pond (spond@ucsd.edu)
@@ -80,32 +81,28 @@ def get_all_meme():
 
 if __name__ == "__main__":
 
-    #mail = 'sweaver@ucsd.edu'
-    #fn   = '/home/sweaver/datamonkey-js/wrappers/res/HIV_gp120.nex'
-    #msa = msa.create_msa(fn,0,0,mail)
-
-    #print msa
+    mail = 'sweaver@ucsd.edu'
+    fn   = '/home/sweaver/datamonkey-js/wrappers/res/HIV_gp120.nex'
+    msa = msa.create_msa(fn,0,0,mail)
 
     #Neighbor Joining
     modelstring = "010010"
-    treemode = 0
-    pvalue = 0.5
-    sendmail = True;
+    treemode    = 0
+    pvalue      = 0.5
+    sendmail    = True
 
     #Start analysis. Receive ticket.
-    #meme = meme_analysis(msa["msaid"],treemode,modelstring,pvalue,sendmail)
-
-    msaid  = 'upload.410652109932063.1'
-
-    meme = meme_analysis(msaid,treemode,modelstring,pvalue,sendmail)
+    meme = meme_analysis(msa["msaid"],treemode,modelstring,pvalue,sendmail)
     print meme
 
-    ##Can continue polling
-    #for x in range(1000):
-    #  print get_meme_status(msa["_id"],meme["id"])
+    #Can continue polling
+    for x in range(1000):
+      print get_meme_status(msa["msaid"],meme["id"])
 
-    #'http://datamonkey-dev:3000/msa/51392f4a3f76634973000001/meme'
-    #memeid = '5137dbeb5aa2574628000002'
+    #msaid  = 'upload.410652109932063.1'
+
+    #meme = meme_analysis(msaid,treemode,modelstring,pvalue,sendmail)
+    #print meme
 
     #print parse_meme_results(msaid,memeid)
 

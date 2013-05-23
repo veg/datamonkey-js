@@ -1,4 +1,5 @@
-#  HyPhy - Hypothesis Testing Using Phylogenies.
+#  Datamonkey - An API for comparative analysis of sequence alignments using
+#  state-of-the-art statistical models.
 #
 #  Copyright (C) 2013
 #  Sergei L Kosakovsky Pond (spond@ucsd.edu)
@@ -49,3 +50,4 @@ def get_all_sequences():
 
 if __name__ == "__main__":
     print create_msa('/Users/sweaver/Documents/NexusFiles/HIV_gp120.nex',0,0)
+
