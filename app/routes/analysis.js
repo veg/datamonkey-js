@@ -53,6 +53,7 @@ exports.findAll = function(req, res) {
 };
 
 function createAnalysis(Analysis,AnalysisParameters,msa,count,postdata,res) {
+
   var an = new Analysis ({
     msafn  : msa._id,
     status : globals.queue,
@@ -170,8 +171,10 @@ exports.invokeJob = function(req, res) {
 exports.queryStatus = function(req, res) {
   // Find the analysis
   // Return its status
-  var Analysis = mongoose.model(type.capitalize());
 
+  type =  req.params.type;
+
+  var Analysis = mongoose.model(type.capitalize());
 
   Analysis.findOne({id : req.params.analysisid}, function(err, item) {
     if (err)
@@ -179,7 +182,7 @@ exports.queryStatus = function(req, res) {
 
     else {
       //This should eventually be its own polling task
-      res.send({status:item.status});
+      res.send({item:item});
     }
   });
 
@@ -201,11 +204,11 @@ exports.getResults = function(req, res) {
     else
     {
 
-      if(item.status == globals.cancelled || item.status == globals.finished)
+      if(item.status == globals.cancelled || item.status == globals.finished || 1)
       {
 
-        if(item.results)
-          res.send(item.results);
+        if(item.results || 1)
+          res.send(item);
 
         else
           res.send('Something wrong happened with this job');
@@ -241,11 +244,8 @@ exports.parseResults = function(req, res) {
       res.send('There is no sequence with id of ' + req.params.analysisid);
 
     else {
-
       //This should eventually be its own polling task
-      dpl.parseResults(item);
-      res.send({status:item.msafn});
-
+      dpl.parseResults(res,item);
     }
 
   });

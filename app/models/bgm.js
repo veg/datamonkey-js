@@ -38,7 +38,7 @@ var Bgm = new Schema({
 });
 
 var BgmParameters = new Schema({
-  _creator : { type: Schema.Types.ObjectId, ref: 'Asr' },
+  _creator : { type: Schema.Types.ObjectId, ref: 'Bgm' },
   roptions   : Number,
   pvalue     : Number,
   dnds       : Number,
