@@ -35,26 +35,27 @@ var Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId;
 
 //TODO: status needs to be a subdocument
-var GABranch = new Schema({
-  msafn      : { type: Schema.Types.ObjectId, ref: 'Msa' },
+var Gabranch = new Schema({
+  msafn      : { type : Schema.Types.ObjectId, ref : 'Msa' },
+  id         : { type : Number },
   status     : String,
   sendmail   : Boolean,
-  parameters : [GABranchParameters],
-  summary    : [GABranchSummary]
+  parameters : [GabranchParameters],
+  gabsummary : [GabSummary]
 });
 
-var GABranchParameters = new Schema({
+var GabranchParameters = new Schema({
   modelstring : String,
   treemode    : Number
 });
 
-var GABranchSummary = new Schema({
+var GabSummary = new Schema({
   _creator  : { type: Schema.Types.ObjectId, ref: 'Meme' },
   col_key   : String,
   col_value : String
 });
 
-module.exports = mongoose.model('GABranch', GABranch);
-module.exports = mongoose.model('GABranchParameters', GABranchParameters);
-module.exports = mongoose.model('GABranchSummary', GABranchSummary);
+module.exports = mongoose.model('Gabranch', Gabranch);
+module.exports = mongoose.model('GabranchParameters', GabranchParameters);
+module.exports = mongoose.model('GabSummary', GabSummary);
 

@@ -175,17 +175,17 @@ exports.queryStatus = function(req, res) {
   type =  req.params.type;
 
   var Analysis = mongoose.model(type.capitalize());
-
-  Analysis.findOne({id : req.params.analysisid}, function(err, item) {
-    if (err)
-      res.send('There is no sequence with id of ' + req.params.analysisid);
-
-    else {
-      //This should eventually be its own polling task
-      res.send({item:item});
-    }
+  
+  Msa.findOne({msaid : req.params.msaid}, function(err, msa) {
+    Analysis.findOne({msafn : msa._id}, function(err, item) {
+      if (err)
+        res.send('There is no sequence with id of ' + req.params.analysisid);
+      else {
+        //This should eventually be its own polling task
+        res.send({item:item});
+      }
+    });
   });
-
 }
 
 exports.getResults = function(req, res) {
@@ -234,20 +234,19 @@ exports.sendMail = function(req, res) {
 exports.parseResults = function(req, res) {
 
   type =  req.params.type;
-  console.log(req.params.type);
-  console.log(req.params.analysisid);
 
   var Analysis = mongoose.model(type.capitalize());
 
-  Analysis.findOne({id : req.params.analysisid}, function(err, item) {
-    if (err)
-      res.send('There is no sequence with id of ' + req.params.analysisid);
-
-    else {
-      //This should eventually be its own polling task
-      dpl.parseResults(res,item);
-    }
-
+  Msa.findOne({msaid : req.params.msaid}, function(err, msa) {
+    Analysis.findOne({msafn : msa._id}, function(err, item) {
+      if (err)
+        res.send('There is no sequence with id of ' + req.params.analysisid);
+      else {
+        //This should eventually be its own polling task
+        dpl.parseResults(item);
+        res.send({item:item});
+      }
+    });
   });
 
 }

@@ -40,7 +40,7 @@ var Meme = new Schema({
   id                    : { type            : Number },
   status                : String,
   sendmail              : Boolean,
-  memeparameters        : [MemeParameters],
+  parameters            : [MemeParameters],
   memeresults           : [MemeResults],
   mememappings          : [MemeMappings],
   memesummary           : [MemeSummary]

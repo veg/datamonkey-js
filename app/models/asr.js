@@ -40,7 +40,7 @@ var Asr = new Schema({
   id                 : { type : Number },
   status             : String,
   sendmail           : Boolean,
-  asrparameters      : [AsrParameters],
+  parameters         : [AsrParameters],
   asrresiduestable   : [AsrResiduesTable],
   asrpartitiontables : [AsrPartitionTables],
   asrmarginaldump    : [AsrMarginalDump],
