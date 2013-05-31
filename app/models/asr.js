@@ -36,15 +36,16 @@ var Schema = mongoose.Schema
 var Mixed = mongoose.Schema.Types.Mixed;
 
 var Asr = new Schema({
-  _creator   : { type: Schema.Types.ObjectId, ref: 'Msa' },
-  msafn      : { type: Schema.Types.ObjectId, ref: 'Msa' },
-  status     : String,
-  sendmail   : Boolean,
-  parameters : [AsrParameters],
-  residues   : [AsrResidues],
-  marginal   : [AsrMarginalDump],
-  sampled    : [AsrSampledDump],
-  summary    : [AsrSummary]
+  msafn              : { type : Schema.Types.ObjectId, ref : 'Msa' },
+  id                 : { type : Number },
+  status             : String,
+  sendmail           : Boolean,
+  asrparameters      : [AsrParameters],
+  asrresiduestable   : [AsrResiduesTable],
+  asrpartitiontables : [AsrPartitionTables],
+  asrmarginaldump    : [AsrMarginalDump],
+  asrsampleddump     : [AsrSampledDump],
+  asrsummary         : [AsrSummary]
 });
 
 var AsrParameters = new Schema({
@@ -58,7 +59,7 @@ var AsrParameters = new Schema({
   root        : Number
 });
 
-var AsrResidues = new Schema({
+var AsrResiduesTable = new Schema({
   _creator  : { type  : Schema.Types.ObjectId, ref : 'Asr' },
   partition : Number,
   site      : Number,
@@ -67,6 +68,14 @@ var AsrResidues = new Schema({
   sampled   : String,
   marginalp : Number,
   sampledp  : Number
+});
+
+var AsrPartitionTables = new Schema({
+  _creator  : { type  : Schema.Types.ObjectId, ref : 'Asr' },
+  partition : Number,
+  span      : Number,
+  tree      : String,
+  node_map  : String
 });
 
 var AsrMarginalDump = new Schema({
@@ -98,8 +107,9 @@ var AsrSummary = new Schema({
 });
 
 module.exports = mongoose.model('Asr', Asr);
-module.exports = mongoose.model('AsrResidues', AsrResidues);
+module.exports = mongoose.model('AsrParameters', AsrParameters);
+module.exports = mongoose.model('AsrResiduesTable', AsrResiduesTable);
+module.exports = mongoose.model('AsrPartitionTables', AsrPartitionTables);
 module.exports = mongoose.model('AsrMarginalDump', AsrMarginalDump);
 module.exports = mongoose.model('AsrSampledDump', AsrSampledDump);
 module.exports = mongoose.model('AsrSummary', AsrSummary);
-
