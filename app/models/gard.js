@@ -29,10 +29,9 @@
 
 
 //Also needs to include status, and results
-require(__dirname + '/slac');
+var SlacSchema = require(__dirname + '/slac');
 
 var mongoose = require('mongoose')
-  , SlacModel = mongoose.model('SlacModel');
 
 var Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId;
@@ -41,14 +40,14 @@ var Mixed = mongoose.Schema.Types.Mixed;
 
 //TODO: status needs to be a subdocument
 var Gard = new Schema({
-  msafn      : { type: Schema.Types.ObjectId, ref: 'Msa' },
-  status     : String,
-  sendmail   : Boolean,
-  parameters : [GardParameters],
-  splits     : [GardSplits],
-  details    : [GardDetails],
-  summary    : [GardSummary],
-  slac_model : [SlacModel],
+  msafn       : { type : Schema.Types.ObjectId, ref : 'Msa' },
+  status      : String,
+  sendmail    : Boolean,
+  parameters  : [GardParameters],
+  gardsplits  : [GardSplits],
+  garddetails : [GardDetails],
+  gardsummary : [GardSummary],
+  slacmodel   : [SlacSchema.SlacModel],
 });
 
 var GardParameters = new Schema({
@@ -83,6 +82,7 @@ var GardSummary = new Schema({
 });
 
 module.exports = mongoose.model('Gard', Gard);
+module.exports = mongoose.model('GardParameters', GardParameters);
 module.exports = mongoose.model('GardSplits', GardSplits);
 module.exports = mongoose.model('GardDetails', GardDetails);
 module.exports = mongoose.model('GardSummary', GardSummary);

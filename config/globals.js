@@ -160,9 +160,26 @@ var modelselection = {
   id : 10,
 };
 
+var gard = {
+  id                    : 21,
+  treeMode              : 0,
+  root                  : "SRC1",
+  modelString           : "010010",
+  NamedModels           : "",
+  rOptions              : 4,
+  dNdS                  : 1.0,
+  ambChoice             : 0,
+  prime_property_choice : 0,
+  pValue                : 0.1,
+  rateOption            : 1,
+  rateClasses           : 2,
+  rateOption2           : 1,
+  rateClasses2          : 2
+};
+
 define("types",types)
 define("asr",asr)
 define("meme",meme)
 define("fubar",fubar)
 define("modelselection",modelselection)
-
+define("gard",gard)
