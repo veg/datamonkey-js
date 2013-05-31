@@ -75,7 +75,7 @@ var SlacTrees = new Schema({
 });
 
 var SlacModel = new Schema({
-  _creator : { type: Schema.Types.ObjectId, ref: 'Slac' },
+  model : String
 });
 
 var SlacMutation = new Schema({
@@ -95,8 +95,8 @@ var SlacSummary = new Schema({
 module.exports = mongoose.model('Slac', Slac);
 module.exports = mongoose.model('SlacParameters', SlacParameters);
 module.exports = mongoose.model('SlacSummary', SlacSummary);
-module.exports = mongoose.model('SlacMutation', SlacMutation)
-module.exports = mongoose.model('SlacTrees', SlacTrees)
-module.exports = mongoose.model('SlacModel', SlacModel)
-module.exports = mongoose.model('SlacResults', SlacResults)
+module.exports = mongoose.model('SlacMutation', SlacMutation);
+module.exports = mongoose.model('SlacTrees', SlacTrees);
+module.exports = mongoose.model('SlacModel', SlacModel);
+module.exports = mongoose.model('SlacResults', SlacResults);
 

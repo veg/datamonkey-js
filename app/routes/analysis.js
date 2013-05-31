@@ -207,12 +207,12 @@ exports.getResults = function(req, res) {
       if(item.status == globals.cancelled || item.status == globals.finished || 1)
       {
 
-        if(item.results || 1)
+        if(item.results || 1) {
           res.send(item);
+        }
 
         else
           res.send('Something wrong happened with this job');
-
       }
     }
     res.send('Job still running!');

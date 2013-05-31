@@ -156,8 +156,13 @@ var gabranch = {
   rateclasses2          : 2,
 };
 
+var modelselection = {
+  id : 10,
+};
+
 define("types",types)
 define("asr",asr)
 define("meme",meme)
 define("fubar",fubar)
-define("gabranch",gabranch)
+define("modelselection",modelselection)
+
