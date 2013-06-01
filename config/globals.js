@@ -162,18 +162,52 @@ var modelselection = {
 
 var gard = {
   id                    : 21,
-  treeMode              : 0,
+  treemode              : 0,
   root                  : "SRC1",
-  modelString           : "010010",
-  NamedModels           : "",
-  rOptions              : 4,
-  dNdS                  : 1.0,
-  ambChoice             : 0,
+  modelstring           : "010010",
+  namedmodels           : "",
+  roptions              : 4,
+  dnds                  : 1.0,
+  ambchoice             : 0,
   prime_property_choice : 0,
-  pValue                : 0.1,
-  rateOption            : 1,
-  rateClasses           : 2,
-  rateOption2           : 1,
+  pvalue                : 0.1,
+  rateoption            : 1,
+  rateclasses           : 2,
+  rateoption2           : 1,
+  rateClasses2          : 2
+};
+
+var evf = {
+  id                    : 42,
+  treemode              : 0,
+  root                  : "SRC1",
+  modelstring           : "010010",
+  namedmodels           : "",
+  roptions              : 4,
+  dnds                  : 1.0,
+  ambchoice             : 0,
+  prime_property_choice : 0,
+  pvalue                : 0.1,
+  rateoption            : 0,
+  rateclasses           : 2,
+  rateoption2           : 1,
+  rateclasses2          : 2
+};
+
+var sbp = {
+  id                    : 20,
+  treemode              : 0,
+  root                  : "SRC1",
+  modelstring           : "010010",
+  namedmodels           : "",
+  roptions              : 4,
+  dnds                  : 1.0,
+  ambchoice             : 0,
+  prime_property_choice : 0,
+  pvalue                : 0.1,
+  rateoption            : 1,
+  rateclasses           : 2,
+  rateoption2           : 1,
   rateClasses2          : 2
 };
 
@@ -183,3 +217,5 @@ define("meme",meme)
 define("fubar",fubar)
 define("modelselection",modelselection)
 define("gard",gard)
+define("evf",evf)
+define("sbp",sbp)

@@ -41,6 +41,7 @@ var Mixed = mongoose.Schema.Types.Mixed;
 //TODO: status needs to be a subdocument
 var Gard = new Schema({
   msafn       : { type : Schema.Types.ObjectId, ref : 'Msa' },
+  id          : { type : Number },
   status      : String,
   sendmail    : Boolean,
   parameters  : [GardParameters],

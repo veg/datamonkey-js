@@ -28,13 +28,13 @@
 import dm
 import msa
 
-def gard_analysis(msaid, methodname, methodstring, rateoption, rateclasses,
+def sbp_analysis(msaid, methodname, methodstring, rateoption, rateclasses,
                   sendmail=False, block=False):
-    u"""Starts a new gard for the given sequence."""
+    u"""Starts a new sbp for the given sequence."""
 
     # We need to have an option of whether they want mail
     # and/or want the call to block until finished, or neither
-    method = "/msa/{0}/gard".format(msaid)
+    method = "/msa/{0}/sbp".format(msaid)
 
     response = dm.post(method, msaid=msaid, methodname=methodname,
                        methodstring=methodstring, rateoption=rateoption,
@@ -42,17 +42,17 @@ def gard_analysis(msaid, methodname, methodstring, rateoption, rateclasses,
 
     return response
 
-def get_gard_status(msaid, gardid):
+def get_sbp_status(msaid, sbpid):
     u"""Returns current status of job"""
 
-    method = "/msa/{0}/gard/{1}".format(msaid, gardid)
+    method = "/msa/{0}/sbp/{1}".format(msaid, sbpid)
     response = dm.get(method, params=None)
     return response
 
-def get_gard_results(msaid, gardid):
+def get_sbp_results(msaid, sbpid):
     u"""Returns results for analysis, or error if there is none"""
 
-    method = "/msa/{0}/gard/{1}/results".format(msaid, gardid)
+    method = "/msa/{0}/sbp/{1}/results".format(msaid, sbpid)
     response = dm.get(method, params=None)
     return response
 
@@ -71,9 +71,9 @@ if __name__ == "__main__":
     sendmail = True
 
     #Start analysis. Receive ticket.
-    gard = gard_analysis(msa["msaid"], method_name, method_string, rateoption,
+    sbp = sbp_analysis(msa["msaid"], method_name, method_string, rateoption,
                          rateclasses, sendmail)
 
     print msa["msaid"]
-    print gard
+    print sbp
 

@@ -28,52 +28,50 @@
 import dm
 import msa
 
-def gard_analysis(msaid, methodname, methodstring, rateoption, rateclasses,
-                  sendmail=False, block=False):
-    u"""Starts a new gard for the given sequence."""
+def evf_analysis(msaid, treemode, methodname, methodstring, sendmail=False,
+                 block=False):
+    u"""Starts a new evf for the given sequence."""
 
     # We need to have an option of whether they want mail
     # and/or want the call to block until finished, or neither
-    method = "/msa/{0}/gard".format(msaid)
+    method = "/msa/{0}/evf".format(msaid)
 
-    response = dm.post(method, msaid=msaid, methodname=methodname,
-                       methodstring=methodstring, rateoption=rateoption,
-                       rateclasses=rateclasses, sendmail=sendmail, block=block)
+    response = dm.post(method, msaid=msaid, treemode=treemode,
+                       methodname=methodname, methodstring=methodstring,
+                       sendmail=sendmail, block=block)
 
     return response
 
-def get_gard_status(msaid, gardid):
+def get_evf_status(msaid, evfid):
     u"""Returns current status of job"""
 
-    method = "/msa/{0}/gard/{1}".format(msaid, gardid)
+    method = "/msa/{0}/evf/{1}".format(msaid, evfid)
     response = dm.get(method, params=None)
     return response
 
-def get_gard_results(msaid, gardid):
+def get_evf_results(msaid, evfid):
     u"""Returns results for analysis, or error if there is none"""
 
-    method = "/msa/{0}/gard/{1}/results".format(msaid, gardid)
+    method = "/msa/{0}/evf/{1}/results".format(msaid, evfid)
     response = dm.get(method, params=None)
     return response
 
 if __name__ == "__main__":
-
     mail = 'sweaver@ucsd.edu'
     fn   = './res/HIV_gp120.nex'
     msa = msa.create_msa(fn, 0, 0, mail)
 
-    method_name = ""
-    method_string = "10110"
-    rateoption = 2
-    rateclasses = 2
+    treemode = 0
+    methodname = ""
+    methodstring = "10110"
 
     #Parameters
     sendmail = True
 
     #Start analysis. Receive ticket.
-    gard = gard_analysis(msa["msaid"], method_name, method_string, rateoption,
-                         rateclasses, sendmail)
+    evf = evf_analysis(msa["msaid"], treemode, methodname, methodstring,
+                       sendmail)
 
     print msa["msaid"]
-    print gard
+    print evf
 

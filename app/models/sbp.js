@@ -28,15 +28,11 @@
 */
 
 
-require(__dirname + '/slac');
-require(__dirname + '/gard');
+var SlacScheme = require(__dirname + '/slac');
+var GardScheme = require(__dirname + '/gard');
 
-var mongoose = require('mongoose')
-  , SlacModel = mongoose.model('SlacModel')
-  , GardSplits = mongoose.model('GardSplits')
-  , GardSummary = mongoose.model('GardSummary')
-  , GardDetails = mongoose.model('GardDetails');
-
+var mongoose = require('mongoose');
+  
 var Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId;
 
@@ -45,16 +41,17 @@ var Mixed = mongoose.Schema.Types.Mixed;
 //TODO: status needs to be a subdocument
 //TODO: Include SLAC
 var Sbp = new Schema({
-  msafn        : { type: Schema.Types.ObjectId, ref: 'Msa' },
-  status       : String,
-  sendmail     : Boolean,
-  parameters   : [SbpParameters],
-  summary      : [SbpSummary],
-  trees        : [SbpTrees],
-  slac_model   : [SlacModel],
-  gard_splits  : [GardSplits],
-  gard_summary : [GardSummary],
-  gard_details : [GardDetails],
+  msafn       : { type : Schema.Types.ObjectId, ref : 'Msa' },
+  status      : String,
+  sendmail    : Boolean,
+  id          : { type : Number },
+  parameters  : [SbpParameters],
+  sbpsummary  : [SbpSummary],
+  sbptrees    : [SbpTrees],
+  slacmodel   : [SlacScheme.SlacModel],
+  gardsplits  : [GardScheme.GardSplits],
+  gardsummary : [GardScheme.GardSummary],
+  garddetails : [GardScheme.GardDetails],
 });
 
 var SbpParameters = new Schema({

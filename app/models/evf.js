@@ -36,15 +36,16 @@ var Schema = mongoose.Schema
 
 //TODO: status needs to be a subdocument
 var Evf = new Schema({
-  msafn             : { type : Schema.Types.ObjectId, ref : 'Msa' },
-  status            : String,
-  sendmail          : Boolean,
-  parameters        : [EvfParameters],
-  samples           : [EvfSamples],
-  posterior_samples : [EvfPosteriorSamples],
-  posteriors        : [EvfPosteriors],
-  summary           : [EvfSummary],
-  rate_info_summary : [EvfRateInfoSummary],
+  msafn               : { type : Schema.Types.ObjectId, ref : 'Msa' },
+  id                  : { type : Number },
+  status              : String,
+  sendmail            : Boolean,
+  parameters          : [EvfParameters],
+  evfsamples          : [EvfSamples],
+  evfposteriorsamples : [EvfPosteriorSamples],
+  evfposteriors       : [EvfPosteriors],
+  evfsummary          : [EvfSummary],
+  evfrateinfosummary  : [EvfRateInfoSummary],
 });
 
 var EvfParameters = new Schema({

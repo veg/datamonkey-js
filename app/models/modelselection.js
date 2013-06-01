@@ -41,6 +41,7 @@ var Schema = mongoose.Schema
 //TODO: Include SLAC
 var Modelselection = new Schema({
   msafn        : { type: Schema.Types.ObjectId, ref: 'Msa' },
+  id           : { type : Number },
   status       : String,
   sendmail     : Boolean,
   parameters   : [ModelselectionParameters],
