@@ -245,6 +245,23 @@ var slac = {
   rateclasses2          : 2
 };
 
+var bgm = {
+  id                    : 6,
+  treemode              : 0,
+  root                  : "SRC1",
+  modelstring           : "010010",
+  namedmodels           : "",
+  roptions              : 4,
+  dnds                  : 1.0,
+  ambchoice             : 0,
+  prime_property_choice : 0,
+  pvalue                : 0.5,
+  rateoption            : 0,
+  rateclasses           : 2,
+  rateoption2           : 1,
+  rateclasses2          : 2
+};
+
 define("types",types)
 define("asr",asr)
 define("meme",meme)
@@ -255,3 +272,4 @@ define("evf",evf)
 define("sbp",sbp)
 define("parris",parris)
 define("slac",slac)
+define("bgm",bgm)

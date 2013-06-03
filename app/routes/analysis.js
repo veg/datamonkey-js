@@ -126,6 +126,7 @@ function createAnalysis(Analysis,AnalysisParameters,msa,count,postdata,res) {
 }
 
 exports.invokeJob = function(req, res) {
+
   type =  req.params.type;
 
   var Analysis = mongoose.model(type.capitalize());
@@ -139,17 +140,19 @@ exports.invokeJob = function(req, res) {
 
     var callback = function(err,result) {
       var highest_countid = 1;
+      var num = 0;
 
       if(err) {
         console.log(err);
       }
 
-      if(result != '' && result != null){
+      if(result != '' && result != null) {
         num = result.countid;
         highest_countid = result.countid + 1;
       }
 
-      createAnalysis(Analysis,AnalysisParameters,msa,highest_countid,postdata,res);
+      createAnalysis(Analysis,AnalysisParameters,msa,highest_countid,postdata,
+                     res);
 
     }
 
@@ -198,19 +201,17 @@ exports.getResults = function(req, res) {
   //Return all results
   Analysis.findOne({id : req.params.analysisid}, function(err, item) {
 
-    if (err)
+    if (err) {
       res.send('There is no sequence with id of ' + id);
+    }
 
     else
     {
 
-      if(item.status == globals.cancelled || item.status == globals.finished || 1)
-      {
-
-        if(item.results || 1) {
+      if(item.status == globals.cancelled || item.status == globals.finished) {
+        if(item.results) {
           res.send(item);
         }
-
         else
           res.send('Something wrong happened with this job');
       }
@@ -222,12 +223,8 @@ exports.getResults = function(req, res) {
 
 //Dev purposes only
 exports.sendMail = function(req, res) {
-
-  type =  req.params.type;
-
-  mailer.send();  
-  res.send({response:'Mail Sent!'});
-
+  //mailer.send();  
+  //res.send({response:'Mail Sent!'});
 }
 
 //Dev purposes only

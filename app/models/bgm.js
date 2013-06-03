@@ -30,19 +30,39 @@
 //Also needs to include status, and results
 var mongoose = require('mongoose');
 
+var SlacSchema = require(__dirname + '/slac');
+
 var Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId;
 
 var Bgm = new Schema({
-  _creator : { type: Schema.Types.ObjectId, ref: 'Msa' },
+  msafn               : { type : Schema.Types.ObjectId, ref : 'Msa' },
+  id                  : { type : Number },
+  status              : String,
+  sendmail            : Boolean,
+  parameters          : [BgmParameters],
+  bgmmodel            : [BgmModel],
+  slacmutation        : [SlacSchema.SlacMutation],
+  slactrees           : [SlacSchema.SlacTrees]
 });
 
 var BgmParameters = new Schema({
+  _creator    : { type  : Schema.Types.ObjectId, ref : 'Bgm' },
+  modelstring : String,
+  treemode    : Number,
+  roptions    : Number,
+  pvalue      : Number,
+  dnds        : Number,
+  ambchoice   : Number
+});
+
+var BgmModel = new Schema({
   _creator : { type: Schema.Types.ObjectId, ref: 'Bgm' },
-  roptions   : Number,
-  pvalue     : Number,
-  dnds       : Number,
-  ambchoice  : Number
+  model : String,
+  treemode : String
 });
 
 module.exports = mongoose.model('Bgm', Bgm);
+module.exports = mongoose.model('BgmParameters', BgmParameters);
+module.exports = mongoose.model('BgmModel', BgmModel);
+
