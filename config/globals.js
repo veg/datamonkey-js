@@ -222,7 +222,24 @@ var parris = {
   ambchoice             : 0,
   prime_property_choice : 0,
   pvalue                : 0.1,
-  rateoption            : 1,
+  rateoption            : 0,
+  rateclasses           : 2,
+  rateoption2           : 1,
+  rateclasses2          : 2
+};
+
+var slac = {
+  id                    : 0,
+  treemode              : 0,
+  root                  : "SRC1",
+  modelstring           : "010010",
+  namedmodels           : "",
+  roptions              : 4,
+  dnds                  : 1.0,
+  ambchoice             : 0,
+  prime_property_choice : 0,
+  pvalue                : 0.1,
+  rateoption            : 0,
   rateclasses           : 2,
   rateoption2           : 1,
   rateclasses2          : 2
@@ -237,3 +254,4 @@ define("gard",gard)
 define("evf",evf)
 define("sbp",sbp)
 define("parris",parris)
+define("slac",slac)

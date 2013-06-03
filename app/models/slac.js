@@ -36,15 +36,15 @@ var Schema = mongoose.Schema
 //TODO: status needs to be a subdocument
 //TODO: Include SLAC
 var Slac = new Schema({
-  msafn        : { type: Schema.Types.ObjectId, ref: 'Msa' },
+  msafn        : { type : Schema.Types.ObjectId, ref : 'Msa' },
   status       : String,
   sendmail     : Boolean,
   parameters   : [SlacParameters],
-  summary      : [SlacSummary],
-  mutation     : [SlacMutation],
-  trees        : [SlacTrees],
-  model        : [SlacModel],
-  results      : [SlacResults],
+  slacsummary  : [SlacSummary],
+  slacmutation : [SlacMutation],
+  slactrees    : [SlacTrees],
+  slacmodel    : [SlacModel],
+  slacresults  : [SlacResults],
 });
 
 var SlacParameters = new Schema({
@@ -79,15 +79,35 @@ var SlacModel = new Schema({
 });
 
 var SlacMutation = new Schema({
-  _creator : { type: Schema.Types.ObjectId, ref: 'Slac' },
+  partition  : Number,
+  branch     : String,
+  site       : Number,
+  abssite    : Number,
+  startcodon : String,
+  endcodon   : String,
+  startaa    : String,
+  endaa      : String,
+  ns         : Number,
+  s          : Number
 });
 
 var SlacResults = new Schema({
-  _creator : { type: Schema.Types.ObjectId, ref: 'Slac' },
+  field_0  : Number,
+  field_1  : Number,
+  field_2  : Number,
+  field_3  : Number,
+  field_4  : Number,
+  field_5  : Number,
+  field_6  : Number,
+  field_7  : Number,
+  field_8  : Number,
+  field_9  : Number,
+  field_10 : Number,
+  field_11 : Number,
+  field_12 : Number
 });
 
 var SlacSummary = new Schema({
-  _creator : { type: Schema.Types.ObjectId, ref: 'Slac' },
   col_key   : String,
   col_value : String
 });
