@@ -1,4 +1,5 @@
-#  HyPhy - Hypothesis Testing Using Phylogenies.
+#  Datamonkey - An API for comparative analysis of sequence alignments using
+#  state-of-the-art statistical models.
 #
 #  Copyright (C) 2013
 #  Sergei L Kosakovsky Pond (spond@ucsd.edu)
@@ -27,9 +28,9 @@
 import dm
 import msa
 
-def fubar_analysis(msaid,treemode,pvalue,sendmail=False,block=False):
+def fel_analysis(msaid,treemode,modelstring,pvalue,sendmail=False,block=False):
     # We need to tell the API the method
-    # A fubar analysis requires:
+    # A fel analysis requires:
     # sequence
     # treemode
     # (Model String and Named Model may be redundant)
@@ -42,55 +43,55 @@ def fubar_analysis(msaid,treemode,pvalue,sendmail=False,block=False):
 
     #TODO: Have url friendly sequence ids
 
-    method = "/msa/{0}/fubar".format(msaid)
-    response = dm.post(method,msaid=msaid,treemode=treemode,pvalue=pvalue,sendmail=sendmail,block=block)
+    method = "/msa/{0}/fel".format(msaid)
+    response = dm.post(method,msaid=msaid,treemode=treemode,modelstring=modelstring,
+                       pvalue=pvalue,sendmail=sendmail,block=block)
     return response
 
-def get_fubar_status(msaid,fubarid):
-    method = "/msa/{0}/fubar/{1}".format(msaid,fubarid)
+def get_fel_status(msaid,felid):
+    method = "/msa/{0}/fel/{1}".format(msaid,felid)
     response = dm.get(method,params=None)
     return response
 
-def parse_fubar_results(msaid,fubarid):
-    method = "/msa/{0}/fubar/{1}/parse".format(msaid,fubarid)
+def parse_fel_results(msaid,felid):
+    method = "/msa/{0}/fel/{1}/parse".format(msaid,felid)
     response = dm.get(method,params=None)
     return response
 
-def get_fubar_results(msaid,fubarid):
-    method = "/msa/{0}/fubar/{1}/results".format(msaid,fubarid)
+def get_fel_results(msaid,felid):
+    method = "/msa/{0}/fel/{1}/results".format(msaid,felid)
     response = dm.get(method,params=None)
     return response
 
-def mail_fubar_results(msaid,fubarid):
-    method = "/msa/{0}/fubar/{1}/mail".format(msaid,fubarid)
+def mail_fel_results(msaid,felid):
+    method = "/msa/{0}/fel/{1}/mail".format(msaid,felid)
     response = dm.get(method,params=None)
     return response
 
-def parse_fubar_results(msaid,fubarid):
-    method = "/msa/{0}/fubar/{1}/parseresults".format(msaid,fubarid)
+def parse_fel_results(msaid,felid):
+    method = "/msa/{0}/fel/{1}/parseresults".format(msaid,felid)
     response = dm.get(method,params=None)
     return response
 
 
-def get_all_fubar():
-    method = "/msa/{0}/fubar".format(msaid)
+def get_all_fel():
+    method = "/msa/{0}/fel".format(msaid)
     response = dm.get(method,params=None)
     return response
 
 if __name__ == "__main__":
 
-    mail   = 'sweaver@ucsd.edu'
-    fn   = './res/HIV_gp120.nex'
+    mail = 'sweaver@ucsd.edu'
+    fn   = '/home/sweaver/datamonkey-js/wrappers/res/HIV_gp120.nex'
     msa = msa.create_msa(fn,0,0,mail)
-    print msa
 
     #Neighbor Joining
-    treemode = 0
-    pvalue = 0.9
-    sendmail = True;
+    treemode    = 0
+    modelstring = "010010"
+    pvalue      = 0.5
+    sendmail    = True
 
-    fubar = fubar_analysis(msa["msaid"],treemode,pvalue,sendmail)
-    print msa["msaid"]
-    print fubar
-
+    #Start analysis. Receive ticket.
+    fel = fel_analysis(msa["msaid"],treemode,modelstring,pvalue,sendmail)
+    print fel
 

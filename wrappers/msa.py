@@ -30,12 +30,19 @@ import dm
 
 #Need to create users
 def create_msa(fn,datatype,gencode,mailaddr=""):
-
     #Need to add name
     #Sites and Sequences are to be added on the backend
     method = "/msa"
     fh = {"file":(fn, open(fn,'rb').read())}
     response = dm.post(method,files=fh,datatype=datatype, genCodeId=gencode, mailaddr=mailaddr)
+    return response
+
+def upload_uds(fn,mailaddr=""):
+    #Need to add name
+    #Sites and Sequences are to be added on the backend
+    method = "/msa"
+    fh = {"file":(fn, open(fn,'rb').read())}
+    response = dm.post(method,files=fh,uds=1,mailaddr=mailaddr)
     return response
 
 def get_all_sequences():

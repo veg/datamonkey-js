@@ -37,6 +37,7 @@ var Schema = mongoose.Schema
 //TODO: Include SLAC
 var Scueal = new Schema({
   msafn             : { type : Schema.Types.ObjectId, ref : 'Msa' },
+  id                : Number,
   status            : String,
   sendmail          : Boolean,
   parameters        : [ScuealParameters],

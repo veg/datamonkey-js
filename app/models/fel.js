@@ -36,12 +36,13 @@ var Schema = mongoose.Schema
 
 //TODO: status needs to be a subdocument
 var Fel = new Schema({
-  msafn      : { type: Schema.Types.ObjectId, ref: 'Msa' },
+  msafn      : { type : Schema.Types.ObjectId, ref : 'Msa' },
+  id         : Number,
   status     : String,
   sendmail   : Boolean,
   parameters : [FelParameters],
-  results    : [FelResults],
-  summary    : [FelSummary]
+  felresults : [FelResults],
+  felsummary : [FelSummary]
 });
 
 var FelParameters = new Schema({
@@ -51,7 +52,6 @@ var FelParameters = new Schema({
 });
 
 var FelResults = new Schema({
-  _creator   : { type: Schema.Types.ObjectId, ref: 'FEL' },
   codon      : Number,
   ds         : Number,
   dn         : Number,
@@ -63,7 +63,6 @@ var FelResults = new Schema({
 });
 
 var FelSummary = new Schema({
-  _creator  : { type: Schema.Types.ObjectId, ref: 'FEL' },
   col_key   : String,
   col_value : String
 });

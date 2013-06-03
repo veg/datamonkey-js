@@ -262,9 +262,36 @@ var bgm = {
   rateclasses2          : 2
 };
 
+var fel = {
+  id            : 1,
+  root          : "SRC1",
+  namedmodels   : "",
+  roptions      : 4,
+  dnds          : 1.0,
+  ambchoice     : 0,
+  rateoption    : 0,
+  rateclasses   : 2,
+  rateoption2   : 1,
+  rateclasses2  : 2
+};
+
+//var uds = {
+//  minread             : Number,
+//  scorem              : Number,
+//  mincoverage         : Number,
+//  windowsize          : Number,
+//  windowstride        : Number,
+//  mincopycount        : Number,
+//  nucdivthreshold     : Number,
+//  dodr                : Number,
+//  mindrugscore        : Number,
+//  mindrugcoverage     : Number,
+//};
+
 define("types",types)
 define("asr",asr)
 define("meme",meme)
+define("fel",fel)
 define("fubar",fubar)
 define("modelselection",modelselection)
 define("gard",gard)
@@ -273,3 +300,5 @@ define("sbp",sbp)
 define("parris",parris)
 define("slac",slac)
 define("bgm",bgm)
+//define("uds",uds)
+

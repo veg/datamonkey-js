@@ -1,5 +1,4 @@
 /*
-
   Datamonkey - An API for comparative analysis of sequence alignments using state-of-the-art statistical models.
 
   Copyright (C) 2013
@@ -29,39 +28,17 @@
 
 
 //Also needs to include status, and results
-require(__dirname + '/slac');
-require(__dirname + '/sbp');
-require(__dirname + '/fel');
-require(__dirname + '/meme');
-require(__dirname + '/rel');
-require(__dirname + '/evf');
+SlacSchema = require(__dirname + '/slac');
+SbpSchema  = require(__dirname + '/sbp');
+FelSchema  = require(__dirname + '/fel');
+MemeSchema = require(__dirname + '/meme');
+EvfSchema  = require(__dirname + '/evf');
 
-var mongoose            = require('mongoose')
-  , SbpSummary          = mongoose.model('SbpSummary')
-  , SbpTrees            = mongoose.model('SbpTrees')
-  , SlacModel           = mongoose.model('SlacModel')
-  , SlacResults         = mongoose.model('SlacResults')
-  , SlacMutation        = mongoose.model('SlacMutation')
-  , SlacSummary         = mongoose.model('SlacSummary')
-  , SlacTrees           = mongoose.model('SlacTrees')
-  , FelResults          = mongoose.model('FelResults')
-  , FelSummary          = mongoose.model('FelSummary')
-  , MemeResults         = mongoose.model('MemeResults')
-  , MemeMappings        = mongoose.model('MemeMappings')
-  , MemeSummary         = mongoose.model('MemeSummary')
-  , RelDistributions    = mongoose.model('RelDistributions')
-  , RelResults          = mongoose.model('RelResults')
-  , RelSummary          = mongoose.model('RelSummary')
-  , EvfSamples          = mongoose.model('EvfSamples')
-  , EvfPosteriorSamples = mongoose.model('EvfPosteriorSamples')
-  , EvfPosteriors       = mongoose.model('EvfPosteriors')
-  , EvfSummary          = mongoose.model('EvfSummary')
-  , EvfRateInfoSummary  = mongoose.model('EvfRateInfoSummary');
+var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId;
 
-//TODO: status needs to be a subdocument
 var Fubar = new Schema({
   msafn               : { type                 : Schema.Types.ObjectId, ref : 'Msa' },
   status              : String,
@@ -72,26 +49,26 @@ var Fubar = new Schema({
   fubarsummary        : [FubarSummary],
   fubarsiteinfo       : [FubarSiteInfo],
   fubarmcmctrace      : [FubarMcmcTrace],
-  sbpsummary          : [SbpSummary],
-  sbptrees            : [SbpTrees],
-  slacmodel           : [SlacModel],
-  slacresults         : [SlacResults],
-  slacmutation        : [SlacMutation],
-  slacsummary         : [SlacSummary],
-  slactrees           : [SlacTrees],
-  felresults          : [FelResults],
-  felsummary          : [FelSummary],
-  memeresults         : [MemeResults],
-  mememappings        : [MemeMappings],
-  memesummary         : [MemeSummary],
   reldistributions    : [RelDistributions],
   relresults          : [RelResults],
   relsummary          : [RelSummary],
-  evfsamples          : [EvfSamples],
-  evfposteriorsamples : [EvfPosteriorSamples],
-  evfposteriors       : [EvfPosteriors],
-  evfsummary          : [EvfSummary],
-  evfrateinfosummary  : [EvfRateInfoSummary],
+  sbpsummary          : [SbpSchema.SbpSummary],
+  sbptrees            : [SbpSchema.SbpTrees],
+  slacmodel           : [SlacSchema.SlacModel],
+  slacresults         : [SlacSchema.SlacResults],
+  slacmutation        : [SlacSchema.SlacMutation],
+  slacsummary         : [SlacSchema.SlacSummary],
+  slactrees           : [SlacSchema.SlacTrees],
+  felresults          : [FelSchema.FelResults],
+  felsummary          : [FelSchema.FelSummary],
+  memeresults         : [MemeSchema.MemeResults],
+  mememappings        : [MemeSchema.MemeMappings],
+  memesummary         : [MemeSchema.MemeSummary],
+  evfsamples          : [EvfSchema.EvfSamples],
+  evfposteriorsamples : [EvfSchema.EvfPosteriorSamples],
+  evfposteriors       : [EvfSchema.EvfPosteriors],
+  evfsummary          : [EvfSchema.EvfSummary],
+  evfrateinfosummary  : [EvfSchema.EvfRateInfoSummary],
 });
 
 var FubarParameters = new Schema({
@@ -142,6 +119,32 @@ var FubarSummary = new Schema({
   col_value : String
 });
 
+var RelDistributions = new Schema({
+  _creator : { type: Schema.Types.ObjectId, ref: 'FEL' },
+  variable : String,
+  rate     : Number,
+  Value    : Number,
+  Prob     : Number 
+});
+
+var RelResults = new Schema({
+  _creator       : { type: Schema.Types.ObjectId, ref: 'FEL' },
+  codon          : Number,
+  ds             : Number,
+  dn             : Number,
+  neutral_ds     : Number,
+  logl           : Number,
+  lrt            : Number,
+  p              : Number,
+  scaleddnds     : Number
+});
+
+var RelSummary = new Schema({
+  _creator  : { type: Schema.Types.ObjectId, ref: 'FEL' },
+  col_key   : String,
+  col_value : String
+});
+
 module.exports = mongoose.model('Fubar', Fubar);
 module.exports = mongoose.model('FubarSummary', FubarSummary);
 module.exports = mongoose.model('FubarParameters', FubarParameters);
@@ -149,3 +152,6 @@ module.exports = mongoose.model('FubarMcmcTrace', FubarMcmcTrace);
 module.exports = mongoose.model('FubarSiteInfo', FubarSiteInfo);
 module.exports = mongoose.model('FubarGrid', FubarGrid);
 module.exports = mongoose.model('FubarResults', FubarResults);
+module.exports = mongoose.model('RelDistributions', RelDistributions);
+module.exports = mongoose.model('RelResults', RelResults);
+module.exports = mongoose.model('RelSummary', RelSummary);
