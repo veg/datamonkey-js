@@ -208,7 +208,24 @@ var sbp = {
   rateoption            : 1,
   rateclasses           : 2,
   rateoption2           : 1,
-  rateClasses2          : 2
+  rateclasses2          : 2
+};
+
+var parris = {
+  id                    : 4,
+  treemode              : 0,
+  root                  : "SRC1",
+  modelstring           : "010010",
+  namedmodels           : "",
+  roptions              : 4,
+  dnds                  : 1.0,
+  ambchoice             : 0,
+  prime_property_choice : 0,
+  pvalue                : 0.1,
+  rateoption            : 1,
+  rateclasses           : 2,
+  rateoption2           : 1,
+  rateclasses2          : 2
 };
 
 define("types",types)
@@ -219,3 +236,4 @@ define("modelselection",modelselection)
 define("gard",gard)
 define("evf",evf)
 define("sbp",sbp)
+define("parris",parris)
