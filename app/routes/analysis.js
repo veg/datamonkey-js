@@ -98,19 +98,20 @@ function createAnalysis(Analysis,AnalysisParameters,msa,count,postdata,res) {
 
           //TODO: If not part of the model, then grab the constant
            var params = {
-              'method'        : globals[type].id,
-              'treeMode'      : aparams.treemode || globals[type].treemode,
-              'root'          : aparams.root || globals[type].root,
-              'modelstring'   : aparams.modelstring || globals[type].modelstring,
-              'namedmodels'   : aparams.namedmodels || globals[type].namedmodels,
-              'roptions'      : aparams.roptions || globals[type].roptions,
-              'dnds'          : aparams.dnds || globals[type].dnds,
-              'ambchoice'     : aparams.ambchoice || globals[type].ambchoice,
-              'pvalue'        : aparams.pvalue || globals[type].pvalue,
-              'rateoption'    : aparams.rateoption || globals[type].rateoption,
-              'rateclasses'   : aparams.rateclasses || globals[type].rateclasses,
-              'rateoption2'   : aparams.rateoption2 || globals[type].rateoption2,
-              'rateclasses2'  : aparams.rateclasses2 || globals[type].rateclasses2
+              'method'                : globals[type].id,
+              'treeMode'              : aparams.treemode || globals[type].treemode,
+              'prime_property_choice' : aparams.prime_property_choice || globals[type].treemode,
+              'root'                  : aparams.root || globals[type].root,
+              'modelstring'           : aparams.modelstring || globals[type].modelstring,
+              'namedmodels'           : aparams.namedmodels || globals[type].namedmodels,
+              'roptions'              : aparams.roptions || globals[type].roptions,
+              'dnds'                  : aparams.dnds || globals[type].dnds,
+              'ambchoice'             : aparams.ambchoice || globals[type].ambchoice,
+              'pvalue'                : aparams.pvalue || globals[type].pvalue,
+              'rateoption'            : aparams.rateoption || globals[type].rateoption,
+              'rateclasses'           : aparams.rateclasses || globals[type].rateclasses,
+              'rateoption2'           : aparams.rateoption2 || globals[type].rateoption2,
+              'rateclasses2'          : aparams.rateclasses2 || globals[type].rateclasses2
            };
 
            // Dispatch the analysis to the perl script

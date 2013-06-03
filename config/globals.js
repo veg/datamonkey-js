@@ -275,6 +275,32 @@ var fel = {
   rateclasses2  : 2
 };
 
+var ifel = {
+  id            : 2,
+  root          : "SRC1",
+  namedmodels   : "",
+  roptions      : 4,
+  dnds          : 1.0,
+  ambchoice     : 0,
+  rateoption    : 0,
+  rateclasses   : 2,
+  rateoption2   : 1,
+  rateclasses2  : 2
+};
+
+var prime = {
+  id            : 71,
+  root          : "SRC1",
+  namedmodels   : "",
+  roptions      : 4,
+  dnds          : 1.0,
+  ambchoice     : 0,
+  rateoption    : 0,
+  rateclasses   : 2,
+  rateoption2   : 1,
+  rateclasses2  : 2
+};
+
 //var uds = {
 //  minread             : Number,
 //  scorem              : Number,
@@ -288,17 +314,19 @@ var fel = {
 //  mindrugcoverage     : Number,
 //};
 
-define("types",types)
-define("asr",asr)
-define("meme",meme)
-define("fel",fel)
-define("fubar",fubar)
-define("modelselection",modelselection)
-define("gard",gard)
-define("evf",evf)
-define("sbp",sbp)
-define("parris",parris)
-define("slac",slac)
-define("bgm",bgm)
+define("types", types)
+define("asr", asr)
+define("meme", meme)
+define("fel", fel)
+define("ifel", ifel)
+define("fubar", fubar)
+define("modelselection", modelselection)
+define("gard", gard)
+define("evf", evf)
+define("sbp", sbp)
+define("parris", parris)
+define("slac", slac)
+define("bgm", bgm)
+define("prime", prime)
 //define("uds",uds)
 
