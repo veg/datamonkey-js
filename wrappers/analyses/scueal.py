@@ -24,40 +24,47 @@
 #  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 #  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+
 import dm
+import msa
 
-#We need to define datatypes and gencodes in the database
+def scueal_analysis(msaid, sendmail=False, block=False):
+    u"""Starts a new scueal for the given sequence."""
 
-#Need to create users
-def create_msa(fn,datatype,gencode,mailaddr=""):
-    #Need to add name
-    #Sites and Sequences are to be added on the backend
-    method = "/msa"
-    fh = {"file":(fn, open(fn,'rb').read())}
-    response = dm.post(method,files=fh,datatype=datatype, genCodeId=gencode, mailaddr=mailaddr)
+    # We need to have an option of whether they want mail
+    # and/or want the call to block until finished, or neither
+    method = "/msa/{0}/scueal".format(msaid)
+    response = dm.post(method, msaid=msaid, sendmail=sendmail, block=block)
     return response
 
-def upload_scueal(fn,mailaddr=""):
-    #Need to add name
-    #Sites and Sequences are to be added on the backend
-    method = "/msa"
-    fh = {"file":(fn, open(fn,'rb').read())}
-    response = dm.post(method,files=fh,scueal=1,mailaddr=mailaddr)
+def get_scueal_status(msaid, scuealid):
+    u"""Returns current status of job"""
+
+    method = "/msa/{0}/scueal/{1}".format(msaid, scuealid)
+    response = dm.get(method, params=None)
     return response
 
-def upload_uds(fn,mailaddr=""):
-    #Need to add name
-    #Sites and Sequences are to be added on the backend
-    method = "/msa"
-    fh = {"file":(fn, open(fn,'rb').read())}
-    response = dm.post(method,files=fh,uds=1,mailaddr=mailaddr)
-    return response
+def get_scueal_results(msaid, scuealid):
+    u"""Returns results for analysis, or error if there is none"""
 
-def get_all_sequences():
-    method = "/msa"
-    response = dm.get(method,params=None)
+    method = "/msa/{0}/scueal/{1}/results".format(msaid, scuealid)
+    response = dm.get(method, params=None)
     return response
 
 if __name__ == "__main__":
-    print(create_msa('/Users/sweaver/Documents/NexusFiles/HIV_gp120.nex',0,0))
 
+    mail = 'sweaver@ucsd.edu'
+    fn   = './res/pol.nex'
+    msa = msa.create_msa(fn, 0, 0, mail)
+    #msa = {}
+    #msa["msaid"] = "upload.6192894431159.1"
+    print msa["msaid"]
+
+    #Neighbor Joining
+    sendmail    = True
+
+    #Start analysis. Receive ticket.
+    scueal = scueal_analysis(msa["msaid"], sendmail)
+
+    print msa["msaid"]
+    print scueal

@@ -24,40 +24,51 @@
 #  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 #  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+
 import dm
+import msa
 
-#We need to define datatypes and gencodes in the database
+def ga_analysis(msaid, treemode, modelstring, sendmail=False,
+                      block=False):
+    u"""Starts a new ga for the given sequence."""
 
-#Need to create users
-def create_msa(fn,datatype,gencode,mailaddr=""):
-    #Need to add name
-    #Sites and Sequences are to be added on the backend
-    method = "/msa"
-    fh = {"file":(fn, open(fn,'rb').read())}
-    response = dm.post(method,files=fh,datatype=datatype, genCodeId=gencode, mailaddr=mailaddr)
+    # We need to have an option of whether they want mail
+    # and/or want the call to block until finished, or neither
+    method = "/msa/{0}/ga".format(msaid)
+
+    response = dm.post(method, msaid=msaid, treemode=treemode,
+                       modelstring=modelstring, sendmail=sendmail, block=block)
+
     return response
 
-def upload_scueal(fn,mailaddr=""):
-    #Need to add name
-    #Sites and Sequences are to be added on the backend
-    method = "/msa"
-    fh = {"file":(fn, open(fn,'rb').read())}
-    response = dm.post(method,files=fh,scueal=1,mailaddr=mailaddr)
+def get_ga_status(msaid, gaid):
+    u"""Returns current status of job"""
+
+    method = "/msa/{0}/ga/{1}".format(msaid, gaid)
+    response = dm.get(method, params=None)
     return response
 
-def upload_uds(fn,mailaddr=""):
-    #Need to add name
-    #Sites and Sequences are to be added on the backend
-    method = "/msa"
-    fh = {"file":(fn, open(fn,'rb').read())}
-    response = dm.post(method,files=fh,uds=1,mailaddr=mailaddr)
-    return response
+def get_ga_results(msaid, gaid):
+    u"""Returns results for analysis, or error if there is none"""
 
-def get_all_sequences():
-    method = "/msa"
-    response = dm.get(method,params=None)
+    method = "/msa/{0}/ga/{1}/results".format(msaid, gaid)
+    response = dm.get(method, params=None)
     return response
 
 if __name__ == "__main__":
-    print(create_msa('/Users/sweaver/Documents/NexusFiles/HIV_gp120.nex',0,0))
+    mail = 'sweaver@ucsd.edu'
+    fn   = '../res/HIV_gp120.nex'
+    msa = msa.create_msa(fn, 0, 0, mail)
+    print msa
+
+    #Neighbor Joining
+    treemode    = 0
+    modelstring = "010010"
+    sendmail    = True
+
+    #Start analysis. Receive ticket.
+    ga = ga_analysis(msa["msaid"], treemode, modelstring, sendmail)
+
+    print msa["msaid"]
+    print ga
 

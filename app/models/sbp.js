@@ -38,8 +38,6 @@ var Schema = mongoose.Schema
 
 var Mixed = mongoose.Schema.Types.Mixed;
 
-//TODO: status needs to be a subdocument
-//TODO: Include SLAC
 var Sbp = new Schema({
   msafn       : { type : Schema.Types.ObjectId, ref : 'Msa' },
   status      : String,

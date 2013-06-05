@@ -32,22 +32,8 @@ define("Blepharisma Nuclear code",11);
 
 
 //Methods
-//define("slac",0);
-//define("fel",1);
-//define("ifel",2);
-//define("rel",3);
-//define("parris",4);
-//define("gabranch",5);
-//define("bsr",9);
-//define("meme",12);
-//define("fubar",13);
-//define("evf",42);
 //define("ga",55);
 //define("toggleanalysis",69);
-//define("bgm",6);
-//define("sbp",20);
-//define("gard",21);
-//define("asr",22);
 
 //Trees
 define("Neighbor Joining Tree",0);
@@ -90,21 +76,32 @@ define("running","running");
 define("finished","finished");
 define("cancelled","cancelled");
 
-types = {
-meme: "meme"
-}
-
 var meme = {
-  id            : 12,
-  root          : "SRC1",
-  namedmodels   : "",
-  roptions      : 4,
-  dnds          : 1.0,
-  ambchoice     : 0,
-  rateoption    : 0,
-  rateclasses   : 2,
-  rateoption2   : 1,
-  rateclasses2  : 2
+  id                    : 12,
+  root                  : "SRC1",
+  namedmodels           : "",
+  roptions              : 4,
+  dnds                  : 1.0,
+  ambchoice             : 0,
+  rateoption            : 0,
+  rateclasses           : 2,
+  rateoption2           : 1,
+  rateclasses2          : 2,
+  prime_property_choice : 0
+};
+
+var toggle = {
+  id                    : 69,
+  root                  : "SRC1",
+  namedmodels           : "",
+  roptions              : 4,
+  dnds                  : 1.0,
+  ambchoice             : 0,
+  rateoption            : 0,
+  rateclasses           : 2,
+  rateoption2           : 1,
+  rateclasses2          : 2,
+  prime_property_choice : 0
 };
 
 var fubar = {
@@ -114,12 +111,12 @@ var fubar = {
   modelstring           : "010010",
   roptions              : 4,
   dnds                  : 1.0,
-  prime_property_choice : 0,
   ambchoice             : 0,
   rateoption            : 0,
   rateclasses           : 2,
   rateoption2           : 1,
-  rateclasses2          : 2
+  rateclasses2          : 2,
+  prime_property_choice : 0
 };
 
 var asr = {
@@ -131,16 +128,33 @@ var asr = {
   roptions              : 4,
   dnds                  : 1.0,
   ambchoice             : 0,
-  prime_property_choice : 0,
   pvalue                : 0.1,
   rateoption            : 1,
   rateclasses           : 2,
   rateoption2           : 1,
-  rateclasses2          : 2
+  rateclasses2          : 2,
+  prime_property_choice : 0
 };
 
 var gabranch = {
   id                    : 5,
+  treemode              : 0,
+  root                  : "SRC1",
+  modelstring           : "010010",
+  namedmodels           : "",
+  roptions              : 4,
+  dnds                  : 1.0,
+  ambchoice             : 0,
+  prime_property_choice : 0,
+  pvalue                : 0.1,
+  rateoption            : 0,
+  rateclasses           : 2,
+  rateoption2           : 1,
+  rateclasses2          : 2,
+};
+
+var cms = {
+  id                    : 55,
   treemode              : 0,
   root                  : "SRC1",
   modelstring           : "010010",
@@ -263,42 +277,49 @@ var bgm = {
 };
 
 var fel = {
-  id            : 1,
-  root          : "SRC1",
-  namedmodels   : "",
-  roptions      : 4,
-  dnds          : 1.0,
-  ambchoice     : 0,
-  rateoption    : 0,
-  rateclasses   : 2,
-  rateoption2   : 1,
-  rateclasses2  : 2
+  id                    : 1,
+  root                  : "SRC1",
+  namedmodels           : "",
+  roptions              : 4,
+  dnds                  : 1.0,
+  ambchoice             : 0,
+  prime_property_choice : 0,
+  rateoption            : 0,
+  rateclasses           : 2,
+  rateoption2           : 1,
+  rateclasses2          : 2
 };
 
 var ifel = {
-  id            : 2,
-  root          : "SRC1",
-  namedmodels   : "",
-  roptions      : 4,
-  dnds          : 1.0,
-  ambchoice     : 0,
-  rateoption    : 0,
-  rateclasses   : 2,
-  rateoption2   : 1,
-  rateclasses2  : 2
+  id                    : 2,
+  root                  : "SRC1",
+  namedmodels           : "",
+  roptions              : 4,
+  dnds                  : 1.0,
+  ambchoice             : 0,
+  prime_property_choice : 0,
+  rateoption            : 0,
+  rateclasses           : 2,
+  rateoption2           : 1,
+  rateclasses2          : 2
 };
 
 var prime = {
-  id            : 71,
-  root          : "SRC1",
-  namedmodels   : "",
-  roptions      : 4,
-  dnds          : 1.0,
-  ambchoice     : 0,
-  rateoption    : 0,
-  rateclasses   : 2,
-  rateoption2   : 1,
-  rateclasses2  : 2
+  id                    : 71,
+  root                  : "SRC1",
+  namedmodels           : "",
+  roptions              : 4,
+  dnds                  : 1.0,
+  ambchoice             : 0,
+  prime_property_choice : 0,
+  rateoption            : 0,
+  rateclasses           : 2,
+  rateoption2           : 1,
+  rateclasses2          : 2
+};
+
+var scueal = {
+  id                    : 50,
 };
 
 //var uds = {
@@ -314,19 +335,21 @@ var prime = {
 //  mindrugcoverage     : Number,
 //};
 
-define("types", types)
-define("asr", asr)
-define("meme", meme)
-define("fel", fel)
-define("ifel", ifel)
-define("fubar", fubar)
-define("modelselection", modelselection)
-define("gard", gard)
-define("evf", evf)
-define("sbp", sbp)
-define("parris", parris)
-define("slac", slac)
-define("bgm", bgm)
-define("prime", prime)
+define("asr"                   , asr);
+define("meme"                  , meme);
+define("cms"                   , cms);
+define("fel"                   , fel);
+define("ifel"                  , ifel);
+define("fubar"                 , fubar);
+define("modelselection"        , modelselection);
+define("gard"                  , gard);
+define("evf"                   , evf);
+define("sbp"                   , sbp);
+define("parris"                , parris);
+define("slac"                  , slac);
+define("bgm"                   , bgm);
+define("prime"                 , prime);
+define("scueal"                , scueal);
+define("toggle"                , toggle);
 //define("uds",uds)
 

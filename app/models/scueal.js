@@ -33,15 +33,13 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId;
 
-//TODO: status needs to be a subdocument
-//TODO: Include SLAC
 var Scueal = new Schema({
-  msafn             : { type : Schema.Types.ObjectId, ref : 'Msa' },
-  id                : Number,
-  status            : String,
-  sendmail          : Boolean,
-  parameters        : [ScuealParameters],
-  subtyping_results : [ScuealSubtypingResults],
+  msafn                  : { type                    : Schema.Types.ObjectId, ref : 'Msa' },
+  id                     : Number,
+  status                 : String,
+  sendmail               : Boolean,
+  parameters             : [ScuealParameters],
+  scuealsubtypingresults : [ScuealSubtypingResults],
 });
 
 var ScuealParameters = new Schema({
@@ -49,7 +47,6 @@ var ScuealParameters = new Schema({
 });
 
 var ScuealSubtypingResults = new Schema({
-  _creator          : { type: Schema.Types.ObjectId, ref: 'Scueal' },
   id                : String,
   file_index        : Number,
   result            : Number,
@@ -65,4 +62,5 @@ var ScuealSubtypingResults = new Schema({
 module.exports = mongoose.model('Scueal', Scueal);
 module.exports = mongoose.model('ScuealParameters', ScuealParameters);
 module.exports = mongoose.model('ScuealSubtypingResults', ScuealSubtypingResults);
+
 

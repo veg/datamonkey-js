@@ -34,7 +34,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId;
 
-//TODO: status needs to be a subdocument
 var Meme = new Schema({
   msafn                 : { type            : Schema.Types.ObjectId, ref : 'Msa' },
   id                    : { type            : Number },

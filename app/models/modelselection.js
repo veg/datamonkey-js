@@ -37,8 +37,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId;
 
-//TODO: status needs to be a subdocument
-//TODO: Include SLAC
 var Modelselection = new Schema({
   msafn        : { type: Schema.Types.ObjectId, ref: 'Msa' },
   id           : { type : Number },

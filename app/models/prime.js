@@ -38,7 +38,6 @@ var Schema = mongoose.Schema
 
 var Mixed = mongoose.Schema.Types.Mixed;
 
-//TODO: status needs to be a subdocument
 var Prime = new Schema({
   msafn        : { type : Schema.Types.ObjectId, ref : 'Msa' },
   status       : String,
@@ -69,4 +68,5 @@ module.exports = mongoose.model('Prime', Prime);
 module.exports = mongoose.model('PrimeParameters', PrimeParameters);
 module.exports = mongoose.model('PrimeResults', PrimeResults);
 module.exports = mongoose.model('PrimeSummary', PrimeSummary);
+
 
