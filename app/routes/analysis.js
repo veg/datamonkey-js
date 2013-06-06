@@ -38,6 +38,7 @@ var mongoose = require('mongoose')
 
 //return all sequences
 exports.findAll = function(req, res) {
+
   type =  req.params.type;
 
   //I need to query find based on type
@@ -156,6 +157,8 @@ exports.invokeJob = function(req, res) {
                      res);
 
     }
+
+    debugger;
 
     //Get count of this analysis
     Analysis 

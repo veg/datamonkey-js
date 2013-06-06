@@ -1,5 +1,4 @@
-#  Datamonkey - An API for comparative analysis of sequence alignments using
-#  state-of-the-art statistical models.
+#  HyPhy - Hypothesis Testing Using Phylogenies.
 #
 #  Copyright (C) 2013
 #  Sergei L Kosakovsky Pond (spond@ucsd.edu)
@@ -24,34 +23,46 @@
 #  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 #  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import dm
+import simplejson as json
+import urllib
+import requests
 
-#We need to define datatypes and gencodes in the database
-class UploadFile:
-    def __init__(self, fn, datatype, gencode, mailaddr=""):
-        u""" Starts a new asr for the given sequence. """
-        self.id = None
-        self.create(fn, datatype, gencode, mailaddr)
+#TODO: Change prints to logger
+URL="http://datamonkey-dev:3000"
 
-    def get(self,id):
-        self.id = id
-        method = "/msa/{0}".format(id)
-        response = dm.get(method,params=None)
-        return response
+#A Generic API POST call
+def post(method, params):
+    url = URL + method
+    if "files" in params.keys():
+        files = params["files"]
+        del params["files"]
+        r = requests.post(url, files, params=params)
+    else:
+        r = requests.post(url, params=params)
+    r.raise_for_status()
+    return json.loads(r.text) if r.text else None
 
-    def create(self, fn, datatype, gencode, mailaddr):
-        #Need to add name
-        #Sites and Sequences are to be added on the backend
-        method = "/msa"
-        fh = {"file":(fn, open(fn,'rb').read())}
+def get(method, params):
+    url = URL + method
+    r = requests.get(url, params=params)
+    r.raise_for_status()
+    return json.loads(r.text) if r.text else None
 
-        params = {
-            "files"       : fh,
-            "datatype"    : datatype,
-            "genCodeId"   : gencode,
-            "mailaddr"    : mailaddr
-        }
+def put(method, **kwargs):
+    url = URL + method
+    r = requests.put(url, params=params)
+    r.raise_for_status()
+    return json.loads(r.text) if r.text else None
 
-        response = dm.post(method, params)
-        self.id = response["msaid"]
-        return response
+def delete(method, params):
+    url = URL + method
+    r = requests.put(url, params=params)
+    r.raise_for_status()
+    return json.loads(r.text) if r.text else None
+
+def _test():
+    #print post("",)
+    pass
+
+if __name__ == "__main__":
+    _test()

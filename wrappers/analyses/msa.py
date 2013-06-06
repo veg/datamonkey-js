@@ -61,3 +61,4 @@ def get_all_sequences():
 if __name__ == "__main__":
     print(create_msa('/Users/sweaver/Documents/NexusFiles/HIV_gp120.nex',0,0))
 
+

@@ -31,13 +31,13 @@ import requests
 URL="http://datamonkey-dev:3000"
 
 #A Generic API POST call
-def post(method, **kwargs):
+def post(method, params):
     url = URL + method
-    if "files" in kwargs:
-        files = kwargs.pop("files")
-        r = requests.post(url, files, params=kwargs)
+    if "files" in params.keys():
+        files = params.pop("files")
+        r = requests.post(url, files, params=params)
     else:
-        r = requests.post(url, params=kwargs)
+        r = requests.post(url, params=params)
     r.raise_for_status()
     return json.loads(r.text) if r.text else None
 

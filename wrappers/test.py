@@ -24,34 +24,30 @@
 #  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 #  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import dm
+from msa import UploadFile
+from analysis import Analysis
 
-#We need to define datatypes and gencodes in the database
-class UploadFile:
-    def __init__(self, fn, datatype, gencode, mailaddr=""):
-        u""" Starts a new asr for the given sequence. """
-        self.id = None
-        self.create(fn, datatype, gencode, mailaddr)
+types = ["asr", "bgm", "cms", "dm", "evf", "fel", "fubar", "gabranch",
+         "gard", "ifel", "meme", "modelselection", "parris", "prime",
+         "sbp", "scueal", "slac"]
 
-    def get(self,id):
-        self.id = id
-        method = "/msa/{0}".format(id)
-        response = dm.get(method,params=None)
-        return response
+mail = 'sweaver@ucsd.edu'
+fn   = './res/HIV_gp120.nex'
 
-    def create(self, fn, datatype, gencode, mailaddr):
-        #Need to add name
-        #Sites and Sequences are to be added on the backend
-        method = "/msa"
-        fh = {"file":(fn, open(fn,'rb').read())}
+msa = UploadFile(fn, 0, 0, mail)
+print msa.id
 
-        params = {
-            "files"       : fh,
-            "datatype"    : datatype,
-            "genCodeId"   : gencode,
-            "mailaddr"    : mailaddr
-        }
+#Neighbor Joining
+params = {
+    "treemode"    : 0,
+    "treeroot"    : "SRC1",
+    "namedmodel"  : "",
+    "modelstring" : "010010",
+    "roption"     : 1,
+    "rclasses"    : 2,
+    "sendmail"    : True
+}
 
-        response = dm.post(method, params)
-        self.id = response["msaid"]
-        return response
+analysis = Analysis(msa.id, "asr", params)
+print analysis
+

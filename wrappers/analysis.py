@@ -1,3 +1,4 @@
+#
 #  Datamonkey - An API for comparative analysis of sequence alignments using
 #  state-of-the-art statistical models.
 #
@@ -25,33 +26,37 @@
 #  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import dm
+import msa
 
-#We need to define datatypes and gencodes in the database
-class UploadFile:
-    def __init__(self, fn, datatype, gencode, mailaddr=""):
-        u""" Starts a new asr for the given sequence. """
+#Replace all the python files with single analysis python script
+class Analysis:
+    def __init__(self, msaid, type, params):
+        u""" Starts a new asr for the given sequence."""
+        self.type = None
         self.id = None
-        self.create(fn, datatype, gencode, mailaddr)
+        self.create(msaid, type, params)
 
-    def get(self,id):
-        self.id = id
-        method = "/msa/{0}".format(id)
-        response = dm.get(method,params=None)
-        return response
+    def create(self, msaid, type, params):
+        u""" Starts a new analysis for the given file. """
 
-    def create(self, fn, datatype, gencode, mailaddr):
-        #Need to add name
-        #Sites and Sequences are to be added on the backend
-        method = "/msa"
-        fh = {"file":(fn, open(fn,'rb').read())}
-
-        params = {
-            "files"       : fh,
-            "datatype"    : datatype,
-            "genCodeId"   : gencode,
-            "mailaddr"    : mailaddr
-        }
-
+        # We need to have an option of whether they want mail
+        # and/or want the call to block until finished, or neither
+        self.type = type
+        method = "/msa/{0}/{1}".format(msaid,self.type)
+        params["msaid"] = msaid
         response = dm.post(method, params)
-        self.id = response["msaid"]
+        self.id = response["id"]
         return response
+
+    def status(self):
+        u""" Returns current status of job """
+        method = "/msa/{0}/{1}/{2}".format(msaid, self.type, self.id)
+        response = dm.get(method, params=None)
+        return response
+
+    def results(self):
+        u""" Returns results for analysis, or error if there is none """
+        method = "/msa/{0}/asr/{1}/results".format(msaid, asrid)
+        response = dm.get(method, params=None)
+        return response
+
