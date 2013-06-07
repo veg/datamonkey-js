@@ -30,23 +30,11 @@
 
 
 //Also needs to include status, and results
-require(__dirname + '/meme');
-require(__dirname + '/fubar');
+var SlacSchema = require(__dirname + '/slac');
+var MemeSchema = require(__dirname + '/meme');
+var FubarSchema = require(__dirname + '/fubar');
 
-var mongoose = require('mongoose')
-  , SlacResults   = mongoose.model('SlacResults')
-  , SlacMutation  = mongoose.model('SlacMutation')
-  , SlacSummary   = mongoose.model('SlacSummary')
-  , SlacTrees     = mongoose.model('SlacTrees')
-  , MemeResults   = mongoose.model('MemeResults')
-  , MemeMappings  = mongoose.model('MemeMappings')
-  , MemeSummary   = mongoose.model('MemeSummary')
-  , FubarResults  = mongoose.model('FubarResults')
-  , FubarGrid     = mongoose.model('FubarGrid')
-  , FubarSummary  = mongoose.model('FubarSummary')
-  , FubarSiteInfo = mongoose.model('FubarSiteInfo')
-  , FubarMcmcTrace= mongoose.model('FubarMcmcTrace');
-  
+var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId;
@@ -55,21 +43,22 @@ var Parris = new Schema({
   msafn               : { type : Schema.Types.ObjectId, ref : 'Msa' },
   status              : String,
   sendmail            : Boolean,
+  id                  : { type : Number },
   parameters          : [ParrisParameters],
   parrisdistributions : [ParrisDistributions],
   parrissummary       : [ParrisSummary],
-  slacresults         : [SlacResults],
-  slacmutation        : [SlacMutation],
-  slacsummary         : [SlacSummary],
-  slactrees           : [SlacTrees],
-  memeresults         : [MemeResults],
-  mememappings        : [MemeMappings],
-  memesummary         : [MemeSummary],
-  fubarresults        : [FubarResults],
-  fubargrid           : [FubarGrid],
-  fubarsummary        : [FubarSummary],
-  fubarsiteinfo       : [FubarSiteInfo],
-  fubarmcmctrace      : [FubarMcmcTrace],
+  slacresults         : [SlacSchema.SlacResults],
+  slacmutation        : [SlacSchema.SlacMutation],
+  slacsummary         : [SlacSchema.SlacSummary],
+  slactrees           : [SlacSchema.SlacTrees],
+  memeresults         : [MemeSchema.MemeResults],
+  mememappings        : [MemeSchema.MemeMappings],
+  memesummary         : [MemeSchema.MemeSummary],
+  fubarresults        : [FubarSchema.FubarResults],
+  fubargrid           : [FubarSchema.FubarGrid],
+  fubarsummary        : [FubarSchema.FubarSummary],
+  fubarsiteinfo       : [FubarSchema.FubarSiteInfo],
+  fubarmcmctrace      : [FubarSchema.FubarMcmcTrace],
 });
 
 var ParrisParameters = new Schema({

@@ -53,8 +53,8 @@ var Modelselection = new Schema({
 });
 
 var ModelselectionParameters = new Schema({
-  modelstring : String,
-  treemode    : Number,
+  //modelstring : String,
+  //treemode    : Number,
 });
 
 module.exports = mongoose.model('Modelselection', Modelselection);

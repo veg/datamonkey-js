@@ -343,6 +343,7 @@ define("ifel"                  , ifel);
 define("fubar"                 , fubar);
 define("modelselection"        , modelselection);
 define("gard"                  , gard);
+define("gabranch"              , gabranch);
 define("evf"                   , evf);
 define("sbp"                   , sbp);
 define("parris"                , parris);

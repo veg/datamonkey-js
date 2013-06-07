@@ -53,8 +53,8 @@ var Sbp = new Schema({
 });
 
 var SbpParameters = new Schema({
-  ratematrix  : Mixed,  //Protein
-  frequencies : Number, //Protein
+  //ratematrix  : Mixed,  //Protein
+  //frequencies : Number, //Protein
   rateoption  : Number,
   rateclasses : Number,
   modelstring : String  //Non-protein

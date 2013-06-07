@@ -42,6 +42,7 @@ var Schema = mongoose.Schema
 var Fubar = new Schema({
   msafn               : { type                 : Schema.Types.ObjectId, ref : 'Msa' },
   status              : String,
+  id                  : Number,
   sendmail            : Boolean,
   parameters          : [FubarParameters],
   fubarresults        : [FubarResults],

@@ -47,10 +47,10 @@ var Bgm = new Schema({
 });
 
 var BgmParameters = new Schema({
-  _creator    : { type  : Schema.Types.ObjectId, ref : 'Bgm' },
+  //_creator    : { type  : Schema.Types.ObjectId, ref : 'Bgm' },
   modelstring : String,
-  treemode    : Number,
-  roptions    : Number,
+  //treemode    : Number,
+  //roptions    : Number,
   pvalue      : Number,
   dnds        : Number,
   ambchoice   : Number

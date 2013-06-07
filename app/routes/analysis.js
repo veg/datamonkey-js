@@ -72,13 +72,32 @@ function createAnalysis(Analysis,AnalysisParameters,msa,count,postdata,res) {
       console.log(err);
     }
 
-    //Create Analysis Parameters from postdata
-    //TODO: Verify parameters before committing them
-    var parameters = new AnalysisParameters({
-      modelstring : postdata.modelstring,
-      treemode    : postdata.treemode,
-      pvalue      : postdata.pvalue,
-    });
+    // Create Analysis Parameters from postdata
+    // Get parameters from analysis
+    // Check to make sure required parameters are posted
+    var parameters = new AnalysisParameters;
+
+    // if there are missing parameters return an error
+    // otherwise, continue
+
+    //Verify parameters (TODO: Move to schema model)
+    var missing_params = new Array();
+
+    for (var parameter in parameters.schema.tree) {
+      if (parameter != "_id" && parameter != "id") { 
+        if (parameter in postdata) {
+         parameters[parameter] = postdata[parameter] ;
+        }
+        else {
+          missing_params.push(parameter);
+        }
+      }
+    }
+
+    if (missing_params.length > 0){
+      res.send({"Error Missing Param": missing_params});
+      return;
+    }
 
     //Save Meme Parameters to parent Meme object
     parameters.save(function (err, aparams) {
@@ -141,6 +160,7 @@ exports.invokeJob = function(req, res) {
   Msa.findOne({msaid : msaid}, function(err, msa) {
 
     var callback = function(err,result) {
+      debugger;
       var highest_countid = 1;
       var num = 0;
 
@@ -149,16 +169,14 @@ exports.invokeJob = function(req, res) {
       }
 
       if(result != '' && result != null) {
-        num = result.countid;
-        highest_countid = result.countid + 1;
+        num = result.id;
+        highest_countid = result.id + 1;
       }
 
       createAnalysis(Analysis,AnalysisParameters,msa,highest_countid,postdata,
                      res);
 
     }
-
-    debugger;
 
     //Get count of this analysis
     Analysis 
@@ -249,6 +267,5 @@ exports.parseResults = function(req, res) {
       }
     });
   });
-
 }
 

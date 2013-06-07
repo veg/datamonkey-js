@@ -49,14 +49,14 @@ var Asr = new Schema({
 });
 
 var AsrParameters = new Schema({
-  _creator : { type: Schema.Types.ObjectId, ref: 'Asr' },
-  ratematrix  : Mixed,  //For protein data
-  frequencies : Number, //For protein data
+  //_creator : { type: Schema.Types.ObjectId, ref: 'Asr' },
+  //ratematrix  : Mixed,  //For protein data
+  //frequencies : Number, //For protein data
   modelstring : String, //For non-protein data
   rateoption  : Number, //Required 
   rateclasses : Number, //Required
   treemode    : Number,
-  root        : Number
+  //root        : Number
 });
 
 var AsrResiduesTable = new Schema({

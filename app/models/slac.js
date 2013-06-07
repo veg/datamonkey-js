@@ -35,6 +35,7 @@ var Schema = mongoose.Schema
 
 var Slac = new Schema({
   msafn        : { type : Schema.Types.ObjectId, ref : 'Msa' },
+  id           : { type : Number },
   status       : String,
   sendmail     : Boolean,
   parameters   : [SlacParameters],
@@ -46,12 +47,10 @@ var Slac = new Schema({
 });
 
 var SlacParameters = new Schema({
-  roptions    : Number,
   pvalue      : Number,
   dnds        : Number,
   ambchoice   : Number,
   modelstring : String,
-  treeMode    : Number
 });
 
 
