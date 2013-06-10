@@ -32,7 +32,7 @@ types = ["asr", "bgm", "cms", "dm", "evf", "fel", "fubar", "gabranch",
          "sbp", "scueal", "slac"]
 
 mail = 'sweaver@ucsd.edu'
-fn   = './res/HIV_gp120.nex'
+fn   = '/home/sweaver/datamonkey-js/wrappers/res/HIV_gp120.nex'
 
 msa = UploadFile(fn, 0, 0, mail)
 
@@ -149,46 +149,45 @@ slac_params = {
     "sendmail"    : True
 }
 
-asr_analysis = Analysis(msa.id, "asr", asr_params)
-print asr_analysis.response
+#asr_analysis = Analysis(msa.id, "asr", asr_params)
+#print asr_analysis.response
 
-bgm_analysis = Analysis(msa.id, "bgm", bgm_params)
-print bgm_analysis.response
+#bgm_analysis = Analysis(msa.id, "bgm", bgm_params)
+#print bgm_analysis.response
 
-cms_analysis = Analysis(msa.id, "cms", cms_params)
-print cms_analysis.response
+#cms_analysis = Analysis(msa.id, "cms", cms_params)
+#print cms_analysis.response
 
-evf_analysis = Analysis(msa.id, "evf", evf_params)
-print evf_analysis.response
+#evf_analysis = Analysis(msa.id, "evf", evf_params)
+#print evf_analysis.response
 
-fel_analysis = Analysis(msa.id, "fel", fel_params)
-print fel_analysis.response
+#fel_analysis = Analysis(msa.id, "fel", fel_params)
+#print fel_analysis.response
 
-fubar_analysis = Analysis(msa.id, "fubar", fubar_params)
-print fubar_analysis.response
+#fubar_analysis = Analysis(msa.id, "fubar", fubar_params)
+#print fubar_analysis.response
 
-gabranch_analysis = Analysis(msa.id, "gabranch", gabranch_params)
-print gabranch_analysis.response
+#gabranch_analysis = Analysis(msa.id, "gabranch", gabranch_params)
+#print gabranch_analysis.response
 
-ifel_analysis = Analysis(msa.id, "ifel", ifel_params)
-print ifel_analysis.response
+#ifel_analysis = Analysis(msa.id, "ifel", ifel_params)
+#print ifel_analysis.response
 
 meme_analysis = Analysis(msa.id, "meme", meme_params)
 print meme_analysis.response
 
-modelselection_analysis = Analysis(msa.id, "modelselection")
-print modelselection_analysis.response
+#modelselection_analysis = Analysis(msa.id, "modelselection")
+#print modelselection_analysis.response
 
-parris_analysis = Analysis(msa.id, "parris", parris_params)
-print parris_analysis.response
+#parris_analysis = Analysis(msa.id, "parris", parris_params)
+#print parris_analysis.response
 
-prime_analysis = Analysis(msa.id, "prime", prime_params)
-print prime_analysis.response
+#prime_analysis = Analysis(msa.id, "prime", prime_params)
+#print prime_analysis.response
 
-sbp_analysis = Analysis(msa.id, "sbp", sbp_params)
-print sbp_analysis.response
+#sbp_analysis = Analysis(msa.id, "sbp", sbp_params)
+#print sbp_analysis.response
 
-slac_analysis = Analysis(msa.id, "slac", slac_params)
-print slac_analysis.response
-
+#slac_analysis = Analysis(msa.id, "slac", slac_params)
+#print slac_analysis.response
 

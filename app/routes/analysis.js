@@ -245,8 +245,21 @@ exports.getResults = function(req, res) {
 
 //Dev purposes only
 exports.sendMail = function(req, res) {
-  //mailer.send();  
-  //res.send({response:'Mail Sent!'});
+  type =  req.params.type;
+
+  var Analysis = mongoose.model(type.capitalize());
+
+  Msa.findOne({msaid : req.params.msaid}, function(err, msa) {
+    Analysis.findOne({msafn : msa._id}, function(err, item) {
+      if (err)
+        res.send('There is no sequence with id of ' + req.params.analysisid);
+      else {
+        mailer.send(item, msa);  
+        res.send({response:'Mail Sent!'});
+      }
+    });
+  });
+
 }
 
 //Dev purposes only
