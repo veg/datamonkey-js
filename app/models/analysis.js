@@ -4,11 +4,12 @@ var mongoose = require('mongoose'),
 var Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId;
 
-var Analysis = new Schema({
+var AnalysisSchema = new Schema({
   msafn               : { type : Schema.Types.ObjectId, ref : 'Msa' },
   id                  : { type : Number },
+  type                : String,
   status              : String,
   sendmail            : Boolean,
 });
 
-module.exports = Analysis;
+module.exports = AnalysisSchema;

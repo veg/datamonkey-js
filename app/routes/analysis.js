@@ -36,29 +36,16 @@ var fs          = require('fs');
 var mongoose = require('mongoose')
   , Msa = mongoose.model('Msa');
 
-//return all sequences
-exports.findAll = function(req, res) {
 
-  type =  req.params.type;
-
-  //I need to query find based on type
-  var Analysis = mongoose.model(type.capitalize());
-
-  Analysis.find({},function(err, items) {
-    if (err)
-      res.send('There is no sequence with id of ' + id);
-    else
-      res.send(items);
-  });
-
-};
-
-function createAnalysis(Analysis,AnalysisParameters,msa,count,postdata,res) {
+//TODO: Put in Model
+function createAnalysis(Analysis, AnalysisParameters, msa, count, type, 
+                        postdata, res) {
 
   var an = new Analysis ({
     msafn  : msa._id,
+    id     : count,
+    type   : type,
     status : globals.queue,
-    id : count,
   });
 
   //TODO: Change to verify function
@@ -80,7 +67,7 @@ function createAnalysis(Analysis,AnalysisParameters,msa,count,postdata,res) {
     // if there are missing parameters return an error
     // otherwise, continue
 
-    //Verify parameters (TODO: Move to schema model)
+    //Verify parameters
     var missing_params = new Array();
 
     for (var parameter in parameters.schema.tree) {
@@ -99,7 +86,7 @@ function createAnalysis(Analysis,AnalysisParameters,msa,count,postdata,res) {
       return;
     }
 
-    //Save Meme Parameters to parent Meme object
+    //Save Parameters to parent object
     parameters.save(function (err, aparams) {
       if (err) {
         console.log(err);
@@ -116,7 +103,7 @@ function createAnalysis(Analysis,AnalysisParameters,msa,count,postdata,res) {
           an.parameters.push(parameters);
           an.save();
 
-          //TODO: If not part of the model, then grab the constant
+          // If not part of the model, then grab the constant
            var params = {
               'method'                : globals[type].id,
               'treeMode'              : aparams.treemode || globals[type].treemode,
@@ -137,7 +124,7 @@ function createAnalysis(Analysis,AnalysisParameters,msa,count,postdata,res) {
            // Dispatch the analysis to the perl script
            dpl.dispatchAnalysis(an,type,msa,params,res);
 
-           // TODO: We should return the status id ticket here instead of
+           // We should return the status id ticket here instead of
            // inside dispatchAnalysis
          }
       }
@@ -145,6 +132,23 @@ function createAnalysis(Analysis,AnalysisParameters,msa,count,postdata,res) {
     });
   });
 }
+
+//return all sequences
+exports.findAll = function(req, res) {
+
+  type =  req.params.type;
+
+  //I need to query find based on type
+  var Analysis = mongoose.model(type.capitalize());
+
+  Analysis.find({},function(err, items) {
+    if (err)
+      res.send('There is no sequence with id of ' + id);
+    else
+      res.send(items);
+  });
+
+};
 
 exports.invokeJob = function(req, res) {
 
@@ -160,9 +164,8 @@ exports.invokeJob = function(req, res) {
   Msa.findOne({msaid : msaid}, function(err, msa) {
 
     var callback = function(err,result) {
-      debugger;
-      var highest_countid = 1;
       var num = 0;
+      var highest_countid = 1;
 
       if(err) {
         console.log(err);
@@ -173,8 +176,8 @@ exports.invokeJob = function(req, res) {
         highest_countid = result.id + 1;
       }
 
-      createAnalysis(Analysis,AnalysisParameters,msa,highest_countid,postdata,
-                     res);
+      createAnalysis(Analysis, AnalysisParameters, msa, highest_countid, type,
+                     postdata, res);
 
     }
 
