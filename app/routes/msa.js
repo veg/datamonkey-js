@@ -29,6 +29,7 @@
 
 
 var dpl = require('../../lib/datamonkey-pl.js');
+var error       = require('../../lib/error.js');
 
 var mongoose = require('mongoose')
   , Msa = mongoose.model('Msa');
@@ -38,13 +39,13 @@ exports.findById = function(req, res) {
 
   var id = req.params.id;
 
-  console.log('Retrieving sequence: ' + id);
-
   Msa.findOne({msaid : id}, function(err, items) {
-    if (err)
-      res.send('There is no sequence with id of ' + id);
-    else
+    if (err) {
+      res.send(error.errorResponse('There is no sequence with id of ' + id));
+    }
+    else {
       res.send(items);
+    }
   });
 
 };
@@ -52,9 +53,10 @@ exports.findById = function(req, res) {
 //return all sequences
 exports.findAll = function(req, res) {
 
- Msa.find({},function(err, items) {
-   if (err)
-     res.send('There is no sequence with id of ' + id);
+  Msa.find({},function(err, items) {
+    if (err) {
+      res.send(error.errorResponse('There is no sequence with id of ' + id));
+    }
     else
      res.send(items);
    });
@@ -78,7 +80,7 @@ exports.uploadMsa = function(req, res) {
   sequence_alignment.save(function (err,result) {
 
     if (err) {
-      res.send({'error':err});
+      res.send(errorResponse(err));
     } 
 
     else {
@@ -92,21 +94,15 @@ exports.uploadMsa = function(req, res) {
 
 //update a sequence
 exports.updateMsa = function(req, res) {
-
   var id = req.params.id;
   var postdata = req.body;
-
-  console.log('Updating sequence: ' + id);
-  console.log(JSON.stringify(sequence));
 
   //Should check the postdata before
   Msa.update(postdata, function (err, result) {
     if (err) {
-      res.send({'error':'An error has occurred'});
+      res.send(error.errorResponse(err));
     } 
     else {
-      //TODO: Only should log when debugging
-      //console.log('Success: ' + JSON.stringify(result));
       res.send(postdata);
     }
   });
@@ -116,19 +112,17 @@ exports.updateMsa = function(req, res) {
 exports.deleteMsa = function(req, res) {
 
   var id = req.params.id;
-  console.log('Deleting sequence: ' + id);
 
   Msa.remove({ msaid: new BSON.ObjectID(id) }, function(err) {
     if (err) {
-      res.send({'error':'An error has occurred - ' + err});
+      res.send(error.errorResponse(err));
     }
 
     else {
-      console.log('' + result + ' document(s) deleted');
       res.send(req.body);
      }
 
   });
-  
+
 }
 

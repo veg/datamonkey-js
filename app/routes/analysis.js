@@ -28,6 +28,7 @@
 var querystring = require('querystring');
 var dpl         = require('../../lib/datamonkey-pl.js');
 var dme         = require('../../lib/datamonkey-event.js');
+var error       = require('../../lib/error.js');
 var globals     = require('../../config/globals.js');
 var mailer      = require('../../lib/mailer.js');
 var helpers     = require('../../lib/helpers.js');
@@ -82,7 +83,7 @@ function createAnalysis(Analysis, AnalysisParameters, msa, count, type,
     }
 
     if (missing_params.length > 0){
-      res.send({"Error Missing Param": missing_params});
+      res.send(error.errorResponse("Missing Parameters: " + missing_params));
       return;
     }
 
@@ -97,7 +98,7 @@ function createAnalysis(Analysis, AnalysisParameters, msa, count, type,
         // Open Multiple Sequence Alignment File to get all necessary parameters
         // for dispatching.
         if (err)
-          res.send('There is no sequence with id of ' + id);
+          res.send(error.errorResponse('There is no sequence with id of ' + id));
 
          else {
           an.parameters.push(parameters);
@@ -122,13 +123,9 @@ function createAnalysis(Analysis, AnalysisParameters, msa, count, type,
            };
 
            // Dispatch the analysis to the perl script
-           dpl.dispatchAnalysis(an,type,msa,params,res);
-
-           // We should return the status id ticket here instead of
-           // inside dispatchAnalysis
+           dpl.dispatchAnalysis(an, type, msa, params, res);
          }
       }
-
     });
   });
 }
@@ -143,7 +140,7 @@ exports.findAll = function(req, res) {
 
   Analysis.find({},function(err, items) {
     if (err)
-      res.send('There is no sequence with id of ' + id);
+      res.send(error.errorResponse('There is no sequence with id of ' + id));
     else
       res.send(items);
   });
@@ -168,7 +165,7 @@ exports.invokeJob = function(req, res) {
       var highest_countid = 1;
 
       if(err) {
-        console.log(err);
+        res.send(error.errorResponse(err));
       }
 
       if(result != '' && result != null) {
@@ -207,7 +204,8 @@ exports.queryStatus = function(req, res) {
   Msa.findOne({msaid : req.params.msaid}, function(err, msa) {
     Analysis.findOne({msafn : msa._id}, function(err, item) {
       if (err)
-        res.send('There is no sequence with id of ' + req.params.analysisid);
+        res.send(error.errorResponse('There is no sequence with id of ' 
+                 + req.params.analysisid));
       else {
         //This should eventually be its own polling task
         res.send({item:item});
@@ -227,7 +225,7 @@ exports.getResults = function(req, res) {
   Analysis.findOne({id : req.params.analysisid}, function(err, item) {
 
     if (err) {
-      res.send('There is no sequence with id of ' + id);
+      res.send(error.errorResponse('There is no sequence with id of ' + id));
     }
 
     else
@@ -238,10 +236,13 @@ exports.getResults = function(req, res) {
           res.send(item);
         }
         else
-          res.send('Something wrong happened with this job');
+          res.send(error.errorResponse(
+                   'Something wrong happened with this job'));
       }
     }
-    res.send('Job still running!');
+
+    res.send(error.errorResponse('Job still running!'));
+
   });
 
 }
@@ -255,7 +256,8 @@ exports.sendMail = function(req, res) {
   Msa.findOne({msaid : req.params.msaid}, function(err, msa) {
     Analysis.findOne({msafn : msa._id}, function(err, item) {
       if (err)
-        res.send('There is no sequence with id of ' + req.params.analysisid);
+        res.send(error.errorResponse('There is no sequence with id of ' 
+                 + req.params.analysisid));
       else {
         mailer.send(item, msa);  
         res.send({response:'Mail Sent!'});
