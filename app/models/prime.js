@@ -31,18 +31,17 @@
 var SlacScheme = require(__dirname + '/slac');
 var GardScheme = require(__dirname + '/gard');
 
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+    extend = require('mongoose-schema-extend');
+
+var AnalysisSchema = require(__dirname + '/analysis');
   
 var Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId;
 
 var Mixed = mongoose.Schema.Types.Mixed;
 
-var Prime = new Schema({
-  msafn        : { type : Schema.Types.ObjectId, ref : 'Msa' },
-  status       : String,
-  sendmail     : Boolean,
-  id           : { type : Number },
+var Prime = AnalysisSchema.extend({
   parameters   : [PrimeParameters],
   primeresults : [PrimeResults],
   primesummary : [PrimeSummary],

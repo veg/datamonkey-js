@@ -34,16 +34,15 @@ var SlacSchema = require(__dirname + '/slac');
 var MemeSchema = require(__dirname + '/meme');
 var FubarSchema = require(__dirname + '/fubar');
 
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+    extend = require('mongoose-schema-extend');
+
+var AnalysisSchema = require(__dirname + '/analysis');
 
 var Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId;
 
-var Parris = new Schema({
-  msafn               : { type : Schema.Types.ObjectId, ref : 'Msa' },
-  status              : String,
-  sendmail            : Boolean,
-  id                  : { type : Number },
+var Parris = AnalysisSchema.extend({
   parameters          : [ParrisParameters],
   parrisdistributions : [ParrisDistributions],
   parrissummary       : [ParrisSummary],

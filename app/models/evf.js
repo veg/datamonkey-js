@@ -29,16 +29,15 @@
 
 
 //Also needs to include status, and results
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+    extend = require('mongoose-schema-extend');
+
+var AnalysisSchema = require(__dirname + '/analysis');
 
 var Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId;
 
-var Evf = new Schema({
-  msafn               : { type : Schema.Types.ObjectId, ref : 'Msa' },
-  id                  : { type : Number },
-  status              : String,
-  sendmail            : Boolean,
+var Evf = AnalysisSchema.extend({
   parameters          : [EvfParameters],
   evfsamples          : [EvfSamples],
   evfposteriorsamples : [EvfPosteriorSamples],

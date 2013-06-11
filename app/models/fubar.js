@@ -34,16 +34,16 @@ FelSchema  = require(__dirname + '/fel');
 MemeSchema = require(__dirname + '/meme');
 EvfSchema  = require(__dirname + '/evf');
 
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+    extend = require('mongoose-schema-extend');
+
+
+var AnalysisSchema = require(__dirname + '/analysis');
 
 var Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId;
 
-var Fubar = new Schema({
-  msafn               : { type                 : Schema.Types.ObjectId, ref : 'Msa' },
-  status              : String,
-  id                  : Number,
-  sendmail            : Boolean,
+var Fubar = AnalysisSchema.extend({
   parameters          : [FubarParameters],
   fubarresults        : [FubarResults],
   fubargrid           : [FubarGrid],

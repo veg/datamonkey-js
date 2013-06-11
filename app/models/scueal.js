@@ -28,16 +28,15 @@
 */
 
 
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+    extend = require('mongoose-schema-extend');
+
+var AnalysisSchema = require(__dirname + '/analysis');
 
 var Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId;
 
-var Scueal = new Schema({
-  msafn                  : { type                    : Schema.Types.ObjectId, ref : 'Msa' },
-  id                     : Number,
-  status                 : String,
-  sendmail               : Boolean,
+var Scueal = AnalysisSchema.extend({
   parameters             : [ScuealParameters],
   scuealsubtypingresults : [ScuealSubtypingResults],
 });

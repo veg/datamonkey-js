@@ -28,17 +28,17 @@
 */
 
 
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+    extend = require('mongoose-schema-extend');
+
+var AnalysisSchema = require(__dirname + '/analysis');
 
 var Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId;
 
 var Mixed = mongoose.Schema.Types.Mixed;
 
-var Uds = new Schema({
-  msafn               : { type : Schema.Types.ObjectId, ref : 'Msa' },
-  status              : String,
-  sendmail            : Boolean,
+var Uds = AnalysisSchema.extend({
   parameters          : [UdsParameters],
   aa_alignment        : [UdsAaAlignment],
   accessory_mutations : [UdsAccessoryMutations],

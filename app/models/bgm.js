@@ -28,18 +28,17 @@
 */
 
 //Also needs to include status, and results
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+    extend = require('mongoose-schema-extend');
+
+var AnalysisSchema = require(__dirname + '/analysis');
 
 var SlacSchema = require(__dirname + '/slac');
 
 var Schema = mongoose.Schema
     ,ObjectId = Schema.ObjectId;
 
-var Bgm = new Schema({
-  msafn               : { type : Schema.Types.ObjectId, ref : 'Msa' },
-  id                  : { type : Number },
-  status              : String,
-  sendmail            : Boolean,
+var Bgm = AnalysisSchema.extend({
   parameters          : [BgmParameters],
   bgmmodel            : [BgmModel],
   slacmutation        : [SlacSchema.SlacMutation],

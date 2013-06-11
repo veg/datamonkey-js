@@ -9,6 +9,7 @@
         "email-templates" : "0.0.*"
         "mongodb"   : "1.*"
         "mongoose"  : "3.*"
+        "mongoose-schema-extend" : "1.*"
         "http"      : "*"
         "mocha"     : "*"
         "nodemailer": "0.*.*"
