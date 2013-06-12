@@ -35,13 +35,13 @@ MemeSchema = require(__dirname + '/meme');
 EvfSchema  = require(__dirname + '/evf');
 
 var mongoose = require('mongoose'),
-    extend = require('mongoose-schema-extend');
+  extend = require('mongoose-schema-extend');
 
 
 var AnalysisSchema = require(__dirname + '/analysis');
 
-var Schema = mongoose.Schema
-    ,ObjectId = Schema.ObjectId;
+var Schema = mongoose.Schema,
+  ObjectId = Schema.ObjectId;
 
 var Fubar = AnalysisSchema.extend({
   parameters          : [FubarParameters],

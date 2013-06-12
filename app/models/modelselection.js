@@ -33,12 +33,12 @@ var SlacSchema = require(__dirname + '/slac');
 var FelSchema  = require(__dirname + '/fel');
 
 var mongoose = require('mongoose'),
-    extend = require('mongoose-schema-extend');
+  extend = require('mongoose-schema-extend');
 
 var AnalysisSchema = require(__dirname + '/analysis');
 
-var Schema = mongoose.Schema
-    ,ObjectId = Schema.ObjectId;
+var Schema = mongoose.Schema,
+  ObjectId = Schema.ObjectId;
 
 var Modelselection = AnalysisSchema.extend({
   parameters   : [ModelselectionParameters],

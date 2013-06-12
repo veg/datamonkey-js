@@ -28,22 +28,21 @@
 */
 
 
-var dpl = require('../../lib/datamonkey-pl.js');
-var error       = require('../../lib/error.js');
+var dpl   = require('../../lib/datamonkey-pl.js');
+var error = require('../../lib/error.js');
 
-var mongoose = require('mongoose')
-  , Msa = mongoose.model('Msa');
+var mongoose = require('mongoose'),
+    Msa = mongoose.model('Msa');
 
 //find sequence by id
-exports.findById = function(req, res) {
+exports.findById = function (req, res) {
 
   var id = req.params.id;
 
-  Msa.findOne({msaid : id}, function(err, items) {
+  Msa.findOne({msaid : id}, function (err, items) {
     if (err) {
       res.send(error.errorResponse('There is no sequence with id of ' + id));
-    }
-    else {
+    } else {
       res.send(items);
     }
   });
@@ -51,43 +50,42 @@ exports.findById = function(req, res) {
 };
 
 //return all sequences
-exports.findAll = function(req, res) {
+exports.findAll = function (req, res) {
 
-  Msa.find({},function(err, items) {
+  Msa.find({}, function (err, items) {
+
     if (err) {
       res.send(error.errorResponse('There is no sequence with id of ' + id));
-    }
-    else
+    } else {
      res.send(items);
-   });
+    }
+
+  });
 
 };
 
 //upload a sequence
-exports.uploadMsa = function(req, res) {
+exports.uploadMsa = function (req, res) {
 
   postdata = req.query;
   postdata.contents = req.body["file"][1];
 
   //TODO: Clean postdata
   var sequence_alignment = new Msa({
-    contents    : postdata.contents,  
+    contents    : postdata.contents,
     datatype    : postdata.datatype,
     gencodeid   : postdata.genCodeId,
     mailaddr    : postdata.mailaddr,
   });
 
-  sequence_alignment.save(function (err,result) {
+  sequence_alignment.save(function (err, result) {
 
     if (err) {
-      res.send(errorResponse(err));
-    } 
-
-    else {
+      res.send(error.errorResponse(err));
+    } else {
       //Upload to datamonkey
-      dpl.uploadToPerl(result,res);
+      dpl.uploadToPerl(result, res);
     }
-
   });
 
 }
@@ -101,8 +99,7 @@ exports.updateMsa = function(req, res) {
   Msa.update(postdata, function (err, result) {
     if (err) {
       res.send(error.errorResponse(err));
-    } 
-    else {
+    } else {
       res.send(postdata);
     }
   });

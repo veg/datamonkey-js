@@ -29,12 +29,12 @@
 
 //Also needs to include status, and results
 var mongoose = require('mongoose'),
-    extend = require('mongoose-schema-extend');
+  extend = require('mongoose-schema-extend');
 
 var AnalysisSchema = require(__dirname + '/analysis');
 
-var Schema = mongoose.Schema
-    ,ObjectId = Schema.ObjectId;
+var Schema = mongoose.Schema,
+  ObjectId = Schema.ObjectId;
 
 var Mixed = mongoose.Schema.Types.Mixed;
 

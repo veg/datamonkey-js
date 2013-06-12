@@ -34,43 +34,37 @@ var mailer      = require('../../lib/mailer.js');
 var helpers     = require('../../lib/helpers.js');
 var fs          = require('fs');
 
-var mongoose = require('mongoose')
-  , Msa = mongoose.model('Msa');
+var mongoose = require('mongoose'),
+    Msa = mongoose.model('Msa');
 
 
-//TODO: Put in Model
-function createAnalysis(Analysis, AnalysisParameters, msa, count, type, 
+// TODO: Put in Model
+function createAnalysis(Analysis, AnalysisParameters, msa, count, type,
                         postdata, res) {
 
-  var an = new Analysis ({
+  var an = new Analysis({
     msafn  : msa._id,
     id     : count,
     type   : type,
     status : globals.queue,
   });
 
-  //TODO: Change to verify function
+  // TODO: Change to verify function
   if (postdata.sendmail !== undefined) {
-    analysis.sendmail = postdata.sendmail;
+    an.sendmail = postdata.sendmail;
   }
 
-  an.save(function (err,result) {
+  an.save(function (err, result) {
 
     if (err) {
       console.log(err);
     }
 
     // Create Analysis Parameters from postdata
-    // Get parameters from analysis
-    // Check to make sure required parameters are posted
-    var parameters = new AnalysisParameters;
+    var parameters = new AnalysisParameters(),
+      missing_params = [];
 
-    // if there are missing parameters return an error
-    // otherwise, continue
-
-    //Verify parameters
-    var missing_params = new Array();
-
+    // Verify parameters
     for (var parameter in parameters.schema.tree) {
       if (parameter != "_id" && parameter != "id") { 
         if (parameter in postdata) {
@@ -212,6 +206,7 @@ exports.queryStatus = function(req, res) {
       }
     });
   });
+
 }
 
 exports.getResults = function(req, res) {

@@ -1,8 +1,8 @@
 var mongoose = require('mongoose'),
-    extend = require('mongoose-schema-extend');
+  extend = require('mongoose-schema-extend');
 
-var Schema = mongoose.Schema
-    ,ObjectId = Schema.ObjectId;
+var Schema = mongoose.Schema,
+  ObjectId = Schema.ObjectId;
 
 var AnalysisSchema = new Schema({
   msafn               : { type : Schema.Types.ObjectId, ref : 'Msa' },
@@ -10,6 +10,7 @@ var AnalysisSchema = new Schema({
   type                : String,
   status              : String,
   sendmail            : Boolean,
+  timestamp           : { type: String, default: (new Date()).getTime() }
 });
 
 module.exports = AnalysisSchema;

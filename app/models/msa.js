@@ -30,11 +30,11 @@
 
 var mongoose = require('mongoose');
 
-var Schema = mongoose.Schema
-    ,ObjectId = Schema.ObjectId;
+var Schema = mongoose.Schema,
+  ObjectId = Schema.ObjectId;
 
 var Msa = new Schema({
-    contents    : {type: String, require: true},  
+    contents    : {type: String, require: true},
     msaid       : {type: String},
     datatype    : Number,
     partitions  : Number,
