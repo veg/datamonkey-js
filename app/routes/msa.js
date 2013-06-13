@@ -113,13 +113,9 @@ exports.deleteMsa = function(req, res) {
   Msa.remove({ msaid: new BSON.ObjectID(id) }, function(err) {
     if (err) {
       res.send(error.errorResponse(err));
-    }
-
-    else {
+    } else {
       res.send(req.body);
      }
-
   });
-
 }
 

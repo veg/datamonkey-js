@@ -71,8 +71,8 @@ analysis = require('./app/routes/analysis');
 //app.get('/msa/:msaid/:type', analysis.findAll);
 app.get('/:type', analysis.findAll);
 app.post('/msa/:msaid/:type', analysis.invokeJob);
-app.get('/msa/:msaid/:type/:analysisid', analysis.queryStatus);
-app.get('/msa/:msaid/:type/:analysisid/results', analysis.getResults);
+app.get('/msa/:msaid/:type/:analysisid', analysis.getResults);
+app.get('/msa/:msaid/:type/:analysisid/status', analysis.queryStatus);
 app.get('/msa/:msaid/:type/:analysisid/mail', analysis.sendMail);
 app.get('/msa/:msaid/:type/:analysisid/parseresults', analysis.parseResults);
 

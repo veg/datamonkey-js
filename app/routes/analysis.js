@@ -44,6 +44,7 @@ function createAnalysis(Analysis, AnalysisParameters, msa, count, type,
 
   var an = new Analysis({
     msafn  : msa._id,
+    msaid  : msa.msaid,
     id     : count,
     type   : type,
     status : globals.queue,
@@ -91,10 +92,10 @@ function createAnalysis(Analysis, AnalysisParameters, msa, count, type,
 
         // Open Multiple Sequence Alignment File to get all necessary parameters
         // for dispatching.
-        if (err)
-          res.send(error.errorResponse('There is no sequence with id of ' + id));
-
-         else {
+        if (err) {
+          res.send(error.errorResponse('There is no sequence with id of '
+                                       + id));
+        } else {
           an.parameters.push(parameters);
           an.save();
 
@@ -127,7 +128,7 @@ function createAnalysis(Analysis, AnalysisParameters, msa, count, type,
 //return all sequences
 exports.findAll = function(req, res) {
 
-  type =  req.params.type;
+  var type =  req.params.type;
 
   //I need to query find based on type
   var Analysis = mongoose.model(type.capitalize());
@@ -191,8 +192,7 @@ exports.queryStatus = function(req, res) {
   // Find the analysis
   // Return its status
 
-  type =  req.params.type;
-
+  var type =  req.params.type;
   var Analysis = mongoose.model(type.capitalize());
   
   Msa.findOne({msaid : req.params.msaid}, function(err, msa) {
@@ -202,7 +202,7 @@ exports.queryStatus = function(req, res) {
                  + req.params.analysisid));
       else {
         //This should eventually be its own polling task
-        res.send({item:item});
+        res.send({"status":item.status});
       }
     });
   });
@@ -212,68 +212,51 @@ exports.queryStatus = function(req, res) {
 exports.getResults = function(req, res) {
   // Find the analysis
   // Return its results
-
-  type =  req.params.type;
-  var Analysis = mongoose.model(type.capitalize());
+  var type =  req.params.type,
+    Analysis = mongoose.model(type.capitalize());
 
   //Return all results
-  Analysis.findOne({id : req.params.analysisid}, function(err, item) {
-
-    if (err) {
-      res.send(error.errorResponse('There is no sequence with id of ' + id));
-    }
-
-    else
-    {
-
-      if(item.status == globals.cancelled || item.status == globals.finished) {
-        if(item.results) {
-          res.send(item);
+  Msa.findOne({msaid : req.params.msaid}, function(err, msa) {
+    Analysis.findOne({msafn : msa._id}, function(err, item) {
+      if (err || !item ) {
+        res.send(error.errorResponse('Item not found'));
+      } else {
+        if(item.status == globals.cancelled || item.status == globals.finished) {
+          res.send({item:item});
+        } else {
+          res.send(error.errorResponse('Job still running!'));
         }
-        else
-          res.send(error.errorResponse(
-                   'Something wrong happened with this job'));
       }
-    }
-
-    res.send(error.errorResponse('Job still running!'));
-
+    });
   });
-
 }
 
 //Dev purposes only
 exports.sendMail = function(req, res) {
-  type =  req.params.type;
-
+  var type =  req.params.type;
   var Analysis = mongoose.model(type.capitalize());
-
   Msa.findOne({msaid : req.params.msaid}, function(err, msa) {
     Analysis.findOne({msafn : msa._id}, function(err, item) {
-      if (err)
+      if (err) {
         res.send(error.errorResponse('There is no sequence with id of ' 
                  + req.params.analysisid));
-      else {
+      } else {
         mailer.send(item, msa);  
         res.send({response:'Mail Sent!'});
       }
     });
   });
-
 }
 
 //Dev purposes only
 exports.parseResults = function(req, res) {
-
-  type =  req.params.type;
-
+  var type =  req.params.type;
   var Analysis = mongoose.model(type.capitalize());
-
   Msa.findOne({msaid : req.params.msaid}, function(err, msa) {
     Analysis.findOne({msafn : msa._id}, function(err, item) {
-      if (err)
+      if (err) {
         res.send('There is no sequence with id of ' + req.params.analysisid);
-      else {
+      } else {
         //This should eventually be its own polling task
         dpl.parseResults(item);
         res.send({item:item});

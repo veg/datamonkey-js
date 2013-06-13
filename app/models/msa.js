@@ -66,3 +66,4 @@ var Sequences = new Schema({
 });
 
 module.exports = mongoose.model('Msa', Msa);
+
