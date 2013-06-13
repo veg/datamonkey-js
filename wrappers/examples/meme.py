@@ -35,9 +35,6 @@ mail = 'sweaver@ucsd.edu'
 fn   = './res/HIV_gp120.nex'
 
 msa_obj = msa.upload_file(fn, 0, 0, mail)
-print msa_obj.id
-exit()
-
 
 meme_params = {
     'treemode'    : 0,
