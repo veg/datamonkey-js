@@ -36,9 +36,7 @@ var mongoose = require('mongoose'),
 
 //find sequence by id
 exports.findById = function (req, res) {
-
   var id = req.params.id;
-
   Msa.findOne({msaid : id}, function (err, items) {
     if (err) {
       res.send(error.errorResponse('There is no sequence with id of ' + id));
@@ -46,7 +44,6 @@ exports.findById = function (req, res) {
       res.send(items);
     }
   });
-
 };
 
 //return all sequences
@@ -68,15 +65,30 @@ exports.findAll = function (req, res) {
 exports.uploadMsa = function (req, res) {
 
   postdata = req.query;
-  postdata.contents = req.body["file"][1];
 
-  //TODO: Clean postdata
-  var sequence_alignment = new Msa({
-    contents    : postdata.contents,
-    datatype    : postdata.datatype,
-    gencodeid   : postdata.genCodeId,
-    mailaddr    : postdata.mailaddr,
-  });
+  try {
+    postdata.contents = req.body["file"][1];
+  } catch(e) {
+   res.send(error.errorResponse("Missing Parameters: No File"));
+   return;
+  }
+
+  var sequence_alignment = new Msa;
+
+  try {
+
+    sequence_alignment.contents  = postdata.contents;
+    sequence_alignment.datatype  = postdata.datatype;
+    sequence_alignment.gencodeid = postdata.gencodeid;
+    sequence_alignment.mailaddr  = postdata.mailaddr;
+
+  } catch(e) {
+
+    res.send(error.errorResponse("Missing Parameters: " + e));
+    return;
+
+  }
+
 
   sequence_alignment.save(function (err, result) {
 

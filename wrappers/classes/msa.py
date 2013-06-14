@@ -37,7 +37,7 @@ def upload_file(fn, datatype, gencode, mailaddr=""):
     params = {
         "files"       : fh,
         "datatype"    : datatype,
-        "genCodeId"   : gencode,
+        "gencodeid"   : gencode,
         "mailaddr"    : mailaddr
     }
 

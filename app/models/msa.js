@@ -35,8 +35,8 @@ var Schema = mongoose.Schema,
 
 var Msa = new Schema({
     contents    : {type: String, require: true},
+    datatype    : {type: Number, require: true},
     msaid       : {type: String},
-    datatype    : Number,
     partitions  : Number,
     sites       : Number,
     rawsites    : Number,
@@ -64,6 +64,8 @@ var Sequences = new Schema({
     seqindex : Number,
     name     : String
 });
+
+//TODO: Put in validation
 
 module.exports = mongoose.model('Msa', Msa);
 

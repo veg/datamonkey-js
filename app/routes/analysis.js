@@ -66,6 +66,7 @@ function createAnalysis(Analysis, AnalysisParameters, msa, count, type,
       missing_params = [];
 
     // Verify parameters
+    // TODO: Just search required
     for (var parameter in parameters.schema.tree) {
       if (parameter != "_id" && parameter != "id") { 
         if (parameter in postdata) {
@@ -196,17 +197,21 @@ exports.queryStatus = function(req, res) {
   var Analysis = mongoose.model(type.capitalize());
   
   Msa.findOne({msaid : req.params.msaid}, function(err, msa) {
-    Analysis.findOne({msafn : msa._id}, function(err, item) {
-      if (err)
-        res.send(error.errorResponse('There is no sequence with id of ' 
-                 + req.params.analysisid));
-      else {
-        //This should eventually be its own polling task
-        res.send({"status":item.status});
-      }
-    });
+      if (err || !msa ) {
+        res.send(error.errorResponse('There is no sequence with id of ' + 
+                                      req.params.analysisid));
+      } else { 
+      Analysis.findOne({msafn : msa._id}, function(err, item) {
+        if (err)
+          res.send(error.errorResponse('There is no sequence with id of ' 
+                   + req.params.analysisid));
+        else {
+          //This should eventually be its own polling task
+          res.send({"status":item.status});
+        }
+      });
+    }
   });
-
 }
 
 exports.getResults = function(req, res) {
