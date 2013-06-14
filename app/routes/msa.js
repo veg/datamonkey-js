@@ -39,9 +39,9 @@ exports.findById = function (req, res) {
   var id = req.params.id;
   Msa.findOne({msaid : id}, function (err, items) {
     if (err) {
-      res.send(error.errorResponse('There is no sequence with id of ' + id));
+      res.json(500, error.errorResponse('There is no sequence with id of ' + id));
     } else {
-      res.send(items);
+      res.json(items);
     }
   });
 };
@@ -52,9 +52,9 @@ exports.findAll = function (req, res) {
   Msa.find({}, function (err, items) {
 
     if (err) {
-      res.send(error.errorResponse('There is no sequence with id of ' + id));
+      res.json(500, error.errorResponse('There is no sequence with id of ' + id));
     } else {
-     res.send(items);
+     res.json(items);
     }
 
   });
@@ -69,7 +69,7 @@ exports.uploadMsa = function (req, res) {
   try {
     postdata.contents = req.body["file"][1];
   } catch(e) {
-   res.send(error.errorResponse("Missing Parameters: No File"));
+   res.json(500, error.errorResponse("Missing Parameters: No File"));
    return;
   }
 
@@ -84,7 +84,7 @@ exports.uploadMsa = function (req, res) {
 
   } catch(e) {
 
-    res.send(error.errorResponse("Missing Parameters: " + e));
+    res.json(500, error.errorResponse("Missing Parameters: " + e));
     return;
 
   }
@@ -93,7 +93,7 @@ exports.uploadMsa = function (req, res) {
   sequence_alignment.save(function (err, result) {
 
     if (err) {
-      res.send(error.errorResponse(err));
+      res.json(500, error.errorResponse(err));
     } else {
       //Upload to datamonkey
       dpl.uploadToPerl(result, res);
@@ -110,9 +110,9 @@ exports.updateMsa = function(req, res) {
   //Should check the postdata before
   Msa.update(postdata, function (err, result) {
     if (err) {
-      res.send(error.errorResponse(err));
+      res.json(500, error.errorResponse(err));
     } else {
-      res.send(postdata);
+      res.json(postdata);
     }
   });
 }
@@ -124,9 +124,9 @@ exports.deleteMsa = function(req, res) {
 
   Msa.remove({ msaid: new BSON.ObjectID(id) }, function(err) {
     if (err) {
-      res.send(error.errorResponse(err));
+      res.json(500, error.errorResponse(err));
     } else {
-      res.send(req.body);
+      res.json(req.body);
      }
   });
 }

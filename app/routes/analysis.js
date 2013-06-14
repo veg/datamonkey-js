@@ -79,7 +79,7 @@ function createAnalysis(Analysis, AnalysisParameters, msa, count, type,
     }
 
     if (missing_params.length > 0){
-      res.send(error.errorResponse("Missing Parameters: " + missing_params));
+      res.json(500, error.errorResponse("Missing Parameters: " + missing_params));
       return;
     }
 
@@ -94,7 +94,7 @@ function createAnalysis(Analysis, AnalysisParameters, msa, count, type,
         // Open Multiple Sequence Alignment File to get all necessary parameters
         // for dispatching.
         if (err) {
-          res.send(error.errorResponse('There is no sequence with id of '
+          res.json(500, error.errorResponse('There is no sequence with id of '
                                        + id));
         } else {
           an.parameters.push(parameters);
@@ -136,16 +136,17 @@ exports.findAll = function(req, res) {
 
   Analysis.find({},function(err, items) {
     if (err)
-      res.send(error.errorResponse('There is no sequence with id of ' + id));
+      res.json(500, error.errorResponse('There is no sequence with id of ' + id));
     else
-      res.send(items);
+      res.json(items);
   });
 
 };
 
 exports.invokeJob = function(req, res) {
 
-  type =  req.params.type;
+  //TODO: Validate parameters
+  var type =  req.params.type;
 
   var Analysis = mongoose.model(type.capitalize());
   var AnalysisParameters = mongoose.model(type.capitalize() + 'Parameters');
@@ -161,7 +162,7 @@ exports.invokeJob = function(req, res) {
       var highest_countid = 1;
 
       if(err) {
-        res.send(error.errorResponse(err));
+        res.json(500, error.errorResponse(err));
       }
 
       if(result != '' && result != null) {
@@ -193,21 +194,22 @@ exports.queryStatus = function(req, res) {
   // Find the analysis
   // Return its status
 
+  //TODO: Validate parameters
   var type =  req.params.type;
   var Analysis = mongoose.model(type.capitalize());
   
   Msa.findOne({msaid : req.params.msaid}, function(err, msa) {
       if (err || !msa ) {
-        res.send(error.errorResponse('There is no sequence with id of ' + 
+        res.json(500, error.errorResponse('There is no sequence with id of ' + 
                                       req.params.analysisid));
       } else { 
       Analysis.findOne({msafn : msa._id}, function(err, item) {
         if (err)
-          res.send(error.errorResponse('There is no sequence with id of ' 
+          res.json(500, error.errorResponse('There is no sequence with id of ' 
                    + req.params.analysisid));
         else {
           //This should eventually be its own polling task
-          res.send({"status":item.status});
+          res.json({"status":item.status});
         }
       });
     }
@@ -224,12 +226,12 @@ exports.getResults = function(req, res) {
   Msa.findOne({msaid : req.params.msaid}, function(err, msa) {
     Analysis.findOne({msafn : msa._id}, function(err, item) {
       if (err || !item ) {
-        res.send(error.errorResponse('Item not found'));
+        res.json(500, error.errorResponse('Item not found'));
       } else {
         if(item.status == globals.cancelled || item.status == globals.finished) {
-          res.send({item:item});
+          res.json({item:item});
         } else {
-          res.send(error.errorResponse('Job still running!'));
+          res.json(500, error.errorResponse('Job still running!'));
         }
       }
     });
@@ -243,11 +245,11 @@ exports.sendMail = function(req, res) {
   Msa.findOne({msaid : req.params.msaid}, function(err, msa) {
     Analysis.findOne({msafn : msa._id}, function(err, item) {
       if (err) {
-        res.send(error.errorResponse('There is no sequence with id of ' 
+        res.json(500, error.errorResponse('There is no sequence with id of ' 
                  + req.params.analysisid));
       } else {
         mailer.send(item, msa);  
-        res.send({response:'Mail Sent!'});
+        res.json({response:'Mail Sent!'});
       }
     });
   });
@@ -260,13 +262,14 @@ exports.parseResults = function(req, res) {
   Msa.findOne({msaid : req.params.msaid}, function(err, msa) {
     Analysis.findOne({msafn : msa._id}, function(err, item) {
       if (err) {
-        res.send('There is no sequence with id of ' + req.params.analysisid);
+        res.json('There is no sequence with id of ' + req.params.analysisid);
       } else {
         //This should eventually be its own polling task
         dpl.parseResults(item);
-        res.send({item:item});
+        res.json({item:item});
       }
     });
   });
 }
+
 

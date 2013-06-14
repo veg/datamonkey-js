@@ -59,6 +59,10 @@ fs.readdirSync(models_path).forEach(function (file) {
   require(models_path+'/'+file)
 });
 
+function errorHandler(err, req, res, next) {
+  res.send(500, { error: 'Something blew up!' });
+}
+
 //Routes
 msa = require('./app/routes/msa');
 app.get('/msa', msa.findAll);
