@@ -32,31 +32,95 @@ var app = require('../../server'),
   should  = require('should'),
   request = require('supertest');
 
-describe('msa', function(){
-    it('Should return all msa', function(done){
-      app.use(function(req, res){
-        req.accepted[0].value.should.equal('application/json');
-        req.accepted[1].value.should.equal('text/html');
-        res.end();
-      });
+describe('Upload a file', function() {
 
-      request(app)
-      .get('/msa/')
-      .set('Accept', 'text/html;q=.5, application/json')
-      .expect(200, done);
-    })
+  // app.post('/msa', msa.uploadMsa);
+  it('Should return object', function(done){
+    app.use(function(req, res){
+      req.accepted[0].value.should.equal('application/json');
+      req.accepted[1].value.should.equal('text/html');
+      res.end();
+    });
 
-    describe('when there is an id specified', function(){
+    var params = {
+      'treemode'    : '0',
+      'modelstring' : '010010',
+      'pvalue'      : '0.1',
+      'sendmail'    : '1'
+    };
 
-      it('should return object', function(done){
-        app.use(function(req, res){
-          req.accepted.should.have.length(0);
-          res.end();
-        });
+    request(app)
+    .post('/msa/')
+    .set('Accept', 'application/json')
+    .send(params)
+    .expect(500)
+    .expect('content-type', 'application/json; charset=utf-8')
+    .end(function(err, res){
+      console.log(res.body);
+      if (err) return done(err);
+      if (!res.body.error) {
+        err = "Incorrect JSON returned: " + res.body.error;
+        done(err);
+        if(res.body.error.indexOf("No File") == -1) {
+          var err = "Incorrect body response: " + res.body;
+          done(err);
+        }
+      }
+      done();
+    });
+  });
 
-        request(app)
-        .get('/msa/50d3a9624f0cdc5372000002')
-        .expect(200, done);
-      })
-    })
 })
+
+ app.get('/msa/:id', msa.findById);
+describe('Should return object specified by id', function() {
+
+  it('should return object', function(done){
+    app.use(function(req, res){
+      req.accepted.should.have.length(0);
+      res.end();
+    });
+
+  app.put('/msa/:id', msa.updateMsa);
+    request(app)
+    .get('/msa/')
+    .expect(200, done);
+  });
+
+});
+
+// app.put('/msa/:id', msa.updateMsa);
+describe('Should return object specified by id', function() {
+
+  it('should return object', function(done){
+    app.use(function(req, res){
+      req.accepted.should.have.length(0);
+      res.end();
+    });
+
+  app.put('/msa/:id', msa.updateMsa);
+    request(app)
+    .get('/msa/')
+    .expect(200, done);
+  });
+
+});
+
+// app.delete('/msa/:id', msa.deleteMsa);
+describe('when there is an id specified', function() {
+
+  it('should return object', function(done){
+    app.use(function(req, res){
+      req.accepted.should.have.length(0);
+      res.end();
+    });
+
+  app.put('/msa/:id', msa.updateMsa);
+    request(app)
+    .get('/msa/50d3a9624f0cdc5372000002')
+    .expect(200, done);
+  });
+
+});
+
+

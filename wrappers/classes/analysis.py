@@ -43,8 +43,7 @@ def get_analysis(id, msaid, type, params):
     # We need to have an option of whether they want mail
     # and/or want the call to block until finished, or neither
     method = '/msa/{0}/{1}'.format(msaid, type)
-    params["msaid"] = msaid
-    json = dm.post(method, params)
+    json = dm.get(method)
     return Analysis(json)
 
 #Replace all the python files with single analysis python script

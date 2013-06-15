@@ -38,7 +38,7 @@ var mongoose = require('mongoose'),
 exports.findById = function (req, res) {
   var id = req.params.id;
   Msa.findOne({msaid : id}, function (err, items) {
-    if (err) {
+    if (err || !items) {
       res.json(500, error.errorResponse('There is no sequence with id of ' + id));
     } else {
       res.json(items);
@@ -67,7 +67,8 @@ exports.uploadMsa = function (req, res) {
   postdata = req.query;
 
   try {
-    postdata.contents = req.body["file"][1];
+    console.log(req.body);
+    postdata.contents = req.body["files"][1];
   } catch(e) {
    res.json(500, error.errorResponse("Missing Parameters: No File"));
    return;
@@ -104,29 +105,40 @@ exports.uploadMsa = function (req, res) {
 
 //update a sequence
 exports.updateMsa = function(req, res) {
-  var id = req.params.id;
-  var postdata = req.body;
+  var id = req.query.id;
+  var postdata = req.query;
+  var options = { multi: false };
 
-  //Should check the postdata before
-  Msa.update(postdata, function (err, result) {
+  Msa.findOne({msaid : id}, function (err, item) {
     if (err) {
-      res.json(500, error.errorResponse(err));
+      res.json(500, error.errorResponse('There is no sequence with id of ' + id));
     } else {
-      res.json(postdata);
+      //Should check the postdata before
+      Msa.findByIdAndUpdate(item._id, postdata, options, function (err, result) {
+        if (err) {
+          console.log(err);
+          res.json(500, error.errorResponse(err));
+        } else {
+          res.json(result);
+        }
+      });
     }
   });
+
+
 }
 
 //delete a sequence
 exports.deleteMsa = function(req, res) {
 
   var id = req.params.id;
+  console.log(id)
 
-  Msa.remove({ msaid: new BSON.ObjectID(id) }, function(err) {
+  Msa.findOneAndRemove({ msaid: id }, function(err) {
     if (err) {
       res.json(500, error.errorResponse(err));
     } else {
-      res.json(req.body);
+      res.json({"success" : 1});
      }
   });
 }

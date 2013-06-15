@@ -25,6 +25,7 @@
 #  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import dm
+import simplejson as json
 
 def upload_file(fn, datatype, gencode, mailaddr=""):
     u""" Starts a new analysis for the given file. """
@@ -32,7 +33,7 @@ def upload_file(fn, datatype, gencode, mailaddr=""):
     # We need to have an option of whether they want mail
     # and/or want the call to block until finished, or neither
     method = "/msa"
-    fh = {"file":(fn, open(fn,'rb').read())}
+    fh = {"files":(fn, open(fn,'rb').read())}
 
     params = {
         "files"       : fh,
@@ -44,20 +45,46 @@ def upload_file(fn, datatype, gencode, mailaddr=""):
     json = dm.post(method, params)
     return MSA(json)
 
+def get_by_id(id):
+    u""" Starts a new analysis for the given file. """
+
+    # We need to have an option of whether they want mail
+    # and/or want the call to block until finished, or neither
+    method = '/msa/{0}'.format(id)
+    json = dm.get(method)
+    return MSA(json)
+
+def update(obj):
+    u""" Starts a new analysis for the given file. """
+    # We need to have an option of whether they want mail
+    # and/or want the call to block until finished, or neither
+    method = '/msa/{0}'.format(obj["id"])
+    json = dm.put(method, obj)
+    return MSA(json)
+
+def delete(id):
+    u""" Starts a new analysis for the given file. """
+    # We need to have an option of whether they want mail
+    # and/or want the call to block until finished, or neither
+    method = '/msa/{0}'.format(id)
+    json = dm.delete(method)
+    return json
+
+
 
 #We need to define datatypes and gencodes in the database
 class MSA:
     def __init__(self, msa):
         u""" Initializes Multiple Sequence Alignment """
         self.id         = msa.get('msaid')
-        self.gencodeid  = msa.get('gencodeid'),
-        self.datatype   = msa.get('datatype'),
-        self.msaid      = msa.get('msaid'),
-        self.partitions = msa.get('partitions'),
-        self.sites      = msa.get('sites'),
-        self.rawsites   = msa.get('rawsites'),
-        self.sequences  = msa.get('sequences'),
-        self.goodtree   = msa.get('goodtree'),
-        self.nj         = msa.get('nj'),
-        self.timestamp  = msa.get('timestamp'),
+        self.gencodeid  = msa.get('gencodeid')
+        self.datatype   = msa.get('datatype')
+        self.msaid      = msa.get('msaid')
+        self.partitions = msa.get('partitions')
+        self.sites      = msa.get('sites')
+        self.rawsites   = msa.get('rawsites')
+        self.sequences  = msa.get('sequences')
+        self.goodtree   = msa.get('goodtree')
+        self.nj         = msa.get('nj')
+        self.timestamp  = msa.get('timestamp')
         self.mailaddr   = msa.get('mailaddr')

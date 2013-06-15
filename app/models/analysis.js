@@ -6,8 +6,8 @@ var Schema = mongoose.Schema,
 
 var AnalysisSchema = new Schema({
   msafn               : { type : Schema.Types.ObjectId, ref : 'Msa' },
-  msaid               : String,
   id                  : { type : Number },
+  msaid               : String,
   type                : String,
   status              : String,
   sendmail            : Boolean,

@@ -65,7 +65,10 @@ function errorHandler(err, req, res, next) {
 
 //Routes
 msa = require('./app/routes/msa');
-app.get('/msa', msa.findAll);
+
+// /msa will eventually require authentication
+// Will return all uploaded files from user
+//app.get('/msa', msa.findAll);
 app.get('/msa/:id', msa.findById);
 app.post('/msa', msa.uploadMsa);
 app.put('/msa/:id', msa.updateMsa);
@@ -73,7 +76,7 @@ app.delete('/msa/:id', msa.deleteMsa);
 
 analysis = require('./app/routes/analysis');
 //app.get('/msa/:msaid/:type', analysis.findAll);
-app.get('/:type', analysis.findAll);
+app.get('/type/:type', analysis.findAll);
 app.post('/msa/:msaid/:type', analysis.invokeJob);
 app.get('/msa/:msaid/:type/:analysisid', analysis.getResults);
 app.get('/msa/:msaid/:type/:analysisid/status', analysis.queryStatus);
