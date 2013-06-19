@@ -30,22 +30,17 @@ var express          = require('express'),
     expressValidator = require('express-validator'),
     fs               = require('fs'),
     path             = require("path"),
-    mongoose         = require('mongoose');
+    mongoose         = require('mongoose'),
+    setup            = require('./config/setup');
 
 // Connect to database
-mongoose.connect('mongodb://localhost/datamonkey');
-
-// Use this only for debugging
-mongoose.connection.on('open', function() {
-   console.log('Connected to datamonkey');
-});
-
+mongoose.connect(setup.database);
 
 // Main app configuration
 var app = express();
 
 app.configure(function () {
-    app.use(express.logger('dev'));     /* 'default', 'short', 'tiny', 'dev' */
+    app.use(express.logger(setup.logger));     
     app.use(expressValidator);
     app.use(express.bodyParser());
     app.use(express.limit('25mb'));
@@ -80,7 +75,7 @@ app.get('/msa/:msaid/:type/:analysisid/status', analysis.queryStatus);
 app.delete('/msa/:msaid/:type/:analysisid', analysis.deleteAnalysis);
 
 //Port to listen on
-app.listen(3000);
+app.listen(setup.port);
 
-console.log('Listening on port 3000...');
+console.log('Listening on port ' + setup.port + '...');
 module.exports = app;
