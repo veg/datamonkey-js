@@ -126,23 +126,6 @@ function createAnalysis(Analysis, AnalysisParameters, msa, count, type,
   });
 }
 
-//return all sequences
-exports.findAll = function(req, res) {
-
-  var type =  req.params.type;
-
-  //I need to query find based on type
-  var Analysis = mongoose.model(type.capitalize());
-
-  Analysis.find({},function(err, items) {
-    if (err)
-      res.json(500, error.errorResponse('There is no sequence with id of ' + id));
-    else
-      res.json(items);
-  });
-
-};
-
 exports.invokeJob = function(req, res) {
 
   //TODO: Validate parameters
@@ -216,13 +199,13 @@ exports.queryStatus = function(req, res) {
   });
 }
 
-exports.getResults = function(req, res) {
+exports.getAnalysis = function(req, res) {
   // Find the analysis
   // Return its results
   var type =  req.params.type,
     Analysis = mongoose.model(type.capitalize());
 
-  var msaid = req.params.id,
+  var msaid = req.params.msaid,
       analysisid = req.params.analysisid;
 
 
@@ -236,14 +219,13 @@ exports.getResults = function(req, res) {
   });
 }
 
-
 exports.deleteAnalysis = function(req, res) {
   // Find the analysis
   // Return its results
   var type =  req.params.type,
     Analysis = mongoose.model(type.capitalize());
 
-  var msaid = req.params.id,
+  var msaid = req.params.msaid,
       analysisid = req.params.analysisid;
 
   //Return all results

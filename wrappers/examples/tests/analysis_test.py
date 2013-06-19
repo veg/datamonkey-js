@@ -57,30 +57,30 @@ class TestAnalysis(unittest.TestCase):
                                                       self.type,
                                                       self.meme_params)
 
-    ##app.post('/msa/:msaid/:type', analysis.invokeJob);
-    #def test_invokejob(self):
-    #    self.assertTrue(self.meme_analysis.id is not None)
-    #    self.assertTrue(self.meme_analysis.msaid is not None)
-    #    self.assertEqual(self.meme_analysis.type, self.type)
-    #    self.assertTrue(self.meme_analysis.status is not None)
-    #    self.assertTrue(self.meme_analysis.sendmail is not None)
+    #app.post('/msa/:msaid/:type', analysis.invokeJob);
+    def test_invokejob(self):
+        self.assertTrue(self.meme_analysis.id is not None)
+        self.assertTrue(self.meme_analysis.msaid is not None)
+        self.assertEqual(self.meme_analysis.type, self.type)
+        self.assertTrue(self.meme_analysis.status is not None)
+        self.assertTrue(self.meme_analysis.sendmail is not None)
 
-    ##app.get('/msa/:msaid/:type/:analysisid', analysis.getResults);
-    #def test_findbyid(self):
-    #    analysis_obj = analysis.get_by_id(self.meme_analysis.id,
-    #                                      self.created_analysis.id,
-    #                                      self.type)
+    #app.get('/msa/:msaid/:type/:analysisid', analysis.getResults);
+    def test_findbyid(self):
+        analysis_obj = analysis.get_by_id(self.meme_analysis.id,
+                                          self.created_analysis.id,
+                                          self.type)
 
-    #    self.assertEqual(analysis_obj.id, self.meme_analysis.id)
-    #    self.assertEqual(analysis_obj.msaid, self.meme_analysis.msaid)
-    #    self.assertEqual(analysis_obj.type, self.meme_analysis.type)
-    #    self.assertEqual(analysis_obj.sendmail, self.meme_analysis.sendmail)
+        self.assertEqual(analysis_obj.id, self.meme_analysis.id)
+        self.assertEqual(analysis_obj.msaid, self.meme_analysis.msaid)
+        self.assertEqual(analysis_obj.type, self.meme_analysis.type)
+        self.assertEqual(analysis_obj.sendmail, self.meme_analysis.sendmail)
 
-    ## app.get('/msa/:msaid/:type/:analysisid/status', analysis.queryStatus);
-    #def test_status(self):
-    #    status = self.meme_analysis.get_status()
-    #    possible_statuses = ["running", "queueing", "finished", "cancelled"]
-    #    self.assertTrue(status in possible_statuses)
+    # app.get('/msa/:msaid/:type/:analysisid/status', analysis.queryStatus);
+    def test_status(self):
+        status = self.meme_analysis.get_status()
+        possible_statuses = ["running", "queueing", "finished", "cancelled"]
+        self.assertTrue(status in possible_statuses)
 
     # app.delete('/analysis/:id', analysis.deleteanalysis);
     def test_delete(self):

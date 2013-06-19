@@ -75,9 +75,9 @@ app.delete('/msa/:id', msa.deleteMsa);
 // ANALYSIS ROUTES
 analysis = require('./app/routes/analysis');
 app.post('/msa/:msaid/:type', analysis.invokeJob);
-app.get('/msa/:msaid/:type/:analysisid', analysis.getResults);
+app.get('/msa/:msaid/:type/:analysisid', analysis.getAnalysis);
 app.get('/msa/:msaid/:type/:analysisid/status', analysis.queryStatus);
-app.delete('/msa/:id/:type/:analysisid', analysis.deleteAnalysis);
+app.delete('/msa/:msaid/:type/:analysisid', analysis.deleteAnalysis);
 
 //Port to listen on
 app.listen(3000);
