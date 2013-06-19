@@ -66,26 +66,21 @@ function errorHandler(err, req, res, next) {
 //Routes
 msa = require('./app/routes/msa');
 
-// /msa will eventually require authentication
-// Will return all uploaded files from user
-//app.get('/msa', msa.findAll);
+// UPLOAD FILE ROUTES
 app.get('/msa/:id', msa.findById);
 app.post('/msa', msa.uploadMsa);
 app.put('/msa/:id', msa.updateMsa);
 app.delete('/msa/:id', msa.deleteMsa);
 
+// ANALYSIS ROUTES
 analysis = require('./app/routes/analysis');
-//app.get('/msa/:msaid/:type', analysis.findAll);
-app.get('/type/:type', analysis.findAll);
 app.post('/msa/:msaid/:type', analysis.invokeJob);
 app.get('/msa/:msaid/:type/:analysisid', analysis.getResults);
 app.get('/msa/:msaid/:type/:analysisid/status', analysis.queryStatus);
-app.get('/msa/:msaid/:type/:analysisid/mail', analysis.sendMail);
-app.get('/msa/:msaid/:type/:analysisid/parseresults', analysis.parseResults);
+app.delete('/msa/:id/:type/:analysisid', analysis.deleteAnalysis);
 
 //Port to listen on
 app.listen(3000);
 
 console.log('Listening on port 3000...');
 module.exports = app;
-

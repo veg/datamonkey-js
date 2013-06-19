@@ -203,7 +203,7 @@ exports.queryStatus = function(req, res) {
         res.json(500, error.errorResponse('There is no sequence with id of ' + 
                                       req.params.analysisid));
       } else { 
-      Analysis.findOne({msafn : msa._id}, function(err, item) {
+      Analysis.findOne({msafn : msa._id, id : req.params.analysisid}, function(err, item) {
         if (err)
           res.json(500, error.errorResponse('There is no sequence with id of ' 
                    + req.params.analysisid));
@@ -222,54 +222,38 @@ exports.getResults = function(req, res) {
   var type =  req.params.type,
     Analysis = mongoose.model(type.capitalize());
 
+  var msaid = req.params.id,
+      analysisid = req.params.analysisid;
+
+
   //Return all results
-  Msa.findOne({msaid : req.params.msaid}, function(err, msa) {
-    Analysis.findOne({msafn : msa._id}, function(err, item) {
-      if (err || !item ) {
-        res.json(500, error.errorResponse('Item not found'));
-      } else {
-        if(item.status == globals.cancelled || item.status == globals.finished) {
-          res.json({item:item});
-        } else {
-          res.json(500, error.errorResponse('Job still running!'));
-        }
-      }
-    });
+  Analysis.findOne({msaid : msaid, id : analysisid}, function(err, item) {
+    if (err || !item ) {
+      res.json(500, error.errorResponse('Item not found'));
+    } else {
+      res.json(item);
+    }
   });
 }
 
-//Dev purposes only
-exports.sendMail = function(req, res) {
-  var type =  req.params.type;
-  var Analysis = mongoose.model(type.capitalize());
-  Msa.findOne({msaid : req.params.msaid}, function(err, msa) {
-    Analysis.findOne({msafn : msa._id}, function(err, item) {
-      if (err) {
-        res.json(500, error.errorResponse('There is no sequence with id of ' 
-                 + req.params.analysisid));
-      } else {
-        mailer.send(item, msa);  
-        res.json({response:'Mail Sent!'});
-      }
-    });
+
+exports.deleteAnalysis = function(req, res) {
+  // Find the analysis
+  // Return its results
+  var type =  req.params.type,
+    Analysis = mongoose.model(type.capitalize());
+
+  var msaid = req.params.id,
+      analysisid = req.params.analysisid;
+
+  //Return all results
+  Analysis.findOneAndRemove({msaid : msaid, id : analysisid}, 
+                   function(err, item) {
+    if (err || !item) {
+      res.json(500, error.errorResponse('Item not found: msaid: ' + msaid + ', id : ' + analysisid));
+    } else {
+      res.json({"success" : 1});
+    }
   });
 }
-
-//Dev purposes only
-exports.parseResults = function(req, res) {
-  var type =  req.params.type;
-  var Analysis = mongoose.model(type.capitalize());
-  Msa.findOne({msaid : req.params.msaid}, function(err, msa) {
-    Analysis.findOne({msafn : msa._id}, function(err, item) {
-      if (err) {
-        res.json('There is no sequence with id of ' + req.params.analysisid);
-      } else {
-        //This should eventually be its own polling task
-        dpl.parseResults(item);
-        res.json({item:item});
-      }
-    });
-  });
-}
-
 

@@ -39,25 +39,33 @@ def post(method, params={}):
         r = requests.post(url, files, params=params)
     else:
         r = requests.post(url, params=params)
-    r.raise_for_status()
+    if r.status_code != 200:
+      print r.text
+      r.raise_for_status()
     return json.loads(r.text) if r.text else None
 
 def get(method, params={}):
     url = URL + method
     r = requests.get(url, params=params)
-    r.raise_for_status()
+    if r.status_code != 200:
+      print r.text
+      r.raise_for_status()
     return json.loads(r.text) if r.text else None
 
 def put(method, params={}):
     url = URL + method
     r = requests.put(url, params=params)
-    r.raise_for_status()
+    if r.status_code != 200:
+      print r.text
+      r.raise_for_status()
     return json.loads(r.text) if r.text else None
 
 def delete(method, params={}):
     url = URL + method
     r = requests.delete(url, params=params)
-    r.raise_for_status()
+    if r.status_code != 200:
+      print r.text
+      r.raise_for_status()
     return json.loads(r.text) if r.text else None
 
 def _test():

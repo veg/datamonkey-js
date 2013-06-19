@@ -38,34 +38,45 @@ def create_analysis(msaid, type, params):
     json = dm.post(method, params)
     return Analysis(json)
 
-def get_analysis(id, msaid, type, params):
+def get_by_id(id, msaid, type):
     u""" Starts a new analysis for the given file. """
     # We need to have an option of whether they want mail
     # and/or want the call to block until finished, or neither
-    method = '/msa/{0}/{1}'.format(msaid, type)
+    method = '/msa/{0}/{1}/{2}'.format(msaid, type, id)
     json = dm.get(method)
     return Analysis(json)
+
+def delete(id, msaid, type):
+    u""" Starts a new analysis for the given file. """
+    # We need to have an option of whether they want mail
+    # and/or want the call to block until finished, or neither
+    method = '/msa/{0}/{1}/{2}'.format(msaid, type, id)
+    json = dm.delete(method)
+    return json
+
 
 #Replace all the python files with single analysis python script
 class Analysis:
     def __init__(self, analysis):
         u""" Starts a new asr for the given sequence."""
-        self.id     = analysis.get("id")
-        self.type   = analysis.get("type")
-        self.msaid  = analysis.get("msaid")
-        self.status = analysis.get("msaid")
+        self.id       = analysis.get("id")
+        self.type     = analysis.get("type")
+        self.msaid    = analysis.get("msaid")
+        self.status   = analysis.get("status")
+        self.sendmail = analysis.get("sendmail")
 
     def poll(self):
         while 1:
             time.sleep(5)
-            self.update_status()
+            self.get_status()
             if self.status != "queueing" and self.status != "running":
                 return
 
-    def update_status(self):
+    def get_status(self):
         u""" Returns current status of job """
         method = '/msa/{0}/{1}/{2}/status'.format(self.msaid, self.type,
                                                   self.id)
         response = dm.get(method, params=None)
         self.status = response.get('status')
-        return response
+        return response.get('status')
+
