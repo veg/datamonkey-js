@@ -13,6 +13,7 @@
         "mocha"     : "*",
         "nodemailer": "*",
         "supertest" : "*",
-        "should"    : "*"
+        "should"    : "*",
+	"sqlite3"   : "*"
     }
 }
