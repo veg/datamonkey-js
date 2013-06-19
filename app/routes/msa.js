@@ -67,7 +67,6 @@ exports.uploadMsa = function (req, res) {
   postdata = req.query;
 
   try {
-    console.log(req.body);
     postdata.contents = req.body["files"][1];
   } catch(e) {
    res.json(500, error.errorResponse("Missing Parameters: No File"));
