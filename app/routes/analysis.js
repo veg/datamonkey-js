@@ -58,7 +58,9 @@ function createAnalysis(Analysis, AnalysisParameters, msa, count, type,
   an.save(function (err, result) {
 
     if (err) {
-      console.log(err);
+      helpers.logger.warn(err);
+      res.json(500, error.errorResponse("Missing Parameters: " + missing_params));
+      return;
     }
 
     // Create Analysis Parameters from postdata
@@ -73,7 +75,9 @@ function createAnalysis(Analysis, AnalysisParameters, msa, count, type,
          parameters[parameter] = postdata[parameter] ;
         }
         else {
-          missing_params.push(parameter);
+          if(parameter != "__v") {
+            missing_params.push(parameter);
+          }
         }
       }
     }
@@ -86,7 +90,8 @@ function createAnalysis(Analysis, AnalysisParameters, msa, count, type,
     //Save Parameters to parent object
     parameters.save(function (err, aparams) {
       if (err) {
-        console.log(err);
+        helpers.logger.warn(err);
+        res.json(500, error.errorResponse("Unable to save parameters"));
       }
 
       else {
@@ -207,7 +212,6 @@ exports.getAnalysis = function(req, res) {
 
   var msaid = req.params.msaid,
       analysisid = req.params.analysisid;
-
 
   //Return all results
   Analysis.findOne({msaid : msaid, id : analysisid}, function(err, item) {

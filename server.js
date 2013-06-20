@@ -31,6 +31,7 @@ var express          = require('express'),
     fs               = require('fs'),
     path             = require("path"),
     mongoose         = require('mongoose'),
+    helpers          = require('./lib/helpers'),
     setup            = require('./config/setup');
 
 // Connect to database
@@ -54,10 +55,6 @@ fs.readdirSync(models_path).forEach(function (file) {
   require(models_path+'/'+file)
 });
 
-function errorHandler(err, req, res, next) {
-  res.send(500, { error: 'Something blew up!' });
-}
-
 //Routes
 msa = require('./app/routes/msa');
 
@@ -77,5 +74,5 @@ app.delete('/msa/:msaid/:type/:analysisid', analysis.deleteAnalysis);
 //Port to listen on
 app.listen(setup.port);
 
-console.log('Listening on port ' + setup.port + '...');
+helpers.logger.info('Listening on port ' + setup.port + '...');
 module.exports = app;
