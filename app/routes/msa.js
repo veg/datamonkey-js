@@ -28,8 +28,8 @@
 */
 
 
-var dpl   = require('../../lib/datamonkey-pl.js');
-var error = require('../../lib/error.js');
+var dpl   = require( ROOT_PATH + '/lib/datamonkey-pl.js');
+var error = require( ROOT_PATH + '/lib/error.js');
 
 var mongoose = require('mongoose'),
     Msa = mongoose.model('Msa');

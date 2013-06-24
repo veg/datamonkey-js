@@ -1,5 +1,4 @@
 /*
-
   Datamonkey - An API for comparative analysis of sequence alignments using state-of-the-art statistical models.
 
   Copyright (C) 2013
@@ -24,47 +23,20 @@
   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
 */
 
+function define(name, value) {
+    Object.defineProperty(exports, name, {
+        value:      value,
+        enumerable: true
+    });
+}
 
-var mongoose = require('mongoose');
-
-var Schema = mongoose.Schema,
-  ObjectId = Schema.ObjectId;
-
-var Msa = new Schema({
-    contents    : {type: String, require: true},
-    datatype    : {type: Number, require: true},
-    msaid       : {type: String},
-    partitions  : Number,
-    sites       : Number,
-    rawsites    : Number,
-    sequences   : Number,
-    gencodeid   : Number,
-    goodtree    : Number,
-    nj          : String,
-    mailaddr    : String,
-    timestamp   : { type: String, default: (new Date()).getTime() }
-});
-
-Msa.index( { "id": 1 } );
-
-var PartitionInfo = new Schema({
-    _creator : { type: Schema.Types.ObjectId, ref: 'Msa' },
-    partition   : Number,
-    startcodon  : Number,
-    endcodon    : Number,
-    span        : Number,
-    usertree    : String
-});
-
-var Sequences = new Schema({
-    _creator : { type: Schema.Types.ObjectId, ref: 'Msa' },
-    seqindex : Number,
-    name     : String
-});
-
-//TODO: Put in validation
-module.exports = mongoose.model('Msa', Msa);
-
+//// Unit Test
+//define("host","datamonkey-dev");
+//define('port', 3000);
+//define('database', 'mongodb://localhost/datamonkey-dev');
+//// 'default', 'short', 'tiny', 'dev'
+//define('logger', 'dev');
+//define('rootpath', '/home/sweaver/datamonkey-js');
+//define("spooldir","/home/sweaver/datamonkey-js/tests/res/spool/");

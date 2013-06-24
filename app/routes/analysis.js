@@ -25,14 +25,14 @@
   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-var querystring = require('querystring');
-var dpl         = require('../../lib/datamonkey-pl.js');
-var dme         = require('../../lib/datamonkey-event.js');
-var error       = require('../../lib/error.js');
-var globals     = require('../../config/globals.js');
-var mailer      = require('../../lib/mailer.js');
-var helpers     = require('../../lib/helpers.js');
-var fs          = require('fs');
+var querystring = require('querystring'),
+    dpl         = require( ROOT_PATH + '/lib/datamonkey-pl.js'),
+    dme         = require( ROOT_PATH + '/lib/datamonkey-event.js'),
+    error       = require( ROOT_PATH + '/lib/error.js'),
+    globals     = require( ROOT_PATH + '/config/globals.js'),
+    mailer      = require( ROOT_PATH + '/lib/mailer.js'),
+    helpers     = require( ROOT_PATH + '/lib/helpers.js'),
+    fs          = require('fs');
 
 var mongoose = require('mongoose'),
     Msa = mongoose.model('Msa');

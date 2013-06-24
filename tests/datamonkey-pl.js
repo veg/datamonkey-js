@@ -1,4 +1,5 @@
 /*
+
   Datamonkey - An API for comparative analysis of sequence alignments using state-of-the-art statistical models.
 
   Copyright (C) 2013
@@ -23,61 +24,67 @@
   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 */
 
-// Necessary packages
-var express          = require('express'),
-    expressValidator = require('express-validator'),
-    fs               = require('fs'),
-    path             = require("path"),
-    mongoose         = require('mongoose'),
-    helpers          = require('./lib/helpers'),
-    setup            = require('./config/setup');
-
+var setup   = require('../config/utsetup');
+var fs = require('fs');
 
 ROOT_PATH = setup.rootpath;
 SPOOL_DIR = setup.spooldir;
 HOST      = setup.host;
 
-// Connect to database
-mongoose.connect(setup.database);
-
-// Main app configuration
-var app = express();
-
-app.configure(function () {
-    app.use(express.logger(setup.logger));     
-    app.use(expressValidator);
-    app.use(express.bodyParser());
-    app.use(express.limit('25mb'));
-    app.use(app.router);
-});
+var mongoose = require('mongoose');
 
 // Bootstrap models
-var models_path = __dirname + '/app/models';
+var models_path = ROOT_PATH + '/app/models';
 
 fs.readdirSync(models_path).forEach(function (file) {
   require(models_path+'/'+file)
 });
 
-//Routes
-msa = require('./app/routes/msa');
+var Msa     = mongoose.model('Msa'),
+    should  = require('should'),
+    dpl     = require( ROOT_PATH + '/lib/datamonkey-pl.js');
 
-// UPLOAD FILE ROUTES
-app.get('/msa/:id', msa.findById);
-app.post('/msa', msa.uploadMsa);
-app.put('/msa/:id', msa.updateMsa);
-app.delete('/msa/:id', msa.deleteMsa);
+// app.post('/msa/:msaid/:type', analysis.invokeJob);
+describe('Parse results unit test', function() {
 
-// ANALYSIS ROUTES
-analysis = require('./app/routes/analysis');
-app.post('/msa/:msaid/:type', analysis.invokeJob);
-app.get('/msa/:msaid/:type/:analysisid', analysis.getAnalysis);
-app.get('/msa/:msaid/:type/:analysisid/status', analysis.queryStatus);
-app.delete('/msa/:msaid/:type/:analysisid', analysis.deleteAnalysis);
+  before(function(done) {
+    if (mongoose.connection.db) return done();
+    mongoose.connect(setup.database, done);
+  });
 
-//Port to listen on
-app.listen(setup.port);
 
-helpers.logger.info('Listening on port ' + setup.port + '...');
-module.exports = app;
+  it("Parse Meme", function(done) {
+    this.timeout(5000);
+
+    var Msa  = mongoose.model('Msa');
+
+    var msa  = new Msa({
+      msaid   : 'upload.958520133127023.1',
+      content : 'finished'
+    });
+
+    var Analysis = mongoose.model('Meme');
+    var type = 'meme';
+    var meme = new Analysis({
+      msaid  : 'upload.958520133127023.1',
+      id     : 1,
+      type   : type,
+      status : 'finished',
+    });
+
+    //Invalid parameter passed
+    //dpl.parseResults("beavis");
+    //result = dpl.parseResults(meme);
+
+    msa.save(function (err, result) {
+      meme.save(function (err, result) {
+        dpl.parseResults(result, function(analysis) {
+          done();
+        });
+      });
+    });
+  });
+});

@@ -33,12 +33,6 @@ function define(name, value) {
     });
 }
 
-//We need to split each of the following into classes
-
-//Spool Directory
-define("spooldir","/var/lib/datamonkey/www/spool/");
-define("host","datamonkey-dev");
-
 //Data Type
 define("Codon",0);
 define("Nucleotide (DNA/RNA)",1);
@@ -57,7 +51,6 @@ define("Alternative Yeast Nuclear code",8);
 define("Ascidian mitochondrial DNA code",9);
 define("Flatworm mitochondrial DNA code",10);
 define("Blepharisma Nuclear code",11);
-
 
 //Methods
 //define("ga",55);

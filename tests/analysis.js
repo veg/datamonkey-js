@@ -28,43 +28,23 @@
 */
 
 
-var mongoose = require('mongoose');
+var app = require('../../server'),
+  should  = require('should'),
+  request = require('supertest');
 
-var Schema = mongoose.Schema,
-  ObjectId = Schema.ObjectId;
+// app.post('/msa/:msaid/:type', analysis.invokeJob);
+describe('Start an analysis', function() {
 
-var Msa = new Schema({
-    contents    : {type: String, require: true},
-    datatype    : {type: Number, require: true},
-    msaid       : {type: String},
-    partitions  : Number,
-    sites       : Number,
-    rawsites    : Number,
-    sequences   : Number,
-    gencodeid   : Number,
-    goodtree    : Number,
-    nj          : String,
-    mailaddr    : String,
-    timestamp   : { type: String, default: (new Date()).getTime() }
 });
 
-Msa.index( { "id": 1 } );
+// app.get('/msa/:msaid/:type/:analysisid', analysis.getResults);
+describe('Get the results of an analysis', function() {
 
-var PartitionInfo = new Schema({
-    _creator : { type: Schema.Types.ObjectId, ref: 'Msa' },
-    partition   : Number,
-    startcodon  : Number,
-    endcodon    : Number,
-    span        : Number,
-    usertree    : String
 });
 
-var Sequences = new Schema({
-    _creator : { type: Schema.Types.ObjectId, ref: 'Msa' },
-    seqindex : Number,
-    name     : String
+// app.get('/msa/:msaid/:type/:analysisid/status', analysis.queryStatus);
+describe('Query the current status', function() {
+
 });
 
-//TODO: Put in validation
-module.exports = mongoose.model('Msa', Msa);
 
