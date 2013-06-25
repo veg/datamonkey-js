@@ -65,11 +65,31 @@ var Sequences = new Schema({
     name     : String
 });
 
+Msa.virtual('clipped').get(function () {
+
+  clipped_file = {
+    gencodeid  : this.gencodeid,
+    datatype   : this.datatype,
+    msaid      : this.msaid,
+    partitions : this.partitions,
+    sites      : this.sites,
+    rawsites   : this.rawsites,
+    sequences  : this.sequences,
+    goodtree   : this.goodtree,
+    nj         : this.nj,
+    timestamp  : this.timestamp,
+    mailaddr   : this.mailaddr
+  }
+
+  return clipped_file;
+
+});
+
+
 var MsaModel = mongoose.model('MsaModel', Msa);
 
 MsaModel.schema.path('mailaddr').validate(function (value) {
   check(value).len(6, 64).isEmail();
 }, 'Invalid email');
 
-//TODO: Put in validation
 module.exports = mongoose.model('Msa', Msa);

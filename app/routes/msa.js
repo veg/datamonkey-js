@@ -89,15 +89,15 @@ exports.uploadMsa = function (req, res) {
 
   }
 
-
-  sequence_alignment.save(function (err, result) {
-
-    if (err) {
-      res.json(500, error.errorResponse(err));
-    } else {
-      //Upload to datamonkey
-      dpl.uploadToPerl(result, res);
-    }
+  //Upload to Perl to get all other information
+  dpl.uploadToPerl(sequence_alignment, function(err, upload_file) {
+    upload_file.save(function (err, result) {
+      if (err) {
+        res.json(500, error.errorResponse(err));
+      } else {
+        res.json(200, upload_file.clipped);
+      }
+    });
   });
 
 }
