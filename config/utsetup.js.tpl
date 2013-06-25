@@ -1,5 +1,4 @@
 /*
-
   Datamonkey - An API for comparative analysis of sequence alignments using state-of-the-art statistical models.
 
   Copyright (C) 2013
@@ -24,23 +23,20 @@
   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
 */
 
+function define(name, value) {
+    Object.defineProperty(exports, name, {
+        value:      value,
+        enumerable: true
+    });
+}
 
-var mongoose = require('mongoose'),
-    extend = require('mongoose-schema-extend');
-
-var Schema = mongoose.Schema,
-  ObjectId = Schema.ObjectId;
-
-var AnalysisSchema = new Schema({
-  msaid               : {type: String, require: true},
-  id                  : {type: Number, require: true},
-  type                : {type: String, require: true},
-  status              : String,
-  sendmail            : Boolean,
-  timestamp           : { type: String, default: (new Date()).getTime() }
-});
-
-module.exports = AnalysisSchema;
+//// Unit Test
+//define("host","datamonkey-dev");
+//define('port', 3000);
+//define('database', 'mongodb://localhost/datamonkey-dev');
+//// 'default', 'short', 'tiny', 'dev'
+//define('logger', 'dev');
+//define('rootpath', '/home/sweaver/datamonkey-js');
+//define("spooldir","/home/sweaver/datamonkey-js/tests/res/spool/");

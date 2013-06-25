@@ -25,25 +25,22 @@
   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-var querystring = require('querystring');
-var dpl         = require('../../lib/datamonkey-pl.js');
-var dme         = require('../../lib/datamonkey-event.js');
-var error       = require('../../lib/error.js');
-var globals     = require('../../config/globals.js');
-var mailer      = require('../../lib/mailer.js');
-var helpers     = require('../../lib/helpers.js');
-var fs          = require('fs');
+var querystring = require('querystring'),
+    dpl         = require( ROOT_PATH + '/lib/datamonkey-pl.js'),
+    dme         = require( ROOT_PATH + '/lib/datamonkey-event.js'),
+    error       = require( ROOT_PATH + '/lib/error.js'),
+    globals     = require( ROOT_PATH + '/config/globals.js'),
+    mailer      = require( ROOT_PATH + '/lib/mailer.js'),
+    helpers     = require( ROOT_PATH + '/lib/helpers.js'),
+    fs          = require('fs');
 
 var mongoose = require('mongoose'),
     Msa = mongoose.model('Msa');
 
-
-// TODO: Put in Model
 function createAnalysis(Analysis, AnalysisParameters, msa, count, type,
                         postdata, res) {
 
   var an = new Analysis({
-    msafn  : msa._id,
     msaid  : msa.msaid,
     id     : count,
     type   : type,
@@ -58,7 +55,9 @@ function createAnalysis(Analysis, AnalysisParameters, msa, count, type,
   an.save(function (err, result) {
 
     if (err) {
-      console.log(err);
+      helpers.logger.warn(err);
+      res.json(500, error.errorResponse("Missing Parameters: " + missing_params));
+      return;
     }
 
     // Create Analysis Parameters from postdata
@@ -73,20 +72,24 @@ function createAnalysis(Analysis, AnalysisParameters, msa, count, type,
          parameters[parameter] = postdata[parameter] ;
         }
         else {
-          missing_params.push(parameter);
+          if(parameter != "__v") {
+            missing_params.push(parameter);
+          }
         }
       }
     }
 
-    if (missing_params.length > 0){
-      res.json(500, error.errorResponse("Missing Parameters: " + missing_params));
+    if (missing_params.length > 0) {
+      res.json(500, error.errorResponse("Missing Parameters: " 
+               + missing_params));
       return;
     }
 
     //Save Parameters to parent object
     parameters.save(function (err, aparams) {
       if (err) {
-        console.log(err);
+        helpers.logger.warn(err);
+        res.json(500, error.errorResponse("Unable to save parameters"));
       }
 
       else {
@@ -97,6 +100,7 @@ function createAnalysis(Analysis, AnalysisParameters, msa, count, type,
           res.json(500, error.errorResponse('There is no sequence with id of '
                                        + id));
         } else {
+
           an.parameters.push(parameters);
           an.save();
 
@@ -160,7 +164,7 @@ exports.invokeJob = function(req, res) {
 
     //Get count of this analysis
     Analysis 
-    .findOne({ msafn: msa._id })
+    .findOne({ msaid: msa.msaid })
     .sort('-id')
     .select('id')
     .exec(callback)
@@ -181,20 +185,14 @@ exports.queryStatus = function(req, res) {
   var type =  req.params.type;
   var Analysis = mongoose.model(type.capitalize());
   
-  Msa.findOne({msaid : req.params.msaid}, function(err, msa) {
-      if (err || !msa ) {
-        res.json(500, error.errorResponse('There is no sequence with id of ' + 
-                                      req.params.analysisid));
-      } else { 
-      Analysis.findOne({msafn : msa._id, id : req.params.analysisid}, function(err, item) {
-        if (err)
-          res.json(500, error.errorResponse('There is no sequence with id of ' 
-                   + req.params.analysisid));
-        else {
-          //This should eventually be its own polling task
-          res.json({"status":item.status});
-        }
-      });
+  Analysis.findOne({msafn : msa._id, id : req.params.analysisid}, 
+                   function(err, item) {
+    if (err) {
+      res.json(500, error.errorResponse('There is no sequence with id of ' 
+               + req.params.analysisid));
+    } else {
+      //This should eventually be its own polling task
+      res.json({"status":item.status});
     }
   });
 }
@@ -207,7 +205,6 @@ exports.getAnalysis = function(req, res) {
 
   var msaid = req.params.msaid,
       analysisid = req.params.analysisid;
-
 
   //Return all results
   Analysis.findOne({msaid : msaid, id : analysisid}, function(err, item) {

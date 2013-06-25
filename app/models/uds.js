@@ -62,18 +62,18 @@ var Uds = AnalysisSchema.extend({
 });
 
 var UdsParameters = new Schema({
-  minread             : Number,
-  scoreM              : Number,
-  mincoverage         : Number,
-  windowsize          : Number,
-  windowstride        : Number,
-  mincopycount        : Number,
-  nucdivthreshold     : Number,
-  dodr                : Number,
-  mindrugscore        : Number,
-  mindrugcoverage     : Number,
-  lovemelongtime      : String,
-  lovemelikeyouwantto : String
+  minread             : {type: Number, require: true},
+  scoreM              : {type: Number, require: true},
+  mincoverage         : {type: Number, require: true},
+  windowsize          : {type: Number, require: true},
+  windowstride        : {type: Number, require: true},
+  mincopycount        : {type: Number, require: true},
+  nucdivthreshold     : {type: Number, require: true},
+  dodr                : {type: Number, require: true},
+  mindrugscore        : {type: Number, require: true},
+  mindrugcoverage     : {type: Number, require: true},
+  lovemelongtime      : {type: String, require: true},
+  lovemelikeyouwantto : {type: String, require: true},
 });
 
 var UdsAaAlignment = new Schema({

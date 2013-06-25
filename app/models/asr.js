@@ -52,8 +52,8 @@ var AsrParameters = new Schema({
   //ratematrix  : Mixed,  //For protein data
   //frequencies : Number, //For protein data
   modelstring : String, //For non-protein data
-  rateoption  : Number, //Required 
-  rateclasses : Number, //Required
+  rateoption  : {type: Number, require: true}, //Required 
+  rateclasses : {type: Number, require: true}, //Required
   treemode    : Number,
   //root        : Number
 });

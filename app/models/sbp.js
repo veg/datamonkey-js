@@ -54,8 +54,8 @@ var Sbp = AnalysisSchema.extend({
 var SbpParameters = new Schema({
   //ratematrix  : Mixed,  //Protein
   //frequencies : Number, //Protein
-  rateoption  : Number,
-  rateclasses : Number,
+  rateoption  : {type: Number, require: true},
+  rateclasses : {type: Number, require: true},
   modelstring : String  //Non-protein
 });
 

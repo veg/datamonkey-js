@@ -48,8 +48,8 @@ var Prime = AnalysisSchema.extend({
 });
 
 var PrimeParameters = new Schema({
-  treemode              : Number,
-  prime_property_choice : Number,
+  treemode              : {type: Number, require: true},
+  prime_property_choice : {type: Number, require: true},
 });
 
 var PrimeResults = new Schema({

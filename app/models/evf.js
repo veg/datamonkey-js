@@ -47,7 +47,7 @@ var Evf = AnalysisSchema.extend({
 });
 
 var EvfParameters = new Schema({
-  treemode    : Number,
+  treemode    : {type: Number, require: true},
 });
 
 var EvfSamples = new Schema({
