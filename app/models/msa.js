@@ -28,7 +28,9 @@
 */
 
 
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+    check = require('validator').check,
+    sanitize = require('validator').sanitize
 
 var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
@@ -36,7 +38,7 @@ var Schema = mongoose.Schema,
 var Msa = new Schema({
     contents    : {type: String, require: true},
     datatype    : {type: Number, require: true},
-    msaid       : {type: String},
+    msaid       : {type: String, index: { unique: true, dropDups: true } },
     partitions  : Number,
     sites       : Number,
     rawsites    : Number,
@@ -47,8 +49,6 @@ var Msa = new Schema({
     mailaddr    : String,
     timestamp   : { type: String, default: (new Date()).getTime() }
 });
-
-Msa.index( { "id": 1 } );
 
 var PartitionInfo = new Schema({
     _creator : { type: Schema.Types.ObjectId, ref: 'Msa' },
@@ -65,6 +65,11 @@ var Sequences = new Schema({
     name     : String
 });
 
+var MsaModel = mongoose.model('MsaModel', Msa);
+
+MsaModel.schema.path('mailaddr').validate(function (value) {
+  check(value).len(6, 64).isEmail();
+}, 'Invalid email');
+
 //TODO: Put in validation
 module.exports = mongoose.model('Msa', Msa);
-

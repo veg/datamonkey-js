@@ -67,6 +67,7 @@ describe('Parse results unit test', function() {
     });
 
     var Analysis = mongoose.model('Meme');
+
     var type = 'meme';
     var meme = new Analysis({
       msaid  : 'upload.958520133127023.1',
@@ -88,3 +89,4 @@ describe('Parse results unit test', function() {
     });
   });
 });
+

@@ -44,9 +44,9 @@ var Ifel = AnalysisSchema.extend({
 });
 
 var IfelParameters = new Schema({
-  modelstring : String,
-  treemode    : Number,
-  pvalue      : Number,
+  modelstring : {type: String, require: true},
+  treemode    : {type: Number, require: true},
+  pvalue      : {type: Number, require: true},
 });
 
 var IfelResults = new Schema({

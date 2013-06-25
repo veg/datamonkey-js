@@ -28,99 +28,72 @@
 */
 
 
-var app = require('../../server'),
-  should  = require('should'),
-  request = require('supertest');
+var setup   = require('../config/utsetup');
+var fs = require('fs');
 
-describe('Upload a file', function() {
+ROOT_PATH = setup.rootpath;
+SPOOL_DIR = setup.spooldir;
+HOST      = setup.host;
 
-  // app.post('/msa', msa.uploadMsa);
-  it('Should return object', function(done){
-    app.use(function(req, res){
-      req.accepted[0].value.should.equal('application/json');
-      req.accepted[1].value.should.equal('text/html');
-      res.end();
+var mongoose = require('mongoose');
+
+// Bootstrap models
+var models_path = ROOT_PATH + '/app/models';
+
+fs.readdirSync(models_path).forEach(function (file) {
+  require(models_path+'/'+file);
+});
+
+var Msa     = mongoose.model('Msa'),
+    should  = require('should');
+
+// app.post('/msa/:msaid/:type', analysis.invokeJob);
+describe('MSA Model tests', function() {
+
+  before(function(done) {
+    if (mongoose.connection.db) return done();
+    mongoose.connect(setup.database, done);
+  });
+
+  it('mail validation', function(done) {
+
+    var Msa  = mongoose.model('Msa');
+
+    var msa  = new Msa({
+      msaid   : 'upload.dupe.1',
+      content : 'finished',
+      mailaddr : 'sweaver@ucsd.edu',
     });
 
-    var params = {
-      'treemode'    : '0',
-      'modelstring' : '010010',
-      'pvalue'      : '0.1',
-      'sendmail'    : '1'
-    };
+    var Analysis = mongoose.model('Meme');
 
-    request(app)
-    .post('/msa/')
-    .set('Accept', 'application/json')
-    .send(params)
-    .expect(500)
-    .expect('content-type', 'application/json; charset=utf-8')
-    .end(function(err, res){
-      console.log(res.body);
-      if (err) return done(err);
-      if (!res.body.error) {
-        err = "Incorrect JSON returned: " + res.body.error;
-        done(err);
-        if(res.body.error.indexOf("No File") == -1) {
-          var err = "Incorrect body response: " + res.body;
-          done(err);
-        }
-      }
+    var type = 'meme';
+    var meme = new Analysis({
+      msaid    : 'upload.958520133127023.1',
+      id       : 1,
+      type     : type,
+      status   : 'finished',
+    });
+
+    msa.save(function (err, result) {
       done();
     });
   });
 
-})
+  it('No dupes', function(done) {
+    var Msa  = mongoose.model('Msa');
 
- app.get('/msa/:id', msa.findById);
-describe('Should return object specified by id', function() {
-
-  it('should return object', function(done){
-    app.use(function(req, res){
-      req.accepted.should.have.length(0);
-      res.end();
+    var msa  = new Msa({
+      msaid   : 'upload.dupe.1',
+      content : 'finished'
     });
 
-  app.put('/msa/:id', msa.updateMsa);
-    request(app)
-    .get('/msa/')
-    .expect(200, done);
-  });
-
-});
-
-// app.put('/msa/:id', msa.updateMsa);
-describe('Should return object specified by id', function() {
-
-  it('should return object', function(done){
-    app.use(function(req, res){
-      req.accepted.should.have.length(0);
-      res.end();
+    msa.save(function (err, result) {
+      msa.save(function (err, result) {
+        err.code.should.equal(11000);
+        done();
+      });
     });
-
-  app.put('/msa/:id', msa.updateMsa);
-    request(app)
-    .get('/msa/')
-    .expect(200, done);
   });
-
 });
-
-// app.delete('/msa/:id', msa.deleteMsa);
-describe('when there is an id specified', function() {
-
-  it('should return object', function(done){
-    app.use(function(req, res){
-      req.accepted.should.have.length(0);
-      res.end();
-    });
-
-  app.put('/msa/:id', msa.updateMsa);
-    request(app)
-    .get('/msa/50d3a9624f0cdc5372000002')
-    .expect(200, done);
-  });
-
-});
-
 

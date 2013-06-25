@@ -61,9 +61,9 @@ var Parris = AnalysisSchema.extend({
 });
 
 var ParrisParameters = new Schema({
-  modelstring : String,
-  treemode    : Number,
-  pvalue      : Number,
+  modelstring : {type: String, require: true},
+  treemode    : {type: Number, require: true},
+  pvalue      : {type: Number, require: true},
 });
 
 var ParrisDistributions = new Schema({

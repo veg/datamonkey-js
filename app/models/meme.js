@@ -47,13 +47,12 @@ var Meme = AnalysisSchema.extend({
 });
 
 var MemeParameters = new Schema({
-  modelstring : String,
-  treemode    : Number,
-  pvalue      : Number,
+  modelstring : {type: String, require: true},
+  treemode    : {type: Number, require: true},
+  pvalue      : {type: Number, require: true},
 });
 
 var MemeResults = new Schema({
-  _creator : { type: Schema.Types.ObjectId, ref: 'Meme' },
   codon   : Number,
   beta1   : Number,
   p1      : Number,
@@ -67,7 +66,6 @@ var MemeResults = new Schema({
 });
 
 var MemeMappings = new Schema({
-  _creator : { type: Schema.Types.ObjectId, ref: 'Meme' },
   tree     : Number,
   codon    : Number,
   branch   : String,
@@ -78,7 +76,6 @@ var MemeMappings = new Schema({
 });
 
 var MemeSummary = new Schema({
-  _creator  : { type: Schema.Types.ObjectId, ref: 'Meme' },
   col_key   : String,
   col_value : String
 });
