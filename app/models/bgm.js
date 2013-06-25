@@ -47,12 +47,12 @@ var Bgm = AnalysisSchema.extend({
 
 var BgmParameters = new Schema({
   //_creator    : { type  : Schema.Types.ObjectId, ref : 'Bgm' },
-  modelstring : String,
+  modelstring : {type: String, require: true},
   //treemode    : Number,
   //roptions    : Number,
-  pvalue      : Number,
-  dnds        : Number,
-  ambchoice   : Number
+  pvalue      : {type: Number, require: true},
+  dnds        : {type: Number, require: true},
+  ambchoice   : {type: Number, require: true},
 });
 
 var BgmModel = new Schema({

@@ -43,8 +43,8 @@ var Gabranch = AnalysisSchema.extend({
 });
 
 var GabranchParameters = new Schema({
-  modelstring : String,
-  treemode    : Number
+  modelstring : {type: String, require: true},
+  treemode    : {type: Number, require: true},
 });
 
 var GabSummary = new Schema({

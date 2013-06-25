@@ -73,8 +73,8 @@ var Fubar = AnalysisSchema.extend({
 });
 
 var FubarParameters = new Schema({
-  treemode    : Number,
-  pvalue      : Number,
+  treemode    : {type: Number, require: true},
+  pvalue      : {type: Number, require: true},
 });
 
 var FubarResults = new Schema({

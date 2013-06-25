@@ -44,9 +44,9 @@ var Fel = AnalysisSchema.extend({
 });
 
 var FelParameters = new Schema({
-  modelstring : String,
-  treemode    : Number,
-  pvalue      : Number,
+  modelstring : {type: String, require: true},
+  treemode    : {type: Number, require: true},
+  pvalue      : {type: Number, require: true},
 });
 
 var FelResults = new Schema({

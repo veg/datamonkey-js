@@ -47,10 +47,10 @@ var Slac = AnalysisSchema.extend({
 });
 
 var SlacParameters = new Schema({
-  pvalue      : Number,
-  dnds        : Number,
-  ambchoice   : Number,
-  modelstring : String,
+  pvalue      : {type: Number, require: true},
+  dnds        : {type: Number, require: true},
+  ambchoice   : {type: Number, require: true},
+  modelstring : {type: String, require: true},
 });
 
 

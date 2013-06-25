@@ -4,16 +4,18 @@
     "version": "0.0.1",
     "private": true,
     "dependencies": {
-        "express"   : "3.x"
-        "express-validator" : "0.3.*"
-        "email-templates" : "0.0.*"
-        "mongodb"   : "1.*"
-        "mongoose"  : "3.*"
-        "mongoose-schema-extend" : "1.*"
-        "http"      : "*"
-        "mocha"     : "*"
-        "nodemailer": "0.*.*"
-        "supertest" : "*"
-        "should"    : "*"
+        "express"   : "3.x",
+        "express-validator" : "0.3.x",
+        "jade"      : "0.x",
+        "mongodb"   : "1.x",
+        "mongoose"  : "3.x.x",
+        "mongoose-schema-extend" : "0.1.3",
+        "mocha"     : "*",
+        "nodemailer": "*",
+        "supertest" : "*",
+        "should"    : "*",
+    	"sqlite3"   : "*"
+    	"validator" : "1.2.x"
+    	"winston"   : "*"
     }
 }

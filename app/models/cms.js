@@ -47,8 +47,8 @@ var Cms = AnalysisSchema.extend({
 });
 
 var CmsParameters = new Schema({
-  modelstring : String,
-  treemode    : Number
+  modelstring : {type: String, require: true},
+  treemode    : {type: Number, require: true},
 });
 
 var CmsSummary = new Schema({

@@ -28,8 +28,8 @@
 */
 
 
-var dpl   = require('../../lib/datamonkey-pl.js');
-var error = require('../../lib/error.js');
+var dpl   = require( ROOT_PATH + '/lib/datamonkey-pl.js');
+var error = require( ROOT_PATH + '/lib/error.js');
 
 var mongoose = require('mongoose'),
     Msa = mongoose.model('Msa');
@@ -115,7 +115,6 @@ exports.updateMsa = function(req, res) {
       //Should check the postdata before
       Msa.findByIdAndUpdate(item._id, postdata, options, function (err, result) {
         if (err) {
-          console.log(err);
           res.json(500, error.errorResponse(err));
         } else {
           res.json(result);
@@ -131,7 +130,6 @@ exports.updateMsa = function(req, res) {
 exports.deleteMsa = function(req, res) {
 
   var id = req.params.id;
-  console.log(id)
 
   Msa.findOneAndRemove({ msaid: id }, function(err) {
     if (err) {

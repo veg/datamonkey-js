@@ -42,7 +42,7 @@ var Scueal = AnalysisSchema.extend({
 });
 
 var ScuealParameters = new Schema({
-  reference : String,
+  reference : {type: String, require: true},
 });
 
 var ScuealSubtypingResults = new Schema({
