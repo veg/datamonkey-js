@@ -111,6 +111,21 @@ var meme = {
   prime_property_choice : 0
 };
 
+var bsrel = {
+  id                    : 9,
+  root                  : "SRC1",
+  namedmodels           : "",
+  roptions              : 4,
+  dnds                  : 1.0,
+  ambchoice             : 0,
+  rateoption            : 0,
+  rateclasses           : 2,
+  rateoption2           : 1,
+  rateclasses2          : 2,
+  pvalue                : 0.1,
+  prime_property_choice : 0
+};
+
 var toggle = {
   id                    : 69,
   root                  : "SRC1",
@@ -357,6 +372,7 @@ var scueal = {
 //};
 
 define("asr"                   , asr);
+define("bsrel"                 , bsrel);
 define("meme"                  , meme);
 define("cms"                   , cms);
 define("fel"                   , fel);

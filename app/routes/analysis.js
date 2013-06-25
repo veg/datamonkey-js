@@ -49,6 +49,8 @@ function createAnalysis(Analysis, AnalysisParameters, msa, count, type,
 
   if (postdata.sendmail !== undefined) {
     an.sendmail = postdata.sendmail;
+  } else {
+    an.sendmail = true;
   }
 
   an.save(function (err, result) {
