@@ -38,7 +38,7 @@ var mongoose = require('mongoose'),
     Msa = mongoose.model('Msa');
 
 function createAnalysis(Analysis, AnalysisParameters, msa, count, type,
-                        postdata, res) {
+                        postdata, callback) {
 
   var an = new Analysis({
     msaid  : msa.msaid,
@@ -56,7 +56,7 @@ function createAnalysis(Analysis, AnalysisParameters, msa, count, type,
 
     if (err) {
       helpers.logger.warn(err);
-      res.json(500, error.errorResponse("Missing Parameters: " + missing_params));
+      callback("Missing Parameters: " + missing_params, null);
       return;
     }
 
@@ -70,8 +70,7 @@ function createAnalysis(Analysis, AnalysisParameters, msa, count, type,
       if (parameter != "_id" && parameter != "id") { 
         if (parameter in postdata) {
          parameters[parameter] = postdata[parameter] ;
-        }
-        else {
+        } else {
           if(parameter != "__v") {
             missing_params.push(parameter);
           }
@@ -80,8 +79,7 @@ function createAnalysis(Analysis, AnalysisParameters, msa, count, type,
     }
 
     if (missing_params.length > 0) {
-      res.json(500, error.errorResponse("Missing Parameters: " 
-               + missing_params));
+      callback("Missing Parameters: " + missing_params, null);
       return;
     }
 
@@ -89,7 +87,7 @@ function createAnalysis(Analysis, AnalysisParameters, msa, count, type,
     parameters.save(function (err, aparams) {
       if (err) {
         helpers.logger.warn(err);
-        res.json(500, error.errorResponse("Unable to save parameters"));
+        callback("Unable to save parameters", null);
       }
 
       else {
@@ -97,8 +95,7 @@ function createAnalysis(Analysis, AnalysisParameters, msa, count, type,
         // Open Multiple Sequence Alignment File to get all necessary parameters
         // for dispatching.
         if (err) {
-          res.json(500, error.errorResponse('There is no sequence with id of '
-                                       + id));
+          callback('There is no sequence with id of '+ id, null);
         } else {
 
           an.parameters.push(parameters);
@@ -123,7 +120,13 @@ function createAnalysis(Analysis, AnalysisParameters, msa, count, type,
            };
 
            // Dispatch the analysis to the perl script
-           dpl.dispatchAnalysis(an, type, msa, params, res);
+           dpl.dispatchAnalysis(an, type, msa, params, function(err, analysis) {
+             if (err) {
+               callback(err, null);  
+             } else {
+               callback(null, analysis);  
+             }
+           });
          }
       }
     });
@@ -158,8 +161,13 @@ exports.invokeJob = function(req, res) {
       }
 
       createAnalysis(Analysis, AnalysisParameters, msa, highest_countid, type,
-                     postdata, res);
-
+                     postdata, function(err, message) {
+        if (err) {
+          res.json(500, error.errorResponse(err));
+        } else {
+          res.json(200, message);
+        }
+      });
     }
 
     //Get count of this analysis

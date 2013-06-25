@@ -55,7 +55,6 @@ describe('Parse results unit test', function() {
     mongoose.connect(setup.database, done);
   });
 
-
   it("Parse Meme", function(done) {
     this.timeout(5000);
 
@@ -88,5 +87,8 @@ describe('Parse results unit test', function() {
       });
     });
   });
+
+
 });
+
 
