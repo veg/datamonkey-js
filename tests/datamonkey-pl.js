@@ -82,13 +82,18 @@ describe('Parse results unit test', function() {
     msa.save(function (err, result) {
       meme.save(function (err, result) {
         dpl.parseResults(result, function(analysis) {
+          analysis.memeresults.length.should.equal(875);
           done();
         });
       });
     });
   });
 
-
+  after(function(done) {
+    var Analysis = mongoose.model('Meme');
+    Analysis.remove({}, function(err) { 
+       done();
+     });
+  });
 });
-
 

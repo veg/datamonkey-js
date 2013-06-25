@@ -47,7 +47,6 @@ function createAnalysis(Analysis, AnalysisParameters, msa, count, type,
     status : globals.queue,
   });
 
-  // TODO: Change to verify function
   if (postdata.sendmail !== undefined) {
     an.sendmail = postdata.sendmail;
   }
@@ -190,10 +189,11 @@ exports.queryStatus = function(req, res) {
   // Return its status
 
   //TODO: Validate parameters
-  var type =  req.params.type;
+  var type  =  req.params.type;
+  var msaid =  req.params.msaid;
   var Analysis = mongoose.model(type.capitalize());
   
-  Analysis.findOne({msafn : msa._id, id : req.params.analysisid}, 
+  Analysis.findOne({msaid : msaid, id : req.params.analysisid}, 
                    function(err, item) {
     if (err) {
       res.json(500, error.errorResponse('There is no sequence with id of ' 
