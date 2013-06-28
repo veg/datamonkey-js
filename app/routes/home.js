@@ -27,37 +27,9 @@
 
 */
 
+//find sequence by id
+exports.homePage = function (req, res) {
+  res.render('index.ejs');
+};
 
-var setup   = require('../config/utsetup');
-var fs = require('fs');
-
-ROOT_PATH = setup.rootpath;
-SPOOL_DIR = setup.spooldir;
-HOST      = setup.host;
-
-var mongoose = require('mongoose');
-
-// Bootstrap models
-var models_path = ROOT_PATH + '/app/models';
-
-fs.readdirSync(models_path).forEach(function (file) {
-  require(models_path+'/'+file);
-});
-
-var Msa     = mongoose.model('Msa'),
-    should  = require('should');
-
-// app.post('/msa/:msaid/:type', analysis.invokeJob);
-describe('MSA Model tests', function() {
-
-  before(function(done) {
-    if (mongoose.connection.db) return done();
-    mongoose.connect(setup.database, done);
-  });
-
-
-  it('No dupes', function(done) {
-    done();
-  });
-});
 

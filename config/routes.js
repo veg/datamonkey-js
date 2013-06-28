@@ -1,5 +1,4 @@
 /*
-
   Datamonkey - An API for comparative analysis of sequence alignments using state-of-the-art statistical models.
 
   Copyright (C) 2013
@@ -24,40 +23,26 @@
   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
 */
 
+//Routes
 
-var setup   = require('../config/utsetup');
-var fs = require('fs');
+module.exports = function(app){
+  // HOME PAGE
+  home = require( ROOT_PATH + '/app/routes/home');
+  app.get('/', home.homePage);
 
-ROOT_PATH = setup.rootpath;
-SPOOL_DIR = setup.spooldir;
-HOST      = setup.host;
+  // UPLOAD FILE ROUTES
+  msa = require( ROOT_PATH + '/app/routes/msa');
+  app.get('/msa/:id', msa.findById);
+  app.post('/msa', msa.uploadMsa);
+  app.put('/msa/:id', msa.updateMsa);
+  app.delete('/msa/:id', msa.deleteMsa);
 
-var mongoose = require('mongoose');
-
-// Bootstrap models
-var models_path = ROOT_PATH + '/app/models';
-
-fs.readdirSync(models_path).forEach(function (file) {
-  require(models_path+'/'+file);
-});
-
-var Msa     = mongoose.model('Msa'),
-    should  = require('should');
-
-// app.post('/msa/:msaid/:type', analysis.invokeJob);
-describe('MSA Model tests', function() {
-
-  before(function(done) {
-    if (mongoose.connection.db) return done();
-    mongoose.connect(setup.database, done);
-  });
-
-
-  it('No dupes', function(done) {
-    done();
-  });
-});
-
+  // ANALYSIS ROUTES
+  analysis = require( ROOT_PATH + '/app/routes/analysis');
+  app.post('/msa/:msaid/:type', analysis.invokeJob);
+  app.get('/msa/:msaid/:type/:analysisid', analysis.getAnalysis);
+  app.get('/msa/:msaid/:type/:analysisid/status', analysis.queryStatus);
+  app.delete('/msa/:msaid/:type/:analysisid', analysis.deleteAnalysis);
+}

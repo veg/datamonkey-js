@@ -27,37 +27,27 @@
 
 */
 
+#datamonkey-hero {
+  fill: none;
+  stroke: #000;
+  background-color: #E7E6F2;
+  background-image: url('../img/dm_whole.png');
+  background-repeat: no-repeat;
+  background-position: bottom right;
+}
 
-var setup   = require('../config/utsetup');
-var fs = require('fs');
+#dm-news-logo {
+  width: 75px;
+}
 
-ROOT_PATH = setup.rootpath;
-SPOOL_DIR = setup.spooldir;
-HOST      = setup.host;
+#tiny-monkey-logo {
+  width: 65px;
+  float: left;
+  position: relative;
+  bottom: -5px;
+}
 
-var mongoose = require('mongoose');
-
-// Bootstrap models
-var models_path = ROOT_PATH + '/app/models';
-
-fs.readdirSync(models_path).forEach(function (file) {
-  require(models_path+'/'+file);
-});
-
-var Msa     = mongoose.model('Msa'),
-    should  = require('should');
-
-// app.post('/msa/:msaid/:type', analysis.invokeJob);
-describe('MSA Model tests', function() {
-
-  before(function(done) {
-    if (mongoose.connection.db) return done();
-    mongoose.connect(setup.database, done);
-  });
-
-
-  it('No dupes', function(done) {
-    done();
-  });
-});
+li.media {
+  margin-top: 5px;
+}
 

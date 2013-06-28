@@ -57,24 +57,15 @@ app.configure(function () {
 var models_path = __dirname + '/app/models';
 
 fs.readdirSync(models_path).forEach(function (file) {
-  require(models_path+'/'+file)
+  require(models_path+'/'+file);
 });
 
-//Routes
-msa = require('./app/routes/msa');
+require('./config/routes')(app);
 
-// UPLOAD FILE ROUTES
-app.get('/msa/:id', msa.findById);
-app.post('/msa', msa.uploadMsa);
-app.put('/msa/:id', msa.updateMsa);
-app.delete('/msa/:id', msa.deleteMsa);
+app.set('views', __dirname + '/app/templates');
+app.engine('html', require('ejs').renderFile);
 
-// ANALYSIS ROUTES
-analysis = require('./app/routes/analysis');
-app.post('/msa/:msaid/:type', analysis.invokeJob);
-app.get('/msa/:msaid/:type/:analysisid', analysis.getAnalysis);
-app.get('/msa/:msaid/:type/:analysisid/status', analysis.queryStatus);
-app.delete('/msa/:msaid/:type/:analysisid', analysis.deleteAnalysis);
+app.use(express.static(__dirname + '/public'));
 
 //Port to listen on
 app.listen(setup.port);
