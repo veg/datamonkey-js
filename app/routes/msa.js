@@ -108,7 +108,7 @@ exports.uploadMsa = function (req, res) {
         res.format({
           html: function(){
             console.log(details);
-            res.render('analysis/summary.ejs', details);
+            res.render('upload/summary.ejs', details);
           },
           json: function(){
             console.log(details);

@@ -36,7 +36,7 @@ exports.homePage = function (req, res) {
 
 //find sequence by id
 exports.help = function (req, res) {
-  res.render('uploadhelp.ejs');
+  res.render('help.ejs');
 };
 
 exports.jobQueue = function(req, res) {
