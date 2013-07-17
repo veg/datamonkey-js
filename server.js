@@ -72,3 +72,4 @@ app.listen(setup.port);
 
 helpers.logger.info('Listening on port ' + setup.port + '...');
 module.exports = app;
+

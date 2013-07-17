@@ -28,48 +28,39 @@
 */
 
 
-var dpl   = require( ROOT_PATH + '/lib/datamonkey-pl.js');
-var error = require( ROOT_PATH + '/lib/error.js');
+var dpl     = require( ROOT_PATH + '/lib/datamonkey-pl.js'),
+    error   = require( ROOT_PATH + '/lib/error.js'),
+    helpers = require(ROOT_PATH + '/lib/helpers.js'),
+    globals = require(ROOT_PATH + '/config/globals.js'),
+    fs      = require('fs');
 
 var mongoose = require('mongoose'),
     Msa = mongoose.model('Msa');
 
-//find sequence by id
-exports.findById = function (req, res) {
-  var id = req.params.id;
-  Msa.findOne({msaid : id}, function (err, items) {
-    if (err || !items) {
-      res.json(500, error.errorResponse('There is no sequence with id of ' + id));
-    } else {
-      res.json(items);
-    }
-  });
+
+
+// app.get('/msa', msa.showUploadForm);
+exports.showUploadForm = function (req, res) {
+  res.render('uploadform.ejs');
 };
 
-//return all sequences
-exports.findAll = function (req, res) {
-
-  Msa.find({}, function (err, items) {
-
-    if (err) {
-      res.json(500, error.errorResponse('There is no sequence with id of ' + id));
-    } else {
-     res.json(items);
-    }
-
-  });
-
-};
-
-//upload a sequence
+// app.post('/msa', msa.uploadMsa);
 exports.uploadMsa = function (req, res) {
 
-  postdata = req.query;
+  postdata = req.body;
 
   try {
-    postdata.contents = req.body["files"][1];
+    contents = fs.readFileSync(req.files.files.path);
+    postdata.contents = contents;
   } catch(e) {
-   res.json(500, error.errorResponse("Missing Parameters: No File"));
+    res.format({
+      html: function(){
+        res.render('error.ejs', error.errorResponse("Missing Parameters: No File"));
+      },
+      json: function(){
+        res.json(500, error.errorResponse("Missing Parameters: No File"));
+      }
+    });
    return;
   }
 
@@ -83,27 +74,92 @@ exports.uploadMsa = function (req, res) {
     sequence_alignment.mailaddr  = postdata.mailaddr;
 
   } catch(e) {
+    res.format({
+      html: function(){
+        res.render('error.ejs', error.errorResponse("Missing Parameters: " + e));
+      },
+      json: function(){
+        res.json(500, error.errorResponse("Missing Parameters: " + e));
+      }
+    });
 
-    res.json(500, error.errorResponse("Missing Parameters: " + e));
     return;
-
   }
 
   //Upload to Perl to get all other information
   dpl.uploadToPerl(sequence_alignment, function(err, upload_file) {
+    if(err) {
+      helpers.logger.error("Error uploading file: " + err);
+      res.json(500, error.errorResponse(err));
+    }
+
+    if(!upload_file) {
+      err = "Unexpected error occured: Empty sequence alignment";
+      helpers.logger.error(err);
+      res.json(500, error.errorResponse(err));
+    }
+
+    //TODO: We should just redirect
     upload_file.save(function (err, result) {
       if (err) {
         res.json(500, error.errorResponse(err));
       } else {
-        res.json(200, upload_file.clipped);
+        var details = upload_file.clipped;
+        res.format({
+          html: function(){
+            console.log(details);
+            res.render('uploaded.ejs', details);
+          },
+          json: function(){
+            console.log(details);
+            res.json(200, details);
+          }
+        });
       }
     });
   });
-
 }
 
-//update a sequence
+// app.get('/msa/:id', msa.findById);
+exports.findById = function (req, res) {
+
+  //We must get count of all analyses for the job, respective of type.
+  var id = req.params.id;
+
+  Msa.findOne({msaid : id}, function (err, items) {
+    if (err || !items) {
+      res.json(500, error.errorResponse('There is no sequence with id of ' + id));
+    } else {
+      var details = items;
+
+      //Get the count of the different analyses on the job
+      items.AnalysisCount(function(type_counts) {
+
+        var ftc = []
+
+        for(var t in globals.types) {
+          ftc[t] = {
+            "full_name" : globals.types[t].full_name,
+            "count"     : type_counts[t] || 0,
+          }
+        }
+
+        res.format({
+          html: function(){
+            res.render('uploaded.ejs', {'details': details, 'type_count': ftc });
+          },
+          json: function(){
+            res.json(200, {'details': details, 'type_count': ftc });
+          }
+        });
+      });
+    }
+  });
+};
+
+// app.put('/msa/:id', msa.updateMsa);
 exports.updateMsa = function(req, res) {
+
   var id = req.query.id;
   var postdata = req.query;
   var options = { multi: false };
@@ -122,11 +178,9 @@ exports.updateMsa = function(req, res) {
       });
     }
   });
-
-
 }
 
-//delete a sequence
+// app.delete('/msa/:id', msa.deleteMsa);
 exports.deleteMsa = function(req, res) {
 
   var id = req.params.id;

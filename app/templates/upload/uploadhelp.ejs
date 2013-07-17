@@ -1,0 +1,24 @@
+<%- include includes/header.ejs %>
+
+<div class="tabbable tabs-left">
+<ul class="nav nav-tabs">
+  <li class="active"><a href="#preparing-data" data-toggle="tab">Preparing Data</a></li>
+  <li class=""><a href="#data-types" data-toggle="tab">Data Types</a></li>
+  <li class=""><a href="#genetic-code" data-toggle="tab">Genetic Code</a></li>
+  <li class=""><a href="#data-formats" data-toggle="tab">Data Formats</a></li>
+</ul>
+<div class="tab-content">
+  <div id="preparing-data" class="tab-pane active">
+    <%- include includes/uploadform/preparingdata.ejs %>
+  </div>
+  <div id="data-types" class="tab-pane">
+    <%- include includes/uploadform/datatypes.ejs %>
+  </div>
+  <div id="genetic-code" class="tab-pane">
+    <%- include includes/uploadform/geneticcode.ejs %>
+  </div>
+  <div id="data-formats" class="tab-pane">
+    <%- include includes/uploadform/dataformats.ejs %>
+  </div>
+</div>
+<%- include includes/footer.ejs %>

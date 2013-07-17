@@ -29,7 +29,9 @@
 
 
 var mongoose = require('mongoose'),
-    check = require('validator').check,
+    moment   = require('moment'),
+    check    = require('validator').check,
+    globals  = require( ROOT_PATH + '/config/globals.js'),
     sanitize = require('validator').sanitize
 
 var Schema = mongoose.Schema,
@@ -85,11 +87,65 @@ Msa.virtual('clipped').get(function () {
 
 });
 
+Msa.virtual('genetic_code').get(function () {
+    return globals.genetic_code[this.gencodeid];
+});
+
+Msa.virtual('day_created_on').get(function () {
+    console.log(this.timestamp);
+    var time = moment.unix(this.timestamp);
+    console.log(time);
+    return time.format('YYYY-MMM-DD');
+});
+
+Msa.virtual('time_created_on').get(function () {
+    console.log(this.timestamp);
+    var time = moment.unix(this.timestamp);
+    console.log(time);
+    return time.format('HH:mm');
+});
+
 
 var MsaModel = mongoose.model('MsaModel', Msa);
 
 MsaModel.schema.path('mailaddr').validate(function (value) {
+  if(value) {
   check(value).len(6, 64).isEmail();
+  } else {
+    return true;
+  }
 }, 'Invalid email');
 
+Msa.methods.AnalysisCount = function (cb) {
+
+  var type_counts = {};
+  var c = 0;
+
+  var count_increment = function(err, analysis) {
+
+    c += 1;
+
+    if(analysis != null) {
+      type_counts[analysis.type] = analysis.id || 0; 
+    }
+
+    if(c == Object.keys(globals.types).length) {
+      cb(type_counts);
+    }
+
+  }
+
+  for(var t in globals.types) {
+    Analysis = mongoose.model(t.capitalize());
+    //Get count of this analysis
+    Analysis 
+    .findOne({ msaid: this.msaid })
+    .sort('-id')
+    .exec(count_increment)
+  }
+
+};
+
 module.exports = mongoose.model('Msa', Msa);
+
+

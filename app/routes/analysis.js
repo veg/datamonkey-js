@@ -186,6 +186,19 @@ exports.invokeJob = function(req, res) {
 
 }
 
+exports.createForm = function(req, res) {
+  var upload_id = req.params.msaid;
+  Msa.findOne({msaid : upload_id}, function (err, uploadfile) {
+    if (err || !uploadfile) {
+      res.json(500, error.errorResponse('There is no sequence with id of ' + id));
+    } else {
+      var ftc = []
+      res.render('analysis/create.ejs', { 'uploadfile' : uploadfile , 
+                                          'analysis_type' : globals.types });
+    }
+  });
+}
+
 exports.queryStatus = function(req, res) {
   // Find the analysis
   // Return its status
@@ -245,4 +258,5 @@ exports.deleteAnalysis = function(req, res) {
     }
   });
 }
+
 

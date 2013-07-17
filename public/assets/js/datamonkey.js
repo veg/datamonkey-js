@@ -1,3 +1,5 @@
-//$(document).ready(function() {
-//    $('#analysis-nav').affix({});
-//});
+$(document).ready(function(){
+  $('a[href="' + window.location.hash + '"]').click()
+});
+
+$('#upload-file-label').popover()

@@ -27,9 +27,20 @@
 
 */
 
+var mongoose = require('mongoose');
+
 //find sequence by id
 exports.homePage = function (req, res) {
   res.render('index.ejs');
 };
 
+//find sequence by id
+exports.help = function (req, res) {
+  res.render('uploadhelp.ejs');
+};
+
+exports.jobQueue = function(req, res) {
+  //Gather all queueing and running jobs
+  //var collections = mongoose.connection.collections;
+}
 

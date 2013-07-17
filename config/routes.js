@@ -28,21 +28,27 @@
 //Routes
 
 module.exports = function(app){
+
   // HOME PAGE
   home = require( ROOT_PATH + '/app/routes/home');
   app.get('/', home.homePage);
+  app.get('/help', home.help);
+  app.get('/jobqueue', home.jobQueue);
 
   // UPLOAD FILE ROUTES
   msa = require( ROOT_PATH + '/app/routes/msa');
-  app.get('/msa/:id', msa.findById);
+  app.get('/msa', msa.showUploadForm);
   app.post('/msa', msa.uploadMsa);
+  app.get('/msa/:id', msa.findById);
   app.put('/msa/:id', msa.updateMsa);
   app.delete('/msa/:id', msa.deleteMsa);
 
   // ANALYSIS ROUTES
   analysis = require( ROOT_PATH + '/app/routes/analysis');
   app.post('/msa/:msaid/:type', analysis.invokeJob);
+  app.get('/msa/:msaid/:type/create', analysis.createForm);
   app.get('/msa/:msaid/:type/:analysisid', analysis.getAnalysis);
   app.get('/msa/:msaid/:type/:analysisid/status', analysis.queryStatus);
   app.delete('/msa/:msaid/:type/:analysisid', analysis.deleteAnalysis);
+
 }
