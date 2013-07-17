@@ -41,7 +41,7 @@ var mongoose = require('mongoose'),
 
 // app.get('/msa', msa.showUploadForm);
 exports.showUploadForm = function (req, res) {
-  res.render('uploadform.ejs');
+  res.render('upload/form.ejs');
 };
 
 // app.post('/msa', msa.uploadMsa);
@@ -108,7 +108,7 @@ exports.uploadMsa = function (req, res) {
         res.format({
           html: function(){
             console.log(details);
-            res.render('uploaded.ejs', details);
+            res.render('analysis/summary.ejs', details);
           },
           json: function(){
             console.log(details);
@@ -146,7 +146,7 @@ exports.findById = function (req, res) {
 
         res.format({
           html: function(){
-            res.render('uploaded.ejs', {'details': details, 'type_count': ftc });
+            res.render('upload/summary.ejs', {'details': details, 'type_count': ftc });
           },
           json: function(){
             res.json(200, {'details': details, 'type_count': ftc });
