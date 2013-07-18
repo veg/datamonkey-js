@@ -52,7 +52,7 @@ li.media {
 }
 
 .upload-div {
-  margin: 15px 0px 15px 0px;
+  margin: 0px 0px 15px 0px;
 }
 
 .boxed-group {
@@ -123,3 +123,4 @@ li.media {
 #modelmatrix label {
   display: inline; 
 }
+

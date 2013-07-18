@@ -1,3 +1,7 @@
+$(document).ready(function(){
+  setBF();
+});
+
 function populateForm () {
   SetMethodByValue(0);
   setBF();

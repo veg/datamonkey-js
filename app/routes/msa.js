@@ -99,19 +99,17 @@ exports.uploadMsa = function (req, res) {
       res.json(500, error.errorResponse(err));
     }
 
+
     //TODO: We should just redirect
     upload_file.save(function (err, result) {
       if (err) {
         res.json(500, error.errorResponse(err));
       } else {
-        var details = upload_file.clipped;
         res.format({
           html: function(){
-            console.log(details);
-            res.render('upload/summary.ejs', details);
+            res.redirect('./' + upload_file.msaid);
           },
           json: function(){
-            console.log(details);
             res.json(200, details);
           }
         });

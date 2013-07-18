@@ -13,8 +13,8 @@
       <label class="control-label" for="inputEmail">Method<a class="info" target="_blank" href="/help/index.php"><sup>?</sup></a></label>
       <div class="controls">
         <select onchange="setBF()" name="method">
-          <% for(var t in analysis_type) { %>
-            <option value="<%= analysis_type[t].id %>"><%= analysis_type[t].full_name %></option>
+          <% for(var t in analysis_types) { %>
+            <option value="<%= analysis_types[t].id %>" <%if (get_type == t) {%>selected<%}%> ><%= analysis_types[t].full_name %></option>
           <% } %>
         </select>
       </div>
@@ -312,5 +312,4 @@
     <div><input type="Submit" value="Run the analysis"></div>
   </form>
 </div>
-<script src="/assets/js/analysis/create.js"></script>
 <%- include ../includes/footer.ejs %>

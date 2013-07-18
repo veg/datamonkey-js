@@ -180,21 +180,20 @@ exports.invokeJob = function(req, res) {
 
   });
 
-// I want to post all analyses to here, 
-// based on what the type is, create
-// the correct type of object.
-
 }
 
 exports.createForm = function(req, res) {
   var upload_id = req.params.msaid;
+  var get_type = req.query.type || "";
+
   Msa.findOne({msaid : upload_id}, function (err, uploadfile) {
     if (err || !uploadfile) {
       res.json(500, error.errorResponse('There is no sequence with id of ' + id));
     } else {
       var ftc = []
       res.render('analysis/create.ejs', { 'uploadfile' : uploadfile , 
-                                          'analysis_type' : globals.types });
+                                          'get_type'   : get_type,
+                                          'analysis_types' : globals.types });
     }
   });
 }

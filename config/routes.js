@@ -45,8 +45,8 @@ module.exports = function(app){
 
   // ANALYSIS ROUTES
   analysis = require( ROOT_PATH + '/app/routes/analysis');
+  app.get('/msa/:msaid/createanalysis', analysis.createForm);
   app.post('/msa/:msaid/:type', analysis.invokeJob);
-  app.get('/msa/:msaid/:type/create', analysis.createForm);
   app.get('/msa/:msaid/:type/:analysisid', analysis.getAnalysis);
   app.get('/msa/:msaid/:type/:analysisid/status', analysis.queryStatus);
   app.delete('/msa/:msaid/:type/:analysisid', analysis.deleteAnalysis);
