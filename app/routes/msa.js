@@ -138,6 +138,7 @@ exports.findById = function (req, res) {
         for(var t in globals.types) {
           ftc[t] = {
             "full_name" : globals.types[t].full_name,
+            "help" : globals.types[t].help,
             "count"     : type_counts[t] || 0,
           }
         }

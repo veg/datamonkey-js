@@ -10,7 +10,7 @@
     <input type="hidden" value="<%= uploadfile.partitions %>" name="partitions">
 
     <div id="method" class="control-group">
-      <label class="control-label" for="inputEmail">Method<a class="info" target="_blank" href="/help/index.php"><sup>?</sup></a></label>
+      <label class="control-label" for="inputEmail">Method<a class="info" target="_blank" href="/help"><sup>?</sup></a></label>
       <div class="controls">
         <select onchange="setBF()" name="method">
           <% for(var t in analysis_types) { %>
@@ -37,7 +37,7 @@
     </div>
 
     <div id="rootOn" class="control-group">
-      <label class="control-label" for="root">Root on<a class="info" target="_blank" href="/help/rooting.php"><sup>?</sup></a></label>
+      <label class="control-label" for="root">Root on<a class="info" target="_blank" href="/help#rooting"><sup>?</sup></a></label>
         <select name="root">
           <option>SRC1</option>
           <option>SRC2</option>
@@ -60,7 +60,7 @@
         <option value="010040">TrN93</option>
         <option value="012345">REV</option>
       </select>
-      <span>) nucleotide substitution bias model<a class="info" target="_blank" href="/help/models.php"><sup>?</sup></a></span>
+      <span>) nucleotide substitution bias model<a class="info" target="_blank" href="/help#nucleotide_models"><sup>?</sup></a></span>
 
       <table class="table table-bordered table-striped table-hover">
         <tbody>
@@ -219,7 +219,7 @@
     </div>
 
     <div id="rOptionsDIV" class="control-group">
-      <label class="control-label">Global dN/dS value is<a class="info" target="_blank" href="/help/dNdS.php"><sup>?</sup></a></label>
+      <label class="control-label">Global dN/dS value is<a class="info" target="_blank" href="/help#dnds"><sup>?</sup></a></label>
       <select name="rOptions">
         <option value="0">Neutral
         </option>
@@ -234,7 +234,7 @@
     </div>
 
     <div id="ambChoice" class="control-group">
-      <label for="ambChoice" class="control-label">Handling ambiguities<a class="info" target="_blank" href="/help/ambigs.php"><sup>?</sup></a></label>
+      <label for="ambChoice" class="control-label">Handling ambiguities<a class="info" target="_blank" href="/help#ambiguities"><sup>?</sup></a></label>
       <select name="ambChoice">
         <option selected="" value="0">Averaged
         </option>
@@ -244,7 +244,7 @@
     </div>
 
     <div id="property_set" class="control-group">
-      <label for="prime_property_choice" class="control-label">Amino-acid property set<a class="info" target="_blank" href="http://hyphy.org/w/index.php/Datamonkey:PRIME"><sup>?</sup></a></label>
+      <label for="prime_property_choice" class="control-label">Amino-acid property set<a class="info" target="_blank" href="/help#aminoacidproperty"><sup>?</sup></a></label>
       <select name="prime_property_choice">
         <option selected="" value="0">Conant-Stadler
         </option>
@@ -254,13 +254,13 @@
     </div>
 
     <div id="sigLevel" class="control-group">
-      <label id="sigLevelText" for="pValue" class="control-label">Significance Level (p-value/Bayes Factor/posterior probability)<a class="info" target="_blank" href="/help/pvalue.php"><sup>?</sup></a></label>
+      <label id="sigLevelText" for="pValue" class="control-label">Significance Level (p-value/Bayes Factor/posterior probability)<a class="info" target="_blank" href="/help#pvalue"><sup>?</sup></a></label>
       <input type="text" onchange="flagOddValues()" size="10" maxlength="15" value="0.1" name="pValue"> 
     </div>
 
     <div id="rvoptions1" class="control-group">
 
-        <label for="rateOption" class="control-label">Site-to-site rate variation<a class="info" target="_blank" href="/help/ratevariation.php#distributions"><sup>?</sup></a></label>
+        <label for="rateOption" class="control-label">Site-to-site rate variation<a class="info" target="_blank" href="/help#ratevariation"><sup>?</sup></a></label>
         <select name="rateOption">
           <option value="0">None
           </option>
@@ -271,7 +271,7 @@
         </select>
         
 
-        <label for="rateClasses" class="control-label">Rate classes<a class="info" target="_blank" href="/help/ratevariation.php#rate_classes"><sup>?</sup></a></label>
+        <label for="rateClasses" class="control-label">Rate classes<a class="info" target="_blank" href="/help#ratevariation"><sup>?</sup></a></label>
         <select name="rateClasses">
           <option value="2">2
           </option>
@@ -288,14 +288,14 @@
     </div> 
 
     <div id="rvoptionsNoConstant" class="control-group">
-        <label class="control-label">Site-to-site rate variation<a class="info" target="_blank" href="/help/ratevariation.php#distributions"><sup>?</sup></a></label>
+        <label class="control-label">Site-to-site rate variation<a class="info" target="_blank" href="/help#ratevariation"><sup>?</sup></a></label>
         <select name="rateOption2">
           <option value="1">General Discrete
           </option>
           <option value="2">Beta-Gamma
           </option>
         </select>
-        <label for="rateClasses2" class="control-label">Rate classes<a class="info" target="_blank" href="/help/ratevariation.php#rate_classes"><sup>?</sup></a></label>
+        <label for="rateClasses2" class="control-label">Rate classes<a class="info" target="_blank" href="/help#ratevariation"><sup>?</sup></a></label>
         <select name="rateClasses2">
           <option value="2">2
           </option>

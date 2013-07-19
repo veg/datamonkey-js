@@ -82,6 +82,7 @@ define("cancelled","cancelled");
 
 var meme = {
   full_name             : "Mixed Effects Model of Episodic Diversifying Selection",
+  help                  : "http://hyphy.org/w/index.php/API:MEME",
   id                    : 12,
   root                  : "SRC1",
   namedmodels           : "",
@@ -97,6 +98,7 @@ var meme = {
 
 var bsrel = {
   full_name             : "Branch-site REL test for Episodic Diversifying Selection",
+  help                  : "http://hyphy.org/w/index.php/API:Branch-site_REL",
   id                    : 9,
   root                  : "SRC1",
   namedmodels           : "",
@@ -113,6 +115,7 @@ var bsrel = {
 
 var toggle = {
   full_name             : "TOGGLE",
+  help                  : "http://hyphy.org/w/index.php/API:Toggle",
   id                    : 69,
   root                  : "SRC1",
   namedmodels           : "",
@@ -128,6 +131,7 @@ var toggle = {
 
 var fubar = {
   full_name             : "Fast Unconstrained Bayesian AppRoximation",
+  help                  : "http://hyphy.org/w/index.php/API:Fubar",
   id                    : 13,
   root                  : "SRC1",
   namedmodels           : "",
@@ -144,6 +148,7 @@ var fubar = {
 
 var asr = {
   full_name             : "Ancestral State Reconstruction",
+  help                  : "http://hyphy.org/w/index.php/API:ASR",
   id                    : 22,
   treemode              : 0,
   root                  : "SRC1",
@@ -162,6 +167,7 @@ var asr = {
 
 var gabranch = {
   full_name             : "GA-Branch",
+  help                  : "http://hyphy.org/w/index.php/API:GABranch",
   id                    : 5,
   treemode              : 0,
   root                  : "SRC1",
@@ -180,6 +186,7 @@ var gabranch = {
 
 var cms = {
   full_name             : "Codon Model Selection",
+  help                  : "",
   id                    : 55,
   treemode              : 0,
   root                  : "SRC1",
@@ -198,11 +205,13 @@ var cms = {
 
 var modelselection = {
   full_name : "Model",
+  help      : "http://hyphy.org/w/index.php/API:Model_Selection",
   id : 10,
 };
 
 var gard = {
   full_name             : "GARD",
+  help                  : "http://hyphy.org/w/index.php/API:GARD",
   id                    : 21,
   treemode              : 0,
   root                  : "SRC1",
@@ -221,6 +230,7 @@ var gard = {
 
 var evf = {
   full_name             : "Evolutionary Fingerprinting",
+  help                  : "http://hyphy.org/w/index.php/API:EVF",
   id                    : 42,
   treemode              : 0,
   root                  : "SRC1",
@@ -239,6 +249,7 @@ var evf = {
 
 var sbp = {
   full_name             : "Single Breakpoint Recombination",
+  help                  : "http://hyphy.org/w/index.php/API:SBP",
   id                    : 20,
   treemode              : 0,
   root                  : "SRC1",
@@ -257,6 +268,7 @@ var sbp = {
 
 var parris = {
   full_name             : "PARRIS",
+  help                  : "http://hyphy.org/w/index.php/API:PARRIS",
   id                    : 4,
   treemode              : 0,
   root                  : "SRC1",
@@ -275,6 +287,7 @@ var parris = {
 
 var slac = {
   full_name             : "SLAC",
+  help                  : "http://hyphy.org/w/index.php/API:SLAC",
   id                    : 0,
   treemode              : 0,
   root                  : "SRC1",
@@ -293,6 +306,7 @@ var slac = {
 
 var bgm = {
   full_name             : "BGM",
+  help                  : "http://hyphy.org/w/index.php/API:BGM",
   id                    : 6,
   treemode              : 0,
   root                  : "SRC1",
@@ -311,6 +325,7 @@ var bgm = {
 
 var fel = {
   full_name             : "FEL",
+  help                  : "http://hyphy.org/w/index.php/API:FEL",
   id                    : 1,
   root                  : "SRC1",
   namedmodels           : "",
@@ -326,6 +341,7 @@ var fel = {
 
 var ifel = {
   full_name             : "IFEL",
+  help                  : "http://hyphy.org/w/index.php/API:IFEL",
   id                    : 2,
   root                  : "SRC1",
   namedmodels           : "",
@@ -341,6 +357,7 @@ var ifel = {
 
 var prime = {
   full_name             : "PRoperty Informed Models of Evolution",
+  help                  : "http://hyphy.org/w/index.php/API:PRIME",
   id                    : 71,
   root                  : "SRC1",
   namedmodels           : "",
@@ -356,6 +373,7 @@ var prime = {
 
 var scueal = {
   full_name             : "SCUEAL",
+  help                  : "http://hyphy.org/w/index.php/API:SCUEAL",
   id                    : 50,
 };
 

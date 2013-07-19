@@ -2,23 +2,65 @@
 
 <div class="tabbable tabs-left">
 <ul class="nav nav-tabs">
-  <li class="active"><a href="#preparing-data" data-toggle="tab">Preparing Data</a></li>
+  <li class="active"><a href="#general" data-toggle="tab">General</a></li>
+  <li class="nav-header">Uploading Files</li>
+  <li class=""><a href="#preparing-data" data-toggle="tab">Preparing Data</a></li>
   <li class=""><a href="#data-types" data-toggle="tab">Data Types</a></li>
   <li class=""><a href="#genetic-code" data-toggle="tab">Genetic Code</a></li>
   <li class=""><a href="#data-formats" data-toggle="tab">Data Formats</a></li>
+
+  <li class="nav-header">Analyzing Data</li>
+  <li class=""><a href="#nucleotide-models" data-toggle="tab">Nucleotide Models</a></li>
+  <li class=""><a href="#rooting" data-toggle="tab">Rooting</a></li>
+  <li class=""><a href="#dnds" data-toggle="tab">dN/DS</a></li>
+  <li class=""><a href="#ambiguities" data-toggle="tab">Handling Ambiguities</a></li>
+  <li class=""><a href="#pvalue" data-toggle="tab">Significance Levels</a></li>
+  <li class=""><a href="#aminoacidproperty" data-toggle="tab">Amino Acid Property Set</a></li>
+  <li class=""><a href="#ratevariation" data-toggle="tab">Rate Variation</a></li>
+
 </ul>
 <div class="tab-content">
-  <div id="preparing-data" class="tab-pane active">
-    <%- include includes/uploadform/preparingdata.ejs %>
+
+  <div id="general" class="tab-pane span10 active">
+    <%- include includes/help/general.ejs %>
   </div>
-  <div id="data-types" class="tab-pane">
-    <%- include includes/uploadform/datatypes.ejs %>
+
+  <!-- Uploading Files -->
+  <div id="preparing-data" class="tab-pane span10">
+    <%- include includes/help/uploads/preparingdata.ejs %>
   </div>
-  <div id="genetic-code" class="tab-pane">
-    <%- include includes/uploadform/geneticcode.ejs %>
+  <div id="data-types" class="tab-pane span10">
+    <%- include includes/help/uploads/datatypes.ejs %>
   </div>
-  <div id="data-formats" class="tab-pane">
-    <%- include includes/uploadform/dataformats.ejs %>
+  <div id="genetic-code" class="tab-pane span10">
+    <%- include includes/help/uploads/geneticcode.ejs %>
+  </div>
+  <div id="data-formats" class="tab-pane span10">
+    <%- include includes/help/uploads/dataformats.ejs %>
+  </div>
+
+  <!-- Analyzing Data -->
+  <div id="nucleotide-models" class="tab-pane span10">
+    <%- include includes/help/analysis/nucleotide_models.ejs %>
+  </div>
+  <div id="rooting" class="tab-pane span10">
+    <%- include includes/help/analysis/rooting.ejs %>
+  </div>
+  <div id="dnds" class="tab-pane span10">
+    <%- include includes/help/analysis/dnds.ejs %>
+  </div>
+  <div id="ambiguities" class="tab-pane span10">
+    <%- include includes/help/analysis/ambiguities.ejs %>
+  </div>
+  <div id="pvalue" class="tab-pane span10">
+    <%- include includes/help/analysis/significance.ejs %>
+  </div>
+  <div id="aminoacidproperty" class="tab-pane span10">
+    <%- include includes/help/analysis/aminoacidproperty.ejs %>
+  </div>
+  <div id="ratevariation" class="tab-pane span10">
+    <%- include includes/help/analysis/ratevariation.ejs %>
   </div>
 </div>
 <%- include includes/footer.ejs %>
+

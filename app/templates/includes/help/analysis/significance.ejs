@@ -1,0 +1,46 @@
+<h1 class="page-header">How to choose significance levels?</h1>
+
+<DIV class = "RepClassSM">For more details see <a href='http://mbe.oxfordjournals.org/cgi/content/short/22/5/1208' class = 'REFERENCE'>MBE paper</a>
+</DIV>
+
+<h3>SLAC</h3>
+<p>
+The cutoff p-value for the two-tail extended binomial test to classify a site as positively or negatively
+selected. Must lie between 0 and 1 (not inclusive). Note the difference from  
+empirical Bayesian methods (e.g. those implemented in PAML), where the "cutoff" values reflect an arbitrary tail of the posterior rate distribution 
+at a site, and in general, can not be readily interpreted as indication of significance. 
+The SLAC method also tends to be very conservative compared to empiricial Bayesian approaches.
+</p>
+
+<h3>FEL/IFEL/TOGGLE</h3>
+<p>
+The cutoff p-value for the single degree of freedom likelihood ratio test (chi squared asymptotic is used) to classify a site as positively or negatively
+selected. Must lie between 0 and 1 (not inclusive). Again, note the difference from  
+empirical Bayesian methods. The FEL method also tends to be more conservative than empiricial Bayesian
+approaches, but less conservative than SLAC.</p>
+
+<h3>REL</h3>
+<p>
+A (somewhat) arbitrary cut-off value for the Bayes factor for the event of positive selection at a given site.
+When a Bayes factor sufficiently greater than 1 (default is 50; values between 10-100 provide <b>strong</b> evidence for the hypothesis, while values over 100 
+are <b>decisive</b>) suggests that the data supports positive (or negative) selection at that site. This value does 
+correspond to statistical significance, but the exact mapping between Bayes factors and p-values is data set dependent.
+The reciprocal of a Bayes Factor is loosely analogous to a p-value.
+REL methods are most sensitive, but are also most prone to false positives.
+</a> for a detailed discussion.</p> 
+
+<h3>PARRIS</h3>
+<p>
+The cutoff p-value for the 2-degree of freedom likelihood ratio test (chi squared asymptotic is used) to compare
+the null M1 model (no &omega;&gt;1) to the alternative model M2 model which allows a proportion of sites to have &omega;&gt;1.
+Also see the PARRIS paper.
+</p>
+
+<h3>BGM/Spidermonkey</h3>
+<p>
+The minimum value for the posterior probability for an edge (association) to be included the inferred bayesian graph. Must be in [0,1] and
+should be in [0.5,1].
+Loosely, 0.95 is a <b>stringent</b> cutoff, 0.9 is a <b>strong</b> cutoff, 0.5 is a <b>minimal</b> (suitable for initial exploratory 
+analyses) cutoff value. Results can be re-displayed interactively at different posterior levels without the need to rerun the analysis.
+</p>
+
