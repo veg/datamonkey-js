@@ -27,7 +27,8 @@
 
 */
 
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+    globals  = require( ROOT_PATH + '/config/globals.js');
 
 //find sequence by id
 exports.homePage = function (req, res) {
@@ -40,7 +41,22 @@ exports.help = function (req, res) {
 };
 
 exports.jobQueue = function(req, res) {
-  //Gather all queueing and running jobs
-  //var collections = mongoose.connection.collections;
-}
 
+  var all_jobs = [];
+
+  //Need a count to know when to callback
+  var count = 0;
+
+  // Gather all queueing and running jobs
+  for(var t in globals.types) {
+    Analysis = mongoose.model(t.capitalize());
+    Analysis.jobs(function(err, respective_jobs){
+      all_jobs.push(respective_jobs);
+      count++;
+      if(count == Object.keys(globals.types).length) {
+        res.render('jobqueue.ejs', { "jobs" : respective_jobs , 
+                                     "globals" : globals } );
+      }
+    });
+  }
+}

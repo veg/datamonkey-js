@@ -38,9 +38,9 @@ var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
 var Msa = new Schema({
+    upload_id   : {type: String, index: { unique: true, dropDups: true } },
     contents    : {type: String, require: true},
     datatype    : {type: Number, require: true},
-    msaid       : {type: String, index: { unique: true, dropDups: true } },
     partitions  : Number,
     sites       : Number,
     rawsites    : Number,
@@ -49,7 +49,7 @@ var Msa = new Schema({
     goodtree    : Number,
     nj          : String,
     mailaddr    : String,
-    timestamp   : { type: String, default: (new Date()).getTime() }
+    timestamp   : { type: Number, default: (new Date()).getTime() }
 });
 
 var PartitionInfo = new Schema({
@@ -92,16 +92,12 @@ Msa.virtual('genetic_code').get(function () {
 });
 
 Msa.virtual('day_created_on').get(function () {
-    console.log(this.timestamp);
-    var time = moment.unix(this.timestamp);
-    console.log(time);
+    var time = moment(this.timestamp);
     return time.format('YYYY-MMM-DD');
 });
 
 Msa.virtual('time_created_on').get(function () {
-    console.log(this.timestamp);
-    var time = moment.unix(this.timestamp);
-    console.log(time);
+    var time = moment(this.timestamp);
     return time.format('HH:mm');
 });
 
@@ -124,7 +120,6 @@ Msa.methods.AnalysisCount = function (cb) {
   var count_increment = function(err, analysis) {
 
     c += 1;
-
     if(analysis != null) {
       type_counts[analysis.type] = analysis.id || 0; 
     }
@@ -135,11 +130,12 @@ Msa.methods.AnalysisCount = function (cb) {
 
   }
 
+  //TODO: Change to get children
   for(var t in globals.types) {
     Analysis = mongoose.model(t.capitalize());
     //Get count of this analysis
     Analysis 
-    .findOne({ msaid: this.msaid })
+    .findOne({ upload_id: this._id })
     .sort('-id')
     .exec(count_increment)
   }
@@ -147,5 +143,4 @@ Msa.methods.AnalysisCount = function (cb) {
 };
 
 module.exports = mongoose.model('Msa', Msa);
-
 

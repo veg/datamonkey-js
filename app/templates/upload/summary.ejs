@@ -3,7 +3,7 @@
 <div class="container" id="property_table">
   <div class="span12">
     <h3>File Upload Summary</h3>
-    <h4><%= details.msaid %></h4>
+    <h4><%= details.upload_id %></h4>
     <div id="upload_summary">
       <ul class="nav">
         <li><b><%= details.partitions %></b> Partitions</li>
@@ -21,32 +21,32 @@
         <div>
           <td>Nucleotide sequences </td>
           <ul>
-            <li><a href="/cgi-bin/datamonkey/showdata.pl?<%= details.msaid %>">FASTA</a></li>
-            <li><a href="/cgi-bin/datamonkey/seqPlot.pl?file=<%= details.msaid %>">PDF</a></li>
+            <li><a href="/cgi-bin/datamonkey/showdata.pl?<%= details.upload_id %>">FASTA</a></li>
+            <li><a href="/cgi-bin/datamonkey/seqPlot.pl?file=<%= details.upload_id %>">PDF</a></li>
           </ul>
         </div>
 
         <div>
           <td>Aminoacid translation</td>
           <ul>
-            <li><a href="/cgi-bin/datamonkey/showdata.pl?<%= details.msaid %>.aa">FASTA</a></li>
-            <li><a href="/cgi-bin/datamonkey/seqPlot.pl?file=<%= details.msaid %>.aa">PDF</a></li>
+            <li><a href="/cgi-bin/datamonkey/showdata.pl?<%= details.upload_id %>.aa">FASTA</a></li>
+            <li><a href="/cgi-bin/datamonkey/seqPlot.pl?file=<%= details.upload_id %>.aa">PDF</a></li>
           </ul>
         </div>
 
         <div>
           <td>Neighbor Joining Tree
           <ul>
-            <li><a href="/cgi-bin/datamonkey/wrapHyPhyBF.pl?file=splits&amp;mode=1&amp;arguments=<%= details.msaid %>-0">Newick</a></li>
-            <li><a href="/cgi-bin/datamonkey/wrapHyPhyBF.pl?file=pdftrees&amp;mode=2&amp;arguments=<%= details.msaid %>-0">PDF</a></li>
+            <li><a href="/cgi-bin/datamonkey/wrapHyPhyBF.pl?file=splits&amp;mode=1&amp;arguments=<%= details.upload_id %>-0">Newick</a></li>
+            <li><a href="/cgi-bin/datamonkey/wrapHyPhyBF.pl?file=pdftrees&amp;mode=2&amp;arguments=<%= details.upload_id %>-0">PDF</a></li>
           </ul>
         </div>
 
         <div>
           User Tree(s)
           <ul>
-            <li><a href="/cgi-bin/datamonkey/wrapHyPhyBF.pl?file=splits&amp;mode=1&amp;arguments=<%= details.msaid %>-1">Newick</a></li>
-            <li><a href="/cgi-bin/datamonkey/wrapHyPhyBF.pl?file=pdftrees&amp;mode=2&amp;arguments=<%= details.msaid %>-1">PDF</a></li>
+            <li><a href="/cgi-bin/datamonkey/wrapHyPhyBF.pl?file=splits&amp;mode=1&amp;arguments=<%= details.upload_id %>-1">Newick</a></li>
+            <li><a href="/cgi-bin/datamonkey/wrapHyPhyBF.pl?file=pdftrees&amp;mode=2&amp;arguments=<%= details.upload_id %>-1">PDF</a></li>
           </ul>
         </div>
 
@@ -59,10 +59,10 @@
         <table class="table table-bordered table-striped table-hover" >
         <% for(var t in type_count) { %>
           <%if (type_count[t].count == 0) { %>
-            <tr><td><%= type_count[t].full_name %><a target="_blank" href="<%= type_count[t].help %>"><sup>?</sup></a></td><td>No results. <a href="/msa/<%= details.msaid %>/createanalysis?type=<%= t %>">Set up an analysis.</a></td></tr>
+            <tr><td><%= type_count[t].full_name %><a target="_blank" href="<%= type_count[t].help %>"><sup>?</sup></a></td><td>No results. <a href="/msa/<%= details.upload_id %>/createanalysis?type=<%= t %>">Set up an analysis.</a></td></tr>
           <% } %>
           <% if (type_count[t].count > 0) { %>
-            <tr><td><%= type_count[t].full_name %><a target="_blank" href="<%= type_count[t].help %>"><sup>?</sup></a></td><td>Found <%= type_count[t].count %> results. <a href="/msa/<%= details.msaid %>/<%= t %>">View</a></td></tr>
+            <tr><td><%= type_count[t].full_name %><a target="_blank" href="<%= type_count[t].help %>"><sup>?</sup></a></td><td>Found <%= type_count[t].count %> results. <a href="/msa/<%= details.upload_id %>/<%= t %>">View</a></td></tr>
           <% } %>
         <% } %>
         </table>

@@ -38,10 +38,6 @@ define("Codon",0);
 define("Nucleotide (DNA/RNA)",1);
 define("Protein",2);
 
-//Trees
-define("Neighbor Joining Tree",0);
-define("User Tree(s)",1);
-
 //Model Form
 define("AC",0);
 define("1",1);
@@ -418,7 +414,15 @@ var types = {
   "toggle"         : toggle
 };
 
-define("types", types)
+define("types", types);
+
+//Trees
+var treemode = {
+  0 :"Neighbor Joining Tree",
+  1: "User Tree(s)"
+};
+
+define("treemode", treemode);
 
 //Genetic Code
 var genetic_code = {

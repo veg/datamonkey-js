@@ -41,10 +41,10 @@ function createAnalysis(Analysis, AnalysisParameters, msa, count, type,
                         postdata, callback) {
 
   var an = new Analysis({
-    msaid  : msa.msaid,
-    id     : count,
-    type   : type,
-    status : globals.queue,
+    upload_id : msa._id,
+    id        : count,
+    type      : type,
+    status    : globals.queue,
   });
 
   if (postdata.sendmail !== undefined) {
@@ -144,9 +144,9 @@ exports.invokeJob = function(req, res) {
 
   //Create Analysis of respective type
   var postdata = req.query;
-  var msaid =  postdata.msaid;
+  var upload_id =  postdata.upload_id;
 
-  Msa.findOne({msaid : msaid}, function(err, msa) {
+  Msa.findOne({ 'upload_id' : upload_id }, function(err, msa) {
 
     var callback = function(err,result) {
       var num = 0;
@@ -173,7 +173,7 @@ exports.invokeJob = function(req, res) {
 
     //Get count of this analysis
     Analysis 
-    .findOne({ msaid: msa.msaid })
+    .findOne({ upload_id : msa._id })
     .sort('-id')
     .select('id')
     .exec(callback)
@@ -183,10 +183,10 @@ exports.invokeJob = function(req, res) {
 }
 
 exports.createForm = function(req, res) {
-  var upload_id = req.params.msaid;
+  var upload_id = req.params.upload_id;
   var get_type = req.query.type || "";
 
-  Msa.findOne({msaid : upload_id}, function (err, uploadfile) {
+  Msa.findOne({upload_id : upload_id}, function (err, uploadfile) {
     if (err || !uploadfile) {
       res.json(500, error.errorResponse('There is no sequence with id of ' + id));
     } else {
@@ -204,10 +204,10 @@ exports.queryStatus = function(req, res) {
 
   //TODO: Validate parameters
   var type  =  req.params.type;
-  var msaid =  req.params.msaid;
+  var upload_id =  req.params.upload_id;
   var Analysis = mongoose.model(type.capitalize());
   
-  Analysis.findOne({msaid : msaid, id : req.params.analysisid}, 
+  Analysis.findOne({upload_id : upload_id, id : req.params.analysisid}, 
                    function(err, item) {
     if (err) {
       res.json(500, error.errorResponse('There is no sequence with id of ' 
@@ -225,11 +225,11 @@ exports.getAnalysis = function(req, res) {
   var type =  req.params.type,
     Analysis = mongoose.model(type.capitalize());
 
-  var msaid = req.params.msaid,
+  var upload_id = req.params.upload_id,
       analysisid = req.params.analysisid;
 
   //Return all results
-  Analysis.findOne({msaid : msaid, id : analysisid}, function(err, item) {
+  Analysis.findOne({upload_id : upload_id, id : analysisid}, function(err, item) {
     if (err || !item ) {
       res.json(500, error.errorResponse('Item not found'));
     } else {
@@ -244,18 +244,17 @@ exports.deleteAnalysis = function(req, res) {
   var type =  req.params.type,
     Analysis = mongoose.model(type.capitalize());
 
-  var msaid = req.params.msaid,
+  var upload_id = req.params.upload_id,
       analysisid = req.params.analysisid;
 
   //Return all results
-  Analysis.findOneAndRemove({msaid : msaid, id : analysisid}, 
+  Analysis.findOneAndRemove({upload_id : upload_id, id : analysisid}, 
                    function(err, item) {
     if (err || !item) {
-      res.json(500, error.errorResponse('Item not found: msaid: ' + msaid + ', id : ' + analysisid));
+      res.json(500, error.errorResponse('Item not found: upload_id: ' + upload_id + ', id : ' + analysisid));
     } else {
       res.json({"success" : 1});
     }
   });
 }
-
 

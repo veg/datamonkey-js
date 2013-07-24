@@ -88,6 +88,7 @@ exports.uploadMsa = function (req, res) {
 
   //Upload to Perl to get all other information
   dpl.uploadToPerl(sequence_alignment, function(err, upload_file) {
+
     if(err) {
       helpers.logger.error("Error uploading file: " + err);
       res.json(500, error.errorResponse(err));
@@ -107,7 +108,7 @@ exports.uploadMsa = function (req, res) {
       } else {
         res.format({
           html: function(){
-            res.redirect('./' + upload_file.msaid);
+            res.redirect('./' + upload_file.upload_id);
           },
           json: function(){
             res.json(200, details);
@@ -124,7 +125,7 @@ exports.findById = function (req, res) {
   //We must get count of all analyses for the job, respective of type.
   var id = req.params.id;
 
-  Msa.findOne({msaid : id}, function (err, items) {
+  Msa.findOne({upload_id : id}, function (err, items) {
     if (err || !items) {
       res.json(500, error.errorResponse('There is no sequence with id of ' + id));
     } else {
@@ -138,7 +139,7 @@ exports.findById = function (req, res) {
         for(var t in globals.types) {
           ftc[t] = {
             "full_name" : globals.types[t].full_name,
-            "help" : globals.types[t].help,
+            "help"      : globals.types[t].help,
             "count"     : type_counts[t] || 0,
           }
         }
@@ -163,7 +164,7 @@ exports.updateMsa = function(req, res) {
   var postdata = req.query;
   var options = { multi: false };
 
-  Msa.findOne({msaid : id}, function (err, item) {
+  Msa.findOne({upload_id : id}, function (err, item) {
     if (err) {
       res.json(500, error.errorResponse('There is no sequence with id of ' + id));
     } else {
@@ -184,7 +185,7 @@ exports.deleteMsa = function(req, res) {
 
   var id = req.params.id;
 
-  Msa.findOneAndRemove({ msaid: id }, function(err) {
+  Msa.findOneAndRemove({ upload_id: id }, function(err) {
     if (err) {
       res.json(500, error.errorResponse(err));
     } else {

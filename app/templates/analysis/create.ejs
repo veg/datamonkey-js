@@ -3,7 +3,7 @@
 <h2 class="page-header">Analysis Options</h2>
 
   <form onsubmit="return CheckValidDnDS()" action="/cgi-bin/datamonkey/dispatchAnalysis.pl" enctype="multipart/form-data" method="POST" name="modelForm">
-    <input type="hidden" value="<%= uploadfile.msaid %>" name="filename">
+    <input type="hidden" value="<%= uploadfile.upload_id %>" name="filename">
     <input type="hidden" value="<%= uploadfile.gencodeid%>" name="genCodeID">
     <input type="hidden" value="<%= uploadfile.sequences %>" name="sequences">
     <input type="hidden" value="<%= uploadfile.sites %>" name="sites">
