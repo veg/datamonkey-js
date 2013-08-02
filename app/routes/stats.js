@@ -1,4 +1,5 @@
 /*
+
   Datamonkey - An API for comparative analysis of sequence alignments using state-of-the-art statistical models.
 
   Copyright (C) 2013
@@ -23,39 +24,23 @@
   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 */
 
-//Routes
+var mongoose = require('mongoose'),
+    globals  = require( ROOT_PATH + '/config/globals.js');
 
-module.exports = function(app){
+exports.usageStatistics = function(req, res) {
 
-  // HOME PAGE
-  home = require( ROOT_PATH + '/app/routes/home');
-  app.get('/', home.homePage);
-  app.get('/help', home.help);
-  app.get('/jobqueue', home.jobQueue);
-  app.get('/stats', home.stats);
+  // Find the analysis
+  // Return its results
+  var type =  req.params.type,
+    Analysis = mongoose.model(type.capitalize());
 
-  // UPLOAD FILE ROUTES
-  msa = require( ROOT_PATH + '/app/routes/msa');
-  app.get('/msa', msa.showUploadForm);
-  app.post('/msa', msa.uploadMsa);
-  app.get('/msa/:id', msa.findById);
-  app.put('/msa/:id', msa.updateMsa);
-  app.delete('/msa/:id', msa.deleteMsa);
-
-  // ANALYSIS ROUTES
-  analysis = require( ROOT_PATH + '/app/routes/analysis');
-  app.get('/msa/:msaid/createanalysis', analysis.createForm);
-  app.post('/msa/:msaid/:type', analysis.invokeJob);
-  app.get('/msa/:msaid/:type/:analysisid', analysis.getAnalysis);
-  app.get('/msa/:msaid/:type/:analysisid/status', analysis.queryStatus);
-  app.delete('/msa/:msaid/:type/:analysisid', analysis.deleteAnalysis);
-
-
-  // STATS ROUTES
-  stats = require( ROOT_PATH + '/app/routes/stats');
-  app.get('/:type/usage', stats.usageStatistics);
+  //Return all results
+  Analysis.usageStatistics(function(err, analysis_stats){
+    res.json(analysis_stats);
+  });
 
 }
 

@@ -60,3 +60,8 @@ exports.jobQueue = function(req, res) {
     });
   }
 }
+
+exports.stats = function (req, res) {
+  res.render('stats.ejs', {'types' : globals.types });
+};
+

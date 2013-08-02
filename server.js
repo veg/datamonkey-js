@@ -46,6 +46,7 @@ mongoose.connect(setup.database);
 var app = express();
 
 app.configure(function () {
+    app.use(express.compress());
     app.use(express.logger(setup.logger));     
     app.use(expressValidator);
     app.use(express.bodyParser());

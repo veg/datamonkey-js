@@ -49,7 +49,7 @@ var Msa = new Schema({
     goodtree    : Number,
     nj          : String,
     mailaddr    : String,
-    timestamp   : { type: Number, default: (new Date()).getTime() }
+    created     : {type: Date, default: Date.now}
 });
 
 var PartitionInfo = new Schema({

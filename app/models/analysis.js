@@ -43,7 +43,8 @@ var AnalysisSchema = new Schema({
   type                : {type: String, require: true},
   status              : String,
   sendmail            : Boolean,
-  timestamp           : { type: Number, default: (new Date()).getTime() }
+  created             : {type: Date, default: Date.now},
+  cpu_time            : { type: Number }
 });
 
 AnalysisSchema.virtual('since_created').get(function () {
@@ -61,6 +62,16 @@ AnalysisSchema.statics.jobs = function (cb) {
                           cb(err, items)
                          });
 };
+
+AnalysisSchema.statics.usageStatistics = function (cb) {
+  // Aggregation is done client-side
+  this.find({}, 'cpu_time created upload_id')
+        .limit(1000)
+        .populate('upload_id', 'sequences sites')        
+        .exec( function(err, items) {
+              cb(err, items)
+             });
+  };
 
 module.exports = AnalysisSchema;
 
