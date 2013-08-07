@@ -38,15 +38,11 @@ var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
 var Ifel = AnalysisSchema.extend({
-  parameters : [IfelParameters],
-  ifelresults : [IfelResults],
-  ifelsummary : [IfelSummary]
-});
-
-var IfelParameters = new Schema({
   modelstring : {type: String, require: true},
   treemode    : {type: Number, require: true},
   pvalue      : {type: Number, require: true},
+  ifelresults : [IfelResults],
+  ifelsummary : [IfelSummary]
 });
 
 var IfelResults = new Schema({
@@ -66,7 +62,6 @@ var IfelSummary = new Schema({
 });
 
 module.exports = mongoose.model('Ifel', Ifel);
-module.exports = mongoose.model('IfelParameters', IfelParameters);
 module.exports = mongoose.model('IfelResults', IfelResults);
 module.exports = mongoose.model('IfelSummary', IfelSummary);
 

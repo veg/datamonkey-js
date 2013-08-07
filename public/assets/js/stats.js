@@ -33,8 +33,10 @@ function crossfilterBlock(jobs) {
     sites                   = site.group(),
     cpu_time                = job.dimension(function(d) { return d.cpu_time; }),
     cpu_times               = cpu_time.group(),
+    pvalue                  = job.dimension(function(d) { return d.pvalue; }),
+    pvalues                 = pvalue.group(),
     oldest_date             = date.bottom(1),
-    newest_date             = date.top(1),
+    newest_date             = date.top(1);
 
     // Number of jobs per date
     job_mean = all.value()/dates.size();
@@ -45,23 +47,35 @@ function crossfilterBlock(jobs) {
     // Number of sequences per job
     sequence_total  = job.groupAll().reduceSum(function(d) { return d.upload_id.sequences; });
     sequence_mean = sequence_total.value()/all.value();
-    sequence_median = sequence.top(Infinity)[Math.round(sequence.groupAll().value()/2)].upload_id.sequences;
-    lowest_sequence_number = sequence.top(Infinity)[sequence.groupAll().value() - 1].upload_id.sequences;
-    highest_sequence_number = sequence.top(1)[0].upload_id.sequences;
+
+    try {
+      sequence_median = sequence.top(Infinity)[Math.round(sequence.groupAll().value()/2)].upload_id.sequences;
+      lowest_sequence_number = sequence.top(Infinity)[sequence.groupAll().value() - 1].upload_id.sequences;
+      highest_sequence_number = sequence.top(1)[0].upload_id.sequences;
+    } catch (e) {
+    }
 
     // Number of sites per job
     site_total  = job.groupAll().reduceSum(function(d) { return d.upload_id.sites; });
     site_mean = site_total.value()/all.value();
-    site_median = site.top(Infinity)[Math.round(site.groupAll().value()/2)].upload_id.sites;
-    lowest_site_number = site.top(Infinity)[site.groupAll().value() - 1].upload_id.sites;
-    highest_site_number = site.top(1)[0].upload_id.sites;
+
+    try {
+      site_median = site.top(Infinity)[Math.round(site.groupAll().value()/2)].upload_id.sites;
+      lowest_site_number = site.top(Infinity)[site.groupAll().value() - 1].upload_id.sites;
+      highest_site_number = site.top(1)[0].upload_id.sites;
+    } catch (e) {
+    }
 
     // Average CPU time
     cpu_time_total  = job.groupAll().reduceSum(function(d) { return d.cpu_time; });
     cpu_time_mean = cpu_time_total.value()/all.value();
-    cpu_time_median = cpu_time.top(Infinity)[Math.round(cpu_time.groupAll().value()/2)].cpu_time;
-    lowest_cpu_time_number = cpu_time.top(Infinity)[Math.round(cpu_time.groupAll().value()) - 1].cpu_time;
-    highest_cpu_time_number = cpu_time.top(1)[0].cpu_time;
+
+    try {
+      cpu_time_median = cpu_time.top(Infinity)[Math.round(cpu_time.groupAll().value()/2)].cpu_time;
+      lowest_cpu_time_number = cpu_time.top(Infinity)[Math.round(cpu_time.groupAll().value()) - 1].cpu_time;
+      highest_cpu_time_number = cpu_time.top(1)[0].cpu_time;
+    } catch (e) {
+    }
 
     d3.selectAll("#job-mean").text(formatReal(job_mean));
     d3.selectAll("#job-median").text(formatReal(job_median));
@@ -75,6 +89,7 @@ function crossfilterBlock(jobs) {
     d3.selectAll("#cpu-time-mean").text(formatReal(cpu_time_mean));
     d3.selectAll("#cpu-time-median").text(formatReal(cpu_time_median));
     d3.selectAll("#cpu-time-range").text(lowest_cpu_time_number + '-' + highest_cpu_time_number);
+
   }
 
 
@@ -156,6 +171,37 @@ function crossfilterBlock(jobs) {
         .rangeRound([0, 10 * 40])),
 
   ];
+
+  /* Create a pie chart and use the given css selector as anchor. You can also specify
+   * an optional chart group for this chart to be scoped within. When a chart belongs
+   * to a specific group then any interaction with such chart will only trigger redraw
+   * on other charts within the same chart group. */
+  pvalue_chart = dc.pieChart("#pvalue-chart")
+      .width(200) // (optional) define chart width, :default = 200
+      .height(200) // (optional) define chart height, :default = 200
+      .transitionDuration(500) // (optional) define chart transition duration, :default = 350
+      // (optional) define color array for slices
+      .colors(['#3182bd', '#6baed6', '#9ecae1', '#c6dbef', '#dadaeb'])
+      // (optional) define color domain to match your data domain if you want to bind data or color
+      .colorDomain([-1750, 1644])
+      // (optional) define color value accessor
+      .colorAccessor(function(d, i){return d.value;})
+      .radius(90) // define pie radius
+      // (optional) if inner radius is used then a donut chart will
+      // be generated instead of pie chart
+      .innerRadius(40)
+      .dimension(pvalue) // set dimension
+      .group(pvalues) // set group
+      // (optional) by default pie chart will use group.key as it's label
+      // but you can overwrite it with a closure
+      .label(function(d) { return d.data.key + "(" + Math.floor(d.data.value / all.value() * 100) + "%)"; })
+      // (optional) whether chart should render labels, :default = true
+      .renderLabel(true)
+      // (optional) by default pie chart will use group.key and group.value as its title
+      // you can overwrite it with a closure
+      .title(function(d) { return d.data.key + "(" + Math.floor(d.data.value / all.value() * 100) + "%)"; })
+      // (optional) whether chart should render titles, :default = false
+      .renderTitle(true);
 
   // Given our array of charts, which we assume are in the same order as the
   // .chart elements in the DOM, bind the charts to the DOM and render them.
@@ -313,6 +359,7 @@ function crossfilterBlock(jobs) {
       });
 
       function barPath(groups) {
+
         var path = [],
             i = -1,
             n = groups.length,
@@ -418,12 +465,10 @@ function crossfilterBlock(jobs) {
     };
 
     return d3.rebind(chart, brush, "on");
+
   }
 
-
 }
-
-
 
 function drawAnalysisHistory() {
   d3.json("/slac/usage", function(error, jobs) {

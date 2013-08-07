@@ -38,12 +38,8 @@ var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
 var Bsrel = AnalysisSchema.extend({
-  parameters : [BsrelParameters],
+  treemode   : {type: Number},
   bsrresults : [BsrResults],
-});
-
-var BsrelParameters = new Schema({
-  treemode    : {type: Number, require: true},
 });
 
 var BsrResults = new Schema({
@@ -66,6 +62,5 @@ var BsrelSummary = new Schema({
 });
 
 module.exports = mongoose.model('Bsrel', Bsrel);
-module.exports = mongoose.model('BsrelParameters', BsrelParameters);
 module.exports = mongoose.model('BsrResults', BsrResults);
 

@@ -37,7 +37,7 @@ var querystring = require('querystring'),
 var mongoose = require('mongoose'),
     Msa = mongoose.model('Msa');
 
-function createAnalysis(Analysis, AnalysisParameters, msa, count, type,
+function createAnalysis(Analysis, msa, count, type,
                         postdata, callback) {
 
   var an = new Analysis({
@@ -53,6 +53,20 @@ function createAnalysis(Analysis, AnalysisParameters, msa, count, type,
     an.sendmail = true;
   }
 
+  // Verify parameters
+  // TODO: Just search required
+  for (var parameter in an.schema.tree) {
+    if (parameter != "_id" && parameter != "id") { 
+      if (parameter in postdata) {
+       parameters[parameter] = postdata[parameter] ;
+      } else {
+        if(parameter != "__v") {
+          missing_params.push(parameter);
+        }
+      }
+    }
+  }
+
   an.save(function (err, result) {
 
     if (err) {
@@ -60,75 +74,31 @@ function createAnalysis(Analysis, AnalysisParameters, msa, count, type,
       callback("Missing Parameters: " + missing_params, null);
       return;
     }
+  
+    // If not part of the model, then grab the constant
+     var params = {
+        'method'                : globals[type].id,
+        'treeMode'              : result.treemode || globals[type].treemode,
+        'prime_property_choice' : result.prime_property_choice || globals[type].treemode,
+        'root'                  : result.root || globals[type].root,
+        'modelstring'           : result.modelstring || globals[type].modelstring,
+        'namedmodels'           : result.namedmodels || globals[type].namedmodels,
+        'roptions'              : result.roptions || globals[type].roptions,
+        'dnds'                  : result.dnds || globals[type].dnds,
+        'ambchoice'             : result.ambchoice || globals[type].ambchoice,
+        'pvalue'                : result.pvalue || globals[type].pvalue,
+        'rateoption'            : result.rateoption || globals[type].rateoption,
+        'rateclasses'           : result.rateclasses || globals[type].rateclasses,
+        'rateoption2'           : result.rateoption2 || globals[type].rateoption2,
+        'rateclasses2'          : result.rateclasses2 || globals[type].rateclasses2
+     };
 
-    // Create Analysis Parameters from postdata
-    var parameters = new AnalysisParameters(),
-      missing_params = [];
-
-    // Verify parameters
-    // TODO: Just search required
-    for (var parameter in parameters.schema.tree) {
-      if (parameter != "_id" && parameter != "id") { 
-        if (parameter in postdata) {
-         parameters[parameter] = postdata[parameter] ;
-        } else {
-          if(parameter != "__v") {
-            missing_params.push(parameter);
-          }
-        }
-      }
-    }
-
-    if (missing_params.length > 0) {
-      callback("Missing Parameters: " + missing_params, null);
-      return;
-    }
-
-    //Save Parameters to parent object
-    parameters.save(function (err, aparams) {
+     // Dispatch the analysis to the perl script
+    dpl.dispatchAnalysis(an, type, msa, params, function(err, analysis) {
       if (err) {
-        helpers.logger.warn(err);
-        callback("Unable to save parameters", null);
-      }
-
-      else {
-
-        // Open Multiple Sequence Alignment File to get all necessary parameters
-        // for dispatching.
-        if (err) {
-          callback('There is no sequence with id of '+ id, null);
-        } else {
-
-          an.parameters.push(parameters);
-          an.save();
-
-          // If not part of the model, then grab the constant
-           var params = {
-              'method'                : globals[type].id,
-              'treeMode'              : aparams.treemode || globals[type].treemode,
-              'prime_property_choice' : aparams.prime_property_choice || globals[type].treemode,
-              'root'                  : aparams.root || globals[type].root,
-              'modelstring'           : aparams.modelstring || globals[type].modelstring,
-              'namedmodels'           : aparams.namedmodels || globals[type].namedmodels,
-              'roptions'              : aparams.roptions || globals[type].roptions,
-              'dnds'                  : aparams.dnds || globals[type].dnds,
-              'ambchoice'             : aparams.ambchoice || globals[type].ambchoice,
-              'pvalue'                : aparams.pvalue || globals[type].pvalue,
-              'rateoption'            : aparams.rateoption || globals[type].rateoption,
-              'rateclasses'           : aparams.rateclasses || globals[type].rateclasses,
-              'rateoption2'           : aparams.rateoption2 || globals[type].rateoption2,
-              'rateclasses2'          : aparams.rateclasses2 || globals[type].rateclasses2
-           };
-
-           // Dispatch the analysis to the perl script
-           dpl.dispatchAnalysis(an, type, msa, params, function(err, analysis) {
-             if (err) {
-               callback(err, null);  
-             } else {
-               callback(null, analysis);  
-             }
-           });
-         }
+        callback(err, null);  
+      } else {
+        callback(null, analysis);  
       }
     });
   });
@@ -140,7 +110,6 @@ exports.invokeJob = function(req, res) {
   var type =  req.params.type;
 
   var Analysis = mongoose.model(type.capitalize());
-  var AnalysisParameters = mongoose.model(type.capitalize() + 'Parameters');
 
   //Create Analysis of respective type
   var postdata = req.query;
@@ -161,7 +130,7 @@ exports.invokeJob = function(req, res) {
         highest_countid = result.id + 1;
       }
 
-      createAnalysis(Analysis, AnalysisParameters, msa, highest_countid, type,
+      createAnalysis(Analysis, msa, highest_countid, type,
                      postdata, function(err, message) {
         if (err) {
           res.json(500, error.errorResponse(err));

@@ -39,12 +39,12 @@ var Schema = mongoose.Schema,
 
 var AnalysisSchema = new Schema({
   upload_id           : {type: Schema.Types.ObjectId, require: true, ref: 'Msa'},
+  created             : {type: Date, default: Date.now},
   id                  : {type: Number, require: true},
   type                : {type: String, require: true},
   status              : String,
   sendmail            : Boolean,
-  created             : {type: Date, default: Date.now},
-  cpu_time            : { type: Number }
+  cpu_time            : Number
 });
 
 AnalysisSchema.virtual('since_created').get(function () {
@@ -64,14 +64,16 @@ AnalysisSchema.statics.jobs = function (cb) {
 };
 
 AnalysisSchema.statics.usageStatistics = function (cb) {
+
   // Aggregation is done client-side
-  this.find({}, 'cpu_time created upload_id')
+  this.find({}, 'cpu_time created upload_id pvalue modelstring')
         .limit(1000)
         .populate('upload_id', 'sequences sites')        
         .exec( function(err, items) {
               cb(err, items)
              });
-  };
+
+};
 
 module.exports = AnalysisSchema;
 

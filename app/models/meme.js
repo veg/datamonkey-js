@@ -39,17 +39,12 @@ var Schema = mongoose.Schema,
 
 
 var Meme = AnalysisSchema.extend({
-  sendmail              : Boolean,
-  parameters            : [MemeParameters],
+  modelstring           : {type: String},
+  treemode              : {type: Number},
+  pvalue                : {type: Number},
   memeresults           : [MemeResults],
   mememappings          : [MemeMappings],
   memesummary           : [MemeSummary]
-});
-
-var MemeParameters = new Schema({
-  modelstring : {type: String, require: true},
-  treemode    : {type: Number, require: true},
-  pvalue      : {type: Number, require: true},
 });
 
 var MemeResults = new Schema({
@@ -83,7 +78,6 @@ var MemeSummary = new Schema({
 Meme.index({ id: 1 });
 
 module.exports = mongoose.model('Meme', Meme);
-module.exports = mongoose.model('MemeParameters', MemeParameters);
 module.exports = mongoose.model('MemeResults', MemeResults);
 module.exports = mongoose.model('MemeMappings', MemeMappings);
 module.exports = mongoose.model('MemeSummary', MemeSummary);

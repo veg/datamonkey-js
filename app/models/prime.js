@@ -32,30 +32,26 @@ var SlacScheme = require(__dirname + '/slac');
 var GardScheme = require(__dirname + '/gard');
 
 var mongoose = require('mongoose'),
-  extend = require('mongoose-schema-extend');
+    extend = require('mongoose-schema-extend');
 
 var AnalysisSchema = require(__dirname + '/analysis');
   
 var Schema = mongoose.Schema,
-  ObjectId = Schema.ObjectId;
+    ObjectId = Schema.ObjectId;
 
 var Mixed = mongoose.Schema.Types.Mixed;
 
 var Prime = AnalysisSchema.extend({
-  parameters   : [PrimeParameters],
-  primeresults : [PrimeResults],
-  primesummary : [PrimeSummary],
-});
-
-var PrimeParameters = new Schema({
-  treemode              : {type: Number, require: true},
-  prime_property_choice : {type: Number, require: true},
+  treemode              : {type: Number},
+  prime_property_choice : {type: Number},
+  primeresults          : [PrimeResults],
+  primesummary          : [PrimeSummary]
 });
 
 var PrimeResults = new Schema({
-  codon : Number,
+  codon     : Number,
   attribute : String,
-  value : Number
+  value     : Number
 });
 
 var PrimeSummary = new Schema({
@@ -64,8 +60,6 @@ var PrimeSummary = new Schema({
 });
 
 module.exports = mongoose.model('Prime', Prime);
-module.exports = mongoose.model('PrimeParameters', PrimeParameters);
 module.exports = mongoose.model('PrimeResults', PrimeResults);
 module.exports = mongoose.model('PrimeSummary', PrimeSummary);
-
 

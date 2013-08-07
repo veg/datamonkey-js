@@ -51,6 +51,11 @@
             <div id="cpu-time-range"></div>
           </div>
         </div>
+        <div id="pvalue-chart" class="chart">
+          <div class="title">p values</div>
+          <div class="donut-chart">
+          </div>
+        </div>
       </div>
       <aside id="totals"><span id="active">-</span> of <span id="total">-</span> jobs selected.</aside>
       <div id="lists">
@@ -62,4 +67,5 @@
 <%- include includes/footer.ejs %>
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script type="text/javascript" src="/assets/js/interdependent-interactive-histograms/crossfilter.v1.js"></script>
+<script type="text/javascript" src="/assets/js/dc.js/dc.js"></script>
 <script src="/assets/js/stats.js"></script>

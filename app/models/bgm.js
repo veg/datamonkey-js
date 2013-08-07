@@ -39,20 +39,16 @@ var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
 var Bgm = AnalysisSchema.extend({
-  parameters          : [BgmParameters],
   bgmmodel            : [BgmModel],
   slacmutation        : [SlacSchema.SlacMutation],
-  slactrees           : [SlacSchema.SlacTrees]
-});
-
-var BgmParameters = new Schema({
-  //_creator    : { type  : Schema.Types.ObjectId, ref : 'Bgm' },
+  slactrees           : [SlacSchema.SlacTrees],
+  //Parameters
   modelstring : {type: String, require: true},
-  //treemode    : Number,
-  //roptions    : Number,
   pvalue      : {type: Number, require: true},
   dnds        : {type: Number, require: true},
   ambchoice   : {type: Number, require: true},
+  //treemode    : Number,
+  //roptions    : Number,
 });
 
 var BgmModel = new Schema({
@@ -62,6 +58,5 @@ var BgmModel = new Schema({
 });
 
 module.exports = mongoose.model('Bgm', Bgm);
-module.exports = mongoose.model('BgmParameters', BgmParameters);
 module.exports = mongoose.model('BgmModel', BgmModel);
 
