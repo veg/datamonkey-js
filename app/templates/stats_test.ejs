@@ -1,0 +1,71 @@
+<%- include includes/header.ejs %>
+<link href="/assets/css/stats.css" rel="stylesheet">
+<div class="container-fluid">
+  <h1 class="page-header">Datamonkey Usage Statistics</h1>
+
+  <div class="row-fluid">
+    <div class="span1 pull-left">
+      <div class="dropdown nav nav-list">
+        <button class="dropdown-toggle btn-small btn-primary" data-toggle="dropdown" href="#">Analysis Select</button>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+          <% for(var t in types) { %>
+            <li role="presentation">
+              <a href="#" tabindex="-1" role="menuitem"><%=t.toUpperCase()%></a>
+            </li>
+          <% } %>
+          </ul>
+      </div>
+    </div>
+
+    <div class="span11">
+      <div id="charts">
+        <div id="job-chart" class="chart">
+          <div class="title">Job Count</div>
+            <div class="job">
+              <span>Mean</span><span id="job-mean"></span>
+              <span>Median</span><span id="job-median"></span>
+              <span>Range</span><span id="job-range"></span>
+            </div>
+        </div>
+        <div id="sequence-chart" class="chart">
+          <div class="title">Sequence Count</div>
+          <div class="job">
+            <span>Mean</span><span id="sequence-mean"></span>
+            <span>Median</span><span id="sequence-median"></span>
+            <span>Range</span><span id="sequence-range"></span>
+          </div>
+        </div>
+        <div id="site-chart" class="chart">
+          <div class="title">Sites Count</div>
+          <div class="job">
+            <span>Mean</span><span id="site-mean"></span>
+            <span>Median</span><span id="site-median"></span>
+            <span>Range</span><span id="site-range"></span>
+          </div>
+        </div>
+        <div id="cpu-time-chart" class="chart">
+          <div class="title">CPU Time</div>
+          <div class="job">
+            <span>Mean</span><span id="cpu-time-mean"></span>
+            <span>Median</span><span id="cpu-time-median"></span>
+            <span>Range</span><span id="cpu-time-range"></span>
+          </div>
+        </div>
+        <div id="pvalue-chart" class="chart">
+          <div class="donut-chart">
+          </div>
+        </div>
+      </div>
+      <aside id="totals"><span id="active">-</span> of <span id="total">-</span> jobs selected.</aside>
+      <div id="lists">
+        <div id="job-list" class="list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include includes/footer.ejs %>
+<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script type="text/javascript" src="/assets/js/crossfilter.min.js"></script>
+<script type="text/javascript" src="/assets/js/dc.js/dc.js"></script>
+<script src="/assets/js/stats_test.js"></script>
+
