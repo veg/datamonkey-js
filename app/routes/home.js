@@ -65,3 +65,7 @@ exports.stats = function (req, res) {
   res.render('stats.ejs', {'types' : globals.types });
 };
 
+exports.stats_test = function (req, res) {
+  res.render('stats_test.ejs', {'types' : globals.types });
+};
+
