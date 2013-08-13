@@ -57,14 +57,31 @@
         </div>
       </div>
       <aside id="totals"><span id="active">-</span> of <span id="total">-</span> jobs selected.</aside>
-      <div id="lists">
-        <div id="job-list" class="list"></div>
-      </div>
+
+      <table class="table top-ten-pvalues">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>p-value</th>
+            <th>Times Used</th>
+            <th>% Used</th>
+          </tr>
+        </thead>
+      </table>
+      <table class="table top-ten-modelstrings">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Model</th>
+            <th>Times Used</th>
+            <th>% Used</th>
+          </tr>
+        </thead>
+      </table>
     </div>
   </div>
 </div>
 <%- include includes/footer.ejs %>
 <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 <script type="text/javascript" src="/assets/js/crossfilter.min.js"></script>
-<script type="text/javascript" src="/assets/js/dc.js/dc.js"></script>
 <script src="/assets/js/stats.js"></script>
