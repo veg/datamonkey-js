@@ -100,8 +100,6 @@ exports.uploadMsa = function (req, res) {
       res.json(500, error.errorResponse(err));
     }
 
-
-    //TODO: We should just redirect
     upload_file.save(function (err, result) {
       if (err) {
         res.json(500, error.errorResponse(err));
@@ -125,14 +123,14 @@ exports.findById = function (req, res) {
   //We must get count of all analyses for the job, respective of type.
   var id = req.params.id;
 
-  Msa.findOne({upload_id : id}, function (err, items) {
-    if (err || !items) {
+  Msa.findOne({upload_id : id}, function (err, item) {
+    if (err || !item) {
       res.json(500, error.errorResponse('There is no sequence with id of ' + id));
     } else {
-      var details = items;
+      var details = item;
 
       //Get the count of the different analyses on the job
-      items.AnalysisCount(function(type_counts) {
+      item.AnalysisCount(function(type_counts) {
 
         var ftc = []
 

@@ -1,0 +1,49 @@
+<%- include ../includes/header.ejs %>
+<!--<a class="INFO" href="help/data.php">Preparing your data</a>&nbsp;-->
+<!--Examples:-->
+<!--<a class="INFO" href="data/Flu.fasta">Influenza A H5N1 hemagluttinin</a>&nbsp;-->
+<!--<a class="INFO" href="data/pol.nex">HIV-1 pol (recombinant data)</a>-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<div class="container">
+  <h2 class="page-header">Upload a Sequence Alignment</h2>
+  <div class="nav nav-list pull-right span4i"><a href="/help" target="_blank">I'm confused</a></div>
+  <form class="form-horizontal upload-form" name="uploadform" enctype="multipart/form-data" action="/hivcluster" method="post">
+    <fieldset>
+      <div class="form-element">
+        <label id="upload-file-label">Choose a sequence alignment<a href="/help#data-formats" target="_blank"><sup>?</sup></a></label> 
+        <input type="file" name="files">
+      </div>
+      <div class="form-element">
+        <label id="datatype-content">Distance Threshold<a href="/help#data-types" target="_blank"><sup>?</sup></a></label> 
+        <input name="distance_threshold" type="text" placeholder=".015">
+      </div>
+      <div class="form-element">
+        <label id="datatype-content">Minimum Overlap<a href="/help#data-types" target="_blank"><sup>?</sup></a></label> 
+        <input name="min_overlap" type="text" placeholder="500">
+      </div>
+      <div class="form-element">
+        <label id="">Handle Ambiguities<a href="/help#genetic-code" target="_blank"><sup>?</sup></a></label>
+        <select name="ambiguity_handling">
+          <option value="RESOLVE">
+            Resolve
+          </option>
+          <option value="AVERAGE">
+            Average
+          </option>
+          <option value="SKIP">
+            Skip
+          </option>
+          <option value="GAPMM">
+            GAPMM
+          </option>
+        </select> 
+      </div>
+      <div class="form-element">
+        <button type="submit" class="btn">
+          Upload
+        </button>
+      </div>
+    </fieldset>
+  </form>
+</div>
+<%- include ../includes/footer.ejs %>

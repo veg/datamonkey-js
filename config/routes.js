@@ -58,6 +58,10 @@ module.exports = function(app){
   stats = require( ROOT_PATH + '/app/routes/stats');
   app.get('/:type/usage', stats.usageStatistics);
 
+  // HIV CLUSTERING ROUTES
+  hivcluster = require( ROOT_PATH + '/app/routes/hivcluster');
+  app.get('/hivcluster', hivcluster.clusterForm);
+  app.post('/hivcluster', hivcluster.invokeClusterAnalysis);
+  app.get('/hivcluster/:id', hivcluster.startJob);
+  //app.delete('/hivcluster', hivcluster.deletehivcluster);
 }
-
-

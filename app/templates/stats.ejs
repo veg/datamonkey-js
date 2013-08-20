@@ -6,14 +6,11 @@
   <div class="row-fluid">
     <div class="span1 pull-left">
       <div class="dropdown nav nav-list">
-        <button class="dropdown-toggle btn-small btn-primary" data-toggle="dropdown" href="#">Analysis Select</button>
-          <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-          <% for(var t in types) { %>
-            <li role="presentation">
-              <a href="#" tabindex="-1" role="menuitem"><%=t.toUpperCase()%></a>
-            </li>
-          <% } %>
-          </ul>
+        <div class="btn-group btn-group-vertical stat-buttons" data-toggle="buttons-checkbox">
+            <% for(var t in types) { %>
+            <!--<button type="button" class="btn btn-primary"><%=t.toUpperCase()%></button>-->
+            <% } %>
+        </div>
       </div>
     </div>
 

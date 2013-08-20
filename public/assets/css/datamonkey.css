@@ -55,6 +55,10 @@ li.media {
   margin: 0px 0px 15px 0px;
 }
 
+.form-element {
+  margin: 0px 0px 15px 0px;
+}
+
 .boxed-group {
     background: none repeat scroll 0 0 #EFEFEF;
     border-radius: 3px 3px 3px 3px;

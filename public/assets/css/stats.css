@@ -100,3 +100,8 @@ aside {
   font-size: smaller;
   width: 220px;
 }
+
+
+.stat-buttons button{
+  margin-bottom: 5px;
+}

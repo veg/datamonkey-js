@@ -71,7 +71,6 @@ function crossfilterBlock(jobs) {
 
   }
 
-
   // A little coercion, since the CSV is untyped.
   jobs.forEach(function(d, i) {
     d.index = i;
