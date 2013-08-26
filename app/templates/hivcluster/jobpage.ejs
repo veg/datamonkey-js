@@ -1,7 +1,12 @@
 <%- include ../includes/header.ejs %>
 <div class="container" data-hivclusterid="<%= hivclusterid %>" >
-<h1 class="page-header">HIV Clustering Analysis</h1>
-
+  <h1 class="page-header">HIV Clustering Analysis</h1>
+  <div id="hiv-cluster-status" data-hivclusterid="<%= hivclusterid %>">
+      <h2>Current Status</h2>
+  </div>
+  <div id="hiv-cluster-results" class="row-fluid">
+    <h2>Results</h2>
+  </div>
 </div>
 <%- include ../includes/footer.ejs %>
 <script src="/assets/js/socket.io.min.js"></script>

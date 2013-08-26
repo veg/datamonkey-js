@@ -27,6 +27,8 @@
 
 */
 
+var setup    = require( ROOT_PATH + '/config/setup');
+
 var mongoose = require('mongoose'),
     moment   = require('moment'),
     check    = require('validator').check,
@@ -37,19 +39,24 @@ var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
 var HivCluster = new Schema({
-    distance_threshold : Number,
-    min_overlap        : Number,
+    distance_threshold : { type: Number, min : 0, max: 0.02 },
+    min_overlap        : { type: Number, min : 100, max: 1000 },
     ambiguity_handling : String,
     mailaddr           : String,
+    status             : String,
+    graph_dot          : String,
+    cluster_csv        : String,
     created            : {type   : Date, default : Date.now}
-});
-
-HivCluster.virtual('filepath').get(function () {
-  return "/home/sweaver/datamonkey-js/uploads/hivcluster/" + this._id;
 });
 
 HivCluster.virtual('filename').get(function () {
   return this._id;
 });
+
+
+HivCluster.virtual('filepath').get(function () {
+  return setup.root_hivcluster_path + this._id;
+});
+
 
 module.exports = mongoose.model('HivCluster', HivCluster);

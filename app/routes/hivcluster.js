@@ -43,17 +43,37 @@ exports.clusterForm = function (req, res) {
   res.render('hivcluster/form.ejs');
 };
 
-exports.startJob = function (req, res) {
+exports.results = function (req, res) {
+
   // HIV Cluster id
   var id = req.params.id;
-
-  HivCluster.findOne({_id: id}, function (err, item) {
-    if (err || !item) {
+  HivCluster.findOne({_id: id}, 'graph_dot cluster_csv', function (err, hiv_cluster) {
+    if (err || !hiv_cluster) {
       res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
     } else {
-      var job_proxy = new jobproxy.JobProxy();
-      res.json(200, {'details': details, 'type_count': ftc });
+      console.log(hiv_cluster);
+      res.json(200, {'hiv_cluster': hiv_cluster});
+    }
+  });
 
+}
+
+exports.jobPage = function (req, res) {
+
+  // HIV Cluster id
+  var id = req.params.id;
+  HivCluster.findOne({_id: id}, function (err, hiv_cluster) {
+    if (err || !hiv_cluster) {
+      res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
+    } else {
+      res.format({
+        html: function(){
+          res.render('hivcluster/jobpage.ejs', {'hivclusterid': hiv_cluster._id});
+        },
+        json: function(){
+          res.json(200, {'result': data});
+        }
+      });
     }
   });
 
@@ -62,29 +82,31 @@ exports.startJob = function (req, res) {
 exports.invokeClusterAnalysis = function (req, res) {
 
   var hiv_cluster = new HivCluster;
-
   var postdata = req.body;
   hiv_cluster.distance_threshold = postdata.distance_threshold;
   hiv_cluster.min_overlap        = postdata.min_overlap;
   hiv_cluster.ambiguity_handling = postdata.ambiguity_handling;
+  hiv_cluster.status             = 'queue';
 
   hiv_cluster.save(function (err, result) {
-
-    fs.readFile(req.files.files.path, function (err, data) {
-      var new_path = result.filepath;
-      fs.writeFile(new_path, data, function (err) {
-        var job_proxy = new jobproxy.JobProxy();
+    if(err) {
         res.format({
           html: function(){
-            res.render('hivcluster/jobpage.ejs', {'hivclusterid': result._id});
+            res.json(200, {'result': err});
           },
 
           json: function(){
             res.json(200, {'result': data});
           }
-
         });
-      });
+    }
+
+    fs.readFile(req.files.files.path, function (err, data) {
+      var new_path = result.filepath;
+      fs.writeFile(new_path, data, function (err) {
+        var hpcsocket = new jobproxy.HPCSocket(result);
+        res.redirect('./' + result._id);
+        });
+      }); 
     });
-  });
 };

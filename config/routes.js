@@ -62,6 +62,6 @@ module.exports = function(app){
   hivcluster = require( ROOT_PATH + '/app/routes/hivcluster');
   app.get('/hivcluster', hivcluster.clusterForm);
   app.post('/hivcluster', hivcluster.invokeClusterAnalysis);
-  app.get('/hivcluster/:id', hivcluster.startJob);
-  //app.delete('/hivcluster', hivcluster.deletehivcluster);
+  app.get('/hivcluster/:id', hivcluster.jobPage);
+  app.get('/hivcluster/:id/results', hivcluster.results);
 }

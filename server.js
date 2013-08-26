@@ -25,6 +25,13 @@
   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+var setup = require('./config/setup');
+
+ROOT_PATH = setup.rootpath;
+SPOOL_DIR = setup.spooldir;
+HOST      = setup.host;
+
+
 // Necessary packages
 var express          = require('express'),
     expressValidator = require('express-validator'),
@@ -32,19 +39,14 @@ var express          = require('express'),
     path             = require("path"),
     mongoose         = require('mongoose'),
     helpers          = require('./lib/helpers'),
-    setup            = require('./config/setup');
+    io               = require('socket.io').listen(setup.socket_port);
 
-
-ROOT_PATH = setup.rootpath;
-SPOOL_DIR = setup.spooldir;
-HOST      = setup.host;
 
 // Connect to database
 mongoose.connect(setup.database);
 
 // Main app configuration
 var app = express();
-
 app.configure(function () {
     app.use(express.compress());
     app.use(express.logger(setup.logger));     
@@ -56,16 +58,13 @@ app.configure(function () {
 
 // Bootstrap models
 var models_path = __dirname + '/app/models';
-
 fs.readdirSync(models_path).forEach(function (file) {
   require(models_path+'/'+file);
 });
 
 require('./config/routes')(app);
-
 app.set('views', __dirname + '/app/templates');
 app.engine('html', require('ejs').renderFile);
-
 app.use(express.static(__dirname + '/public'));
 
 //Port to listen on
@@ -73,4 +72,16 @@ app.listen(setup.port);
 
 helpers.logger.info('Listening on port ' + setup.port + '...');
 module.exports = app;
+
+var jobproxy = require('./lib/hivcluster.js');
+
+// Set up socket.io server
+io.sockets.on('connection', function (socket) {
+  socket.emit('connected', { hello: 'world' });
+  socket.on('acknowledged', function (data) {
+    //Create client socket
+    var clientSocket = new jobproxy.ClientSocket(socket, data.id);
+  });
+
+});
 
