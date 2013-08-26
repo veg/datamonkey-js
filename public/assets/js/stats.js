@@ -29,32 +29,32 @@ function crossfilterBlock(jobs) {
       }
     });
 
-    all_dates = tmp_all_dates;
-    job_mean = all.value()/all_dates.length;
-    job_median = all_dates[Math.round((all_dates.length-1)/2)].value;
-    lowest_job_number = all_dates[all_dates.length - 1].value;
-    highest_job_number = all_dates[0].value;
+    all_dates                      = tmp_all_dates;
+    job_mean                       = all.value()/all_dates.length;
+    job_median                     = all_dates[Math.round((all_dates.length-1)/2)].value;
+    lowest_job_number              = all_dates[all_dates.length - 1].value;
+    highest_job_number             = all_dates[0].value;
 
     // Number of sequences per job
-    sequence_total  = job.groupAll().reduceSum(function(d) { return d.upload_id.sequences; });
-    sequence_mean = sequence_total.value()/all.value();
-    sequence_median = avg_sequence.top(Infinity)[Math.round(avg_sequence.groupAll().value()/2)].upload_id.sequences;
-    lowest_sequence_number = avg_sequence.top(Infinity)[avg_sequence.groupAll().value() - 1].upload_id.sequences;
-    highest_sequence_number = avg_sequence.top(1)[0].upload_id.sequences;
-
-    // Number of sites per job
-    site_total  = job.groupAll().reduceSum(function(d) { return d.upload_id.sites; });
-    site_mean = site_total.value()/all.value();
-    site_median = avg_site.top(Infinity)[Math.round(avg_site.groupAll().value()/2)].upload_id.sites;
-    lowest_site_number = avg_site.top(Infinity)[avg_site.groupAll().value() - 1].upload_id.sites;
-    highest_site_number = avg_site.top(1)[0].upload_id.sites;
+    sequence_total                 = job.groupAll().reduceSum(function(d) { return d.upload_id.sequences; });
+    sequence_mean                  = sequence_total.value()/all.value();
+    sequence_median                = avg_sequence.top(Infinity)[Math.round(avg_sequence.groupAll().value()/2)].upload_id.sequences;
+    lowest_sequence_number         = avg_sequence.top(Infinity)[avg_sequence.groupAll().value() - 1].upload_id.sequences;
+    highest_sequence_number        = avg_sequence.top(1)[0].upload_id.sequences;
 
     // Average CPU time
-    cpu_time_total  = job.groupAll().reduceSum(function(d) { return d.cpu_time; });
-    cpu_time_mean = cpu_time_total.value()/all.value();
-    cpu_time_median = avg_cpu_time.top(Infinity)[Math.round(avg_cpu_time.groupAll().value()/2)].cpu_time;
-    lowest_cpu_time_number = avg_cpu_time.top(Infinity)[Math.round(avg_cpu_time.groupAll().value()) - 1].cpu_time;
-    highest_cpu_time_number = avg_cpu_time.top(1)[0].cpu_time;
+    cpu_time_total                 = job.groupAll().reduceSum(function(d) { return d.cpu_time; });
+    cpu_time_mean                  = cpu_time_total.value()/all.value();
+    cpu_time_median                = avg_cpu_time.top(Infinity)[Math.round(avg_cpu_time.groupAll().value()/2)].cpu_time;
+    lowest_cpu_time_number         = avg_cpu_time.top(Infinity)[Math.round(avg_cpu_time.groupAll().value()) - 1].cpu_time;
+    highest_cpu_time_number        = avg_cpu_time.top(1)[0].cpu_time;
+
+    // Number of sites per job
+    site_total                     = job.groupAll().reduceSum(function(d) { return d.upload_id.sites; });
+    site_mean                      = site_total.value()/all.value();
+    site_median                    = avg_site.top(Infinity)[Math.round(avg_site.groupAll().value()/2)].upload_id.sites;
+    lowest_site_number             = avg_site.top(Infinity)[avg_site.groupAll().value() - 1].upload_id.sites;
+    highest_site_number            = avg_site.top(1)[0].upload_id.sites;
 
     d3.selectAll("#job-mean").text("Mean: " + formatReal(job_mean));
     d3.selectAll("#job-median").text("Median: " + formatReal(job_median));
@@ -62,8 +62,8 @@ function crossfilterBlock(jobs) {
     d3.selectAll("#sequence-mean").text("Mean: " + formatReal(sequence_mean));
     d3.selectAll("#sequence-median").text("Median: " + formatReal(sequence_median));
     d3.selectAll("#sequence-range").text("Range: " + lowest_sequence_number + '-' + highest_sequence_number);
-    d3.selectAll("#site-mean").text(formatReal("Mean: " + site_mean));
-    d3.selectAll("#site-median").text(formatReal("Median: " + site_median));
+    d3.selectAll("#site-mean").text("Mean: " + formatReal(site_mean));
+    d3.selectAll("#site-median").text("Median: " + formatReal(site_median));
     d3.selectAll("#site-range").text("Range: " + lowest_site_number + '-' + highest_site_number);
     d3.selectAll("#cpu-time-mean").text("Mean: " + formatReal(cpu_time_mean));
     d3.selectAll("#cpu-time-median").text("Median:" + formatReal(cpu_time_median));
