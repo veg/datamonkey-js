@@ -27,40 +27,11 @@
 
 */
 
-var setup     = require( ROOT_PATH + '/config/setup'),
-    hiv_setup = require( ROOT_PATH + '/config/hiv_cluster_globals');
+function define(name, value) {
+    Object.defineProperty(exports, name, {
+        value:      value,
+        enumerable: true
+    });
+}
 
-var mongoose = require('mongoose'),
-    moment   = require('moment'),
-    check    = require('validator').check,
-    globals  = require( ROOT_PATH + '/config/globals.js'),
-    sanitize = require('validator').sanitize
-
-var Schema = mongoose.Schema,
-  ObjectId = Schema.ObjectId;
-
-
-
-
-var HivCluster = new Schema({
-    distance_threshold : { type: Number, min : 0, max: 0.02 },
-    min_overlap        : { type: Number, min : 100, max: 1000 },
-    status             : {type: String, enum: hiv_setup.valid_statuses },
-    ambiguity_handling : String,
-    mailaddr           : String,
-    graph_dot          : String,
-    cluster_csv        : String,
-    created            : {type   : Date, default : Date.now}
-});
-
-HivCluster.virtual('filename').get(function () {
-  return this._id;
-});
-
-
-HivCluster.virtual('filepath').get(function () {
-  return setup.root_hivcluster_path + this._id;
-});
-
-
-module.exports = mongoose.model('HivCluster', HivCluster);
+define('valid_statuses', ['In Queue', 'Aligning', 'Converting to FASTA', 'TN93 Analysis', 'HIV Network Analysis', 'Completed']);

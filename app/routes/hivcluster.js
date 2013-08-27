@@ -27,12 +27,13 @@
 
 */
 
-var dpl      = require( ROOT_PATH + '/lib/datamonkey-pl.js'),
-    error    = require( ROOT_PATH + '/lib/error.js'),
-    helpers  = require( ROOT_PATH + '/lib/helpers.js'),
-    globals  = require( ROOT_PATH + '/config/globals.js'),
-    fs       = require('fs'),
-    jobproxy = require( ROOT_PATH + "/lib/hivcluster.js");
+var dpl       = require( ROOT_PATH + '/lib/datamonkey-pl.js'),
+    error     = require( ROOT_PATH + '/lib/error.js'),
+    helpers   = require( ROOT_PATH + '/lib/helpers.js'),
+    globals   = require( ROOT_PATH + '/config/globals.js'),
+    fs        = require('fs'),
+    jobproxy  = require( ROOT_PATH + "/lib/hivcluster.js"),
+    hiv_setup = require( ROOT_PATH + '/config/hiv_cluster_globals');
 
 var mongoose = require('mongoose'),
     HivCluster = mongoose.model('HivCluster');
@@ -68,10 +69,10 @@ exports.jobPage = function (req, res) {
     } else {
       res.format({
         html: function(){
-          res.render('hivcluster/jobpage.ejs', {'hivclusterid': hiv_cluster._id});
+          res.render('hivcluster/jobpage.ejs', {hiv_cluster : hiv_cluster});
         },
         json: function(){
-          res.json(200, {'result': data});
+          res.json(200, {'result': hiv_cluster});
         }
       });
     }
@@ -86,7 +87,7 @@ exports.invokeClusterAnalysis = function (req, res) {
   hiv_cluster.distance_threshold = postdata.distance_threshold;
   hiv_cluster.min_overlap        = postdata.min_overlap;
   hiv_cluster.ambiguity_handling = postdata.ambiguity_handling;
-  hiv_cluster.status             = 'queue';
+  hiv_cluster.status             = hiv_setup.valid_statuses[0];
 
   hiv_cluster.save(function (err, result) {
     if(err) {
@@ -108,5 +109,10 @@ exports.invokeClusterAnalysis = function (req, res) {
         res.redirect('./' + result._id);
         });
       }); 
+
     });
 };
+
+
+
+

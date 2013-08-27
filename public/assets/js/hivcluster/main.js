@@ -15,15 +15,20 @@ function setupJob() {
 
   // Status update
   socket.on('status update', function (data) {
-    //Update status div
+    // Select all prior alert-blocks and turn them to successes
+    $('.alert-block').attr("class", "alert alert-success");
+    
+    // Update status div
     jQuery('<div/>', {
-        class: 'alert alert-success',
+        class: 'alert alert-block',
         text : data
     }).appendTo('#hiv-cluster-status');
   });
 
   // Status update
   socket.on('completed', function (data) {
+    $('.alert-block').attr("class", "alert alert-success");
+
      jQuery('<div/>', {
         class: 'alert alert-success',
         text : data

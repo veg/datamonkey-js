@@ -1,11 +1,18 @@
 <%- include ../includes/header.ejs %>
-<div class="container" data-hivclusterid="<%= hivclusterid %>" >
+<div class="container">
   <h1 class="page-header">HIV Clustering Analysis</h1>
-  <div id="hiv-cluster-status" data-hivclusterid="<%= hivclusterid %>">
+  <%if (hiv_cluster.status != 'Completed') { %>  
+  <div id="hiv-cluster-status" data-hivclusterid="<%= hiv_cluster._id %>">
       <h2>Current Status</h2>
+      <div class="alert alert-block"><%= hiv_cluster.status %></div>
   </div>
+  <% } %>
+
   <div id="hiv-cluster-results" class="row-fluid">
-    <h2>Results</h2>
+  <h2>Results</h2>
+  <%if (hiv_cluster.status == 'Completed') { %>  
+    <%- include ./results.ejs %>
+  <% } %>
   </div>
 </div>
 <%- include ../includes/footer.ejs %>
