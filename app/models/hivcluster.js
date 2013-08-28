@@ -64,3 +64,4 @@ HivCluster.virtual('filepath').get(function () {
 
 
 module.exports = mongoose.model('HivCluster', HivCluster);
+
