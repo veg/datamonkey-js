@@ -4,7 +4,6 @@ $(document).ready(function(){
 
 function setupJob() {
 
-  console.log("setting job up");
   var hivclusterid = $('#hiv-cluster-status').data('hivclusterid')
   var socket = io.connect('http://datamonkey-dev:3001');
 
@@ -28,11 +27,23 @@ function setupJob() {
   // Status update
   socket.on('completed', function (data) {
     $('.alert-block').attr("class", "alert alert-success");
-
      jQuery('<div/>', {
         class: 'alert alert-success',
         text : data
     }).appendTo('#hiv-cluster-status');
+
+
+    $.get(hivclusterid + '/results', function(results) {
+      //Do an AJAX request to get results
+      jQuery('<pre/>', {
+          text : results.hiv_cluster.graph_dot
+      }).appendTo('#hiv-cluster-results');
+
+      jQuery('<pre/>', {
+          text : results.hiv_cluster.cluster_csv
+      }).appendTo('#hiv-cluster-results');
+    });
+
   });
 
   // Error
