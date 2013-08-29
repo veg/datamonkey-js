@@ -41,7 +41,7 @@ var mongoose = require('mongoose'),
 
 // app.get('/hivclustering', msa.showUploadForm);
 exports.clusterForm = function (req, res) {
-  res.render('hivcluster/form.ejs');
+  res.render('hivcluster/form.ejs', {'validators': HivCluster.validators()});
 };
 
 exports.results = function (req, res) {
@@ -89,30 +89,54 @@ exports.invokeClusterAnalysis = function (req, res) {
   hiv_cluster.ambiguity_handling = postdata.ambiguity_handling;
   hiv_cluster.status             = hiv_setup.valid_statuses[0];
 
-  hiv_cluster.save(function (err, result) {
-    if(err) {
-        res.format({
-          html: function(){
-            res.json(200, {'result': err});
-          },
-
-          json: function(){
-            res.json(200, {'result': data});
-          }
-        });
-    }
-
-    fs.readFile(req.files.files.path, function (err, data) {
-      var new_path = result.filepath;
-      fs.writeFile(new_path, data, function (err) {
-        var hpcsocket = new jobproxy.HPCSocket(result);
-        res.redirect('./' + result._id);
-        });
-      }); 
-
+  // Parameters checkout out. Validate upload file.
+  if (req.files.files.size == 0) {
+    // Show form again
+    res.format({
+      html: function(){
+        res.render('hivcluster/form.ejs', {'errors' : { 'file' : "Empty File"}, 'validators': HivCluster.validators() });
+      },
+      json: function(){
+        res.json(200, {'err': "Empty File"});
+      }
     });
-};
+    return;
+  }
 
+  HivCluster.validateFasta(req.files.files.path, function(result) {
+    if(!result.success) {
+      // Show form again
+      res.format({
+        html: function(){
+          res.render('hivcluster/form.ejs', {'errors': { 'file' : result.msg }, 'validators': HivCluster.validators() });
+        },
+        json: function(){
+          res.json(200, {'err': "Empty File"});
+        }
+      });
+    } else {
+      hiv_cluster.save(function (err, result) {
+        if(err) {
+            res.format({
+              html: function(){
+                console.log(err);
+                res.render('hivcluster/form.ejs', {'errors': err.errors, 'validators': HivCluster.validators()});
+              },
 
-
-
+              json: function(){
+                res.json(200, {'result': data});
+              }
+            });
+        } else {
+          fs.readFile(req.files.files.path, function (err, data) {
+            var new_path = result.filepath;
+            fs.writeFile(new_path, data, function (err) {
+              var hpcsocket = new jobproxy.HPCSocket(result);
+              res.redirect('./' + result._id);
+            });
+          }); 
+        }
+      });
+    } 
+  });
+}

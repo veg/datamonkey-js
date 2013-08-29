@@ -34,24 +34,52 @@ var mongoose = require('mongoose'),
     moment   = require('moment'),
     check    = require('validator').check,
     globals  = require( ROOT_PATH + '/config/globals.js'),
-    sanitize = require('validator').sanitize
+    sanitize = require('validator').sanitize,
+    spawn    = require('child_process').spawn;
 
 var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
-
+function notEmptyValidator (val) {
+  return val != null;
+}
 
 
 var HivCluster = new Schema({
-    distance_threshold : { type: Number, min : 0, max: 0.02 },
-    min_overlap        : { type: Number, min : 100, max: 1000 },
-    status             : {type: String, enum: hiv_setup.valid_statuses },
-    ambiguity_handling : String,
+    distance_threshold : { type: Number, require: true, min : 0, max: 0.02, validate: [notEmptyValidator, 'Distance Threshold is empty'] },
+    min_overlap        : { type: Number, require: true, min : 100, max: 1000, validate: [notEmptyValidator, 'Minimum Overlap is empty'] },
+    status             : { type: String, enum: hiv_setup.valid_statuses },
+    ambiguity_handling : { type: String, require: true, validate: [notEmptyValidator, 'Ambiguity Handling is empty']},
     mailaddr           : String,
     graph_dot          : String,
     cluster_csv        : String,
-    created            : {type   : Date, default : Date.now}
+    created            : {type: Date, default: Date.now}
 });
+
+HivCluster.statics.validators = function () {
+  var validators = [];
+  debugger;
+  validators.min_overlap = HivCluster.paths.min_overlap.options;
+  validators.distance_threshold = HivCluster.paths.distance_threshold.options;
+  return validators;
+}
+
+HivCluster.statics.validateFasta = function (fn, cb) {
+  var fasta_validator =  spawn(setup.fasta_validator, 
+                               [fn]); 
+
+  fasta_validator.stderr.on('data', function (data) {
+    // Failed return the error
+    cb({success: false, msg: String(data).replace(/(\r\n|\n|\r)/gm,"")});
+  }); 
+
+  fasta_validator.on('close', function (code) {
+    // Check the error code, but probably success!
+    if(code != 1) {
+      cb({success: true});
+    }
+  }); 
+}
 
 HivCluster.virtual('filename').get(function () {
   return this._id;

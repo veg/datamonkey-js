@@ -33,17 +33,6 @@ function setupJob() {
         class: 'alert alert-success',
         text : data
     }).appendTo('#hiv-cluster-status');
-
-    $.get(hivclusterid + '/results', function(results) {
-      //Do an AJAX request to get results
-      jQuery('<pre/>', {
-          text : results.hiv_cluster.graph_dot
-      }).appendTo('#hiv-cluster-results');
-
-      jQuery('<pre/>', {
-          text : results.hiv_cluster.cluster_csv
-      }).appendTo('#hiv-cluster-results');
-    });
   });
 
   // Error
