@@ -44,26 +44,46 @@ function notEmptyValidator (val) {
   return val != null;
 }
 
-
+/**
+ * HivCluster Schema Type
+ * distance threshold : Parameter set by user
+ * min_overlap        : Parameter set by user
+ * ambiguity_handling : Current status of job
+ * status             : Current status of job
+ * mailaddr           : User's email address
+ * graph_dot          : Results
+ * cluster_csv        : Results
+ * created            : When the document was created
+ */
 var HivCluster = new Schema({
     distance_threshold : { type: Number, require: true, min : 0, max: 0.02, validate: [notEmptyValidator, 'Distance Threshold is empty'] },
     min_overlap        : { type: Number, require: true, min : 100, max: 1000, validate: [notEmptyValidator, 'Minimum Overlap is empty'] },
-    status             : { type: String, enum: hiv_setup.valid_statuses },
     ambiguity_handling : { type: String, require: true, validate: [notEmptyValidator, 'Ambiguity Handling is empty']},
+    status             : { type: String, enum: hiv_setup.valid_statuses },
     mailaddr           : String,
     graph_dot          : String,
     cluster_csv        : String,
     created            : {type: Date, default: Date.now}
 });
 
+
+/**
+ * Validators to be passed to an html template as data attributes for 
+ * form validation
+ */
 HivCluster.statics.validators = function () {
   var validators = [];
-  debugger;
   validators.min_overlap = HivCluster.paths.min_overlap.options;
   validators.distance_threshold = HivCluster.paths.distance_threshold.options;
   return validators;
 }
 
+/**
+ * Ensure that the file is in valid FASTA format
+ * The function relies on "FastaValidator" from 
+ * git@github.com:veg/TN93.git to be installed and defined in setup
+ * @param fn {String} path to file to be validated
+ */
 HivCluster.statics.validateFasta = function (fn, cb) {
   var fasta_validator =  spawn(setup.fasta_validator, 
                                [fn]); 
@@ -81,11 +101,16 @@ HivCluster.statics.validateFasta = function (fn, cb) {
   }); 
 }
 
+/**
+ * Filename of document's file upload
+ */
 HivCluster.virtual('filename').get(function () {
   return this._id;
 });
 
-
+/**
+ * Complete file path for document's file upload
+ */
 HivCluster.virtual('filepath').get(function () {
   return setup.root_hivcluster_path + this._id;
 });

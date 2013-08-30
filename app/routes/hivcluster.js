@@ -39,26 +39,35 @@ var mongoose = require('mongoose'),
     HivCluster = mongoose.model('HivCluster');
 
 
-// app.get('/hivclustering', msa.showUploadForm);
+/**
+ * Form submission page
+ * app.get('/hivclustering', msa.showUploadForm);
+ */
 exports.clusterForm = function (req, res) {
   res.render('hivcluster/form.ejs', {'validators': HivCluster.validators()});
 };
 
+/**
+ * Returns strictly JSON results for requested job id
+ * app.get('/hivcluster/:id/results', hivcluster.results);
+ */
 exports.results = function (req, res) {
-
   // HIV Cluster id
   var id = req.params.id;
   HivCluster.findOne({_id: id}, 'graph_dot cluster_csv', function (err, hiv_cluster) {
     if (err || !hiv_cluster) {
       res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
     } else {
-      console.log(hiv_cluster);
       res.json(200, {'hiv_cluster': hiv_cluster});
     }
   });
 
 }
 
+/**
+ * Displays the page for the specified document
+ * app.get('/hivcluster/:id', hivcluster.jobPage);
+ */
 exports.jobPage = function (req, res) {
 
   // HIV Cluster id
@@ -80,6 +89,10 @@ exports.jobPage = function (req, res) {
 
 }
 
+/**
+ * Handles a job request by the user
+ * app.post('/hivcluster', hivcluster.invokeClusterAnalysis);
+ */
 exports.invokeClusterAnalysis = function (req, res) {
 
   var hiv_cluster = new HivCluster;
@@ -89,7 +102,7 @@ exports.invokeClusterAnalysis = function (req, res) {
   hiv_cluster.ambiguity_handling = postdata.ambiguity_handling;
   hiv_cluster.status             = hiv_setup.valid_statuses[0];
 
-  // Parameters checkout out. Validate upload file.
+  // Validate that a file was uploaded
   if (req.files.files.size == 0) {
     // Show form again
     res.format({
@@ -103,9 +116,10 @@ exports.invokeClusterAnalysis = function (req, res) {
     return;
   }
 
+  // Validate that the file uploaded was a FASTA file
   HivCluster.validateFasta(req.files.files.path, function(result) {
     if(!result.success) {
-      // Show form again
+      // FASTA validation failed, report an error and the form back to the user
       res.format({
         html: function(){
           res.render('hivcluster/form.ejs', {'errors': { 'file' : result.msg }, 'validators': HivCluster.validators() });
@@ -117,10 +131,12 @@ exports.invokeClusterAnalysis = function (req, res) {
     } else {
       hiv_cluster.save(function (err, result) {
         if(err) {
+            // One of the postdata parameters most likely failed. 
+            // Redisplay form with errors
             res.format({
               html: function(){
-                console.log(err);
-                res.render('hivcluster/form.ejs', {'errors': err.errors, 'validators': HivCluster.validators()});
+                res.render('hivcluster/form.ejs', {'errors': err.errors, 
+                           'validators': HivCluster.validators()});
               },
 
               json: function(){
@@ -128,6 +144,8 @@ exports.invokeClusterAnalysis = function (req, res) {
               }
             });
         } else {
+          // Successful upload, copy the tmp uploaded file to our 
+          // specified storage location as per setup.js
           fs.readFile(req.files.files.path, function (err, data) {
             var new_path = result.filepath;
             fs.writeFile(new_path, data, function (err) {
