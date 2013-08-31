@@ -34,4 +34,5 @@ function define(name, value) {
     });
 }
 
-define('valid_statuses', ['In Queue', 'Aligning', 'Converting to FASTA', 'TN93 Analysis', 'HIV Network Analysis', 'Completed', 'Aborted']);
+define('valid_statuses', ['In Queue', 'Aligning', 'Converting to FASTA', 'TN93 Analysis', 'HIV Network Analysis', 'Completed']);
+define('off_kilter_statuses', ['Aborted']);

@@ -59,13 +59,12 @@ var HivCluster = new Schema({
     distance_threshold : { type: Number, require: true, min : 0, max: 0.02, validate: [notEmptyValidator, 'Distance Threshold is empty'] },
     min_overlap        : { type: Number, require: true, min : 100, max: 1000, validate: [notEmptyValidator, 'Minimum Overlap is empty'] },
     ambiguity_handling : { type: String, require: true, validate: [notEmptyValidator, 'Ambiguity Handling is empty']},
-    status             : { type: String, enum: hiv_setup.valid_statuses },
+    status             : { type: String, enum: hiv_setup.valid_statuses.concat(hiv_setup.off_kilter_statuses) },
     mailaddr           : String,
     graph_dot          : String,
     cluster_csv        : String,
     created            : {type: Date, default: Date.now}
 });
-
 
 /**
  * Validators to be passed to an html template as data attributes for 
@@ -115,6 +114,26 @@ HivCluster.virtual('filepath').get(function () {
   return setup.root_hivcluster_path + this._id;
 });
 
+/**
+ * Index of status
+ */
+HivCluster.virtual('status_index').get(function () {
+  return hiv_setup.valid_statuses.indexOf(this.status);
+});
+
+/**
+ * Percentage of job complete
+ */
+HivCluster.virtual('percentage_complete').get(function () {
+  return ((this.status_index + 1)/hiv_setup.valid_statuses.length)*100 + '%';
+});
+
+/**
+ * Unix timestamp
+ */
+HivCluster.virtual('timestamp').get(function () {
+  return moment(this.created).unix();
+});
 
 module.exports = mongoose.model('HivCluster', HivCluster);
 

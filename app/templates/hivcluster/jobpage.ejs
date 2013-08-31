@@ -1,20 +1,31 @@
 <%- include ../includes/header.ejs %>
 <div class="container">
   <h1 class="page-header">HIV Clustering Analysis</h1>
+  <div id="hiv-cluster-report" data-hivclusterid="<%= hiv_cluster._id %>">
   <%if (hiv_cluster.status != 'Completed') { %>  
-  <div id="hiv-cluster-status" data-hivclusterid="<%= hiv_cluster._id %>">
-      <h2>Current Status</h2>
-      <div class="alert alert-block"><%= hiv_cluster.status %></div>
-  </div>
-  <% } %>
-
-  <div id="hiv-cluster-results" class="row-fluid">
-  <h2>Results</h2>
-  <%if (hiv_cluster.status == 'Completed') { %>  
+      <h2>Job in Progress</h2>
+      <div class="progress progress-striped active">
+        <div class="bar" style="width: <%= hiv_cluster.percentage_complete %>"></div>
+      </div>  
+      <div id="job-timer" data-created="<%= hiv_cluster.timestamp %>" style="float:right"><h3>Runtime <span class="time">00:00:00</span><h3></div>
+      <div style="clear:both"></div>
+      <% for(var s in valid_statuses) { %>
+        <div class="job-status alert 
+        <%if (hiv_cluster.status_index < s) { %>  
+        alert-info
+        <% } else if (hiv_cluster.status_index == s) { %>  
+        alert-block 
+        <% } else { %>
+        alert-success
+        <% } %>
+        "data-index=<%= s %>><%= valid_statuses[s] %></div>
+      <% } %>
+  <% } else { %>
     <%- include ./results.ejs %>
   <% } %>
   </div>
 </div>
 <%- include ../includes/footer.ejs %>
 <script src="/assets/js/socket.io.min.js"></script>
+<script src="/assets/js/moment.min.js"></script>
 <script src="/assets/js/hivcluster/main.js"></script>

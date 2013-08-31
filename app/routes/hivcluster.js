@@ -58,7 +58,14 @@ exports.results = function (req, res) {
     if (err || !hiv_cluster) {
       res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
     } else {
-      res.json(200, {'hiv_cluster': hiv_cluster});
+      res.format({
+        html: function(){
+          res.render('hivcluster/results.ejs', {hiv_cluster : hiv_cluster});
+        },
+        json: function(){
+          res.render('hivcluster/results.ejs', {hiv_cluster : hiv_cluster});
+        }
+      });
     }
   });
 
@@ -78,7 +85,7 @@ exports.jobPage = function (req, res) {
     } else {
       res.format({
         html: function(){
-          res.render('hivcluster/jobpage.ejs', {hiv_cluster : hiv_cluster});
+          res.render('hivcluster/jobpage.ejs', {hiv_cluster : hiv_cluster, valid_statuses : hiv_setup.valid_statuses});
         },
         json: function(){
           res.json(200, {'result': hiv_cluster});
