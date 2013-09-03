@@ -35,10 +35,10 @@ HOST      = setup.host;
 // Necessary packages
 var express          = require('express'),
     expressValidator = require('express-validator'),
+    helpers          = require('./lib/helpers'),
     fs               = require('fs'),
     path             = require("path"),
     mongoose         = require('mongoose'),
-    helpers          = require('./lib/helpers'),
     io               = require('socket.io').listen(setup.socket_port);
 
 
@@ -73,9 +73,8 @@ app.listen(setup.port);
 helpers.logger.info('Listening on port ' + setup.port + '...');
 module.exports = app;
 
-var jobproxy = require('./lib/hivcluster.js');
-
 // Set up socket.io server
+var jobproxy = require('./lib/hivcluster.js');
 io.sockets.on('connection', function (socket) {
   socket.emit('connected', { hello: 'world' });
   socket.on('acknowledged', function (data) {

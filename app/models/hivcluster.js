@@ -60,7 +60,7 @@ var HivCluster = new Schema({
     min_overlap        : { type: Number, require: true, min : 100, max: 1000, validate: [notEmptyValidator, 'Minimum Overlap is empty'] },
     ambiguity_handling : { type: String, require: true, validate: [notEmptyValidator, 'Ambiguity Handling is empty']},
     status             : { type: String, enum: hiv_setup.valid_statuses.concat(hiv_setup.off_kilter_statuses) },
-    mailaddr           : String,
+    mail               : String,
     graph_dot          : String,
     cluster_csv        : String,
     created            : {type: Date, default: Date.now}
@@ -133,6 +133,13 @@ HivCluster.virtual('percentage_complete').get(function () {
  */
 HivCluster.virtual('timestamp').get(function () {
   return moment(this.created).unix();
+});
+
+/**
+ * URL 
+ */
+HivCluster.virtual('url').get(function () {
+  return 'http://' + setup.host + '/hivcluster/' + this._id;
 });
 
 module.exports = mongoose.model('HivCluster', HivCluster);

@@ -31,6 +31,7 @@ var dpl       = require( ROOT_PATH + '/lib/datamonkey-pl.js'),
     error     = require( ROOT_PATH + '/lib/error.js'),
     helpers   = require( ROOT_PATH + '/lib/helpers.js'),
     globals   = require( ROOT_PATH + '/config/globals.js'),
+    mailer    = require( ROOT_PATH + '/lib/mailer.js'),
     fs        = require('fs'),
     jobproxy  = require( ROOT_PATH + "/lib/hivcluster.js"),
     hiv_setup = require( ROOT_PATH + '/config/hiv_cluster_globals');
@@ -84,11 +85,11 @@ exports.jobPage = function (req, res) {
       res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
     } else {
       res.format({
+        json: function(){
+          res.json(200, hiv_cluster);
+        },
         html: function(){
           res.render('hivcluster/jobpage.ejs', {hiv_cluster : hiv_cluster, valid_statuses : hiv_setup.valid_statuses});
-        },
-        json: function(){
-          res.json(200, {'result': hiv_cluster});
         }
       });
     }
@@ -104,9 +105,10 @@ exports.invokeClusterAnalysis = function (req, res) {
 
   var hiv_cluster = new HivCluster;
   var postdata = req.body;
-  hiv_cluster.distance_threshold = postdata.distance_threshold;
-  hiv_cluster.min_overlap        = postdata.min_overlap;
+  hiv_cluster.distance_threshold = Number(postdata.distance_threshold);
+  hiv_cluster.min_overlap        = Number(postdata.min_overlap);
   hiv_cluster.ambiguity_handling = postdata.ambiguity_handling;
+  hiv_cluster.mail               = postdata.mail;
   hiv_cluster.status             = hiv_setup.valid_statuses[0];
 
   // Validate that a file was uploaded
@@ -157,7 +159,14 @@ exports.invokeClusterAnalysis = function (req, res) {
             var new_path = result.filepath;
             fs.writeFile(new_path, data, function (err) {
               var hpcsocket = new jobproxy.HPCSocket(result);
-              res.redirect('./' + result._id);
+              res.format({
+                json: function(){
+                  res.json(200, result);
+                },
+                html: function(){
+                  res.redirect('hivcluster/' + result._id);
+                }
+              });
             });
           }); 
         }
