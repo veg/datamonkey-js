@@ -60,6 +60,7 @@ var HivCluster = new Schema({
     min_overlap        : { type: Number, require: true, min : 100, max: 1000, validate: [notEmptyValidator, 'Minimum Overlap is empty'] },
     ambiguity_handling : { type: String, require: true, validate: [notEmptyValidator, 'Ambiguity Handling is empty']},
     status             : { type: String, enum: hiv_setup.valid_statuses.concat(hiv_setup.off_kilter_statuses) },
+    torque_id          : String,
     mail               : String,
     graph_dot          : String,
     cluster_csv        : String,
