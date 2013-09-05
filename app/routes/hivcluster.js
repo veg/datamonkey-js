@@ -168,6 +168,7 @@ exports.invokeLanlAnalysis = function (req, res) {
   var hpcsocket = new jobproxy.LANLSocket(result);
 
 }
+
 /**
  * Displays the page for the specified document
  * app.get('/hivcluster/:id', hivcluster.jobPage);

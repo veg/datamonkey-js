@@ -20,11 +20,11 @@
       </div>
       <div class="form-element control-group <%if (typeof errors != "undefined" && typeof errors.distance_threshold != "undefined") { %>error<% } %>">
         <label id="datatype-content">Distance Threshold<a href="/help#data-types" target="_blank"><sup>?</sup></a></label> 
-        <input name="distance_threshold" type="number" placeholder=".015" data-min=<%= validators.distance_threshold.min %> data-max=<%= validators.distance_threshold.max %>>
+        <input name="distance_threshold" type="text" placeholder=".015" data-min=<%= validators.distance_threshold.min %> data-max=<%= validators.distance_threshold.max %>>
       </div>
       <div class="form-element control-group <%if (typeof errors != "undefined" && typeof errors.min_overlap != "undefined") { %>error<% } %>">
         <label id="datatype-content">Minimum Overlap<a href="/help#data-types" target="_blank"><sup>?</sup></a></label> 
-        <input name="min_overlap" type="number" placeholder="500"data-min=<%= validators.min_overlap.min %> data-max=<%= validators.min_overlap.max %>>
+        <input name="min_overlap" type="text" placeholder="500"data-min=<%= validators.min_overlap.min %> data-max=<%= validators.min_overlap.max %>>
       </div>
       <div class="form-element">
         <label id="">Handle Ambiguities<a href="/help#genetic-code" target="_blank"><sup>?</sup></a></label>
@@ -42,6 +42,11 @@
             GAPMM
           </option>
         </select> 
+      </div>
+      <div class="form-element">
+        <label class="checkbox">
+          <input type="checkbox" checked name="lanl_compare" value="yes"> Compare to Public Database </input>
+        </label>
       </div>
       <div class="form-element">
         <button type="submit" class="btn">
