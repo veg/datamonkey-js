@@ -56,15 +56,20 @@ function notEmptyValidator (val) {
  * created            : When the document was created
  */
 var HivCluster = new Schema({
-    distance_threshold : { type: Number, require: true, min : 0, max: 0.02, validate: [notEmptyValidator, 'Distance Threshold is empty'] },
-    min_overlap        : { type: Number, require: true, min : 100, max: 1000, validate: [notEmptyValidator, 'Minimum Overlap is empty'] },
-    ambiguity_handling : { type: String, require: true, validate: [notEmptyValidator, 'Ambiguity Handling is empty']},
-    status             : { type: String, enum: hiv_setup.valid_statuses.concat(hiv_setup.off_kilter_statuses) },
-    torque_id          : String,
-    mail               : String,
-    graph_dot          : String,
-    cluster_csv        : String,
-    created            : {type: Date, default: Date.now}
+    distance_threshold      : { type: Number, require: true, min : 0, max: 0.02, validate: [notEmptyValidator, 'Distance Threshold is empty'] },
+    min_overlap             : { type: Number, require: true, min : 100, max: 1000, validate: [notEmptyValidator, 'Minimum Overlap is empty'] },
+    ambiguity_handling      : { type: String, require: true, validate: [notEmptyValidator, 'Ambiguity Handling is empty']},
+    status                  : { type: String, enum: hiv_setup.valid_statuses.concat(hiv_setup.off_kilter_statuses) },
+    torque_id               : String,
+    mail                    : String,
+    graph_dot               : String,
+    cluster_csv             : String,
+    lanl_distance_threshold : { type: Number, min : 0, max: 0.02, validate: [notEmptyValidator, 'Distance Threshold is empty'] },
+    lanl_min_overlap        : { type: Number, min : 100, max: 1000, validate: [notEmptyValidator, 'Minimum Overlap is empty'] },
+    lanl_ambiguity_handling : { type: String, validate: [notEmptyValidator, 'Ambiguity Handling is empty']},
+    lanl_status             : { type: String, enum: hiv_setup.valid_lanl_statuses.concat(hiv_setup.off_kilter_statuses) },
+    lanl_torque_id          : String,
+    created                 : {type: Date, default: Date.now}
 });
 
 /**
@@ -75,6 +80,17 @@ HivCluster.statics.validators = function () {
   var validators = [];
   validators.min_overlap = HivCluster.paths.min_overlap.options;
   validators.distance_threshold = HivCluster.paths.distance_threshold.options;
+  return validators;
+}
+
+/**
+ * Validators to be passed to an html template as data attributes for 
+ * form validation
+ */
+HivCluster.statics.lanl_validators = function () {
+  var validators = [];
+  validators.min_overlap = HivCluster.paths.lanl_min_overlap.options;
+  validators.distance_threshold = HivCluster.paths.lanl_distance_threshold.options;
   return validators;
 }
 
@@ -123,10 +139,24 @@ HivCluster.virtual('status_index').get(function () {
 });
 
 /**
+ * Index of status
+ */
+HivCluster.virtual('lanl_status_index').get(function () {
+  return hiv_setup.valid_statuses.indexOf(this.lanl_status);
+});
+
+/**
  * Percentage of job complete
  */
 HivCluster.virtual('percentage_complete').get(function () {
   return ((this.status_index + 1)/hiv_setup.valid_statuses.length)*100 + '%';
+});
+
+/**
+ * Percentage of job complete
+ */
+HivCluster.virtual('lanl_percentage_complete').get(function () {
+  return ((this.lanl_status_index + 1)/hiv_setup.lanl_valid_statuses.length)*100 + '%';
 });
 
 /**

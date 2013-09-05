@@ -42,59 +42,35 @@ var mongoose = require('mongoose'),
 
 /**
  * Form submission page
- * app.get('/hivclustering', msa.showUploadForm);
+ * app.get('/hivcluster', hivcluster.clusterForm);
  */
 exports.clusterForm = function (req, res) {
   res.render('hivcluster/form.ejs', {'validators': HivCluster.validators()});
-};
-
-/**
- * Returns strictly JSON results for requested job id
- * app.get('/hivcluster/:id/results', hivcluster.results);
- */
-exports.results = function (req, res) {
-  // HIV Cluster id
-  var id = req.params.id;
-  HivCluster.findOne({_id: id}, 'graph_dot cluster_csv', function (err, hiv_cluster) {
-    if (err || !hiv_cluster) {
-      res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
-    } else {
-      res.format({
-        html: function(){
-          res.render('hivcluster/results.ejs', {hiv_cluster : hiv_cluster});
-        },
-        json: function(){
-          res.render('hivcluster/results.ejs', {hiv_cluster : hiv_cluster});
-        }
-      });
-    }
-  });
-
 }
 
 /**
- * Displays the page for the specified document
- * app.get('/hivcluster/:id', hivcluster.jobPage);
+ * Compare to LANL Form submission page
+ * app.get('/hivcluster/:id/comparetolanl', hivcluster.compareLanlForm);
  */
-exports.jobPage = function (req, res) {
+exports.compareLanlForm = function (req, res) {
 
-  // HIV Cluster id
   var id = req.params.id;
+
   HivCluster.findOne({_id: id}, function (err, hiv_cluster) {
     if (err || !hiv_cluster) {
       res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
     } else {
       res.format({
         json: function(){
-          res.json(200, hiv_cluster);
+          res.json(200, {'error' : 'Nothing to see here, try POSTing'});
         },
         html: function(){
-          res.render('hivcluster/jobpage.ejs', {hiv_cluster : hiv_cluster, valid_statuses : hiv_setup.valid_statuses});
+          res.render('hivcluster/lanlform.ejs', {'hiv_cluster': hiv_cluster,
+                     'validators': HivCluster.lanl_validators()});
         }
       });
     }
   });
-
 }
 
 /**
@@ -174,3 +150,72 @@ exports.invokeClusterAnalysis = function (req, res) {
     } 
   });
 }
+
+
+/**
+ * Handles a job request by the user
+ * app.post('/hivcluster', hivcluster.invokeClusterAnalysis);
+ */
+exports.invokeLanlAnalysis = function (req, res) {
+
+  var hiv_cluster = new HivCluster;
+  var postdata = req.body;
+  hiv_cluster.distance_threshold = Number(postdata.distance_threshold);
+  hiv_cluster.min_overlap        = Number(postdata.min_overlap);
+  hiv_cluster.ambiguity_handling = postdata.ambiguity_handling;
+  hiv_cluster.lanl_status        = hiv_setup.valid_statuses[0];
+
+  var hpcsocket = new jobproxy.LANLSocket(result);
+
+}
+/**
+ * Displays the page for the specified document
+ * app.get('/hivcluster/:id', hivcluster.jobPage);
+ */
+exports.jobPage = function (req, res) {
+
+  // HIV Cluster id
+  var id = req.params.id;
+  HivCluster.findOne({_id: id}, function (err, hiv_cluster) {
+    if (err || !hiv_cluster) {
+      res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
+    } else {
+      res.format({
+        json: function(){
+          res.json(200, hiv_cluster);
+        },
+        html: function(){
+          res.render('hivcluster/jobpage.ejs', {hiv_cluster : hiv_cluster, valid_statuses : hiv_setup.valid_statuses});
+        }
+      });
+    }
+  });
+
+}
+
+/**
+ * Returns strictly JSON results for requested job id
+ * app.get('/hivcluster/:id/results', hivcluster.results);
+ */
+exports.results = function (req, res) {
+  // HIV Cluster id
+  var id = req.params.id;
+  HivCluster.findOne({_id: id}, 'graph_dot cluster_csv', function (err, hiv_cluster) {
+    if (err || !hiv_cluster) {
+      res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
+    } else {
+      res.format({
+        html: function(){
+          res.render('hivcluster/results.ejs', {hiv_cluster : hiv_cluster});
+        },
+        json: function(){
+          res.render('hivcluster/results.ejs', {hiv_cluster : hiv_cluster});
+        }
+      });
+    }
+  });
+
+}
+
+
+
