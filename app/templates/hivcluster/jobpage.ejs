@@ -9,7 +9,7 @@
       </div>  
       <div id="job-timer" data-created="<%= hiv_cluster.timestamp %>" style="float:right"><h3>Runtime <span class="time">00:00:00</span><h3></div>
       <div style="clear:both"></div>
-      <% for(var s in valid_statuses) { %>
+      <% for(var s = 0; s < hiv_cluster.status_stack.length; s++) { %>
         <div class="job-status alert 
         <%if (hiv_cluster.status_index < s) { %>  
         alert-info
@@ -18,7 +18,7 @@
         <% } else { %>
         alert-success
         <% } %>
-        "data-index=<%= s %>><%= valid_statuses[s] %></div>
+        "data-index=<%= s %>><%= hiv_cluster.status_stack[s] %></div>
       <% } %>
   <% } else { %>
     <%- include ./results.ejs %>

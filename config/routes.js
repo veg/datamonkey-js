@@ -63,10 +63,5 @@ module.exports = function(app){
   app.post('/hivcluster', hivcluster.invokeClusterAnalysis);
   app.get('/hivcluster/:id', hivcluster.jobPage);
   app.get('/hivcluster/:id/results', hivcluster.results);
-  app.get('/hivcluster/:id/comparetolanl', hivcluster.compareLanlForm);
-  app.post('/hivcluster/:id/comparetolanl', hivcluster.invokeLanlAnalysis);
-
 }
-
-
 

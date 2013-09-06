@@ -59,16 +59,13 @@ var HivCluster = new Schema({
     distance_threshold      : { type: Number, require: true, min : 0, max: 0.02, validate: [notEmptyValidator, 'Distance Threshold is empty'] },
     min_overlap             : { type: Number, require: true, min : 100, max: 1000, validate: [notEmptyValidator, 'Minimum Overlap is empty'] },
     ambiguity_handling      : { type: String, require: true, validate: [notEmptyValidator, 'Ambiguity Handling is empty']},
-    status                  : { type: String, enum: hiv_setup.valid_statuses.concat(hiv_setup.off_kilter_statuses) },
+    status_stack            : Array,
+    status                  : { type: String },
+    lanl_compare            : Boolean,
     torque_id               : String,
     mail                    : String,
     graph_dot               : String,
     cluster_csv             : String,
-    lanl_distance_threshold : { type: Number, min : 0, max: 0.02, validate: [notEmptyValidator, 'Distance Threshold is empty'] },
-    lanl_min_overlap        : { type: Number, min : 100, max: 1000, validate: [notEmptyValidator, 'Minimum Overlap is empty'] },
-    lanl_ambiguity_handling : { type: String, validate: [notEmptyValidator, 'Ambiguity Handling is empty']},
-    lanl_status             : { type: String, enum: hiv_setup.valid_lanl_statuses.concat(hiv_setup.off_kilter_statuses) },
-    lanl_torque_id          : String,
     created                 : {type: Date, default: Date.now}
 });
 
@@ -135,28 +132,14 @@ HivCluster.virtual('filepath').get(function () {
  * Index of status
  */
 HivCluster.virtual('status_index').get(function () {
-  return hiv_setup.valid_statuses.indexOf(this.status);
-});
-
-/**
- * Index of status
- */
-HivCluster.virtual('lanl_status_index').get(function () {
-  return hiv_setup.valid_statuses.indexOf(this.lanl_status);
+  return this.status_stack.indexOf(this.status);
 });
 
 /**
  * Percentage of job complete
  */
 HivCluster.virtual('percentage_complete').get(function () {
-  return ((this.status_index + 1)/hiv_setup.valid_statuses.length)*100 + '%';
-});
-
-/**
- * Percentage of job complete
- */
-HivCluster.virtual('lanl_percentage_complete').get(function () {
-  return ((this.lanl_status_index + 1)/hiv_setup.lanl_valid_statuses.length)*100 + '%';
+  return ((this.status_index + 1)/this.status_stack.length)*100 + '%';
 });
 
 /**

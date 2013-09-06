@@ -49,43 +49,28 @@ exports.clusterForm = function (req, res) {
 }
 
 /**
- * Compare to LANL Form submission page
- * app.get('/hivcluster/:id/comparetolanl', hivcluster.compareLanlForm);
- */
-exports.compareLanlForm = function (req, res) {
-
-  var id = req.params.id;
-
-  HivCluster.findOne({_id: id}, function (err, hiv_cluster) {
-    if (err || !hiv_cluster) {
-      res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
-    } else {
-      res.format({
-        json: function(){
-          res.json(200, {'error' : 'Nothing to see here, try POSTing'});
-        },
-        html: function(){
-          res.render('hivcluster/lanlform.ejs', {'hiv_cluster': hiv_cluster,
-                     'validators': HivCluster.lanl_validators()});
-        }
-      });
-    }
-  });
-}
-
-/**
  * Handles a job request by the user
  * app.post('/hivcluster', hivcluster.invokeClusterAnalysis);
  */
 exports.invokeClusterAnalysis = function (req, res) {
 
   var hiv_cluster = new HivCluster;
+
   var postdata = req.body;
+
+  if(postdata.public_db_compare == 'yes') {
+    hiv_cluster.lanl_compare = true;
+    hiv_cluster.status_stack = hiv_setup.valid_lanl_statuses;
+  } else {
+    hiv_cluster.lanl_compare = false;
+    hiv_cluster.status_stack = hiv_setup.valid_statuses;
+  }
+
   hiv_cluster.distance_threshold = Number(postdata.distance_threshold);
   hiv_cluster.min_overlap        = Number(postdata.min_overlap);
   hiv_cluster.ambiguity_handling = postdata.ambiguity_handling;
   hiv_cluster.mail               = postdata.mail;
-  hiv_cluster.status             = hiv_setup.valid_statuses[0];
+  hiv_cluster.status             = hiv_cluster.status_stack[0];
 
   // Validate that a file was uploaded
   if (req.files.files.size == 0) {
@@ -153,23 +138,6 @@ exports.invokeClusterAnalysis = function (req, res) {
 
 
 /**
- * Handles a job request by the user
- * app.post('/hivcluster', hivcluster.invokeClusterAnalysis);
- */
-exports.invokeLanlAnalysis = function (req, res) {
-
-  var hiv_cluster = new HivCluster;
-  var postdata = req.body;
-  hiv_cluster.distance_threshold = Number(postdata.distance_threshold);
-  hiv_cluster.min_overlap        = Number(postdata.min_overlap);
-  hiv_cluster.ambiguity_handling = postdata.ambiguity_handling;
-  hiv_cluster.lanl_status        = hiv_setup.valid_statuses[0];
-
-  var hpcsocket = new jobproxy.LANLSocket(result);
-
-}
-
-/**
  * Displays the page for the specified document
  * app.get('/hivcluster/:id', hivcluster.jobPage);
  */
@@ -186,7 +154,7 @@ exports.jobPage = function (req, res) {
           res.json(200, hiv_cluster);
         },
         html: function(){
-          res.render('hivcluster/jobpage.ejs', {hiv_cluster : hiv_cluster, valid_statuses : hiv_setup.valid_statuses});
+          res.render('hivcluster/jobpage.ejs', {hiv_cluster : hiv_cluster});
         }
       });
     }
