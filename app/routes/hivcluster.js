@@ -173,14 +173,24 @@ exports.results = function (req, res) {
     if (err || !hiv_cluster) {
       res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
     } else {
-      res.format({
-        html: function(){
-          res.render('hivcluster/results.ejs', {hiv_cluster : hiv_cluster});
-        },
-        json: function(){
-          res.render('hivcluster/results.ejs', {hiv_cluster : hiv_cluster});
-        }
+
+      results = {};
+
+      fs.readFile(hiv_cluster.graph_dot, function (err, data) {
+        results.graph_dot = data;
+          fs.readFile(hiv_cluster.cluster_csv, function (err, data) {
+            results.cluster_csv = data;
+            res.format({
+              html: function(){
+                res.render('hivcluster/results.ejs', {hiv_cluster : results});
+              },
+              json: function(){
+                res.render('hivcluster/results.ejs', {hiv_cluster : results});
+              }
+            });
+          });
       });
+
     }
   });
 

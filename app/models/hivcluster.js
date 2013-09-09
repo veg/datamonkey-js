@@ -66,6 +66,8 @@ var HivCluster = new Schema({
     mail                    : String,
     graph_dot               : String,
     cluster_csv             : String,
+    lanl_graph_dot          : String,
+    lanl_cluster_csv        : String,
     created                 : {type: Date, default: Date.now}
 });
 
