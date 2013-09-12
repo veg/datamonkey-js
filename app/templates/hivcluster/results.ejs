@@ -1,9 +1,15 @@
 <h2>Results</h2>
-<h3>Graph Dot File</h3>
+<h3>TN93 Summary</h3>
 <pre>
-  <%= hiv_cluster.graph_dot %>
+  <%= hiv_cluster.tn93_summary%>
 </pre>
-<h3>Cluster CSV</h3>
+<h3>Cluster Results</h3>
 <pre>
-  <%= hiv_cluster.cluster_csv %>
+  <%= hiv_cluster.cluster_results %>
 </pre>
+<%if (hiv_cluster.lanl_cluster_results) { %>  
+<h3>LANL Cluster Results</h3>
+<pre>
+  <%= hiv_cluster.lanl_cluster_results %>
+</pre>
+<% } %>

@@ -169,28 +169,40 @@ exports.jobPage = function (req, res) {
 exports.results = function (req, res) {
   // HIV Cluster id
   var id = req.params.id;
-  HivCluster.findOne({_id: id}, 'graph_dot cluster_csv', function (err, hiv_cluster) {
+  HivCluster.findOne({_id: id}, 'tn93_summary cluster_results lanl_cluster_results', function (err, hiv_cluster) {
     if (err || !hiv_cluster) {
       res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
     } else {
-
       results = {};
+      results.tn93_summary = hiv_cluster.tn93_summary;
 
-      fs.readFile(hiv_cluster.graph_dot, function (err, data) {
-        results.graph_dot = data;
-          fs.readFile(hiv_cluster.cluster_csv, function (err, data) {
-            results.cluster_csv = data;
-            res.format({
-              html: function(){
-                res.render('hivcluster/results.ejs', {hiv_cluster : results});
-              },
-              json: function(){
-                res.render('hivcluster/results.ejs', {hiv_cluster : results});
-              }
-            });
+      fs.readFile(hiv_cluster.cluster_results, function (err, data) {
+        results.cluster_results = data;
+        if(!hiv_cluster.lanl_cluster_results) {
+          res.format({
+            html: function(){
+              res.render('hivcluster/results.ejs', {hiv_cluster : results});
+            },
+            json: function(){
+              res.render('hivcluster/results.ejs', {hiv_cluster : results});
+            }
           });
-      });
 
+        } else {
+
+        fs.readFile(hiv_cluster.lanl_cluster_results, function (err, lanl_data) {
+          results.lanl_cluster_results = lanl_data;
+          res.format({
+            html: function(){
+              res.render('hivcluster/results.ejs', {hiv_cluster : results});
+            },
+            json: function(){
+              res.render('hivcluster/results.ejs', {hiv_cluster : results});
+            }
+          });
+        });
+      }
+      });
     }
   });
 

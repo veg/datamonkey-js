@@ -64,10 +64,9 @@ var HivCluster = new Schema({
     lanl_compare            : Boolean,
     torque_id               : String,
     mail                    : String,
-    graph_dot               : String,
-    cluster_csv             : String,
-    lanl_graph_dot          : String,
-    lanl_cluster_csv        : String,
+    tn93_summary            : String,
+    cluster_results         : String,
+    lanl_cluster_results    : String,
     created                 : {type: Date, default: Date.now}
 });
 

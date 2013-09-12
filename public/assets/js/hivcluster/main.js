@@ -19,9 +19,7 @@ function getTime() {
   time_difference -= hh * 1000 * 60 * 60;
   var mm = pad(String(Math.floor(time_difference / 1000 / 60)));
   time_difference -= mm * 1000 * 60;
-  console.log(time_difference);
   var ss = pad(String(Math.floor(time_difference / 1000)));
-  console.log(ss);
   $("#job-timer .time").html(hh + ":"+ mm  + ":"+ ss);
 }
 
@@ -75,11 +73,6 @@ function setupJob() {
           class: 'alert alert-error',
           text : 'There was an error! Please try again. Error : ' + data.msg
       }).insertAfter($(".page-header"));
-    
-    //Update status div
-    //Please try again
-    //Close connection
   });
-
 }
 
