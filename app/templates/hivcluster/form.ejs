@@ -10,7 +10,7 @@
   <div id="form-error" class="alert alert-danger" <%if (typeof errors == "undefined") { %>style="display: none;"<% } %>>
       There were errors with your request. Errors are highlighted in red.
   </div>
-  <div class="nav nav-list pull-right col-sm-4"><a href="/help" target="_blank">I'm confused</a></div>
+  <div class="nav nav-list pull-right"><a href="/help" target="_blank">I'm confused</a></div>
   <form role="form" class="form-horizontal upload-form" name="uploadform" enctype="multipart/form-data" action="/hivcluster" method="post">
       <div class="form-group <%if (typeof errors != "undefined" && typeof errors.file != "undefined") { %>has-error<% } %>">
         <label id="upload-file-label" class="control-label">Choose a sequence alignment<a href="/help#data-formats" target="_blank"><sup>?</sup></a></label> 
@@ -23,7 +23,7 @@
       </div>
       <div class="form-group <%if (typeof errors != "undefined" && typeof errors.min_overlap != "undefined") { %>has-error<% } %>">
         <label id="datatype-content" class="control-label">Minimum Overlap<a href="/help#data-types" target="_blank"><sup>?</sup></a></label> 
-        <input class="form-control" name="min_overlap" type="text" placeholder="500"data-min=<%= validators.min_overlap.min %> data-max=<%= validators.min_overlap.max %>>
+        <input class="form-control" name="min_overlap" type="text" placeholder="500" data-min=<%= validators.min_overlap.min %> data-max=<%= validators.min_overlap.max %>>
       </div>
       <div class="form-group">
         <label class="control-label">Handle Ambiguities<a href="/help#genetic-code" target="_blank"><sup>?</sup></a></label>
@@ -44,11 +44,11 @@
       </div>
       <div class="form-group <%if (typeof errors != "undefined" && typeof errors.mail != "undefined") { %>has-error<% } %>">
         <label id="datatype-content" class="control-label">Notify When Completed? <a href="/help#data-types" target="_blank"><sup>?</sup></a></label> 
-        <div class="input-group">
+        <div class="input-group mail-group">
           <span class="input-group-addon">
-            <input type="checkbox">
+            <input name="receive_mail" type="checkbox" value="on">
           </span>
-          <input type="text" class="form-control">
+          <input name="mail" type="text" class="form-control" placeholder="Email Address">
         </div>
       </div><!-- /form-group -->
       <div class="form-group">

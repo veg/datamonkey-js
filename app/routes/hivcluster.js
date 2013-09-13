@@ -66,15 +66,20 @@ exports.invokeClusterAnalysis = function (req, res) {
     hiv_cluster.status_stack = hiv_setup.valid_statuses;
   }
 
+  debugger;
+
   hiv_cluster.distance_threshold = Number(postdata.distance_threshold);
   hiv_cluster.min_overlap        = Number(postdata.min_overlap);
   hiv_cluster.ambiguity_handling = postdata.ambiguity_handling;
-  hiv_cluster.mail               = postdata.mail;
   hiv_cluster.status             = hiv_cluster.status_stack[0];
+
+  if(postdata.receive_mail == 'on') {
+    hiv_cluster.mail = postdata.mail;
+  }
 
   // Validate that a file was uploaded
   if (req.files.files.size == 0) {
-    // Show form again
+    // Error, show form again
     res.format({
       html: function(){
         res.render('hivcluster/form.ejs', {'errors' : { 'file' : "Empty File"}, 'validators': HivCluster.validators() });
@@ -101,7 +106,6 @@ exports.invokeClusterAnalysis = function (req, res) {
     } else {
       hiv_cluster.save(function (err, result) {
         if(err) {
-            // One of the postdata parameters most likely failed. 
             // Redisplay form with errors
             res.format({
               html: function(){
@@ -189,17 +193,16 @@ exports.results = function (req, res) {
           });
 
         } else {
-
-        fs.readFile(hiv_cluster.lanl_cluster_results, function (err, lanl_data) {
-          results.lanl_cluster_results = lanl_data;
-          res.format({
-            html: function(){
-              res.render('hivcluster/results.ejs', {hiv_cluster : results});
-            },
-            json: function(){
-              res.render('hivcluster/results.ejs', {hiv_cluster : results});
-            }
-          });
+          fs.readFile(hiv_cluster.lanl_cluster_results, function (err, lanl_data) {
+            results.lanl_cluster_results = lanl_data;
+            res.format({
+              html: function(){
+                res.render('hivcluster/results.ejs', {hiv_cluster : results});
+              },
+              json: function(){
+                res.render('hivcluster/results.ejs', {hiv_cluster : results});
+              }
+            });
         });
       }
       });
