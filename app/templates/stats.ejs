@@ -1,10 +1,10 @@
 <%- include includes/header.ejs %>
 <link href="/assets/css/stats.css" rel="stylesheet">
-<div class="container-fluid">
+<div class="container">
   <h1 class="page-header">Datamonkey Usage Statistics</h1>
 
-  <div class="row-fluid">
-    <div class="span1 pull-left">
+  <div class="row">
+    <div class="col-sm-1 pull-left">
       <div class="dropdown nav nav-list">
         <div class="btn-group btn-group-vertical stat-buttons" data-toggle="buttons-checkbox">
             <% for(var t in types) { %>
@@ -14,7 +14,7 @@
       </div>
     </div>
 
-    <div class="span11">
+    <div class="col-sm-11">
       <div id="charts">
         <div id="job-chart" class="chart">
           <div class="title">Job Count</div>

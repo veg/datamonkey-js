@@ -36,7 +36,7 @@ function setupJob() {
       if($(this).data("index") < data.index ) {
         $(this).attr("class", "job-status alert alert-success")
       } else if ($(this).data("index") == data.index) {
-        $(this).attr("class", "job-status alert alert-block")
+        $(this).attr("class", "job-status alert alert-warning")
       }
     });
 
@@ -54,7 +54,7 @@ function setupJob() {
 
   // Status update
   socket.on('completed', function (data) {
-    $(".progress .bar").width("100%");
+    $(".progress .progress-bar").width("100%");
 
     $(".job-status").each(function(index) {
       $(this).attr("class", "alert alert-success")

@@ -5,7 +5,9 @@
   <%if (hiv_cluster.status != 'Completed') { %>  
       <h2>Job in Progress</h2>
       <div class="progress progress-striped active">
-        <div class="bar" style="width: <%= hiv_cluster.percentage_complete %>"></div>
+        <div class="progress-bar" role="progressbar" aria-valuenow="<%= hiv_cluster.percentage_complete %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= hiv_cluster.percentage_complete %>">
+          <span class="sr-only"><%= hiv_cluster.percentage_complete %> Complete</span> 
+        </div>
       </div>  
       <div id="job-timer" data-created="<%= hiv_cluster.timestamp %>" style="float:right"><h3>Runtime <span class="time">00:00:00</span><h3></div>
       <div style="clear:both"></div>
@@ -14,7 +16,7 @@
         <%if (hiv_cluster.status_index < s) { %>  
         alert-info
         <% } else if (hiv_cluster.status_index == s) { %>  
-        alert-block 
+        alert-warning
         <% } else { %>
         alert-success
         <% } %>

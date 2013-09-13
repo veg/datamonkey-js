@@ -9,14 +9,14 @@ $("form").submit(function() {
   validateFile();
 
 
-  $(this).next('.help-inline').remove();
+  $(this).next('.help-block').remove();
 
-  if($(this).find(".error").length > 0) {
-    $("#form-error").show();
+  if($(this).find(".has-error").length > 0) {
+    $("#form-has-error").show();
     return false;
   }
 
-  $("#form-error").hide();
+  $("#form-has-error").hide();
   return true;
 
 });
@@ -24,21 +24,21 @@ $("form").submit(function() {
 var validateFile = function() {
   var selector = "input[type='file']";
 
-  $(selector).next('.help-inline').remove();
+  $(selector).next('.help-block').remove();
 
   // Ensure that file is not empty
   if($(selector).val().length == 0) {
 
-    $(selector).parent().addClass('error');
+    $(selector).parent().addClass('has-error');
 
     jQuery('<span/>', {
-          class: 'help-inline',
+          class: 'help-block',
           text : 'Field is empty'
       }).insertAfter($(selector));
     return false;
   } 
 
-  $(selector).parent().removeClass('error');
+  $(selector).parent().removeClass('has-error');
   return true;
 }
 
@@ -51,43 +51,43 @@ var validateElement = function () {
   // Check that it is not empty
   if($(this).val().length == 0) {
     // Empty 
-    $(this).next('.help-inline').remove();
-    $(this).parent().removeClass('success');
-    $(this).parent().addClass('error');
+    $(this).next('.help-block').remove();
+    $(this).parent().removeClass('has-success');
+    $(this).parent().addClass('has-error');
 
     jQuery('<span/>', {
-          class: 'help-inline',
+          class: 'help-block',
           text : 'Field is empty'
       }).insertAfter($(this));
 
   } else if($(this).val() < $(this).data('min')) {
 
     // We're being cheated
-    $(this).next('.help-inline').remove();
-    $(this).parent().removeClass('success');
-    $(this).parent().addClass('error');
+    $(this).next('.help-block').remove();
+    $(this).parent().removeClass('has-success');
+    $(this).parent().addClass('has-error');
 
     jQuery('<span/>', {
-          class: 'help-inline',
+          class: 'help-block',
           text : 'Parameter must be between ' + $(this).data('min') + ' and ' + $(this).data('max')
       }).insertAfter($(this));
 
   } else if($(this).val() > $(this).data('max')) {
 
     // They're being too kind
-    $(this).next('.help-inline').remove();
-    $(this).parent().removeClass('success');
-    $(this).parent().addClass('error');
+    $(this).next('.help-block').remove();
+    $(this).parent().removeClass('has-success');
+    $(this).parent().addClass('has-error');
     jQuery('<span/>', {
-          class: 'help-inline',
+          class: 'help-block',
           text : 'Parameter must be between ' + $(this).data('min') + ' and ' + $(this).data('max')
       }).insertAfter($(this));
 
   } else {
     // Give them a green arrow. They like that.
-    $(this).parent().removeClass('error');
-    $(this).parent().addClass('success');
-    $(this).next('.help-inline').remove();
+    $(this).parent().removeClass('has-error');
+    $(this).parent().addClass('has-success');
+    $(this).next('.help-block').remove();
   }
  
 }

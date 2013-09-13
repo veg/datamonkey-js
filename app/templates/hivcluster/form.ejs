@@ -7,27 +7,26 @@
 <div class="container">
   <h2 class="page-header">HIV Clustering</h2>
 
-  <div id="form-error" class="alert alert-error" <%if (typeof errors == "undefined") { %>style="display: none;"<% } %>>
+  <div id="form-error" class="alert alert-danger" <%if (typeof errors == "undefined") { %>style="display: none;"<% } %>>
       There were errors with your request. Errors are highlighted in red.
   </div>
-  <div class="nav nav-list pull-right span4i"><a href="/help" target="_blank">I'm confused</a></div>
-  <form class="form-horizontal upload-form" name="uploadform" enctype="multipart/form-data" action="/hivcluster" method="post">
-    <fieldset>
-      <div class="form-element control-group <%if (typeof errors != "undefined" && typeof errors.file != "undefined") { %>error<% } %>">
-        <label id="upload-file-label">Choose a sequence alignment<a href="/help#data-formats" target="_blank"><sup>?</sup></a></label> 
+  <div class="nav nav-list pull-right col-sm-4"><a href="/help" target="_blank">I'm confused</a></div>
+  <form role="form" class="form-horizontal upload-form" name="uploadform" enctype="multipart/form-data" action="/hivcluster" method="post">
+      <div class="form-group <%if (typeof errors != "undefined" && typeof errors.file != "undefined") { %>has-error<% } %>">
+        <label id="upload-file-label" class="control-label">Choose a sequence alignment<a href="/help#data-formats" target="_blank"><sup>?</sup></a></label> 
         <input type="file" name="files">
-        <%if (typeof errors != "undefined" && typeof errors.file != "undefined") { %><span class="help-inline"> <%= errors.file %> </span><% } %>
+        <%if (typeof errors != "undefined" && typeof errors.file != "undefined") { %><span class="help-block"> <%= errors.file %> </span><% } %>
       </div>
-      <div class="form-element control-group <%if (typeof errors != "undefined" && typeof errors.distance_threshold != "undefined") { %>error<% } %>">
-        <label id="datatype-content">Distance Threshold<a href="/help#data-types" target="_blank"><sup>?</sup></a></label> 
-        <input name="distance_threshold" type="text" placeholder=".015" data-min=<%= validators.distance_threshold.min %> data-max=<%= validators.distance_threshold.max %>>
+      <div class=" form-group <%if (typeof errors != "undefined" && typeof errors.distance_threshold != "undefined") { %>has-error<% } %>">
+        <label id="datatype-content" class="control-label">Distance Threshold<a href="/help#data-types" target="_blank"><sup>?</sup></a></label> 
+        <input class="form-control" name="distance_threshold" type="text" placeholder=".015" data-min=<%= validators.distance_threshold.min %> data-max=<%= validators.distance_threshold.max %>>
       </div>
-      <div class="form-element control-group <%if (typeof errors != "undefined" && typeof errors.min_overlap != "undefined") { %>error<% } %>">
-        <label id="datatype-content">Minimum Overlap<a href="/help#data-types" target="_blank"><sup>?</sup></a></label> 
-        <input name="min_overlap" type="text" placeholder="500"data-min=<%= validators.min_overlap.min %> data-max=<%= validators.min_overlap.max %>>
+      <div class="form-group <%if (typeof errors != "undefined" && typeof errors.min_overlap != "undefined") { %>has-error<% } %>">
+        <label id="datatype-content" class="control-label">Minimum Overlap<a href="/help#data-types" target="_blank"><sup>?</sup></a></label> 
+        <input class="form-control" name="min_overlap" type="text" placeholder="500"data-min=<%= validators.min_overlap.min %> data-max=<%= validators.min_overlap.max %>>
       </div>
-      <div class="form-element">
-        <label id="">Handle Ambiguities<a href="/help#genetic-code" target="_blank"><sup>?</sup></a></label>
+      <div class="form-group">
+        <label class="control-label">Handle Ambiguities<a href="/help#genetic-code" target="_blank"><sup>?</sup></a></label>
         <select name="ambiguity_handling">
           <option value="RESOLVE">
             Resolve
@@ -43,17 +42,21 @@
           </option>
         </select> 
       </div>
-      <div class="form-element">
+      <div class="form-group <%if (typeof errors != "undefined" && typeof errors.mail != "undefined") { %>has-error<% } %>">
+        <label id="datatype-content" class="control-label">Notify When Completed? <a href="/help#data-types" target="_blank"><sup>?</sup></a></label> 
+        <div class="input-group">
+          <span class="input-group-addon">
+            <input type="checkbox">
+          </span>
+          <input type="text" class="form-control">
+        </div>
+      </div><!-- /form-group -->
+      <div class="form-group">
         <label class="checkbox">
-          <input type="checkbox" checked name="public_db_compare" value="yes"> Compare to Public Database </input>
+          <input type="checkbox" checked name="public_db_compare" value="yes"> Compare to Public Database</input>
         </label>
       </div>
-      <div class="form-element">
-        <button type="submit" class="btn">
-          Upload
-        </button>
-      </div>
-    </fieldset>
+      <button type="submit" class="btn btn-primary pull-right">Upload</button>
   </form>
 </div>
 <%- include ../includes/footer.ejs %>

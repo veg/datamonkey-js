@@ -1,0 +1,48 @@
+@import "../bootstrap/less/bootstrap.less";
+
+// Buttons
+// -------------------------
+@btnPrimaryBackground:              #FC6736;
+
+// Hr border color
+// -------------------------
+@hrBorder:                #FC6736;
+
+// Inverted navbar
+@navbarInverseBackground:                #FFFFFF;
+@navbarInverseBackgroundHighlight:       #E7E6F2;
+@navbarInverseBorder:                    #FC6736;
+@navbarInverseText:                      #777777;
+@navbarInverseLinkColor:                 #777777;
+@navbarInverseLinkColorHover:            #000;
+
+// Hero unit
+// -------------------------
+@jumbotron-bg:              #E7E6F2;
+
+// Navbar Styles
+// -------------------------
+.navbar-static-top {
+  border-width: 0 0 5px;
+}
+
+.navbar-inverse {
+  #gradient > .vertical(@navbarInverseBackgroundHighlight, @navbarInverseBackground);
+  border-color: @navbarInverseBorder;
+  border-width: 0px 0px 5px 0px;
+}
+
+.navbar-collapse {
+  border-color: @navbarInverseBorder;
+  border-width: 5px 0px 0px 0px;
+}
+
+.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+  border-color: @navbarInverseBorder;
+}
+
+.navbar .btn-navbar .icon-bar {
+  .box-shadow(0 0px 0 rgba(0,0,0,.25));
+}
+
+
