@@ -13,14 +13,14 @@ function pad (s) {
 
 function getTime() {
 
-  var created_time = new Date($("#job-timer").data("created") * 1000);
+  var created_time = new Date($('#job-timer').data('created') * 1000);
   var time_difference = new Date() - created_time;
   var hh = pad(String(Math.floor(time_difference / 1000 / 60 / 60)));
   time_difference -= hh * 1000 * 60 * 60;
   var mm = pad(String(Math.floor(time_difference / 1000 / 60)));
   time_difference -= mm * 1000 * 60;
   var ss = pad(String(Math.floor(time_difference / 1000)));
-  $("#job-timer .time").html(hh + ":"+ mm  + ":"+ ss);
+  $('#job-timer .time').html(hh + ':'+ mm  + ':'+ ss);
 }
 
 function setupJob() {
@@ -29,14 +29,14 @@ function setupJob() {
   var socket = io.connect('http://datamonkey-dev:3001');
 
   var changeStatus = function (data) {
-    $(".progress .bar").width(data.percentage);
+    $('.progress .progress-bar').width(data.percentage);
 
     //data is index and message
-    $(".job-status").each(function(index) {
-      if($(this).data("index") < data.index ) {
-        $(this).attr("class", "job-status alert alert-success")
+    $('.job-status').each(function(index) {
+      if($(this).data('index') < data.index ) {
+        $(this).attr('class', 'job-status alert alert-success')
       } else if ($(this).data("index") == data.index) {
-        $(this).attr("class", "job-status alert alert-warning")
+        $(this).attr('class', 'job-status alert alert-warning')
       }
     });
 
@@ -54,10 +54,10 @@ function setupJob() {
 
   // Status update
   socket.on('completed', function (data) {
-    $(".progress .progress-bar").width("100%");
+    $('.progress .progress-bar').width('100%');
 
-    $(".job-status").each(function(index) {
-      $(this).attr("class", "alert alert-success")
+    $('.job-status').each(function(index) {
+      $(this).attr('class', 'alert alert-success')
     });
 
     $.get(hivclusterid + '/results', function(results) {
@@ -72,7 +72,7 @@ function setupJob() {
     jQuery('<div/>', {
           class: 'alert alert-error',
           text : 'There was an error! Please try again. Error : ' + data.msg
-      }).insertAfter($(".page-header"));
+      }).insertAfter($('.page-header'));
   });
 }
 

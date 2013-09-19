@@ -1,44 +1,44 @@
 @import "../bootstrap/less/bootstrap.less";
 
-// Buttons
+// buttons
 // -------------------------
-@btn-primary-bg:              #FC6736;
+@btn-primary-bg: #fc6736;
 
-// Hr border color
+// hr border color
 // -------------------------
-@hrBorder:                #FC6736;
+@hrborder: #fc6736;
 
-// Inverted navbar
-@navbarInverseBackground:                #FFFFFF;
-@navbarInverseBackgroundHighlight:       #E7E6F2;
-@navbarInverseBorder:                    #FC6736;
-@navbarInverseText:                      #777777;
-@navbarInverseLinkColor:                 #777777;
-@navbarInverseLinkColorHover:            #000;
+// inverted navbar
+@navbar-inverse-bg               : #e9e6f2;
+@navbar-inverse-bg-highlight     : #e8e6f2;
+@navbar-inverse-border           : #fc6736;
+@navbar-inverse-text             : #777777;
+@navbar-inverse-link-color       : #777777;
+@navbar-inverse-link-hover-color : #555555;
+@navbar-inverse-link-hover-bg    : transparent;
 
-// Hero unit
+// hero unit
 // -------------------------
-@jumbotron-bg:              #E7E6F2;
+@jumbotron-bg: #e7e6f2;
 
-// Navbar Styles
+// navbar styles
 // -------------------------
 .navbar-static-top {
   border-width: 0 0 5px;
 }
 
 .navbar-inverse {
-  #gradient > .vertical(@navbarInverseBackgroundHighlight, @navbarInverseBackground);
-  border-color: @navbarInverseBorder;
+  border-color: @navbar-inverse-border;
   border-width: 0px 0px 5px 0px;
 }
 
 .navbar-collapse {
-  border-color: @navbarInverseBorder;
+  border-color: @navbar-inverse-border;
   border-width: 5px 0px 0px 0px;
 }
 
 .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
-  border-color: @navbarInverseBorder;
+  border-color: @navbar-inverse-border;
 }
 
 .navbar .btn-navbar .icon-bar {
