@@ -26,7 +26,7 @@ function getTime() {
 function setupJob() {
 
   var hivclusterid = $('#hiv-cluster-report').data('hivclusterid')
-  var socket = io.connect('http://datamonkey-dev:3001');
+  var socket = io.connect('http://datamonkey-dev:4001');
 
   var changeStatus = function (data) {
     $('.progress .progress-bar').width(data.percentage);
@@ -39,10 +39,9 @@ function setupJob() {
         $(this).attr('class', 'job-status alert alert-warning')
       }
     });
-
   }
 
-  socket.on('connected', function (data) {
+  socket.on('connected', function () {
     // Start job
     socket.emit('acknowledged', { id: hivclusterid });
   });
@@ -75,4 +74,3 @@ function setupJob() {
       }).insertAfter($('.page-header'));
   });
 }
-

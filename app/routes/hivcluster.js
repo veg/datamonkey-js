@@ -66,8 +66,6 @@ exports.invokeClusterAnalysis = function (req, res) {
     hiv_cluster.status_stack = hiv_setup.valid_statuses;
   }
 
-  debugger;
-
   hiv_cluster.distance_threshold = Number(postdata.distance_threshold);
   hiv_cluster.min_overlap        = Number(postdata.min_overlap);
   hiv_cluster.ambiguity_handling = postdata.ambiguity_handling;
