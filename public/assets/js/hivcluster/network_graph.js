@@ -1,4 +1,15 @@
 $(document).ready(function(){
+  if(!inProgress()) {
+    initializeClusterNetworkGraphs();
+  }
+});
+
+function inProgress() {
+  return $('.progress').length > 0;
+}
+
+var initializeClusterNetworkGraphs = function () {
+
   var network_container     = '#network_tag',
       network_status_string = '#network_status_string',
       histogram_tag         = '#histogram_tag',
@@ -9,19 +20,23 @@ $(document).ready(function(){
                         histogram_tag, 
                         histogram_label);
 
-  var lanl_network_container     = '#lanl_network_tag',
-      lanl_network_status_string = '#lanl_network_status_string',
-      lanl_histogram_tag         = '#lanl_histogram_tag',
-      lanl_histogram_label       = '#lanl_histogram_label';
+  if($('#lanl_cluster_results').length > 0) {
 
-var lanl_cluster_results = clusterNetworkGraph(lanl_network_container, 
-                           lanl_network_status_string,
-                           lanl_histogram_tag, 
-                           lanl_histogram_label);
-                        
-});
+    // Only if the comparison was done
+    var lanl_network_container     = '#lanl_network_tag',
+        lanl_network_status_string = '#lanl_network_status_string',
+        lanl_histogram_tag         = '#lanl_histogram_tag',
+        lanl_histogram_label       = '#lanl_histogram_label';
 
-clusterNetworkGraph = function (network_container, network_status_string, 
+    var lanl_cluster_results = clusterNetworkGraph(lanl_network_container, 
+                             lanl_network_status_string,
+                             lanl_histogram_tag, 
+                             lanl_histogram_label);
+  }
+
+}
+
+var clusterNetworkGraph = function (network_container, network_status_string, 
                                 histogram_tag, histogram_label) {
 
   var w = 850,
@@ -53,6 +68,7 @@ clusterNetworkGraph = function (network_container, network_status_string,
 
   //Get JSON url
   var json_url = $(network_container).data('url');
+  console.log(json_url);
 
   /*------------ "MAIN CALL" ---------------*/
   //$('#indicator').show();

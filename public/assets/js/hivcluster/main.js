@@ -62,6 +62,7 @@ function setupJob() {
     $.get(hivclusterid + '/results', function(results) {
       //Do an AJAX request to get results
       $('#hiv-cluster-report').html(results);
+      initializeClusterNetworkGraphs();
     });
 
   });

@@ -176,33 +176,13 @@ exports.results = function (req, res) {
       res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
     } else {
       results = {};
-      results.tn93_summary = hiv_cluster.tn93_summary;
-
-      fs.readFile(hiv_cluster.cluster_results, function (err, data) {
-        results.cluster_results = data;
-        if(!hiv_cluster.lanl_cluster_results) {
-          res.format({
-            html: function(){
-              res.render('hivcluster/results.ejs', {hiv_cluster : results});
-            },
-            json: function(){
-              res.render('hivcluster/results.ejs', {hiv_cluster : results});
-            }
-          });
-
-        } else {
-          fs.readFile(hiv_cluster.lanl_cluster_results, function (err, lanl_data) {
-            results.lanl_cluster_results = lanl_data;
-            res.format({
-              html: function(){
-                res.render('hivcluster/results.ejs', {hiv_cluster : results});
-              },
-              json: function(){
-                res.render('hivcluster/results.ejs', {hiv_cluster : results});
-              }
-            });
-        });
-      }
+      res.format({
+        html: function(){
+          res.render('hivcluster/results.ejs', {hiv_cluster : hiv_cluster});
+        },
+        json: function(){
+          res.render('hivcluster/results.ejs', {hiv_cluster : hiv_cluster});
+        }
       });
     }
   });
