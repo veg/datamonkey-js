@@ -20,7 +20,7 @@ var initializeClusterNetworkGraphs = function () {
                         histogram_tag, 
                         histogram_label);
 
-  if($('#lanl_cluster_results').length > 0) {
+  if($('#lanl-cluster-results').length > 0) {
 
     // Only if the comparison was done
     var lanl_network_container     = '#lanl_network_tag',

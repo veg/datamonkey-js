@@ -5,7 +5,7 @@
   <%if (hiv_cluster.status != 'Completed') { %>  
       <h2>Job in Progress</h2>
       <div class="progress progress-striped active">
-        <div class="progress-bar" role="progressbar" aria-valuenow="<%= hiv_cluster.percentage_complete %>" aria-valuemin="0" aria-valuemax="100" style="width: <%= hiv_cluster.percentage_complete %>">
+        <div class="progress-bar" role="progressbar" aria-valuenow="<%= hiv_cluster.percentage_complete %>" aria-valuemin="1" aria-valuemax="100" style="width: <%= hiv_cluster.percentage_complete %>">
           <span class="sr-only"><%= hiv_cluster.percentage_complete %> Complete</span> 
         </div>
       </div>  
