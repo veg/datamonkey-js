@@ -66,6 +66,7 @@ require('./config/routes')(app);
 app.set('views', __dirname + '/app/templates');
 app.engine('html', require('ejs').renderFile);
 app.use(express.static(__dirname + '/public'));
+app.use('/uploads', express.static(__dirname + '/uploads'));
 
 //Port to listen on
 app.listen(setup.port);

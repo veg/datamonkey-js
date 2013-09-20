@@ -3,13 +3,52 @@
 <pre>
   <%= hiv_cluster.tn93_summary%>
 </pre>
+
 <h3>Cluster Results</h3>
-<pre>
-  <%= hiv_cluster.cluster_results %>
-</pre>
+<div class="row">
+  <div class = "span6">
+    <p class="lead" id = 'network_tag_caption'>Connected components of the network</p>
+    <p class="small muted">Click on clusters/nodes to expand/collapse subnetworks.</p>
+  </div>
+  <div class = "span6">
+    <div class="alert" id = 'main-warning' style = 'display:none;'>
+    </div>
+  </div>
+  <div id = 'network_tag' class='span9' data-url=<%= hiv_cluster.cluster_results %>></div>
+  <div class="row">
+    <div id = 'histogram_tag' class = 'span3'>
+        <p id = 'histogram_label' class="text-left text-info small"></p><br>
+    </div>
+  </div>
+</div>
+<div class = "row">
+  <div class = 'span9'>
+    <p id = 'network_status_string' class = 'text-info'></p>
+  </div> 
+</div>
+
 <%if (hiv_cluster.lanl_cluster_results) { %>  
 <h3>LANL Cluster Results</h3>
-<pre>
-  <%= hiv_cluster.lanl_cluster_results %>
-</pre>
+<div class="row">
+  <div class = "span6">
+    <p class="lead" id = 'network_tag_caption'>Connected components of the network</p>
+    <p class="small muted">Click on clusters/nodes to expand/collapse subnetworks.</p>
+  </div>
+  <div class = "span6">
+    <div class="alert" id = 'main-warning' style = 'display:none;'>
+    </div>
+  </div>
+  <div id = 'network_tag' class='span9' data-url=<%= hiv_cluster.lanl_cluster_results %>></div>
+  <div class="row">
+    <div id = 'histogram_tag' class = 'span3'>
+        <p id = 'histogram_label' class="text-left text-info small"></p><br>
+    </div>
+  </div>
+</div>
+<div class = "row">
+  <div class = 'span9'>
+    <p id = 'network_status_string' class = 'text-info'></p>
+  </div> 
+</div>
 <% } %>
+
