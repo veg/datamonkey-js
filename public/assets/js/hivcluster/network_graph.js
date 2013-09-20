@@ -1,9 +1,28 @@
 $(document).ready(function(){
-  var network_container = "#network_tag";
-  clusterNetworkGraph(network_container);
+  var network_container     = '#network_tag',
+      network_status_string = '#network_status_string',
+      histogram_tag         = '#histogram_tag',
+      histogram_label       = '#histogram_label';
+
+  var cluster_results = clusterNetworkGraph(network_container, 
+                        network_status_string,
+                        histogram_tag, 
+                        histogram_label);
+
+  var lanl_network_container     = '#lanl_network_tag',
+      lanl_network_status_string = '#lanl_network_status_string',
+      lanl_histogram_tag         = '#lanl_histogram_tag',
+      lanl_histogram_label       = '#lanl_histogram_label';
+
+var lanl_cluster_results = clusterNetworkGraph(lanl_network_container, 
+                           lanl_network_status_string,
+                           lanl_histogram_tag, 
+                           lanl_histogram_label);
+                        
 });
 
-clusterNetworkGraph = function (network_container) {
+clusterNetworkGraph = function (network_container, network_status_string, 
+                                histogram_tag, histogram_label) {
 
   var w = 850,
       h = 800,
@@ -18,7 +37,6 @@ clusterNetworkGraph = function (network_container) {
       edges,    // edges between nodes
       clusters, // cluster 'nodes', used either as fixed cluster anchors, or 
                 // to be a placeholder for the cluster
-      json_url = '/assets/samples/test.json',
       max_points_to_render = 60,
       popover_html = "<div class='btn-group btn-group-vertical'>\
       <button class='btn btn-link btn-mini' type='button' id = 'cluster_expand_button'>Expand cluster</button>\
@@ -34,7 +52,7 @@ clusterNetworkGraph = function (network_container) {
       currently_displayed_objects;
 
   //Get JSON url
-  json_url = $(network_container).data('url');
+  var json_url = $(network_container).data('url');
 
   /*------------ "MAIN CALL" ---------------*/
   //$('#indicator').show();
@@ -214,11 +232,11 @@ clusterNetworkGraph = function (network_container) {
                         histogram_w, histogram_h, 
                         "histogram_tag");
 
-      d3.select ("#histogram_label").html ("Network degree distribution is best described by the <strong>" 
-                                           + json["Degrees"]["Model"] + "</strong> model, with &rho; of " 
-                                           + defaultFloatFormat(json ["Degrees"]["rho"])
-                                           + " (95% CI " + defaultFloatFormat(json ["Degrees"]["rho CI"][0]) 
-                                           + " - " + defaultFloatFormat(json ["Degrees"]["rho CI"][1]) + ")" );
+      d3.select(histogram_label).html ("Network degree distribution is best described by the <strong>" 
+                                       + json["Degrees"]["Model"] + "</strong> model, with &rho; of " 
+                                       + defaultFloatFormat(json ["Degrees"]["rho"])
+                                       + " (95% CI " + defaultFloatFormat(json ["Degrees"]["rho CI"][0]) 
+                                       + " - " + defaultFloatFormat(json ["Degrees"]["rho CI"][1]) + ")" );
 
     }
 
@@ -258,7 +276,7 @@ clusterNetworkGraph = function (network_container) {
           histogram_svg.remove();
       }
       
-      histogram_svg = d3.select("#histogram_tag").append("svg")
+      histogram_svg = d3.select(histogram_tag).append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
     .append("g")
@@ -307,7 +325,7 @@ clusterNetworkGraph = function (network_container) {
       if (singletons > 0) {
           s += "<strong>" +singletons + "</strong> singleton nodes are not shown. ";
       }
-      d3.select ("#network_status_string").html (s);
+      d3.select (network_status_string).html (s);
   }
 
   function update () {
