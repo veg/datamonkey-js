@@ -52,7 +52,7 @@ var clusterNetworkGraph = function (network_container, network_status_string,
       edges,    // edges between nodes
       clusters, // cluster 'nodes', used either as fixed cluster anchors, or 
                 // to be a placeholder for the cluster
-      max_points_to_render = 60,
+      max_points_to_render = 256,
       popover_html = "<div class='btn-group btn-group-vertical'>\
       <button class='btn btn-link btn-mini' type='button' id = 'cluster_expand_button'>Expand cluster</button>\
       <button class='btn btn-link btn-mini' id = 'cluster_center_button' type='button'>Center on screen</button>\
@@ -68,12 +68,12 @@ var clusterNetworkGraph = function (network_container, network_status_string,
 
   //Get JSON url
   var json_url = $(network_container).data('url');
-  console.log(json_url);
 
   /*------------ "MAIN CALL" ---------------*/
   //$('#indicator').show();
   d3.json(json_url, initial_json_load);
 
+      
   /*------------ D3 globals and SVG elements ---------------*/
       
   var defaultFloatFormat = d3.format(",.2f");
@@ -140,7 +140,7 @@ var clusterNetworkGraph = function (network_container, network_status_string,
       x.collapsed = true;
       if (!keep_in_q) {
           var idx = open_cluster_queue.indexOf (x.cluster_id);
-          if (idx) {
+          if (idx >= 0) {
            open_cluster_queue.splice (idx,1);
           }
       }
@@ -216,8 +216,8 @@ var clusterNetworkGraph = function (network_container, network_status_string,
     connected_links = [];
     total = 0;
     exclude_cluster_ids = {};
+    
     cluster_sizes = [];
-
     graph.Nodes.forEach (function (d) { if (typeof cluster_sizes[d.cluster-1]  === "undefined") {cluster_sizes[d.cluster-1] = 1;} else {cluster_sizes[d.cluster-1] ++;}});
      
     if (cluster_sizes.length > max_points_to_render) {
@@ -240,23 +240,16 @@ var clusterNetworkGraph = function (network_container, network_status_string,
     clusters.forEach (collapseCluster); 
     clusters.forEach (function (d,i) {cluster_mapping[d.cluster_id] = i;});
     
-    
+
+
     if(graph["Degrees"]["fitted"] != null) {
-
-      render_histogram (graph["Degrees"]["Distribution"], 
-                        graph["Degrees"]["fitted"], 
-                        histogram_w, histogram_h, 
-                        "histogram_tag");
-
-      d3.select(histogram_label).html ("Network degree distribution is best described by the <strong>" 
-                                       + json["Degrees"]["Model"] + "</strong> model, with &rho; of " 
-                                       + defaultFloatFormat(json ["Degrees"]["rho"])
-                                       + " (95% CI " + defaultFloatFormat(json ["Degrees"]["rho CI"][0]) 
-                                       + " - " + defaultFloatFormat(json ["Degrees"]["rho CI"][1]) + ")" );
-
+      render_histogram (graph["Degrees"]["Distribution"], graph["Degrees"]["fitted"], histogram_w, histogram_h, "histogram_tag");
+      d3.select (histogram_label).html ("Network degree distribution is best described by the <strong>" + json ["Degrees"]["Model"] + "</strong> model, with &rho; of " + defaultFloatFormat(json ["Degrees"]["rho"])
+                + " (95% CI " + defaultFloatFormat(json ["Degrees"]["rho CI"][0]) + " - " + defaultFloatFormat(json ["Degrees"]["rho CI"][1]) + ")" );
     }
-
+    
     update();
+    //$('#indicator').hide();
     $('#results').show();
 
   }
@@ -426,6 +419,8 @@ var clusterNetworkGraph = function (network_container, network_status_string,
     });    
   }
 
+
+
   function cluster_box_size (c) {
       return 5*Math.sqrt (c.children.length);
   }
@@ -439,6 +434,7 @@ var clusterNetworkGraph = function (network_container, network_status_string,
     node.attr("cx", function(d) { return d.x; })
         .attr("cy", function(d) { return d.y; });
   }
+
 
   function nodeColor(d) {
     //console.log (d);
@@ -459,6 +455,7 @@ var clusterNetworkGraph = function (network_container, network_status_string,
              "<br>Max degree <em>" + d3.max (degrees) + "</em>";
              
   }
+
 
   function nodeInfoString (n) {
       return "Degree <em>" + n.degree + "</em>"+
@@ -524,6 +521,7 @@ var clusterNetworkGraph = function (network_container, network_status_string,
     }
   }
 
+
   function cluster_pop_on (d) {
       toggle_tooltip (this, true, "Cluster " + d.cluster_id, clusterInfoString (d.cluster_id));
   }
@@ -540,17 +538,14 @@ var clusterNetworkGraph = function (network_container, network_status_string,
       toggle_tooltip (this, false);
   }
 
-  function expandClusterHandler (d, do_update) {
-    console.log (open_cluster_queue, d);
-    
+  function expandClusterHandler (d, do_update) { 
     var new_nodes = cluster_sizes[d.cluster_id-1];
     var leftover = new_nodes + currently_displayed_objects - max_points_to_render;
     if (leftover > 0) {
-      console.log (open_cluster_queue, d);
       for (k = 0; k < open_cluster_queue.length && leftover > 0; k++) {
-          leftover -= cluster_sizes[open_cluster_queue[k]];
-          console.log (clusters[open_cluster_queue[k]]);
-          collapseCluster (clusters[open_cluster_queue[k]-1],true);
+          var cluster = clusters[cluster_mapping[open_cluster_queue[k]]];
+          leftover -= cluster.children.length - 1;
+          collapseCluster (cluster,true);
       }
       if (k) {
           open_cluster_queue.splice (0, k);
