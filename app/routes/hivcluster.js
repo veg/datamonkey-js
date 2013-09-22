@@ -35,6 +35,7 @@ var dpl       = require( ROOT_PATH + '/lib/datamonkey-pl.js'),
     fs        = require('fs'),
     jobproxy  = require( ROOT_PATH + "/lib/hivcluster.js"),
     hiv_setup = require( ROOT_PATH + '/config/hiv_cluster_globals');
+    setup     = require( ROOT_PATH + '/config/setup');
 
 var mongoose = require('mongoose'),
     HivCluster = mongoose.model('HivCluster');
@@ -156,7 +157,7 @@ exports.jobPage = function (req, res) {
           res.json(200, hiv_cluster);
         },
         html: function(){
-          res.render('hivcluster/jobpage.ejs', {hiv_cluster : hiv_cluster});
+          res.render('hivcluster/jobpage.ejs', {hiv_cluster : hiv_cluster, socket_addr: 'http://' + setup.host + ':' + setup.socket_port });
         }
       });
     }

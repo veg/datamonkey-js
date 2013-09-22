@@ -1,7 +1,7 @@
 <%- include ../includes/header.ejs %>
 <div class="container">
   <h1 class="page-header">HIV Clustering Analysis</h1>
-  <div id="hiv-cluster-report" data-hivclusterid="<%= hiv_cluster._id %>">
+  <div id="hiv-cluster-report" data-hivclusterid="<%= hiv_cluster._id %>" data-socket-address="<%= socket_addr %>">
   <%if (hiv_cluster.status != 'Completed') { %>  
       <h2>Job in Progress</h2>
       <div class="progress progress-striped active">
@@ -28,7 +28,7 @@
   </div>
 </div>
 <%- include ../includes/footer.ejs %>
-<script src="/assets/js/socket.io.js"></script>
+<script src="/assets/js/socket.io.min.js"></script>
 <script src="http://d3js.org/d3.v3.js"></script>
 <script src="/assets/js/hivcluster/network_graph.js"></script>
 <script src="/assets/js/hivcluster/main.js"></script>

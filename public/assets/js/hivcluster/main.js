@@ -26,7 +26,8 @@ function getTime() {
 function setupJob() {
 
   var hivclusterid = $('#hiv-cluster-report').data('hivclusterid')
-  var socket = io.connect('http://datamonkey-dev:4001');
+  var socket_address = $('#hiv-cluster-report').data('socket-address')
+  var socket = io.connect(socket_address);
 
   var changeStatus = function (data) {
     $('.progress .progress-bar').width(data.percentage);
