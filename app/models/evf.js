@@ -38,16 +38,12 @@ var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
 var Evf = AnalysisSchema.extend({
-  parameters          : [EvfParameters],
+  treemode            : {type: Number},
   evfsamples          : [EvfSamples],
   evfposteriorsamples : [EvfPosteriorSamples],
   evfposteriors       : [EvfPosteriors],
   evfsummary          : [EvfSummary],
   evfrateinfosummary  : [EvfRateInfoSummary],
-});
-
-var EvfParameters = new Schema({
-  treemode    : {type: Number, require: true},
 });
 
 var EvfSamples = new Schema({
@@ -71,7 +67,6 @@ var EvfRateInfoSummary = new Schema({
 });
 
 module.exports = mongoose.model('Evf', Evf);
-module.exports = mongoose.model('EvfParameters', EvfParameters);
 module.exports = mongoose.model('EvfSamples', EvfSamples)
 module.exports = mongoose.model('EvfPosteriorSamples', EvfPosteriorSamples)
 module.exports = mongoose.model('EvfPosteriors', EvfPosteriors)

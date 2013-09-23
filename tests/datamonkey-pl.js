@@ -55,7 +55,6 @@ describe('Parse results unit test', function() {
     mongoose.connect(setup.database, done);
   });
 
-
   it("Parse Meme", function(done) {
     this.timeout(5000);
 
@@ -83,10 +82,48 @@ describe('Parse results unit test', function() {
     msa.save(function (err, result) {
       meme.save(function (err, result) {
         dpl.parseResults(result, function(analysis) {
+          analysis.memeresults.length.should.equal(875);
           done();
         });
       });
     });
+  });
+
+  it("Parse BSREL", function(done) {
+    this.timeout(5000);
+
+    var Msa  = mongoose.model('Msa');
+
+    var msa  = new Msa({
+      msaid   : 'upload.321598752225620.1',
+      content : 'finished'
+    });
+
+    var Analysis = mongoose.model('Bsrel');
+
+    var type = 'bsrel';
+    var meme = new Analysis({
+      msaid  : 'upload.321598752225620.1',
+      id     : 1,
+      type   : type,
+      status : 'finished',
+    });
+
+    msa.save(function (err, result) {
+      meme.save(function (err, result) {
+        dpl.parseResults(result, function(analysis) {
+          analysis.bsrresults.length.should.equal(9);
+          done();
+        });
+      });
+    });
+  });
+
+  after(function(done) {
+    var Analysis = mongoose.model('Bsrel');
+    Analysis.remove({}, function(err) { 
+       done();
+     });
   });
 });
 

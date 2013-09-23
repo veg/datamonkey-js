@@ -29,17 +29,28 @@
 
 
 var mongoose = require('mongoose'),
-  extend = require('mongoose-schema-extend');
+    extend = require('mongoose-schema-extend');
 
 var AnalysisSchema = require(__dirname + '/analysis');
 
 var Schema = mongoose.Schema,
-  ObjectId = Schema.ObjectId;
+    ObjectId = Schema.ObjectId;
 
 var Mixed = mongoose.Schema.Types.Mixed;
 
 var Uds = AnalysisSchema.extend({
-  parameters          : [UdsParameters],
+  minread             : {type: Number, require: true},
+  scoreM              : {type: Number, require: true},
+  mincoverage         : {type: Number, require: true},
+  windowsize          : {type: Number, require: true},
+  windowstride        : {type: Number, require: true},
+  mincopycount        : {type: Number, require: true},
+  nucdivthreshold     : {type: Number, require: true},
+  dodr                : {type: Number, require: true},
+  mindrugscore        : {type: Number, require: true},
+  mindrugcoverage     : {type: Number, require: true},
+  lovemelongtime      : {type: String, require: true},
+  lovemelikeyouwantto : {type: String, require: true},
   aa_alignment        : [UdsAaAlignment],
   accessory_mutations : [UdsAccessoryMutations],
   accessory_test      : [UdsAccessoryTest],
@@ -59,21 +70,6 @@ var Uds = AnalysisSchema.extend({
   site_posteriors     : [UdsSitePosteriors],
   uds_file_info       : [UdsFileInfo],
   uds_qc_stats        : [UdsQcStats],
-});
-
-var UdsParameters = new Schema({
-  minread             : {type: Number, require: true},
-  scoreM              : {type: Number, require: true},
-  mincoverage         : {type: Number, require: true},
-  windowsize          : {type: Number, require: true},
-  windowstride        : {type: Number, require: true},
-  mincopycount        : {type: Number, require: true},
-  nucdivthreshold     : {type: Number, require: true},
-  dodr                : {type: Number, require: true},
-  mindrugscore        : {type: Number, require: true},
-  mindrugcoverage     : {type: Number, require: true},
-  lovemelongtime      : {type: String, require: true},
-  lovemelikeyouwantto : {type: String, require: true},
 });
 
 var UdsAaAlignment = new Schema({
@@ -379,7 +375,6 @@ var UdsQcStats = new Schema({
 });
 
 module.exports = mongoose.model('Uds', Uds);
-module.exports = mongoose.model('UdsParameters', UdsParameters);
 module.exports = mongoose.model('UdsAaAlignment', UdsAaAlignment);
 module.exports = mongoose.model('UdsAccessoryMutations', UdsAccessoryMutations);
 module.exports = mongoose.model('UdsAccessoryTest', UdsAccessoryTest);

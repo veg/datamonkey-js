@@ -37,94 +37,68 @@ var querystring = require('querystring'),
 var mongoose = require('mongoose'),
     Msa = mongoose.model('Msa');
 
-function createAnalysis(Analysis, AnalysisParameters, msa, count, type,
-                        postdata, res) {
+function createAnalysis(Analysis, msa, count, type,
+                        postdata, callback) {
 
   var an = new Analysis({
-    msaid  : msa.msaid,
-    id     : count,
-    type   : type,
-    status : globals.queue,
+    upload_id : msa._id,
+    id        : count,
+    type      : type,
+    status    : globals.queue,
   });
 
-  // TODO: Change to verify function
   if (postdata.sendmail !== undefined) {
     an.sendmail = postdata.sendmail;
+  } else {
+    an.sendmail = true;
+  }
+
+  // Verify parameters
+  // TODO: Just search required
+  for (var parameter in an.schema.tree) {
+    if (parameter != "_id" && parameter != "id") { 
+      if (parameter in postdata) {
+       parameters[parameter] = postdata[parameter] ;
+      } else {
+        if(parameter != "__v") {
+          missing_params.push(parameter);
+        }
+      }
+    }
   }
 
   an.save(function (err, result) {
 
     if (err) {
       helpers.logger.warn(err);
-      res.json(500, error.errorResponse("Missing Parameters: " + missing_params));
+      callback("Missing Parameters: " + missing_params, null);
       return;
     }
+  
+    // If not part of the model, then grab the constant
+     var params = {
+        'method'                : globals[type].id,
+        'treeMode'              : result.treemode || globals[type].treemode,
+        'prime_property_choice' : result.prime_property_choice || globals[type].treemode,
+        'root'                  : result.root || globals[type].root,
+        'modelstring'           : result.modelstring || globals[type].modelstring,
+        'namedmodels'           : result.namedmodels || globals[type].namedmodels,
+        'roptions'              : result.roptions || globals[type].roptions,
+        'dnds'                  : result.dnds || globals[type].dnds,
+        'ambchoice'             : result.ambchoice || globals[type].ambchoice,
+        'pvalue'                : result.pvalue || globals[type].pvalue,
+        'rateoption'            : result.rateoption || globals[type].rateoption,
+        'rateclasses'           : result.rateclasses || globals[type].rateclasses,
+        'rateoption2'           : result.rateoption2 || globals[type].rateoption2,
+        'rateclasses2'          : result.rateclasses2 || globals[type].rateclasses2
+     };
 
-    // Create Analysis Parameters from postdata
-    var parameters = new AnalysisParameters(),
-      missing_params = [];
-
-    // Verify parameters
-    // TODO: Just search required
-    for (var parameter in parameters.schema.tree) {
-      if (parameter != "_id" && parameter != "id") { 
-        if (parameter in postdata) {
-         parameters[parameter] = postdata[parameter] ;
-        }
-        else {
-          if(parameter != "__v") {
-            missing_params.push(parameter);
-          }
-        }
-      }
-    }
-
-    if (missing_params.length > 0) {
-      res.json(500, error.errorResponse("Missing Parameters: " 
-               + missing_params));
-      return;
-    }
-
-    //Save Parameters to parent object
-    parameters.save(function (err, aparams) {
+     // Dispatch the analysis to the perl script
+    dpl.dispatchAnalysis(an, type, msa, params, function(err, analysis) {
       if (err) {
-        helpers.logger.warn(err);
-        res.json(500, error.errorResponse("Unable to save parameters"));
-      }
-
-      else {
-
-        // Open Multiple Sequence Alignment File to get all necessary parameters
-        // for dispatching.
-        if (err) {
-          res.json(500, error.errorResponse('There is no sequence with id of '
-                                       + id));
-        } else {
-
-          an.parameters.push(parameters);
-          an.save();
-
-          // If not part of the model, then grab the constant
-           var params = {
-              'method'                : globals[type].id,
-              'treeMode'              : aparams.treemode || globals[type].treemode,
-              'prime_property_choice' : aparams.prime_property_choice || globals[type].treemode,
-              'root'                  : aparams.root || globals[type].root,
-              'modelstring'           : aparams.modelstring || globals[type].modelstring,
-              'namedmodels'           : aparams.namedmodels || globals[type].namedmodels,
-              'roptions'              : aparams.roptions || globals[type].roptions,
-              'dnds'                  : aparams.dnds || globals[type].dnds,
-              'ambchoice'             : aparams.ambchoice || globals[type].ambchoice,
-              'pvalue'                : aparams.pvalue || globals[type].pvalue,
-              'rateoption'            : aparams.rateoption || globals[type].rateoption,
-              'rateclasses'           : aparams.rateclasses || globals[type].rateclasses,
-              'rateoption2'           : aparams.rateoption2 || globals[type].rateoption2,
-              'rateclasses2'          : aparams.rateclasses2 || globals[type].rateclasses2
-           };
-
-           // Dispatch the analysis to the perl script
-           dpl.dispatchAnalysis(an, type, msa, params, res);
-         }
+        callback(err, null);  
+      } else {
+        callback(null, analysis);  
       }
     });
   });
@@ -136,13 +110,12 @@ exports.invokeJob = function(req, res) {
   var type =  req.params.type;
 
   var Analysis = mongoose.model(type.capitalize());
-  var AnalysisParameters = mongoose.model(type.capitalize() + 'Parameters');
 
   //Create Analysis of respective type
   var postdata = req.query;
-  var msaid =  postdata.msaid;
+  var upload_id =  postdata.upload_id;
 
-  Msa.findOne({msaid : msaid}, function(err, msa) {
+  Msa.findOne({ 'upload_id' : upload_id }, function(err, msa) {
 
     var callback = function(err,result) {
       var num = 0;
@@ -157,24 +130,41 @@ exports.invokeJob = function(req, res) {
         highest_countid = result.id + 1;
       }
 
-      createAnalysis(Analysis, AnalysisParameters, msa, highest_countid, type,
-                     postdata, res);
-
+      createAnalysis(Analysis, msa, highest_countid, type,
+                     postdata, function(err, message) {
+        if (err) {
+          res.json(500, error.errorResponse(err));
+        } else {
+          res.json(200, message);
+        }
+      });
     }
 
     //Get count of this analysis
     Analysis 
-    .findOne({ msaid: msa.msaid })
+    .findOne({ upload_id : msa._id })
     .sort('-id')
     .select('id')
     .exec(callback)
 
   });
 
-// I want to post all analyses to here, 
-// based on what the type is, create
-// the correct type of object.
+}
 
+exports.createForm = function(req, res) {
+  var upload_id = req.params.upload_id;
+  var get_type = req.query.type || "";
+
+  Msa.findOne({upload_id : upload_id}, function (err, uploadfile) {
+    if (err || !uploadfile) {
+      res.json(500, error.errorResponse('There is no sequence with id of ' + id));
+    } else {
+      var ftc = []
+      res.render('analysis/create.ejs', { 'uploadfile' : uploadfile , 
+                                          'get_type'   : get_type,
+                                          'analysis_types' : globals.types });
+    }
+  });
 }
 
 exports.queryStatus = function(req, res) {
@@ -182,10 +172,11 @@ exports.queryStatus = function(req, res) {
   // Return its status
 
   //TODO: Validate parameters
-  var type =  req.params.type;
+  var type  =  req.params.type;
+  var upload_id =  req.params.upload_id;
   var Analysis = mongoose.model(type.capitalize());
   
-  Analysis.findOne({msafn : msa._id, id : req.params.analysisid}, 
+  Analysis.findOne({upload_id : upload_id, id : req.params.analysisid}, 
                    function(err, item) {
     if (err) {
       res.json(500, error.errorResponse('There is no sequence with id of ' 
@@ -203,11 +194,11 @@ exports.getAnalysis = function(req, res) {
   var type =  req.params.type,
     Analysis = mongoose.model(type.capitalize());
 
-  var msaid = req.params.msaid,
+  var upload_id = req.params.upload_id,
       analysisid = req.params.analysisid;
 
   //Return all results
-  Analysis.findOne({msaid : msaid, id : analysisid}, function(err, item) {
+  Analysis.findOne({upload_id : upload_id, id : analysisid}, function(err, item) {
     if (err || !item ) {
       res.json(500, error.errorResponse('Item not found'));
     } else {
@@ -222,14 +213,14 @@ exports.deleteAnalysis = function(req, res) {
   var type =  req.params.type,
     Analysis = mongoose.model(type.capitalize());
 
-  var msaid = req.params.msaid,
+  var upload_id = req.params.upload_id,
       analysisid = req.params.analysisid;
 
   //Return all results
-  Analysis.findOneAndRemove({msaid : msaid, id : analysisid}, 
+  Analysis.findOneAndRemove({upload_id : upload_id, id : analysisid}, 
                    function(err, item) {
     if (err || !item) {
-      res.json(500, error.errorResponse('Item not found: msaid: ' + msaid + ', id : ' + analysisid));
+      res.json(500, error.errorResponse('Item not found: upload_id: ' + upload_id + ', id : ' + analysisid));
     } else {
       res.json({"success" : 1});
     }

@@ -29,20 +29,16 @@
 
 
 var mongoose = require('mongoose'),
-  extend = require('mongoose-schema-extend');
+    extend = require('mongoose-schema-extend');
 
 var AnalysisSchema = require(__dirname + '/analysis');
 
 var Schema = mongoose.Schema,
-  ObjectId = Schema.ObjectId;
+    ObjectId = Schema.ObjectId;
 
 var Scueal = AnalysisSchema.extend({
-  parameters             : [ScuealParameters],
+  reference              : {type: String},
   scuealsubtypingresults : [ScuealSubtypingResults],
-});
-
-var ScuealParameters = new Schema({
-  reference : {type: String, require: true},
 });
 
 var ScuealSubtypingResults = new Schema({
@@ -59,7 +55,5 @@ var ScuealSubtypingResults = new Schema({
 });
 
 module.exports = mongoose.model('Scueal', Scueal);
-module.exports = mongoose.model('ScuealParameters', ScuealParameters);
 module.exports = mongoose.model('ScuealSubtypingResults', ScuealSubtypingResults);
-
 

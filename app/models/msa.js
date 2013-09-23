@@ -29,16 +29,18 @@
 
 
 var mongoose = require('mongoose'),
-    check = require('validator').check,
+    moment   = require('moment'),
+    check    = require('validator').check,
+    globals  = require( ROOT_PATH + '/config/globals.js'),
     sanitize = require('validator').sanitize
 
 var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
 var Msa = new Schema({
+    upload_id   : {type: String, index: { unique: true, dropDups: true } },
     contents    : {type: String, require: true},
     datatype    : {type: Number, require: true},
-    msaid       : {type: String, index: { unique: true, dropDups: true } },
     partitions  : Number,
     sites       : Number,
     rawsites    : Number,
@@ -47,7 +49,7 @@ var Msa = new Schema({
     goodtree    : Number,
     nj          : String,
     mailaddr    : String,
-    timestamp   : { type: String, default: (new Date()).getTime() }
+    created     : {type: Date, default: Date.now}
 });
 
 var PartitionInfo = new Schema({
@@ -65,11 +67,80 @@ var Sequences = new Schema({
     name     : String
 });
 
+Msa.virtual('clipped').get(function () {
+
+  clipped_file = {
+    gencodeid  : this.gencodeid,
+    datatype   : this.datatype,
+    msaid      : this.msaid,
+    partitions : this.partitions,
+    sites      : this.sites,
+    rawsites   : this.rawsites,
+    sequences  : this.sequences,
+    goodtree   : this.goodtree,
+    nj         : this.nj,
+    timestamp  : this.timestamp,
+    mailaddr   : this.mailaddr
+  }
+
+  return clipped_file;
+
+});
+
+Msa.virtual('genetic_code').get(function () {
+    return globals.genetic_code[this.gencodeid];
+});
+
+Msa.virtual('day_created_on').get(function () {
+    var time = moment(this.timestamp);
+    return time.format('YYYY-MMM-DD');
+});
+
+Msa.virtual('time_created_on').get(function () {
+    var time = moment(this.timestamp);
+    return time.format('HH:mm');
+});
+
+
 var MsaModel = mongoose.model('MsaModel', Msa);
 
 MsaModel.schema.path('mailaddr').validate(function (value) {
+  if(value) {
   check(value).len(6, 64).isEmail();
+  } else {
+    return true;
+  }
 }, 'Invalid email');
 
-//TODO: Put in validation
+Msa.methods.AnalysisCount = function (cb) {
+
+  var type_counts = {};
+  var c = 0;
+
+  var count_increment = function(err, analysis) {
+
+    c += 1;
+    if(analysis != null) {
+      type_counts[analysis.type] = analysis.id || 0; 
+    }
+
+    if(c == Object.keys(globals.types).length) {
+      cb(type_counts);
+    }
+
+  }
+
+  //TODO: Change to get children
+  for(var t in globals.types) {
+    Analysis = mongoose.model(t.capitalize());
+    //Get count of this analysis
+    Analysis 
+    .findOne({ upload_id: this._id })
+    .sort('-id')
+    .exec(count_increment)
+  }
+
+};
+
 module.exports = mongoose.model('Msa', Msa);
+

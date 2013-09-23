@@ -38,17 +38,13 @@ var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
 var Cms = AnalysisSchema.extend({
-  parameters            : [CmsParameters],
+  modelstring           : {type: String},
+  treemode              : {type: Number},
   cmssummary            : [CmsSummary],
   cmsbyresidue          : [CmsByresidue],
   rateclassbics         : [Rateclassbics],
   crediblemodelssummary : [CrediblemodelsSummary],
   crediblemodelsrates   : [CrediblemodelsRates]
-});
-
-var CmsParameters = new Schema({
-  modelstring : {type: String, require: true},
-  treemode    : {type: Number, require: true},
 });
 
 var CmsSummary = new Schema({
@@ -94,7 +90,6 @@ var CrediblemodelsRates = new Schema({
 })
 
 module.exports = mongoose.model('Cms', Cms);
-module.exports = mongoose.model('CmsParameters', CmsParameters);
 module.exports = mongoose.model('Rateclassbics', Rateclassbics);
 module.exports = mongoose.model('CmsSummary', CmsSummary);
 module.exports = mongoose.model('CrediblemodelsSummary', CrediblemodelsSummary);

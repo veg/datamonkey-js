@@ -1,0 +1,72 @@
+<%- include ../includes/header.ejs %>
+
+<div class="container" id="property_table">
+  <div class="span12">
+    <h3>File Upload Summary</h3>
+    <h4><%= details.upload_id %></h4>
+    <div id="upload_summary">
+      <ul class="nav">
+        <li><b><%= details.partitions %></b> Partitions</li>
+        <li><b><%= details.sequences %></b> Sequence Codons</li>
+        <li><b><%= details.genetic_code%></b> Genetic Code</li>
+        <li> Uploaded on <b><%= details.day_created_on %></b> at <b><%= details.time_created_on %></b></li>
+      </ul>
+    </div>
+  </div>
+
+  <div>
+    <div id="sidebar" class="nav nav-list pull-right span4">
+      <h4>Downloads</h4>
+      <div class="">
+        <div>
+          <td>Nucleotide sequences </td>
+          <ul>
+            <li><a href="/cgi-bin/datamonkey/showdata.pl?<%= details.upload_id %>">FASTA</a></li>
+            <li><a href="/cgi-bin/datamonkey/seqPlot.pl?file=<%= details.upload_id %>">PDF</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <td>Aminoacid translation</td>
+          <ul>
+            <li><a href="/cgi-bin/datamonkey/showdata.pl?<%= details.upload_id %>.aa">FASTA</a></li>
+            <li><a href="/cgi-bin/datamonkey/seqPlot.pl?file=<%= details.upload_id %>.aa">PDF</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <td>Neighbor Joining Tree
+          <ul>
+            <li><a href="/cgi-bin/datamonkey/wrapHyPhyBF.pl?file=splits&amp;mode=1&amp;arguments=<%= details.upload_id %>-0">Newick</a></li>
+            <li><a href="/cgi-bin/datamonkey/wrapHyPhyBF.pl?file=pdftrees&amp;mode=2&amp;arguments=<%= details.upload_id %>-0">PDF</a></li>
+          </ul>
+        </div>
+
+        <div>
+          User Tree(s)
+          <ul>
+            <li><a href="/cgi-bin/datamonkey/wrapHyPhyBF.pl?file=splits&amp;mode=1&amp;arguments=<%= details.upload_id %>-1">Newick</a></li>
+            <li><a href="/cgi-bin/datamonkey/wrapHyPhyBF.pl?file=pdftrees&amp;mode=2&amp;arguments=<%= details.upload_id %>-1">PDF</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="pull-left span8">
+      <h4>Analyses</h4>
+      <div id="analysis-data">
+        <table class="table table-bordered table-striped table-hover" >
+        <% for(var t in type_count) { %>
+          <%if (type_count[t].count == 0) { %>
+            <tr><td><%= type_count[t].full_name %><a target="_blank" href="<%= type_count[t].help %>"><sup>?</sup></a></td><td>No results. <a href="/msa/<%= details.upload_id %>/createanalysis?type=<%= t %>">Set up an analysis.</a></td></tr>
+          <% } %>
+          <% if (type_count[t].count > 0) { %>
+            <tr><td><%= type_count[t].full_name %><a target="_blank" href="<%= type_count[t].help %>"><sup>?</sup></a></td><td>Found <%= type_count[t].count %> results. <a href="/msa/<%= details.upload_id %>/<%= t %>">View</a></td></tr>
+          <% } %>
+        <% } %>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include ../includes/footer.ejs %>

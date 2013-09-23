@@ -38,15 +38,11 @@ var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
 var Fel = AnalysisSchema.extend({
-  parameters : [FelParameters],
+  modelstring : {type: String},
+  treemode    : {type: Number},
+  pvalue      : {type: Number},
   felresults : [FelResults],
   felsummary : [FelSummary]
-});
-
-var FelParameters = new Schema({
-  modelstring : {type: String, require: true},
-  treemode    : {type: Number, require: true},
-  pvalue      : {type: Number, require: true},
 });
 
 var FelResults = new Schema({
@@ -66,7 +62,6 @@ var FelSummary = new Schema({
 });
 
 module.exports = mongoose.model('Fel', Fel);
-module.exports = mongoose.model('FelParameters', FelParameters);
 module.exports = mongoose.model('FelResults', FelResults);
 module.exports = mongoose.model('FelSummary', FelSummary);
 

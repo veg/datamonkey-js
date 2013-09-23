@@ -29,18 +29,51 @@
 
 
 var mongoose = require('mongoose'),
-    extend = require('mongoose-schema-extend');
+    globals  = require( ROOT_PATH + '/config/globals.js'),
+    moment   = require('moment'),
+    extend   = require('mongoose-schema-extend');
+
 
 var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
 var AnalysisSchema = new Schema({
-  msaid               : {type: String, require: true},
+  upload_id           : {type: Schema.Types.ObjectId, require: true, ref: 'Msa'},
+  created             : {type: Date, default: Date.now},
   id                  : {type: Number, require: true},
   type                : {type: String, require: true},
   status              : String,
   sendmail            : Boolean,
-  timestamp           : { type: String, default: (new Date()).getTime() }
+  cpu_time            : Number
 });
 
+AnalysisSchema.virtual('since_created').get(function () {
+    moment.lang('en');
+    var time = moment(this.timestamp);
+    return time.fromNow();
+});
+
+
+AnalysisSchema.statics.jobs = function (cb) {
+  this.find({ $or: [ { "status": globals.running }, 
+                        { "status": globals.queue} ] })
+                        .populate('upload_id')
+                        .exec(function(err, items) {
+                          cb(err, items)
+                         });
+};
+
+AnalysisSchema.statics.usageStatistics = function (cb) {
+
+  // Aggregation is done client-side
+  this.find({}, 'cpu_time created upload_id pvalue modelstring')
+        .limit(1000)
+        .populate('upload_id', 'sequences sites')        
+        .exec( function(err, items) {
+              cb(err, items)
+             });
+
+};
+
 module.exports = AnalysisSchema;
+

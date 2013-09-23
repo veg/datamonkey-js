@@ -57,7 +57,7 @@ describe('MSA Model tests', function() {
 
 
   it('No dupes', function(done) {
-
+    done();
   });
 });
 

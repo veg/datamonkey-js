@@ -42,19 +42,15 @@ var Schema = mongoose.Schema,
 var Mixed = mongoose.Schema.Types.Mixed;
 
 var Gard = AnalysisSchema.extend({
-  parameters  : [GardParameters],
-  gardsplits  : [GardSplits],
-  garddetails : [GardDetails],
-  gardsummary : [GardSummary],
-  slacmodel   : [SlacSchema.SlacModel],
-});
-
-var GardParameters = new Schema({
   ratematrix  : Mixed,  //Protein
   frequencies : Number, //Protein
   rateoption  : {type: Number, require: true},
   rateclasses : {type: Number, require: true},
-  modelstring : String  //Non-protein
+  modelstring : String, //Non-protein
+  gardsplits  : [GardSplits],
+  garddetails : [GardDetails],
+  gardsummary : [GardSummary],
+  slacmodel   : [SlacSchema.SlacModel],
 });
 
 var GardSplits = new Schema({
@@ -81,7 +77,6 @@ var GardSummary = new Schema({
 });
 
 module.exports = mongoose.model('Gard', Gard);
-module.exports = mongoose.model('GardParameters', GardParameters);
 module.exports = mongoose.model('GardSplits', GardSplits);
 module.exports = mongoose.model('GardDetails', GardDetails);
 module.exports = mongoose.model('GardSummary', GardSummary);

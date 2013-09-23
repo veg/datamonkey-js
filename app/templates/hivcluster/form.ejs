@@ -1,0 +1,77 @@
+<%- include ../includes/header.ejs %>
+<!--<a class="INFO" href="help/data.php">Preparing your data</a>&nbsp;-->
+<!--Examples:-->
+<!--<a class="INFO" href="data/Flu.fasta">Influenza A H5N1 hemagluttinin</a>&nbsp;-->
+<!--<a class="INFO" href="data/pol.nex">HIV-1 pol (recombinant data)</a>-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<div class="container">
+  <h2 class="page-header">HIV Clustering</h2>
+
+  <div id="form-error" class="alert alert-danger" <%if (typeof errors == "undefined") { %>style="display: none;"<% } %>>
+      There were errors with your request. Errors are highlighted in red.
+  </div>
+  <div class="nav nav-list pull-right"><a href="/help" target="_blank">I'm confused</a></div>
+  <div class="row col-lg-9">
+      <form role="form" class="form-horizontal" name="uploadform" enctype="multipart/form-data" action="/hivcluster" method="post">
+          <div class="form-group <%if (typeof errors != "undefined" && typeof errors.file != "undefined") { %>has-error<% } %>">
+            <label id="upload-file-label" class="col-lg-3 control-label">Sequence Alignment<a href="/help#data-formats" target="_blank"><sup>?</sup></a></label> 
+            <div class="col-lg-9">
+                <input type="file" name="files">
+            </div>
+            <%if (typeof errors != "undefined" && typeof errors.file != "undefined") { %><span class="help-block"> <%= errors.file %> </span><% } %>
+          </div>
+          <div class=" form-group <%if (typeof errors != "undefined" && typeof errors.distance_threshold != "undefined") { %>has-error<% } %>">
+            <label id="datatype-content" class="col-lg-3 control-label">Distance Threshold<a href="/help#data-types" target="_blank"><sup>?</sup></a></label> 
+            <div class="col-lg-9">
+                <input class="form-control" name="distance_threshold" type="text" placeholder=".015" data-min=<%= validators.distance_threshold.min %> data-max=<%= validators.distance_threshold.max %>>
+            </div>
+          </div>
+          <div class="form-group <%if (typeof errors != "undefined" && typeof errors.min_overlap != "undefined") { %>has-error<% } %>">
+            <label id="datatype-content" class="col-lg-3 control-label">Minimum Overlap<a href="/help#data-types" target="_blank"><sup>?</sup></a></label> 
+            <div class="col-lg-9">
+                <input class="form-control" name="min_overlap" type="text" placeholder="500" data-min=<%= validators.min_overlap.min %> data-max=<%= validators.min_overlap.max %>>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-3 control-label">Handle Ambiguities<a href="/help#genetic-code" target="_blank"><sup>?</sup></a></label>
+            <div class="col-lg-9">
+                <select name="ambiguity_handling">
+                  <option value="RESOLVE">
+                    Resolve
+                  </option>
+                  <option selected="selected" value="AVERAGE">
+                    Average
+                  </option>
+                  <option value="SKIP">
+                    Skip
+                  </option>
+                  <option value="GAPMM">
+                    GAPMM
+                  </option>
+                </select> 
+            </div>
+          </div>
+          <div class="form-group <%if (typeof errors != "undefined" && typeof errors.mail != "undefined") { %>has-error<% } %>">
+            <label id="datatype-content" class="col-lg-3 control-label">Notify When Completed? <a href="/help#data-types" target="_blank"><sup>?</sup></a></label> 
+            <div class="col-lg-9 input-group mail-group">
+              <span class="input-group-addon">
+                <input name="receive_mail" type="checkbox" value="on">
+              </span>
+              <input name="mail" type="text" class="form-control" placeholder="Email Address">
+            </div>
+          </div><!-- /form-group -->
+          <div class="form-group">
+            <div class="col-lg-3">
+            </div>
+            <div class="col-lg-9">
+                <label class="checkbox">
+                  <input type="checkbox" checked name="public_db_compare" value="yes"> Compare to Public Database</input>
+                </label>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary pull-right">Upload</button>
+      </form>
+  </div>
+</div>
+<%- include ../includes/footer.ejs %>
+<script src="/assets/js/hivcluster/form.js"></script>

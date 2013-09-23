@@ -1,0 +1,34 @@
+<%- include ../includes/header.ejs %>
+<div class="container">
+  <h1 class="page-header">HIV Clustering Analysis</h1>
+  <div id="hiv-cluster-report" data-hivclusterid="<%= hiv_cluster._id %>" data-socket-address="<%= socket_addr %>">
+  <%if (hiv_cluster.status != 'Completed') { %>  
+      <h2>Job in Progress</h2>
+      <div class="progress progress-striped active">
+        <div class="progress-bar" role="progressbar" aria-valuenow="<%= hiv_cluster.percentage_complete %>" aria-valuemin="1" aria-valuemax="100" style="width: <%= hiv_cluster.percentage_complete %>">
+          <span class="sr-only"><%= hiv_cluster.percentage_complete %> Complete</span> 
+        </div>
+      </div>  
+      <div id="job-timer" data-created="<%= hiv_cluster.timestamp %>" style="float:right"><h3>Runtime <span class="time">00:00:00</span><h3></div>
+      <div style="clear:both"></div>
+      <% for(var s = 0; s < hiv_cluster.status_stack.length; s++) { %>
+        <div class="job-status alert 
+        <%if (hiv_cluster.status_index < s) { %>  
+        alert-info
+        <% } else if (hiv_cluster.status_index == s) { %>  
+        alert-warning
+        <% } else { %>
+        alert-success
+        <% } %>
+        "data-index=<%= s %>><%= hiv_cluster.status_stack[s] %></div>
+      <% } %>
+  <% } else { %>
+    <%- include ./results.ejs %>
+  <% } %>
+  </div>
+</div>
+<%- include ../includes/footer.ejs %>
+<script src="/assets/js/socket.io.min.js"></script>
+<script src="http://d3js.org/d3.v3.js"></script>
+<script src="/assets/js/hivcluster/network_graph.js"></script>
+<script src="/assets/js/hivcluster/main.js"></script>

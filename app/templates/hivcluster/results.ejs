@@ -1,0 +1,61 @@
+<div class="tabbable">
+
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#cluster-results" data-toggle="tab">Cluster Results</a></li>
+    <li class=""><a href="#lanl-cluster-results" data-toggle="tab">Comparison Results</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div id="cluster-results" class="tab-pane active">
+      <h3>Cluster Results</h3>
+      <div class="row">
+        <div class="col-lg-6">
+          <p class="lead" class='network-tag-caption'>Connected components of the network</p>
+          <p class="small muted">Click on clusters/nodes to expand/collapse subnetworks.</p>
+        </div>
+        <div class="col-lg-6">
+          <div class="alert" class='main-warning' style='display:none;'>
+          </div>
+        </div>
+        <div id='network_tag' class='col-lg-9' data-url=<%= hiv_cluster.cluster_results %>></div>
+        <div class="row">
+          <div id='histogram_tag' class='col-lg-3'>
+              <p id='histogram_label' class="text-left text-info small"></p><br>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class='col-lg-9'>
+          <p id='network_status_string' class='text-info'></p>
+        </div>
+      </div>
+    </div>
+
+    <%if (hiv_cluster.lanl_cluster_results) { %>
+    <div id="lanl-cluster-results" class="tab-pane">
+      <h3>LANL Cluster Results</h3>
+      <div class="row">
+        <div class="col-lg-6">
+          <p class="lead" id='network_tag_caption'>Connected components of the network</p>
+          <p class="small muted">Click on clusters/nodes to expand/collapse subnetworks.</p>
+        </div>
+        <div class="col-lg-6">
+          <div class="alert" id='lanl_main_warning' style='display:none;'>
+          </div>
+        </div>
+        <div class="row">
+          <div id='lanl_network_tag' class='col-lg-9' data-url=<%= hiv_cluster.lanl_cluster_results %>></div>
+          <div id='lanl_histogram_tag' class='col-lg-3'>
+              <p id='lanl_histogram_label' class="text-left text-info small"></p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class='col-lg-9'>
+          <p id='network_status_string' class='text-info'></p>
+        </div>
+      </div>
+    </div>
+    <% } %>
+  </div>
+</div>
