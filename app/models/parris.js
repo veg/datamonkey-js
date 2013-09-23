@@ -43,7 +43,9 @@ var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
 var Parris = AnalysisSchema.extend({
-  parameters          : [ParrisParameters],
+  modelstring         : {type: String},
+  treemode            : {type: Number},
+  pvalue              : {type: Number},
   parrisdistributions : [ParrisDistributions],
   parrissummary       : [ParrisSummary],
   slacresults         : [SlacSchema.SlacResults],
@@ -58,12 +60,6 @@ var Parris = AnalysisSchema.extend({
   fubarsummary        : [FubarSchema.FubarSummary],
   fubarsiteinfo       : [FubarSchema.FubarSiteInfo],
   fubarmcmctrace      : [FubarSchema.FubarMcmcTrace],
-});
-
-var ParrisParameters = new Schema({
-  modelstring : {type: String, require: true},
-  treemode    : {type: Number, require: true},
-  pvalue      : {type: Number, require: true},
 });
 
 var ParrisDistributions = new Schema({
@@ -81,7 +77,6 @@ var ParrisSummary = new Schema({
 });
 
 module.exports = mongoose.model('Parris', Parris);
-module.exports = mongoose.model('ParrisParameters', ParrisParameters);
 module.exports = mongoose.model('ParrisDistributions', ParrisDistributions);
 module.exports = mongoose.model('ParrisSummary', ParrisSummary);
 

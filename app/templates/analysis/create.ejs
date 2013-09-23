@@ -1,0 +1,316 @@
+<%- include ../includes/header.ejs %>
+<div class="container">
+<h2 class="page-header">Analysis Options</h2>
+
+  <form onsubmit="return CheckValidDnDS()" action="/cgi-bin/datamonkey/dispatchAnalysis.pl" enctype="multipart/form-data" method="POST" name="modelForm">
+    <input type="hidden" value="<%= uploadfile.upload_id %>" name="filename">
+    <input type="hidden" value="<%= uploadfile.gencodeid%>" name="genCodeID">
+    <input type="hidden" value="<%= uploadfile.sequences %>" name="sequences">
+    <input type="hidden" value="<%= uploadfile.sites %>" name="sites">
+    <input type="hidden" value="<%= uploadfile.partitions %>" name="partitions">
+
+    <div id="method" class="control-group">
+      <label class="control-label" for="inputEmail">Method<a class="info" target="_blank" href="/help"><sup>?</sup></a></label>
+      <div class="controls">
+        <select onchange="setBF()" name="method">
+          <% for(var t in analysis_types) { %>
+            <option value="<%= analysis_types[t].id %>" <%if (get_type == t) {%>selected<%}%> ><%= analysis_types[t].full_name %></option>
+          <% } %>
+        </select>
+      </div>
+    </div>
+
+    <div id="treeMode" class="control-group">
+
+      <label class="control-label" for="treeMode">Tree Mode</label>
+
+      <label class="radio">
+        <input type="radio" checked name="treeMode" id="treeModeChoice0" value="0">
+          Neighbor Joining Tree
+      </label>
+
+      <label class="radio">
+        <input type="radio" name="treeMode" id="treeModeChoice1" value="1">
+          User Tree(s)
+      </label>
+
+    </div>
+
+    <div id="rootOn" class="control-group">
+      <label class="control-label" for="root">Root on<a class="info" target="_blank" href="/help#rooting"><sup>?</sup></a></label>
+        <select name="root">
+          <option>SRC1</option>
+          <option>SRC2</option>
+          <option>SCR3</option>
+          <option>RCP1</option>
+          <option>RCP2</option>
+          <option>RCP3</option>
+        </select>
+    </div>    
+
+    <input type="hidden" value="010010" name="modelString">
+
+    <div id="modelmatrix" class="control-group">
+      <label class="control-label" for="NamedModels">Define a custom (or choose a "named"</label>
+      <select onchange="SetNamedModel()" name="NamedModels">
+        <option selected="" value="">
+        </option>
+        <option value="111111">F81</option>
+        <option value="010010">HKY85</option>
+        <option value="010040">TrN93</option>
+        <option value="012345">REV</option>
+      </select>
+      <span>) nucleotide substitution bias model<a class="info" target="_blank" href="/help#nucleotide_models"><sup>?</sup></a></span>
+
+      <table class="table table-bordered table-striped table-hover">
+        <tbody>
+          <tr>
+            <th width="100">
+              To/From
+            </th>
+            <th width="100">
+              A
+            </th>
+            <th width="100">
+              C
+            </th>
+            <th width="100">
+              G
+            </th>
+            <th width="100">
+              T
+            </th>
+          </tr>
+          <tr>
+            <th>
+              A
+            </th>
+            <td>
+              *
+            </td>
+            <td>
+              <select id="AC">
+                <option selected="" value="0">AC
+                </option>
+                <option value="1">1
+                </option>
+                <option value="2">AT
+                </option>
+                <option value="3">CG
+                </option>
+                <option value="4">CT
+                </option>
+                <option value="5">GT
+                </option>
+              </select>
+            </td>
+            <td>
+              1
+            </td>
+            <td>
+              <select id="AT">
+                <option selected="" value="0">AC
+                </option>
+                <option value="1">1
+                </option>
+                <option value="2">AT
+                </option>
+                <option value="3">CG
+                </option>
+                <option value="4">CT
+                </option>
+                <option value="5">GT
+                </option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th>
+              C
+            </th>
+            <td>
+              -
+            </td>
+            <td>
+              *
+            </td>
+            <td>
+              <select id="CG">
+                <option selected="" value="0">AC
+                </option>
+                <option value="1">1
+                </option>
+                <option value="2">AT
+                </option>
+                <option value="3">CG
+                </option>
+                <option value="4">CT
+                </option>
+                <option value="5">GT
+                </option>
+              </select>
+            </td>
+            <td>
+              <select id="CT">
+                <option value="0">AC
+                </option>
+                <option selected="" value="1">1
+                </option>
+                <option value="2">AT
+                </option>
+                <option value="3">CG
+                </option>
+                <option value="4">CT
+                </option>
+                <option value="5">GT
+                </option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th>
+              G
+            </th>
+            <td>
+              -
+            </td>
+            <td>
+              -
+            </td>
+            <td>
+              *
+            </td>
+            <td>
+              <select id="GT">
+                <option selected="" value="0">AC
+                </option>
+                <option value="1">1
+                </option>
+                <option value="2">AT
+                </option>
+                <option value="3">CG
+                </option>
+                <option value="4">CT
+                </option>
+                <option value="5">GT
+                </option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <th>
+              T
+            </th>
+            <td>
+              -
+            </td>
+            <td>
+              -
+            </td>
+            <td>
+              -
+            </td>
+            <td>
+              *
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="rOptionsDIV" class="control-group">
+      <label class="control-label">Global dN/dS value is<a class="info" target="_blank" href="/help#dnds"><sup>?</sup></a></label>
+      <select name="rOptions">
+        <option value="0">Neutral
+        </option>
+        <option value="1">User Supplied
+        </option>
+        <option selected="" value="4">Estimated
+        </option>
+        <option value="3">Estimated with CI
+        </option>
+      </select>
+      <input type="text" size="10" maxlength="15" value="1.0" name="dNdS"> 
+    </div>
+
+    <div id="ambChoice" class="control-group">
+      <label for="ambChoice" class="control-label">Handling ambiguities<a class="info" target="_blank" href="/help#ambiguities"><sup>?</sup></a></label>
+      <select name="ambChoice">
+        <option selected="" value="0">Averaged
+        </option>
+        <option value="1">Resolved
+        </option>
+      </select>
+    </div>
+
+    <div id="property_set" class="control-group">
+      <label for="prime_property_choice" class="control-label">Amino-acid property set<a class="info" target="_blank" href="/help#aminoacidproperty"><sup>?</sup></a></label>
+      <select name="prime_property_choice">
+        <option selected="" value="0">Conant-Stadler
+        </option>
+        <option value="1">Atchley
+        </option>
+      </select>
+    </div>
+
+    <div id="sigLevel" class="control-group">
+      <label id="sigLevelText" for="pValue" class="control-label">Significance Level (p-value/Bayes Factor/posterior probability)<a class="info" target="_blank" href="/help#pvalue"><sup>?</sup></a></label>
+      <input type="text" onchange="flagOddValues()" size="10" maxlength="15" value="0.1" name="pValue"> 
+    </div>
+
+    <div id="rvoptions1" class="control-group">
+
+        <label for="rateOption" class="control-label">Site-to-site rate variation<a class="info" target="_blank" href="/help#ratevariation"><sup>?</sup></a></label>
+        <select name="rateOption">
+          <option value="0">None
+          </option>
+          <option value="1">General Discrete
+          </option>
+          <option value="2">Beta-Gamma
+          </option>
+        </select>
+        
+
+        <label for="rateClasses" class="control-label">Rate classes<a class="info" target="_blank" href="/help#ratevariation"><sup>?</sup></a></label>
+        <select name="rateClasses">
+          <option value="2">2
+          </option>
+          <option value="3">3
+          </option>
+          <option value="4">4
+          </option>
+          <option value="5">5
+          </option>
+          <option value="6">6
+          </option>
+        </select>
+        
+    </div> 
+
+    <div id="rvoptionsNoConstant" class="control-group">
+        <label class="control-label">Site-to-site rate variation<a class="info" target="_blank" href="/help#ratevariation"><sup>?</sup></a></label>
+        <select name="rateOption2">
+          <option value="1">General Discrete
+          </option>
+          <option value="2">Beta-Gamma
+          </option>
+        </select>
+        <label for="rateClasses2" class="control-label">Rate classes<a class="info" target="_blank" href="/help#ratevariation"><sup>?</sup></a></label>
+        <select name="rateClasses2">
+          <option value="2">2
+          </option>
+          <option value="3">3
+          </option>
+          <option value="4">4
+          </option>
+          <option value="5">5
+          </option>
+          <option value="6">6
+          </option>
+        </select>
+    </div>    
+    <div><input type="Submit" value="Run the analysis"></div>
+  </form>
+</div>
+<%- include ../includes/footer.ejs %>
+<script src="/assets/js/analysis/create.js"></script>

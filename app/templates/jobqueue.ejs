@@ -1,0 +1,14 @@
+<%- include includes/header.ejs %>
+<div class="container">
+  <h1 class="page-header">Job Queue</h1>
+  <table class="table table-bordered table-striped table-hover" >
+    <tr><td>Status</td><td>Position</td><td>Kind</td><td>Tree Mode</td><td>Sequences</td><td>Sites</td><td>Time in queue</td><td>Action</td></tr>
+    <% for(var l in jobs) { %>
+      <%if (jobs[l].upload_id) { %>
+        <tr><td><%=jobs[l].status.capitalize()%></td><td><%=jobs[l].position%></td><td><%=jobs[l].type.toUpperCase()%></td><td><%=globals.treemode[jobs[l].parameters[0].treemode]%></td><td><%=jobs[l].upload_id.sequences%></td><td><%=jobs[l].upload_id.sites %></td><td><%=jobs[l].since_created%></td><td>N/A</td></tr>
+      <%}%>
+    <% } %>
+  </table>
+</div>
+<%- include includes/footer.ejs %>
+

@@ -44,7 +44,8 @@ var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
 var Fubar = AnalysisSchema.extend({
-  parameters          : [FubarParameters],
+  treemode            : {type: Number},
+  pvalue              : {type: Number},
   fubarresults        : [FubarResults],
   fubargrid           : [FubarGrid],
   fubarsummary        : [FubarSummary],
@@ -70,11 +71,6 @@ var Fubar = AnalysisSchema.extend({
   evfposteriors       : [EvfSchema.EvfPosteriors],
   evfsummary          : [EvfSchema.EvfSummary],
   evfrateinfosummary  : [EvfSchema.EvfRateInfoSummary],
-});
-
-var FubarParameters = new Schema({
-  treemode    : {type: Number, require: true},
-  pvalue      : {type: Number, require: true},
 });
 
 var FubarResults = new Schema({
@@ -147,8 +143,6 @@ var RelSummary = new Schema({
 });
 
 module.exports = mongoose.model('Fubar', Fubar);
-module.exports = mongoose.model('FubarSummary', FubarSummary);
-module.exports = mongoose.model('FubarParameters', FubarParameters);
 module.exports = mongoose.model('FubarMcmcTrace', FubarMcmcTrace);
 module.exports = mongoose.model('FubarSiteInfo', FubarSiteInfo);
 module.exports = mongoose.model('FubarGrid', FubarGrid);

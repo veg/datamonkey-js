@@ -38,13 +38,9 @@ var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
 var Gabranch = AnalysisSchema.extend({
-  parameters : [GabranchParameters],
+  modelstring : {type: String},
+  treemode    : {type: Number},
   gabsummary : [GabSummary]
-});
-
-var GabranchParameters = new Schema({
-  modelstring : {type: String, require: true},
-  treemode    : {type: Number, require: true},
 });
 
 var GabSummary = new Schema({
@@ -54,6 +50,5 @@ var GabSummary = new Schema({
 });
 
 module.exports = mongoose.model('Gabranch', Gabranch);
-module.exports = mongoose.model('GabranchParameters', GabranchParameters);
 module.exports = mongoose.model('GabSummary', GabSummary);
 

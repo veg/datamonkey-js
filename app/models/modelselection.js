@@ -41,7 +41,8 @@ var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
 var Modelselection = AnalysisSchema.extend({
-  parameters   : [ModelselectionParameters],
+  //modelstring : String,
+  //treemode    : Number,
   slacmodel    : [SlacSchema.SlacModel],
   slacresults  : [SlacSchema.SlacResults],
   slacmutation : [SlacSchema.SlacMutation],
@@ -51,10 +52,4 @@ var Modelselection = AnalysisSchema.extend({
   felsummary   : [FelSchema.FelSummary]
 });
 
-var ModelselectionParameters = new Schema({
-  //modelstring : String,
-  //treemode    : Number,
-});
-
 module.exports = mongoose.model('Modelselection', Modelselection);
-module.exports = mongoose.model('ModelselectionParameters', ModelselectionParameters);

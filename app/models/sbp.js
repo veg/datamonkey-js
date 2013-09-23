@@ -32,31 +32,27 @@ var SlacScheme = require(__dirname + '/slac');
 var GardScheme = require(__dirname + '/gard');
 
 var mongoose = require('mongoose'),
-  extend = require('mongoose-schema-extend');
+    extend = require('mongoose-schema-extend');
 
 var AnalysisSchema = require(__dirname + '/analysis');
   
 var Schema = mongoose.Schema,
-  ObjectId = Schema.ObjectId;
+    ObjectId = Schema.ObjectId;
 
 var Mixed = mongoose.Schema.Types.Mixed;
 
 var Sbp = AnalysisSchema.extend({
-  parameters  : [SbpParameters],
+  //ratematrix  : Mixed,  //Protein
+  //frequencies : Number, //Protein
+  rateoption  : {type: Number},
+  rateclasses : {type: Number},
+  modelstring : String, //Non-protein
   sbpsummary  : [SbpSummary],
   sbptrees    : [SbpTrees],
   slacmodel   : [SlacScheme.SlacModel],
   gardsplits  : [GardScheme.GardSplits],
   gardsummary : [GardScheme.GardSummary],
   garddetails : [GardScheme.GardDetails],
-});
-
-var SbpParameters = new Schema({
-  //ratematrix  : Mixed,  //Protein
-  //frequencies : Number, //Protein
-  rateoption  : {type: Number, require: true},
-  rateclasses : {type: Number, require: true},
-  modelstring : String  //Non-protein
 });
 
 var SbpTrees = new Schema({
@@ -83,7 +79,7 @@ var SbpSummary = new Schema({
 });
 
 module.exports = mongoose.model('Sbp', Sbp);
-module.exports = mongoose.model('SbpParameters', SbpParameters);
 module.exports = mongoose.model('SbpTrees', SbpTrees);
 module.exports = mongoose.model('SbpSummary', SbpSummary);
+
 

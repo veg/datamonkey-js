@@ -38,21 +38,16 @@ var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
 var Slac = AnalysisSchema.extend({
-  parameters   : [SlacParameters],
+  pvalue       : {type: Number},
+  dnds         : {type: Number},
+  ambchoice    : {type: Number},
+  modelstring  : {type: String},
   slacsummary  : [SlacSummary],
   slacmutation : [SlacMutation],
   slactrees    : [SlacTrees],
   slacmodel    : [SlacModel],
   slacresults  : [SlacResults],
 });
-
-var SlacParameters = new Schema({
-  pvalue      : {type: Number, require: true},
-  dnds        : {type: Number, require: true},
-  ambchoice   : {type: Number, require: true},
-  modelstring : {type: String, require: true},
-});
-
 
 var SlacTrees = new Schema({
   _creator    : { type   : Schema.Types.ObjectId, ref : 'Slac' },
@@ -110,7 +105,6 @@ var SlacSummary = new Schema({
 });
 
 module.exports = mongoose.model('Slac', Slac);
-module.exports = mongoose.model('SlacParameters', SlacParameters);
 module.exports = mongoose.model('SlacSummary', SlacSummary);
 module.exports = mongoose.model('SlacMutation', SlacMutation);
 module.exports = mongoose.model('SlacTrees', SlacTrees);

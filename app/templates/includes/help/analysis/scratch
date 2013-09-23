@@ -1,0 +1,465 @@
+<form name="modelForm" method="POST" enctype="multipart/form-data" action="http://www.datamonkey.org/cgi-bin/datamonkey/dispatchAnalysis.pl" onsubmit="return CheckValidDnDS()">
+<input name="filename" value="upload.61619620408275.1" type="hidden">
+<input name="genCodeID" value="0" type="hidden">
+<input name="sequences" value="9" type="Hidden">
+<input name="sites" value="744" type="Hidden">
+<input name="partitions" value="1" type="Hidden">
+<div class="RepClassSM">Method: <select name="method" onchange="setBF()"><option value="0">SLAC</option><option value="1">FEL</option><option value="2">IFEL</option><option value="3">REL</option><option value="4">PARRIS</option><option value="5">GA-Branch</option><option value="9">Branch-site REL</option><option value="12">MEME</option><option value="13">FUBAR</option><option value="42">Evolutionary Fingerprintng</option><option value="55">GA-Codon Model Selector</option><option value="69">TOGGLE</option><option value="71">PRIME</option><option value="6">SPIDERMONKEY/BGM</option><option value="20">SBP</option><option value="21">GARD</option><option value="22">ASR</option></select> <a href="http://www.datamonkey.org/help/index.php" target="_blank" class="INFO">Help</a></div><div style="display: block;" class="RepClassSM" id="treeMode">Use this tree set:<span id="treeModeChoice0"><input name="treeMode" value="0" checked="" type="radio">Neighbor Joining Tree</span>
+</div><div style="display: none;" class="RepClassSM" id="rootOn">Root on: <select name="root"><option>LCL_EU430082_1_CDSID_ACC54354_1_PROTEIN_GFP509_PARTIAL_3_PROTEIN_ID_ACC54354_1_LOCATION_1_711_
+</option><option>LCL_AF435432_1_CDSID_AAL33917_1_GENE_GFP_PROTEIN_ORANGE_FLUORESCENT_PROTEIN_PROTEIN_ID_AAL33917_1_LOCATION_1_717_
+</option><option>LCL_M62654_1_CDSID_AAA27722_1_GENE_GFP_PROTEIN_GREEN_FLUORESCENT_PROTEIN_PROTEIN_ID_AAA27722_1_LOCATION_JOIN_208_413_946_1240_2308_2523_
+</option><option>LCL_AY151052_1_CDSID_AAN41637_1_PROTEIN_GREEN_FLUORESCENT_PROTEIN_PROTEIN_ID_AAN41637_1_LOCATION_67_783_
+</option><option>LCL_AY485333_1_CDSID_AAR85349_1_PROTEIN_YELLOW_FLUORESCENT_PROTEIN_PROTEIN_ID_AAR85349_1_LOCATION_25_729_
+</option><option>LCL_GU721033_1_CDSID_ADI71928_1_GENE_GFP2_PROTEIN_GREEN_FLUORESCENT_PROTEIN_2_PROTEIN_ID_ADI71928_1_LOCATION_74_781_
+</option><option>LCL_JN385282_1_CDSID_AEL17649_1_PROTEIN_GFP_LIKE_FLUORESCENT_PROTEIN_CYAN_ISOFORM_PARTIAL_3_PROTEIN_ID_AEL17649_1_LOCATION_1_702_
+</option><option>LCL_JN385284_1_CDSID_AEL17651_1_PROTEIN_GFP_LIKE_FLUORESCENT_PROTEIN_YELLOW_ISOFORM_PARTIAL_3_PROTEIN_ID_AEL17651_1_LOCATION_1_702_
+</option><option>LCL_JN385283_1_CDSID_AEL17650_1_PROTEIN_GFP_LIKE_FLUORESCENT_PROTEIN_GREEN_ISOFORM_PARTIAL_3_PROTEIN_ID_AEL17650_1_LOCATION_1_702_
+</option></select> <a href="http://www.datamonkey.org/help/rooting.php" target="_blank" class="INFO">Help</a></div><input name="modelString" value="010010" type="Hidden">
+
+<div style="display: block;" class="RepClassSM" id="modelmatrix">
+
+Define a custom (or choose a "named" 
+  <select name="NamedModels" onchange="SetNamedModel()">
+    <option value="" selected="">
+    </option><option value="111111">F81
+    </option><option value="010010">HKY85
+    </option><option value="010040">TrN93
+    </option><option value="012345">REV
+  </option></select>) nucleotide substitution bias model (<a href="http://www.datamonkey.org/help/models.php" target="_blank" class="INFO">Help</a>)
+
+<table border="0">
+  <tbody><tr class="HeaderClassSM">
+    <th width="100">
+      To/From
+    </th>
+    <th width="100">
+      A
+    </th>
+    <th width="100">
+      C
+    </th>
+    <th width="100">
+      G
+    </th>
+    <th width="100">
+      T
+    </th>
+  </tr>
+  <tr class="ModelClass1">
+    <th class="HeaderClassSM">
+      A
+    </th>
+    <td>
+      *
+    </td>
+    <td>
+      <select id="AC">
+        <option value="0" selected="">AC
+        </option><option value="1">1
+        </option><option value="2">AT
+        </option><option value="3">CG
+        </option><option value="4">CT
+        </option><option value="5">GT
+      </option></select>      
+    </td>
+    <td>
+      1
+    </td>
+    <td>
+      <select id="AT">
+        <option value="0" selected="">AC
+        </option><option value="1">1
+        </option><option value="2">AT
+        </option><option value="3">CG
+        </option><option value="4">CT
+        </option><option value="5">GT
+      </option></select>      
+    </td> 
+  </tr>
+  <tr class="ModelClass2">
+    <th class="HeaderClassSM">
+      C
+    </th>
+    <td>
+      -
+    </td>
+    <td>
+      *
+    </td>
+    <td>
+      <select id="CG">
+        <option value="0" selected="">AC
+        </option><option value="1">1
+        </option><option value="2">AT
+        </option><option value="3">CG
+        </option><option value="4">CT
+        </option><option value="5">GT
+      </option></select>      
+    </td> 
+    <td>
+      <select id="CT">
+        <option value="0">AC
+        </option><option value="1" selected="">1
+        </option><option value="2">AT
+        </option><option value="3">CG
+        </option><option value="4">CT
+        </option><option value="5">GT
+      </option></select>      
+    </td> 
+  </tr>
+  <tr class="ModelClass1">
+    <th class="HeaderClassSM">
+      G
+    </th>
+    <td>
+      -
+    </td>
+    <td>
+      -
+    </td>
+    <td>
+      *
+    </td>
+    <td>
+      <select id="GT">
+        <option value="0" selected="">AC
+        </option><option value="1">1
+        </option><option value="2">AT
+        </option><option value="3">CG
+        </option><option value="4">CT
+        </option><option value="5">GT
+      </option></select>      
+    </td> 
+  </tr>
+  <tr class="ModelClass2">
+    <th class="HeaderClassSM">
+      T
+    </th>
+    <td>
+      -
+    </td>
+    <td>
+      -
+    </td>
+    <td>
+      -
+    </td>
+    <td>
+      *
+    </td> 
+  </tr>
+</tbody></table>
+
+</div>
+
+<div style="display: block;" class="RepClassSM" id="rOptionsDIV">
+  Global dN/dS value is: 
+  <select name="rOptions">
+    <option value="0">Neutral
+    </option><option value="1">User Supplied
+    </option><option value="4" selected="">Estimated
+    </option><option value="3">Estimated with CI
+  </option></select>    
+  <input name="dNdS" value="1.0" maxlength="15" size="10" type="Text"> 
+  <a href="http://www.datamonkey.org/help/dNdS.php" target="_blank" class="INFO">Help</a> 
+</div>
+
+<div style="display: block;" class="RepClassSM" id="ambChoice">
+  Handling ambiguities: 
+  <select name="ambChoice">
+    <option value="0" selected="">Averaged
+    </option><option value="1">Resolved
+  </option></select>      
+  <a href="http://www.datamonkey.org/help/ambigs.php" target="_blank" class="INFO">Help</a> 
+</div>
+
+<div style="display: none;" class="RepClassSM" id="property_set">
+  Amino-acid property set: 
+  <select name="prime_property_choice">
+    <option value="0" selected="">Conant-Stadler
+    </option><option value="1">Atchley
+  </option></select>      
+  <a href="http://hyphy.org/w/index.php/Datamonkey:PRIME" target="_blank" class="INFO">Help</a> 
+</div>
+
+<div style="display: block;" class="RepClassSM" id="sigLevel">
+  <span id="sigLevelText">Significance Level (p-value/Bayes Factor/posterior probability): </span>
+  <input name="pValue" value="0.1" maxlength="15" size="10" onchange="flagOddValues()" type="Text"> 
+  <a href="http://www.datamonkey.org/help/pvalue.php" target="_blank" class="INFO">Help</a> 
+</div>
+
+
+
+
+<div style="display: none;" class="RepClassSM" id="rvoptions">
+  
+  <table style="margin:5px;">
+    <tbody><tr class="TRReport1"><td>Site-to-site rate variation</td><td>
+      <select name="rateOption">
+        <option value="0">None
+        </option><option value="1">General Discrete
+        </option><option value="2">Beta-Gamma
+      </option></select>
+    </td>
+    <td>  
+      <a href="http://www.datamonkey.org/help/ratevariation.php#distributions" target="_blank" class="INFO">Help</a>  
+    </td>
+    </tr>
+    <tr class="TRReport2"><td>Rate classes </td><td>
+      <select name="rateClasses">
+        <option value="2">2
+        </option><option value="3">3
+        </option><option value="4">4
+        </option><option value="5">5
+        </option><option value="6">6
+      </option></select>
+    </td>
+    <td>  
+      <a href="http://www.datamonkey.org/help/ratevariation.php#rate_classes" target="_blank" class="INFO">Help</a> 
+    </td>   
+    </tr>
+  </tbody></table>    
+</div>
+
+<div style="display: none;" class="RepClassSM" id="rvoptionsNoConstant">
+  
+  <table style="margin:5px;">
+    <tbody><tr class="TRReport1"><td>Site-to-site rate variation</td><td>
+      <select name="rateOption2">
+        <option value="1">General Discrete
+        </option><option value="2">Beta-Gamma
+      </option></select>
+    </td>
+    <td>  
+      <a href="http://www.datamonkey.org/help/ratevariation.php#distributions" target="_blank" class="INFO">Help</a>  
+    </td>
+    </tr>
+    <tr class="TRReport2"><td>Rate classes </td><td>
+      <select name="rateClasses2">
+        <option value="2">2
+        </option><option value="3">3
+        </option><option value="4">4
+        </option><option value="5">5
+        </option><option value="6">6
+      </option></select>
+    </td>
+    <td>  
+      <a href="http://www.datamonkey.org/help/ratevariation.php#rate_classes" target="_blank" class="INFO">Help</a> 
+    </td>   
+    </tr>
+  </tbody></table>    
+</div><div class="RepClassSM">Click to <input value="Run" type="Submit"> the analysis.</div></form><script language="JavaScript" type="text/javascript">
+
+    function populateForm () {
+        SetMethodByValue(0);setBF();document.getElementById('all_enclosure').style.visibility = 'visible';;
+    }
+
+  function toggleBox(szDivID, iState) // 1 visible, 0 hidden
+  {
+      try {
+    var ele = document.getElementById(szDivID);
+    if(iState == 0) {
+        ele.style.display = "none";
+    }
+    else {
+      ele.style.display = "block";
+    }
+    }
+    catch (err)
+    {
+    }
+  }
+
+  function toggleElement(szDivID, iState) // 1 visible, 0 hidden
+  {
+    try
+    {
+      var ele = document.getElementById(szDivID);
+      if(iState == 0) {
+          ele.style.display = "none";
+      }
+      else {
+        ele.style.display = "inline";
+      }
+    }
+    catch (err)
+    {
+    
+    }
+  }
+
+  function SetNamedModel()
+  {
+    SetModel(modelForm.NamedModels.options[modelForm.NamedModels.selectedIndex].value);
+  }
+
+  function SetMethodByValue(v)
+  {
+    for (k=0; k<modelForm.method.options.length;k++)
+    {
+      if (modelForm.method.options[k].value == v)
+      {
+        modelForm.method.selectedIndex = k;
+        break;
+      }
+    }
+  }
+
+  function SetModel(modelString)
+  {
+    if (modelString.length == 6)
+    {
+      document.getElementById('AC').selectedIndex = parseInt(modelString.charAt(0));
+      document.getElementById('AT').selectedIndex = parseInt(modelString.charAt(2));
+      document.getElementById('CG').selectedIndex = parseInt(modelString.charAt(3));
+      document.getElementById('CT').selectedIndex = parseInt(modelString.charAt(4));
+      document.getElementById('GT').selectedIndex = parseInt(modelString.charAt(5));
+    }
+  }
+
+  function setBF()
+  {
+    checkValue = parseFloat (modelForm.pValue.value);
+    selMethodV = modelForm.method.options[modelForm.method.selectedIndex].value;
+    toggleBox ("rOptionsDIV",selMethodV==0 || selMethodV==6);
+    toggleBox ("ambChoice",  selMethodV==0 || selMethodV==6 || selMethodV==69);
+    toggleBox ("sigLevel",   selMethodV < 5 || selMethodV == 69 || selMethodV == 12 || selMethodV == 13);
+    toggleBox ("rvoptions",  selMethodV >=20  && selMethodV != 55 && selMethodV != 42 && selMethodV != 69 && selMethodV != 71);
+    toggleBox ("rvoptionsNoConstant", selMethodV == 60 );
+    toggleBox ("rootOn",     selMethodV == 22);
+    toggleBox ("treeMode",   selMethodV != 20 && selMethodV != 21);
+    toggleElement ("treeModeChoice2",   selMethodV != 5 && selMethodV != 6 && selMethodV != 9);
+    toggleElement ("treeModeChoice3",   selMethodV != 5 && selMethodV != 6 && selMethodV != 9);
+    toggleBox ("run_model_selector",   selMethodV != 71 && selMethodV != 13);
+    toggleBox ("property_set",   selMethodV == 71);
+    toggleBox ("modelmatrix",   !(selMethodV == 9 || selMethodV == 13 || selMethodV == 71));
+    
+    if (selMethodV == 3)
+    {
+      if (checkValue < 1.0)
+        modelForm.pValue.value = 50;
+    }
+    else
+    {
+      if (selMethodV < 3 || selMethodV == 4)
+      {
+        if (checkValue >= 0.5)
+          modelForm.pValue.value = 0.1;   
+      }
+      else
+      {
+        if (selMethodV == 6)
+        {
+          if (checkValue >= 1.0 || checkValue < 0.5)
+            modelForm.pValue.value = 0.5;   
+        } 
+                else
+                {
+                    if (selMethodV == 13)
+                    {
+                        if (checkValue >= 1.0 || checkValue < 0.5)
+                            modelForm.pValue.value = 0.9;   
+                    }       
+                }
+      }
+    }
+  }
+  function flagOddValues()
+  {
+    checkValue = parseFloat (modelForm.pValue.value);
+    selMethodV = modelForm.method.options[modelForm.method.selectedIndex].value;
+    if (selMethodV<5 && selMethodV != 3 || selMethodV == 12)
+    {
+      if (checkValue > 0.25)
+      {
+        alert ("Warning: p-values for SLAC, FEL, IFEL, MEME and PARRIS should be small (e.g. p<=0.25), since they measure the probability of observing large (or small) dN/dS in random neutral data.");
+      }
+    }
+    else
+    {
+      if (selMethodV == 3)
+      {
+        if (checkValue < 10 && modelForm.method.selectedIndex<5)
+        {
+          alert ("Warning: Bayes Factors for the REL test should be large (>=10), since they measure the effect of the data on our prior beliefs.");
+        } 
+      }
+      else
+      {
+        if (checkValue < 0.5 || checkValue > 1.0)
+        {
+          alert ("Warning: Posterior probability for Spidermonkey/BGM/FUBAR analyses must be between 0 and 1 and generally be greater than 0.5");
+        }
+      }
+    }
+  }
+  function CheckValidDnDS()
+  {
+    checkValue = parseFloat (modelForm.pValue.value);
+    selMethodV = modelForm.method.options[modelForm.method.selectedIndex].value;
+    if (selMethodV<3 || selMethodV==4)
+    {
+      if ((checkValue <= 0.0)||(checkValue>=1.0))
+      {
+        alert ("User supplied p-value must be in (0,1).");
+        return false;
+      }
+    }
+    else
+    {
+      if (selMethodV == 3)
+      { 
+        if (checkValue <= 1.0)
+        {
+          alert ("User supplied Bayes Factor must be > 1.");
+          return false; 
+        }
+      } 
+      else
+      {
+        if (selMethodV == 6 || selMethod == 13)
+        { 
+          if ((checkValue <= 0.0)||(checkValue>=1.0))
+          {
+            alert ("User supplied posterior probability must be in (0,1).");
+            return false;
+          }
+        }
+      }   
+  
+    }
+    if (modelForm.rOptions.selectedIndex==1)
+    {
+      checkValue = parseFloat (modelForm.dNdS.value);
+      if (checkValue <= 0.0)
+      {
+        alert ("User supplied dN/dS value must be positive");
+        return false;
+      }
+    }
+    else
+    {
+      modelForm.dNdS.value = "1.0";
+    }
+    
+    var subs =["AT","CG","CT","GT"];
+    
+    modelSpec = document.getElementById('AC').options[document.getElementById('AC').selectedIndex].value+"1";
+    for (k = 0; k < 4; k++)
+    {
+      modelSpec += document.getElementById(subs[k]).options[document.getElementById(subs[k]).selectedIndex].value;
+    }
+    
+    modelForm.modelString.value = modelSpec;
+    return true;
+  }
+</script>
+<div class="RepClassSM" id="run_model_selector" style="background-color: rgb(64, 0, 128); color: white; display: block;">
+<form name="modelChooseForm" method="POST" enctype="multipart/form-data" action="http://www.datamonkey.org/cgi-bin/datamonkey/dispatchAnalysis.pl">
+<input name="filename" value="upload.61619620408275.1" type="hidden"><input name="sequences" value="9" type="Hidden">
+<input name="sites" value="744" type="Hidden">
+<input name="partitions" value="1" type="Hidden">
+<input name="method" value="10" type="Hidden">
+
+Unsure which substitution model to use?<input value="Execute" type="Submit"> an automatic model selection tool.</form></div>
+

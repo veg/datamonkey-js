@@ -1,0 +1,126 @@
+/*
+
+  Datamonkey - An API for comparative analysis of sequence alignments using state-of-the-art statistical models.
+
+  Copyright (C) 2013
+  Sergei L Kosakovsky Pond (spond@ucsd.edu)
+  Steven Weaver (sweaver@ucsd.edu)
+
+  Permission is hereby granted, free of charge, to any person obtaining a
+  copy of this software and associated documentation files (the
+  "Software"), to deal in the Software without restriction, including
+  without limitation the rights to use, copy, modify, merge, publish,
+  distribute, sublicense, and/or sell copies of the Software, and to
+  permit persons to whom the Software is furnished to do so, subject to
+  the following conditions:
+
+  The above copyright notice and this permission notice shall be included
+  in all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+  CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+*/
+
+#datamonkey-hero {
+  fill: none;
+  stroke: #000;
+  background-color: #E7E6F2;
+  background-image: url('../img/dm_whole.png');
+  background-repeat: no-repeat;
+  background-position: bottom right;
+}
+
+#dm-news-logo {
+  width: 75px;
+}
+
+#tiny-monkey-logo {
+  width: 65px;
+  float: left;
+  position: relative;
+  bottom: -15px;
+}
+
+li.media {
+  margin-top: 5px;
+}
+
+.upload-div {
+  margin: 0px 0px 15px 0px;
+}
+
+.boxed-group {
+    background: none repeat scroll 0 0 #EFEFEF;
+    border-radius: 3px 3px 3px 3px;
+    margin: 0 0 15px;
+    padding: 3px;
+    position: relative;
+}
+
+.boxed-group .boxed-group-inner {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background: none repeat scroll 0 0 #FFFFFF;
+    border-bottom-left-radius: 1px;
+    border-bottom-right-radius: 1px;
+    border-color: #CCCCCC #D8D8D8 #D8D8D8;
+    border-image: none;
+    border-right: 1px solid #D8D8D8;
+    border-style: solid;
+    border-width: 1px;
+    color: #666666;
+    font-size: 13px;
+    padding: 1px 10px;
+}
+
+.boxed-group h3 {
+  margin: 0 15px 15px 15px;
+}
+
+.boxed-group-inner {
+  margin: 0 15px 15px 15px;
+}
+
+
+#upload_summary li{
+  display : table-cell;
+  padding : 5px;
+  text-align: center;
+  color: #666666;
+}
+
+#upload_summary li b{
+  color: black;
+}
+
+#sidebar {
+  width: 170px;
+}
+
+.footer {
+  text-align: center;
+}
+
+.footer-links {
+  margin: 10px 0;
+}
+.footer-links li {
+  display: inline;
+  padding: 0 2px;
+}
+.footer-links li:first-child {
+  padding-left: 0;
+}
+
+#modelmatrix label {
+  display: inline; 
+}
+

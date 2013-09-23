@@ -1,0 +1,11 @@
+<h1 class="page-header"> Data Formats </h1>
+<p>Datamonkey automatically recognizes five aligned sequence data formats and also autodetects whether the data is nucleotide (codon) or aminoacid. The recognized formats are:</p>
+  <ul>
+    <li>NEXUS - files in NEXUS format. The following NEXUS blocks are supported: DATA, CHARACTERS,TAXA, ASSUMPTIONS (for data partitioning) and TREES. See notes on HyPhy constants DATA_FILE_PARTITION_MATRIX and NEXUS_FILE_TREE_MATRIX for details on how to access NEXUS trees and partitions once the file has been read.
+    <li>PHYLIP Sequential and Interleaved: PHYLIP option characters in the first line are ignored
+    <li>FASTA (or #) Sequential: taxa names preceded by '>' (or '#'), complete sequence data follow the name of the taxon
+    <li>FASTA (or #) Interleaved: list of taxa names preceded by '>' (or '#'_, blocks of sequence data follow in the same order as the names of the taxa.
+  </ul>
+
+<h2>Examples</h2>
+Examples of each format can be found on the <a href="http://hyphy.org/w/index.php/DATA_FILE_PRINT_FORMAT">hyphy wiki page</a>
