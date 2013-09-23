@@ -1,5 +1,4 @@
-/*
-  Datamonkey - An API for comparative analysis of sequence alignments using state-of-the-art statistical models.
+/* Datamonkey - An API for comparative analysis of sequence alignments using state-of-the-art statistical models.
 
   Copyright (C) 2013
   Sergei L Kosakovsky Pond (spond@ucsd.edu)
@@ -41,23 +40,28 @@ function define(name, value) {
 //define('spooldir','/var/lib/datamonkey/www/spool/');
 
 
-// QA
+//// QA
 //define('host','datamonkey-dev');
 //define('port', 3000);
 //define('database', 'mongodb://localhost/datamonkey-dev');
-// 'default', 'short', 'tiny', 'dev'
-//define('logger', 'dev');
-//define('rootpath', '/home/sweaver/datamonkey-js');
-//define('spooldir','/var/lib/datamonkey/www/spool/');
-
-
-//// DEVELOPMENT
-//define('host','datamonkey-dev');
-//define('port', 3000);
-//define(database, 'mongodb://localhost/datamonkey-dev');
 //// 'default', 'short', 'tiny', 'dev'
 //define('logger', 'dev');
 //define('rootpath', '/home/sweaver/datamonkey-js');
+//define('root_hivcluster_path', '/home/sweaver/datamonkey-js/uploads/hivcluster/');
 //define('spooldir','/var/lib/datamonkey/www/spool/');
+//define('cluster_ip','silverback.ucsd.edu:7000');
+//define('socket_port', 3001);
+//define('fasta_validator', '/home/sweaver/TN93/FastaValidator');
 
-
+//// DEV
+//define('host','datamonkey-dev');
+//define('port', 4000);
+//define('database', 'mongodb://localhost/datamonkey-dev-steven');
+//// 'default', 'short', 'tiny', 'dev'
+//define('logger', 'dev');
+//define('rootpath', '/home/sweaver/datamonkey/datamonkey-js-dev');
+//define('hivcluster_upload_path', '/uploads/hivcluster/');
+//define('spooldir','/var/lib/datamonkey/www/spool/');
+//define('cluster_ip','silverback.ucsd.edu:7010');
+//define('socket_port', 4001);
+//define('fasta_validator', '/home/sweaver/TN93/FastaValidator');
