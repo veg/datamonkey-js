@@ -3,19 +3,19 @@ Datamonkey API
 
 INSTALL
 ===========================
-##System Dependencies
+###System Dependencies
 * node
 * mongodb-server
 * redis
 
-##Check out datamonkey-js
+###Check out datamonkey-js
 * git clone git@github.com:veg/datamonkey-js.git
 
-##Install package
+###Install package
 * cd ./datamonkey-js/
 * npm install
 
-##Configure
+###Configure
 * cp ./config/setup.js.tpl ./config/setup.js
 * Change configuration options
 
