@@ -17,7 +17,6 @@ INSTALL
 
 ###Configure
     cp ./config/setup.js.tpl ./config/setup.js
-* Change configuration options
 
 
 <!--
