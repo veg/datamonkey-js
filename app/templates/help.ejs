@@ -1,17 +1,17 @@
 <%- include includes/header.ejs %>
 
-<div class="tabbable">
+<div role="complementary" class="tabbable bs-sidebarhidden-print">
 
-<ul class="nav nav-tabs nav-stacked navbar-left col-sm-2">
+<ul class="nav bs-sidenav navbar-help col-sm-2">
 
   <li class="active"><a href="#general" data-toggle="tab">General</a></li>
-  <li class="nav-header">Uploading Files</li>
+  <li class="">Uploading Files</li>
   <li class=""><a href="#preparing-data" data-toggle="tab">Preparing Data</a></li>
   <li class=""><a href="#data-types" data-toggle="tab">Data Types</a></li>
   <li class=""><a href="#genetic-code" data-toggle="tab">Genetic Code</a></li>
   <li class=""><a href="#data-formats" data-toggle="tab">Data Formats</a></li>
 
-  <li class="nav-header">Analyzing Data</li>
+  <li class="">Analyzing Data</li>
   <li class=""><a href="#nucleotide-models" data-toggle="tab">Nucleotide Models</a></li>
   <li class=""><a href="#rooting" data-toggle="tab">Rooting</a></li>
   <li class=""><a href="#dnds" data-toggle="tab">dN/DS</a></li>
@@ -19,6 +19,9 @@
   <li class=""><a href="#pvalue" data-toggle="tab">Significance Levels</a></li>
   <li class=""><a href="#aminoacidproperty" data-toggle="tab">Amino Acid Property Set</a></li>
   <li class=""><a href="#ratevariation" data-toggle="tab">Rate Variation</a></li>
+
+  <li class="">HIV TRACE</li>
+  <li class=""><a href="#hivtrace-overview" data-toggle="tab">Overview</a></li>
 
 </ul>
 
@@ -40,6 +43,12 @@
   <div id="data-formats" class="tab-pane col-sm-10">
     <%- include includes/help/uploads/dataformats.ejs %>
   </div>
+
+  <!-- HIV TRACE -->
+  <div id="hivtrace-overview" class="tab-pane col-sm-10">
+    <%- include includes/help/hivtrace/general.ejs %>
+  </div>
+
 
   <!-- Analyzing Data -->
   <div id="nucleotide-models" class="tab-pane col-sm-10">

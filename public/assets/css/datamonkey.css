@@ -124,3 +124,10 @@ li.media {
   display: inline; 
 }
 
+.navbar-help {
+  margin-left: 15px;
+}
+
+.navbar-help .active {
+  background-color: #EEE;
+}
