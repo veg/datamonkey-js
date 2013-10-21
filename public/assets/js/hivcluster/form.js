@@ -98,22 +98,22 @@ function ValidateEmail(email) {
     var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     if(regex.test($(this).find("input[name='mail']").val())) {
        // Give them green. They like that.
-      $(this).parent().removeClass('has-error');
-      $(this).parent().addClass('has-success');
+      $(this).removeClass('has-error');
+      $(this).addClass('has-success');
       $(this).next('.help-block').remove();
     } else {
       $(this).next('.help-block').remove();
-      $(this).parent().removeClass('has-error');
-      $(this).parent().removeClass('has-success');
-      $(this).parent().addClass('has-error');
+      $(this).removeClass('has-error');
+      $(this).removeClass('has-success');
+      $(this).addClass('has-error');
       var span = jQuery('<span/>', {
             class: 'help-block col-lg-9 pull-right',
             text : 'Invalid Email'
         }).insertAfter($(this));
     }
   } else {
-    $(this).parent().removeClass('has-error');
-    $(this).parent().removeClass('has-success');
+    $(this).removeClass('has-error');
+    $(this).removeClass('has-success');
     $(this).next('.help-block').remove();
   }
 }

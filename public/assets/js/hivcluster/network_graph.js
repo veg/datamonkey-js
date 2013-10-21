@@ -4,6 +4,11 @@ $(document).ready(function(){
   }
 });
 
+function saveImage() {
+
+
+}
+
 function inProgress() {
   return $('.progress').length > 0;
 }

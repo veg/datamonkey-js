@@ -71,8 +71,10 @@ function setupJob() {
   // Error
   socket.on('error', function (data) {
     jQuery('<div/>', {
-          class: 'alert alert-error',
+          class: 'alert alert-danger',
           text : 'There was an error! Please try again. Error : ' + data.msg
       }).insertAfter($('.page-header'));
   });
 }
+
+

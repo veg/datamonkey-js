@@ -2,7 +2,9 @@
 <div class="container">
   <h1 class="page-header">HIV Clustering Analysis</h1>
   <div id="hiv-cluster-report" data-hivclusterid="<%= hiv_cluster._id %>" data-socket-address="<%= socket_addr %>">
-  <%if (hiv_cluster.status != 'Completed') { %>  
+  <% if (hiv_cluster.status == 'Aborted') { %>
+    <div class="alert alert-danger">There was an error! Please try again. Please try again or report the issue to bitcore@ucsd.edu</div>
+  <% } else if (hiv_cluster.status != 'Completed') { %>  
       <h2>Job in Progress</h2>
       <div class="progress progress-striped active">
         <div class="progress-bar" role="progressbar" aria-valuenow="<%= hiv_cluster.percentage_complete %>" aria-valuemin="1" aria-valuemax="100" style="width: <%= hiv_cluster.percentage_complete %>">
@@ -27,6 +29,7 @@
   <% } %>
   </div>
 </div>
+<canvas id='canvas'></canvas>
 <%- include ../includes/footer.ejs %>
 <script src="/assets/js/socket.io.min.js"></script>
 <script src="http://d3js.org/d3.v3.js"></script>
