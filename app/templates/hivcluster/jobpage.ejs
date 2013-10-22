@@ -1,6 +1,6 @@
 <%- include ../includes/header.ejs %>
 <div class="container">
-  <h1 class="page-header">HIV Clustering Analysis</h1>
+  <h1 class="page-header">HIV TRACE</h1>
   <div id="hiv-cluster-report" data-hivclusterid="<%= hiv_cluster._id %>" data-socket-address="<%= socket_addr %>">
   <% if (hiv_cluster.status == 'Aborted') { %>
     <div class="alert alert-danger">There was an error! Please try again. Please try again or report the issue to bitcore@ucsd.edu</div>

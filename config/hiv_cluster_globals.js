@@ -34,6 +34,12 @@ function define(name, value) {
     });
 }
 
-define('valid_statuses', ['In Queue', 'Aligning', 'Converting to FASTA', 'TN93 Analysis', 'HIV Network Analysis', 'Completed']);
-define('valid_lanl_statuses', ['In Queue', 'Aligning', 'Converting to FASTA', 'TN93 Analysis', 'HIV Network Analysis', 'Public Database TN93 Analysis', 'Public Database HIV Network Analysis', 'Completed']);
+define('valid_statuses', ['In Queue', 'Aligning', 'Converting to FASTA', 
+                          'TN93 Analysis', 'HIV Network Analysis', 'Completed']);
+
+define('valid_lanl_statuses', ['In Queue', 'Aligning', 'Converting to FASTA', 
+                               'TN93 Analysis', 'HIV Network Analysis', 
+                               'Public Database TN93 Analysis', 
+                               'Public Database HIV Network Analysis', 'Completed']);
+
 define('off_kilter_statuses', ['Aborted']);
