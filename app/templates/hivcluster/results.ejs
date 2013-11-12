@@ -2,7 +2,9 @@
 
   <ul class="nav nav-tabs">
     <li class="active"><a href="#cluster-results" data-toggle="tab">Cluster Results</a></li>
+    <%if (hiv_cluster.lanl_cluster_results) { %>
     <li class=""><a href="#lanl-cluster-results" data-toggle="tab">Comparison Results</a></li>
+    <% } %>
   </ul>
 
   <div class="tab-content">
