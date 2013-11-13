@@ -47,7 +47,7 @@ function define(name, value) {
 //// 'default', 'short', 'tiny', 'dev'
 //define('logger', 'dev');
 //define('rootpath', '/home/sweaver/datamonkey-js');
-//define('root_hivcluster_path', '/home/sweaver/datamonkey-js/uploads/hivcluster/');
+//define('root_hivtrace_path', '/home/sweaver/datamonkey-js/uploads/hivtrace/');
 //define('spooldir','/var/lib/datamonkey/www/spool/');
 //define('cluster_ip','silverback.ucsd.edu:7000');
 //define('socket_port', 3001);
@@ -60,7 +60,7 @@ function define(name, value) {
 //// 'default', 'short', 'tiny', 'dev'
 //define('logger', 'dev');
 //define('rootpath', '/home/sweaver/datamonkey/datamonkey-js-dev');
-//define('hivcluster_upload_path', '/uploads/hivcluster/');
+//define('hivtrace_upload_path', '/uploads/hivtrace/');
 //define('spooldir','/var/lib/datamonkey/www/spool/');
 //define('cluster_ip','silverback.ucsd.edu:7010');
 //define('socket_port', 4001);

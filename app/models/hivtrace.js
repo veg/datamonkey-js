@@ -28,7 +28,7 @@
 */
 
 var setup     = require( ROOT_PATH + '/config/setup'),
-    hiv_setup = require( ROOT_PATH + '/config/hiv_cluster_globals');
+    hiv_setup = require( ROOT_PATH + '/config/hivtrace_globals');
 
 var mongoose = require('mongoose'),
     moment   = require('moment'),
@@ -45,7 +45,7 @@ function notEmptyValidator (val) {
 }
 
 /**
- * HivCluster Schema Type
+ * HivTrace Schema Type
  * distance threshold : Parameter set by user
  * min_overlap        : Parameter set by user
  * ambiguity_handling : Current status of job
@@ -55,7 +55,7 @@ function notEmptyValidator (val) {
  * cluster_csv        : Results
  * created            : When the document was created
  */
-var HivCluster = new Schema({
+var HivTrace = new Schema({
     distance_threshold      : { type: Number, require: true, min : 0, max: 0.02, validate: [notEmptyValidator, 'Distance Threshold is empty'] },
     min_overlap             : { type: Number, require: true, min : 100, max: 1000, validate: [notEmptyValidator, 'Minimum Overlap is empty'] },
     ambiguity_handling      : { type: String, require: true, validate: [notEmptyValidator, 'Ambiguity Handling is empty']},
@@ -65,8 +65,8 @@ var HivCluster = new Schema({
     torque_id               : String,
     mail                    : String,
     tn93_summary            : String,
-    cluster_results         : String,
-    lanl_cluster_results    : String,
+    trace_results           : String,
+    lanl_trace_results      : String,
     created                 : {type: Date, default: Date.now}
 });
 
@@ -74,10 +74,10 @@ var HivCluster = new Schema({
  * Validators to be passed to an html template as data attributes for 
  * form validation
  */
-HivCluster.statics.validators = function () {
+HivTrace.statics.validators = function () {
   var validators = [];
-  validators.min_overlap = HivCluster.paths.min_overlap.options;
-  validators.distance_threshold = HivCluster.paths.distance_threshold.options;
+  validators.min_overlap = HivTrace.paths.min_overlap.options;
+  validators.distance_threshold = HivTrace.paths.distance_threshold.options;
   return validators;
 }
 
@@ -85,10 +85,10 @@ HivCluster.statics.validators = function () {
  * Validators to be passed to an html template as data attributes for 
  * form validation
  */
-HivCluster.statics.lanl_validators = function () {
+HivTrace.statics.lanl_validators = function () {
   var validators = [];
-  validators.min_overlap = HivCluster.paths.lanl_min_overlap.options;
-  validators.distance_threshold = HivCluster.paths.lanl_distance_threshold.options;
+  validators.min_overlap = HivTrace.paths.lanl_min_overlap.options;
+  validators.distance_threshold = HivTrace.paths.lanl_distance_threshold.options;
   return validators;
 }
 
@@ -98,7 +98,7 @@ HivCluster.statics.lanl_validators = function () {
  * git@github.com:veg/TN93.git to be installed and defined in setup
  * @param fn {String} path to file to be validated
  */
-HivCluster.statics.validateFasta = function (fn, cb) {
+HivTrace.statics.validateFasta = function (fn, cb) {
   var fasta_validator =  spawn(setup.fasta_validator, 
                                [fn]); 
 
@@ -118,44 +118,44 @@ HivCluster.statics.validateFasta = function (fn, cb) {
 /**
  * Filename of document's file upload
  */
-HivCluster.virtual('filename').get(function () {
+HivTrace.virtual('filename').get(function () {
   return this._id;
 });
 
 /**
  * Complete file path for document's file upload
  */
-HivCluster.virtual('filepath').get(function () {
-  return setup.root_hivcluster_path + this._id;
+HivTrace.virtual('filepath').get(function () {
+  return setup.root_hivtrace_path + this._id;
 });
 
 /**
  * Index of status
  */
-HivCluster.virtual('status_index').get(function () {
+HivTrace.virtual('status_index').get(function () {
   return this.status_stack.indexOf(this.status);
 });
 
 /**
  * Percentage of job complete
  */
-HivCluster.virtual('percentage_complete').get(function () {
+HivTrace.virtual('percentage_complete').get(function () {
   return ((this.status_index + 1)/this.status_stack.length)*100 + '%';
 });
 
 /**
  * Unix timestamp
  */
-HivCluster.virtual('timestamp').get(function () {
+HivTrace.virtual('timestamp').get(function () {
   return moment(this.created).unix();
 });
 
 /**
  * URL 
  */
-HivCluster.virtual('url').get(function () {
-  return 'http://' + setup.host + '/hivcluster/' + this._id;
+HivTrace.virtual('url').get(function () {
+  return 'http://' + setup.host + '/hivtrace/' + this._id;
 });
 
-module.exports = mongoose.model('HivCluster', HivCluster);
+module.exports = mongoose.model('HivTrace', HivTrace);
 

@@ -2,7 +2,7 @@
 
   <ul class="nav nav-tabs">
     <li class="active"><a href="#cluster-results" data-toggle="tab">Cluster Results</a></li>
-    <%if (hiv_cluster.lanl_cluster_results) { %>
+    <%if (hivtrace.lanl_cluster_results) { %>
     <li class=""><a href="#lanl-cluster-results" data-toggle="tab">Comparison Results</a></li>
     <% } %>
   </ul>
@@ -19,7 +19,7 @@
           <div class="alert" class='main-warning' style='display:none;'>
           </div>
         </div>
-        <div id='network_tag' class='col-lg-9' data-url=<%= hiv_cluster.cluster_results %>></div>
+        <div id='network_tag' class='col-lg-9' data-url=<%= hivtrace.trace_results %>></div>
         <div class="row">
           <div id='histogram_tag' class='col-lg-3'>
               <p id='histogram_label' class="text-left text-info small"></p><br>
@@ -33,7 +33,7 @@
       </div>
     </div>
 
-    <%if (hiv_cluster.lanl_cluster_results) { %>
+    <%if (hivtrace.lanl_cluster_results) { %>
     <div id="lanl-cluster-results" class="tab-pane">
       <h3>LANL Cluster Results</h3>
       <div class="row">
@@ -46,7 +46,7 @@
           </div>
         </div>
         <div class="row">
-          <div id='lanl_network_tag' class='col-lg-9' data-url=<%= hiv_cluster.lanl_cluster_results %>></div>
+          <div id='lanl_network_tag' class='col-lg-9' data-url=<%= hivtrace.lanl_cluster_results %>></div>
           <div id='lanl_histogram_tag' class='col-lg-3'>
               <p id='lanl_histogram_label' class="text-left text-info small"></p>
           </div>

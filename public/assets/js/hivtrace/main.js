@@ -25,7 +25,7 @@ function getTime() {
 
 function setupJob() {
 
-  var hivclusterid = $('#hiv-cluster-report').data('hivclusterid')
+  var hivtraceid = $('#hiv-cluster-report').data('hivtraceid')
   var socket_address = $('#hiv-cluster-report').data('socket-address')
   var socket = io.connect(socket_address);
 
@@ -44,7 +44,7 @@ function setupJob() {
 
   socket.on('connected', function () {
     // Start job
-    socket.emit('acknowledged', { id: hivclusterid });
+    socket.emit('acknowledged', { id: hivtraceid });
   });
 
   // Status update
@@ -60,7 +60,7 @@ function setupJob() {
       $(this).attr('class', 'alert alert-success')
     });
 
-    $.get(hivclusterid + '/results', function(results) {
+    $.get(hivtraceid + '/results', function(results) {
       //Do an AJAX request to get results
       $('#hiv-cluster-report').html(results);
       initializeClusterNetworkGraphs();

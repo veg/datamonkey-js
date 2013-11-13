@@ -12,7 +12,7 @@
   </div>
   <div class="nav nav-list pull-right"><a href="/help#hivtrace-overview" target="_blank">I'm confused</a></div>
   <div class="row col-lg-9">
-      <form role="form" class="form-horizontal" name="uploadform" enctype="multipart/form-data" action="/hivcluster" method="post">
+      <form role="form" class="form-horizontal" name="uploadform" enctype="multipart/form-data" action="/hivtrace" method="post">
           <div class="form-group <%if (typeof errors != "undefined" && typeof errors.file != "undefined") { %>has-error<% } %>">
             <label id="upload-file-label" class="col-lg-3 control-label">Sequence Alignment</label> 
             <div class="col-lg-9">
@@ -74,4 +74,4 @@
   </div>
 </div>
 <%- include ../includes/footer.ejs %>
-<script src="/assets/js/hivcluster/form.js"></script>
+<script src="/assets/js/hivtrace/form.js"></script>
