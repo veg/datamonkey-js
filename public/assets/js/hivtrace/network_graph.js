@@ -57,7 +57,7 @@ var clusterNetworkGraph = function (network_container, network_status_string,
       edges,    // edges between nodes
       clusters, // cluster 'nodes', used either as fixed cluster anchors, or 
                 // to be a placeholder for the cluster
-      max_points_to_render = 256,
+      max_points_to_render = 400,
       popover_html = "<div class='btn-group btn-group-vertical'>\
       <button class='btn btn-link btn-mini' type='button' id = 'cluster_expand_button'>Expand cluster</button>\
       <button class='btn btn-link btn-mini' id = 'cluster_center_button' type='button'>Center on screen</button>\
@@ -83,13 +83,14 @@ var clusterNetworkGraph = function (network_container, network_status_string,
       
   var defaultFloatFormat = d3.format(",.2f");
 
-      
   var network_layout = d3.layout.force()
-      .on("tick", tick)
-      .charge(function(d) { if (d.cluster_id) return -50-2*d.children.length; return -50*Math.sqrt(d.degree); })
-      .linkDistance(function(d) { return Math.max(d.length*l_scale,1); })
-      .friction (0.5)
-      .size([w, h - 160]);
+    .on("tick", tick)
+    .charge(function(d) { if (d.cluster_id) return -50-2*d.children.length; return -50*Math.sqrt(d.degree); })
+    .linkDistance(function(d) { return Math.max(d.length*l_scale,1); })
+    .linkStrength (function (d) { if (d.support != undefined) { return 2*(0.5-d.support);} return 1;})
+    .friction (0.5)
+    .size([w, h - 160]);
+
 
   var network_svg = d3.select(network_container).append("svg:svg")
       .attr("width", w)
@@ -97,7 +98,6 @@ var clusterNetworkGraph = function (network_container, network_status_string,
       .style ("border", "solid black 1px");
 
 
-      
   network_svg.append("defs").append("marker")
       .attr("id", "arrowhead")
       .attr("refX", 9) /*must be smarter way to calculate shift*/
@@ -110,14 +110,13 @@ var clusterNetworkGraph = function (network_container, network_status_string,
       .append("path")
           .attr("d", "M 0,0 V 4 L6,2 Z"); //this is actual shape for arrowhead
           
-          
   /*------------ Network layout code ---------------*/
           
       
   function  get_initial_xy (nodes, cluster_count, exclude ) {  
       var d_clusters = {'id': 'root', 'children': []};
       for (var k = 0; k < cluster_count; k+=1) {
-          if (exclude[k+1] != undefined) {continue;}
+       if (exclude != undefined && exclude[k+1] != undefined) {continue;}
           d_clusters.children.push ({'cluster_id' : k+1, 'children': nodes.filter (function (v) {return v.cluster == k+1;})});
       }   
       
@@ -215,6 +214,13 @@ var clusterNetworkGraph = function (network_container, network_status_string,
       return graphMe;
   }
 
+  function defaultLayout (clusters, nodes, exclude_cluster_ids){
+      init_layout = get_initial_xy (nodes, cluster_sizes.length, exclude_cluster_ids);
+      clusters = init_layout.filter (function (v,i,obj) { return  !(typeof v.cluster_id === "undefined");});
+      nodes = nodes.map (function (v) {v.x += v.dx/2; v.y += v.dy/2; return v;});
+      clusters.forEach (collapseCluster); 
+      return [clusters, nodes];
+  }
 
   function initial_json_load (json) {
     graph = json;
@@ -239,25 +245,44 @@ var clusterNetworkGraph = function (network_container, network_status_string,
     edges = edges.map (function (v,i) {v.source = connected_links[v.source]; v.target = connected_links[v.target]; v.id = i; return v;});
     computeNodeDegrees  (nodes, edges);
     
-    init_layout = get_initial_xy (nodes, cluster_sizes.length, exclude_cluster_ids);
-    clusters = init_layout.filter (function (v,i,obj) { return  !(typeof v.cluster_id === "undefined");});
-    nodes = nodes.map (function (v) {v.x += v.dx/2; v.y += v.dy/2; return v;});
-    clusters.forEach (collapseCluster); 
+    r = defaultLayout (clusters, nodes, exclude_cluster_ids);
+    clusters = r[0];
+    nodes = r[1];
+    
     clusters.forEach (function (d,i) {cluster_mapping[d.cluster_id] = i;});
     
+    render_histogram (graph["Degrees"]["Distribution"], graph["Degrees"]["fitted"], histogram_w, histogram_h, "histogram_tag");
 
-
-    if(graph["Degrees"]["fitted"] != null) {
-      render_histogram (graph["Degrees"]["Distribution"], graph["Degrees"]["fitted"], histogram_w, histogram_h, "histogram_tag");
-      d3.select (histogram_label).html ("Network degree distribution is best described by the <strong>" + json ["Degrees"]["Model"] + "</strong> model, with &rho; of " + defaultFloatFormat(json ["Degrees"]["rho"])
-                + " (95% CI " + defaultFloatFormat(json ["Degrees"]["rho CI"][0]) + " - " + defaultFloatFormat(json ["Degrees"]["rho CI"][1]) + ")" );
+    var label = "Network degree distribution is best described by the <strong>" + json ["Degrees"]["Model"] + "</strong> model, with &rho; of " + 
+               defaultFloatFormat(json ["Degrees"]["rho"]);
+               
+    if (json ["Degrees"]["rho CI"] != undefined) {
+          label += " (95% CI " + defaultFloatFormat(json ["Degrees"]["rho CI"][0]) + " - " + defaultFloatFormat(json ["Degrees"]["rho CI"][1]) + ")";
     }
     
+    d3.select ("#histogram_label").html (label);
+     
     update();
-    //$('#indicator').hide();
+    $('#indicator').hide();
     $('#results').show();
+    
+    $('#expand_all_clusters').click(function(e) {
+      clusters.forEach (function (x) { expandClusterHandler (x, false); });
+      update (); 
+      e.preventDefault();// prevent the default anchor functionality
+      });
 
-  }
+    $('#collapse_all_clusters').click(function(e) {
+      clusters.forEach (function (x) { collapseCluster (x); });
+      update();
+      e.preventDefault();// prevent the default anchor functionality
+      });
+
+    $('#reset_layout').click(function(e) {
+      defaultLayout (clusters, nodes);
+      update ();
+      e.preventDefault();// prevent the default anchor functionality
+      });}
 
   function render_histogram (counts, fit, w, h, id) {
       var margin = {top: 10, right: 30, bottom: 30, left: 30},
@@ -268,8 +293,8 @@ var clusterNetworkGraph = function (network_container, network_status_string,
               .domain([0, counts.length+1])
               .range([0, width]);
               
-      var y = d3.scale.linear()
-              .domain ([0, d3.max (counts)])
+      var y = d3.scale.log()
+              .domain ([1, d3.max (counts)])
               .range  ([height,0]);
               
       var total = d3.sum (counts);          
@@ -278,12 +303,6 @@ var clusterNetworkGraph = function (network_container, network_status_string,
           .scale(x)
           .orient("bottom");
           
-      var fit_line = d3.svg.line()
-          .interpolate("linear")
-          .x(function(d,i) { return x(i+1) + (x(i+1)-x(i))/2; })
-          .y(function(d) { return y(d*total); });
-
-
       var histogram_svg = d3.select("#" + id).selectAll ("svg");
 
       if (histogram_svg != undefined) {
@@ -298,7 +317,7 @@ var clusterNetworkGraph = function (network_container, network_status_string,
       
       
           var bar = histogram_svg.selectAll(".bar")
-          .data(counts)
+          .data(counts.map (function (d) { return d+1; }))
           .enter().append("g")
           .attr("class", "bar")
           .attr("transform", function(d,i) { return "translate(" + x(i+1) + "," + y(d) + ")"; });
@@ -309,9 +328,15 @@ var clusterNetworkGraph = function (network_container, network_status_string,
           .attr("height", function(d) { return height - y(d); })
           .append ("title").text (function (d,i) { return "" + counts[i] + " nodes with degree " + (i+1);});
 
-       histogram_svg.append("path").datum(fit)
-        .attr("class", "line")
-        .attr("d", function(d) { return fit_line(d); });
+    if (fit != undefined) {    
+        var fit_line = d3.svg.line()
+            .interpolate("linear")
+            .x(function(d,i) { return x(i+1) + (x(i+1)-x(i))/2; })
+            .y(function(d) { return y(1+d*total); });
+        histogram_svg.append("path").datum(fit)
+          .attr("class", "line")
+          .attr("d", function(d) { return fit_line(d); });
+    }
 
       /*bar.append("text")
           .attr("dy", ".75em")
@@ -364,7 +389,7 @@ var clusterNetworkGraph = function (network_container, network_status_string,
     link.exit().remove();
     
     var link_enter = link.enter().append("line")
-        .attr("class", "link");
+        .attr("class", function (d) { if (d.removed) return "link removed"; return "link";  });
         
     var directed_links = link_enter.filter (function (d) {return d.directed;})
       .attr("marker-end", "url(#arrowhead)");
@@ -459,6 +484,7 @@ var clusterNetworkGraph = function (network_container, network_status_string,
              "<br>Mean degree <em>" + defaultFloatFormat(d3.mean (degrees)) + "</em>"+
              "<br>Max degree <em>" + d3.max (degrees) + "</em>";
              
+
   }
 
 
