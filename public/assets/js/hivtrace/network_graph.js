@@ -25,7 +25,7 @@ var initializeClusterNetworkGraphs = function () {
                         histogram_tag, 
                         histogram_label);
 
-  if($('#lanl-cluster-results').length > 0) {
+  if($('#lanl-trace-results').length > 0) {
 
     // Only if the comparison was done
     var lanl_network_container     = '#lanl_network_tag',
@@ -33,7 +33,7 @@ var initializeClusterNetworkGraphs = function () {
         lanl_histogram_tag         = '#lanl_histogram_tag',
         lanl_histogram_label       = '#lanl_histogram_label';
 
-    var lanl_cluster_results = clusterNetworkGraph(lanl_network_container, 
+    var lanl_trace_results = clusterNetworkGraph(lanl_network_container, 
                              lanl_network_status_string,
                              lanl_histogram_tag, 
                              lanl_histogram_label);
