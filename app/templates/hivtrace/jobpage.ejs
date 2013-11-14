@@ -29,9 +29,10 @@
   <% } %>
   </div>
 </div>
-<canvas id='canvas'></canvas>
 <%- include ../includes/footer.ejs %>
 <script src="/assets/js/socket.io.min.js"></script>
 <script src="http://d3js.org/d3.v3.js"></script>
 <script src="/assets/js/hivtrace/network_graph.js"></script>
-<script src="/assets/js/hivtrace/main.js"></script>
+<% if (hivtrace.status != 'Aborted' && hivtrace.status != 'Completed') { %>
+<script src="/assets/js/hivtrace/network.js"></script>
+<% } %>

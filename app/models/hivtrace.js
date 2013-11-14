@@ -126,7 +126,7 @@ HivTrace.virtual('filename').get(function () {
  * Complete file path for document's file upload
  */
 HivTrace.virtual('filepath').get(function () {
-  return setup.root_hivtrace_path + this._id;
+  return setup.rootpath + setup.hivtrace_upload_path + this._id;
 });
 
 /**

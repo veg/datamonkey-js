@@ -66,6 +66,8 @@ function setupJob() {
       initializeClusterNetworkGraphs();
     });
 
+    socket.disconnect();
+
   });
 
   // Error
@@ -74,6 +76,8 @@ function setupJob() {
           class: 'alert alert-danger',
           text : 'There was an error! Please try again. Error : ' + data.msg
       }).insertAfter($('.page-header'));
+
+      socket.disconnect();
   });
 }
 
