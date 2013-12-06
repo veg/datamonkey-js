@@ -67,6 +67,7 @@ var HivTrace = new Schema({
     tn93_summary            : String,
     trace_results           : String,
     lanl_trace_results      : String,
+    error_message           : String,
     created                 : {type: Date, default: Date.now}
 });
 

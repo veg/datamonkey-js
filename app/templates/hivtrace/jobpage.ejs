@@ -3,7 +3,7 @@
   <h1 class="page-header">HIV TRACE</h1>
   <div id="hiv-cluster-report" data-hivtraceid="<%= hivtrace._id %>" data-socket-address="<%= socket_addr %>">
   <% if (hivtrace.status == 'Aborted') { %>
-    <div class="alert alert-danger">There was an error! Please try again. Please try again or report the issue to bitcore@ucsd.edu</div>
+    <div class="alert alert-danger">There was an error! Please try again. <code><%= hivtrace.error_message %></code></div>
   <% } else if (hivtrace.status != 'Completed') { %>  
       <h2>Job in Progress</h2>
       <div class="progress progress-striped active">

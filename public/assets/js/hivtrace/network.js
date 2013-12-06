@@ -74,7 +74,7 @@ function setupJob() {
   socket.on('error', function (data) {
     jQuery('<div/>', {
           class: 'alert alert-danger',
-          text : 'There was an error! Please try again. Error : ' + data.msg
+          html : 'There was an error! Please try again. Message : <code>' + data.msg + '</code>'
       }).insertAfter($('.page-header'));
 
       socket.disconnect();
