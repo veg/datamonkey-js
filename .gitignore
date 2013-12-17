@@ -12,6 +12,9 @@ logs
 results
 console
 node_modules
+contrib
+tags
+uploads
 
 npm-debug.log
 config/setup.js
