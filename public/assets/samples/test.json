@@ -1,0 +1,3524 @@
+{
+    "Cluster sizes": [
+        2, 
+        8, 
+        2, 
+        8, 
+        2, 
+        6, 
+        4, 
+        2, 
+        2, 
+        3, 
+        17, 
+        7, 
+        4, 
+        3, 
+        3, 
+        5, 
+        4, 
+        2, 
+        3, 
+        2, 
+        2, 
+        2, 
+        2, 
+        2, 
+        2, 
+        2, 
+        2, 
+        3, 
+        3, 
+        2, 
+        2, 
+        2, 
+        2, 
+        4, 
+        2
+    ], 
+    "Degrees": {
+        "Distribution": [
+            81, 
+            22, 
+            11, 
+            2, 
+            1, 
+            3, 
+            2, 
+            0, 
+            0, 
+            0, 
+            0, 
+            0, 
+            0, 
+            0, 
+            1
+        ], 
+        "Model": "Yule", 
+        "fitted": null, 
+        "rho": 3.1545737765755395, 
+        "rho CI": null
+    }, 
+    "Directed Edges": {
+        "Count": 0, 
+        "Reasons for unresolved directions": {
+            "No EDI": 109
+        }
+    }, 
+    "Edges": [
+        {
+            "directed": false, 
+            "length": 0.00580125, 
+            "removed": true, 
+            "source": 61, 
+            "support": 0.5, 
+            "target": 62
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00915803, 
+            "removed": false, 
+            "source": 12, 
+            "support": 0.003886188558679171, 
+            "target": 13
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0116385, 
+            "removed": false, 
+            "source": 25, 
+            "support": 0.0, 
+            "target": 26
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0140253, 
+            "removed": false, 
+            "source": 111, 
+            "support": 0.0, 
+            "target": 112
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0125234, 
+            "removed": false, 
+            "source": 49, 
+            "support": 0.0, 
+            "target": 47
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00372577, 
+            "removed": false, 
+            "source": 4, 
+            "support": 0.0, 
+            "target": 8
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00831121, 
+            "removed": false, 
+            "source": 49, 
+            "support": 0.0, 
+            "target": 41
+        }, 
+        {
+            "directed": false, 
+            "length": 0.000826847, 
+            "removed": false, 
+            "source": 28, 
+            "support": 0.0, 
+            "target": 30
+        }, 
+        {
+            "directed": false, 
+            "length": -0.0, 
+            "removed": false, 
+            "source": 78, 
+            "support": 0.0, 
+            "target": 81
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00248196, 
+            "removed": false, 
+            "source": 4, 
+            "support": 0.0, 
+            "target": 2
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00165508, 
+            "removed": false, 
+            "source": 84, 
+            "support": 0.0, 
+            "target": 86
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00914034, 
+            "removed": true, 
+            "source": 61, 
+            "support": 0.5, 
+            "target": 58
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0141726, 
+            "removed": false, 
+            "source": 66, 
+            "support": 0.0, 
+            "target": 65
+        }, 
+        {
+            "directed": false, 
+            "length": -0.0, 
+            "removed": false, 
+            "source": 88, 
+            "support": 0.0, 
+            "target": 87
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00165317, 
+            "removed": true, 
+            "source": 103, 
+            "support": 0.5, 
+            "target": 104
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0033091, 
+            "removed": false, 
+            "source": 115, 
+            "support": 0.0, 
+            "target": 116
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00497585, 
+            "removed": false, 
+            "source": 49, 
+            "support": 0.0, 
+            "target": 44
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00372714, 
+            "removed": false, 
+            "source": 71, 
+            "support": 0.0, 
+            "target": 72
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00914029, 
+            "removed": false, 
+            "source": 49, 
+            "support": 0.0, 
+            "target": 42
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0108273, 
+            "removed": false, 
+            "source": 12, 
+            "support": 0.0, 
+            "target": 16
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0116651, 
+            "removed": false, 
+            "source": 49, 
+            "support": 0.0, 
+            "target": 53
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00165506, 
+            "removed": false, 
+            "source": 105, 
+            "support": 0.00019788724459629536, 
+            "target": 103
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00748443, 
+            "removed": false, 
+            "source": 28, 
+            "support": 0.0, 
+            "target": 31
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0125101, 
+            "removed": false, 
+            "source": 49, 
+            "support": 0.0, 
+            "target": 45
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00915792, 
+            "removed": true, 
+            "source": 84, 
+            "support": 0.5, 
+            "target": 85
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0125127, 
+            "removed": false, 
+            "source": 50, 
+            "support": 0.0, 
+            "target": 52
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0127246, 
+            "removed": false, 
+            "source": 24, 
+            "support": 0.0, 
+            "target": 27
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00998527, 
+            "removed": false, 
+            "source": 42, 
+            "support": 0.0, 
+            "target": 53
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0133697, 
+            "removed": false, 
+            "source": 117, 
+            "support": 0.0, 
+            "target": 119
+        }, 
+        {
+            "directed": false, 
+            "length": -0.0, 
+            "removed": false, 
+            "source": 83, 
+            "support": 0.0, 
+            "target": 82
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00331204, 
+            "removed": false, 
+            "source": 1, 
+            "support": 0.0, 
+            "target": 0
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0116638, 
+            "removed": true, 
+            "source": 12, 
+            "support": 0.5, 
+            "target": 15
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00580561, 
+            "removed": false, 
+            "source": 49, 
+            "support": 0.0, 
+            "target": 43
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00747097, 
+            "removed": false, 
+            "source": 57, 
+            "support": 8.097392653616531e-07, 
+            "target": 58
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0142947, 
+            "removed": false, 
+            "source": 90, 
+            "support": 0.0, 
+            "target": 89
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00580733, 
+            "removed": false, 
+            "source": 49, 
+            "support": 0.0, 
+            "target": 51
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0125142, 
+            "removed": true, 
+            "source": 59, 
+            "support": 0.5, 
+            "target": 61
+        }, 
+        {
+            "directed": false, 
+            "length": 0.000412852, 
+            "removed": false, 
+            "source": 80, 
+            "support": 0.0, 
+            "target": 78
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00916555, 
+            "removed": false, 
+            "source": 110, 
+            "support": 0.0, 
+            "target": 109
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0133697, 
+            "removed": false, 
+            "source": 117, 
+            "support": 0.0, 
+            "target": 118
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0108199, 
+            "removed": false, 
+            "source": 107, 
+            "support": 0.0, 
+            "target": 106
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00165726, 
+            "removed": false, 
+            "source": 13, 
+            "support": 0.0, 
+            "target": 14
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00747457, 
+            "removed": false, 
+            "source": 49, 
+            "support": 0.0, 
+            "target": 46
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00497053, 
+            "removed": true, 
+            "source": 61, 
+            "support": 0.5, 
+            "target": 56
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0041519, 
+            "removed": false, 
+            "source": 67, 
+            "support": 0.0, 
+            "target": 69
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00999909, 
+            "removed": true, 
+            "source": 13, 
+            "support": 0.5, 
+            "target": 17
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00958717, 
+            "removed": false, 
+            "source": 63, 
+            "support": 0.0, 
+            "target": 66
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00525076, 
+            "removed": false, 
+            "source": 75, 
+            "support": 0.0, 
+            "target": 73
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00497715, 
+            "removed": false, 
+            "source": 48, 
+            "support": 0.0, 
+            "target": 42
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0066478, 
+            "removed": false, 
+            "source": 14, 
+            "support": 4.8776885526180536e-06, 
+            "target": 17
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00915802, 
+            "removed": false, 
+            "source": 12, 
+            "support": 0.002721833265761142, 
+            "target": 14
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00942552, 
+            "removed": false, 
+            "source": 77, 
+            "support": 0.0, 
+            "target": 73
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00414156, 
+            "removed": false, 
+            "source": 36, 
+            "support": 0.0, 
+            "target": 37
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00914139, 
+            "removed": false, 
+            "source": 35, 
+            "support": 0.0, 
+            "target": 34
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0141726, 
+            "removed": false, 
+            "source": 66, 
+            "support": 0.0, 
+            "target": 64
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00914457, 
+            "removed": true, 
+            "source": 61, 
+            "support": 0.5, 
+            "target": 60
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00497747, 
+            "removed": false, 
+            "source": 4, 
+            "support": 0.0, 
+            "target": 5
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00165251, 
+            "removed": false, 
+            "source": 61, 
+            "support": 2.702282841937631e-13, 
+            "target": 57
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00747529, 
+            "removed": false, 
+            "source": 86, 
+            "support": 0.0007473771338281088, 
+            "target": 85
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00643158, 
+            "removed": false, 
+            "source": 55, 
+            "support": 0.0, 
+            "target": 49
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0058073, 
+            "removed": false, 
+            "source": 50, 
+            "support": 0.0, 
+            "target": 42
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00165511, 
+            "removed": false, 
+            "source": 60, 
+            "support": 3.885780586188048e-16, 
+            "target": 62
+        }, 
+        {
+            "directed": false, 
+            "length": -0.0, 
+            "removed": false, 
+            "source": 94, 
+            "support": 0.0, 
+            "target": 93
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00248087, 
+            "removed": false, 
+            "source": 4, 
+            "support": 0.0, 
+            "target": 6
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00998505, 
+            "removed": false, 
+            "source": 107, 
+            "support": 0.0, 
+            "target": 108
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0133589, 
+            "removed": false, 
+            "source": 59, 
+            "support": 5.660160916021173e-06, 
+            "target": 60
+        }, 
+        {
+            "directed": false, 
+            "length": 0.010839, 
+            "removed": false, 
+            "source": 59, 
+            "support": 1.1113808515150758e-06, 
+            "target": 57
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0139847, 
+            "removed": false, 
+            "source": 22, 
+            "support": 0.0, 
+            "target": 26
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00372899, 
+            "removed": false, 
+            "source": 10, 
+            "support": 0.0, 
+            "target": 11
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00663671, 
+            "removed": false, 
+            "source": 113, 
+            "support": 0.0, 
+            "target": 114
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00289386, 
+            "removed": false, 
+            "source": 14, 
+            "support": 0.0, 
+            "target": 15
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00248638, 
+            "removed": false, 
+            "source": 60, 
+            "support": 1.9197976541818207e-12, 
+            "target": 56
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00663783, 
+            "removed": false, 
+            "source": 49, 
+            "support": 0.0, 
+            "target": 48
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00331157, 
+            "removed": false, 
+            "source": 57, 
+            "support": 1.728319746208129e-07, 
+            "target": 56
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0058138, 
+            "removed": false, 
+            "source": 102, 
+            "support": 0.0, 
+            "target": 101
+        }, 
+        {
+            "directed": false, 
+            "length": -0.0, 
+            "removed": false, 
+            "source": 78, 
+            "support": 0.0, 
+            "target": 79
+        }, 
+        {
+            "directed": false, 
+            "length": 0.01087, 
+            "removed": false, 
+            "source": 91, 
+            "support": 0.0, 
+            "target": 92
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00207388, 
+            "removed": false, 
+            "source": 105, 
+            "support": 0.0003217222131245423, 
+            "target": 104
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00497173, 
+            "removed": false, 
+            "source": 39, 
+            "support": 0.0, 
+            "target": 42
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0141906, 
+            "removed": false, 
+            "source": 76, 
+            "support": 0.0, 
+            "target": 74
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00914029, 
+            "removed": false, 
+            "source": 49, 
+            "support": 0.0, 
+            "target": 54
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00999202, 
+            "removed": false, 
+            "source": 117, 
+            "support": 0.0, 
+            "target": 120
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0108255, 
+            "removed": false, 
+            "source": 49, 
+            "support": 0.0, 
+            "target": 40
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00747376, 
+            "removed": true, 
+            "source": 57, 
+            "support": 0.5, 
+            "target": 60
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0108417, 
+            "removed": false, 
+            "source": 22, 
+            "support": 0.0, 
+            "target": 27
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00830408, 
+            "removed": false, 
+            "source": 49, 
+            "support": 0.0, 
+            "target": 50
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0058071, 
+            "removed": false, 
+            "source": 100, 
+            "support": 0.0, 
+            "target": 99
+        }, 
+        {
+            "directed": false, 
+            "length": 0.010829, 
+            "removed": false, 
+            "source": 23, 
+            "support": 0.0, 
+            "target": 26
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0142467, 
+            "removed": false, 
+            "source": 122, 
+            "support": 0.0, 
+            "target": 121
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00373075, 
+            "removed": false, 
+            "source": 36, 
+            "support": 0.0, 
+            "target": 38
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00830782, 
+            "removed": false, 
+            "source": 4, 
+            "support": 0.0, 
+            "target": 9
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00914215, 
+            "removed": false, 
+            "source": 12, 
+            "support": 0.0, 
+            "target": 18
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00248194, 
+            "removed": false, 
+            "source": 4, 
+            "support": 0.0, 
+            "target": 3
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00538348, 
+            "removed": false, 
+            "source": 95, 
+            "support": 0.0, 
+            "target": 96
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00747717, 
+            "removed": false, 
+            "source": 12, 
+            "support": 0.0, 
+            "target": 19
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0058075, 
+            "removed": false, 
+            "source": 20, 
+            "support": 0.0, 
+            "target": 21
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00942628, 
+            "removed": false, 
+            "source": 76, 
+            "support": 0.0, 
+            "target": 73
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0116529, 
+            "removed": false, 
+            "source": 68, 
+            "support": 0.0, 
+            "target": 67
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00539099, 
+            "removed": false, 
+            "source": 71, 
+            "support": 0.0, 
+            "target": 70
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00525159, 
+            "removed": false, 
+            "source": 75, 
+            "support": 0.0, 
+            "target": 76
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0108526, 
+            "removed": false, 
+            "source": 45, 
+            "support": 0.0, 
+            "target": 42
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00441629, 
+            "removed": false, 
+            "source": 77, 
+            "support": 0.0, 
+            "target": 76
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0111007, 
+            "removed": false, 
+            "source": 98, 
+            "support": 0.0, 
+            "target": 97
+        }, 
+        {
+            "directed": false, 
+            "length": 0.0066381, 
+            "removed": false, 
+            "source": 32, 
+            "support": 0.0, 
+            "target": 33
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00624282, 
+            "removed": false, 
+            "source": 4, 
+            "support": 0.0, 
+            "target": 7
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00185941, 
+            "removed": false, 
+            "source": 49, 
+            "support": 0.0, 
+            "target": 39
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00165252, 
+            "removed": false, 
+            "source": 42, 
+            "support": 0.0, 
+            "target": 51
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00917356, 
+            "removed": false, 
+            "source": 28, 
+            "support": 0.0, 
+            "target": 29
+        }, 
+        {
+            "directed": false, 
+            "length": 0.00414062, 
+            "removed": false, 
+            "source": 57, 
+            "support": 1.5325197088023046e-06, 
+            "target": 62
+        }
+    ], 
+    "HIV Stages": {
+        "A-1": 0, 
+        "A-2": 0, 
+        "A-3": 0, 
+        "Chronic": 123, 
+        "E-1": 0, 
+        "E-2": 0, 
+        "E-3": 0
+    }, 
+    "Multiple sequences": {
+        "Followup, days": {
+            "IQR": [
+                72, 
+                993
+            ], 
+            "count": 21, 
+            "max": 2478, 
+            "mean": 539.6666666666666, 
+            "median": 257, 
+            "min": 3
+        }, 
+        "Subjects with": 21
+    }, 
+    "Network Summary": {
+        "Clusters": 36, 
+        "Edges": 109, 
+        "Nodes": 123, 
+        "Sequences used to make links": 211
+    }, 
+    "Nodes": [
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|05_126424|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_106627|NULL"
+            ], 
+            "baseline": [
+                2005, 
+                5, 
+                27, 
+                0, 
+                0, 
+                0, 
+                4, 
+                147, 
+                -1
+            ], 
+            "cluster": 1, 
+            "edi": null, 
+            "id": "050109550"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|05_106627|NULL"
+            ], 
+            "baseline": [
+                2005, 
+                2, 
+                11, 
+                0, 
+                0, 
+                0, 
+                4, 
+                42, 
+                -1
+            ], 
+            "cluster": 1, 
+            "edi": null, 
+            "id": "050108848"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|UCSD|NULL|NULL"
+            ], 
+            "baseline": [
+                2005, 
+                2, 
+                11, 
+                0, 
+                0, 
+                0, 
+                4, 
+                42, 
+                -1
+            ], 
+            "cluster": 2, 
+            "edi": null, 
+            "id": "050109086"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|05_104588|NULL"
+            ], 
+            "baseline": [
+                2005, 
+                1, 
+                27, 
+                0, 
+                0, 
+                0, 
+                3, 
+                27, 
+                -1
+            ], 
+            "cluster": 2, 
+            "edi": null, 
+            "id": "050108990"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|05_104588|NULL", 
+                "pol|plasma|pool|1|ViroLogic|09-144773|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_145365|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_111404|NULL", 
+                "pol|plasma|pool|1|ViroLogic|04_124044|NULL", 
+                "pol|plasma|pool|1|UCSD|NULL|NULL", 
+                "pol|plasma|pool|1|ViroLogic|04_140887|NULL", 
+                "pol|plasma|pool|1|ViroLogic|06_103890|NULL"
+            ], 
+            "baseline": [
+                2004, 
+                6, 
+                15, 
+                0, 
+                0, 
+                0, 
+                1, 
+                167, 
+                -1
+            ], 
+            "cluster": 2, 
+            "edi": null, 
+            "id": "050108144"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|04_140887|NULL"
+            ], 
+            "baseline": [
+                2004, 
+                9, 
+                22, 
+                0, 
+                0, 
+                0, 
+                2, 
+                266, 
+                -1
+            ], 
+            "cluster": 2, 
+            "edi": null, 
+            "id": "050108603"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|05_111404|NULL"
+            ], 
+            "baseline": [
+                2005, 
+                3, 
+                7, 
+                0, 
+                0, 
+                0, 
+                0, 
+                66, 
+                -1
+            ], 
+            "cluster": 2, 
+            "edi": null, 
+            "id": "050109229"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|09-144773|NULL"
+            ], 
+            "baseline": [
+                2009, 
+                6, 
+                17, 
+                0, 
+                0, 
+                0, 
+                2, 
+                168, 
+                -1
+            ], 
+            "cluster": 2, 
+            "edi": null, 
+            "id": "050113006"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|06_103890|NULL"
+            ], 
+            "baseline": [
+                2005, 
+                3, 
+                4, 
+                0, 
+                0, 
+                0, 
+                4, 
+                63, 
+                -1
+            ], 
+            "cluster": 2, 
+            "edi": null, 
+            "id": "050109192"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|05_145365|NULL"
+            ], 
+            "baseline": [
+                2005, 
+                9, 
+                2, 
+                0, 
+                0, 
+                0, 
+                4, 
+                245, 
+                -1
+            ], 
+            "cluster": 2, 
+            "edi": null, 
+            "id": "050109932"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|09_111208|NULL", 
+                "pol|plasma|pool|1|ViroLogic|09_111201|NULL"
+            ], 
+            "baseline": [
+                2009, 
+                2, 
+                3, 
+                0, 
+                0, 
+                0, 
+                1, 
+                34, 
+                -1
+            ], 
+            "cluster": 3, 
+            "edi": null, 
+            "id": "050112388"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|09_111208|NULL"
+            ], 
+            "baseline": [
+                2009, 
+                2, 
+                3, 
+                0, 
+                0, 
+                0, 
+                1, 
+                34, 
+                -1
+            ], 
+            "cluster": 3, 
+            "edi": null, 
+            "id": "050112396"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|03_125938|NULL", 
+                "pol|plasma|pool|1|ViroLogic|08_173578|NULL", 
+                "pol|plasma|pool|1|ViroLogic|04_118814|NULL", 
+                "pol|plasma|pool|1|ViroLogic|04_133037|NULL", 
+                "pol|plasma|pool|1|ViroLogic|09-155987|NULL", 
+                "pol|plasma|pool|1|ViroLogic|06-152175|NULL", 
+                "pol|plasma|pool|1|ViroLogic|09-181046|NULL"
+            ], 
+            "baseline": [
+                2003, 
+                8, 
+                4, 
+                0, 
+                0, 
+                0, 
+                0, 
+                216, 
+                -1
+            ], 
+            "cluster": 4, 
+            "edi": null, 
+            "id": "050106675"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|06-152175|NULL"
+            ], 
+            "baseline": [
+                2006, 
+                11, 
+                8, 
+                0, 
+                0, 
+                0, 
+                2, 
+                312, 
+                -1
+            ], 
+            "cluster": 4, 
+            "edi": null, 
+            "id": "050111077"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|09-155987|NULL", 
+                "pol|plasma|pool|1|ViroLogic|06-152175|NULL", 
+                "pol|plasma|pool|1|ViroLogic|09-181046|NULL", 
+                "pol|plasma|pool|1|Virologic|10-109881|NULL"
+            ], 
+            "baseline": [
+                2009, 
+                8, 
+                3, 
+                0, 
+                0, 
+                0, 
+                0, 
+                215, 
+                -1
+            ], 
+            "cluster": 4, 
+            "edi": null, 
+            "id": "050113720"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|09-181046|NULL"
+            ], 
+            "baseline": [
+                2009, 
+                12, 
+                10, 
+                0, 
+                0, 
+                0, 
+                3, 
+                344, 
+                -1
+            ], 
+            "cluster": 4, 
+            "edi": null, 
+            "id": "050117110"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|08_173578|NULL"
+            ], 
+            "baseline": [
+                2008, 
+                10, 
+                8, 
+                0, 
+                0, 
+                0, 
+                2, 
+                282, 
+                -1
+            ], 
+            "cluster": 4, 
+            "edi": null, 
+            "id": "050112128"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|Virologic|10-109881|NULL", 
+                "pol|plasma|pool|1|ViroLogic|06-152175|NULL"
+            ], 
+            "baseline": [
+                2010, 
+                2, 
+                12, 
+                0, 
+                0, 
+                0, 
+                4, 
+                43, 
+                -1
+            ], 
+            "cluster": 4, 
+            "edi": null, 
+            "id": "050117340"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|04_133037|NULL"
+            ], 
+            "baseline": [
+                2004, 
+                7, 
+                28, 
+                0, 
+                0, 
+                0, 
+                2, 
+                210, 
+                -1
+            ], 
+            "cluster": 4, 
+            "edi": null, 
+            "id": "050108372"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|04_118814|NULL"
+            ], 
+            "baseline": [
+                2004, 
+                5, 
+                6, 
+                0, 
+                0, 
+                0, 
+                3, 
+                127, 
+                -1
+            ], 
+            "cluster": 4, 
+            "edi": null, 
+            "id": "050107971"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|08_173588|NULL", 
+                "pol|plasma|pool|1|ViroLogic|03_120785|NULL"
+            ], 
+            "baseline": [
+                2003, 
+                6, 
+                25, 
+                0, 
+                0, 
+                0, 
+                2, 
+                176, 
+                -1
+            ], 
+            "cluster": 5, 
+            "edi": null, 
+            "id": "050106508"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|08_173588|NULL"
+            ], 
+            "baseline": [
+                2008, 
+                10, 
+                7, 
+                0, 
+                0, 
+                0, 
+                1, 
+                281, 
+                -1
+            ], 
+            "cluster": 5, 
+            "edi": null, 
+            "id": "050112117"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|UCSD|NULL|NULL", 
+                "pol|plasma|pool|1|ViroLogic|04_134319|NULL", 
+                "pol|plasma|pool|1|UCSD|V474_U189|NULL", 
+                "pol|plasma|pool|1|ViroLogic|03_100362|NULL"
+            ], 
+            "baseline": [
+                2002, 
+                11, 
+                26, 
+                0, 
+                0, 
+                0, 
+                1, 
+                330, 
+                -1
+            ], 
+            "cluster": 6, 
+            "edi": null, 
+            "id": "050105328"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|05_127670|NULL", 
+                "pol|plasma|pool|1|UCSD|V474_U189|NULL"
+            ], 
+            "baseline": [
+                2005, 
+                6, 
+                6, 
+                0, 
+                0, 
+                0, 
+                0, 
+                157, 
+                -1
+            ], 
+            "cluster": 6, 
+            "edi": null, 
+            "id": "050109563"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|02_129410|NULL", 
+                "pol|plasma|pool|1|ViroLogic|04_134319|NULL"
+            ], 
+            "baseline": [
+                2002, 
+                9, 
+                30, 
+                0, 
+                0, 
+                0, 
+                0, 
+                273, 
+                -1
+            ], 
+            "cluster": 6, 
+            "edi": null, 
+            "id": "050105065"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|UCSD|V151_4|NULL", 
+                "pol|plasma|pool|1|ViroLogic|00_8_018834_01|NULL", 
+                "pol|plasma|pool|1|UCSD|V474_U189|NULL"
+            ], 
+            "baseline": [
+                1999, 
+                8, 
+                20, 
+                0, 
+                0, 
+                0, 
+                4, 
+                232, 
+                -1
+            ], 
+            "cluster": 6, 
+            "edi": null, 
+            "id": "050101225"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|05_150483|NULL", 
+                "pol|plasma|pool|1|UCSD|V474_U189|NULL"
+            ], 
+            "baseline": [
+                2005, 
+                9, 
+                2, 
+                0, 
+                0, 
+                0, 
+                4, 
+                245, 
+                -1
+            ], 
+            "cluster": 6, 
+            "edi": null, 
+            "id": "050109925"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|04_134319|NULL"
+            ], 
+            "baseline": [
+                2004, 
+                8, 
+                12, 
+                0, 
+                0, 
+                0, 
+                3, 
+                225, 
+                -1
+            ], 
+            "cluster": 6, 
+            "edi": null, 
+            "id": "050108430"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|09-148932|NULL", 
+                "pol|plasma|pool|1|ViroLogic|09-131252|NULL", 
+                "pol|plasma|pool|1|ViroLogic|08_166064|NULL", 
+                "pol|plasma|pool|1|ViroLogic|07_108582|NULL"
+            ], 
+            "baseline": [
+                2007, 
+                2, 
+                28, 
+                0, 
+                0, 
+                0, 
+                2, 
+                59, 
+                -1
+            ], 
+            "cluster": 7, 
+            "edi": null, 
+            "id": "050111238"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|08_166064|NULL"
+            ], 
+            "baseline": [
+                2008, 
+                9, 
+                11, 
+                0, 
+                0, 
+                0, 
+                3, 
+                255, 
+                -1
+            ], 
+            "cluster": 7, 
+            "edi": null, 
+            "id": "050112087"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|09-131252|NULL"
+            ], 
+            "baseline": [
+                2009, 
+                4, 
+                24, 
+                0, 
+                0, 
+                0, 
+                4, 
+                114, 
+                -1
+            ], 
+            "cluster": 7, 
+            "edi": null, 
+            "id": "050112668"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|09-148932|NULL"
+            ], 
+            "baseline": [
+                2009, 
+                7, 
+                6, 
+                0, 
+                0, 
+                0, 
+                0, 
+                187, 
+                -1
+            ], 
+            "cluster": 7, 
+            "edi": null, 
+            "id": "050113201"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|10-128697|NULL", 
+                "pol|plasma|pool|1|ViroLogic|10-145627|NULL"
+            ], 
+            "baseline": [
+                2010, 
+                5, 
+                6, 
+                0, 
+                0, 
+                0, 
+                3, 
+                126, 
+                -1
+            ], 
+            "cluster": 8, 
+            "edi": null, 
+            "id": "050117970"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|10-145627|NULL"
+            ], 
+            "baseline": [
+                2010, 
+                8, 
+                10, 
+                0, 
+                0, 
+                0, 
+                1, 
+                222, 
+                -1
+            ], 
+            "cluster": 8, 
+            "edi": null, 
+            "id": "050118590"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|06_107815|NULL"
+            ], 
+            "baseline": [
+                2001, 
+                10, 
+                17, 
+                0, 
+                0, 
+                0, 
+                2, 
+                290, 
+                -1
+            ], 
+            "cluster": 9, 
+            "edi": null, 
+            "id": "050102673"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|06_107815|NULL", 
+                "pol|plasma|pool|1|UCSD|NULL|NULL"
+            ], 
+            "baseline": [
+                2001, 
+                7, 
+                30, 
+                0, 
+                0, 
+                0, 
+                0, 
+                211, 
+                -1
+            ], 
+            "cluster": 9, 
+            "edi": null, 
+            "id": "050102568"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|09_107014|NULL", 
+                "pol|plasma|pool|1|ViroLogic|09-146163|NULL", 
+                "pol|plasma|pool|1|ViroLogic|09_115915|NULL"
+            ], 
+            "baseline": [
+                2009, 
+                1, 
+                23, 
+                0, 
+                0, 
+                0, 
+                4, 
+                23, 
+                -1
+            ], 
+            "cluster": 10, 
+            "edi": null, 
+            "id": "050112351"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|09-146163|NULL"
+            ], 
+            "baseline": [
+                2009, 
+                6, 
+                23, 
+                0, 
+                0, 
+                0, 
+                1, 
+                174, 
+                -1
+            ], 
+            "cluster": 10, 
+            "edi": null, 
+            "id": "050113063"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|09_115915|NULL"
+            ], 
+            "baseline": [
+                2009, 
+                2, 
+                2, 
+                0, 
+                0, 
+                0, 
+                0, 
+                33, 
+                -1
+            ], 
+            "cluster": 10, 
+            "edi": null, 
+            "id": "050112429"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|03_105991|NULL"
+            ], 
+            "baseline": [
+                2003, 
+                2, 
+                21, 
+                0, 
+                0, 
+                0, 
+                4, 
+                52, 
+                -1
+            ], 
+            "cluster": 11, 
+            "edi": null, 
+            "id": "050105743"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|05_119199|NULL"
+            ], 
+            "baseline": [
+                2005, 
+                4, 
+                21, 
+                0, 
+                0, 
+                0, 
+                3, 
+                111, 
+                -1
+            ], 
+            "cluster": 11, 
+            "edi": null, 
+            "id": "050109428"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|04_140662|NULL"
+            ], 
+            "baseline": [
+                2004, 
+                9, 
+                28, 
+                0, 
+                0, 
+                0, 
+                1, 
+                272, 
+                -1
+            ], 
+            "cluster": 11, 
+            "edi": null, 
+            "id": "050108564"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|03-142073|NULL", 
+                "pol|plasma|pool|1|ViroLogic|09-138739|NULL", 
+                "pol|plasma|pool|1|UCSD|NULL|NULL", 
+                "pol|plasma|pool|1|ViroLogic|03_105991|NULL", 
+                "pol|plasma|pool|1|ViroLogic|02_135387|NULL", 
+                "pol|plasma|pool|1|ViroLogic|06_113881|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_160264|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_157214|NULL", 
+                "pol|plasma|pool|1|ViroLogic|06_118088|NULL"
+            ], 
+            "baseline": [
+                2005, 
+                11, 
+                23, 
+                0, 
+                0, 
+                0, 
+                2, 
+                327, 
+                -1
+            ], 
+            "cluster": 11, 
+            "edi": null, 
+            "id": "050110210"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|03_100366|NULL"
+            ], 
+            "baseline": [
+                2002, 
+                12, 
+                27, 
+                0, 
+                0, 
+                0, 
+                4, 
+                361, 
+                -1
+            ], 
+            "cluster": 11, 
+            "edi": null, 
+            "id": "050105409"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|04_111650|NULL"
+            ], 
+            "baseline": [
+                2004, 
+                3, 
+                4, 
+                0, 
+                0, 
+                0, 
+                3, 
+                64, 
+                -1
+            ], 
+            "cluster": 11, 
+            "edi": null, 
+            "id": "050107661"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|09-138739|NULL"
+            ], 
+            "baseline": [
+                2009, 
+                5, 
+                26, 
+                0, 
+                0, 
+                0, 
+                1, 
+                146, 
+                -1
+            ], 
+            "cluster": 11, 
+            "edi": null, 
+            "id": "050108178"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|04_100564|NULL"
+            ], 
+            "baseline": [
+                2003, 
+                12, 
+                23, 
+                0, 
+                0, 
+                0, 
+                1, 
+                357, 
+                -1
+            ], 
+            "cluster": 11, 
+            "edi": null, 
+            "id": "050107394"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|05_114891|NULL"
+            ], 
+            "baseline": [
+                2005, 
+                3, 
+                28, 
+                0, 
+                0, 
+                0, 
+                0, 
+                87, 
+                -1
+            ], 
+            "cluster": 11, 
+            "edi": null, 
+            "id": "050109313"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|04_128904|NULL", 
+                "pol|plasma|pool|1|ViroLogic|06_118088|NULL"
+            ], 
+            "baseline": [
+                2004, 
+                7, 
+                2, 
+                0, 
+                0, 
+                0, 
+                4, 
+                184, 
+                -1
+            ], 
+            "cluster": 11, 
+            "edi": null, 
+            "id": "050108256"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|05_114891|NULL", 
+                "pol|plasma|pool|1|ViroLogic|09-138739|NULL", 
+                "pol|plasma|pool|1|UCSD|NULL|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_119199|NULL", 
+                "pol|plasma|pool|1|ViroLogic|03_105991|NULL", 
+                "pol|plasma|pool|1|ViroLogic|02_135387|NULL", 
+                "pol|plasma|pool|1|ViroLogic|04_100564|NULL", 
+                "pol|plasma|pool|1|ViroLogic|04_145018|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_157214|NULL", 
+                "pol|plasma|pool|1|ViroLogic|03-142073|NULL", 
+                "pol|plasma|pool|1|ViroLogic|06_113881|NULL", 
+                "pol|plasma|pool|1|ViroLogic|04_128904|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_113917|NULL", 
+                "pol|plasma|pool|1|ViroLogic|04_111650|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_160264|NULL", 
+                "pol|plasma|pool|1|ViroLogic|03_100366|NULL", 
+                "pol|plasma|pool|1|ViroLogic|06_118088|NULL", 
+                "pol|plasma|pool|1|ViroLogic|04_140662|NULL"
+            ], 
+            "baseline": [
+                2002, 
+                11, 
+                25, 
+                0, 
+                0, 
+                0, 
+                0, 
+                329, 
+                -1
+            ], 
+            "cluster": 11, 
+            "edi": null, 
+            "id": "050105272"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|03-142073|NULL"
+            ], 
+            "baseline": [
+                2003, 
+                11, 
+                13, 
+                0, 
+                0, 
+                0, 
+                3, 
+                317, 
+                -1
+            ], 
+            "cluster": 11, 
+            "edi": null, 
+            "id": "050107205"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|05_160264|NULL"
+            ], 
+            "baseline": [
+                2005, 
+                12, 
+                5, 
+                0, 
+                0, 
+                0, 
+                0, 
+                339, 
+                -1
+            ], 
+            "cluster": 11, 
+            "edi": null, 
+            "id": "050110254"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|03-142073|NULL", 
+                "pol|plasma|pool|1|ViroLogic|09-155981|NULL"
+            ], 
+            "baseline": [
+                2009, 
+                7, 
+                28, 
+                0, 
+                0, 
+                0, 
+                1, 
+                209, 
+                -1
+            ], 
+            "cluster": 11, 
+            "edi": null, 
+            "id": "050113708"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|06_113881|NULL"
+            ], 
+            "baseline": [
+                2006, 
+                3, 
+                17, 
+                0, 
+                0, 
+                0, 
+                4, 
+                76, 
+                -1
+            ], 
+            "cluster": 11, 
+            "edi": null, 
+            "id": "050110499"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|04_145018|NULL"
+            ], 
+            "baseline": [
+                2004, 
+                10, 
+                1, 
+                0, 
+                0, 
+                0, 
+                4, 
+                275, 
+                -1
+            ], 
+            "cluster": 11, 
+            "edi": null, 
+            "id": "050108677"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|05_113917|NULL"
+            ], 
+            "baseline": [
+                2005, 
+                3, 
+                18, 
+                0, 
+                0, 
+                0, 
+                4, 
+                77, 
+                -1
+            ], 
+            "cluster": 11, 
+            "edi": null, 
+            "id": "050100870"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|05_160259|NULL"
+            ], 
+            "baseline": [
+                2005, 
+                11, 
+                18, 
+                0, 
+                0, 
+                0, 
+                4, 
+                322, 
+                -1
+            ], 
+            "cluster": 12, 
+            "edi": null, 
+            "id": "050110221"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|05_132652|NULL", 
+                "pol|plasma|pool|1|ViroLogic|06_124752|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_157206|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_160259|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_147722|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_158361|NULL"
+            ], 
+            "baseline": [
+                2005, 
+                7, 
+                1, 
+                0, 
+                0, 
+                0, 
+                4, 
+                182, 
+                -1
+            ], 
+            "cluster": 12, 
+            "edi": null, 
+            "id": "050109680"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|05_147722|NULL"
+            ], 
+            "baseline": [
+                2005, 
+                9, 
+                27, 
+                0, 
+                0, 
+                0, 
+                1, 
+                270, 
+                -1
+            ], 
+            "cluster": 12, 
+            "edi": null, 
+            "id": "050110028"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|06_124752|NULL"
+            ], 
+            "baseline": [
+                2006, 
+                6, 
+                1, 
+                0, 
+                0, 
+                0, 
+                3, 
+                152, 
+                -1
+            ], 
+            "cluster": 12, 
+            "edi": null, 
+            "id": "050109218"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|06_124752|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_157206|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_160259|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_158361|NULL"
+            ], 
+            "baseline": [
+                2005, 
+                12, 
+                1, 
+                0, 
+                0, 
+                0, 
+                3, 
+                335, 
+                -1
+            ], 
+            "cluster": 12, 
+            "edi": null, 
+            "id": "050110187"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|05_132650|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_132652|NULL", 
+                "pol|plasma|pool|1|ViroLogic|06_124752|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_157206|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_160259|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_147722|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_158361|NULL"
+            ], 
+            "baseline": [
+                2005, 
+                6, 
+                29, 
+                0, 
+                0, 
+                0, 
+                2, 
+                180, 
+                -1
+            ], 
+            "cluster": 12, 
+            "edi": null, 
+            "id": "050109667"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|05_157206|NULL"
+            ], 
+            "baseline": [
+                2005, 
+                11, 
+                18, 
+                0, 
+                0, 
+                0, 
+                4, 
+                322, 
+                -1
+            ], 
+            "cluster": 12, 
+            "edi": null, 
+            "id": "050110195"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|04_103069|NULL"
+            ], 
+            "baseline": [
+                2004, 
+                1, 
+                22, 
+                0, 
+                0, 
+                0, 
+                3, 
+                22, 
+                -1
+            ], 
+            "cluster": 13, 
+            "edi": null, 
+            "id": "050101554"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|09-179376|NULL"
+            ], 
+            "baseline": [
+                2009, 
+                12, 
+                1, 
+                0, 
+                0, 
+                0, 
+                1, 
+                335, 
+                -1
+            ], 
+            "cluster": 13, 
+            "edi": null, 
+            "id": "050117080"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|08_181552|NULL"
+            ], 
+            "baseline": [
+                2008, 
+                11, 
+                6, 
+                0, 
+                0, 
+                0, 
+                3, 
+                311, 
+                -1
+            ], 
+            "cluster": 13, 
+            "edi": null, 
+            "id": "050112191"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|05_124782|NULL", 
+                "pol|plasma|pool|1|ViroLogic|09-179376|NULL", 
+                "pol|plasma|pool|1|ViroLogic|04_103069|NULL", 
+                "pol|plasma|pool|1|ViroLogic|08_181552|NULL"
+            ], 
+            "baseline": [
+                2005, 
+                5, 
+                16, 
+                0, 
+                0, 
+                0, 
+                0, 
+                136, 
+                -1
+            ], 
+            "cluster": 13, 
+            "edi": null, 
+            "id": "050109506"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|07_103077|NULL", 
+                "pol|plasma|pool|1|ViroLogic|04_122134|NULL", 
+                "pol|plasma|pool|1|ViroLogic|06_118086|NULL", 
+                "pol|plasma|pool|1|ViroLogic|07_107136|NULL", 
+                "pol|plasma|pool|1|ViroLogic|04_109736|NULL"
+            ], 
+            "baseline": [
+                2004, 
+                6, 
+                2, 
+                0, 
+                0, 
+                0, 
+                2, 
+                154, 
+                -1
+            ], 
+            "cluster": 14, 
+            "edi": null, 
+            "id": "050108062"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|04_109736|NULL"
+            ], 
+            "baseline": [
+                2001, 
+                2, 
+                12, 
+                0, 
+                0, 
+                0, 
+                0, 
+                43, 
+                -1
+            ], 
+            "cluster": 14, 
+            "edi": null, 
+            "id": "050102122"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|07_103077|NULL"
+            ], 
+            "baseline": [
+                2007, 
+                1, 
+                11, 
+                0, 
+                0, 
+                0, 
+                3, 
+                11, 
+                -1
+            ], 
+            "cluster": 14, 
+            "edi": null, 
+            "id": "050111189"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|06_102782|NULL"
+            ], 
+            "baseline": [
+                2006, 
+                1, 
+                19, 
+                0, 
+                0, 
+                0, 
+                3, 
+                19, 
+                -1
+            ], 
+            "cluster": 15, 
+            "edi": null, 
+            "id": "050110316"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|01_125603|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_107323|NULL", 
+                "pol|plasma|pool|1|ViroLogic|03_115792|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_107322|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_107321|NULL", 
+                "pol|plasma|pool|1|ViroLogic|06_102782|NULL", 
+                "pol|plasma|pool|1|ViroLogic|06_106527|NULL", 
+                "pol|plasma|pool|1|UCSD|NULL|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_107324|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_107325|NULL"
+            ], 
+            "baseline": [
+                2000, 
+                7, 
+                26, 
+                0, 
+                0, 
+                0, 
+                2, 
+                208, 
+                -1
+            ], 
+            "cluster": 15, 
+            "edi": null, 
+            "id": "050101820"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|06_106527|NULL"
+            ], 
+            "baseline": [
+                2006, 
+                1, 
+                19, 
+                0, 
+                0, 
+                0, 
+                3, 
+                19, 
+                -1
+            ], 
+            "cluster": 15, 
+            "edi": null, 
+            "id": "050110379"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|01_125598|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_107304|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_125597|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_122837|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_125599|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_107315|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_125593|NULL", 
+                "pol|plasma|pool|1|ViroLogic|00_8_019107_01|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_107328|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_107329|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_107319|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_125595|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_117060|NULL"
+            ], 
+            "baseline": [
+                2000, 
+                8, 
+                1, 
+                0, 
+                0, 
+                0, 
+                1, 
+                214, 
+                -1
+            ], 
+            "cluster": 16, 
+            "edi": null, 
+            "id": "050101837"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|10-145622|NULL"
+            ], 
+            "baseline": [
+                2010, 
+                8, 
+                12, 
+                0, 
+                0, 
+                0, 
+                3, 
+                224, 
+                -1
+            ], 
+            "cluster": 16, 
+            "edi": null, 
+            "id": "050118650"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|01_107305|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_107304|NULL"
+            ], 
+            "baseline": [
+                1999, 
+                8, 
+                30, 
+                0, 
+                0, 
+                0, 
+                0, 
+                242, 
+                -1
+            ], 
+            "cluster": 16, 
+            "edi": null, 
+            "id": "050101258"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|01_107313|NULL", 
+                "pol|plasma|pool|1|ViroLogic|03_107783|NULL", 
+                "pol|plasma|pool|1|ViroLogic|03_107786|NULL", 
+                "pol|plasma|pool|1|ViroLogic|00_8_019107_01|NULL", 
+                "pol|plasma|pool|1|ViroLogic|03_116815|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_107328|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_107312|NULL", 
+                "pol|plasma|pool|1|ViroLogic|04_101351|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_107319|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_125598|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_125597|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_125595|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_107316|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_125593|NULL", 
+                "pol|plasma|pool|1|ViroLogic|03_107792|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_107314|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_107304|NULL", 
+                "pol|plasma|pool|1|ViroLogic|03_107790|NULL", 
+                "pol|plasma|pool|1|ViroLogic|03_107788|NULL", 
+                "pol|plasma|pool|1|ViroLogic|04_101360|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_107320|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_107315|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_107318|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_125599|NULL", 
+                "pol|plasma|pool|1|ViroLogic|10-145622|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_107329|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_117060|NULL"
+            ], 
+            "baseline": [
+                2000, 
+                7, 
+                12, 
+                0, 
+                0, 
+                0, 
+                2, 
+                194, 
+                -1
+            ], 
+            "cluster": 16, 
+            "edi": null, 
+            "id": "050101808"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|02_103255|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_107309|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_107310|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_125595|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_107307|NULL", 
+                "pol|plasma|pool|1|ViroLogic|00_8_019107_01|NULL", 
+                "pol|plasma|pool|1|ViroLogic|01_125593|NULL"
+            ], 
+            "baseline": [
+                1999, 
+                11, 
+                9, 
+                0, 
+                0, 
+                0, 
+                1, 
+                313, 
+                -1
+            ], 
+            "cluster": 16, 
+            "edi": null, 
+            "id": "050101433"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|04_102239|NULL", 
+                "pol|plasma|pool|1|ViroLogic|03_102205|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_155568|NULL", 
+                "pol|plasma|pool|1|ViroLogic|06_150241|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_155310|NULL", 
+                "pol|plasma|pool|1|ViroLogic|07_106578|NULL", 
+                "pol|plasma|pool|1|ViroLogic|06_150239|NULL", 
+                "pol|plasma|pool|1|ViroLogic|04_113462|NULL", 
+                "pol|plasma|pool|1|ViroLogic|06_150240|NULL", 
+                "pol|plasma|pool|1|ViroLogic|06_150243|NULL"
+            ], 
+            "baseline": [
+                2005, 
+                11, 
+                8, 
+                0, 
+                0, 
+                0, 
+                1, 
+                312, 
+                -1
+            ], 
+            "cluster": 17, 
+            "edi": null, 
+            "id": "050105164"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|03_102205|NULL"
+            ], 
+            "baseline": [
+                2003, 
+                1, 
+                23, 
+                0, 
+                0, 
+                0, 
+                3, 
+                23, 
+                -1
+            ], 
+            "cluster": 17, 
+            "edi": null, 
+            "id": "050105580"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|05_109987|NULL", 
+                "pol|plasma|pool|1|ViroLogic|04_102239|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_141095|NULL", 
+                "pol|plasma|pool|1|ViroLogic|03_107847|NULL", 
+                "pol|plasma|pool|1|ViroLogic|03_107845|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_155568|NULL", 
+                "pol|plasma|pool|1|ViroLogic|04_101376|NULL", 
+                "pol|plasma|pool|1|ViroLogic|02_132692|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_142887|NULL", 
+                "pol|plasma|pool|1|UCSD|NULL|NULL", 
+                "pol|plasma|pool|1|ViroLogic|03_116818|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_109985|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_109988|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_141092|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_109990|NULL", 
+                "pol|plasma|pool|1|ViroLogic|06_150239|NULL", 
+                "pol|plasma|pool|1|ViroLogic|06_150240|NULL", 
+                "pol|plasma|pool|1|ViroLogic|03_116819|NULL"
+            ], 
+            "baseline": [
+                2002, 
+                10, 
+                21, 
+                0, 
+                0, 
+                0, 
+                0, 
+                294, 
+                -1
+            ], 
+            "cluster": 17, 
+            "edi": null, 
+            "id": "050105123"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|05_110001|NULL", 
+                "pol|plasma|pool|1|ViroLogic|04_113461|NULL", 
+                "pol|plasma|pool|1|ViroLogic|03_102753|NULL", 
+                "pol|plasma|pool|1|ViroLogic|04_113463|NULL", 
+                "pol|plasma|pool|1|ViroLogic|04_113460|NULL", 
+                "pol|plasma|pool|1|ViroLogic|04_113459|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_141098|NULL", 
+                "pol|plasma|pool|1|ViroLogic|06_150241|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_141099|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_110002|NULL", 
+                "pol|plasma|pool|1|ViroLogic|04_113462|NULL", 
+                "pol|plasma|pool|1|ViroLogic|06_150243|NULL"
+            ], 
+            "baseline": [
+                2003, 
+                1, 
+                29, 
+                0, 
+                0, 
+                0, 
+                2, 
+                29, 
+                -1
+            ], 
+            "cluster": 17, 
+            "edi": null, 
+            "id": "050105593"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|12-100534|NULL"
+            ], 
+            "baseline": [
+                2011, 
+                11, 
+                21, 
+                0, 
+                0, 
+                0, 
+                0, 
+                325, 
+                -1
+            ], 
+            "cluster": 18, 
+            "edi": null, 
+            "id": "222-9v9"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|12-100533|NULL", 
+                "pol|plasma|pool|1|ViroLogic|12-100534|NULL"
+            ], 
+            "baseline": [
+                2011, 
+                11, 
+                10, 
+                0, 
+                0, 
+                0, 
+                3, 
+                314, 
+                -1
+            ], 
+            "cluster": 18, 
+            "edi": null, 
+            "id": "222-9v8"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|UCSD|NULL|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_148034|NULL"
+            ], 
+            "baseline": [
+                2005, 
+                9, 
+                30, 
+                0, 
+                0, 
+                0, 
+                4, 
+                273, 
+                -1
+            ], 
+            "cluster": 19, 
+            "edi": null, 
+            "id": "050110034"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|08_144032|NULL", 
+                "pol|plasma|pool|1|UCSD|NULL|NULL"
+            ], 
+            "baseline": [
+                2008, 
+                6, 
+                12, 
+                0, 
+                0, 
+                0, 
+                3, 
+                164, 
+                -1
+            ], 
+            "cluster": 19, 
+            "edi": null, 
+            "id": "050111775"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|08_144032|NULL", 
+                "pol|plasma|pool|1|UCSD|NULL|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_155312|NULL"
+            ], 
+            "baseline": [
+                2005, 
+                11, 
+                10, 
+                0, 
+                0, 
+                0, 
+                3, 
+                314, 
+                -1
+            ], 
+            "cluster": 19, 
+            "edi": null, 
+            "id": "050110160"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|12-106918|NULL"
+            ], 
+            "baseline": [
+                2012, 
+                1, 
+                27, 
+                0, 
+                0, 
+                0, 
+                4, 
+                27, 
+                -1
+            ], 
+            "cluster": 20, 
+            "edi": null, 
+            "id": "222-bit"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|12-106918|NULL", 
+                "pol|plasma|pool|1|ViroLogic|12-101234|NULL"
+            ], 
+            "baseline": [
+                2011, 
+                12, 
+                15, 
+                0, 
+                0, 
+                0, 
+                3, 
+                349, 
+                -1
+            ], 
+            "cluster": 20, 
+            "edi": null, 
+            "id": "222-b9r"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|UCSD|NULL|NULL", 
+                "pol|plasma|pool|1|ViroLogic|02_101438|NULL"
+            ], 
+            "baseline": [
+                2002, 
+                1, 
+                9, 
+                0, 
+                0, 
+                0, 
+                2, 
+                9, 
+                -1
+            ], 
+            "cluster": 21, 
+            "edi": null, 
+            "id": "050104206"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|UCSD|NULL|NULL"
+            ], 
+            "baseline": [
+                2001, 
+                11, 
+                7, 
+                0, 
+                0, 
+                0, 
+                2, 
+                311, 
+                -1
+            ], 
+            "cluster": 21, 
+            "edi": null, 
+            "id": "050104027"
+        }, 
+        {
+            "attributes": [
+                "pol|PBMC|pool|1|UCSD|NULL|NULL"
+            ], 
+            "baseline": [
+                2010, 
+                1, 
+                7, 
+                0, 
+                0, 
+                0, 
+                3, 
+                7, 
+                -1
+            ], 
+            "cluster": 22, 
+            "edi": null, 
+            "id": "050117140"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|12-102763|NULL", 
+                "pol|PBMC|pool|1|UCSD|NULL|NULL"
+            ], 
+            "baseline": [
+                2012, 
+                1, 
+                6, 
+                0, 
+                0, 
+                0, 
+                4, 
+                6, 
+                -1
+            ], 
+            "cluster": 22, 
+            "edi": null, 
+            "id": "222-bht"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|07_134860|NULL", 
+                "pol|plasma|pool|1|ViroLogic|07_126953|NULL"
+            ], 
+            "baseline": [
+                2007, 
+                6, 
+                29, 
+                0, 
+                0, 
+                0, 
+                4, 
+                180, 
+                -1
+            ], 
+            "cluster": 23, 
+            "edi": null, 
+            "id": "050111447"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|07_126953|NULL"
+            ], 
+            "baseline": [
+                2007, 
+                6, 
+                21, 
+                0, 
+                0, 
+                0, 
+                3, 
+                172, 
+                -1
+            ], 
+            "cluster": 23, 
+            "edi": null, 
+            "id": "050111412"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|09-153806|NULL", 
+                "pol|plasma|pool|1|ViroLogic|11-112311|NULL"
+            ], 
+            "baseline": [
+                2009, 
+                7, 
+                30, 
+                0, 
+                0, 
+                0, 
+                3, 
+                211, 
+                -1
+            ], 
+            "cluster": 24, 
+            "edi": null, 
+            "id": "050113761"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|11-112311|NULL"
+            ], 
+            "baseline": [
+                2011, 
+                1, 
+                13, 
+                0, 
+                0, 
+                0, 
+                3, 
+                13, 
+                -1
+            ], 
+            "cluster": 24, 
+            "edi": null, 
+            "id": "222-5dz"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|05_137584|NULL"
+            ], 
+            "baseline": [
+                2005, 
+                8, 
+                1, 
+                0, 
+                0, 
+                0, 
+                0, 
+                213, 
+                -1
+            ], 
+            "cluster": 25, 
+            "edi": null, 
+            "id": "050109836"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|04_122794|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_137584|NULL"
+            ], 
+            "baseline": [
+                2004, 
+                5, 
+                24, 
+                0, 
+                0, 
+                0, 
+                0, 
+                145, 
+                -1
+            ], 
+            "cluster": 25, 
+            "edi": null, 
+            "id": "050108085"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|AA0395|NULL", 
+                "pol|plasma|pool|1|ViroLogic|97_522|NULL"
+            ], 
+            "baseline": [
+                1996, 
+                10, 
+                17, 
+                0, 
+                0, 
+                0, 
+                3, 
+                291, 
+                -1
+            ], 
+            "cluster": 26, 
+            "edi": null, 
+            "id": "050100074"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|AA0395|NULL"
+            ], 
+            "baseline": [
+                1996, 
+                10, 
+                2, 
+                0, 
+                0, 
+                0, 
+                2, 
+                276, 
+                -1
+            ], 
+            "cluster": 26, 
+            "edi": null, 
+            "id": "050100048"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|03_122545|NULL", 
+                "pol|plasma|pool|1|ViroLogic|03_109464|NULL", 
+                "pol|plasma|pool|1|ViroLogic|04_126749|NULL"
+            ], 
+            "baseline": [
+                2003, 
+                5, 
+                30, 
+                0, 
+                0, 
+                0, 
+                4, 
+                150, 
+                -1
+            ], 
+            "cluster": 27, 
+            "edi": null, 
+            "id": "050106335"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|03_109464|NULL"
+            ], 
+            "baseline": [
+                2003, 
+                3, 
+                18, 
+                0, 
+                0, 
+                0, 
+                1, 
+                77, 
+                -1
+            ], 
+            "cluster": 27, 
+            "edi": null, 
+            "id": "050105949"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|11-122450|NULL", 
+                "pol|plasma|pool|1|ViroLogic|12-100532|NULL"
+            ], 
+            "baseline": [
+                2011, 
+                3, 
+                24, 
+                0, 
+                0, 
+                0, 
+                3, 
+                83, 
+                -1
+            ], 
+            "cluster": 28, 
+            "edi": null, 
+            "id": "222-6bf"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|12-100532|NULL"
+            ], 
+            "baseline": [
+                2011, 
+                12, 
+                16, 
+                0, 
+                0, 
+                0, 
+                4, 
+                350, 
+                -1
+            ], 
+            "cluster": 28, 
+            "edi": null, 
+            "id": "222-bc7"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|11-122450|NULL", 
+                "pol|plasma|pool|1|ViroLogic|12-100532|NULL", 
+                "pol|plasma|pool|1|ViroLogic|11-113164|NULL"
+            ], 
+            "baseline": [
+                2011, 
+                3, 
+                3, 
+                0, 
+                0, 
+                0, 
+                3, 
+                62, 
+                -1
+            ], 
+            "cluster": 28, 
+            "edi": null, 
+            "id": "222-634"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|UCSD|NULL|NULL"
+            ], 
+            "baseline": [
+                2003, 
+                8, 
+                12, 
+                0, 
+                0, 
+                0, 
+                1, 
+                224, 
+                -1
+            ], 
+            "cluster": 29, 
+            "edi": null, 
+            "id": "050106754"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|UCSD|NULL|NULL", 
+                "pol|plasma|pool|1|ViroLogic|03_120788|NULL", 
+                "pol|plasma|pool|1|ViroLogic|08_173594|NULL"
+            ], 
+            "baseline": [
+                2003, 
+                6, 
+                25, 
+                0, 
+                0, 
+                0, 
+                2, 
+                176, 
+                -1
+            ], 
+            "cluster": 29, 
+            "edi": null, 
+            "id": "050106514"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|08_173594|NULL"
+            ], 
+            "baseline": [
+                2008, 
+                10, 
+                7, 
+                0, 
+                0, 
+                0, 
+                1, 
+                281, 
+                -1
+            ], 
+            "cluster": 29, 
+            "edi": null, 
+            "id": "050112134"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|09-159854|NULL"
+            ], 
+            "baseline": [
+                2009, 
+                8, 
+                18, 
+                0, 
+                0, 
+                0, 
+                1, 
+                230, 
+                -1
+            ], 
+            "cluster": 30, 
+            "edi": null, 
+            "id": "050114054"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|Internal|NULL|20090827", 
+                "pol|plasma|pool|1|ViroLogic|04_101367|NULL", 
+                "pol|plasma|pool|1|ViroLogic|02_128546|NULL", 
+                "pol|plasma|pool|1|ViroLogic|09-159854|NULL", 
+                "pol|plasma|pool|1|ViroLogic|03_107834|NULL", 
+                "pol|PBMC|pool|1|Internal|NULL|20090826", 
+                "pol|plasma|pool|1|ViroLogic|03_107831|NULL", 
+                "pol|plasma|pool|1|ViroLogic|04_101363|NULL", 
+                "pol|plasma|pool|1|ViroLogic|03_116816|NULL", 
+                "pol|plasma|pool|1|UCSD|NULL|NULL", 
+                "pol|plasma|pool|1|ViroLogic|03_107829|NULL"
+            ], 
+            "baseline": [
+                2002, 
+                9, 
+                18, 
+                0, 
+                0, 
+                0, 
+                2, 
+                261, 
+                -1
+            ], 
+            "cluster": 30, 
+            "edi": null, 
+            "id": "050105033"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|00_8_018827_01|NULL", 
+                "pol|plasma|pool|1|UCSD|V151_2|NULL", 
+                "pol|plasma|pool|1|UCSD|V151_1|NULL"
+            ], 
+            "baseline": [
+                1999, 
+                4, 
+                20, 
+                0, 
+                0, 
+                0, 
+                1, 
+                110, 
+                -1
+            ], 
+            "cluster": 31, 
+            "edi": null, 
+            "id": "050101087"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|00_8_018828_01|NULL", 
+                "pol|plasma|pool|1|UCSD|V151_2|NULL"
+            ], 
+            "baseline": [
+                1999, 
+                5, 
+                20, 
+                0, 
+                0, 
+                0, 
+                3, 
+                140, 
+                -1
+            ], 
+            "cluster": 31, 
+            "edi": null, 
+            "id": "050101117"
+        }, 
+        {
+            "attributes": [
+                "pol|plamsa|pool|1|ViroLogic|06-152174|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_132651|NULL"
+            ], 
+            "baseline": [
+                2005, 
+                7, 
+                1, 
+                0, 
+                0, 
+                0, 
+                4, 
+                182, 
+                -1
+            ], 
+            "cluster": 32, 
+            "edi": null, 
+            "id": "050109693"
+        }, 
+        {
+            "attributes": [
+                "pol|plamsa|pool|1|ViroLogic|06-152174|NULL"
+            ], 
+            "baseline": [
+                2006, 
+                11, 
+                3, 
+                0, 
+                0, 
+                0, 
+                4, 
+                307, 
+                -1
+            ], 
+            "cluster": 32, 
+            "edi": null, 
+            "id": "050111040"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|09_109519|NULL", 
+                "pol|plasma|pool|1|ViroLogic|09-128049|NULL"
+            ], 
+            "baseline": [
+                2009, 
+                1, 
+                29, 
+                0, 
+                0, 
+                0, 
+                3, 
+                29, 
+                -1
+            ], 
+            "cluster": 33, 
+            "edi": null, 
+            "id": "050112370"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|09-128049|NULL"
+            ], 
+            "baseline": [
+                2009, 
+                4, 
+                14, 
+                0, 
+                0, 
+                0, 
+                1, 
+                104, 
+                -1
+            ], 
+            "cluster": 33, 
+            "edi": null, 
+            "id": "050112643"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|06_133375|NULL", 
+                "pol|plasma|pool|1|ViroLogic|06_108868|NULL", 
+                "pol|plasma|pool|1|ViroLogic|05_157222|NULL", 
+                "pol|plasma|pool|1|ViroLogic|06_155764|NULL", 
+                "pol|plasma|pool|1|ViroLogic|09-181042|NULL"
+            ], 
+            "baseline": [
+                2005, 
+                11, 
+                23, 
+                0, 
+                0, 
+                0, 
+                2, 
+                327, 
+                -1
+            ], 
+            "cluster": 34, 
+            "edi": null, 
+            "id": "050110236"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|06_155764|NULL"
+            ], 
+            "baseline": [
+                2006, 
+                11, 
+                30, 
+                0, 
+                0, 
+                0, 
+                3, 
+                334, 
+                -1
+            ], 
+            "cluster": 34, 
+            "edi": null, 
+            "id": "050111122"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|06_133375|NULL"
+            ], 
+            "baseline": [
+                2006, 
+                7, 
+                27, 
+                0, 
+                0, 
+                0, 
+                3, 
+                208, 
+                -1
+            ], 
+            "cluster": 34, 
+            "edi": null, 
+            "id": "050110780"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|09-181042|NULL"
+            ], 
+            "baseline": [
+                2009, 
+                12, 
+                10, 
+                0, 
+                0, 
+                0, 
+                3, 
+                344, 
+                -1
+            ], 
+            "cluster": 34, 
+            "edi": null, 
+            "id": "050117120"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|09-147814|NULL", 
+                "pol|plasma|pool|1|ViroLogic|09-124506|NULL"
+            ], 
+            "baseline": [
+                2009, 
+                3, 
+                30, 
+                0, 
+                0, 
+                0, 
+                0, 
+                89, 
+                -1
+            ], 
+            "cluster": 35, 
+            "edi": null, 
+            "id": "050112601"
+        }, 
+        {
+            "attributes": [
+                "pol|plasma|pool|1|ViroLogic|09_104732|NULL", 
+                "pol|plasma|pool|1|ViroLogic|09-124506|NULL"
+            ], 
+            "baseline": [
+                2009, 
+                1, 
+                15, 
+                0, 
+                0, 
+                0, 
+                3, 
+                15, 
+                -1
+            ], 
+            "cluster": 35, 
+            "edi": null, 
+            "id": "050108479"
+        }
+    ]
+}

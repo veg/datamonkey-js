@@ -1,7 +1,5 @@
 $(document).ready(function(){
-  if(!inProgress()) {
-    initializeClusterNetworkGraphs();
-  }
+  initializeClusterNetworkGraphs();
 });
 
 function saveImage() {
@@ -72,7 +70,8 @@ var clusterNetworkGraph = function (network_container, network_status_string,
       currently_displayed_objects;
 
   //Get JSON url
-  var json_url = $(network_container).data('url');
+  //var json_url = $(network_container).data('url');
+  var json_url = "http://datamonkey-dev/network-viz/public/assets/samples/test.json";
 
   /*------------ "MAIN CALL" ---------------*/
   //$('#indicator').show();
