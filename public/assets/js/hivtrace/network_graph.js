@@ -71,7 +71,7 @@ var clusterNetworkGraph = function (network_container, network_status_string,
 
   //Get JSON url
   //var json_url = $(network_container).data('url');
-  var json_url = "http://datamonkey-dev/network-viz/public/assets/samples/test.json";
+  var json_url = "public/assets/samples/test.json";
 
   /*------------ "MAIN CALL" ---------------*/
   //$('#indicator').show();
