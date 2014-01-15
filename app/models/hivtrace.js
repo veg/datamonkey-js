@@ -65,8 +65,10 @@ var HivTrace = new Schema({
     torque_id               : String,
     mail                    : String,
     tn93_summary            : String,
+    tn93_results            : String,
     trace_results           : String,
     lanl_trace_results      : String,
+    lanl_tn93_results       : String,
     error_message           : String,
     created                 : {type: Date, default: Date.now}
 });

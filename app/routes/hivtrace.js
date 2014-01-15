@@ -171,12 +171,14 @@ exports.jobPage = function (req, res) {
  */
 exports.results = function (req, res) {
   // HIV Cluster id
+
+  //TODO: Have an options for CSV
+
   var id = req.params.id;
-  HivTrace.findOne({_id: id}, 'tn93_summary trace_results lanl_trace_results', function (err, hivtrace) {
+  HivTrace.findOne({_id: id}, 'tn93_summary tn93_results trace_results lanl_trace_results', function (err, hivtrace) {
     if (err || !hivtrace) {
       res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
     } else {
-      results = {};
       res.format({
         html: function(){
           res.render('hivtrace/results.ejs', {hivtrace : hivtrace});
@@ -189,6 +191,5 @@ exports.results = function (req, res) {
   });
 
 }
-
 
 

@@ -10,20 +10,31 @@
   <div class="tab-content">
     <div id="trace-results" class="tab-pane active">
       <h3>Cluster Results</h3>
+
       <div class="row">
         <div class="col-lg-6">
           <p class="lead" class='network-tag-caption'>Connected components of the network</p>
           <p class="small muted">Click on clusters/nodes to expand/collapse subnetworks.</p>
         </div>
+
         <div class="col-lg-6">
           <div class="alert" class='main-warning' style='display:none;'>
           </div>
         </div>
+
         <div id='network_tag' class='col-lg-9' data-url=<%= hivtrace.trace_results %>></div>
+
         <div class="row">
           <div id='histogram_tag' class='col-lg-3'>
               <p id='histogram_label' class="text-left text-info small"></p><br>
           </div>
+
+          <div id='csvbutton' class='col-lg-3'>
+            <a href="<%= hivtrace.tn93_results%>" type="button" class="btn btn-default btn-lg">
+              <span class="glyphicon glyphicon-floppy-save"></span> Download CSV
+            </a>
+          </div>
+
         </div>
       </div>
       <div class="row">
@@ -47,10 +58,15 @@
         </div>
         <div id='lanl_network_tag' class='col-lg-9' data-url=<%= hivtrace.lanl_trace_results %>></div>
         <div class="row">
-        <div id='lanl_histogram_tag' class='col-lg-3'>
-            <p id='lanl_histogram_label' class="text-left text-info small"></p>
+          <div id='lanl_histogram_tag' class='col-lg-3'>
+              <p id='lanl_histogram_label' class="text-left text-info small"></p>
+          </div>
+          <div id='csvbutton-lanl' class='col-lg-3'>
+            <button type="button" class="btn btn-default btn-lg">
+              <span class="glyphicon glyphicon-floppy-save"></span> Download CSV
+            </button>
+          </div>
         </div>
-      </div>
       <div class="row">
         <div class='col-lg-9'>
           <p id='network_status_string' class='text-info'></p>
