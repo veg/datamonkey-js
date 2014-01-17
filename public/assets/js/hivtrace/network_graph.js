@@ -474,10 +474,12 @@ var clusterNetworkGraph = function (network_container, network_status_string,
   function clusterInfoString (id) {
       var the_cluster = clusters[id-1],
           degrees = the_cluster.children.map (function (d) {return d.degree;});
-          
+      var cluster_mean = computeMeanPathLengthPerCluster(graph.Nodes, graph.Edges, cluster_sizes)
+
       return "<strong>" + cluster_sizes[id-1] + "</strong> nodes." + 
              "<br>Mean degree <em>" + defaultFloatFormat(d3.mean (degrees)) + "</em>"+
-             "<br>Max degree <em>" + d3.max (degrees) + "</em>";
+             "<br>Max degree <em>" + d3.max (degrees) + "</em>"+ 
+             "<br>Mean Path Length <em>" + cluster_mean[id].mean + "</em>";
              
 
   }
