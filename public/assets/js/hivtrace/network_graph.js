@@ -36,6 +36,66 @@ var initializeClusterNetworkGraphs = function () {
 
 }
 
+function compute_shortest_paths(cluster, edges) {
+
+  var distances = []
+
+  nodes =  cluster["1"].nodes;
+
+  // Step 1: Initialize distances
+  nodes.forEach(function(n) { distances[n.id][n.id] = 0 });
+
+  // Step 2: Initialize distances with edge weights
+  edges.forEach(function(e){
+    distances[e.source][e.target] = 1;
+    distances[e.target][e.source] = 1;
+  });
+
+  // Step 3: Get shortest paths
+  nodes.forEach(function(k) {
+    nodes.forEach(function(i) {
+      nodes.forEach(function(j) {
+        if (k != j) {
+          var d_ik = distances[k.id][i.id];
+          var d_jk = distances[k.id][j.id];
+          var d_ij = distances[i.id][j.id];
+          if (d_ik != null &&  d_jk != null) {
+            d_ik += d_jk;
+            if ( d_ij == null || d_ij > d_ik ) {
+              distances[i.id][j.id] = d_ik;
+              distances[j.id][i.id] = d_ik;
+            }
+          }
+        }
+      });
+    });
+  });
+
+  return distances;
+
+}
+
+function compute_mean_path(nodes, edges, cluster_sizes) {
+
+  // Create a cluster object that is easy to deal with
+  var unique_clusters = d3.set(nodes.map(function(d) { return d.cluster })).values();
+  var cluster = {};
+  unique_clusters.map(function(d){ cluster[d] = {'size': 0, 'nodes': [] } });
+
+  //Add each node to the cluster
+  Object.keys(cluster).map(function(d){
+    cluster[d]['size'] = cluster_sizes[parseInt(d)-1];
+  });
+
+  nodes.map(function(d) { cluster[d.cluster]['nodes'].push(d) });
+
+  // Compute the shortst paths according to Floyd-Warshall algorithm
+  d = compute_shortest_paths(cluster);
+
+  return 1;
+
+}
+
 var clusterNetworkGraph = function (network_container, network_status_string, 
                                 histogram_tag, histogram_label) {
 
@@ -161,8 +221,8 @@ var clusterNetworkGraph = function (network_container, network_status_string,
       }
       
       for (var e in edges) {
-          nodes[edges[e].source].degree ++;
-          nodes[edges[e].target].degree ++;
+          nodes[edges[e].source].degree++;
+          nodes[edges[e].target].degree++;
       }
   }
 
@@ -474,12 +534,13 @@ var clusterNetworkGraph = function (network_container, network_status_string,
   function clusterInfoString (id) {
       var the_cluster = clusters[id-1],
           degrees = the_cluster.children.map (function (d) {return d.degree;});
-      var cluster_mean = computeMeanPathLengthPerCluster(graph.Nodes, graph.Edges, cluster_sizes)
+
+      var cluster_mean = compute_mean_path(graph.Nodes, graph.Edges, cluster_sizes);
 
       return "<strong>" + cluster_sizes[id-1] + "</strong> nodes." + 
              "<br>Mean degree <em>" + defaultFloatFormat(d3.mean (degrees)) + "</em>"+
-             "<br>Max degree <em>" + d3.max (degrees) + "</em>"+ 
-             "<br>Mean Path Length <em>" + cluster_mean[id].mean + "</em>";
+             "<br>Max degree <em>" + d3.max (degrees) + "</em>"; 
+             //"<br>Mean Path Length <em>" + cluster_mean[id].mean + "</em>";
              
 
   }

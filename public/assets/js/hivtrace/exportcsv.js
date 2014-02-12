@@ -33,6 +33,7 @@ function computeMeanPathLengthPerCluster(nodes, edges, cluster_sizes) {
     cluster[d]['size'] = cluster_sizes[parseInt(d)-1];
     cluster[d]['mean'] = cluster[d]['length']/cluster[d]['size'];
   });
+
   return cluster
 
 }
@@ -46,15 +47,15 @@ function convertToCSV(obj) {
   return node_csv;
 }
 
-function exportCSV(callback) {
-  var json_url = $('#network_tag').data('url');
+function exportCSV(tag, callback) {
+  var json_url = $(tag).data('url');
   d3.json(json_url, function(obj) {
     callback(convertToCSV(obj));
   });
 }
 
 function downloadExport() {
-  exportCSV(function(data) {
+  exportCSV('#network_tag', function(data) {
     var pom = document.createElement('a');
     pom.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(data));
     pom.setAttribute('download', 'export.csv');
@@ -63,4 +64,17 @@ function downloadExport() {
     pom.click();
     $('#csvexport').append(pom);
   });
+
+  exportCSV('lanl_network_tag', function(data) {
+    var pom = document.createElement('a');
+    pom.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(data));
+    pom.setAttribute('download', 'export.csv');
+    pom.className = 'btn btn-default btn-lg';
+    pom.innerHTML = '<span class="glyphicon glyphicon-floppy-save"></span> Export to CSV';
+    pom.click();
+    $('#csvexport-lanl').append(pom);
+  });
+
 }
+
+
