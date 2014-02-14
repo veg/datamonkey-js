@@ -75,7 +75,7 @@ function compute_shortest_paths(cluster, edges) {
   nodes.forEach(function(k) {
     nodes.forEach(function(i) {
       nodes.forEach(function(j) {
-        if (k != j) {
+        if (i.id != j.id) {
           var d_ik = distances[k.id][i.id];
           var d_jk = distances[k.id][j.id];
           var d_ij = distances[i.id][j.id];
