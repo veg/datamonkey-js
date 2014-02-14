@@ -42,7 +42,7 @@ function compute_shortest_paths(cluster, edges) {
 
   var distances = {}
 
-  nodes =  cluster["1"].nodes;
+  nodes =  cluster.nodes;
   node_ids = []
   nodes.forEach(function(n) { node_ids.push(n.id)});
 
@@ -95,8 +95,9 @@ function compute_shortest_paths(cluster, edges) {
 
 }
 
+function compute_mean_path (cluster_id, nodes, edges, cluster_sizes) {
 
-function compute_mean_path(nodes, edges, cluster_sizes) {
+  //TODO: Create a cluster attribute for the object to pass instead of an id
 
   // Create a cluster object that is easy to deal with
   var unique_clusters = d3.set(nodes.map(function(d) { return d.cluster })).values();
@@ -111,7 +112,7 @@ function compute_mean_path(nodes, edges, cluster_sizes) {
   nodes.map(function(d) { cluster[d.cluster]['nodes'].push(d) });
 
   // Compute the shortst paths according to Floyd-Warshall algorithm
-  var distances = compute_shortest_paths(cluster, edges);
+  var distances = compute_shortest_paths(cluster[cluster_id], edges);
 
   var path_sum = 0;
 
@@ -124,7 +125,7 @@ function compute_mean_path(nodes, edges, cluster_sizes) {
 
   // Average Mean Path Calculation
   // l = (sum(distances))/(N(N-1))
-  var node_len = cluster["1"].nodes.length
+  var node_len = cluster[cluster_id].nodes.length
   var mean_path_length = path_sum / (node_len * (node_len - 1));
 
   return mean_path_length;
@@ -164,13 +165,11 @@ var clusterNetworkGraph = function (network_container, network_status_string,
   //Get JSON url
   var json_url = $(network_container).data('url');
 
-  /*------------ "MAIN CALL" ---------------*/
   //$('#indicator').show();
   d3.json(json_url, initial_json_load);
 
       
   /*------------ D3 globals and SVG elements ---------------*/
-      
   var defaultFloatFormat = d3.format(",.2f");
 
   var network_layout = d3.layout.force()
@@ -201,8 +200,6 @@ var clusterNetworkGraph = function (network_container, network_status_string,
           .attr("d", "M 0,0 V 4 L6,2 Z"); //this is actual shape for arrowhead
           
   /*------------ Network layout code ---------------*/
-          
-      
   function  get_initial_xy (nodes, cluster_count, exclude ) {  
       var d_clusters = {'id': 'root', 'children': []};
       for (var k = 0; k < cluster_count; k+=1) {
@@ -317,8 +314,8 @@ var clusterNetworkGraph = function (network_container, network_status_string,
     connected_links = [];
     total = 0;
     exclude_cluster_ids = {};
-    
     cluster_sizes = [];
+
     graph.Nodes.forEach (function (d) { if (typeof cluster_sizes[d.cluster-1]  === "undefined") {cluster_sizes[d.cluster-1] = 1;} else {cluster_sizes[d.cluster-1] ++;}});
      
     if (cluster_sizes.length > max_points_to_render) {
@@ -570,12 +567,12 @@ var clusterNetworkGraph = function (network_container, network_status_string,
       var the_cluster = clusters[id-1],
           degrees = the_cluster.children.map (function (d) {return d.degree;});
 
-      var cluster_mean = compute_mean_path(graph.Nodes, graph.Edges, cluster_sizes);
+      var cluster_mean = compute_mean_path(id, graph.Nodes, graph.Edges, cluster_sizes);
 
       return "<strong>" + cluster_sizes[id-1] + "</strong> nodes." + 
              "<br>Mean degree <em>" + defaultFloatFormat(d3.mean (degrees)) + "</em>"+
-             "<br>Max degree <em>" + d3.max (degrees) + "</em>"; 
-             //"<br>Mean Path Length <em>" + cluster_mean[id].mean + "</em>";
+             "<br>Max degree <em>" + d3.max (degrees) + "</em>"+
+             "<br>Mean Path Length <em>" + cluster_mean + "</em>";
              
 
   }
