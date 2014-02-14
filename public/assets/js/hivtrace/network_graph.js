@@ -38,17 +38,37 @@ var initializeClusterNetworkGraphs = function () {
 
 function compute_shortest_paths(cluster, edges) {
 
-  var distances = []
+  // Floyd-Warshall implementation
+
+  var distances = {}
 
   nodes =  cluster["1"].nodes;
+  node_ids = []
+  nodes.forEach(function(n) { node_ids.push(n.id)});
+
+  // Step 0: We need to filter out edges that only exist within the cluster
+  // we're looking at
+  var edges = edges.filter(function(n) { 
+    if( node_ids.indexOf(n.sequences[0]) != -1 && node_ids.indexOf(n.sequences[1]) != -1) {
+      return true;
+    } else {
+      return false;
+    }
+   });
 
   // Step 1: Initialize distances
+  nodes.forEach(function(n) { distances[n.id] = {} });
   nodes.forEach(function(n) { distances[n.id][n.id] = 0 });
 
   // Step 2: Initialize distances with edge weights
   edges.forEach(function(e){
-    distances[e.source][e.target] = 1;
-    distances[e.target][e.source] = 1;
+    distances[e.sequences[0]] = {};
+    distances[e.sequences[1]] = {};
+  });
+
+  edges.forEach(function(e){
+    distances[e.sequences[0]][e.sequences[1]] = 1;
+    distances[e.sequences[1]][e.sequences[0]] = 1;
   });
 
   // Step 3: Get shortest paths
@@ -75,6 +95,7 @@ function compute_shortest_paths(cluster, edges) {
 
 }
 
+
 function compute_mean_path(nodes, edges, cluster_sizes) {
 
   // Create a cluster object that is easy to deal with
@@ -90,9 +111,23 @@ function compute_mean_path(nodes, edges, cluster_sizes) {
   nodes.map(function(d) { cluster[d.cluster]['nodes'].push(d) });
 
   // Compute the shortst paths according to Floyd-Warshall algorithm
-  d = compute_shortest_paths(cluster);
+  var distances = compute_shortest_paths(cluster, edges);
 
-  return 1;
+  var path_sum = 0;
+
+  //Sum all the distances and divide by the number of nodes
+  Object.keys(distances).forEach( function(n) { 
+    Object.keys(distances[n]).forEach( function(k) {
+      path_sum += distances[n][k];
+    });
+  });
+
+  // Average Mean Path Calculation
+  // l = (sum(distances))/(N(N-1))
+  var node_len = cluster["1"].nodes.length
+  var mean_path_length = path_sum / (node_len * (node_len - 1));
+
+  return mean_path_length;
 
 }
 
