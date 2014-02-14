@@ -577,8 +577,6 @@ var clusterNetworkGraph = function (network_container, network_status_string,
              "<br>Mean degree <em>" + defaultFloatFormat(d3.mean (degrees)) + "</em>" +
              "<br>Max degree <em>" + d3.max (degrees) + "</em>" +
              "<br>Mean Path Length <em>" + cluster_mean.toFixed(2) + "</em>";
-             
-
   }
 
 
