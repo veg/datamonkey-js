@@ -218,13 +218,13 @@ var clusterNetworkGraph = function (network_container, network_status_string,
 
     var distances = {}
 
-    nodes =  cluster.nodes;
+    var nodes =  cluster.nodes;
     node_ids = []
     nodes.forEach(function(n) { node_ids.push(n.id)});
 
     // Step 0: We need to filter out edges that only exist within the cluster
     // we're looking at
-    var edges = edges.filter(function(n) { 
+    var new_edges = edges.filter(function(n) { 
       if( node_ids.indexOf(n.sequences[0]) != -1 && node_ids.indexOf(n.sequences[1]) != -1) {
         return true;
       } else {
@@ -237,12 +237,12 @@ var clusterNetworkGraph = function (network_container, network_status_string,
     nodes.forEach(function(n) { distances[n.id][n.id] = 0 });
 
     // Step 2: Initialize distances with edge weights
-    edges.forEach(function(e){
+    new_edges.forEach(function(e){
       distances[e.sequences[0]] = {};
       distances[e.sequences[1]] = {};
     });
 
-    edges.forEach(function(e){
+    new_edges.forEach(function(e){
       distances[e.sequences[0]][e.sequences[1]] = 1;
       distances[e.sequences[1]][e.sequences[0]] = 1;
     });
@@ -277,18 +277,18 @@ var clusterNetworkGraph = function (network_container, network_status_string,
 
     // Create a cluster object that is easy to deal with
     var unique_clusters = d3.set(nodes.map(function(d) { return d.cluster })).values();
-    var cluster = {};
-    unique_clusters.map(function(d){ cluster[d] = {'size': 0, 'nodes': [] } });
+    var cluster_map = {};
+    unique_clusters.map(function(d){ cluster_map[d] = {'size': 0, 'nodes': [] } });
 
     //Add each node to the cluster
-    Object.keys(cluster).map(function(d){
-      cluster[d]['size'] = cluster_sizes[parseInt(d)-1];
+    Object.keys(cluster_map).map(function(d){
+      cluster_map[d]['size'] = cluster_sizes[parseInt(d)-1];
     });
 
-    nodes.map(function(d) { cluster[d.cluster]['nodes'].push(d) });
+    nodes.map(function(d) { cluster_map[d.cluster]['nodes'].push(d) });
 
     // Compute the shortst paths according to Floyd-Warshall algorithm
-    var distances = compute_shortest_paths(cluster[cluster_id], edges);
+    var distances = compute_shortest_paths(cluster_map[cluster_id], edges);
 
     var path_sum = 0;
 
@@ -301,11 +301,9 @@ var clusterNetworkGraph = function (network_container, network_status_string,
 
     // Average Mean Path Calculation
     // l = (sum(distances))/(N(N-1))
-    var node_len = cluster[cluster_id].nodes.length
+    var node_len = cluster_map[cluster_id].nodes.length
     var mean_path_length = path_sum / (node_len * (node_len - 1));
-
     return mean_path_length;
-
   }
 
   function initial_json_load (json) {
@@ -562,12 +560,10 @@ var clusterNetworkGraph = function (network_container, network_status_string,
 
 
   function node_color(d) {
-    //console.log (d);
     return "#fd8d3c";
   }
 
   function cluster_color(d) {
-    //console.log (d);
     return "#3182bd";
   }
 
@@ -578,9 +574,9 @@ var clusterNetworkGraph = function (network_container, network_status_string,
       var cluster_mean = compute_mean_path(id, graph.Nodes, graph.Edges, cluster_sizes);
 
       return "<strong>" + cluster_sizes[id-1] + "</strong> nodes." + 
-             "<br>Mean degree <em>" + defaultFloatFormat(d3.mean (degrees)) + "</em>"+
-             "<br>Max degree <em>" + d3.max (degrees) + "</em>"+
-             "<br>Mean Path Length <em>" + cluster_mean + "</em>";
+             "<br>Mean degree <em>" + defaultFloatFormat(d3.mean (degrees)) + "</em>" +
+             "<br>Max degree <em>" + d3.max (degrees) + "</em>" +
+             "<br>Mean Path Length <em>" + cluster_mean.toFixed(2) + "</em>";
              
 
   }
@@ -667,7 +663,7 @@ var clusterNetworkGraph = function (network_container, network_status_string,
       toggle_tooltip (this, false);
   }
 
-  function expand_cluster_handler (d, do_update) { 
+  function expand_cluster_handler (d, do_update) {
     var new_nodes = cluster_sizes[d.cluster_id-1];
     var leftover = new_nodes + currently_displayed_objects - max_points_to_render;
     if (leftover > 0) {
