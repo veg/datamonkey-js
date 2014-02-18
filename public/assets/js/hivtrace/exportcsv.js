@@ -65,7 +65,7 @@ function downloadExport() {
     $('#csvexport').append(pom);
   });
 
-  exportCSV('lanl_network_tag', function(data) {
+  exportCSV('#lanl_network_tag', function(data) {
     var pom = document.createElement('a');
     pom.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(data));
     pom.setAttribute('download', 'export.csv');
