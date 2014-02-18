@@ -49,30 +49,38 @@ function convertToCSV(obj) {
 
 function exportCSV(tag, callback) {
   var json_url = $(tag).data('url');
-  d3.json(json_url, function(obj) {
-    callback(convertToCSV(obj));
-  });
+  if (json_url) {
+    d3.json(json_url, function(obj) {
+      callback(convertToCSV(obj));
+    });
+  } else {
+    return null;
+  }
 }
 
 function downloadExport() {
   exportCSV('#network_tag', function(data) {
-    var pom = document.createElement('a');
-    pom.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(data));
-    pom.setAttribute('download', 'export.csv');
-    pom.className = 'btn btn-default btn-lg';
-    pom.innerHTML = '<span class="glyphicon glyphicon-floppy-save"></span> Export to CSV';
-    pom.click();
-    $('#csvexport').append(pom);
+    if (data != null) {
+      var pom = document.createElement('a');
+      pom.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(data));
+      pom.setAttribute('download', 'export.csv');
+      pom.className = 'btn btn-default btn-lg';
+      pom.innerHTML = '<span class="glyphicon glyphicon-floppy-save"></span> Export to CSV';
+      pom.click();
+      $('#csvexport').append(pom);
+    }
   });
 
   exportCSV('#lanl_network_tag', function(data) {
-    var pom = document.createElement('a');
-    pom.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(data));
-    pom.setAttribute('download', 'export.csv');
-    pom.className = 'btn btn-default btn-lg';
-    pom.innerHTML = '<span class="glyphicon glyphicon-floppy-save"></span> Export to CSV';
-    pom.click();
-    $('#csvexport-lanl').append(pom);
+    if (data != null) {
+      var pom = document.createElement('a');
+      pom.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(data));
+      pom.setAttribute('download', 'export.csv');
+      pom.className = 'btn btn-default btn-lg';
+      pom.innerHTML = '<span class="glyphicon glyphicon-floppy-save"></span> Export to CSV';
+      pom.click();
+      $('#csvexport-lanl').append(pom);
+    }
   });
 
 }
