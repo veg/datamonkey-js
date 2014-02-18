@@ -63,7 +63,7 @@ function setupJob() {
     $.get(hivtraceid + '/results', function(results) {
       //Do an AJAX request to get results
       $('#hiv-cluster-report').html(results);
-      initializeClusterNetworkGraphs();
+      initialize_cluster_network_graphs();
     });
 
     socket.disconnect();
