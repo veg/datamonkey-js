@@ -13,36 +13,16 @@ function computeNodeDegrees (nodes, edges) {
   }
 }
 
-function computeMeanPathLengthPerCluster(nodes, edges, cluster_sizes) {
-
-  for (var n in nodes) {
-    nodes[n].totallength = 0;
-  }
-
-  for (var e in edges) {
-    nodes[edges[e].source].totallength += edges[e].length;
-  }
-
-  // Get unique cluster ids
-  var unique_clusters = d3.set(nodes.map(function(d) { return d.cluster })).values();
-  var cluster = {};
-
-  unique_clusters.map(function(d){ cluster[d] = {'length': 0, 'size': 0, 'mean': 0 } });
-  nodes.map(function(d) { cluster[d.cluster]['length'] += d.totallength });
-  Object.keys(cluster).map(function(d){
-    cluster[d]['size'] = cluster_sizes[parseInt(d)-1];
-    cluster[d]['mean'] = cluster[d]['length']/cluster[d]['size'];
-  });
-
-  return cluster
-
+function computeMeanPathLengths(nodes, edges) {
+  compute_node_mean_paths(nodes, edges);
 }
 
 function convertToCSV(obj) {
   //Translate nodes to rows, and then use d3.format
   computeNodeDegrees(obj.Nodes, obj.Edges)
-  var node_array = obj.Nodes.map(function(d) {return [d.id, d.cluster, d.degree]});
-  node_array.unshift(['ID', 'Cluster', 'Degree'])
+  computeMeanPathLengths(obj.Nodes, obj.Edges)
+  var node_array = obj.Nodes.map(function(d) {return [d.id, d.cluster, d.degree, d.mean_path_length]});
+  node_array.unshift(['ID', 'Cluster', 'Degree', 'Mean Path Length'])
   node_csv = d3.csv.format(node_array); 
   return node_csv;
 }
