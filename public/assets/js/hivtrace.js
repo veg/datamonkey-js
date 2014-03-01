@@ -1,4 +1,333 @@
 $(document).ready(function(){
+
+  if(!inProgress()) {
+    createButtonsFromAttributes();
+  }
+
+});
+
+function inProgress() {
+  return $('.progress').length > 0;
+}
+
+function createButtonsFromAttributes() {
+  // Get list of world country names
+  var world_ids_url = "/assets/js/hivtrace/world-country-names.tsv";
+  var json_url = $('#network_tag').data('url');
+
+  //<li><a href="#">Country</a></li>
+  //<li class="divider"></li>
+  //<li><a href="#">Separated link</a></li>
+
+  //Add list of them to .country-list
+  //d3.tsv(world_ids_url, function(countries) {
+  //  d3.select(".country-list").selectAll("li")
+  //  .data(countries)
+  //  .enter().append("li")
+  //  .text(function(d) { return d.name; });
+  //})
+
+
+  d3.json(json_url, function(obj) {
+    // Filter down each attribute
+    // Get attributes from every object, get uniques for each
+    // [node.attributes.YEAR_OF_SAMPLING for node in obj.Nodes]
+    // years_of_sampling = obj.Nodes[iterator].attributes.YEAR_OF_SAMPLING
+    // d3.set(years_of_sampling)
+
+    //TODO: Generalize attributes
+
+    // Countries 
+    var map_countries = function(node) {
+      return node.attributes.COUNTRY;
+    }
+
+    //var unique_countries = d3.set(obj.Nodes.map(map_countries));
+    var unique_countries = d3.set(obj.Nodes.map(map_countries));
+
+    //Add list
+    d3.select(".country-list").selectAll("li")
+    .data(unique_countries.values())
+    .enter().append("li")
+    .append('a')
+    .text(function(d) { 
+      return country_codes[d]; 
+    });
+
+    // Years of Sampling
+    var map_years_of_sampling = function(node) {
+      return node.attributes.YEAR_OF_SAMPLING;
+    }
+
+    var unique_years = d3.set(obj.Nodes.map(map_years_of_sampling));
+
+    //Add list
+    d3.select(".year-list").selectAll("li")
+    .data(unique_years.values())
+    .enter().append("li")
+    .append('a')
+    .text(function(d) { return d; });
+
+    // Subtype
+    var map_subtype = function(node) {
+      return node.attributes.SUBTYPE;
+    }
+
+    var unique_subtypes = d3.set(obj.Nodes.map(map_subtype));
+
+    //Add list
+    d3.select(".subtype-list").selectAll("li")
+    .data(unique_subtypes.values())
+    .enter().append("li")
+    .append('a')
+    .text(function(d) { return d; });
+
+  });
+
+}
+function computeNodeDegrees (nodes, edges) {
+  for (var n in nodes) {
+    nodes[n].degree = 0;
+  }
+  
+  for (var e in edges) {
+    nodes[edges[e].source].degree++;
+    nodes[edges[e].target].degree++;
+  }
+}
+
+function computeMeanPathLengths(nodes, edges) {
+  compute_node_mean_paths(nodes, edges);
+}
+
+function convertToCSV(obj, callback) {
+  //Translate nodes to rows, and then use d3.format
+  computeNodeDegrees(obj.Nodes, obj.Edges)
+  computeMeanPathLengths(obj.Nodes, obj.Edges)
+  var node_array = obj.Nodes.map(function(d) {return [d.id, d.cluster, d.degree, d.mean_path_length]});
+  node_array.unshift(['ID', 'Cluster', 'Degree', 'Mean Path Length'])
+  node_csv = d3.csv.format(node_array); 
+  callback(node_csv);
+}
+$(document).ready(function(){
+});
+
+$("form").submit(function() {
+
+  //Trigger elements
+  $( "input[name='distance_threshold']" ).trigger('focusout');
+  $( "input[name='min_overlap']" ).trigger('focusout');
+  validateFile();
+
+
+  $(this).next('.help-block').remove();
+
+  if($(this).find(".has-error").length > 0) {
+    $("#form-has-error").show();
+    return false;
+  }
+
+  $("#form-has-error").hide();
+  return true;
+
+});
+
+var validateFile = function() {
+
+  var selector = "#trace-upload";
+  var input_field = "input[type='file']";
+  $(selector).removeClass('has-error');
+
+
+  $(selector).next('.help-div').remove();
+
+  // Ensure that file is not empty
+  if($(input_field).val().length == 0) {
+
+    $(selector).addClass('has-error');
+
+    var help_div = jQuery('<div/>', {
+          class: 'col-lg-9',
+      });
+
+    var help_span = jQuery('<span/>', {
+          class: 'help-block',
+          text : 'Field is empty'
+      });
+
+      $(selector).append(help_div.append(help_span));
+
+    return false;
+  } 
+
+  $(selector).removeClass('has-error');
+  return true;
+}
+
+// Validate an element that has min and max values
+var validateElement = function () {
+
+  // Remove any non-numeric characters
+  $(this).val($(this).val().replace(/[^\.0-9]/g, ''));
+
+  // Check that it is not empty
+  if($(this).val().length == 0) {
+    // Empty 
+    $(this).next('.help-block').remove();
+    $(this).parent().removeClass('has-success');
+    $(this).parent().addClass('has-error');
+
+    jQuery('<span/>', {
+          class: 'help-block',
+          text : 'Field is empty'
+      }).insertAfter($(this));
+
+  } else if($(this).val() < $(this).data('min')) {
+
+    // We're being cheated
+    $(this).next('.help-block').remove();
+    $(this).parent().removeClass('has-success');
+    $(this).parent().addClass('has-error');
+
+    jQuery('<span/>', {
+          class: 'help-block',
+          text : 'Parameter must be between ' + $(this).data('min') + ' and ' + $(this).data('max')
+      }).insertAfter($(this));
+
+  } else if($(this).val() > $(this).data('max')) {
+
+    // They're being too kind
+    $(this).next('.help-block').remove();
+    $(this).parent().removeClass('has-success');
+    $(this).parent().addClass('has-error');
+    jQuery('<span/>', {
+          class: 'help-block',
+          text : 'Parameter must be between ' + $(this).data('min') + ' and ' + $(this).data('max')
+      }).insertAfter($(this));
+
+  } else {
+    // Give them green. They like that.
+    $(this).parent().removeClass('has-error');
+    $(this).parent().addClass('has-success');
+    $(this).next('.help-block').remove();
+  }
+ 
+}
+
+function ValidateEmail(email) {
+
+  if($(this).find("input[name='receive_mail']")[0].checked) {
+    var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    if(regex.test($(this).find("input[name='mail']").val())) {
+       // Give them green. They like that.
+      $(this).removeClass('has-error');
+      $(this).addClass('has-success');
+      $(this).next('.help-block').remove();
+    } else {
+      $(this).next('.help-block').remove();
+      $(this).removeClass('has-error');
+      $(this).removeClass('has-success');
+      $(this).addClass('has-error');
+      var span = jQuery('<span/>', {
+            class: 'help-block col-lg-9 pull-right',
+            text : 'Invalid Email'
+        }).insertAfter($(this));
+    }
+  } else {
+    $(this).removeClass('has-error');
+    $(this).removeClass('has-success');
+    $(this).next('.help-block').remove();
+  }
+}
+
+
+$( "input[name='distance_threshold']" ).focusout(validateElement);
+$( "input[name='min_overlap']" ).focusout(validateElement);
+$( ".mail-group" ).change(ValidateEmail);
+
+function render_histogram(graph, histogram_tag) {  
+  var defaultFloatFormat = d3.format(",.2f");
+  var histogram_w = 300,
+  histogram_h = 300;
+
+  hivtrace_render_histogram(graph["Degrees"]["Distribution"], 
+                            graph["Degrees"]["fitted"], 
+                            histogram_w, 
+                            histogram_h, 
+                            histogram_tag);
+  var label = "Network degree distribution is best described by the <strong>" + graph["Degrees"]["Model"] + "</strong> model, with &rho; of " + 
+             defaultFloatFormat(graph["Degrees"]["rho"]);
+             
+  if (graph["Degrees"]["rho CI"] != undefined) {
+        label += " (95% CI " + defaultFloatFormat(graph["Degrees"]["rho CI"][0]) + " - " + defaultFloatFormat(graph["Degrees"]["rho CI"][1]) + ")";
+  }
+
+  //d3.select ("#histogram_label").html(label);
+  $('#indicator').hide();
+  $('#results').show();
+}
+
+function hivtrace_render_histogram (counts, fit, w, h, id) {
+    var margin = {top: 10, right: 30, bottom: 30, left: 30},
+                width = w - margin.left - margin.right,
+                height = h - margin.top - margin.bottom;
+    
+    var x = d3.scale.linear()
+            .domain([0, counts.length+1])
+            .range([0, width]);
+            
+    var y = d3.scale.log()
+            .domain ([1, d3.max (counts)])
+            .range  ([height,0]);
+            
+    var total = d3.sum(counts);
+
+    var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom");
+        
+    var histogram_svg = d3.select(id).selectAll("svg");
+
+    if (histogram_svg != undefined) {
+        histogram_svg.remove();
+    }
+    
+    histogram_svg = d3.select(histogram_tag).append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    
+    
+    var bar = histogram_svg.selectAll(".bar")
+    .data(counts.map (function (d) { return d+1; }))
+    .enter().append("g")
+    .attr("class", "bar")
+    .attr("transform", function(d,i) { return "translate(" + x(i+1) + "," + y(d) + ")"; });
+      
+    bar.append("rect")
+        .attr("x", 1)
+        .attr("width", function (d,i) {return x(i+2) - x(i+1) - 1;})
+        .attr("height", function(d) { return height - y(d); })
+        .append ("title").text (function (d,i) { return "" + counts[i] + " nodes with degree " + (i+1);});
+
+  if (fit != undefined) {    
+      var fit_line = d3.svg.line()
+          .interpolate("linear")
+          .x(function(d,i) { return x(i+1) + (x(i+1)-x(i))/2; })
+          .y(function(d) { return y(1+d*total); });
+      histogram_svg.append("path").datum(fit)
+        .attr("class", "line")
+        .attr("d", function(d) { return fit_line(d); });
+  }
+    
+    histogram_svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);    
+}
+
+$(document).ready(function(){
   if(!in_progress()) {
     initialize_cluster_network_graphs();
   }
@@ -554,3 +883,221 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
   }
   initial_json_load();       
 }
+$(document).ready(function(){
+  setupJob();
+});
+
+var intervalID = window.setInterval(getTime, 1000);
+
+function pad (s) {
+  if(s.length == 1) {
+    return "0" + s;
+  }
+  return s;
+}
+
+function getTime() {
+
+  var created_time = new Date($('#job-timer').data('created') * 1000);
+  var time_difference = new Date() - created_time;
+  var hh = pad(String(Math.floor(time_difference / 1000 / 60 / 60)));
+  time_difference -= hh * 1000 * 60 * 60;
+  var mm = pad(String(Math.floor(time_difference / 1000 / 60)));
+  time_difference -= mm * 1000 * 60;
+  var ss = pad(String(Math.floor(time_difference / 1000)));
+  $('#job-timer .time').html(hh + ':'+ mm  + ':'+ ss);
+}
+
+function setupJob() {
+
+  var hivtraceid = $('#hiv-cluster-report').data('hivtraceid')
+  var socket_address = $('#hiv-cluster-report').data('socket-address')
+  var socket = io.connect(socket_address);
+
+  var changeStatus = function (data) {
+    $('.progress .progress-bar').width(data.percentage);
+
+    //data is index and message
+    $('.job-status').each(function(index) {
+      if($(this).data('index') < data.index ) {
+        $(this).attr('class', 'job-status alert alert-success')
+      } else if ($(this).data("index") == data.index) {
+        $(this).attr('class', 'job-status alert alert-warning')
+      }
+    });
+  }
+
+  socket.on('connected', function () {
+    // Start job
+    socket.emit('acknowledged', { id: hivtraceid });
+  });
+
+  // Status update
+  socket.on('status update', function (data) {
+    changeStatus(data);
+  });
+
+  // Status update
+  socket.on('completed', function (data) {
+    $('.progress .progress-bar').width('100%');
+
+    $('.job-status').each(function(index) {
+      $(this).attr('class', 'alert alert-success')
+    });
+
+    $.get(hivtraceid + '/results', function(results) {
+      //Do an AJAX request to get results
+      $('#hiv-cluster-report').html(results);
+      initialize_cluster_network_graphs();
+      downloadExport();
+    });
+
+    socket.disconnect();
+
+  });
+
+  // Error
+  socket.on('error', function (data) {
+    jQuery('<div/>', {
+          class: 'alert alert-danger',
+          html : 'There was an error! Please try again. Message : <code>' + data.msg + '</code>'
+      }).insertAfter($('.page-header'));
+
+      socket.disconnect();
+  });
+}
+
+
+function compute_shortest_paths(cluster, edges) {
+
+  // Floyd-Warshall implementation
+  var distances = {}
+
+  var nodes =  cluster.nodes;
+  node_ids = []
+  nodes.forEach(function(n) { node_ids.push(n.id)});
+
+  // Step 0: We need to filter out edges that only exist within the cluster
+  // we're looking at
+  var new_edges = edges.filter(function(n) { 
+    if( node_ids.indexOf(n.sequences[0]) != -1 && node_ids.indexOf(n.sequences[1]) != -1) {
+      return true;
+    } else {
+      return false;
+    }
+   });
+
+  // Step 1: Initialize distances
+  nodes.forEach(function(n) { distances[n.id] = {} });
+  nodes.forEach(function(n) { distances[n.id][n.id] = 0 });
+
+  // Step 2: Initialize distances with edge weights
+  new_edges.forEach(function(e){
+    distances[e.sequences[0]] = {};
+    distances[e.sequences[1]] = {};
+  });
+
+  new_edges.forEach(function(e){
+    distances[e.sequences[0]][e.sequences[1]] = 1;
+    distances[e.sequences[1]][e.sequences[0]] = 1;
+  });
+
+  // Step 3: Get shortest paths
+  nodes.forEach(function(k) {
+    nodes.forEach(function(i) {
+      nodes.forEach(function(j) {
+        if (i.id != j.id) {
+          var d_ik = distances[k.id][i.id];
+          var d_jk = distances[k.id][j.id];
+          var d_ij = distances[i.id][j.id];
+          if (d_ik != null &&  d_jk != null) {
+            d_ik += d_jk;
+            if ( d_ij == null || d_ij > d_ik ) {
+              distances[i.id][j.id] = d_ik;
+              distances[j.id][i.id] = d_ik;
+            }
+          }
+        }
+      });
+    });
+  });
+
+  return distances;
+
+}
+
+function compute_mean_path (cluster_id, nodes, edges, cluster_sizes) {
+
+  //TODO: Create a cluster attribute for the object to pass instead of an id
+
+  // Create a cluster object that is easy to deal with
+  var unique_clusters = d3.set(nodes.map(function(d) { return d.cluster })).values();
+  var cluster_map = {};
+  unique_clusters.map(function(d){ cluster_map[d] = {'size': 0, 'nodes': [] } });
+
+  //Add each node to the cluster
+  Object.keys(cluster_map).map(function(d){
+    cluster_map[d]['size'] = cluster_sizes[parseInt(d)-1];
+  });
+
+  nodes.map(function(d) { cluster_map[d.cluster]['nodes'].push(d) });
+
+  // Compute the shortst paths according to Floyd-Warshall algorithm
+  var distances = compute_shortest_paths(cluster_map[cluster_id], edges);
+
+  var path_sum = 0;
+
+  //Sum all the distances and divide by the number of nodes
+  Object.keys(distances).forEach( function(n) { 
+    var node = nodes.filter(function(a_node){return a_node.id==n})
+    Object.keys(distances[n]).forEach( function(k) {
+      path_sum += distances[n][k];
+    });
+  });
+
+  // Average Mean Path Calculation
+  // l = (sum(distances))/(N(N-1))
+  var node_len = cluster_map[cluster_id].nodes.length
+  var mean_path_length = path_sum / (node_len * (node_len - 1));
+  return mean_path_length;
+}
+
+function compute_node_mean_paths(nodes, edges) {
+  //TODO: Create a cluster attribute for the object to pass instead of an id
+  // Create a cluster object that is easy to deal with
+  var unique_clusters = d3.set(nodes.map(function(d) { return d.cluster })).values();
+  var cluster_map = {};
+  unique_clusters.map(function(d){ cluster_map[d] = {'size': 0, 'nodes': [] } });
+
+  ////Add each node to the cluster
+  //Object.keys(cluster_map).map(function(d){
+  //  cluster_map[d]['size'] = cluster_sizes[parseInt(d)-1];
+  //});
+
+
+  nodes.map(function(d) { cluster_map[d.cluster]['nodes'].push(d) });
+
+  Object.keys(cluster_map).forEach( function(cluster_map_index) {
+    // Compute the shortst paths according to Floyd-Warshall algorithm for each cluster
+    var distances = compute_shortest_paths(cluster_map[cluster_map_index], edges);
+
+    //Sum all the distances and divide by the number of nodes
+    Object.keys(distances).forEach( function(n) { 
+      var index=-1;
+      for(var x=0;x<nodes.length;x++) {
+        if(nodes[x].id===n) {
+          index=x;
+          break;
+        }
+      }
+      var node = nodes[index];
+      var path_sum = 0;
+      var adj_nodes = Object.keys(distances[n]).length;
+      Object.keys(distances[n]).forEach( function(k) {
+        path_sum += distances[n][k];
+      });
+      node.mean_path_length = path_sum / adj_nodes;
+    });
+  });
+}
+

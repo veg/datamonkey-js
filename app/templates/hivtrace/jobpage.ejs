@@ -32,8 +32,4 @@
 <%- include ../includes/footer.ejs %>
 <script src="/assets/js/socket.io.min.js"></script>
 <script src="http://d3js.org/d3.v3.js"></script>
-<script src="/assets/js/hivtrace/network_graph.js"></script>
-<% if (hivtrace.status != 'Aborted' && hivtrace.status != 'Completed') { %>
-<script src="/assets/js/hivtrace/network.js"></script>
-<% } %>
-<script src="/assets/js/hivtrace/exportcsv.js"></script>
+<script src="/assets/js/hivtrace.js"></script>
