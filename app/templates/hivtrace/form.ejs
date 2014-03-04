@@ -1,15 +1,11 @@
 <%- include ../includes/header.ejs %>
-<!--<a class="INFO" href="help/data.php">Preparing your data</a>&nbsp;-->
-<!--Examples:-->
-<!--<a class="INFO" href="data/Flu.fasta">Influenza A H5N1 hemagluttinin</a>&nbsp;-->
-<!--<a class="INFO" href="data/pol.nex">HIV-1 pol (recombinant data)</a>-->
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <div class="container">
   <h2 class="page-header">HIV TRACE</h2>
 
   <div id="form-error" class="alert alert-danger" <%if (typeof errors == "undefined") { %>style="display: none;"<% } %>>
       There were errors with your request. Errors are highlighted in red.
   </div>
+
   <div class="nav nav-list pull-right"><a href="/help#hivtrace-overview" target="_blank">I'm confused</a></div>
   <div class="row col-lg-9">
       <form role="form" class="form-horizontal" name="uploadform" enctype="multipart/form-data" action="/hivtrace" method="post">

@@ -28,7 +28,6 @@
 //Routes
 
 module.exports = function(app){
-
   // HOME PAGE
   home = require( ROOT_PATH + '/app/routes/home');
   app.get('/', home.homePage);
@@ -45,13 +44,12 @@ module.exports = function(app){
   app.put('/msa/:id', msa.updateMsa);
   app.delete('/msa/:id', msa.deleteMsa);
 
-  // ANALYSIS ROUTES
-  analysis = require( ROOT_PATH + '/app/routes/analysis');
-  app.get('/msa/:msaid/createanalysis', analysis.createForm);
-  app.post('/msa/:msaid/:type', analysis.invokeJob);
-  app.get('/msa/:msaid/:type/:analysisid', analysis.getAnalysis);
-  app.get('/msa/:msaid/:type/:analysisid/status', analysis.queryStatus);
-  app.delete('/msa/:msaid/:type/:analysisid', analysis.deleteAnalysis);
+  // PRIME ROUTES
+  prime = require( ROOT_PATH + '/app/routes/prime');
+  app.get('/msa/:msaid/prime', prime.createForm);
+  app.post('/msa/:msaid/prime', prime.invokeJob);
+  app.get('/msa/:msaid/prime/:analysisid', prime.getPrime);
+  app.delete('/msa/:msaid/prime/:analysisid', prime.deletePrime);
 
   // STATS ROUTES
   stats = require( ROOT_PATH + '/app/routes/stats');
@@ -64,4 +62,3 @@ module.exports = function(app){
   app.get('/hivtrace/:id', hivtrace.jobPage);
   app.get('/hivtrace/:id/results', hivtrace.results);
 }
-

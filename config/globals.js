@@ -411,7 +411,6 @@ var types = {
   "bgm"            : bgm,
   "prime"          : prime,
   "scueal"         : scueal,
-  "toggle"         : toggle
 };
 
 define("types", types);

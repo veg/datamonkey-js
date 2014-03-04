@@ -28,8 +28,7 @@
 */
 
 
-var dpl     = require( ROOT_PATH + '/lib/datamonkey-pl.js'),
-    error   = require( ROOT_PATH + '/lib/error.js'),
+var error   = require( ROOT_PATH + '/lib/error.js'),
     helpers = require(ROOT_PATH + '/lib/helpers.js'),
     globals = require(ROOT_PATH + '/config/globals.js'),
     fs      = require('fs');
@@ -86,35 +85,6 @@ exports.uploadMsa = function (req, res) {
     return;
   }
 
-  //Upload to Perl to get all other information
-  dpl.uploadToPerl(sequence_alignment, function(err, upload_file) {
-
-    if(err) {
-      helpers.logger.error("Error uploading file: " + err);
-      res.json(500, error.errorResponse(err));
-    }
-
-    if(!upload_file) {
-      err = "Unexpected error occured: Empty sequence alignment";
-      helpers.logger.error(err);
-      res.json(500, error.errorResponse(err));
-    }
-
-    upload_file.save(function (err, result) {
-      if (err) {
-        res.json(500, error.errorResponse(err));
-      } else {
-        res.format({
-          html: function(){
-            res.redirect('./' + upload_file.upload_id);
-          },
-          json: function(){
-            res.json(200, details);
-          }
-        });
-      }
-    });
-  });
 }
 
 // app.get('/msa/:id', msa.findById);
@@ -133,7 +103,6 @@ exports.findById = function (req, res) {
       item.AnalysisCount(function(type_counts) {
 
         var ftc = []
-
         for(var t in globals.types) {
           ftc[t] = {
             "full_name" : globals.types[t].full_name,
