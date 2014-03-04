@@ -1,4 +1,4 @@
-function render_histogram(graph, histogram_tag) {  
+function render_histogram(graph, histogram_tag, histogram_label) {  
   var defaultFloatFormat = d3.format(",.2f");
   var histogram_w = 300,
   histogram_h = 300;
@@ -15,12 +15,13 @@ function render_histogram(graph, histogram_tag) {
         label += " (95% CI " + defaultFloatFormat(graph["Degrees"]["rho CI"][0]) + " - " + defaultFloatFormat(graph["Degrees"]["rho CI"][1]) + ")";
   }
 
-  //d3.select ("#histogram_label").html(label);
-  $('#indicator').hide();
-  $('#results').show();
+  d3.select (histogram_label).html(label);
+  //$('#indicator').hide();
+  //$('#results').show();
+
 }
 
-function hivtrace_render_histogram (counts, fit, w, h, id) {
+function hivtrace_render_histogram(counts, fit, w, h, id) {
     var margin = {top: 10, right: 30, bottom: 30, left: 30},
                 width = w - margin.left - margin.right,
                 height = h - margin.top - margin.bottom;
@@ -79,4 +80,3 @@ function hivtrace_render_histogram (counts, fit, w, h, id) {
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis);    
 }
-

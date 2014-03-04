@@ -130,4 +130,3 @@ function compute_node_mean_paths(nodes, edges) {
     });
   });
 }
-

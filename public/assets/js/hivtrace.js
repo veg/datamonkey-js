@@ -85,312 +85,7 @@ function createButtonsFromAttributes() {
   });
 
 }
-function computeNodeDegrees (nodes, edges) {
-  for (var n in nodes) {
-    nodes[n].degree = 0;
-  }
-  
-  for (var e in edges) {
-    nodes[edges[e].source].degree++;
-    nodes[edges[e].target].degree++;
-  }
-}
-
-function computeMeanPathLengths(nodes, edges) {
-  compute_node_mean_paths(nodes, edges);
-}
-
-function convertToCSV(obj, callback) {
-  //Translate nodes to rows, and then use d3.format
-  computeNodeDegrees(obj.Nodes, obj.Edges)
-  computeMeanPathLengths(obj.Nodes, obj.Edges)
-  var node_array = obj.Nodes.map(function(d) {return [d.id, d.cluster, d.degree, d.mean_path_length]});
-  node_array.unshift(['ID', 'Cluster', 'Degree', 'Mean Path Length'])
-  node_csv = d3.csv.format(node_array); 
-  callback(node_csv);
-}
-$(document).ready(function(){
-});
-
-$("form").submit(function() {
-
-  //Trigger elements
-  $( "input[name='distance_threshold']" ).trigger('focusout');
-  $( "input[name='min_overlap']" ).trigger('focusout');
-  validateFile();
-
-
-  $(this).next('.help-block').remove();
-
-  if($(this).find(".has-error").length > 0) {
-    $("#form-has-error").show();
-    return false;
-  }
-
-  $("#form-has-error").hide();
-  return true;
-
-});
-
-var validateFile = function() {
-
-  var selector = "#trace-upload";
-  var input_field = "input[type='file']";
-  $(selector).removeClass('has-error');
-
-
-  $(selector).next('.help-div').remove();
-
-  // Ensure that file is not empty
-  if($(input_field).val().length == 0) {
-
-    $(selector).addClass('has-error');
-
-    var help_div = jQuery('<div/>', {
-          class: 'col-lg-9',
-      });
-
-    var help_span = jQuery('<span/>', {
-          class: 'help-block',
-          text : 'Field is empty'
-      });
-
-      $(selector).append(help_div.append(help_span));
-
-    return false;
-  } 
-
-  $(selector).removeClass('has-error');
-  return true;
-}
-
-// Validate an element that has min and max values
-var validateElement = function () {
-
-  // Remove any non-numeric characters
-  $(this).val($(this).val().replace(/[^\.0-9]/g, ''));
-
-  // Check that it is not empty
-  if($(this).val().length == 0) {
-    // Empty 
-    $(this).next('.help-block').remove();
-    $(this).parent().removeClass('has-success');
-    $(this).parent().addClass('has-error');
-
-    jQuery('<span/>', {
-          class: 'help-block',
-          text : 'Field is empty'
-      }).insertAfter($(this));
-
-  } else if($(this).val() < $(this).data('min')) {
-
-    // We're being cheated
-    $(this).next('.help-block').remove();
-    $(this).parent().removeClass('has-success');
-    $(this).parent().addClass('has-error');
-
-    jQuery('<span/>', {
-          class: 'help-block',
-          text : 'Parameter must be between ' + $(this).data('min') + ' and ' + $(this).data('max')
-      }).insertAfter($(this));
-
-  } else if($(this).val() > $(this).data('max')) {
-
-    // They're being too kind
-    $(this).next('.help-block').remove();
-    $(this).parent().removeClass('has-success');
-    $(this).parent().addClass('has-error');
-    jQuery('<span/>', {
-          class: 'help-block',
-          text : 'Parameter must be between ' + $(this).data('min') + ' and ' + $(this).data('max')
-      }).insertAfter($(this));
-
-  } else {
-    // Give them green. They like that.
-    $(this).parent().removeClass('has-error');
-    $(this).parent().addClass('has-success');
-    $(this).next('.help-block').remove();
-  }
- 
-}
-
-function ValidateEmail(email) {
-
-  if($(this).find("input[name='receive_mail']")[0].checked) {
-    var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-    if(regex.test($(this).find("input[name='mail']").val())) {
-       // Give them green. They like that.
-      $(this).removeClass('has-error');
-      $(this).addClass('has-success');
-      $(this).next('.help-block').remove();
-    } else {
-      $(this).next('.help-block').remove();
-      $(this).removeClass('has-error');
-      $(this).removeClass('has-success');
-      $(this).addClass('has-error');
-      var span = jQuery('<span/>', {
-            class: 'help-block col-lg-9 pull-right',
-            text : 'Invalid Email'
-        }).insertAfter($(this));
-    }
-  } else {
-    $(this).removeClass('has-error');
-    $(this).removeClass('has-success');
-    $(this).next('.help-block').remove();
-  }
-}
-
-
-$( "input[name='distance_threshold']" ).focusout(validateElement);
-$( "input[name='min_overlap']" ).focusout(validateElement);
-$( ".mail-group" ).change(ValidateEmail);
-
-function render_histogram(graph, histogram_tag) {  
-  var defaultFloatFormat = d3.format(",.2f");
-  var histogram_w = 300,
-  histogram_h = 300;
-
-  hivtrace_render_histogram(graph["Degrees"]["Distribution"], 
-                            graph["Degrees"]["fitted"], 
-                            histogram_w, 
-                            histogram_h, 
-                            histogram_tag);
-  var label = "Network degree distribution is best described by the <strong>" + graph["Degrees"]["Model"] + "</strong> model, with &rho; of " + 
-             defaultFloatFormat(graph["Degrees"]["rho"]);
-             
-  if (graph["Degrees"]["rho CI"] != undefined) {
-        label += " (95% CI " + defaultFloatFormat(graph["Degrees"]["rho CI"][0]) + " - " + defaultFloatFormat(graph["Degrees"]["rho CI"][1]) + ")";
-  }
-
-  //d3.select ("#histogram_label").html(label);
-  $('#indicator').hide();
-  $('#results').show();
-}
-
-function hivtrace_render_histogram (counts, fit, w, h, id) {
-    var margin = {top: 10, right: 30, bottom: 30, left: 30},
-                width = w - margin.left - margin.right,
-                height = h - margin.top - margin.bottom;
-    
-    var x = d3.scale.linear()
-            .domain([0, counts.length+1])
-            .range([0, width]);
-            
-    var y = d3.scale.log()
-            .domain ([1, d3.max (counts)])
-            .range  ([height,0]);
-            
-    var total = d3.sum(counts);
-
-    var xAxis = d3.svg.axis()
-        .scale(x)
-        .orient("bottom");
-        
-    var histogram_svg = d3.select(id).selectAll("svg");
-
-    if (histogram_svg != undefined) {
-        histogram_svg.remove();
-    }
-    
-    histogram_svg = d3.select(histogram_tag).append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-    
-    
-    var bar = histogram_svg.selectAll(".bar")
-    .data(counts.map (function (d) { return d+1; }))
-    .enter().append("g")
-    .attr("class", "bar")
-    .attr("transform", function(d,i) { return "translate(" + x(i+1) + "," + y(d) + ")"; });
-      
-    bar.append("rect")
-        .attr("x", 1)
-        .attr("width", function (d,i) {return x(i+2) - x(i+1) - 1;})
-        .attr("height", function(d) { return height - y(d); })
-        .append ("title").text (function (d,i) { return "" + counts[i] + " nodes with degree " + (i+1);});
-
-  if (fit != undefined) {    
-      var fit_line = d3.svg.line()
-          .interpolate("linear")
-          .x(function(d,i) { return x(i+1) + (x(i+1)-x(i))/2; })
-          .y(function(d) { return y(1+d*total); });
-      histogram_svg.append("path").datum(fit)
-        .attr("class", "line")
-        .attr("d", function(d) { return fit_line(d); });
-  }
-    
-    histogram_svg.append("g")
-        .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
-        .call(xAxis);    
-}
-
-$(document).ready(function(){
-  if(!in_progress()) {
-    initialize_cluster_network_graphs();
-  }
-});
-
-function in_progress() {
-  return $('.progress').length > 0;
-}
-
-var initialize_cluster_network_graphs = function () {
-
-  var network_container     = '#network_tag',
-      network_status_string = '#network_status_string';
-      histogram_tag         = '#histogram_tag',
-      histogram_label       = '#histogram_label';
-
-
-  //Initialize clusternetworkgraph with json url
-  var json_url = $(network_container).data('url');
-  d3.json(json_url, function(graph) {
-    clusterNetworkGraph(graph, network_container, network_status_string);
-    render_histogram(graph, histogram_tag);
-    convertToCSV(graph, function(data) {
-      if (data != null) {
-        var pom = document.createElement('a');
-        pom.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(data));
-        pom.setAttribute('download', 'export.csv');
-        pom.className = 'btn btn-default btn-lg';
-        pom.innerHTML = '<span class="glyphicon glyphicon-floppy-save"></span> Export to CSV';
-        pom.click();
-        $('#csvexport').append(pom);
-      }
-    });
-  });
-
-  if($('#lanl-trace-results').length > 0) {
-
-    // Only if the comparison was done
-    var lanl_network_container     = '#lanl_network_tag',
-        lanl_network_status_string = '#lanl_network_status_string';
-        lanl_histogram_tag         = '#lanl_histogram_tag',
-        lanl_histogram_label       = '#lanl_histogram_label';
-
-    d3.json(json_url, function(graph) {
-      clusterNetworkGraph(graph, lanl_network_container, lanl_network_status_string);
-      render_histogram(graph, lanl_histogram_tag);
-      convertToCSV(graph, function(data) {
-        if (data != null) {
-          var pom = document.createElement('a');
-          pom.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(data));
-          pom.setAttribute('download', 'export.csv');
-          pom.className = 'btn btn-default btn-lg';
-          pom.innerHTML = '<span class="glyphicon glyphicon-floppy-save"></span> Export to CSV';
-          pom.click();
-          $('#csvexport-lanl').append(pom);
-        }
-      });
-    });
-  }
-}
-
-
-var clusterNetworkGraph = function (json, network_container, network_status_string, 
+;var clusterNetworkGraph = function (json, network_container, network_status_string, 
                                 histogram_tag, histogram_label) {
 
   var w = 850,
@@ -398,12 +93,12 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
       popover = null,
       cluster_sizes,
       cluster_mapping = {},
-      l_scale = 5000, // link scale
-      graph = json,          // the raw JSON network object
-      nodes,          // node objects filtered down to contain only the connected ones
-      edges,          // edges between nodes
-      clusters,       // cluster 'nodes', used either as fixed cluster anchors, or 
-                      // to be a placeholder for the cluster
+      l_scale = 5000,   // link scale
+      graph = json,     // the raw JSON network object
+      nodes,            // node objects filtered down to contain only the connected ones
+      edges,            // edges between nodes
+      clusters,         // cluster 'nodes', used either as fixed cluster anchors, or 
+                        // to be a placeholder for the cluster
       max_points_to_render = 400,
       popover_html = "<div class='btn-group btn-group-vertical'>\
       <button class='btn btn-link btn-mini' type='button' id = 'cluster_expand_button'>Expand cluster</button>\
@@ -883,7 +578,305 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
   }
   initial_json_load();       
 }
-$(document).ready(function(){
+;function computeNodeDegrees (nodes, edges) {
+  for (var n in nodes) {
+    nodes[n].degree = 0;
+  }
+  
+  for (var e in edges) {
+    nodes[edges[e].source].degree++;
+    nodes[edges[e].target].degree++;
+  }
+}
+
+function computeMeanPathLengths(nodes, edges) {
+  compute_node_mean_paths(nodes, edges);
+}
+
+function convertToCSV(obj) {
+  //Translate nodes to rows, and then use d3.format
+  computeNodeDegrees(obj.Nodes, obj.Edges)
+  computeMeanPathLengths(obj.Nodes, obj.Edges)
+  var node_array = obj.Nodes.map(function(d) {return [d.id, d.cluster, d.degree, d.mean_path_length]});
+  node_array.unshift(['ID', 'Cluster', 'Degree', 'Mean Path Length'])
+  node_csv = d3.csv.format(node_array); 
+  return node_csv;
+}
+
+function exportCSVButton(graph, tag) {
+    var data = convertToCSV(graph);
+    if (data != null) {
+      var pom = document.createElement('a');
+      pom.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(data));
+      pom.setAttribute('download', 'export.csv');
+      pom.className = 'btn btn-default btn-lg';
+      pom.innerHTML = '<span class="glyphicon glyphicon-floppy-save"></span> Export to CSV';
+      pom.click();
+      $(tag).append(pom);
+    }
+}
+;$(document).ready(function(){
+});
+
+$("form").submit(function() {
+
+  //Trigger elements
+  $( "input[name='distance_threshold']" ).trigger('focusout');
+  $( "input[name='min_overlap']" ).trigger('focusout');
+  validateFile();
+
+
+  $(this).next('.help-block').remove();
+
+  if($(this).find(".has-error").length > 0) {
+    $("#form-has-error").show();
+    return false;
+  }
+
+  $("#form-has-error").hide();
+  return true;
+
+});
+
+var validateFile = function() {
+
+  var selector = "#trace-upload";
+  var input_field = "input[type='file']";
+  $(selector).removeClass('has-error');
+
+
+  $(selector).next('.help-div').remove();
+
+  // Ensure that file is not empty
+  if($(input_field).val().length == 0) {
+
+    $(selector).addClass('has-error');
+
+    var help_div = jQuery('<div/>', {
+          class: 'col-lg-9',
+      });
+
+    var help_span = jQuery('<span/>', {
+          class: 'help-block',
+          text : 'Field is empty'
+      });
+
+      $(selector).append(help_div.append(help_span));
+
+    return false;
+  } 
+
+  $(selector).removeClass('has-error');
+  return true;
+}
+
+// Validate an element that has min and max values
+var validateElement = function () {
+
+  // Remove any non-numeric characters
+  $(this).val($(this).val().replace(/[^\.0-9]/g, ''));
+
+  // Check that it is not empty
+  if($(this).val().length == 0) {
+    // Empty 
+    $(this).next('.help-block').remove();
+    $(this).parent().removeClass('has-success');
+    $(this).parent().addClass('has-error');
+
+    jQuery('<span/>', {
+          class: 'help-block',
+          text : 'Field is empty'
+      }).insertAfter($(this));
+
+  } else if($(this).val() < $(this).data('min')) {
+
+    // We're being cheated
+    $(this).next('.help-block').remove();
+    $(this).parent().removeClass('has-success');
+    $(this).parent().addClass('has-error');
+
+    jQuery('<span/>', {
+          class: 'help-block',
+          text : 'Parameter must be between ' + $(this).data('min') + ' and ' + $(this).data('max')
+      }).insertAfter($(this));
+
+  } else if($(this).val() > $(this).data('max')) {
+
+    // They're being too kind
+    $(this).next('.help-block').remove();
+    $(this).parent().removeClass('has-success');
+    $(this).parent().addClass('has-error');
+    jQuery('<span/>', {
+          class: 'help-block',
+          text : 'Parameter must be between ' + $(this).data('min') + ' and ' + $(this).data('max')
+      }).insertAfter($(this));
+
+  } else {
+    // Give them green. They like that.
+    $(this).parent().removeClass('has-error');
+    $(this).parent().addClass('has-success');
+    $(this).next('.help-block').remove();
+  }
+ 
+}
+
+function ValidateEmail(email) {
+
+  if($(this).find("input[name='receive_mail']")[0].checked) {
+    var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    if(regex.test($(this).find("input[name='mail']").val())) {
+       // Give them green. They like that.
+      $(this).removeClass('has-error');
+      $(this).addClass('has-success');
+      $(this).next('.help-block').remove();
+    } else {
+      $(this).next('.help-block').remove();
+      $(this).removeClass('has-error');
+      $(this).removeClass('has-success');
+      $(this).addClass('has-error');
+      var span = jQuery('<span/>', {
+            class: 'help-block col-lg-9 pull-right',
+            text : 'Invalid Email'
+        }).insertAfter($(this));
+    }
+  } else {
+    $(this).removeClass('has-error');
+    $(this).removeClass('has-success');
+    $(this).next('.help-block').remove();
+  }
+}
+
+
+$( "input[name='distance_threshold']" ).focusout(validateElement);
+$( "input[name='min_overlap']" ).focusout(validateElement);
+$( ".mail-group" ).change(ValidateEmail);
+
+;function render_histogram(graph, histogram_tag, histogram_label) {  
+  var defaultFloatFormat = d3.format(",.2f");
+  var histogram_w = 300,
+  histogram_h = 300;
+
+  hivtrace_render_histogram(graph["Degrees"]["Distribution"], 
+                            graph["Degrees"]["fitted"], 
+                            histogram_w, 
+                            histogram_h, 
+                            histogram_tag);
+  var label = "Network degree distribution is best described by the <strong>" + graph["Degrees"]["Model"] + "</strong> model, with &rho; of " + 
+             defaultFloatFormat(graph["Degrees"]["rho"]);
+             
+  if (graph["Degrees"]["rho CI"] != undefined) {
+        label += " (95% CI " + defaultFloatFormat(graph["Degrees"]["rho CI"][0]) + " - " + defaultFloatFormat(graph["Degrees"]["rho CI"][1]) + ")";
+  }
+
+  d3.select (histogram_label).html(label);
+  //$('#indicator').hide();
+  //$('#results').show();
+
+}
+
+function hivtrace_render_histogram(counts, fit, w, h, id) {
+    var margin = {top: 10, right: 30, bottom: 30, left: 30},
+                width = w - margin.left - margin.right,
+                height = h - margin.top - margin.bottom;
+    
+    var x = d3.scale.linear()
+            .domain([0, counts.length+1])
+            .range([0, width]);
+            
+    var y = d3.scale.log()
+            .domain ([1, d3.max (counts)])
+            .range  ([height,0]);
+            
+    var total = d3.sum(counts);
+
+    var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom");
+        
+    var histogram_svg = d3.select(id).selectAll("svg");
+
+    if (histogram_svg != undefined) {
+        histogram_svg.remove();
+    }
+    
+    histogram_svg = d3.select(histogram_tag).append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    
+    
+    var bar = histogram_svg.selectAll(".bar")
+    .data(counts.map (function (d) { return d+1; }))
+    .enter().append("g")
+    .attr("class", "bar")
+    .attr("transform", function(d,i) { return "translate(" + x(i+1) + "," + y(d) + ")"; });
+      
+    bar.append("rect")
+        .attr("x", 1)
+        .attr("width", function (d,i) {return x(i+2) - x(i+1) - 1;})
+        .attr("height", function(d) { return height - y(d); })
+        .append ("title").text (function (d,i) { return "" + counts[i] + " nodes with degree " + (i+1);});
+
+  if (fit != undefined) {    
+      var fit_line = d3.svg.line()
+          .interpolate("linear")
+          .x(function(d,i) { return x(i+1) + (x(i+1)-x(i))/2; })
+          .y(function(d) { return y(1+d*total); });
+      histogram_svg.append("path").datum(fit)
+        .attr("class", "line")
+        .attr("d", function(d) { return fit_line(d); });
+  }
+    
+    histogram_svg.append("g")
+        .attr("class", "x axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xAxis);    
+}
+;$(document).ready(function(){
+  if(!in_progress()) {
+    initialize_cluster_network_graphs();
+  }
+});
+
+function in_progress() {
+  return $('.progress').length > 0;
+}
+
+var initialize_cluster_network_graphs = function () {
+
+  var network_container     = '#network_tag',
+      network_status_string = '#network_status_string';
+      histogram_tag         = '#histogram_tag',
+      histogram_label       = '#histogram_label',
+      csvexport_label       = '#csvexport';
+
+
+  //Initialize clusternetworkgraph with json url
+  var json_url = $(network_container).data('url');
+  d3.json(json_url, function(graph) {
+    clusterNetworkGraph(graph, network_container, network_status_string);
+    exportCSVButton(graph, csvexport_label);
+    render_histogram(graph, histogram_tag, histogram_label);
+  });
+
+  if($('#lanl-trace-results').length > 0) {
+
+    // Only if the comparison was done
+    var lanl_network_container     = '#lanl_network_tag',
+        lanl_network_status_string = '#lanl_network_status_string';
+        lanl_histogram_tag         = '#lanl_histogram_tag',
+        lanl_histogram_label       = '#lanl_histogram_label',
+        lanl_csvexport_label       = '#csvexport-lanl';
+
+    d3.json(json_url, function(graph) {
+      clusterNetworkGraph(graph, lanl_network_container, lanl_network_status_string);
+      exportCSVButton(graph, lanl_csvexport_label);
+      render_histogram(graph, lanl_histogram_tag, lanl_histogram_label);
+    });
+  }
+}
+;$(document).ready(function(){
   setupJob();
 });
 
@@ -968,7 +961,7 @@ function setupJob() {
 }
 
 
-function compute_shortest_paths(cluster, edges) {
+;function compute_shortest_paths(cluster, edges) {
 
   // Floyd-Warshall implementation
   var distances = {}
@@ -1100,4 +1093,3 @@ function compute_node_mean_paths(nodes, edges) {
     });
   });
 }
-
