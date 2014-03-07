@@ -30,51 +30,88 @@ var querystring = require('querystring'),
     globals     = require( ROOT_PATH + '/config/globals.js'),
     mailer      = require( ROOT_PATH + '/lib/mailer.js'),
     helpers     = require( ROOT_PATH + '/lib/helpers.js'),
+    hpcsocket   = require( ROOT_PATH + '/lib/hpcsocket.js'),
     fs          = require('fs');
 
 var mongoose = require('mongoose'),
     Msa = mongoose.model('Msa'),
     Prime = mongoose.model('Prime');
 
-
+/**
+ * Displays a form
+ * app.get('/msa/:msaid/prime', prime.createForm)
+ */
 exports.createForm = function(req, res) {
   var upload_id = req.params.msaid;
-
   Msa.findOne({upload_id : upload_id}, function (err, uploadfile) {
     if (err || !uploadfile) {
       res.json(500, error.errorResponse('There is no sequence with id of ' + upload_id));
     } else {
       var ftc = []
-      console.log(uploadfile);
-      res.render('analysis/prime.ejs', { 'uploadfile' : uploadfile});
+      res.render('analysis/prime/form.ejs', { 'uploadfile' : uploadfile});
     }
   });
 }
 
-exports.invokeJob = function(req, res) {
+/**
+ * Handles a job request by the user
+ * app.post('/msa/:msaid/prime', prime.invokePrime);
+ */
+exports.invokePrime = function(req, res) {
 
-  // Start job and go to analysis id page
-
-  var type =  req.params.type;
-
-  var postdata = req.query;
+  var prime = new Prime;
+  var postdata = req.body;
   var upload_id =  req.params.msaid;
 
-  Msa.findOne({ 'upload_id' : upload_id }, function(err, msa) {
+  console.log(postdata);
 
+  prime.property_choice = Number(postdata.property_choice);
+  prime.treemode        = postdata.treemode;
+  prime.status          = prime.status_stack[0];
+
+  // Find the correct multiple sequence alignment to act upon
+  Msa.findOne({ 'upload_id' : upload_id }, function(err, msa) {
     var callback = function(err,result) {
       var num = 0;
       var highest_countid = 1;
-
       if(err) {
         res.json(500, error.errorResponse(err));
-      }
+      } else {
+        if(result != '' &&  result != null) {
+          console.log(result);
+          num = result.id;
+        }
 
-      if(result != '' && result != null) {
-        num = result.id;
-        highest_countid = result.id + 1;
+        highest_countid = num + 1;
+        prime.save(function (err, result) {
+          if(err) {
+            // Redisplay form with errors
+            console.log(err);
+            res.format({
+              html: function() {
+                res.render('analysis/prime/form.ejs', {'errors': err.errors,
+                           'uploadfile' : msa});
+              },
+              json: function() {
+                // Save PRIME analysis
+                res.json(200, {'msg': 'bad job'});
+              }
+            });
+          // Successful upload, spawn job
+          } else {
+            var jobproxy = new hpcsocket.HPCSocket(result);
+            res.format({
+              html: function() {
+                res.redirect('msa/' + msa.upload_id + '/prime/' + result._id);
+              },
+              json: function() {
+                // Save PRIME analysis
+                res.json(200, {'msg': 'good job'});
+              }
+            });
+          }
+        });
       }
-      res.json(200, {'msg': 'good job'});
     }
 
     //Get count of this analysis
@@ -87,39 +124,82 @@ exports.invokeJob = function(req, res) {
 
 }
 
+/**
+ * Displays id page for analysis
+ * app.get('/msa/:msaid/prime/:primeid', prime.getPrime);
+ */
 exports.getPrime = function(req, res) {
+
   // Find the analysis
   // Return its results
-  var type =  req.params.type;
+  var prime = new Prime;
 
   var upload_id = req.params.upload_id,
-      analysisid = req.params.analysisid;
+      primeid = req.params.primeid;
+
 
   //Return all results
-  Prime.findOne({upload_id : upload_id, id : analysisid}, function(err, item) {
+  Prime.findOne({_id : primeid}, function(err, item) {
     if (err || !item ) {
       res.json(500, error.errorResponse('Item not found'));
     } else {
+      // Should return results page
       res.json(item);
+    }
+  });
+
+}
+
+/**
+ * Displays id page for analysis
+ * app.get('/msa/:msaid/prime/:primeid/status', prime.getStatus);
+ */
+exports.getStatus = function(req, res) {
+  // Find the analysis
+  // Return its results
+  var prime = new Prime;
+
+  var upload_id = req.params.upload_id,
+      primeid = req.params.primeid;
+
+  //Return all results
+  Prime.findOne({_id : primeid}, function(err, item) {
+    if (err || !item ) {
+      res.json(500, error.errorResponse('Item not found'));
+    } else {
+      console.log(item);
+      res.format({
+        html: function() {
+          res.render('analysis/prime/status.ejs', { 'prime' : item, socket_addr: 'http://' + setup.host + ':' + setup.socket_port});
+        },
+        json: function() {
+          // Save PRIME analysis
+          res.json(item.status);
+        }
+      });
     }
   });
 }
 
+/**
+ * Deletes analysis
+ * app.delete('/msa/:msaid/prime/:primeid', prime.deletePrime);
+ */
 exports.deletePrime = function(req, res) {
   // Find the analysis
   // Return its results
-  var type =  req.params.type;
+  var prime = new Prime;
 
   var upload_id = req.params.upload_id,
-      analysisid = req.params.analysisid;
+      prime_id = req.params.primeid;
 
   //Return all results
-  Prime.findOneAndRemove({upload_id : upload_id, id : analysisid}, 
+  Prime.findOneAndRemove({upload_id : upload_id, id : primeid}, 
                    function(err, item) {
     if (err || !item) {
-      res.json(500, error.errorResponse('Item not found: upload_id: ' + upload_id + ', id : ' + analysisid));
+      res.json(500, error.errorResponse('Item not found: upload_id: ' + upload_id + ', id : ' + prime_id));
     } else {
-      res.json({"success" : 1});
+      res.json({ "success" : 1 });
     }
   });
 }

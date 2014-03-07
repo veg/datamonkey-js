@@ -47,9 +47,10 @@ module.exports = function(app){
   // PRIME ROUTES
   prime = require( ROOT_PATH + '/app/routes/prime');
   app.get('/msa/:msaid/prime', prime.createForm);
-  app.post('/msa/:msaid/prime', prime.invokeJob);
-  app.get('/msa/:msaid/prime/:analysisid', prime.getPrime);
-  app.delete('/msa/:msaid/prime/:analysisid', prime.deletePrime);
+  app.post('/msa/:msaid/prime', prime.invokePrime);
+  app.get('/msa/:msaid/prime/:primeid/status', prime.getStatus);
+  app.get('/msa/:msaid/prime/:primeid', prime.getPrime);
+  app.delete('/msa/:msaid/prime/:primeid', prime.deletePrime);
 
   // STATS ROUTES
   stats = require( ROOT_PATH + '/app/routes/stats');

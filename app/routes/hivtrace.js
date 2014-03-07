@@ -56,7 +56,6 @@ exports.clusterForm = function (req, res) {
 exports.invokeClusterAnalysis = function (req, res) {
 
   var hivtrace = new HivTrace;
-
   var postdata = req.body;
 
   if(postdata.public_db_compare == 'yes') {
@@ -111,7 +110,6 @@ exports.invokeClusterAnalysis = function (req, res) {
                 res.render('hivtrace/form.ejs', {'errors': err.errors, 
                            'validators': HivTrace.validators()});
               },
-
               json: function(){
                 res.json(200, {'result': data});
               }
@@ -170,10 +168,8 @@ exports.jobPage = function (req, res) {
  * app.get('/hivtrace/:id/results', hivtrace.results);
  */
 exports.results = function (req, res) {
-  // HIV Cluster id
-
-  //TODO: Have an options for CSV
-
+  // HIV Cluster ID
+  // TODO: Have an options for CSV
   var id = req.params.id;
   HivTrace.findOne({_id: id}, 'tn93_summary tn93_results trace_results lanl_trace_results', function (err, hivtrace) {
     if (err || !hivtrace) {
@@ -189,7 +185,4 @@ exports.results = function (req, res) {
       });
     }
   });
-
 }
-
-

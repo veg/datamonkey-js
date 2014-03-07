@@ -1,0 +1,35 @@
+<%- include ../../includes/header.ejs %>
+<div class="container">
+  <h1 class="page-header">PRIME</h1>
+  <div id="prime-report" data-primeid="<%= prime._id %>" data-socket-address="<%= socket_addr %>">
+  <% if (prime.status == 'Aborted') { %>
+    <div class="alert alert-danger">There was an error! Please try again. <code><%= prime.error_message %></code></div>
+  <% } else if (prime.status != 'Completed') { %>  
+      <h2>Job in Progress</h2>
+      <div class="progress progress-striped active">
+        <div class="progress-bar" role="progressbar" aria-valuenow="<%= prime.percentage_complete %>" aria-valuemin="1" aria-valuemax="100" style="width: <%= prime.percentage_complete %>">
+          <span class="sr-only"><%= prime.percentage_complete %> Complete</span> 
+        </div>
+      </div>  
+      <div id="job-timer" data-created="<%= prime.timestamp %>" style="float:right"><h3>Runtime <span class="time">00:00:00</span><h3></div>
+      <div style="clear:both"></div>
+      <% for(var s = 0; s < prime.status_stack.length; s++) { %>
+        <div class="job-status alert 
+        <%if (prime.status_index < s) { %>  
+        alert-info
+        <% } else if (prime.status_index == s) { %>  
+        alert-warning
+        <% } else { %>
+        alert-success
+        <% } %>
+        "data-index=<%= s %>><%= prime.status_stack[s] %></div>
+      <% } %>
+  <% } else { %>
+    <%- include ./results.ejs %>
+  <% } %>
+  </div>
+</div>
+<%- include ../../includes/footer.ejs %>
+<script src="/assets/js/socket.io.min.js"></script>
+<script src="http://d3js.org/d3.v3.js"></script>
+<script src="/assets/js/datamonkey.js"></script>

@@ -33,49 +33,6 @@ function define(name, value) {
     });
 }
 
-//Data Type
-define("Codon",0);
-define("Nucleotide (DNA/RNA)",1);
-define("Protein",2);
-
-//Model Form
-define("AC",0);
-define("1",1);
-define("AT",2);
-define("CG",3);
-define("CT",4);
-define("GT",5);
-
-//Named Models
-define("F81",111111);
-define("HKY85",010010);
-define("TrN93",010040);
-define("REV",012345);
-
-//R-Options
-define("Neutral",0);
-define("User Supplied",1);
-define("Estimated",4);
-define("Estimated with CI",3);
-
-//ambChoice
-define("Averaged",0);
-define("Resolved",1);
-
-
-//Site-to-site rate variation
-define("None",0);
-define("General Discrete",1);
-define("Beta-Gamma",2);
-
-//Status Specific
-define("pollingdelay",1000);
-define("queue","queueing");
-define("running","running");
-define("finished","finished");
-define("cancelled","cancelled");
-
-
 var meme = {
   full_name             : "Mixed Effects Model of Episodic Diversifying Selection",
   help                  : "http://hyphy.org/w/index.php/API:MEME",
@@ -440,4 +397,5 @@ var genetic_code = {
 }
 
 define("genetic_code", genetic_code)
+
 
