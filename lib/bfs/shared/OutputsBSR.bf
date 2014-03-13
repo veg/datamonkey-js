@@ -1,0 +1,1 @@
+selLabelMatrix = {{"Codon","dS","dN","dN/dS","Normalized dN-dS","p-value"}};BSR_ResultTable 			= {};BSR_ResultTable 			["branch"]     = "STRING";rowHeaders = {{"mean","omega1","prob1","omega2","prob2","omega3","prob3","LRT","pvalue","holmpvalue"}};for (k = 0; k < Columns (rowHeaders); k+=1){	BSR_ResultTable [rowHeaders[k]] = "REAL";}

@@ -63,8 +63,6 @@ exports.invokePrime = function(req, res) {
   var postdata = req.body;
   var upload_id =  req.params.msaid;
 
-  console.log(postdata);
-
   prime.property_choice = Number(postdata.property_choice);
   prime.treemode        = postdata.treemode;
   prime.status          = prime.status_stack[0];
@@ -86,7 +84,6 @@ exports.invokePrime = function(req, res) {
         prime.save(function (err, result) {
           if(err) {
             // Redisplay form with errors
-            console.log(err);
             res.format({
               html: function() {
                 res.render('analysis/prime/form.ejs', {'errors': err.errors,
@@ -99,7 +96,11 @@ exports.invokePrime = function(req, res) {
             });
           // Successful upload, spawn job
           } else {
-            var jobproxy = new hpcsocket.HPCSocket(result);
+            // Send the MSA, and type
+            var jobproxy = new hpcsocket.HPCSocket({'msa': msa, 
+                                                    'analysis': result,
+                                                    'status_stack': result.status_stack,
+                                                    'type': 'prime'});
             res.format({
               html: function() {
                 res.redirect('msa/' + msa.upload_id + '/prime/' + result._id);
@@ -121,7 +122,6 @@ exports.invokePrime = function(req, res) {
     .select('id')
     .exec(callback)
   });
-
 }
 
 /**

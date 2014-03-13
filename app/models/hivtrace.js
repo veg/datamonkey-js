@@ -27,13 +27,13 @@
 
 */
 
-var setup     = require( ROOT_PATH + '/config/setup'),
-    hiv_setup = require( ROOT_PATH + '/config/hivtrace_globals');
+var setup     = require( '../../config/setup'),
+    hiv_setup = require( '../../config/hivtrace_globals');
 
 var mongoose = require('mongoose'),
     moment   = require('moment'),
     check    = require('validator').check,
-    globals  = require( ROOT_PATH + '/config/globals.js'),
+    globals  = require( '../../config/globals.js'),
     sanitize = require('validator').sanitize,
     spawn    = require('child_process').spawn;
 

@@ -28,72 +28,43 @@
 */
 
 
-var setup   = require('../config/utsetup');
-var fs = require('fs');
-
-ROOT_PATH = setup.rootpath;
-SPOOL_DIR = setup.spooldir;
-HOST      = setup.host;
-
-var mongoose = require('mongoose');
+var fs = require('fs'),
+    mongoose = require('mongoose'),
+    spawn = require('child_process').spawn
+    setup = require('../config/setup');
 
 // Bootstrap models
-var models_path = ROOT_PATH + '/app/models';
+var models_path = '../app/models';
 
 fs.readdirSync(models_path).forEach(function (file) {
   require(models_path+'/'+file);
 });
 
+
 var Msa     = mongoose.model('Msa'),
     should  = require('should');
 
-// app.post('/msa/:msaid/:type', analysis.invokeJob);
-describe('MSA Model tests', function() {
+describe('msa datareader validation', function() {
 
-  before(function(done) {
-    if (mongoose.connection.db) return done();
-    mongoose.connect(setup.database, done);
-  });
+  var Msa  = mongoose.model('Msa');
 
-  it('mail validation', function(done) {
+  it('run hyphy', function(done) {
+    var hyphy =  spawn(setup.hyphy,
+                      [setup.rootpath + "/lib/bfs/datareader.bf"]);
 
-    var Msa  = mongoose.model('Msa');
-
-    var msa  = new Msa({
-      msaid   : 'upload.dupe.1',
-      content : 'finished',
-      mailaddr : 'sweaver@ucsd.edu',
+    hyphy.stdout.on('data', function (data) {
+      console.log('' + data);
     });
 
-    var Analysis = mongoose.model('Meme');
-
-    var type = 'meme';
-    var meme = new Analysis({
-      msaid    : 'upload.958520133127023.1',
-      id       : 1,
-      type     : type,
-      status   : 'finished',
-    });
-
-    msa.save(function (err, result) {
+    hyphy.stdin.write(__dirname + '/res/HIV_gp121.nex\n');
+    hyphy.stdin.write('0');
+    hyphy.stdin.end();
+    hyphy.on('close', function (code) {
+      console.log('child process exited with code ' + code);
       done();
     });
   });
 
-  it('No dupes', function(done) {
-    var Msa  = mongoose.model('Msa');
-
-    var msa  = new Msa({
-      msaid   : 'upload.dupe.1',
-      content : 'finished'
-    });
-
-    msa.save(function (err, result) {
-      msa.save(function (err, result) {
-        err.code.should.equal(11000);
-        done();
-      });
-    });
-  });
 });
+
 

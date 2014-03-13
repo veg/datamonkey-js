@@ -1,0 +1,52 @@
+BASE_CGI_URL_STRING  	     = "http://datamonkey-dev/cgi-bin/datamonkey/";
+BASE_DM_PATH 		           = "/var/lib/datamonkey/www/";
+BASE_HTML_URL_STRING 	     = "/spool/";
+BASEL_URL_STRING 	         = "http://datamonkey-dev/";
+BASE_OUTPUT_PATH	         = "/var/lib/datamonkey/www/spool/";
+BASE_CLUSTER_ACCESS_PATH   = "/var/lib/datamonkey/www/uploads/";
+BASE_LOG_FILES_PATH        = "/var/log/datamonkey/";
+LOG_SUMMARY_FILE           = BASE_LOG_FILES_PATH + "summary.log";
+
+maxDMSites			   = 12000;
+maxToggleSites		 = 50;
+
+
+
+maxSLACSize		     = 500;
+maxFELSize		     = 500;
+maxMEMESize			   = maxFELSize;
+maxPRIMESize		   = maxFELSize;
+maxFUBARSize		   = 5000;
+maxFADESize	       = maxFUBARSize;
+maxRELSize		     = 75;
+maxBSRSize			   = maxRELSize;
+maxGABranchSize		 = 30;
+maxBGMSize		     = maxSLACSize;
+maxASRSize		     = maxSLACSize;
+maxSBPSize		     = maxSLACSize;
+maxGARDSize		     = 300;
+maxSCUEALSize		   = 500;
+maxCMSSize		 	   = 120;
+maxEVFSize			   = 120;
+maxToggleSize		   = 150;
+maxDEPSSize		 	   = 100;
+maxUploadSize      = 5000;
+
+alignmentSizeLimits		 = {
+{"SLAC",""+maxSLACSize}
+{"FEL",""+maxFELSize}
+{"REL",""+maxRELSize}
+{"GA Branch",""+maxGABranchSize}
+{"BGM",""+maxBGMSize}
+{"SBP",""+maxSBPSize}
+{"GARD",""+maxGARDSize}
+{"CMS",""+maxCMSSize}
+{"EVF",""+maxEVFSize}
+{"TOGGLE",""+maxToggleSize}
+{"DEPS",""+ maxDEPSSize}
+{"BSR","" + maxBSRSize}
+{"MEME","" + maxMEMESize}
+{"FUBAR","" + maxFUBARSize}
+{"FADE","" + maxFADESize}
+{"PRIME","" + maxPRIMESize}
+};

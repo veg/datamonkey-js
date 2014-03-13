@@ -31,7 +31,7 @@
 var mongoose = require('mongoose'),
     moment   = require('moment'),
     check    = require('validator').check,
-    globals  = require( ROOT_PATH + '/config/globals.js'),
+    globals  = require('../../config/globals.js'),
     sanitize = require('validator').sanitize
 
 var Schema = mongoose.Schema,

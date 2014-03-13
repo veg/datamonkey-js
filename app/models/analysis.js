@@ -29,7 +29,7 @@
 
 
 var mongoose = require('mongoose'),
-    globals  = require( ROOT_PATH + '/config/globals.js'),
+    globals  = require( '../../config/globals.js'),
     moment   = require('moment'),
     extend   = require('mongoose-schema-extend');
 
@@ -56,7 +56,7 @@ AnalysisSchema.virtual('since_created').get(function () {
 
 AnalysisSchema.statics.jobs = function (cb) {
   this.find({ $or: [ { "status": globals.running }, 
-                        { "status": globals.queue} ] })
+                     { "status": globals.queue} ] })
                         .populate('upload_id')
                         .exec(function(err, items) {
                           cb(err, items)
