@@ -77,12 +77,12 @@ module.exports = app;
 
 // Set up socket.io server
 var jobproxy = require('./lib/hivtrace.js');
+
 io.sockets.on('connection', function (socket) {
   socket.emit('connected');
   socket.on('acknowledged', function (data) {
     //Create client socket
     var clientSocket = new jobproxy.ClientSocket(socket, data.id);
   });
-
 });
 

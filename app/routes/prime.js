@@ -42,10 +42,10 @@ var mongoose = require('mongoose'),
  * app.get('/msa/:msaid/prime', prime.createForm)
  */
 exports.createForm = function(req, res) {
-  var upload_id = req.params.msaid;
-  Msa.findOne({upload_id : upload_id}, function (err, uploadfile) {
+  var msaid = req.params.msaid;
+  Msa.findOne({_id : msaid}, function (err, uploadfile) {
     if (err || !uploadfile) {
-      res.json(500, error.errorResponse('There is no sequence with id of ' + upload_id));
+      res.json(500, error.errorResponse('There is no sequence with id of ' + msaid));
     } else {
       var ftc = []
       res.render('analysis/prime/form.ejs', { 'uploadfile' : uploadfile});
@@ -61,14 +61,14 @@ exports.invokePrime = function(req, res) {
 
   var prime = new Prime;
   var postdata = req.body;
-  var upload_id =  req.params.msaid;
+  var msaid =  req.params.msaid;
 
   prime.property_choice = Number(postdata.property_choice);
   prime.treemode        = postdata.treemode;
   prime.status          = prime.status_stack[0];
 
   // Find the correct multiple sequence alignment to act upon
-  Msa.findOne({ 'upload_id' : upload_id }, function(err, msa) {
+  Msa.findOne({ '_id' : msaid }, function(err, msa) {
     var callback = function(err,result) {
       var num = 0;
       var highest_countid = 1;
@@ -76,10 +76,8 @@ exports.invokePrime = function(req, res) {
         res.json(500, error.errorResponse(err));
       } else {
         if(result != '' &&  result != null) {
-          console.log(result);
           num = result.id;
         }
-
         highest_countid = num + 1;
         prime.save(function (err, result) {
           if(err) {
@@ -103,7 +101,7 @@ exports.invokePrime = function(req, res) {
                                                     'type': 'prime'});
             res.format({
               html: function() {
-                res.redirect('msa/' + msa.upload_id + '/prime/' + result._id);
+                res.redirect('msa/' + msa._id + '/prime/' + result._id);
               },
               json: function() {
                 // Save PRIME analysis
@@ -117,7 +115,7 @@ exports.invokePrime = function(req, res) {
 
     //Get count of this analysis
     Prime 
-    .findOne({ upload_id : msa._id })
+    .findOne({ _id : msa._id })
     .sort('-id')
     .select('id')
     .exec(callback)
@@ -134,7 +132,7 @@ exports.getPrime = function(req, res) {
   // Return its results
   var prime = new Prime;
 
-  var upload_id = req.params.upload_id,
+  var msaid = req.params.msaid,
       primeid = req.params.primeid;
 
 
@@ -159,7 +157,7 @@ exports.getStatus = function(req, res) {
   // Return its results
   var prime = new Prime;
 
-  var upload_id = req.params.upload_id,
+  var msaid = req.params.msaid,
       primeid = req.params.primeid;
 
   //Return all results
@@ -190,14 +188,14 @@ exports.deletePrime = function(req, res) {
   // Return its results
   var prime = new Prime;
 
-  var upload_id = req.params.upload_id,
+  var msaid = req.params.msaid,
       prime_id = req.params.primeid;
 
   //Return all results
-  Prime.findOneAndRemove({upload_id : upload_id, id : primeid}, 
+  Prime.findOneAndRemove({msaid : msaid, id : primeid}, 
                    function(err, item) {
     if (err || !item) {
-      res.json(500, error.errorResponse('Item not found: upload_id: ' + upload_id + ', id : ' + prime_id));
+      res.json(500, error.errorResponse('Item not found: msaid: ' + msaid + ', id : ' + prime_id));
     } else {
       res.json({ "success" : 1 });
     }

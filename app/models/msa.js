@@ -32,59 +32,40 @@ var mongoose = require('mongoose'),
     moment   = require('moment'),
     check    = require('validator').check,
     globals  = require('../../config/globals.js'),
+    spawn = require('child_process').spawn,
     sanitize = require('validator').sanitize
 
 var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
 var Msa = new Schema({
-    upload_id   : {type: String, index: { unique: true, dropDups: true } },
-    contents    : {type: String, require: true},
-    datatype    : {type: Number, require: true},
-    partitions  : Number,
-    sites       : Number,
-    rawsites    : Number,
-    sequences   : Number,
-    gencodeid   : Number,
-    goodtree    : Number,
-    nj          : String,
-    mailaddr    : String,
-    created     : {type: Date, default: Date.now}
+    datatype       : {type : Number, require : true},
+    partition_info : [PartitionInfo],
+    sequence_info  : [Sequences],
+    partitions     : Number,
+    sites          : Number,
+    rawsites       : Number,
+    sequences      : Number,
+    gencodeid      : Number,
+    goodtree       : Number,
+    nj             : String,
+    mailaddr       : String,
+    created        : {type            : Date, default   : Date.now}
 });
 
 var PartitionInfo = new Schema({
-    _creator : { type: Schema.Types.ObjectId, ref: 'Msa' },
-    partition   : Number,
-    startcodon  : Number,
-    endcodon    : Number,
-    span        : Number,
-    usertree    : String
+    _creator   : { type  : Schema.Types.ObjectId, ref : 'Msa' },
+    partition  : Number,
+    startcodon : Number,
+    endcodon   : Number,
+    span       : Number,
+    usertree   : String
 });
 
 var Sequences = new Schema({
     _creator : { type: Schema.Types.ObjectId, ref: 'Msa' },
     seqindex : Number,
     name     : String
-});
-
-Msa.virtual('clipped').get(function () {
-
-  clipped_file = {
-    gencodeid  : this.gencodeid,
-    datatype   : this.datatype,
-    msaid      : this.msaid,
-    partitions : this.partitions,
-    sites      : this.sites,
-    rawsites   : this.rawsites,
-    sequences  : this.sequences,
-    goodtree   : this.goodtree,
-    nj         : this.nj,
-    timestamp  : this.timestamp,
-    mailaddr   : this.mailaddr
-  }
-
-  return clipped_file;
-
 });
 
 Msa.virtual('genetic_code').get(function () {
@@ -99,6 +80,20 @@ Msa.virtual('day_created_on').get(function () {
 Msa.virtual('time_created_on').get(function () {
     var time = moment(this.timestamp);
     return time.format('HH:mm');
+});
+
+/**
+ * Filename of document's file upload
+ */
+Msa.virtual('filename').get(function () {
+  return this._id;
+});
+
+/**
+ * Complete file path for document's file upload
+ */
+Msa.virtual('filepath').get(function () {
+  return setup.rootpath + setup.msa_upload_path + this._id;
 });
 
 
@@ -142,5 +137,27 @@ Msa.methods.AnalysisCount = function (cb) {
 
 };
 
-module.exports = mongoose.model('Msa', Msa);
+Msa.methods.dataReader = function (file, cb) {
 
+  var hyphy =  spawn(setup.hyphy,
+                    [setup.rootpath + "/lib/bfs/datareader.bf"]);
+
+  hyphy.stdout.on('data', function (data) {
+    var results;
+    try {
+      results = JSON.parse(data);
+    } catch(e) {
+      results = {'error': "An unexpected error occured when parsing the sequence alignment! Here is the full traceback :" + data }
+    }
+    cb(results);
+  });
+
+  hyphy.stdin.write(file + "\n");
+  hyphy.stdin.write(this.gencodeid.toString());
+  hyphy.stdin.end();
+
+};
+
+module.exports = mongoose.model('Msa', Msa);
+module.exports = mongoose.model('PartitionInfo', PartitionInfo);
+module.exports = mongoose.model('Sequences', Sequences);

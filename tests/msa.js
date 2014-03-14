@@ -30,7 +30,7 @@
 
 var fs = require('fs'),
     mongoose = require('mongoose'),
-    spawn = require('child_process').spawn
+    spawn = require('child_process').spawn,
     setup = require('../config/setup');
 
 // Bootstrap models
@@ -48,23 +48,59 @@ describe('msa datareader validation', function() {
 
   var Msa  = mongoose.model('Msa');
 
-  it('run hyphy', function(done) {
+  it('should parse msa and have all properties', function(done) {
     var hyphy =  spawn(setup.hyphy,
                       [setup.rootpath + "/lib/bfs/datareader.bf"]);
 
     hyphy.stdout.on('data', function (data) {
-      console.log('' + data);
+      var results = JSON.parse(data);
+
+      //Ensure that all information is there
+      results.should.have.property('FILE_INFO');
+      results.FILE_INFO.should.have.property('partitions');
+      results.FILE_INFO.should.have.property('gencodeid');
+      results.FILE_INFO.should.have.property('sites');
+      results.FILE_INFO.should.have.property('sequences');
+      results.FILE_INFO.should.have.property('timestamp');
+      results.FILE_INFO.should.have.property('goodtree');
+      results.FILE_INFO.should.have.property('nj');
+      results.FILE_INFO.should.have.property('rawsites');
+
+      results.should.have.property('SEQUENCES');
+
+      results.should.have.property('FILE_PARTITION_INFO');
+      results.FILE_PARTITION_INFO.should.have.property('partition');
+      results.FILE_PARTITION_INFO.should.have.property('startcodon');
+      results.FILE_PARTITION_INFO.should.have.property('endcodon');
+      results.FILE_PARTITION_INFO.should.have.property('span');
+      results.FILE_PARTITION_INFO.should.have.property('usertree');
+
     });
 
-    hyphy.stdin.write(__dirname + '/res/HIV_gp121.nex\n');
+    hyphy.stdin.write(__dirname + '/res/HIV_gp120.nex\n');
     hyphy.stdin.write('0');
     hyphy.stdin.end();
     hyphy.on('close', function (code) {
-      console.log('child process exited with code ' + code);
       done();
     });
   });
 
+  it('should return an error message', function(done) {
+    var hyphy =  spawn(setup.hyphy,
+                      [setup.rootpath + "/lib/bfs/datareader.bf"]);
+
+    hyphy.stdout.on('data', function (data) {
+      var results = JSON.parse(data);
+      results.should.have.property('error');
+    });
+
+    hyphy.stdin.write(__dirname + '/res/mangled_nexus.nex\n');
+    hyphy.stdin.write('0');
+    hyphy.stdin.end();
+
+    hyphy.on('close', function (code) {
+      done();
+    });
+
+  });
 });
-
-

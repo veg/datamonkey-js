@@ -1,15 +1,23 @@
 internalRenames = 0;
 
 function notify(type, msg) {
-	fprintf (stdout, "" + type + " : " + msg) + "\n";
+  // Print to log
+	fprintf ("./datareader.log", type + " : " + msg + "\n");
 	return 0;
+}
+
+function except(msg) {
+	fprintf (stdout, "{" );
+	fprintf (stdout, "\"error\": \"" + msg + "\"");
+	fprintf (stdout, "}");
+  return 0;
 }
 
 function to_json (file_info_record, sequence_records, fpi_record) {
 	fprintf (stdout, "{" );
-	fprintf (stdout, "FILE_INFO: { " + file_info_record + "}");
-	fprintf (stdout, "SEQUENCES: { " + sequence_records + "}");
-	fprintf (stdout, "FILE_PARTITON_INFO: { " + fpi_record + "}");
+	fprintf (stdout, "\"FILE_INFO\": " + file_info_record + ",");
+	fprintf (stdout, "\"SEQUENCES\": " + sequence_records + ",");
+	fprintf (stdout, "\"FILE_PARTITION_INFO\": " + fpi_record);
 	fprintf (stdout, "}");
 	return 0;
 }
@@ -60,10 +68,9 @@ function removeNodeFromParent (nodeID) {
 }
 
 /*------------------------------------------------------------------------------------*/
-
 function checkTreeString (treeS, treeID) {
     if (treeID == 1) {
-      notify("info",  "Successful file upload" + "Read " + filteredData.species +  "sequences and " + filteredData.sites + dType + " alignment columns and " + _pCount + "partitions.");
+      notify("info",  "Successful file upload, " + "Read " + filteredData.species +  " sequences and " + filteredData.sites + " " + dType + " alignment columns and " + _pCount + " partitions.");
       if (genCodeID >= 0)
       {
         //TODO: update path
@@ -207,8 +214,8 @@ filePath    = fileDirInfo[Abs(fileDirInfo)-1];
 
 if (ds.sites < 3)
 {
-  notify("error", "This doesn't seem to be a valid alignment file.");
-	return 0;
+  except("This doesn't seem to be a valid alignment file.");
+  return 1;
 }
 
 HarvestFrequencies (freqs, ds, 1,1,1);
@@ -217,23 +224,23 @@ if (genCodeID != (-2)) /* not an AA alignment */
 {
 	if (Rows(freqs) != 4)
 	{
-    notify("error", "This doesn't seem to be a nucelotide alignment. It had " + Rows(freqs) + " character states, whereas we expected 4. Perhaps you uploaded an amino-acid alignment by mistake?");
-		return 0;
+    except("This doesn't seem to be a nucelotide alignment. It had " + Rows(freqs) + " character states, whereas we expected 4. Perhaps you uploaded an amino-acid alignment by mistake?");
+    return 1;
 	}
 }
 else
 {
 	if (Rows(freqs) != 20)
 	{
-    notify("error", "This doesn't seem to be a protein alignment. It had "+ Rows(freqs) + "character states, whereas we expected 20. Perhaps you uploaded a nucleotide alignment by mistake?");
-		return 0;
+    except("This doesn't seem to be a protein alignment. It had "+ Rows(freqs) + "character states, whereas we expected 20. Perhaps you uploaded a nucleotide alignment by mistake?");
+    return 1;
 	}
 }
 
 if (ds.sites%3 && genCodeID >= 0)
 {
-   notify("error", "The number of nucleotide columns in the data set must be divisible by 3 - had " + ds.sites + " sites. Please check that the reading frame is aligned with the beginning of the data set, and that no trailing sites are extraneous");
-	 return 0;
+   except("The number of nucleotide columns in the data set must be divisible by 3 - had " + ds.sites + " sites. Please check that the reading frame is aligned with the beginning of the data set, and that no trailing sites are extraneous");
+   return 1;
 }
 
 if (genCodeID >= 0)
@@ -241,8 +248,8 @@ if (genCodeID >= 0)
 	DataSetFilter filteredData = CreateFilter (ds,3,"","",GeneticCodeExclusions);
 	if (!filteredData.sites)
 	{
-    notify("error", "Only stop codons were found in your alignment.");
-		return 0;
+    except("Only stop codons were found in your alignment.");
+    return 1;
 	}
 }
 else
@@ -329,16 +336,16 @@ if (genCodeID >= 0 && filteredData.sites*3 < ds.sites)
 	}
 	else
 	{
-    notify("error", "" + totalStopCodonsFound + " stop codons found (detailed report below). Please double-check your alignment and ensure that only coding data are present and that the correct genetic code is selected." + reportString);
-		return 0;
+    except("" + totalStopCodonsFound + " stop codons found (detailed report below). Please double-check your alignment and ensure that only coding data are present and that the correct genetic code is selected.");
+    return 1;
 	}
 }
 
 if (filteredData.species > maxUploadSize || filteredData.sites > maxDMSites)
 {
-  notify("error", "Your data set is too large ("+filteredData.species+" species and "+filteredData.sites+" sites). We currently reject files with more than " + maxSLACSize + " sequences or " + maxDMSites + " sites. " +  
+  except("Your data set is too large ("+filteredData.species+" species and "+filteredData.sites+" sites). We currently reject files with more than " + maxSLACSize + " sequences or " + maxDMSites + " sites. " +  
                   "We'll increase the numbers when we acquire better dedicated hardware. Alternatively, you can download <a href='http://www.hyphy.org/downloads/'>HyPhy</a> and selection analyses locally (see <a href='http://www.hyphy.org/pubs/hyphybook2007.pdf'>[this document]</a> for details).");
-	return 0;
+	return 1;
 }
 
 
@@ -413,13 +420,13 @@ else
 		_pCount = Rows(NEXUS_FILE_TREE_MATRIX);
 		if ((_pCount == Columns(DATA_FILE_PARTITION_MATRIX) && Columns(DATA_FILE_PARTITION_MATRIX)) && _pCount > 1)
 		{
-			ExecuteAFile ("../Shared/PartitionReader.ibf");
+			ExecuteAFile ("./shared/PartitionReader.ibf");
 			for (k=0; k<ds.sites;k=k+1)
 			{
 				if(filterCoverage[k] != 1)
 				{
-          notify("error", "Paritition specification must cover each nucleotide site exactly once. Had coverage of " + filterCoverage[k] + " at nucleotide " + (k+1) + "(" + mySplits + ")");
-					return 0;
+          except("Paritition specification must cover each nucleotide site exactly once. Had coverage of " + filterCoverage[k] + " at nucleotide " + (k+1) + "(" + mySplits + ")");
+          return 1;
 				}
 			}
 		}
@@ -428,8 +435,8 @@ else
 
 if (filteredData.species < 3)
 {
-  notify("error", "The alignment must include at least 3 unique sequences for selection methods to work");
-	return 0;
+  except("The alignment must include at least 3 unique sequences for selection methods to work");
+  return 1;
 }
 
 if (genCodeID >= 0)
@@ -467,8 +474,8 @@ else
 buildNJtree = filteredData.species <= maxSLACSize;
 
 if (!goodTree && !buildNJtree) {
-  notify("error", "Alignments with more than " + maxSLACSize + " sequences must include prebuilt trees");
-  return 0;
+  except("Alignments with more than " + maxSLACSize + " sequences must include prebuilt trees");
+  return 1;
 }
 
 if (Abs(DuplicateSequenceWarning))
@@ -556,28 +563,18 @@ ExecuteAFile	("./shared/GrabBag.bf");
 notify("info", "jobID: " + jobID);
 
 
-//fileInformation = {};
-//fileInformation["Partitions"] = "INTEGER";
-//fileInformation["Sites"]      = "INTEGER";
-//fileInformation["RawSites"]   = "INTEGER";
-//fileInformation["Sequences"]  = "INTEGER";
-//fileInformation["genCodeID"]  = "INTEGER";
-//fileInformation["Timestamp"]  = "REAL";
-//fileInformation["GoodTree"]   = "INTEGER";
-//fileInformation["NJ"]         = "TEXT";
-
 if (dupSeqCount || renames || internalRenames || terminalCodonsStripped)
 {
-    DATA_FILE_PRINT_FORMAT = 6;
-    fprintf(fileName,CLEAR_FILE,filteredData);
-    DataSet ds = ReadDataFile (fileName);
+  DATA_FILE_PRINT_FORMAT = 6;
+  fprintf(fileName,CLEAR_FILE,filteredData);
+  DataSet ds = ReadDataFile (fileName);
 }
 
 
 file_info_record = {};
-file_info_record ["Partitions"] = _pCount;
-file_info_record ["genCodeID"] = genCodeID;
-file_info_record ["Sites"] = filteredData.sites;
+file_info_record ["partitions"] = _pCount;
+file_info_record ["gencodeid"] = genCodeID;
+file_info_record ["sites"] = filteredData.sites;
 
 DataSetFilter filteredData = CreateFilter (ds,1);
 
@@ -588,50 +585,46 @@ if (buildNJtree) {
   treeString      = "";
 }
 
-file_info_record["Sequences"] = filteredData.species;
-file_info_record["Timestamp"] = Format(Time(1),20,0);
-file_info_record["GoodTree"] = goodTree; 
-file_info_record["NJ"] = treeString; 
-file_info_record["RawSites"] = filteredData.sites;
+file_info_record["sequences"] = filteredData.species;
+file_info_record["timestamp"] = Format(Time(1),20,0);
+file_info_record["goodtree"] = goodTree; 
+file_info_record["nj"] = treeString; 
+file_info_record["rawsites"] = filteredData.sites;
 
-//sequenceNames             = {};
-//sequenceNames["SeqIndex"] = "INTEGER";
-//sequenceNames["Name"]     = "TEXT";
 sequence_records = {};
-
 GetString(seqNames, filteredData, -1);
 for (k = 0; k < Columns (seqNames); k = k+1)
 {
   sequence_record = {};
-  sequence_record["SeqIndex"] = k;
-  sequence_record["Name"]  = seqNames[k];
+  sequence_record["seqindex"] = k;
+  sequence_record["name"]  = seqNames[k];
   sequence_records[k] = sequence_record;
 }
-
-//fileInformation               = {};
-//fileInformation["Partition"]  = "INTEGER";
-//fileInformation["StartCodon"] = "INTEGER";
-//fileInformation["EndCodon"]   = "INTEGER";
-//fileInformation["Span"]       = "INTEGER";
-//fileInformation["UserTree"]   = "TEXT";
 
 fpi_record = {};
 if (_pCount == 1)
 {
-  fpi_record ["Partition"] = 1;fpi_record["StartCodon"] = 0; fpi_record["EndCodon"] = filteredData.sites-1; fpi_record["Span"] = filteredData.sites;
+  fpi_record["partition"] = 1;
+  fpi_record["startcodon"] = 0; 
+  fpi_record["endcodon"] = filteredData.sites-1; 
+  fpi_record["span"] = filteredData.sites;
+
   if (goodTree)
   {
-    fpi_record["UserTree"] = DATAFILE_TREE;
+    fpi_record["usertree"] = DATAFILE_TREE;
   }
 }
 else
 {
   for (_k2 = 0; _k2 < _pCount; _k2 = _k2+1)
   {
-    fpi_record ["Partition"] = _k2+1;fpi_record["StartCodon"] = filterCodonBounds[_k2][0]; fpi_record["EndCodon"] = filterCodonBounds[_k2][1]; fpi_record["Span"] = filterCodonBounds[_k2][1]-filterCodonBounds[_k2][0]+1;
+    fpi_record["partition"] = _k2+1;
+    fpi_record["startcodon"] = filterCodonBounds[_k2][0]; 
+    fpi_record["endcodon"] = filterCodonBounds[_k2][1]; 
+    fpi_record["span"] = filterCodonBounds[_k2][1]-filterCodonBounds[_k2][0]+1;
     if (goodTree)
     {
-      fpi_record ["UserTree"] = myTrees[_k2];
+      fpi_record ["usertree"] = myTrees[_k2];
     }
   }
 }

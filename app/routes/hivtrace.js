@@ -27,8 +27,7 @@
 
 */
 
-var dpl       = require( ROOT_PATH + '/lib/datamonkey-pl.js'),
-    error     = require( ROOT_PATH + '/lib/error.js'),
+var error     = require( ROOT_PATH + '/lib/error.js'),
     helpers   = require( ROOT_PATH + '/lib/helpers.js'),
     globals   = require( ROOT_PATH + '/config/globals.js'),
     mailer    = require( ROOT_PATH + '/lib/mailer.js'),
@@ -146,6 +145,7 @@ exports.jobPage = function (req, res) {
 
   // HIV Cluster id
   var id = req.params.id;
+
   HivTrace.findOne({_id: id}, function (err, hivtrace) {
     if (err || !hivtrace) {
       res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
