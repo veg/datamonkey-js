@@ -27,12 +27,11 @@
 
 */
 
-
 var mongoose = require('mongoose'),
     moment   = require('moment'),
     check    = require('validator').check,
     globals  = require('../../config/globals.js'),
-    spawn = require('child_process').spawn,
+    spawn    = require('child_process').spawn,
     sanitize = require('validator').sanitize
 
 var Schema = mongoose.Schema,
@@ -50,11 +49,11 @@ var Msa = new Schema({
     goodtree       : Number,
     nj             : String,
     mailaddr       : String,
-    created        : {type            : Date, default   : Date.now}
+    created        : {type : Date, default : Date.now}
 });
 
 var PartitionInfo = new Schema({
-    _creator   : { type  : Schema.Types.ObjectId, ref : 'Msa' },
+    _creator   : { type : Schema.Types.ObjectId, ref : 'Msa' },
     partition  : Number,
     startcodon : Number,
     endcodon   : Number,
@@ -63,7 +62,7 @@ var PartitionInfo = new Schema({
 });
 
 var Sequences = new Schema({
-    _creator : { type: Schema.Types.ObjectId, ref: 'Msa' },
+    _creator : { type : Schema.Types.ObjectId, ref : 'Msa' },
     seqindex : Number,
     name     : String
 });
@@ -96,6 +95,28 @@ Msa.virtual('filepath').get(function () {
   return setup.rootpath + setup.msa_upload_path + this._id;
 });
 
+Msa.virtual('hyphy_friendly').get(function () {
+
+  //Hyphy does not support arrays
+  var hyphy_obj = {};
+  var self = this;
+
+  Object.keys(this._doc).forEach(function(key) {
+    if(Array.isArray(self[key])) {
+        hyphy_obj[key] = {};
+     for(var i = 0; i < self[key].length; i++) {
+        hyphy_obj[key][i] = self[key][i];
+     }
+    } else {
+      if(key != "created") {
+        hyphy_obj[key] = self[key];
+      }
+    }
+  });
+
+  return hyphy_obj;
+
+});
 
 var MsaModel = mongoose.model('MsaModel', Msa);
 
@@ -127,6 +148,7 @@ Msa.methods.AnalysisCount = function (cb) {
 
   //TODO: Change to get children
   for(var t in globals.types) {
+
     Analysis = mongoose.model(t.capitalize());
     //Get count of this analysis
     Analysis 
@@ -157,6 +179,7 @@ Msa.methods.dataReader = function (file, cb) {
   hyphy.stdin.end();
 
 };
+
 
 module.exports = mongoose.model('Msa', Msa);
 module.exports = mongoose.model('PartitionInfo', PartitionInfo);

@@ -39,7 +39,6 @@ var express          = require('express'),
     fs               = require('fs'),
     path             = require("path"),
     mongoose         = require('mongoose'),
-    //io               = require('socket.io').listen(setup.socket_port);
     io               = require('socket.io').listen(setup.socket_port);
 
 
@@ -55,6 +54,7 @@ app.configure(function () {
     app.use(express.bodyParser());
     app.use(express.limit('25mb'));
     app.use(app.router);
+    app.set('json spaces', 0);
 });
 
 // Bootstrap models

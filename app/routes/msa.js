@@ -57,16 +57,20 @@ exports.uploadMsa = function (req, res) {
       }
     });
    return;
+
   }
 
   var sequence_alignment = new Msa;
 
   try {
+
     postdata = req.body;
     sequence_alignment.datatype  = postdata.datatype;
     sequence_alignment.gencodeid = postdata.gencodeid;
     sequence_alignment.mailaddr  = postdata.mailaddr;
+
   } catch(e) {
+
     res.format({
       html: function(){
         res.render('error.ejs', error.errorResponse("Missing Parameters: " + e));
@@ -75,11 +79,13 @@ exports.uploadMsa = function (req, res) {
         res.json(500, error.errorResponse("Missing Parameters: " + e));
       }
     });
+
     return;
+
   }
 
   sequence_alignment.dataReader(req.files.files.path, function(result) {
-    if('error' in result) {
+    if ('error' in result) {
       res.format({
         json: function(){
           res.json(200, {'msg': result.error });
@@ -144,8 +150,6 @@ exports.findById = function (req, res) {
   var id = req.params.id;
 
   Msa.findOne({_id : id}, function (err, item) {
-    console.log(err);
-    console.log(item);
 
     if (err || !item) {
       res.json(500, error.errorResponse('There is no sequence with id of ' + id));
@@ -156,7 +160,7 @@ exports.findById = function (req, res) {
       //Get the count of the different analyses on the job
       item.AnalysisCount(function(type_counts) {
 
-        var ftc = []
+        var ftc = [];
         for(var t in globals.types) {
           ftc[t] = {
             "full_name" : globals.types[t].full_name,
@@ -165,14 +169,25 @@ exports.findById = function (req, res) {
           }
         }
 
-        res.format({
-          html: function(){
-            res.render('upload/summary.ejs', {'details': details, 'type_count': ftc });
-          },
-          json: function(){
-            res.json(200, {'details': details, 'type_count': ftc });
-          }
-        });
+        if(req.query.format == 'hyphy') {
+          // Reformat arrays
+          res.json(200, item.hyphy_friendly);
+
+        } else {
+
+          res.format({
+
+            json: function() {
+              res.json(200, item);
+            },
+
+            html: function() {
+              res.render('upload/summary.ejs', {'details'    : details, 
+                                                'type_count' : ftc });
+            }
+
+          });
+        }
       });
     }
   });

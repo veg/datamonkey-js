@@ -94,20 +94,26 @@ exports.invokePrime = function(req, res) {
             });
           // Successful upload, spawn job
           } else {
+
             // Send the MSA, and type
             var jobproxy = new hpcsocket.HPCSocket({'msa': msa, 
                                                     'analysis': result,
                                                     'status_stack': result.status_stack,
-                                                    'type': 'prime'});
-            res.format({
-              html: function() {
-                res.redirect('msa/' + msa._id + '/prime/' + result._id);
-              },
-              json: function() {
-                // Save PRIME analysis
-                res.json(200, {'msg': 'good job'});
+                                                    'type': 'prime'}, callback);
+            function callback(data) {
+              if(data == 'connected') {
+                res.format({
+                  html: function() {
+                    res.redirect('msa/' + msa._id + '/prime/' + result._id);
+                  },
+
+                  json: function() {
+                    // Save PRIME analysis
+                    res.json(200, {'msg': 'good job'});
+                  }
+                });
               }
-            });
+            }
           }
         });
       }
@@ -137,12 +143,14 @@ exports.getPrime = function(req, res) {
 
 
   //Return all results
-  Prime.findOne({_id : primeid}, function(err, item) {
-    if (err || !item ) {
-      res.json(500, error.errorResponse('Item not found'));
+  Prime.findOne({_id : primeid}, function(err, prime) {
+    if (err || !prime ) {
+      res.json(500, error.errorResponse('prime not found'));
     } else {
       // Should return results page
-      res.json(item);
+      res.render('analysis/prime/jobpage.ejs', { job : prime, 
+                                                 socket_addr: 'http://' + setup.host + ':' + setup.socket_port 
+                                               });
     }
   });
 

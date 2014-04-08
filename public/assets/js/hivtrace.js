@@ -84,8 +84,9 @@ function createButtonsFromAttributes() {
 
   });
 
-}
-;var clusterNetworkGraph = function (json, network_container, network_status_string, 
+};
+
+var clusterNetworkGraph = function (json, network_container, network_status_string, 
                                 histogram_tag, histogram_label) {
 
   var w = 850,

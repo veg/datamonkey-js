@@ -27,7 +27,7 @@
 
 //Routes
 
-module.exports = function(app){
+module.exports = function(app) {
   // HOME PAGE
   home = require( ROOT_PATH + '/app/routes/home');
   app.get('/', home.homePage);
@@ -41,8 +41,8 @@ module.exports = function(app){
   app.get('/msa', msa.showUploadForm);
   app.post('/msa', msa.uploadMsa);
   app.get('/msa/:id', msa.findById);
-  app.put('/msa/:id', msa.updateMsa);
-  app.delete('/msa/:id', msa.deleteMsa);
+  //app.put('/msa/:id', msa.updateMsa);
+  //app.delete('/msa/:id', msa.deleteMsa);
 
   // PRIME ROUTES
   prime = require( ROOT_PATH + '/app/routes/prime');
@@ -63,3 +63,4 @@ module.exports = function(app){
   app.get('/hivtrace/:id', hivtrace.jobPage);
   app.get('/hivtrace/:id/results', hivtrace.results);
 }
+

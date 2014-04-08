@@ -41,7 +41,7 @@ var Schema = mongoose.Schema,
 var Mixed = mongoose.Schema.Types.Mixed;
 
 var Prime = AnalysisSchema.extend({
-  treemode              : String,
+  treemode              : Number,
   property_choice       : {type: Number},
   primeresults          : [PrimeResults],
   primesummary          : [PrimeSummary]
@@ -63,12 +63,10 @@ var PrimeSummary = new Schema({
  */
 Prime.virtual('status_stack').get(function () {
   return ['In Queue', 
-          'Aligning', 
-          'Converting to FASTA', 
-          'TN93 Analysis', 
-          'HIV Network Analysis', 
+          'Running',
           'Completed'];
 });
+
 
 Prime.virtual('off_kilter_statuses').get(function () {
   return ['Aborted'];

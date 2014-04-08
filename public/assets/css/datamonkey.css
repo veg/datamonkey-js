@@ -131,3 +131,12 @@ li.media {
 .navbar-help .active {
   background-color: #EEE;
 }
+
+#job-timer h6{
+  display:inline;
+}
+
+.datamonkey-progress {
+  margin:0px;
+}
+

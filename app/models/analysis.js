@@ -43,6 +43,7 @@ var AnalysisSchema = new Schema({
   id                  : {type: Number, require: true},
   type                : {type: String, require: true},
   status              : String,
+  torque_id           : String,
   sendmail            : Boolean,
   cpu_time            : Number
 });
@@ -75,5 +76,19 @@ AnalysisSchema.statics.usageStatistics = function (cb) {
 
 };
 
-module.exports = AnalysisSchema;
+/**
+ * Unix timestamp
+ */
+AnalysisSchema.virtual('timestamp').get(function () {
+  return moment(this.created).unix();
+});
 
+/**
+ * Index of status
+ */
+AnalysisSchema.virtual('status_index').get(function () {
+  return this.status_stack.indexOf(this.status);
+});
+
+
+module.exports = AnalysisSchema;
