@@ -39,6 +39,7 @@ var express          = require('express'),
     fs               = require('fs'),
     path             = require("path"),
     mongoose         = require('mongoose'),
+    //io               = require('socket.io').listen(setup.socket_port);
     io               = require('socket.io').listen(setup.socket_port);
 
 
@@ -75,7 +76,7 @@ helpers.logger.info('Listening on port ' + setup.port + '...');
 module.exports = app;
 
 // Set up socket.io server
-var jobproxy = require('./lib/hivcluster.js');
+var jobproxy = require('./lib/hivtrace.js');
 io.sockets.on('connection', function (socket) {
   socket.emit('connected');
   socket.on('acknowledged', function (data) {

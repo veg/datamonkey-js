@@ -25,7 +25,7 @@ function getTime() {
 
 function setupJob() {
 
-  var hivclusterid = $('#hiv-cluster-report').data('hivclusterid')
+  var hivtraceid = $('#hiv-cluster-report').data('hivtraceid')
   var socket_address = $('#hiv-cluster-report').data('socket-address')
   var socket = io.connect(socket_address);
 
@@ -44,7 +44,7 @@ function setupJob() {
 
   socket.on('connected', function () {
     // Start job
-    socket.emit('acknowledged', { id: hivclusterid });
+    socket.emit('acknowledged', { id: hivtraceid });
   });
 
   // Status update
@@ -60,11 +60,14 @@ function setupJob() {
       $(this).attr('class', 'alert alert-success')
     });
 
-    $.get(hivclusterid + '/results', function(results) {
+    $.get(hivtraceid + '/results', function(results) {
       //Do an AJAX request to get results
       $('#hiv-cluster-report').html(results);
-      initializeClusterNetworkGraphs();
+      initialize_cluster_network_graphs();
+      downloadExport();
     });
+
+    socket.disconnect();
 
   });
 
@@ -72,8 +75,10 @@ function setupJob() {
   socket.on('error', function (data) {
     jQuery('<div/>', {
           class: 'alert alert-danger',
-          text : 'There was an error! Please try again. Error : ' + data.msg
+          html : 'There was an error! Please try again. Message : <code>' + data.msg + '</code>'
       }).insertAfter($('.page-header'));
+
+      socket.disconnect();
   });
 }
 

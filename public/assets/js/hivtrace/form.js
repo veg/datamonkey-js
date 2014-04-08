@@ -22,23 +22,34 @@ $("form").submit(function() {
 });
 
 var validateFile = function() {
-  var selector = "input[type='file']";
 
-  $(selector).next('.help-block').remove();
+  var selector = "#trace-upload";
+  var input_field = "input[type='file']";
+  $(selector).removeClass('has-error');
+
+
+  $(selector).next('.help-div').remove();
 
   // Ensure that file is not empty
-  if($(selector).val().length == 0) {
+  if($(input_field).val().length == 0) {
 
-    $(selector).parent().addClass('has-error');
+    $(selector).addClass('has-error');
 
-    jQuery('<span/>', {
+    var help_div = jQuery('<div/>', {
+          class: 'col-lg-9',
+      });
+
+    var help_span = jQuery('<span/>', {
           class: 'help-block',
           text : 'Field is empty'
-      }).insertAfter($(selector));
+      });
+
+      $(selector).append(help_div.append(help_span));
+
     return false;
   } 
 
-  $(selector).parent().removeClass('has-error');
+  $(selector).removeClass('has-error');
   return true;
 }
 
