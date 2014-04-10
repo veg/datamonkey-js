@@ -38,11 +38,11 @@ var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
 var AnalysisSchema = new Schema({
-  upload_id           : {type: Schema.Types.ObjectId, require: true, ref: 'Msa'},
   created             : {type: Date, default: Date.now},
   id                  : {type: Number, require: true},
   type                : {type: String, require: true},
   status              : String,
+  last_status_msg     : Object,
   torque_id           : String,
   sendmail            : Boolean,
   cpu_time            : Number
