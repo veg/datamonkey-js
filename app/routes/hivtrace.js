@@ -50,6 +50,14 @@ exports.clusterForm = function (req, res) {
 }
 
 /**
+ * An AJAX request that verifies the upload is correct
+ * app.post('/hivtrace/upload', hivtrace.verifyUpload);
+ */
+exports.verifyUpload = function (req, res) {
+
+}
+
+/**
  * Handles a job request by the user
  * app.post('/hivtrace', hivtrace.invokeClusterAnalysis);
  */
@@ -115,7 +123,9 @@ exports.invokeClusterAnalysis = function (req, res) {
               json: function(){
                 res.json(200, {'result': data});
               }
+
             });
+
         } else {
           // Successful upload, copy the tmp uploaded file to our 
           // specified storage location as per setup.js
