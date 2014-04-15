@@ -63,5 +63,14 @@ describe('attribute map check', function() {
 
   });
 
+  it('should return an error', function(done) {
+    var fn = "/home/sweaver/datamonkey/datamonkey-js-dev/tests/res/Flu.fasta";
+    HivTrace.createAttributeMap(fn, function(err, result) {
+      //console.log(result);
+      done();
+    });
+
+  });
+
 });
 

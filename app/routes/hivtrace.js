@@ -55,6 +55,33 @@ exports.clusterForm = function (req, res) {
  */
 exports.verifyUpload = function (req, res) {
 
+  var hivtrace = new HivTrace;
+  var postdata = req.body;
+
+  // Validate that a file was uploaded
+  if (req.files.files.size == 0) {
+    // Error, show form again
+    res.format({
+      html: function(){
+        res.render('hivtrace/form.ejs', {'errors' : { 'file' : "Empty File"}, 'validators': HivTrace.validators() });
+      },
+      json: function(){
+        res.json(200, {'err': "Empty File"});
+      }
+    });
+    return;
+  }
+
+
+  HivTrace.createAttributeMap(req.files.files.path, function(err, result) {
+    if(err) {
+      res.json(200, {'error':err, 'result': result});
+    } else {
+      res.json(200, result);
+    }
+  });
+
+
 }
 
 /**
@@ -64,7 +91,6 @@ exports.verifyUpload = function (req, res) {
 exports.invokeClusterAnalysis = function (req, res) {
 
   var hivtrace = new HivTrace;
-
   var postdata = req.body;
 
   if(postdata.public_db_compare == 'yes') {
@@ -107,7 +133,7 @@ exports.invokeClusterAnalysis = function (req, res) {
           res.render('hivtrace/form.ejs', {'errors': { 'file' : result.msg }, 'validators': HivTrace.validators() });
         },
         json: function(){
-          res.json(200, {'err': "Empty File"});
+          res.json(200, {'errors': { 'file' : result.msg }});
         }
       });
     } else {

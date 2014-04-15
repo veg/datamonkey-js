@@ -165,7 +165,6 @@ HivTrace.statics.createAttributeMap = function (fn, cb) {
   var testForAttributes = function (id) {
 
     var attr_map = {};
-
     var possible_delimiters = ['_', '|','.',',',';','\t',':'];
 
     for(var i in possible_delimiters) {
@@ -292,7 +291,7 @@ HivTrace.statics.createAttributeMap = function (fn, cb) {
     }
 
     var data  = data.toString();
-    var lines = data.split('\n');
+    var lines = data.split(/(?:\n|\r\n|\r)/g);
 
     //Collect all headers
     var headers = lines.filter(function(x) { return x.indexOf('>') != -1 } );
@@ -321,8 +320,6 @@ HivTrace.statics.createAttributeMap = function (fn, cb) {
   });
 
 }
-
-
 
 /**
  * Filename of document's file upload
