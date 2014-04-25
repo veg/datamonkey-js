@@ -43,12 +43,18 @@ describe('attribute map check', function() {
   it('should return an attribute map', function(done) {
     var fn = "/home/sweaver/datamonkey/datamonkey-js-dev/tests/res/HIV_B_pol_10k.fa";
     HivTrace.createAttributeMap(fn, function(err, result) {
+
       err.should.not.be.ok;
-      result['_'].length.should.be.exactly(4);
-      result['_'][0].should.be.exactly("subtype");
-      result['_'][1].should.be.exactly("country");
-      result['_'][2].should.be.exactly("id");
-      result['_'][3].should.be.exactly("date");
+      result['map'][0].should.be.exactly("subtype");
+      result['map'][1].should.be.exactly("country");
+      result['map'][2].should.be.exactly("id");
+      result['map'][3].should.be.exactly("date");
+
+      parsed_attributes = HivTrace.parseHeaderFromMap(result.headers[0], result);
+      parsed_attributes['subtype'].should.be.exactly("B");
+      parsed_attributes['country'].should.be.exactly("US");
+      parsed_attributes['date'].should.be.exactly("1982");
+
       done();
     });
 

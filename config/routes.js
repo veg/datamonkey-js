@@ -61,8 +61,8 @@ module.exports = function(app){
   hivtrace = require( ROOT_PATH + '/app/routes/hivtrace');
   app.get('/hivtrace', hivtrace.clusterForm);
   app.post('/hivtrace/upload', hivtrace.verifyUpload);
-  app.post('/hivtrace', hivtrace.invokeClusterAnalysis);
+  app.post('/hivtrace/invoke/:id', hivtrace.invokeClusterAnalysis);
   app.get('/hivtrace/:id', hivtrace.jobPage);
   app.get('/hivtrace/:id/results', hivtrace.results);
-}
 
+}

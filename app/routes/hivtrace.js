@@ -27,8 +27,7 @@
 
 */
 
-var dpl       = require( ROOT_PATH + '/lib/datamonkey-pl.js'),
-    error     = require( ROOT_PATH + '/lib/error.js'),
+var error     = require( ROOT_PATH + '/lib/error.js'),
     helpers   = require( ROOT_PATH + '/lib/helpers.js'),
     globals   = require( ROOT_PATH + '/config/globals.js'),
     mailer    = require( ROOT_PATH + '/lib/mailer.js'),
@@ -58,41 +57,6 @@ exports.verifyUpload = function (req, res) {
   var hivtrace = new HivTrace;
   var postdata = req.body;
 
-  // Validate that a file was uploaded
-  if (req.files.files.size == 0) {
-    // Error, show form again
-    res.format({
-      html: function(){
-        res.render('hivtrace/form.ejs', {'errors' : { 'file' : "Empty File"}, 'validators': HivTrace.validators() });
-      },
-      json: function(){
-        res.json(200, {'err': "Empty File"});
-      }
-    });
-    return;
-  }
-
-
-  HivTrace.createAttributeMap(req.files.files.path, function(err, result) {
-    if(err) {
-      res.json(200, {'error':err, 'result': result});
-    } else {
-      res.json(200, result);
-    }
-  });
-
-
-}
-
-/**
- * Handles a job request by the user
- * app.post('/hivtrace', hivtrace.invokeClusterAnalysis);
- */
-exports.invokeClusterAnalysis = function (req, res) {
-
-  var hivtrace = new HivTrace;
-  var postdata = req.body;
-
   if(postdata.public_db_compare == 'yes') {
     hivtrace.lanl_compare = true;
     hivtrace.status_stack = hiv_setup.valid_lanl_statuses;
@@ -115,7 +79,7 @@ exports.invokeClusterAnalysis = function (req, res) {
     // Error, show form again
     res.format({
       html: function(){
-        res.render('hivtrace/form.ejs', {'errors' : { 'file' : "Empty File"}, 'validators': HivTrace.validators() });
+        res.render('hivtrace/form.ejs', {'error' : { 'file' : "Empty File"}, 'validators': HivTrace.validators() });
       },
       json: function(){
         res.json(200, {'err': "Empty File"});
@@ -130,19 +94,20 @@ exports.invokeClusterAnalysis = function (req, res) {
       // FASTA validation failed, report an error and the form back to the user
       res.format({
         html: function(){
-          res.render('hivtrace/form.ejs', {'errors': { 'file' : result.msg }, 'validators': HivTrace.validators() });
+          res.render('hivtrace/form.ejs', {'error': { 'file' : result.msg }, 'validators': HivTrace.validators() });
         },
         json: function(){
-          res.json(200, {'errors': { 'file' : result.msg }});
+          res.json(200, {'error': { 'file' : result.msg }});
         }
       });
     } else {
       hivtrace.save(function (err, result) {
+        var hivtrace_id = result._id;
         if(err) {
-            // Redisplay form with errors
+            // Redisplay form with error
             res.format({
               html: function(){
-                res.render('hivtrace/form.ejs', {'errors': err.errors, 
+                res.render('hivtrace/form.ejs', {'error': err.error, 
                            'validators': HivTrace.validators()});
               },
 
@@ -151,27 +116,72 @@ exports.invokeClusterAnalysis = function (req, res) {
               }
 
             });
-
         } else {
-          // Successful upload, copy the tmp uploaded file to our 
-          // specified storage location as per setup.js
+
           fs.readFile(req.files.files.path, function (err, data) {
             var new_path = result.filepath;
-            fs.writeFile(new_path, data, function (err) {
-              var hpcsocket = new jobproxy.HPCSocket(result);
-              res.format({
-                json: function(){
-                  res.json(200, result);
-                },
-                html: function(){
-                  res.redirect('hivtrace/' + result._id);
-                }
-              });
+            fs.writeFile(new_path, data, function (err) {});
+          });           
+
+          HivTrace.createAttributeMap(req.files.files.path, function(err, result) {
+            parsed_attributes = HivTrace.parseHeaderFromMap(result.headers[0], result);
+            res.format({
+              html: function(){
+                res.render('hivtrace/attribute_map_assignment.ejs', { 'map'           : result, 
+                                                                      'example_parse' : parsed_attributes, 
+                                                                      'hivtrace_id'   : hivtrace_id, 
+                                                                      'error'         : err, 
+                                                                      'validators'    : HivTrace.validators() });
+              },
+              json: function(){
+                res.json(200, {'err': "Empty File"});
+              }
             });
-          }); 
+          });
         }
       });
     } 
+  });
+}
+
+/**
+ * Handles a job request by the user
+ * app.post('/hivtrace', hivtrace.invokeClusterAnalysis);
+ */
+exports.invokeClusterAnalysis = function (req, res) {
+
+  var postdata = req.body;
+  var id = req.params.id;
+  console.log(id);
+
+  HivTrace.findOne({_id: id}, function (err, hivtrace) {
+    hivtrace.attribute_map = postdata;
+    hivtrace.save(function (err, result) {
+      if(err) {
+          // Redisplay form with error
+          res.format({
+            html: function(){
+              res.render('hivtrace/form.ejs', {'error': err.error, 
+                         'validators': HivTrace.validators()});
+            },
+
+            json: function(){
+              res.json(200, {'result': data});
+            }
+
+          });
+      } else {
+        var hpcsocket = new jobproxy.HPCSocket(result);
+        res.format({
+          json: function(){
+            res.json(200, result._id);
+          },
+          html: function(){
+            res.redirect(result._id);
+          }
+        });
+      }
+    });
   });
 }
 
@@ -227,5 +237,4 @@ exports.results = function (req, res) {
   });
 
 }
-
 

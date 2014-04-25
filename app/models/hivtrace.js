@@ -52,6 +52,11 @@ var ident = {
     UNKNOWN : "unknown"
 }
 
+var error_codes = {
+    INCORRECT_SPLIT   : 0,
+    FAILED_ASSIGNMENT : 1
+}
+
 function notEmptyValidator (val) {
   return val != null;
 }
@@ -138,16 +143,21 @@ function isSubtype(supposed_subtype) {
 
 function isDate(supposed_date) {
   //// check for sampling year/date
-  var valid_date_formats = ["MM/DD/YYYY",
-                        "DD/YY",
-                        "DD/MM/YYYY",
+  var valid_date_formats = [
                         "MM-DD-YYYY",
                         "DD-YY",
                         "DD-MM-YYYY",
-                        "YYYY"
+                        "YYYY",
+                        "YYYYMMDD"
                         ];
 
-  return moment(supposed_date, valid_date_formats, true).isValid();
+  var parsed_date = moment(supposed_date, valid_date_formats, true);
+
+  if(parsed_date.isValid()) {
+    return parsed_date.isBefore(moment());
+  } else {
+    return false;
+  }
 }
 
 function isCountry(supposed_country) {
@@ -209,25 +219,29 @@ HivTrace.statics.createAttributeMap = function (fn, cb) {
       }
     }
 
-
     return attr_map;
 
   }
 
   var validateAttrMap = function (id, delimiter, attr_map) {
+
     header = id.split(delimiter);
+
     for(var i=0; i < attr_map.length; i++) {
       if(attr_map[i] == ident.SUBTYPE) {
         if (!isSubtype(header[i])) {
+          attr_map[i] = 'maybe_' + ident.SUBTYPE;
           return false;
         } 
       //Checking if a date is too expensive
-      //} else if (attr_map[i] == ident.DATE) {
-      //  if (!isDate(header[i])) {
-      //    return false;
-      //  } 
+      } else if (attr_map[i] == ident.DATE) {
+        if (!isDate(header[i])) {
+          attr_map[i] = 'maybe_' + ident.DATE;
+          return false;
+        } 
       } else if (attr_map[i] == ident.COUNTRY) {
         if (!isCountry(header[i])) {
+          attr_map[i] = 'maybe_' + ident.COUNTRY;
           return false;
         } 
       }
@@ -258,7 +272,8 @@ HivTrace.statics.createAttributeMap = function (fn, cb) {
       return { 'status': false,
                'info'  : {
                  'type': 'parse_fail', 
-                 'msg': 'Incorrect attribute split', 
+                 'code': error_codes.INCORRECT_SPLIT, 
+                 'msg': 'Based on a delimiter of "' + delimiter + '", you have inconsistent formatting. The following headers either have too little or too many fields. Please revise your FASTA file and resubmit once reconciled. Alternatively, you can skip attributes altogether and continue.', 
                  'failed_headers': failed_headers
                 }
               };
@@ -266,16 +281,20 @@ HivTrace.statics.createAttributeMap = function (fn, cb) {
 
 
     // If more than one, return a problem with the problem headers
-    var failed_headers = headers.filter(function(x) { return !validateAttrMap(x, delimiter, attr_map)} );
-    if(failed_headers.length > 0) {
-      return { 'status': false,
-               'info'  : {
-                 'type': 'parse_fail', 
-                 'msg': 'Some headers failed parsing', 
-                 'failed_headers': failed_headers
-                }
-              };
-    }
+    //Change attribute map to maybe_ if some fail
+    headers.map(function(x) { validateAttrMap(x, delimiter, attr_map) } );
+
+    //var failed_headers = headers.filter(function(x) { return !validateAttrMap(x, delimiter, attr_map)} );
+    //if(failed_headers.length > 0) {
+    //  return { 'status': false,
+    //           'info'  : {
+    //             'type': 'parse_fail', 
+    //             'code': error_codes.FAILED_ASSIGNMENT, 
+    //             'msg': 'Some headers failed parsing', 
+    //             'failed_headers': failed_headers
+    //            }
+    //          };
+    //}
 
     return {'status': true}
 
@@ -301,7 +320,7 @@ HivTrace.statics.createAttributeMap = function (fn, cb) {
     var attr_map = testForAttributes(headers[0]);
 
     // TODO: Check for a tie
-    var max = -4;
+    var max   = -4;
     var index = -4;
     for (c in attr_map) {
         if(attr_map[c].length > max) {
@@ -315,10 +334,31 @@ HivTrace.statics.createAttributeMap = function (fn, cb) {
       err = is_consistent.info;
     }
 
-    cb(err, attr_map);
+    cb(err, {"headers": headers, "map" : attr_map[index], "delimiter": index});
 
   });
 
+}
+
+HivTrace.statics.parseHeaderFromMap = function (header, attr_map) {
+  parsed = {};
+  var arr = header.split(attr_map.delimiter);
+  for(var i in arr) {
+    if(!parsed[attr_map.map[i]]) {
+      parsed[attr_map.map[i]] = arr[i];
+    } else {
+      var c = 1;
+      var new_key = attr_map.map[i] + c;
+
+      while(parsed[new_key]) {
+        new_key = attr_map.map[i] + ++c;
+      }
+
+      parsed[new_key] = arr[i];
+
+    }
+  }
+  return parsed;
 }
 
 /**
