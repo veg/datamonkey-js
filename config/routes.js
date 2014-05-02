@@ -64,5 +64,6 @@ module.exports = function(app){
   app.post('/hivtrace/invoke/:id', hivtrace.invokeClusterAnalysis);
   app.get('/hivtrace/:id', hivtrace.jobPage);
   app.get('/hivtrace/:id/results', hivtrace.results);
+  app.get('/hivtrace/:id/attributemap', hivtrace.attributemap);
 
 }

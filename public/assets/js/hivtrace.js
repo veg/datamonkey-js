@@ -2,6 +2,7 @@ $(document).ready(function(){
 
   if(!inProgress()) {
     createButtonsFromAttributes();
+    getAttributeMap();
   }
 
 });
@@ -14,18 +15,6 @@ function createButtonsFromAttributes() {
   // Get list of world country names
   var world_ids_url = "/assets/js/hivtrace/world-country-names.tsv";
   var json_url = $('#network_tag').data('url');
-
-  //<li><a href="#">Country</a></li>
-  //<li class="divider"></li>
-  //<li><a href="#">Separated link</a></li>
-
-  //Add list of them to .country-list
-  //d3.tsv(world_ids_url, function(countries) {
-  //  d3.select(".country-list").selectAll("li")
-  //  .data(countries)
-  //  .enter().append("li")
-  //  .text(function(d) { return d.name; });
-  //})
 
 
   d3.json(json_url, function(obj) {
@@ -85,7 +74,8 @@ function createButtonsFromAttributes() {
   });
 
 }
-;var clusterNetworkGraph = function (json, network_container, network_status_string, 
+
+var clusterNetworkGraph = function (json, network_container, network_status_string, 
                                 histogram_tag, histogram_label) {
 
   var w = 850,
@@ -578,7 +568,8 @@ function createButtonsFromAttributes() {
   }
   initial_json_load();       
 }
-;function computeNodeDegrees (nodes, edges) {
+
+function computeNodeDegrees (nodes, edges) {
   for (var n in nodes) {
     nodes[n].degree = 0;
   }
@@ -615,8 +606,9 @@ function exportCSVButton(graph, tag) {
       $(tag).append(pom);
     }
 }
-;$(document).ready(function(){
-});
+
+
+$(document).ready(function(){});
 
 $("form").submit(function() {
 
@@ -721,7 +713,6 @@ var validateElement = function () {
 }
 
 function ValidateEmail(email) {
-
   if($(this).find("input[name='receive_mail']")[0].checked) {
     var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
     if(regex.test($(this).find("input[name='mail']").val())) {
@@ -751,7 +742,7 @@ $( "input[name='distance_threshold']" ).focusout(validateElement);
 $( "input[name='min_overlap']" ).focusout(validateElement);
 $( ".mail-group" ).change(ValidateEmail);
 
-;function render_histogram(graph, histogram_tag, histogram_label) {  
+function render_histogram(graph, histogram_tag, histogram_label) {  
   var defaultFloatFormat = d3.format(",.2f");
   var histogram_w = 300,
   histogram_h = 300;
@@ -833,7 +824,8 @@ function hivtrace_render_histogram(counts, fit, w, h, id) {
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis);    
 }
-;$(document).ready(function(){
+
+$(document).ready(function(){
   if(!in_progress()) {
     initialize_cluster_network_graphs();
   }
@@ -876,7 +868,8 @@ var initialize_cluster_network_graphs = function () {
     });
   }
 }
-;$(document).ready(function(){
+
+$(document).ready(function(){
   setupJob();
 });
 
@@ -899,6 +892,7 @@ function getTime() {
   time_difference -= mm * 1000 * 60;
   var ss = pad(String(Math.floor(time_difference / 1000)));
   $('#job-timer .time').html(hh + ':'+ mm  + ':'+ ss);
+
 }
 
 function setupJob() {
@@ -960,8 +954,7 @@ function setupJob() {
   });
 }
 
-
-;function compute_shortest_paths(cluster, edges) {
+function compute_shortest_paths(cluster, edges) {
 
   // Floyd-Warshall implementation
   var distances = {}
@@ -1062,12 +1055,6 @@ function compute_node_mean_paths(nodes, edges) {
   var cluster_map = {};
   unique_clusters.map(function(d){ cluster_map[d] = {'size': 0, 'nodes': [] } });
 
-  ////Add each node to the cluster
-  //Object.keys(cluster_map).map(function(d){
-  //  cluster_map[d]['size'] = cluster_sizes[parseInt(d)-1];
-  //});
-
-
   nodes.map(function(d) { cluster_map[d.cluster]['nodes'].push(d) });
 
   Object.keys(cluster_map).forEach( function(cluster_map_index) {
@@ -1091,5 +1078,12 @@ function compute_node_mean_paths(nodes, edges) {
       });
       node.mean_path_length = path_sum / adj_nodes;
     });
+  });
+}
+
+function getAttributeMap() {
+  var hivtraceid = $('#hiv-cluster-report').data('hivtraceid')
+  $.get(hivtraceid + '/attributemap', function(attribute_map) {
+    console.log(attribute_map);
   });
 }

@@ -446,5 +446,6 @@ function topTenList(div, dimension) {
     var td = tr.append("td")
           .text(function(d) { return d.percent; });
   });
+
 }
 

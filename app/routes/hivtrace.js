@@ -152,10 +152,8 @@ exports.invokeClusterAnalysis = function (req, res) {
 
   var postdata = req.body;
   var id = req.params.id;
-  console.log(id);
 
   HivTrace.findOne({_id: id}, function (err, hivtrace) {
-    hivtrace.attribute_map = postdata;
     hivtrace.save(function (err, result) {
       if(err) {
           // Redisplay form with error
@@ -233,6 +231,25 @@ exports.results = function (req, res) {
           res.render('hivtrace/results.ejs', {hivtrace : hivtrace});
         }
       });
+    }
+  });
+
+}
+
+/**
+ * Returns strictly JSON results for requested job id
+ * app.get('/hivtrace/:id/results', hivtrace.results);
+ */
+exports.attributemap = function (req, res) {
+  // HIV Cluster id
+  //TODO: Have an options for CSV
+  var id = req.params.id;
+
+  HivTrace.findOne({_id: id}, 'attribute_map', function (err, hivtrace) {
+    if (err || !hivtrace) {
+      res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
+    } else {
+      res.json({hivtrace : hivtrace});
     }
   });
 
