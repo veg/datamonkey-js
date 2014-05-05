@@ -45,6 +45,10 @@ $("#attr_submit").bind( "click", function() {
   submitNewMap();
 });
 
+$("#attr_skip").bind( "click", function() {
+  submitNewMap();
+});
+
 function submitNewMap() {
   var url = "/hivtrace/invoke/" + $("#hivtrace_id").text();
 
