@@ -154,6 +154,7 @@ exports.invokeClusterAnalysis = function (req, res) {
   var id = req.params.id;
 
   HivTrace.findOne({_id: id}, function (err, hivtrace) {
+    hivtrace.attribute_map = postdata;
     hivtrace.save(function (err, result) {
       if(err) {
           // Redisplay form with error
@@ -238,7 +239,7 @@ exports.results = function (req, res) {
 
 /**
  * Returns strictly JSON results for requested job id
- * app.get('/hivtrace/:id/results', hivtrace.results);
+ * app.get('/hivtrace/:id/attributes', hivtrace.results);
  */
 exports.attributemap = function (req, res) {
   // HIV Cluster id
@@ -246,6 +247,7 @@ exports.attributemap = function (req, res) {
   var id = req.params.id;
 
   HivTrace.findOne({_id: id}, 'attribute_map', function (err, hivtrace) {
+    console.log(hivtrace);
     if (err || !hivtrace) {
       res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
     } else {
