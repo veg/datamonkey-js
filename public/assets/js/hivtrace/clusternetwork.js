@@ -1,3 +1,4 @@
+
 var clusterNetworkGraph = function (json, network_container, network_status_string, 
                                 histogram_tag, histogram_label) {
 
@@ -13,14 +14,6 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
       clusters,         // cluster 'nodes', used either as fixed cluster anchors, or 
                         // to be a placeholder for the cluster
       max_points_to_render = 400,
-      popover_html = "<div class='btn-group btn-group-vertical'>\
-      <button class='btn btn-link btn-mini' type='button' id = 'cluster_expand_button'>Expand cluster</button>\
-      <button class='btn btn-link btn-mini' id = 'cluster_center_button' type='button'>Center on screen</button>\
-      </div>",
-       popover_html2 = "<div class='btn-group btn-group-vertical'>\
-      <button class='btn btn-link btn-mini' type='button' id = 'cluster_collapse_button'>Collapse cluster</button>\
-      <button class='btn btn-link btn-mini' id = 'cluster_center_button' type='button'>Center on screen</button>\
-      </div>",
       warning_string     = "",
       singletons         = 0,
       open_cluster_queue = [],
@@ -56,6 +49,86 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
 
 
   /*------------ Network layout code ---------------*/
+  handle_cluster_click = function (cluster) {
+    var id = "d3_context_menu_id";
+    var menu_object = d3.select("body").select ("#" + id);
+    
+    if (menu_object.empty()) {
+      menu_object = d3.select ("body").append ("ul")
+        .attr ("id", id)
+        .attr ("class","dropdown-menu")
+        .attr ("role", "menu");
+    } 
+
+    menu_object.selectAll ("li").remove();
+
+    if (cluster) {
+
+      menu_object.append("li").append ("a")
+                   .attr("tabindex", "-1")
+                   .text("Expand cluster")
+                   .on ("click", function (d) {
+                      expand_cluster_handler(cluster, true);
+                      menu_object.style ("display", "none"); 
+                      });
+
+      menu_object.append("li").append ("a")
+                   .attr ("tabindex", "-1")
+                   .text ("Center on screen")
+                   .on ("click", function (d) {
+                      center_cluster_handler(cluster);
+                      menu_object.style ("display", "none"); 
+                      });
+               
+      menu_object.style ("position", "absolute")
+        .style ("left", "" + d3.event.pageX + "px")
+        .style ("top", "" + d3.event.pageY + "px")
+        .style ("display", "block");
+
+    } else {
+      menu_object.style ("display", "none");
+    }
+
+    d3.select ("body").on("click", function (d) {handle_cluster_click(null);}, true);
+
+  };
+
+  handle_node_click = function (node) {
+    var id = "d3_context_menu_id";
+    var menu_object = d3.select("body").select ("#" + id);
+    
+    if (menu_object.empty()) {
+      menu_object = d3.select ("body").append ("ul")
+        .attr ("id", id)
+        .attr ("class","dropdown-menu")
+        .attr ("role", "menu");
+    } 
+
+    menu_object.selectAll ("li").remove();
+
+    if (node) {
+
+      menu_object.append("li").append ("a")
+                   .attr("tabindex", "-1")
+                   .text("Collapse cluster")
+                   .on ("click", function (d) {
+                      collapse_cluster_handler(node, true)
+                      menu_object.style ("display", "none"); 
+                      });
+
+      menu_object.style ("position", "absolute")
+        .style ("left", "" + d3.event.pageX + "px")
+        .style ("top", "" + d3.event.pageY + "px")
+        .style ("display", "block");
+
+    } else {
+      menu_object.style("display", "none");
+    }
+
+    d3.select ("body").on("click", function (d) {handle_node_click(null);}, true);
+
+  };
+
   function get_initial_xy (nodes, cluster_count, exclude ) { 
       var d_clusters = {'id': 'root', 'children': []};
       for (var k = 0; k < cluster_count; k+=1) {
@@ -220,7 +293,7 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
         .attr("cx", function (d) { return d.x; })
         .attr("cy", function (d) { return d.y; })
         .style("fill", function(d) { return node_color (d); })
-        .on ("click", click_node)
+        .on ("click", handle_node_click)
         .on ("mouseover", node_pop_on)
         .on ("mouseout", node_pop_off)
         .call(network_layout.drag().on("dragstart", node_pop_off));
@@ -241,7 +314,7 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
       .attr("x", function(d) { return d.x; })
       .attr("y", function(d) { return d.y; })
       .style("fill", function(d) { return cluster_color (d); })
-      .on ("click", click_cluster)
+      .on ("click", handle_cluster_click)
       .on ("mouseover", cluster_pop_on)
       .on ("mouseout", cluster_pop_off)
       .call(network_layout.drag().on("dragstart", cluster_pop_off));
@@ -418,75 +491,25 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
     });
 
   /*------------ Event Functions ---------------*/
-  function click_cluster(d) {
-    if (d3.event.defaultPrevented) return;
-    toggle_popover (this, false);
-    toggle_popover (this, true, d, null, popover_html);
-  }
-
-  // Toggle children on click.
-  function click_node(d) {
-    if (d3.event.defaultPrevented) return;
-    toggle_popover (this, false);
-    toggle_popover (this, true, d, null, popover_html2);
-  }
-
   function toggle_tooltip(element, turn_on, title, tag) {
     if (d3.event.defaultPrevented) return;
     if (turn_on && element.tooltip == undefined) {
-        var this_box = $(element);
-        var this_data = d3.select(element).datum();
-        element.tooltip = this_box.tooltip({
-                   'title': title + "<br>" + tag,
-                   'html': true,
-                   'container': 'body'
-                 });
-                 
-        //this_data.fixed = true;
-        element.tooltip.tooltip ('show');
+      var this_box = $(element);
+      var this_data = d3.select(element).datum();
+      element.tooltip = this_box.tooltip({
+                 'title': title + "<br>" + tag,
+                 'html': true,
+                 'container': 'body'
+               });
+               
+      //this_data.fixed = true;
+      element.tooltip.tooltip ('show');
     } else {
-          if (turn_on == false && element.tooltip != undefined) {
-              element.tooltip.tooltip('destroy');
-              element.tooltip = undefined;
-              //d3.select(element).datum().fixed = false;
-          }
-    }
-  }
-
-  function bind_cluster_button_events (d, element) {
-      $('#cluster_expand_button').on('click', function (e) {
-          expand_cluster_handler (d, true);
-          toggle_popover (element, false);
-      });
-      $('#cluster_collapse_button').on('click', function (e) {
-          collapse_cluster_handler (d, true);
-          toggle_popover (element, false);
-      });
-      $('#cluster_center_button').on('click', function (e) {
-          center_cluster_handler (d);
-          toggle_popover (element, false);
-      });
-  }
-
-  function toggle_popover (element, turn_on, d, title, tag) {
-    if (d3.event && d3.event.defaultPrevented) return;
-    if (turn_on && popover == undefined) {
-        var this_box = $(element);
-        var this_data = d3.select(element).datum();
-        popover = this_box.popover({
-                   'title': title,
-                   'content': tag,
-                   'html': true,
-                   'container': 'body'
-                 });
-                 
-        popover.popover ('show');
-        bind_cluster_button_events (d, element);
-     } else {
-          if (turn_on == false && popover != undefined) {
-              popover.popover('destroy');
-              popover = undefined;
-          }
+      if (turn_on == false && element.tooltip != undefined) {
+        element.tooltip.tooltip('destroy');
+        element.tooltip = undefined;
+        //d3.select(element).datum().fixed = false;
+      }
     }
   }
   initial_json_load();       
