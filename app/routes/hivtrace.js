@@ -49,6 +49,32 @@ exports.clusterForm = function (req, res) {
 }
 
 /**
+ * Form submission page
+ * app.post('/hivtrace/uploadfile', hivtrace.clusterForm);
+ */
+exports.uploadFile = function (req, res) {
+  var hivtrace = new HivTrace;
+  // Validate that the file uploaded was a FASTA file
+  HivTrace.validateFasta(req.files.files.path, function(result) {
+    if(!result.success) {
+      // FASTA validation failed, report an error and the form back to the user
+      res.format({
+        html: function(){
+          res.render('hivtrace/form.ejs', {'error': { 'file' : result.msg }, 'validators': HivTrace.validators() });
+        },
+        json: function(){
+          res.json(200, {'error': { 'file' : result.msg }});
+        }
+      });
+    } else {
+      hivtrace.save(function (err, result) {
+        res.json(200, {'result': result});
+      });
+    }
+  });
+}
+
+/**
  * An AJAX request that verifies the upload is correct
  * app.post('/hivtrace/upload', hivtrace.verifyUpload);
  */
@@ -72,20 +98,6 @@ exports.verifyUpload = function (req, res) {
 
   if(postdata.receive_mail == 'on') {
     hivtrace.mail = postdata.mail;
-  }
-
-  // Validate that a file was uploaded
-  if (req.files.files.size == 0) {
-    // Error, show form again
-    res.format({
-      html: function(){
-        res.render('hivtrace/form.ejs', {'error' : { 'file' : "Empty File"}, 'validators': HivTrace.validators() });
-      },
-      json: function(){
-        res.json(200, {'err': "Empty File"});
-      }
-    });
-    return;
   }
 
   // Validate that the file uploaded was a FASTA file

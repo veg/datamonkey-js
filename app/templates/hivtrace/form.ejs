@@ -15,8 +15,13 @@
       <form role="form" class="form-horizontal" name="uploadform" enctype="multipart/form-data" action="/hivtrace/upload" method="post">
           <div id="trace-upload" class="form-group <%if (typeof errors != "undefined" && typeof errors.file != "undefined") { %>has-error<% } %>">
             <label id="upload-file-label" class="col-lg-3 control-label">Sequence Alignment</label> 
-            <div class="col-lg-9">
-                <input type="file" name="files">
+            <div id="seq-file-div" class="col-lg-9">
+                <input id="seq-file" type="file" name="files">
+                <div id="file-progress" class="progress progress-striped active">
+                  <div class="progress-bar" role="progressbar" aria-valuenow="<%= hivtrace.percentage_complete %>" aria-valuemin="1" aria-valuemax="100" style="width: <%= hivtrace.percentage_complete %>">
+                    <span class="sr-only"><%= hivtrace.percentage_complete %> Complete</span> 
+                  </div>
+                </div>  
             </div>
             <%if (typeof errors != "undefined" && typeof errors.file != "undefined") { %><div class="col-lg-9 help-div"><span class="help-block"> <%= errors.file %> </span></div><% } %>
           </div>
@@ -69,7 +74,7 @@
                 </label>
             </div>
           </div>
-          <button type="submit" class="btn btn-primary pull-right">Upload</button>
+          <button id="upload-button" type="submit" class="btn btn-primary pull-right">Upload</button>
       </form>
   </div>
 </div>

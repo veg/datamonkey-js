@@ -134,3 +134,44 @@ $( "input[name='distance_threshold']" ).focusout(validateElement);
 $( "input[name='min_overlap']" ).focusout(validateElement);
 $( ".mail-group" ).change(ValidateEmail);
 
+
+$(function() {
+
+  $("#seq-file").change(function(evt) {
+    uploadForm(evt);
+  });
+  
+  function uploadForm(evt) {
+    evt.preventDefault();
+
+    //$('div.progress').show();
+    var formData = new FormData();
+    var file = document.getElementById('seq-file').files[0];
+    formData.append('files', file);
+    
+    var xhr = new XMLHttpRequest();
+    
+    xhr.open('post', '/hivtrace/uploadfile', true);
+    
+    xhr.upload.onprogress = function(e) {
+      if (e.lengthComputable) {
+        var percentage = (e.loaded / e.total) * 100;
+        $('#file-progress').css("display", "block");
+        $('#seq-file').css("display", "none");
+        $('.progress .progress-bar').css('width', percentage + '%');
+      }
+    };
+    
+    xhr.onerror = function(e) {
+      //showInfo('An error occurred while submitting the form. Maybe your file is too big');
+    };
+    
+    xhr.onload = function() {
+      // Show that it is complete
+    };
+    
+    xhr.send(formData);
+    
+  }
+  
+});
