@@ -59,8 +59,11 @@ module.exports = function(app) {
   // HIV CLUSTERING ROUTES
   hivtrace = require( ROOT_PATH + '/app/routes/hivtrace');
   app.get('/hivtrace', hivtrace.clusterForm);
-  app.post('/hivtrace', hivtrace.invokeClusterAnalysis);
+  app.post('/hivtrace/uploadfile', hivtrace.uploadFile);
+  app.post('/hivtrace/upload/:id', hivtrace.verifyUpload);
+  app.post('/hivtrace/invoke/:id', hivtrace.invokeClusterAnalysis);
   app.get('/hivtrace/:id', hivtrace.jobPage);
   app.get('/hivtrace/:id/results', hivtrace.results);
-}
+  app.get('/hivtrace/:id/attributemap', hivtrace.attributemap);
 
+}

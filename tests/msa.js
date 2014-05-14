@@ -27,20 +27,29 @@
 
 */
 
+<<<<<<< HEAD
 
 var fs = require('fs'),
     mongoose = require('mongoose'),
     spawn = require('child_process').spawn,
     setup = require('../config/setup');
+=======
+var fs = require('fs');
+
+var mongoose = require('mongoose');
+>>>>>>> master
 
 // Bootstrap models
 var models_path = '../app/models';
 
+<<<<<<< HEAD
 fs.readdirSync(models_path).forEach(function (file) {
   require(models_path+'/'+file);
 });
 
 
+=======
+>>>>>>> master
 var Msa     = mongoose.model('Msa'),
     should  = require('should');
 

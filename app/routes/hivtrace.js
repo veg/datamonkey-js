@@ -49,90 +49,130 @@ exports.clusterForm = function (req, res) {
 }
 
 /**
+ * Form submission page
+ * app.post('/hivtrace/uploadfile', hivtrace.clusterForm);
+ */
+exports.uploadFile = function (req, res) {
+
+  var hivtrace = new HivTrace;
+  // Validate that the file uploaded was a FASTA file
+  HivTrace.validateFasta(req.files.files.path, function(result) {
+    if(!result.success) {
+      res.json(200, {'error': { 'file' : result.msg }});
+      return;
+    }
+    hivtrace.save(function (err, ht) {
+      fs.rename(req.files.files.path, ht.filepath, function(err, result) {
+        if(err) {
+          // FASTA validation failed, report an error and the form back to the user
+          res.json(200, {'error': { 'file' : result.msg }});
+        } else {
+          hivtrace.save(function (err, result) {
+            res.json(200, {'result': result});
+          });
+        }
+      });
+    });
+  });
+}
+
+/**
+ * An AJAX request that verifies the upload is correct
+ * app.post('/hivtrace/upload/:id', hivtrace.verifyUpload);
+ */
+exports.verifyUpload = function (req, res) {
+
+  var postdata = req.body;
+  var id = req.params.id;
+
+  HivTrace.findOne({_id: id}, function (err, hivtrace) {
+    if(postdata.public_db_compare == 'yes') {
+      hivtrace.lanl_compare = true;
+      hivtrace.status_stack = hiv_setup.valid_lanl_statuses;
+    } else {
+      hivtrace.lanl_compare = false;
+      hivtrace.status_stack = hiv_setup.valid_statuses;
+    }
+
+    hivtrace.distance_threshold = Number(postdata.distance_threshold);
+    hivtrace.min_overlap        = Number(postdata.min_overlap);
+    hivtrace.ambiguity_handling = postdata.ambiguity_handling;
+    hivtrace.status             = hivtrace.status_stack[0];
+
+    if(postdata.receive_mail == 'on') {
+      hivtrace.mail = postdata.mail;
+    }
+
+    // Validate that the file uploaded was a FASTA file
+    hivtrace.save(function (err, result) {
+      var hivtrace_id = result._id;
+      if(err) {
+        res.json(200, {'error'     : err.error, 
+                       'validators': HivTrace.validators()});
+
+      } else {
+
+        HivTrace.createAttributeMap(result.filepath, function(err, result) {
+          parsed_attributes = HivTrace.parseHeaderFromMap(result.headers[0], result);
+          res.format({
+            html: function() {
+              res.render('hivtrace/attribute_map_assignment.ejs', { 'map'           : result, 
+                                                                    'example_parse' : parsed_attributes, 
+                                                                    'hivtrace_id'   : hivtrace_id, 
+                                                                    'error'         : err, 
+                                                                    'validators'    : HivTrace.validators() });
+            },
+            json: function(){
+              res.json(200, { 'map'           : result, 
+                              'example_parse' : parsed_attributes, 
+                              'hivtrace_id'   : hivtrace_id, 
+                              'error'         : err, 
+                              'validators'    : HivTrace.validators() });
+            }
+          });
+        });
+      }
+    });
+  });
+}
+
+/**
  * Handles a job request by the user
  * app.post('/hivtrace', hivtrace.invokeClusterAnalysis);
  */
 exports.invokeClusterAnalysis = function (req, res) {
 
-  var hivtrace = new HivTrace;
   var postdata = req.body;
+  var id = req.params.id;
 
-  if(postdata.public_db_compare == 'yes') {
-    hivtrace.lanl_compare = true;
-    hivtrace.status_stack = hiv_setup.valid_lanl_statuses;
-  } else {
-    hivtrace.lanl_compare = false;
-    hivtrace.status_stack = hiv_setup.valid_statuses;
-  }
+  HivTrace.findOne({_id: id}, function (err, hivtrace) {
+    hivtrace.attribute_map = postdata;
+    hivtrace.save(function (err, result) {
+      if(err) {
+          // Redisplay form with error
+          res.format({
+            html: function(){
+              res.render('hivtrace/form.ejs', {'error': err.error, 
+                         'validators': HivTrace.validators()});
+            },
 
-  hivtrace.distance_threshold = Number(postdata.distance_threshold);
-  hivtrace.min_overlap        = Number(postdata.min_overlap);
-  hivtrace.ambiguity_handling = postdata.ambiguity_handling;
-  hivtrace.status             = hivtrace.status_stack[0];
+            json: function(){
+              res.json(200, {'result': data});
+            }
 
-  if(postdata.receive_mail == 'on') {
-    hivtrace.mail = postdata.mail;
-  }
-
-  // Validate that a file was uploaded
-  if (req.files.files.size == 0) {
-    // Error, show form again
-    res.format({
-      html: function(){
-        res.render('hivtrace/form.ejs', {'errors' : { 'file' : "Empty File"}, 'validators': HivTrace.validators() });
-      },
-      json: function(){
-        res.json(200, {'err': "Empty File"});
+          });
+      } else {
+        var hpcsocket = new jobproxy.HPCSocket(result);
+        res.format({
+          json: function(){
+            res.json(200, '/hivtrace/' + result._id);
+          },
+          html: function(){
+            res.redirect(result._id);
+          }
+        });
       }
     });
-    return;
-  }
-
-  // Validate that the file uploaded was a FASTA file
-  HivTrace.validateFasta(req.files.files.path, function(result) {
-    if(!result.success) {
-      // FASTA validation failed, report an error and the form back to the user
-      res.format({
-        html: function(){
-          res.render('hivtrace/form.ejs', {'errors': { 'file' : result.msg }, 'validators': HivTrace.validators() });
-        },
-        json: function(){
-          res.json(200, {'err': "Empty File"});
-        }
-      });
-    } else {
-      hivtrace.save(function (err, result) {
-        if(err) {
-            // Redisplay form with errors
-            res.format({
-              html: function(){
-                res.render('hivtrace/form.ejs', {'errors': err.errors, 
-                           'validators': HivTrace.validators()});
-              },
-              json: function(){
-                res.json(200, {'result': data});
-              }
-            });
-        } else {
-          // Successful upload, copy the tmp uploaded file to our 
-          // specified storage location as per setup.js
-          fs.readFile(req.files.files.path, function (err, data) {
-            var new_path = result.filepath;
-            fs.writeFile(new_path, data, function (err) {
-              var hpcsocket = new jobproxy.HPCSocket(result);
-              res.format({
-                json: function(){
-                  res.json(200, result);
-                },
-                html: function(){
-                  res.redirect('hivtrace/' + result._id);
-                }
-              });
-            });
-          }); 
-        }
-      });
-    } 
   });
 }
 
@@ -145,7 +185,6 @@ exports.jobPage = function (req, res) {
 
   // HIV Cluster id
   var id = req.params.id;
-
   HivTrace.findOne({_id: id}, function (err, hivtrace) {
     if (err || !hivtrace) {
       res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
@@ -168,8 +207,9 @@ exports.jobPage = function (req, res) {
  * app.get('/hivtrace/:id/results', hivtrace.results);
  */
 exports.results = function (req, res) {
-  // HIV Cluster ID
-  // TODO: Have an options for CSV
+  // HIV Cluster id
+
+  //TODO: Have an options for CSV
   var id = req.params.id;
   HivTrace.findOne({_id: id}, 'tn93_summary tn93_results trace_results lanl_trace_results', function (err, hivtrace) {
     if (err || !hivtrace) {
@@ -185,4 +225,26 @@ exports.results = function (req, res) {
       });
     }
   });
+
 }
+
+/**
+ * Returns strictly JSON results for requested job id
+ * app.get('/hivtrace/:id/attributes', hivtrace.results);
+ */
+exports.attributemap = function (req, res) {
+  // HIV Cluster id
+  //TODO: Have an options for CSV
+  var id = req.params.id;
+
+  HivTrace.findOne({_id: id}, 'attribute_map', function (err, hivtrace) {
+    console.log(hivtrace);
+    if (err || !hivtrace) {
+      res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
+    } else {
+      res.json({hivtrace : hivtrace});
+    }
+  });
+
+}
+

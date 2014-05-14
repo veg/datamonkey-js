@@ -15,15 +15,26 @@ module.exports = function(grunt) {
         dest: 'public/assets/js/datamonkey.js'
       }
     },
+    mochaTest: {
+      test: {
+          src: ['tests/hivtrace.js'],
+          options: {
+                run: true,
+              },
+          },
+    },
     watch: {
-      files: ['assets/js/**/*.js'],
-      tasks: ['concat']
+      //files: ['assets/js/**/*.js'],
+      files: ['app/**/*.js', 'tests/*.js'],
+      tasks: ['mochaTest']
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.registerTask('default', ['concat']);
+  grunt.registerTask('default', ['mochaTest']);
 
 };
