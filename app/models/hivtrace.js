@@ -300,6 +300,7 @@ HivTrace.statics.createAttributeMap = function (fn, cb) {
 
   }
 
+  console.log(fn);
 
   // explode by all delimiting varieties
   fs.readFile(fn, function (err, data) {
@@ -309,6 +310,7 @@ HivTrace.statics.createAttributeMap = function (fn, cb) {
       cb({'err': err}, false);
     }
 
+    console.log(data);
     var data  = data.toString();
     var lines = data.split(/(?:\n|\r\n|\r)/g);
 
