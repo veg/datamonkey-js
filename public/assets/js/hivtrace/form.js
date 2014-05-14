@@ -1,13 +1,12 @@
 $(document).ready(function(){
 });
 
-$("form").submit(function() {
+$("form").submit(function(e) {
+  e.preventDefault();
 
   //Trigger elements
   $( "input[name='distance_threshold']" ).trigger('focusout');
   $( "input[name='min_overlap']" ).trigger('focusout');
-  validateFile();
-
 
   $(this).next('.help-block').remove();
 
@@ -17,41 +16,33 @@ $("form").submit(function() {
   }
 
   $("#form-has-error").hide();
-  return true;
+
+  //Submit form
+  var url = "/hivtrace/upload/" + $("#seq-file-div").data('fileid')
+
+  // Collect data to be posted
+  data = {};
+  data.distance_threshold = $( "input[name='distance_threshold']" ).val();
+  data.min_overlap = $( "input[name='min_overlap']" ).val();
+  data.receive_mail = $( "input[name='receive_mail']" ).prop("checked");
+  data.mail = $( "input[name='mail']" ).val();
+  data.public_db_compare = $( "input[name='public_db_compare']" ).prop("checked");
+
+  $.ajax({
+    type: "POST",
+    url: url,
+    data: data,
+    success: function (data, textStatus, xhr) {
+        $("#container").replaceWith(data);
+    },
+    error: function (xhr, textStatus, errorThrown) {
+        //$('.rtnMsg').html("opps: " + textStatus + " : " + errorThrown);
+        //myRtnA = "Error"
+        //return myRtnA;
+    }
+  });
 
 });
-
-var validateFile = function() {
-
-  var selector = "#trace-upload";
-  var input_field = "input[type='file']";
-  $(selector).removeClass('has-error');
-
-
-  $(selector).next('.help-div').remove();
-
-  // Ensure that file is not empty
-  if($(input_field).val().length == 0) {
-
-    $(selector).addClass('has-error');
-
-    var help_div = jQuery('<div/>', {
-          class: 'col-lg-9',
-      });
-
-    var help_span = jQuery('<span/>', {
-          class: 'help-block',
-          text : 'Field is empty'
-      });
-
-      $(selector).append(help_div.append(help_span));
-
-    return false;
-  } 
-
-  $(selector).removeClass('has-error');
-  return true;
-}
 
 // Validate an element that has min and max values
 var validateElement = function () {
@@ -143,16 +134,19 @@ $(function() {
   
   function uploadForm(evt) {
     evt.preventDefault();
+    $("#upload-button").prop("disabled",true);
 
     //$('div.progress').show();
     var formData = new FormData();
     var file = document.getElementById('seq-file').files[0];
+    var filename = document.getElementById('seq-file').files[0].name;
+
     formData.append('files', file);
     
     var xhr = new XMLHttpRequest();
     
     xhr.open('post', '/hivtrace/uploadfile', true);
-    
+
     xhr.upload.onprogress = function(e) {
       if (e.lengthComputable) {
         var percentage = (e.loaded / e.total) * 100;
@@ -163,11 +157,25 @@ $(function() {
     };
     
     xhr.onerror = function(e) {
-      //showInfo('An error occurred while submitting the form. Maybe your file is too big');
+      $('#file-progress').html(e);
     };
     
-    xhr.onload = function() {
-      // Show that it is complete
+    xhr.onload = function(res) {
+      // Replace field with green text, name of file
+      $("#seq-file-div").empty()
+      $("#seq-file-div").append($('<div />').html('<span class="text-success">' + filename + '</span> successfully uploaded')
+                                            .css('padding-top','5px'));
+
+      var result = JSON.parse(this.responseText).result;
+      if('_id' in result) {
+        $("#seq-file-div")[0].setAttribute('data-fileid', result._id);
+      }
+
+      //TODO: Handle error
+
+      // set id
+      $("#upload-button").prop("disabled",false);
+
     };
     
     xhr.send(formData);

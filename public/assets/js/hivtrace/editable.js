@@ -69,3 +69,4 @@ function submitNewMap() {
   });
 
 }
+
