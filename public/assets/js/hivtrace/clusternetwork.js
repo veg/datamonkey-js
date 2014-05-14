@@ -63,11 +63,12 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
     menu_object.selectAll ("li").remove();
 
     if (cluster) {
-
+      cluster.fixed = 1;
       menu_object.append("li").append ("a")
                    .attr("tabindex", "-1")
                    .text("Expand cluster")
                    .on ("click", function (d) {
+                      cluster.fixed = 0;
                       expand_cluster_handler(cluster, true);
                       menu_object.style ("display", "none"); 
                       });
@@ -76,6 +77,7 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
                    .attr ("tabindex", "-1")
                    .text ("Center on screen")
                    .on ("click", function (d) {
+                      cluster.fixed = 0;
                       center_cluster_handler(cluster);
                       menu_object.style ("display", "none"); 
                       });
@@ -108,10 +110,12 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
 
     if (node) {
 
+      node.fixed = 1;
       menu_object.append("li").append ("a")
                    .attr("tabindex", "-1")
                    .text("Collapse cluster")
                    .on ("click", function (d) {
+                      node.fixed = 0;
                       collapse_cluster_handler(node, true)
                       menu_object.style ("display", "none"); 
                       });
