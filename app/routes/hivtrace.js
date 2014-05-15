@@ -32,7 +32,7 @@ var error     = require( ROOT_PATH + '/lib/error.js'),
     globals   = require( ROOT_PATH + '/config/globals.js'),
     mailer    = require( ROOT_PATH + '/lib/mailer.js'),
     fs        = require('fs'),
-    jobproxy  = require( ROOT_PATH + "/lib/hivtrace.js"),
+    hpcsocket = require( ROOT_PATH + '/lib/hpcsocket.js'),
     hiv_setup = require( ROOT_PATH + '/config/hivtrace_globals');
     setup     = require( ROOT_PATH + '/config/setup');
 
@@ -143,7 +143,7 @@ exports.verifyUpload = function (req, res) {
 exports.invokeClusterAnalysis = function (req, res) {
 
   var postdata = req.body;
-  var id = req.params.id;
+  var id    = req.params.id;
 
   HivTrace.findOne({_id: id}, function (err, hivtrace) {
     hivtrace.attribute_map = postdata;
@@ -159,18 +159,26 @@ exports.invokeClusterAnalysis = function (req, res) {
             json: function(){
               res.json(200, {'result': data});
             }
-
           });
       } else {
-        var hpcsocket = new jobproxy.HPCSocket(result);
-        res.format({
-          json: function(){
-            res.json(200, '/hivtrace/' + result._id);
-          },
-          html: function(){
-            res.redirect(result._id);
-          }
-        });
+
+        // Send the MSA, and type
+        var jobproxy = new hpcsocket.HPCSocket({'filepath': result.filepath, 
+                                                'analysis': result,
+                                                'resultpath': setup.hivtrace_upload_path,
+                                                'status_stack': result.status_stack,
+                                                'type': 'hivtrace'}, callback);
+
+        function callback(data) {
+          res.format({
+            json: function(){
+              res.json(200, '/hivtrace/' + result._id);
+            },
+            html: function(){
+              res.redirect(result._id);
+            }
+          });
+        }
       }
     });
   });
@@ -207,9 +215,8 @@ exports.jobPage = function (req, res) {
  * app.get('/hivtrace/:id/results', hivtrace.results);
  */
 exports.results = function (req, res) {
-  // HIV Cluster id
 
-  //TODO: Have an options for CSV
+  // HIV Cluster id
   var id = req.params.id;
   HivTrace.findOne({_id: id}, 'tn93_summary tn93_results trace_results lanl_trace_results', function (err, hivtrace) {
     if (err || !hivtrace) {
@@ -233,8 +240,6 @@ exports.results = function (req, res) {
  * app.get('/hivtrace/:id/attributes', hivtrace.results);
  */
 exports.attributemap = function (req, res) {
-  // HIV Cluster id
-  //TODO: Have an options for CSV
   var id = req.params.id;
 
   HivTrace.findOne({_id: id}, 'attribute_map', function (err, hivtrace) {

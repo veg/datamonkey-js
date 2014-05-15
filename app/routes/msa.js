@@ -92,6 +92,7 @@ exports.uploadMsa = function (req, res) {
         }
       });
     } else {
+
       var fpi = result.FILE_PARTITION_INFO;
       var file_info = result.FILE_INFO;
 
@@ -124,17 +125,10 @@ exports.uploadMsa = function (req, res) {
         } else {
             // Successful upload, copy the tmp uploaded file to our 
             // specified storage location as per setup.js
-            fs.readFile(req.files.files.path, function (err, data) {
-              var new_path = sequence_alignment.filepath;
-              fs.writeFile(new_path, data, function (err) {
-                res.format({
-                  html: function(){
-                          res.redirect('./' + sequence_alignment._id);
-                        },
-                  json: function() {
-                        res.json(200, sequence_alignment);
-                        }
-                });
+            fs.rename(req.files.files.path, sequence_alignment.filepath, function(err, result) {
+              res.format({
+                html: function(){res.redirect('./' + sequence_alignment._id);},
+                json: function() {res.json(200, sequence_alignment);}
               });
             }); 
           }
@@ -228,5 +222,6 @@ exports.deleteMsa = function(req, res) {
       res.json({"success" : 1});
      }
   });
+
 }
 

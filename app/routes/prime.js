@@ -96,10 +96,11 @@ exports.invokePrime = function(req, res) {
           } else {
 
             // Send the MSA, and type
-            var jobproxy = new hpcsocket.HPCSocket({'msa': msa, 
-                                                    'analysis': result,
+            var jobproxy = new hpcsocket.HPCSocket({'filepath'    : msa.filepath, 
+                                                    'msa'         : msa,
+                                                    'analysis'    : result,
                                                     'status_stack': result.status_stack,
-                                                    'type': 'prime'}, callback);
+                                                    'type'        : 'prime'}, callback);
             function callback(data) {
               if(data == 'connected') {
                 res.format({
