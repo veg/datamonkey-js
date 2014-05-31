@@ -187,9 +187,27 @@ exports.findById = function (req, res) {
   });
 };
 
+// app.get('/msa/:id', msa.findById);
+exports.getNeighborJoin = function (req, res) {
+
+  //We must get count of all analyses for the job, respective of type.
+  var id = req.params.id;
+
+  Msa.findOne({_id : id}, 'nj', function (err, item) {
+    if (err || !item) {
+      res.json(500, error.errorResponse('There is no sequence with id of ' + id));
+    } else if (!item.nj) {
+      // check if tree is null
+    } else {
+      //Get the count of the different analyses on the job
+      res.json(200, item);
+    }
+  });
+
+};
+
 // app.put('/msa/:id', msa.updateMsa);
 exports.updateMsa = function(req, res) {
-
   var id = req.query.id;
   var postdata = req.query;
   var options = { multi: false };
@@ -212,9 +230,7 @@ exports.updateMsa = function(req, res) {
 
 // app.delete('/msa/:id', msa.deleteMsa);
 exports.deleteMsa = function(req, res) {
-
   var id = req.params.id;
-
   Msa.findOneAndRemove({ _id: id }, function(err) {
     if (err) {
       res.json(500, error.errorResponse(err));
@@ -222,6 +238,5 @@ exports.deleteMsa = function(req, res) {
       res.json({"success" : 1});
      }
   });
-
 }
 

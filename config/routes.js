@@ -41,6 +41,7 @@ module.exports = function(app) {
   app.get('/msa', msa.showUploadForm);
   app.post('/msa', msa.uploadMsa);
   app.get('/msa/:id', msa.findById);
+  app.get('/msa/:id/nj', msa.getNeighborJoin);
   //app.put('/msa/:id', msa.updateMsa);
   //app.delete('/msa/:id', msa.deleteMsa);
 

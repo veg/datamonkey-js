@@ -165,7 +165,6 @@ exports.invokeClusterAnalysis = function (req, res) {
         // Send the MSA, and type
         var jobproxy = new hpcsocket.HPCSocket({'filepath': result.filepath, 
                                                 'analysis': result,
-                                                'resultpath': setup.hivtrace_upload_path,
                                                 'status_stack': result.status_stack,
                                                 'type': 'hivtrace'}, callback);
 

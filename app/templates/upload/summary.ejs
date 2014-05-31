@@ -1,59 +1,22 @@
 <%- include ../includes/header.ejs %>
+<link href="/assets/css/phylotree.css" rel="stylesheet">
+<link href="/assets/css/neighbor-join.css" rel="stylesheet">
 
 <div class="container" id="property_table">
-  <div class="span12">
-    <h3>File Upload Summary</h3>
-    <h4><%= details._id %></h4>
-    <div id="upload_summary">
-      <ul class="nav">
-        <li><b><%= details.partitions %></b> Partitions</li>
-        <li><b><%= details.sequences %></b> Sequence Codons</li>
-        <li><b><%= details.genetic_code%></b> Genetic Code</li>
-        <li> Uploaded on <b><%= details.day_created_on %></b> at <b><%= details.time_created_on %></b></li>
-      </ul>
-    </div>
+
+  <h3>File Upload Summary</h3>
+  <h4>ID: <%= details._id %></h4>
+  <div id="upload-summary">
+    <ul class="list-group">
+      <li class="list-group-item"><b><%= details.partitions %></b> Partitions</li>
+      <li class="list-group-item"><b><%= details.sequences %></b> Sequence Codons</li>
+      <li class="list-group-item">Code: <b><%= details.genetic_code%></b></li>
+      <li class="list-group-item">Uploaded on <b><%= details.day_created_on %></b> at <b><%= details.time_created_on %></b></li>
+    </ul>
   </div>
 
-  <div>
-    <div id="sidebar" class="nav nav-list pull-right span4">
-      <h4>Downloads</h4>
-      <div class="">
-        <div>
-          <td>Nucleotide sequences </td>
-          <ul>
-            <li><a href="/cgi-bin/datamonkey/showdata.pl?<%= details._id %>">FASTA</a></li>
-            <li><a href="/cgi-bin/datamonkey/seqPlot.pl?file=<%= details._id %>">PDF</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <td>Aminoacid translation</td>
-          <ul>
-            <li><a href="/cgi-bin/datamonkey/showdata.pl?<%= details._id %>.aa">FASTA</a></li>
-            <li><a href="/cgi-bin/datamonkey/seqPlot.pl?file=<%= details._id %>.aa">PDF</a></li>
-          </ul>
-        </div>
-
-        <div>
-          <td>Neighbor Joining Tree
-          <ul>
-            <li><a href="/cgi-bin/datamonkey/wrapHyPhyBF.pl?file=splits&amp;mode=1&amp;arguments=<%= details._id %>-0">Newick</a></li>
-            <li><a href="/cgi-bin/datamonkey/wrapHyPhyBF.pl?file=pdftrees&amp;mode=2&amp;arguments=<%= details._id %>-0">PDF</a></li>
-          </ul>
-        </div>
-
-        <div>
-          User Tree(s)
-          <ul>
-            <li><a href="/cgi-bin/datamonkey/wrapHyPhyBF.pl?file=splits&amp;mode=1&amp;arguments=<%= details._id %>-1">Newick</a></li>
-            <li><a href="/cgi-bin/datamonkey/wrapHyPhyBF.pl?file=pdftrees&amp;mode=2&amp;arguments=<%= details._id %>-1">PDF</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <div class="pull-left span8">
-      <h4>Analyses</h4>
+  <div class="row">
+    <div class="pull-left col-lg-9">
       <div id="analysis-data">
         <table class="table table-bordered table-striped table-hover" >
         <% for(var t in type_count) { %>
@@ -67,6 +30,37 @@
         </table>
       </div>
     </div>
+
+    <div class="pull-right col-lg-3">
+      <div class="list-group">
+        <a href="#" class="list-group-item">Nucleotide sequences</a>
+        <a href="#" class="list-group-item">Aminoacid translation</a>
+        <a id="neighbor-joining-tree" href="#" class="list-group-item" data-toggle="modal" data-target="#neighbor-tree-modal">Neighbor Joining Tree</a>
+        <a href="#" class="list-group-item">User Tree(s)</a>
+      </div>
+    </div>
   </div>
 </div>
+
+<div id="neighbor-tree-modal" class="modal fade" data-tree="<%= details.nj %>">
+  <div class="modal-tree modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Neighbor Joining Tree</h4>
+      </div>
+      <div id="tree-body" class="modal-body">
+        <div id='tree_container' class='tree-widget'></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <%- include ../includes/footer.ejs %>
+<script src="http://d3js.org/d3.v3.js"></script>
+<script src="/assets/js/lib/phylotree.js"></script>
+<script src="/assets/js/datamonkey/neighbor-join.js"></script>
+

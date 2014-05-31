@@ -89,14 +89,14 @@ li.media {
   margin: 0 15px 15px 15px;
 }
 
-#upload_summary li{
+#upload-summary li{
   display : table-cell;
-  padding : 5px;
+  padding : 15px;
   text-align: center;
   color: #666666;
 }
 
-#upload_summary li b{
+#upload-summary li b{
   color: black;
 }
 

@@ -76,7 +76,7 @@ helpers.logger.info('Listening on port ' + setup.port + '...');
 module.exports = app;
 
 // Set up socket.io server
-var jobproxy = require('./lib/hivtrace.js');
+var jobproxy = require('./lib/hpcsocket.js');
 
 io.sockets.on('connection', function (socket) {
   socket.emit('connected');

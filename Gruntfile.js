@@ -33,6 +33,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
 
   grunt.registerTask('default', ['concat']);
   grunt.registerTask('default', ['mochaTest']);
