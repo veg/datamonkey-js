@@ -374,7 +374,7 @@ HivTrace.virtual('filename').get(function () {
  * Complete file path for document's file upload
  */
 HivTrace.virtual('filepath').get(function () {
-  return setup.rootpath + setup.hivtrace_upload_path + this._id;
+  return __dirname + "../../upload/hivtrace" + this._id;
 });
 
 /**

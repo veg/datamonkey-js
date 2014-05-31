@@ -92,7 +92,7 @@ Msa.virtual('filename').get(function () {
  * Complete file path for document's file upload
  */
 Msa.virtual('filepath').get(function () {
-  return setup.rootpath + setup.msa_upload_path + this._id;
+  return __dirname + '../../uploads/msa/' + this._id;
 });
 
 Msa.virtual('hyphy_friendly').get(function () {
@@ -162,7 +162,7 @@ Msa.methods.AnalysisCount = function (cb) {
 Msa.methods.dataReader = function (file, cb) {
 
   var hyphy =  spawn(setup.hyphy,
-                    [setup.rootpath + "/lib/bfs/datareader.bf"]);
+                    [__dirname + "../../lib/bfs/datareader.bf"]);
 
   hyphy.stdout.on('data', function (data) {
     var results;

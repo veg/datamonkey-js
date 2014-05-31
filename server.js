@@ -27,8 +27,7 @@
 
 var setup = require('./config/setup');
 
-ROOT_PATH = setup.rootpath;
-SPOOL_DIR = setup.spooldir;
+ROOT_PATH = __dirname;
 HOST      = setup.host;
 
 
@@ -44,6 +43,11 @@ var express          = require('express'),
 
 // Connect to database
 mongoose.connect(setup.database);
+
+//Ensure that upload paths exists
+fs.mkdir(__dirname + '/upload', 750, function(e){});
+fs.mkdir(__dirname + '/upload/hivtrace', 750, function(e){});
+fs.mkdir(__dirname + '/upload/msa', 750, function(e){});
 
 // Main app configuration
 var app = express();
