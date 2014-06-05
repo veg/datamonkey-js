@@ -240,3 +240,17 @@ exports.deleteMsa = function(req, res) {
   });
 }
 
+// app.get('/msa/:id/aa', msa.aminoAcidTranslation);
+exports.aminoAcidTranslation = function(req, res) {
+  var id = req.params.id;
+  Msa.findOne({ _id: id }, function(err, item) {
+    if (err) {
+      res.json(500, error.errorResponse(err));
+    } else {
+      item.aminoAcidTranslation(function(aa) {
+        res.json({'aa': aa});
+      });
+    }
+  });
+}
+

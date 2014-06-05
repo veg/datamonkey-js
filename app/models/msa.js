@@ -32,7 +32,8 @@ var mongoose = require('mongoose'),
     check    = require('validator').check,
     globals  = require('../../config/globals.js'),
     spawn    = require('child_process').spawn,
-    sanitize = require('validator').sanitize
+    sanitize = require('validator').sanitize,
+    fs       = require('fs');
 
 var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
@@ -92,7 +93,7 @@ Msa.virtual('filename').get(function () {
  * Complete file path for document's file upload
  */
 Msa.virtual('filepath').get(function () {
-  return __dirname + '../../uploads/msa/' + this._id;
+  return __dirname + '/../../uploads/msa/' + this._id;
 });
 
 Msa.virtual('hyphy_friendly').get(function () {
@@ -159,10 +160,37 @@ Msa.methods.AnalysisCount = function (cb) {
 
 };
 
+Msa.methods.aminoAcidTranslation = function (cb) {
+
+  fs.readFile(this.filepath, function (err, data) {
+    if (err) {
+      cb(err);
+    }
+    cb(data);
+  });
+
+  //var hyphy =  spawn(setup.hyphy,
+  //                  [__dirname + "../../lib/bfs/datareader.bf"]);
+  //hyphy.stdout.on('data', function (data) {
+  //  var results;
+  //  try {
+  //    results = JSON.parse(data);
+  //  } catch(e) {
+  //    results = {'error': "An unexpected error occured when parsing the sequence alignment! Here is the full traceback :" + data }
+  //  }
+  //  cb(results);
+  //});
+  //hyphy.stdin.write(file + "\n");
+  //hyphy.stdin.write(this.gencodeid.toString());
+  //hyphy.stdin.end();
+
+};
+
+
 Msa.methods.dataReader = function (file, cb) {
 
   var hyphy =  spawn(setup.hyphy,
-                    [__dirname + "../../lib/bfs/datareader.bf"]);
+                    [__dirname + "/../../lib/bfs/datareader.bf"]);
 
   hyphy.stdout.on('data', function (data) {
     var results;
@@ -179,7 +207,6 @@ Msa.methods.dataReader = function (file, cb) {
   hyphy.stdin.end();
 
 };
-
 
 module.exports = mongoose.model('Msa', Msa);
 module.exports = mongoose.model('PartitionInfo', PartitionInfo);

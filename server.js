@@ -45,9 +45,9 @@ var express          = require('express'),
 mongoose.connect(setup.database);
 
 //Ensure that upload paths exists
-fs.mkdir(__dirname + '/upload', 750, function(e){});
-fs.mkdir(__dirname + '/upload/hivtrace', 750, function(e){});
-fs.mkdir(__dirname + '/upload/msa', 750, function(e){});
+fs.mkdir(__dirname + '/uploads', 750, function(e){});
+fs.mkdir(__dirname + '/uploads/hivtrace', 750, function(e){});
+fs.mkdir(__dirname + '/uploads/msa', 750, function(e){});
 
 // Main app configuration
 var app = express();
