@@ -27,13 +27,14 @@
 
 */
 
-var mongoose = require('mongoose'),
-    moment   = require('moment'),
-    check    = require('validator').check,
-    globals  = require('../../config/globals.js'),
-    spawn    = require('child_process').spawn,
-    sanitize = require('validator').sanitize,
-    fs       = require('fs');
+var mongoose    = require('mongoose'),
+    moment      = require('moment'),
+    check       = require('validator').check,
+    globals     = require('../../config/globals.js'),
+    spawn       = require('child_process').spawn,
+    sanitize    = require('validator').sanitize,
+    fs          = require('fs'),
+    seqio       = require( '../../lib/biohelpers/sequenceio.js');
 
 var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
@@ -160,29 +161,24 @@ Msa.methods.AnalysisCount = function (cb) {
 
 };
 
+
 Msa.methods.aminoAcidTranslation = function (cb) {
+  var self = this;
 
   fs.readFile(this.filepath, function (err, data) {
     if (err) {
       cb(err);
     }
-    cb(data);
-  });
 
-  //var hyphy =  spawn(setup.hyphy,
-  //                  [__dirname + "../../lib/bfs/datareader.bf"]);
-  //hyphy.stdout.on('data', function (data) {
-  //  var results;
-  //  try {
-  //    results = JSON.parse(data);
-  //  } catch(e) {
-  //    results = {'error': "An unexpected error occured when parsing the sequence alignment! Here is the full traceback :" + data }
-  //  }
-  //  cb(results);
-  //});
-  //hyphy.stdin.write(file + "\n");
-  //hyphy.stdin.write(this.gencodeid.toString());
-  //hyphy.stdin.end();
+    // Split data sequences out
+    var seq_array = seqio.parseFile(data.toString());
+    var translated_arr = seqio.translateSequenceArray(seq_array, self.gencodeid.toString());
+    var translated_fasta = seqio.toFasta(translated_arr);
+
+    //console.log(translated_arr);
+    cb(null, translated_fasta);
+
+  });
 
 };
 
@@ -199,6 +195,7 @@ Msa.methods.dataReader = function (file, cb) {
     } catch(e) {
       results = {'error': "An unexpected error occured when parsing the sequence alignment! Here is the full traceback :" + data }
     }
+
     cb(results);
   });
 
@@ -208,6 +205,9 @@ Msa.methods.dataReader = function (file, cb) {
 
 };
 
+
+
 module.exports = mongoose.model('Msa', Msa);
 module.exports = mongoose.model('PartitionInfo', PartitionInfo);
 module.exports = mongoose.model('Sequences', Sequences);
+

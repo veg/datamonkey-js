@@ -392,10 +392,9 @@ var genetic_code = {
  7 : "Euplotid Nuclear code",
  8 : "Alternative Yeast Nuclear code",
  9 : "Ascidian mitochondrial DNA code",
- 10 : "Flatworm mitochondrial DNA code",
+ 10 : "Alternative Flatworm mitochondrial DNA code",
  11 : "Blepharisma Nuclear code"
 }
 
 define("genetic_code", genetic_code)
-
 

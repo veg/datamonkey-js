@@ -247,8 +247,14 @@ exports.aminoAcidTranslation = function(req, res) {
     if (err) {
       res.json(500, error.errorResponse(err));
     } else {
-      item.aminoAcidTranslation(function(aa) {
-        res.json({'aa': aa});
+      item.aminoAcidTranslation(function(err, aa) {
+
+        res.set({
+          'Content-Type': 'application/octet-stream'
+        })
+
+        res.send(aa);
+
       });
     }
   });

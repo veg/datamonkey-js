@@ -17,17 +17,20 @@ module.exports = function(grunt) {
     },
     mochaTest: {
       test: {
-          src: ['tests/hivtrace.js'],
+          //src: ['tests/hivtrace.js', 'tests/msa.js'],
+          src: ['tests/msa.js'],
           options: {
                 run: true,
+                debug: true,
               },
           },
     },
+
     watch: {
-      //files: ['assets/js/**/*.js'],
-      files: ['app/**/*.js', 'tests/*.js'],
+      files: ['lib/**/*.js', 'app/**/*.js', 'tests/*.js', 'lib/**/*.js*'],
       tasks: ['mochaTest']
     }
+
   });
 
   grunt.loadNpmTasks('grunt-contrib-concat');

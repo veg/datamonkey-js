@@ -1,0 +1,256 @@
+{
+  "0" : { 
+    "name " : "Universal Code",
+    "table" : {
+       "TTT": "F", "TTC": "F", "TTA": "L", "TTG": "L", "TCT": "S",
+       "TCC": "S", "TCA": "S", "TCG": "S", "TAT": "Y", "TAC": "Y",
+       "TGT": "C", "TGC": "C", "TGG": "W", "CTT": "L", "CTC": "L",
+       "CTA": "L", "CTG": "L", "CCT": "P", "CCC": "P", "CCA": "P",
+       "CCG": "P", "CAT": "H", "CAC": "H", "CAA": "Q", "CAG": "Q",
+       "CGT": "R", "CGC": "R", "CGA": "R", "CGG": "R", "ATT": "I",
+       "ATC": "I", "ATA": "I", "ATG": "M", "ACT": "T", "ACC": "T",
+       "ACA": "T", "ACG": "T", "AAT": "N", "AAC": "N", "AAA": "K",
+       "AAG": "K", "AGT": "S", "AGC": "S", "AGA": "R", "AGG": "R",
+       "GTT": "V", "GTC": "V", "GTA": "V", "GTG": "V", "GCT": "A",
+       "GCC": "A", "GCA": "A", "GCG": "A", "GAT": "D", "GAC": "D",
+       "GAA": "E", "GAG": "E", "GGT": "G", "GGC": "G", "GGA": "G",
+       "GGG": "G"
+     },
+     "stop_codons"  : [ "TAA", "TAG", "TGA"],
+     "start_codons" : [ "TTG", "CTG", "ATG"]
+    },
+
+  "1" : { 
+    "name " : "Vertebrate mitochondrial DNA code",
+    "table" : {
+         "TTT": "F", "TTC": "F", "TTA": "L", "TTG": "L", "TCT": "S",
+         "TCC": "S", "TCA": "S", "TCG": "S", "TAT": "Y", "TAC": "Y",
+         "TGT": "C", "TGC": "C", "TGA": "W", "TGG": "W", "CTT": "L",
+         "CTC": "L", "CTA": "L", "CTG": "L", "CCT": "P", "CCC": "P",
+         "CCA": "P", "CCG": "P", "CAT": "H", "CAC": "H", "CAA": "Q",
+         "CAG": "Q", "CGT": "R", "CGC": "R", "CGA": "R", "CGG": "R",
+         "ATT": "I", "ATC": "I", "ATA": "M", "ATG": "M", "ACT": "T",
+         "ACC": "T", "ACA": "T", "ACG": "T", "AAT": "N", "AAC": "N",
+         "AAA": "K", "AAG": "K", "AGT": "S", "AGC": "S", "GTT": "V",
+         "GTC": "V", "GTA": "V", "GTG": "V", "GCT": "A", "GCC": "A",
+         "GCA": "A", "GCG": "A", "GAT": "D", "GAC": "D", "GAA": "E",
+         "GAG": "E", "GGT": "G", "GGC": "G", "GGA": "G", "GGG": "G"     
+      },
+      "stop_codons"  : [ "TAA", "TAG", "AGA", "AGG"],
+      "start_codons" : [ "ATT", "ATC", "ATA", "ATG", "GTG"]
+    },
+
+  "2" : { 
+    "name " : "Yeast mitochondrial DNA code",
+     "table" : {
+       "TTT": "F", "TTC": "F", "TTA": "L", "TTG": "L", "TCT": "S",
+       "TCC": "S", "TCA": "S", "TCG": "S", "TAT": "Y", "TAC": "Y",
+       "TGT": "C", "TGC": "C", "TGA": "W", "TGG": "W", "CTT": "T",
+       "CTC": "T", "CTA": "T", "CTG": "T", "CCT": "P", "CCC": "P",
+       "CCA": "P", "CCG": "P", "CAT": "H", "CAC": "H", "CAA": "Q",
+       "CAG": "Q", "CGT": "R", "CGC": "R", "CGA": "R", "CGG": "R",
+       "ATT": "I", "ATC": "I", "ATA": "M", "ATG": "M", "ACT": "T",
+       "ACC": "T", "ACA": "T", "ACG": "T", "AAT": "N", "AAC": "N",
+       "AAA": "K", "AAG": "K", "AGT": "S", "AGC": "S", "AGA": "R",
+       "AGG": "R", "GTT": "V", "GTC": "V", "GTA": "V", "GTG": "V",
+       "GCT": "A", "GCC": "A", "GCA": "A", "GCG": "A", "GAT": "D",
+       "GAC": "D", "GAA": "E", "GAG": "E", "GGT": "G", "GGC": "G",
+       "GGA": "G", "GGG": "G" 
+      },
+      "stop_codons" : [ "TAA", "TAG"],
+      "start_codons" : [ "ATA", "ATG"]
+    },
+
+
+  "3" : { 
+    "name " : "Mold, Protozoan and Coelenterate mt; Mycloplasma/Spiroplasma",
+     "table" : {
+       "TTT": "F", "TTC": "F", "TTA": "L", "TTG": "L", "TCT": "S",
+       "TCC": "S", "TCA": "S", "TCG": "S", "TAT": "Y", "TAC": "Y",
+       "TGT": "C", "TGC": "C", "TGA": "W", "TGG": "W", "CTT": "L",
+       "CTC": "L", "CTA": "L", "CTG": "L", "CCT": "P", "CCC": "P",
+       "CCA": "P", "CCG": "P", "CAT": "H", "CAC": "H", "CAA": "Q",
+       "CAG": "Q", "CGT": "R", "CGC": "R", "CGA": "R", "CGG": "R",
+       "ATT": "I", "ATC": "I", "ATA": "I", "ATG": "M", "ACT": "T",
+       "ACC": "T", "ACA": "T", "ACG": "T", "AAT": "N", "AAC": "N",
+       "AAA": "K", "AAG": "K", "AGT": "S", "AGC": "S", "AGA": "R",
+       "AGG": "R", "GTT": "V", "GTC": "V", "GTA": "V", "GTG": "V",
+       "GCT": "A", "GCC": "A", "GCA": "A", "GCG": "A", "GAT": "D",
+       "GAC": "D", "GAA": "E", "GAG": "E", "GGT": "G", "GGC": "G",
+       "GGA": "G", "GGG": "G" 
+      },
+      "stop_codons" : [ "TAA", "TAG"],
+      "start_codons" : [ "TTA", "TTG", "CTG", "ATT", "ATC", "ATA", "ATG", "GTG"]
+    },
+
+  "4" : { 
+    "name " : "Invertebrate mitochondrial DNA code",
+     "table" : {
+       "TTT": "F", "TTC": "F", "TTA": "L", "TTG": "L", "TCT": "S",
+       "TCC": "S", "TCA": "S", "TCG": "S", "TAT": "Y", "TAC": "Y",
+       "TGT": "C", "TGC": "C", "TGA": "W", "TGG": "W", "CTT": "L",
+       "CTC": "L", "CTA": "L", "CTG": "L", "CCT": "P", "CCC": "P",
+       "CCA": "P", "CCG": "P", "CAT": "H", "CAC": "H", "CAA": "Q",
+       "CAG": "Q", "CGT": "R", "CGC": "R", "CGA": "R", "CGG": "R",
+       "ATT": "I", "ATC": "I", "ATA": "M", "ATG": "M", "ACT": "T",
+       "ACC": "T", "ACA": "T", "ACG": "T", "AAT": "N", "AAC": "N",
+       "AAA": "K", "AAG": "K", "AGT": "S", "AGC": "S", "AGA": "S",
+       "AGG": "S", "GTT": "V", "GTC": "V", "GTA": "V", "GTG": "V",
+       "GCT": "A", "GCC": "A", "GCA": "A", "GCG": "A", "GAT": "D",
+       "GAC": "D", "GAA": "E", "GAG": "E", "GGT": "G", "GGC": "G",
+       "GGA": "G", "GGG": "G"
+      },
+      "stop_codons" : [ "TAA", "TAG"],
+      "start_codons" : [ "TTG", "ATT", "ATC", "ATA", "ATG", "GTG"]
+    },
+
+  "5" : { 
+    "name " : "Ciliate, Dasycladacean and Hexamita Nuclear code",
+     "table" : {
+       "TTT": "F", "TTC": "F", "TTA": "L", "TTG": "L", "TCT": "S",
+       "TCC": "S", "TCA": "S", "TCG": "S", "TAT": "Y", "TAC": "Y",
+       "TAA": "Q", "TAG": "Q", "TGT": "C", "TGC": "C", "TGG": "W",
+       "CTT": "L", "CTC": "L", "CTA": "L", "CTG": "L", "CCT": "P",
+       "CCC": "P", "CCA": "P", "CCG": "P", "CAT": "H", "CAC": "H",
+       "CAA": "Q", "CAG": "Q", "CGT": "R", "CGC": "R", "CGA": "R",
+       "CGG": "R", "ATT": "I", "ATC": "I", "ATA": "I", "ATG": "M",
+       "ACT": "T", "ACC": "T", "ACA": "T", "ACG": "T", "AAT": "N",
+       "AAC": "N", "AAA": "K", "AAG": "K", "AGT": "S", "AGC": "S",
+       "AGA": "R", "AGG": "R", "GTT": "V", "GTC": "V", "GTA": "V",
+       "GTG": "V", "GCT": "A", "GCC": "A", "GCA": "A", "GCG": "A",
+       "GAT": "D", "GAC": "D", "GAA": "E", "GAG": "E", "GGT": "G",
+       "GGC": "G", "GGA": "G", "GGG": "G"
+      },
+      "stop_codons" : [ "TGA" ],
+      "start_codons" : [ "ATG" ]
+    },
+
+  "6" : { 
+    "name " : "Echinoderm mitochondrial DNA code",
+     "table" : {
+       "TTT": "F", "TTC": "F", "TTA": "L", "TTG": "L", "TCT": "S",
+       "TCC": "S", "TCA": "S", "TCG": "S", "TAT": "Y", "TAC": "Y",
+       "TGT": "C", "TGC": "C", "TGA": "W", "TGG": "W", "CTT": "L",
+       "CTC": "L", "CTA": "L", "CTG": "L", "CCT": "P", "CCC": "P",
+       "CCA": "P", "CCG": "P", "CAT": "H", "CAC": "H", "CAA": "Q",
+       "CAG": "Q", "CGT": "R", "CGC": "R", "CGA": "R", "CGG": "R",
+       "ATT": "I", "ATC": "I", "ATA": "I", "ATG": "M", "ACT": "T",
+       "ACC": "T", "ACA": "T", "ACG": "T", "AAT": "N", "AAC": "N",
+       "AAA": "N", "AAG": "K", "AGT": "S", "AGC": "S", "AGA": "S",
+       "AGG": "S", "GTT": "V", "GTC": "V", "GTA": "V", "GTG": "V",
+       "GCT": "A", "GCC": "A", "GCA": "A", "GCG": "A", "GAT": "D",
+       "GAC": "D", "GAA": "E", "GAG": "E", "GGT": "G", "GGC": "G",
+       "GGA": "G", "GGG": "G"
+      },
+      "stop_codons" : [ "TAA", "TAG"],
+      "start_codons" : [ "ATG", "GTG"]
+    },
+
+
+  "7" : { 
+    "name " : "Euplotid Nuclear code",
+     "table" : {
+       "TTT": "F", "TTC": "F", "TTA": "L", "TTG": "L", "TCT": "S",
+       "TCC": "S", "TCA": "S", "TCG": "S", "TAT": "Y", "TAC": "Y",
+       "TGT": "C", "TGC": "C", "TGA": "C", "TGG": "W", "CTT": "L",
+       "CTC": "L", "CTA": "L", "CTG": "L", "CCT": "P", "CCC": "P",
+       "CCA": "P", "CCG": "P", "CAT": "H", "CAC": "H", "CAA": "Q",
+       "CAG": "Q", "CGT": "R", "CGC": "R", "CGA": "R", "CGG": "R",
+       "ATT": "I", "ATC": "I", "ATA": "I", "ATG": "M", "ACT": "T",
+       "ACC": "T", "ACA": "T", "ACG": "T", "AAT": "N", "AAC": "N",
+       "AAA": "K", "AAG": "K", "AGT": "S", "AGC": "S", "AGA": "R",
+       "AGG": "R", "GTT": "V", "GTC": "V", "GTA": "V", "GTG": "V",
+       "GCT": "A", "GCC": "A", "GCA": "A", "GCG": "A", "GAT": "D",
+       "GAC": "D", "GAA": "E", "GAG": "E", "GGT": "G", "GGC": "G",
+       "GGA": "G", "GGG": "G"
+      },
+      "stop_codons" : [ "TAA", "TAG"],
+      "start_codons" : [ "ATG"]
+   },
+
+  "8" : { 
+    "name " : "Alternative Yeast Nuclear code",
+     "table" :   {
+       "TTT": "F", "TTC": "F", "TTA": "L", "TTG": "L", "TCT": "S",
+       "TCC": "S", "TCA": "S", "TCG": "S", "TAT": "Y", "TAC": "Y",
+       "TGT": "C", "TGC": "C", "TGG": "W", "CTT": "L", "CTC": "L",
+       "CTA": "L", "CTG": "S", "CCT": "P", "CCC": "P", "CCA": "P",
+       "CCG": "P", "CAT": "H", "CAC": "H", "CAA": "Q", "CAG": "Q",
+       "CGT": "R", "CGC": "R", "CGA": "R", "CGG": "R", "ATT": "I",
+       "ATC": "I", "ATA": "I", "ATG": "M", "ACT": "T", "ACC": "T",
+       "ACA": "T", "ACG": "T", "AAT": "N", "AAC": "N", "AAA": "K",
+       "AAG": "K", "AGT": "S", "AGC": "S", "AGA": "R", "AGG": "R",
+       "GTT": "V", "GTC": "V", "GTA": "V", "GTG": "V", "GCT": "A",
+       "GCC": "A", "GCA": "A", "GCG": "A", "GAT": "D", "GAC": "D",
+       "GAA": "E", "GAG": "E", "GGT": "G", "GGC": "G", "GGA": "G",
+       "GGG": "G" 
+      },
+      "stop_codons" : [ "TAA", "TAG", "TGA" ],
+      "start_codons" : [ "CTG", "ATG"]
+    },
+
+
+  "9" : { 
+    "name " : "Ascidian mitochondrial DNA code",
+     "table" : {
+       "TTT": "F", "TTC": "F", "TTA": "L", "TTG": "L", "TCT": "S",
+       "TCC": "S", "TCA": "S", "TCG": "S", "TAT": "Y", "TAC": "Y",
+       "TGT": "C", "TGC": "C", "TGA": "W", "TGG": "W", "CTT": "L",
+       "CTC": "L", "CTA": "L", "CTG": "L", "CCT": "P", "CCC": "P",
+       "CCA": "P", "CCG": "P", "CAT": "H", "CAC": "H", "CAA": "Q",
+       "CAG": "Q", "CGT": "R", "CGC": "R", "CGA": "R", "CGG": "R",
+       "ATT": "I", "ATC": "I", "ATA": "M", "ATG": "M", "ACT": "T",
+       "ACC": "T", "ACA": "T", "ACG": "T", "AAT": "N", "AAC": "N",
+       "AAA": "K", "AAG": "K", "AGT": "S", "AGC": "S", "AGA": "G",
+       "AGG": "G", "GTT": "V", "GTC": "V", "GTA": "V", "GTG": "V",
+       "GCT": "A", "GCC": "A", "GCA": "A", "GCG": "A", "GAT": "D",
+       "GAC": "D", "GAA": "E", "GAG": "E", "GGT": "G", "GGC": "G",
+       "GGA": "G", "GGG": "G" 
+      },
+      "stop_codons" : [ "TAA", "TAG" ],
+      "start_codons" : [ "TTG", "ATA", "ATG", "GTG"]
+    },
+
+  "10" : { 
+    "name " : "Flatworm mitochondrial DNA code",
+     "table" : {
+         "TTT": "F", "TTC": "F", "TTA": "L", "TTG": "L", "TCT": "S",
+         "TCC": "S", "TCA": "S", "TCG": "S", "TAT": "Y", "TAC": "Y",
+         "TAA": "Y", "TGT": "C", "TGC": "C", "TGA": "W", "TGG": "W",
+         "CTT": "L", "CTC": "L", "CTA": "L", "CTG": "L", "CCT": "P",
+         "CCC": "P", "CCA": "P", "CCG": "P", "CAT": "H", "CAC": "H",
+         "CAA": "Q", "CAG": "Q", "CGT": "R", "CGC": "R", "CGA": "R",
+         "CGG": "R", "ATT": "I", "ATC": "I", "ATA": "I", "ATG": "M",
+         "ACT": "T", "ACC": "T", "ACA": "T", "ACG": "T", "AAT": "N",
+         "AAC": "N", "AAA": "N", "AAG": "K", "AGT": "S", "AGC": "S",
+         "AGA": "S", "AGG": "S", "GTT": "V", "GTC": "V", "GTA": "V",
+         "GTG": "V", "GCT": "A", "GCC": "A", "GCA": "A", "GCG": "A",
+         "GAT": "D", "GAC": "D", "GAA": "E", "GAG": "E", "GGT": "G",
+         "GGC": "G", "GGA": "G", "GGG": "G"
+      },
+      "stop_codons" : ["TAG"],
+      "start_codons" : ["ATG"]
+    },
+
+  "11" : { 
+    "name " : "Blepharisma Nuclear code",
+     "table" : {
+       "TTT": "F", "TTC": "F", "TTA": "L", "TTG": "L", "TCT": "S",
+       "TCC": "S", "TCA": "S", "TCG": "S", "TAT": "Y", "TAC": "Y",
+       "TAG": "Q", "TGT": "C", "TGC": "C", "TGG": "W", "CTT": "L",
+       "CTC": "L", "CTA": "L", "CTG": "L", "CCT": "P", "CCC": "P",
+       "CCA": "P", "CCG": "P", "CAT": "H", "CAC": "H", "CAA": "Q",
+       "CAG": "Q", "CGT": "R", "CGC": "R", "CGA": "R", "CGG": "R",
+       "ATT": "I", "ATC": "I", "ATA": "I", "ATG": "M", "ACT": "T",
+       "ACC": "T", "ACA": "T", "ACG": "T", "AAT": "N", "AAC": "N",
+       "AAA": "K", "AAG": "K", "AGT": "S", "AGC": "S", "AGA": "R",
+       "AGG": "R", "GTT": "V", "GTC": "V", "GTA": "V", "GTG": "V",
+       "GCT": "A", "GCC": "A", "GCA": "A", "GCG": "A", "GAT": "D",
+       "GAC": "D", "GAA": "E", "GAG": "E", "GGT": "G", "GGC": "G",
+       "GGA": "G", "GGG": "G"
+      },
+
+      "stop_codons"  : ["TAA", "TGA"],
+      "start_codons" : ["ATG"]
+   }
+}
