@@ -34,6 +34,7 @@ var initialize_cluster_network_graphs = function () {
         lanl_histogram_label       = '#lanl_histogram_label',
         lanl_csvexport_label       = '#csvexport-lanl';
 
+    var json_url = $(lanl_network_container).data('url');
     d3.json(json_url, function(graph) {
       clusterNetworkGraph(graph, lanl_network_container, lanl_network_status_string);
       exportCSVButton(graph, lanl_csvexport_label);

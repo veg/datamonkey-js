@@ -94,7 +94,7 @@ Msa.virtual('filename').get(function () {
  * Complete file path for document's file upload
  */
 Msa.virtual('filepath').get(function () {
-  return __dirname + '/../../uploads/msa/' + this._id;
+  return __dirname + '/../../uploads/msa/' + this._id + '.fasta';
 });
 
 Msa.virtual('hyphy_friendly').get(function () {

@@ -32,11 +32,26 @@
     </div>
 
     <div class="pull-right col-lg-3">
-      <div class="list-group">
-        <a href="#" class="list-group-item">Nucleotide sequences</a>
-        <a href="<%= details._id %>/aa" class="list-group-item">Aminoacid translation</a>
-        <a id="neighbor-joining-tree" href="#" class="list-group-item" data-toggle="modal" data-target="#neighbor-tree-modal">Neighbor Joining Tree</a>
-      </div>
+      <ul class="list-group">
+        <li  class="list-group-item">
+          Nucleotide sequences 
+          <ul class="list-inline pull-right">
+            <li><a href="/uploads/msa/<%= details._id %>.fasta"><span class="glyphicon glyphicon-eye-open big"></span></a></li>
+            <li><a href="/uploads/msa/<%= details._id %>.fasta"><span class="glyphicon glyphicon-download"></span></a></li>
+          </ul>
+        </li>
+        <li class="list-group-item">
+          Aminoacid translation 
+          <ul class="list-inline pull-right">
+            <li><a href="<%= details._id %>/aa/view"><span class="glyphicon glyphicon-eye-open"></span></a></li>
+            <li><a href="<%= details._id %>/aa"><span class="glyphicon glyphicon-download"></span></a></li>
+          </ul>
+        </li>
+        <li class="list-group-item">
+          Neighbor Joining Tree
+          <a id="neighbor-joining-tree" class="pull-right" href="#" data-toggle="modal" data-target="#neighbor-tree-modal"><span class="glyphicon glyphicon-eye-open"></a>
+        </li>
+      </ul>
     </div>
   </div>
 </div>

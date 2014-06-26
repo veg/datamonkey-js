@@ -43,6 +43,7 @@ module.exports = function(app) {
   app.get('/msa/:id', msa.findById);
   app.get('/msa/:id/nj', msa.getNeighborJoin);
   app.get('/msa/:id/aa', msa.aminoAcidTranslation);
+  app.get('/msa/:id/aa/view', msa.aminoAcidTranslationViewer);
   //app.put('/msa/:id', msa.updateMsa);
   //app.delete('/msa/:id', msa.deleteMsa);
 

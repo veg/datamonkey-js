@@ -253,8 +253,28 @@ exports.aminoAcidTranslation = function(req, res) {
           'Content-Type': 'application/octet-stream'
         })
 
+        res.set({'Content-Disposition':'attachment; filename="' + id + '_aa.fasta"'});
+
         res.send(aa);
 
+      });
+    }
+  });
+}
+
+// app.get('/msa/:id/aa/view', msa.aminoAcidTranslation);
+exports.aminoAcidTranslationViewer = function(req, res) {
+  var id = req.params.id;
+  Msa.findOne({ _id: id }, function(err, item) {
+    if (err) {
+      res.json(500, error.errorResponse(err));
+    } else {
+      item.aminoAcidTranslation(function(err, aa) {
+        res.format({
+          html: function() {
+                res.render('msa/alignmentview.ejs', {'sequence' : aa});
+          }
+        });
       });
     }
   });

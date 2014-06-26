@@ -85,8 +85,8 @@ var HivTrace = new Schema({
     mail                    : String,
     tn93_summary            : String,
     tn93_results            : String,
-    trace_results           : String,
-    lanl_trace_results      : String,
+    //trace_results           : String,
+    //lanl_trace_results      : String,
     lanl_tn93_results       : String,
     error_message           : String,
     created                 : {type: Date, default: Date.now}
@@ -374,7 +374,21 @@ HivTrace.virtual('filename').get(function () {
  * Complete file path for document's file upload
  */
 HivTrace.virtual('filepath').get(function () {
-  return __dirname + "../../upload/hivtrace" + this._id;
+  return __dirname + "/../../uploads/hivtrace/" + this._id;
+});
+
+/**
+ * TODO: Change storage to mongodb instead of file
+ */
+HivTrace.virtual('trace_results').get(function () {
+  return '/uploads/hivtrace/' + this._id + '_user.trace.json';
+});
+
+/**
+ * TODO: Change storage to mongodb instead of file
+ */
+HivTrace.virtual('lanl_trace_results').get(function () {
+  return '/uploads/hivtrace/' + this._id + '_lanl_user.trace.json';
 });
 
 /**
