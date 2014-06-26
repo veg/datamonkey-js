@@ -49,6 +49,7 @@ function setupJob() {
 
   // Status update
   socket.on('status update', function (data) {
+    console.log(data);
     changeStatus(data);
   });
 

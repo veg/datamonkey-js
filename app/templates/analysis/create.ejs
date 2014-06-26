@@ -2,8 +2,8 @@
 <div class="container">
 <h2 class="page-header">Analysis Options</h2>
 
-  <form onsubmit="return CheckValidDnDS()" action="/cgi-bin/datamonkey/dispatchAnalysis.pl" enctype="multipart/form-data" method="POST" name="modelForm">
-    <input type="hidden" value="<%= uploadfile.upload_id %>" name="filename">
+  <form onsubmit="return CheckValidDnDS()" action="/prime" enctype="multipart/form-data" method="POST" name="modelForm">
+    <input type="hidden" value="<%= uploadfile._id %>" name="filename">
     <input type="hidden" value="<%= uploadfile.gencodeid%>" name="genCodeID">
     <input type="hidden" value="<%= uploadfile.sequences %>" name="sequences">
     <input type="hidden" value="<%= uploadfile.sites %>" name="sites">
@@ -309,8 +309,12 @@
           </option>
         </select>
     </div>    
-    <div><input type="Submit" value="Run the analysis"></div>
+    <div>
+      <button type="submit" class="btn btn-primary pull-right">Run the analysis</button>
+    </div>
   </form>
 </div>
 <%- include ../includes/footer.ejs %>
+
 <script src="/assets/js/analysis/create.js"></script>
+

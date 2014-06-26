@@ -27,8 +27,7 @@
 
 //Routes
 
-module.exports = function(app){
-
+module.exports = function(app) {
   // HOME PAGE
   home = require( ROOT_PATH + '/app/routes/home');
   app.get('/', home.homePage);
@@ -42,16 +41,19 @@ module.exports = function(app){
   app.get('/msa', msa.showUploadForm);
   app.post('/msa', msa.uploadMsa);
   app.get('/msa/:id', msa.findById);
-  app.put('/msa/:id', msa.updateMsa);
-  app.delete('/msa/:id', msa.deleteMsa);
+  app.get('/msa/:id/nj', msa.getNeighborJoin);
+  app.get('/msa/:id/aa', msa.aminoAcidTranslation);
+  app.get('/msa/:id/aa/view', msa.aminoAcidTranslationViewer);
+  //app.put('/msa/:id', msa.updateMsa);
+  //app.delete('/msa/:id', msa.deleteMsa);
 
-  // ANALYSIS ROUTES
-  analysis = require( ROOT_PATH + '/app/routes/analysis');
-  app.get('/msa/:msaid/createanalysis', analysis.createForm);
-  app.post('/msa/:msaid/:type', analysis.invokeJob);
-  app.get('/msa/:msaid/:type/:analysisid', analysis.getAnalysis);
-  app.get('/msa/:msaid/:type/:analysisid/status', analysis.queryStatus);
-  app.delete('/msa/:msaid/:type/:analysisid', analysis.deleteAnalysis);
+  // PRIME ROUTES
+  prime = require( ROOT_PATH + '/app/routes/prime');
+  app.get('/msa/:msaid/prime', prime.createForm);
+  app.post('/msa/:msaid/prime', prime.invokePrime);
+  app.get('/msa/:msaid/prime/:primeid/status', prime.getStatus);
+  app.get('/msa/:msaid/prime/:primeid', prime.getPrime);
+  app.delete('/msa/:msaid/prime/:primeid', prime.deletePrime);
 
   // STATS ROUTES
   stats = require( ROOT_PATH + '/app/routes/stats');

@@ -27,8 +27,7 @@
 
 var setup = require('./config/setup');
 
-ROOT_PATH = setup.rootpath;
-SPOOL_DIR = setup.spooldir;
+ROOT_PATH = __dirname;
 HOST      = setup.host;
 
 
@@ -39,12 +38,16 @@ var express          = require('express'),
     fs               = require('fs'),
     path             = require("path"),
     mongoose         = require('mongoose'),
-    //io               = require('socket.io').listen(setup.socket_port);
     io               = require('socket.io').listen(setup.socket_port);
 
 
 // Connect to database
 mongoose.connect(setup.database);
+
+//Ensure that upload paths exists
+fs.mkdir(__dirname + '/uploads', 750, function(e){});
+fs.mkdir(__dirname + '/uploads/hivtrace', 750, function(e){});
+fs.mkdir(__dirname + '/uploads/msa', 750, function(e){});
 
 // Main app configuration
 var app = express();
@@ -55,6 +58,7 @@ app.configure(function () {
     app.use(express.bodyParser());
     app.use(express.limit('25mb'));
     app.use(app.router);
+    app.set('json spaces', 0);
 });
 
 // Bootstrap models
@@ -76,13 +80,13 @@ helpers.logger.info('Listening on port ' + setup.port + '...');
 module.exports = app;
 
 // Set up socket.io server
-var jobproxy = require('./lib/hivtrace.js');
+var jobproxy = require('./lib/hpcsocket.js');
+
 io.sockets.on('connection', function (socket) {
   socket.emit('connected');
   socket.on('acknowledged', function (data) {
     //Create client socket
     var clientSocket = new jobproxy.ClientSocket(socket, data.id);
   });
-
 });
 

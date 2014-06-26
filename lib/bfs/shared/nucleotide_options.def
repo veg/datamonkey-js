@@ -1,0 +1,125 @@
+alignOptions_p2 = {};
+
+
+alignOptions_p2 ["SEQ_ALIGN_CHARACTER_MAP"]	=	"ACGT";
+
+/*
+alignOptions_p2 ["SEQ_ALIGN_SCORE_MATRIX"]  = 	{
+{ 3,-2,-1,-2}	
+{-2, 3,-2,-1}	
+{-1,-2, 3,-2}	
+{-2,-1,-2, 3}	
+};
+
+alignOptions_p2 ["SEQ_ALIGN_GAP_OPEN"]		= 	50;
+alignOptions_p2 ["SEQ_ALIGN_GAP_OPEN2"]		= 	10;
+alignOptions_p2 ["SEQ_ALIGN_GAP_EXTEND"]	= 	5;
+alignOptions_p2 ["SEQ_ALIGN_GAP_EXTEND2"]	= 	5;
+*/
+
+
+
+alignOptions_p2 ["SEQ_ALIGN_SCORE_MATRIX"]  = 	{{91,-114,-31,-123}{-114,100,-125,-31}{-31,-125,100,-114}{-123,-31,-114,91}};
+alignOptions_p2 ["SEQ_ALIGN_GAP_OPEN"]		= 	400;
+alignOptions_p2 ["SEQ_ALIGN_GAP_OPEN2"]		= 	400;
+alignOptions_p2 ["SEQ_ALIGN_GAP_EXTEND"]	= 	30;
+alignOptions_p2 ["SEQ_ALIGN_GAP_EXTEND2"]	= 	30;
+alignOptions_p2 ["SEQ_ALIGN_AFFINE"]		=   1;
+alignOptions_p2 ["SEQ_ALIGN_NO_TP"]			=   1;
+
+
+/*-------------------------------------------------*/
+
+function	computeCorrection (str)
+{
+	correctionFore	 = (str$"^\\-+")[1]+1;
+	correctionAft	 = (str$"\\-+$")[0];
+	if (correctionAft >= 0)
+	{
+		correctionAft = Abs(str)-correctionAft;
+	}
+	else
+	{
+		correctionAft = 0;
+	}
+	return {{correctionFore__,correctionAft__}};
+}
+
+/*-------------------------------------------------*/
+
+function	extractRegionBasedOnReference (reference, fromP, toP, reference_offset)
+{
+	ll 			= Abs(reference);
+	stringIndex = 0;
+	offsetIndex = reference_offset;
+	
+	for (;stringIndex<ll;stringIndex=stringIndex+1)
+	{
+		if (reference[stringIndex] != "-")
+		{
+			if (offsetIndex>=fromP)
+			{
+				break;
+			}
+			offsetIndex = offsetIndex + 1;
+		}
+	}
+	
+	for (stringIndex2=stringIndex;stringIndex2<ll;stringIndex2=stringIndex2+1)
+	{
+		if (reference[stringIndex] != "-")
+		{
+			if (offsetIndex>=toP)
+			{
+				break;
+			}
+			offsetIndex = offsetIndex + 1;
+		}
+	}
+	stringIndex2 = Min(stringIndex2,ll-1);
+	
+	return {{stringIndex__,stringIndex2__}};
+}
+
+/*-------------------------------------------------*/
+
+function makeAAMap ()
+{
+	codonToAAMap = {};
+	codeToAA 	 = "FLIMVSPTAYXHQNKDECWRG";
+	
+	nucChars = "ACGT";
+	
+	for (p1=0; p1<64; p1=p1+1)
+	{
+		codon 				= nucChars[p1$16]+nucChars[p1%16$4]+nucChars[p1%4];
+		ccode 				= _Genetic_Code[p1];
+		codonToAAMap[codon] = codeToAA[ccode];
+	}
+	return codonToAAMap;
+}
+
+/*-------------------------------------------------*/
+
+function translateToAA (aSeq, offset)
+{
+	seqLen	= Abs (aSeq)-2;
+	translString = "";
+	translString * (seqLen/3+1);
+	for (seqPos = offset; seqPos < seqLen; seqPos = seqPos+3)
+	{
+		codon = aSeq[seqPos][seqPos+2];
+		prot = codonToAAMap[codon];
+		if (Abs(prot))
+		{
+			translString * prot;
+		}
+		else
+		{
+			translString * "?";
+		}
+	} 
+	translString * 0;
+	translString = translString^{{"X$","?"}};
+	return translString;
+}

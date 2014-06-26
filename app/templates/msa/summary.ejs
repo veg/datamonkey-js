@@ -1,0 +1,95 @@
+<%- include ../includes/header.ejs %>
+<link href="/assets/css/phylotree.css" rel="stylesheet">
+<link href="/assets/css/neighbor-join.css" rel="stylesheet">
+
+<div class="container" id="property_table">
+
+  <h3>File Upload Summary</h3>
+  <h4>ID: <%= details._id %></h4>
+  <div id="upload-summary">
+    <ul class="list-group">
+      <li class="list-group-item"><b><%= details.partitions %></b> Partitions</li>
+      <li class="list-group-item"><b><%= details.sequences %></b> Sequence Codons</li>
+      <li class="list-group-item">Code: <b><%= details.genetic_code%></b></li>
+      <li class="list-group-item">Uploaded on <b><%= details.day_created_on %></b> at <b><%= details.time_created_on %></b></li>
+    </ul>
+  </div>
+
+  <div class="row">
+    <div class="pull-left col-lg-9">
+      <div id="analysis-data">
+        <table class="table table-bordered table-striped table-hover" >
+        <% for(var t in type_count) { %>
+          <%if (type_count[t].count == 0) { %>
+            <tr><td><%= type_count[t].full_name %><a target="_blank" href="<%= type_count[t].help %>"><sup>?</sup></a></td><td>No results. <a href="/msa/<%= details._id %>/<%= t %>">Set up an analysis.</a></td></tr>
+          <% } %>
+          <% if (type_count[t].count > 0) { %>
+            <tr><td><%= type_count[t].full_name %><a target="_blank" href="<%= type_count[t].help %>"><sup>?</sup></a></td><td>Found <%= type_count[t].count %> results. <a href="/msa/<%= details._id %>/<%= t %>">View</a></td></tr>
+          <% } %>
+        <% } %>
+        </table>
+      </div>
+    </div>
+
+    <div class="pull-right col-lg-3">
+      <ul class="list-group">
+        <li  class="list-group-item">
+          Nucleotide sequences 
+          <ul class="list-inline pull-right">
+            <li><a href="/uploads/msa/<%= details._id %>.fasta"><span class="glyphicon glyphicon-eye-open big"></span></a></li>
+            <li><a href="/uploads/msa/<%= details._id %>.fasta"><span class="glyphicon glyphicon-download"></span></a></li>
+          </ul>
+        </li>
+        <li class="list-group-item">
+          Aminoacid translation 
+          <ul class="list-inline pull-right">
+            <li><a href="<%= details._id %>/aa/view"><span class="glyphicon glyphicon-eye-open"></span></a></li>
+            <li><a href="<%= details._id %>/aa"><span class="glyphicon glyphicon-download"></span></a></li>
+          </ul>
+        </li>
+        <li class="list-group-item">
+          Neighbor Joining Tree
+          <a id="neighbor-joining-tree" class="pull-right" href="#" data-toggle="modal" data-target="#neighbor-tree-modal"><span class="glyphicon glyphicon-eye-open"></a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div id="neighbor-tree-modal" class="modal fade" data-tree="<%= details.nj %>">
+  <div class="modal-tree modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Neighbor Joining Tree</h4>
+      </div>
+
+      <div id="tree-body" class="modal-body">
+        <div id='tree_container' class='tree-widget'></div>
+      </div>
+
+      <div id="newick-body" class="modal-body hide">
+        <pre>
+          <%= details.nj %>
+        </pre>
+      </div>
+
+      <div class="modal-footer">
+        <button id="newick-view" type="button" class="btn btn-primary">View Newick</button>
+        <button id="save-button" type="button" class="btn btn-primary">Save as SVG</button>
+        <button id="save-png-button" type="button" class="btn btn-primary">Save as PNG</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<canvas id="canvas" style="clear:both;display:none;"></canvas>
+<img id="image" style="clear:both;display:none;">
+
+<%- include ../includes/footer.ejs %>
+<script src="http://d3js.org/d3.v3.js"></script>
+<script src="/assets/js/lib/phylotree.js"></script>
+<script src="/assets/js/datamonkey/neighbor-join.js"></script>
+
+

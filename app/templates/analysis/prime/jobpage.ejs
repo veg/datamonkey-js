@@ -1,0 +1,63 @@
+<%- include ../../includes/header.ejs %>
+<div class="container">
+
+  <div class="page-header">
+    <h2>PRIME - In Progress</h2>
+  </div>
+
+  <div id="job-report" data-jobid="<%= job._id %>" data-socket-address="<%= socket_addr %>">
+  <% if (job.status == 'Aborted') { %>
+    <div class="alert alert-danger">There was an error! Please try again. <code><%= job.error_message %></code></div>
+  <% } else if (job.status != 'Completed') { %>  
+      <div class="datamonkey-progress progress progress-striped active">
+        <div class="progress-bar" role="progressbar" aria-valuenow="<%= job.percentage_complete %>" aria-valuemin="1" aria-valuemax="100" style="width: <%= job.percentage_complete %>">
+          <span class="sr-only"><%= job.percentage_complete %> Complete</span> 
+        </div>
+      </div>  
+      <div id="time-status">
+        <div class="pull-left" id="job-timer" data-created="<%= job.timestamp %>"><h6>Runtime <span class="time">00:00:00</span></h6></div>
+        <div class="pull-right" id="job-time-left" data-created="<%= prime.timestamp %>"><h6>Estimated Time Left <span class="time">00:00:00</span></h6></div>
+      </div>
+      <div style="clear:both"></div>
+      <% for(var s = 0; s < job.status_stack.length; s++) { %>
+        <div class="job-status panel 
+        <%if (job.status_index < s) { %>  
+        panel-info
+        <% } else if (job.status_index == s) { %>  
+        panel-warning
+        <% } else { %>
+        panel-success
+        <% } %>
+        "data-index=<%= s %>>
+        <div class="panel-heading">
+          <%= job.status_stack[s] %>
+        </div>
+        <div class="panel-body">
+          <%if (s == 0 && job.torque_id) { %>
+            Ticket Number: <%= job.torque_id%>
+          <% } %>
+          <%if (s == 1 && Object.hasOwnProperty("00000")) { %>
+            <% try { %>
+              <% for(var m = 0; m < Object.keys(job.last_status_msg).length; m++) { %>
+                <h4><%= job.last_status_msg[Object.keys(job.last_status_msg)[m]]["Phase"] %></h4>
+                <ul>
+                  <% for(var n = 0; n < Object.keys(job.last_status_msg[Object.keys(job.last_status_msg)[m]]["Information"]).length; n++) {  %>
+                    <li><%= job.last_status_msg[Object.keys(job.last_status_msg)[m]]["Information"]
+                            [Object.keys(job.last_status_msg[Object.keys(job.last_status_msg)[m]]["Information"])[n]] %></li>
+                  <% } %>
+                </ul>
+              <% } %>
+            <% } catch (e) {} %>
+          <% } %>
+        </div>
+        </div>
+      <% } %>
+  <% } else { %>
+    <%- include ./results.ejs %>
+  <% } %>
+  </div>
+</div>
+<%- include ../../includes/footer.ejs %>
+<script src="/assets/js/socket.io.min.js"></script>
+<script src="http://d3js.org/d3.v3.js"></script>
+<script src="/assets/js/datamonkey/job.js"></script>

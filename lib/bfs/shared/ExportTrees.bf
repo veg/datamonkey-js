@@ -1,0 +1,1 @@
+treeFile = fileName + ".splits";fprintf (treeFile, CLEAR_FILE, KEEP_OPEN, Abs(mySplits));for (_pID = 0; _pID < _pCount; _pID = _pID + 1){	fprintf (treeFile, "\n", mySplits[_pID], "\n", myTrees[_pID]);}fprintf (treeFile, CLOSE_FILE);

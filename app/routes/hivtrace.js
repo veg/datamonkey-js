@@ -32,7 +32,7 @@ var error     = require( ROOT_PATH + '/lib/error.js'),
     globals   = require( ROOT_PATH + '/config/globals.js'),
     mailer    = require( ROOT_PATH + '/lib/mailer.js'),
     fs        = require('fs'),
-    jobproxy  = require( ROOT_PATH + "/lib/hivtrace.js"),
+    hpcsocket = require( ROOT_PATH + '/lib/hpcsocket.js'),
     hiv_setup = require( ROOT_PATH + '/config/hivtrace_globals');
     setup     = require( ROOT_PATH + '/config/setup');
 
@@ -53,25 +53,18 @@ exports.clusterForm = function (req, res) {
  * app.post('/hivtrace/uploadfile', hivtrace.clusterForm);
  */
 exports.uploadFile = function (req, res) {
-
-  var hivtrace = new HivTrace;
   // Validate that the file uploaded was a FASTA file
-  HivTrace.validateFasta(req.files.files.path, function(result) {
-    if(!result.success) {
-      res.json(200, {'error': { 'file' : result.msg }});
-      return;
-    }
-    hivtrace.save(function (err, ht) {
-      fs.rename(req.files.files.path, ht.filepath, function(err, result) {
-        if(err) {
-          // FASTA validation failed, report an error and the form back to the user
-          res.json(200, {'error': { 'file' : result.msg }});
-        } else {
-          hivtrace.save(function (err, result) {
-            res.json(200, {'result': result});
-          });
-        }
-      });
+  var hivtrace = new HivTrace;
+  hivtrace.save(function (err, ht) {
+    fs.rename(req.files.files.path, ht.filepath, function(err, result) {
+      if(err) {
+        // FASTA validation failed, report an error and the form back to the user
+        res.json(200, {'error': { 'file' : err.msg }});
+      } else {
+        hivtrace.save(function (err, result) {
+          res.json(200, {'result': ht});
+        });
+      }
     });
   });
 }
@@ -86,7 +79,7 @@ exports.verifyUpload = function (req, res) {
   var id = req.params.id;
 
   HivTrace.findOne({_id: id}, function (err, hivtrace) {
-    if(postdata.public_db_compare == 'yes') {
+    if(postdata.public_db_compare == 'true') {
       hivtrace.lanl_compare = true;
       hivtrace.status_stack = hiv_setup.valid_lanl_statuses;
     } else {
@@ -105,6 +98,7 @@ exports.verifyUpload = function (req, res) {
 
     // Validate that the file uploaded was a FASTA file
     hivtrace.save(function (err, result) {
+
       var hivtrace_id = result._id;
       if(err) {
         res.json(200, {'error'     : err.error, 
@@ -115,6 +109,7 @@ exports.verifyUpload = function (req, res) {
         HivTrace.createAttributeMap(result.filepath, function(err, result) {
           parsed_attributes = HivTrace.parseHeaderFromMap(result.headers[0], result);
           res.format({
+
             html: function() {
               res.render('hivtrace/attribute_map_assignment.ejs', { 'map'           : result, 
                                                                     'example_parse' : parsed_attributes, 
@@ -122,6 +117,7 @@ exports.verifyUpload = function (req, res) {
                                                                     'error'         : err, 
                                                                     'validators'    : HivTrace.validators() });
             },
+
             json: function(){
               res.json(200, { 'map'           : result, 
                               'example_parse' : parsed_attributes, 
@@ -129,6 +125,7 @@ exports.verifyUpload = function (req, res) {
                               'error'         : err, 
                               'validators'    : HivTrace.validators() });
             }
+
           });
         });
       }
@@ -143,7 +140,7 @@ exports.verifyUpload = function (req, res) {
 exports.invokeClusterAnalysis = function (req, res) {
 
   var postdata = req.body;
-  var id = req.params.id;
+  var id    = req.params.id;
 
   HivTrace.findOne({_id: id}, function (err, hivtrace) {
     hivtrace.attribute_map = postdata;
@@ -159,18 +156,27 @@ exports.invokeClusterAnalysis = function (req, res) {
             json: function(){
               res.json(200, {'result': data});
             }
-
           });
       } else {
-        var hpcsocket = new jobproxy.HPCSocket(result);
-        res.format({
-          json: function(){
-            res.json(200, '/hivtrace/' + result._id);
-          },
-          html: function(){
-            res.redirect(result._id);
-          }
-        });
+
+        // Send the MSA, and type
+        var jobproxy = new hpcsocket.HPCSocket({'filepath': result.filepath, 
+                                                'analysis': result,
+                                                'status_stack': result.status_stack,
+                                                'type': 'hivtrace'}, callback);
+
+        function callback(data) {
+          res.format({
+
+            json: function(){
+              res.json(200, '/hivtrace/' + result._id);
+            },
+
+            html: function() {
+              res.redirect(result._id);
+            }
+          });
+        }
       }
     });
   });
@@ -207,9 +213,8 @@ exports.jobPage = function (req, res) {
  * app.get('/hivtrace/:id/results', hivtrace.results);
  */
 exports.results = function (req, res) {
-  // HIV Cluster id
 
-  //TODO: Have an options for CSV
+  // HIV Cluster id
   var id = req.params.id;
   HivTrace.findOne({_id: id}, 'tn93_summary tn93_results trace_results lanl_trace_results', function (err, hivtrace) {
     if (err || !hivtrace) {
@@ -233,12 +238,9 @@ exports.results = function (req, res) {
  * app.get('/hivtrace/:id/attributes', hivtrace.results);
  */
 exports.attributemap = function (req, res) {
-  // HIV Cluster id
-  //TODO: Have an options for CSV
   var id = req.params.id;
 
   HivTrace.findOne({_id: id}, 'attribute_map', function (err, hivtrace) {
-    console.log(hivtrace);
     if (err || !hivtrace) {
       res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
     } else {

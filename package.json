@@ -36,7 +36,6 @@
     "redis"                  : "*",
     "moment"                 : "*",
     "socket.io-client"       : "*",
-    "socket.io-stream"       : "*",
-    "winston"                : "*"
+    "socket.io-stream"       : "*"
   }
 }
