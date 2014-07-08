@@ -31,13 +31,19 @@ function setupJob() {
 
   var changeStatus = function (data) {
     //$('.progress .progress-bar').width(data.percentage);
-
     //data is index and message
+    $($(".panel-body")[1]).empty();
+
     $('.job-status').each(function(index) {
-      if($(this).data('index') == 1 ) {
+
+      if($(this).data('index') < data.index ) {
+        $(this).attr('class', 'job-status panel panel-success')
+      } else if ($(this).data("index") == data.index) {
+        $(this).attr('class', 'job-status panel panel-warning')
+      }
 
 
-        $($(".panel-body")[1]).empty()
+      if($(this).data('index') == 1  && data.index == 1) {
         Object.keys(data.msg).forEach(function(m) { 
 
           var phase = $( "<h4></h4>", {
@@ -56,8 +62,8 @@ function setupJob() {
           $($(".panel-body")[1]).append(ul)
 
         });
-
       }
+
     });
   }
 

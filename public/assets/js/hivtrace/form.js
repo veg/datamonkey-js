@@ -167,7 +167,6 @@ $(function() {
                                             .css('padding-top','5px'));
 
       var result = JSON.parse(this.responseText).result;
-      console.log(result)
       if('_id' in result) {
         $("#seq-file-div")[0].setAttribute('data-fileid', result._id);
       }
