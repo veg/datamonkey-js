@@ -34,7 +34,27 @@ var mongoose    = require('mongoose'),
     spawn       = require('child_process').spawn,
     sanitize    = require('validator').sanitize,
     fs          = require('fs'),
-    seqio       = require( '../../lib/biohelpers/sequenceio.js');
+    seqio       = require( '../../lib/biohelpers/sequenceio.js'),
+    country_codes = require( '../../config/country_codes.json'),
+    subtypes      = require( '../../config/subtypes.json');
+
+
+var ident = {
+    SUBTYPE : "subtype",
+    DATE    : "date",
+    ID      : "id",
+    COUNTRY : "country",
+    UNKNOWN : "unknown"
+}
+
+var error_codes = {
+    INCORRECT_SPLIT   : 0,
+    FAILED_ASSIGNMENT : 1
+}
+
+function notEmptyValidator (val) {
+  return val != null;
+}
 
 var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
@@ -175,7 +195,6 @@ Msa.methods.aminoAcidTranslation = function (cb) {
     var translated_arr = seqio.translateSequenceArray(seq_array, self.gencodeid.toString());
     var translated_fasta = seqio.toFasta(translated_arr);
 
-    //console.log(translated_arr);
     cb(null, translated_fasta);
 
   });
@@ -205,6 +224,251 @@ Msa.methods.dataReader = function (file, cb) {
 
 };
 
+function isSubtype(supposed_subtype) {
+  return subtypes.subtypes.indexOf(supposed_subtype) != -1;
+}
+
+function isDate(supposed_date) {
+  //// check for sampling year/date
+  var valid_date_formats = [
+                        "MM-DD-YYYY",
+                        "DD-YY",
+                        "DD-MM-YYYY",
+                        "YYYY",
+                        "YYYYMMDD"
+                        ];
+
+  var parsed_date = moment(supposed_date, valid_date_formats, true);
+
+  if(parsed_date.isValid()) {
+    return parsed_date.isBefore(moment());
+  } else {
+    return false;
+  }
+}
+
+function isCountry(supposed_country) {
+  return Object.keys(country_codes).indexOf(supposed_country) != -1
+}
+
+/**
+ * Create an attribute map based off the header files of
+ * a FASTA file
+ */
+Msa.statics.createAttributeMap = function (fn, cb) {
+  // SDHC|AEH020|222-4kr|20090619
+  // Z|JP|K03455|2036|6 
+
+  var testForAttributes = function (id) {
+
+    var attr_map = {};
+    var possible_delimiters = ['_', '|','.',',',';','\t',':'];
+
+    for(var i in possible_delimiters) {
+      cur_dl = possible_delimiters[i];
+      attr_map[cur_dl] = [];
+
+      var arr = id.split(possible_delimiters[i]);
+
+      for (var j in arr) {
+
+        // Find subtype
+        if (isSubtype(arr[j])) {
+          attr_map[cur_dl][j] = ident.SUBTYPE;
+        }
+
+        // check if sampling country
+        else if (isCountry(arr[j])) {
+          attr_map[cur_dl][j] = ident.COUNTRY;
+        }
+
+        else if (isDate(arr[j])) {
+          attr_map[cur_dl][j] = ident.DATE;
+        }
+
+        else {
+          attr_map[cur_dl][j] = ident.UNKNOWN;
+        }
+
+      }
+
+      // If there is only one null attribute, we can guess that it's the id
+      var c = 0;
+      var index = -1;
+      for(var j = 0; j < attr_map[cur_dl].length; j++) {
+        if(attr_map[cur_dl][j] == ident.UNKNOWN) {
+          c++;
+          index = j;
+        }
+      }
+      if (c == 1) {
+       attr_map[cur_dl][index] = "id";
+      }
+    }
+
+    return attr_map;
+
+  }
+
+  var validateAttrMap = function (id, delimiter, attr_map) {
+
+    header = id.split(delimiter);
+
+    for(var i=0; i < attr_map.length; i++) {
+      if(attr_map[i] == ident.SUBTYPE) {
+        if (!isSubtype(header[i])) {
+          attr_map[i] = 'maybe_' + ident.SUBTYPE;
+          return false;
+        } 
+      //Checking if a date is too expensive
+      } else if (attr_map[i] == ident.DATE) {
+        if (!isDate(header[i])) {
+          attr_map[i] = 'maybe_' + ident.DATE;
+          return false;
+        } 
+      } else if (attr_map[i] == ident.COUNTRY) {
+        if (!isCountry(header[i])) {
+          attr_map[i] = 'maybe_' + ident.COUNTRY;
+          return false;
+        } 
+      }
+    }
+    return true;
+  }
+
+  var checkForConsistency = function (headers, delimiter, attr_map) {
+
+    // Ensure all headers are the same length
+    lengths = {};
+
+    //Sort by file lengths
+    headers.map( function(x) { lengths[x.split(delimiter).length] = lengths[x.split(delimiter).length] + 1 || 1});
+
+    if(Object.keys(lengths).length > 1) {
+      // Sort and return problematic headers
+      var max   = 0;
+      var index = 0;
+      for(var j in lengths) {
+        if(lengths[j] > max) {
+          max = lengths[j]; 
+          index = j;
+        }
+      }
+
+      var failed_headers = headers.filter(function(x) { return x.split(delimiter).length != index} );
+      return { 'status': false,
+               'info'  : {
+                 'type': 'parse_fail', 
+                 'code': error_codes.INCORRECT_SPLIT, 
+                 'msg': 'Based on a delimiter of "' + delimiter + '", you have inconsistent formatting. The following headers either have too little or too many fields. Please revise your FASTA file and resubmit once reconciled. Alternatively, you can skip attributes altogether and continue.', 
+                 'failed_headers': failed_headers
+                }
+              };
+    }
+
+
+    // If more than one, return a problem with the problem headers
+    //Change attribute map to maybe_ if some fail
+    headers.map(function(x) { validateAttrMap(x, delimiter, attr_map) } );
+
+    //var failed_headers = headers.filter(function(x) { return !validateAttrMap(x, delimiter, attr_map)} );
+    //if(failed_headers.length > 0) {
+    //  return { 'status': false,
+    //           'info'  : {
+    //             'type': 'parse_fail', 
+    //             'code': error_codes.FAILED_ASSIGNMENT, 
+    //             'msg': 'Some headers failed parsing', 
+    //             'failed_headers': failed_headers
+    //            }
+    //          };
+    //}
+
+    return {'status': true}
+
+  }
+
+  // explode by all delimiting varieties
+  fs.readFile(fn, function (err, data) {
+    var err = false;
+
+    if (err) {
+      cb({'err': err}, false);
+    }
+
+    var data  = data.toString();
+    var lines = data.split(/(?:\n|\r\n|\r)/g);
+
+    //Collect all headers
+    var headers = lines.filter(function(x) { return x.indexOf('>') != -1 } );
+    var headers = headers.map(function(x) { return x.substring(headers[0].indexOf('>') + 1) } );
+
+    // Try exploding and testing for attributes
+    var attr_map = testForAttributes(headers[0]);
+
+    // TODO: Check for a tie
+    var max   = -4;
+    var index = -4;
+    for (c in attr_map) {
+        if(attr_map[c].length > max) {
+          max = attr_map[c].length;
+          index = c;
+        }
+    }
+
+    var is_consistent = checkForConsistency(headers, index, attr_map[index]);
+    if(is_consistent.status != true) {
+      err = is_consistent.info;
+    }
+
+    cb(err, {"headers": headers, "map" : attr_map[index], "delimiter": index});
+
+  });
+
+}
+
+Msa.statics.parseHeaderFromMap = function (header, attr_map) {
+  parsed = {};
+  var arr = header.split(attr_map.delimiter);
+  for(var i in arr) {
+    if(!parsed[attr_map.map[i]]) {
+      parsed[attr_map.map[i]] = arr[i];
+    } else {
+      var c = 1;
+      var new_key = attr_map.map[i] + c;
+
+      while(parsed[new_key]) {
+        new_key = attr_map.map[i] + ++c;
+      }
+
+      parsed[new_key] = arr[i];
+
+    }
+  }
+  return parsed;
+}
+
+/**
+ * Ensure that the file is in valid FASTA format
+ * The function relies on "FastaValidator" from 
+ * git@github.com:veg/TN93.git to be installed and defined in setup
+ * @param fn {String} path to file to be validated
+ */
+Msa.statics.validateFasta = function (fn, cb) {
+  var fasta_validator =  spawn(setup.fasta_validator, 
+                               [fn]); 
+
+  fasta_validator.stderr.on('data', function (data) {
+    // Failed return the error
+    cb({success: false, msg: String(data).replace(/(\r\n|\n|\r)/gm,"")});
+  }); 
+
+  fasta_validator.on('close', function (code) {
+    // Check the error code, but probably success!
+    if(code != 1) {
+      cb({success: true});
+    }
+  }); 
+}
 
 
 module.exports = mongoose.model('Msa', Msa);

@@ -39,11 +39,14 @@ module.exports = function(app) {
   // UPLOAD FILE ROUTES
   msa = require( ROOT_PATH + '/app/routes/msa');
   app.get('/msa', msa.showUploadForm);
-  app.post('/msa', msa.uploadMsa);
+  //app.post('/msa', msa.uploadMsa);
+  app.post('/msa/uploadfile', msa.uploadFile);
+  app.post('/msa/:id', msa.verifySubmit);
   app.get('/msa/:id', msa.findById);
   app.get('/msa/:id/nj', msa.getNeighborJoin);
   app.get('/msa/:id/aa', msa.aminoAcidTranslation);
   app.get('/msa/:id/aa/view', msa.aminoAcidTranslationViewer);
+  app.get('/msa/:id/attributemap', msa.attributemap);
   //app.put('/msa/:id', msa.updateMsa);
   //app.delete('/msa/:id', msa.deleteMsa);
 
@@ -61,12 +64,11 @@ module.exports = function(app) {
 
   // HIV CLUSTERING ROUTES
   hivtrace = require( ROOT_PATH + '/app/routes/hivtrace');
-  app.get('/hivtrace', hivtrace.clusterForm);
-  app.post('/hivtrace/uploadfile', hivtrace.uploadFile);
-  app.post('/hivtrace/upload/:id', hivtrace.verifyUpload);
-  app.post('/hivtrace/invoke/:id', hivtrace.invokeClusterAnalysis);
-  app.get('/hivtrace/:id', hivtrace.jobPage);
-  app.get('/hivtrace/:id/results', hivtrace.results);
-  app.get('/hivtrace/:id/attributemap', hivtrace.attributemap);
+  app.get('/msa/:msaid/hivtrace', hivtrace.clusterForm);
+  app.post('/msa/:msaid/hivtrace/', hivtrace.invokeClusterAnalysis);
+  app.get('/msa/:msaid/hivtrace/:id', hivtrace.jobPage);
+  app.get('/msa/:msaid/hivtrace/:id/results', hivtrace.results);
 
 }
+
+

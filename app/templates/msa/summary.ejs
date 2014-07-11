@@ -19,14 +19,8 @@
     <div class="pull-left col-lg-9">
       <div id="analysis-data">
         <table class="table table-bordered table-striped table-hover" >
-        <% for(var t in type_count) { %>
-          <%if (type_count[t].count == 0) { %>
-            <tr><td><%= type_count[t].full_name %><a target="_blank" href="<%= type_count[t].help %>"><sup>?</sup></a></td><td>No results. <a href="/msa/<%= details._id %>/<%= t %>">Set up an analysis.</a></td></tr>
-          <% } %>
-          <% if (type_count[t].count > 0) { %>
-            <tr><td><%= type_count[t].full_name %><a target="_blank" href="<%= type_count[t].help %>"><sup>?</sup></a></td><td>Found <%= type_count[t].count %> results. <a href="/msa/<%= details._id %>/<%= t %>">View</a></td></tr>
-          <% } %>
-        <% } %>
+          <tr><td>PRIME<a target="_blank" href="/help#prime"><sup>?</sup></a></td><td>No results. <a href="/msa/<%= details._id %>/prime">Set up an analysis.</a></td></tr>
+          <tr><td>HIV Trace<a target="_blank" href="/help#hivtrace-overview"><sup>?</sup></a></td><td>No results. <a href="/msa/<%= details._id %>/hivtrace">Set up an analysis.</a></td></tr>
         </table>
       </div>
     </div>
