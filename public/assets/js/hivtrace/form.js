@@ -2,7 +2,7 @@ $(document).ready(function(){
 });
 
 $("form").submit(function(e) {
-  e.preventDefault();
+  //e.preventDefault();
 
   //Trigger elements
   $( "input[name='distance_threshold']" ).trigger('focusout');
@@ -11,20 +11,23 @@ $("form").submit(function(e) {
   $(this).next('.help-block').remove();
 
   if($(this).find(".has-error").length > 0) {
+
     $("#form-has-error").show();
     return false;
+
   }
 
   $("#form-has-error").hide();
 
-  // Collect data to be posted
-  data = {};
-  data.distance_threshold = $( "input[name='distance_threshold']" ).val();
-  data.min_overlap = $( "input[name='min_overlap']" ).val();
-  data.receive_mail = $( "input[name='receive_mail']" ).prop("checked");
-  data.mail = $( "input[name='mail']" ).val();
-  data.public_db_compare = $( "input[name='public_db_compare']" ).prop("checked");
-  $(this).submit();
+  //// Collect data to be posted
+  //data = {};
+  //data.distance_threshold = $( "input[name='distance_threshold']" ).val();
+  //data.min_overlap = $( "input[name='min_overlap']" ).val();
+  //data.receive_mail = $( "input[name='receive_mail']" ).prop("checked");
+  //data.mail = $( "input[name='mail']" ).val();
+  //data.public_db_compare = $( "input[name='public_db_compare']" ).prop("checked");
+  //$(this).submit();
+  return true;
 
 });
 
@@ -102,6 +105,7 @@ function ValidateEmail(email) {
     $(this).removeClass('has-success');
     $(this).next('.help-block').remove();
   }
+
 }
 
 

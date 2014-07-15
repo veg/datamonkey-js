@@ -63,6 +63,7 @@ var Msa = new Schema({
     datatype       : {type : Number, require : true},
     partition_info : [PartitionInfo],
     sequence_info  : [Sequences],
+    attribute_map  : Object,
     partitions     : Number,
     sites          : Number,
     rawsites       : Number,
@@ -208,14 +209,20 @@ Msa.methods.dataReader = function (file, cb) {
                     [__dirname + "/../../lib/bfs/datareader.bf"]);
 
   hyphy.stdout.on('data', function (data) {
+
     var results;
+
     try {
       results = JSON.parse(data);
     } catch(e) {
-      results = {'error': "An unexpected error occured when parsing the sequence alignment! Here is the full traceback :" + data }
+      cb("An unexpected error occured when parsing the sequence alignment! Here is the full traceback :" + data, {});
     }
 
-    cb(results);
+    if ("error" in results) {
+      cb(results.error, '');
+    } else {
+      cb('', results);
+    }
   });
 
   hyphy.stdin.write(file + "\n");

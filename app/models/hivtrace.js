@@ -109,13 +109,6 @@ HivTrace.virtual('filename').get(function () {
 });
 
 /**
- * Complete file path for document's file upload
- */
-HivTrace.virtual('filepath').get(function () {
-  return __dirname + "/../../uploads/hivtrace/" + this._id;
-});
-
-/**
  * TODO: Change storage to mongodb instead of file
  */
 HivTrace.virtual('trace_results').get(function () {
@@ -133,7 +126,11 @@ HivTrace.virtual('lanl_trace_results').get(function () {
  * Index of status
  */
 HivTrace.virtual('status_index').get(function () {
-  return this.status_stack.indexOf(this.status);
+  if(this.status != undefined) {
+    return this.status_stack.indexOf(this.status);
+  } else {
+    return -1;
+  }
 });
 
 /**

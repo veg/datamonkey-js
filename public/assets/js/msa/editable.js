@@ -41,31 +41,33 @@ function editable (self) {
   )
 }
 
-$("#attr_submit").bind( "click", function() {
+$('#attr_submit').bind( 'click', function() {
   submitNewMap();
 });
 
-$("#attr_skip").bind( "click", function() {
+$('#attr_skip').bind('click', function() {
   submitNewMap();
 });
 
 function submitNewMap() {
-  var url = "/msa/" + $("#msa_id").text();
+  var url = '/msa/' + $('#msa_id').text() + '/save-attributes';
 
   new_map = {};
   new_map.map = [];
-  new_map.delimiter = $("#delimiter").text()
+  new_map.delimiter = $('#delimiter').text()
                 
   // Collect data
-  for(var i = 0; i < $(".attr_field").length; i++) {
-    new_map.map.push($(".attr_field")[i].text);
+  for(var i = 0; i < $('.attr_field').length; i++) {
+    new_map.map.push($('.attr_field')[i].text);
   }
 
   $.ajax({
-    type: "GET",
+    type: 'POST',
     url: url,
     data: new_map,
-    success: function(data) { window.location.replace(url);  }
+    success: function(data) { 
+      window.location.replace('/msa/' + $('#msa_id').text());  
+    }
   });
 
 }

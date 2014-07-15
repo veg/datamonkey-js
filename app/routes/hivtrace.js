@@ -37,8 +37,8 @@ var error     = require( ROOT_PATH + '/lib/error.js'),
     setup     = require( ROOT_PATH + '/config/setup');
 
 var mongoose = require('mongoose'),
-    HivTrace = mongoose.model('HivTrace');
-
+    HivTrace = mongoose.model('HivTrace'),
+    Msa = mongoose.model('Msa');
 
 /**
  * Form submission page
@@ -53,28 +53,30 @@ exports.clusterForm = function (req, res) {
  * app.post('/hivtrace', hivtrace.invokeClusterAnalysis);
  */
 exports.invokeClusterAnalysis = function (req, res) {
-  //HivTrace.findOne({_id: id}, function (err, hivtrace) {
-  //  if(postdata.public_db_compare == 'true') {
-  //    hivtrace.lanl_compare = true;
-  //    hivtrace.status_stack = hiv_setup.valid_lanl_statuses;
-  //  } else {
-  //    hivtrace.lanl_compare = false;
-  //    hivtrace.status_stack = hiv_setup.valid_statuses;
-  //  }
-  //  hivtrace.distance_threshold = Number(postdata.distance_threshold);
-  //  hivtrace.min_overlap        = Number(postdata.min_overlap);
-  //  hivtrace.ambiguity_handling = postdata.ambiguity_handling;
-  //  hivtrace.status             = hivtrace.status_stack[0];
-  //  if(postdata.receive_mail == 'on') {
-  //    hivtrace.mail = postdata.mail;
-  //  }
-
 
   var postdata = req.body;
-  var id    = req.params.id;
+  var msaid    = req.params.msaid;
 
-  HivTrace.findOne({_id: id}, function (err, hivtrace) {
-    hivtrace.attribute_map = postdata;
+  Msa.findOne({_id: msaid}, function (err, msa) {
+
+    var hivtrace = new HivTrace;
+
+    if(postdata.public_db_compare == 'true') {
+      hivtrace.lanl_compare = true;
+      hivtrace.status_stack = hiv_setup.valid_lanl_statuses;
+    } else {
+      hivtrace.lanl_compare = false;
+      hivtrace.status_stack = hiv_setup.valid_statuses;
+    }
+
+    hivtrace.distance_threshold = Number(postdata.distance_threshold);
+    hivtrace.min_overlap        = Number(postdata.min_overlap);
+    hivtrace.ambiguity_handling = postdata.ambiguity_handling;
+    hivtrace.status             = hivtrace.status_stack[0];
+    if(postdata.receive_mail == 'on') {
+      hivtrace.mail = postdata.mail;
+    }
+
     hivtrace.save(function (err, result) {
       if(err) {
           // Redisplay form with error
@@ -86,25 +88,28 @@ exports.invokeClusterAnalysis = function (req, res) {
 
             json: function(){
               res.json(200, {'result': data});
+
             }
           });
+
       } else {
 
         // Send the MSA, and type
-        var jobproxy = new hpcsocket.HPCSocket({'filepath': result.filepath, 
-                                                'analysis': result,
+        var jobproxy = new hpcsocket.HPCSocket({'filepath'    : msa.filepath, 
+                                                'msa'         : msa,
+                                                'analysis'    : result,
                                                 'status_stack': result.status_stack,
-                                                'type': 'hivtrace'}, callback);
+                                                'type'        : 'hivtrace'}, callback);
 
         function callback(data) {
           res.format({
 
             json: function(){
-              res.json(200, '/hivtrace/' + result._id);
+              res.json(200, 'msa/' + msa._id + '/hivtrace/' + result._id);
             },
 
             html: function() {
-              res.redirect(result._id);
+              res.redirect('msa/' + msa._id + '/hivtrace/' + String(result._id));
             }
           });
         }

@@ -49,104 +49,119 @@ exports.showUploadForm = function (req, res) {
  * app.post('/msa/uploadfile', msa.uploadFile);
  */
 exports.uploadFile = function (req, res) {
+
   // Validate that the file uploaded was a FASTA file
+  var postdata = req.body;
   var msa = new Msa;
-  msa.save(function (err, msa) {
-    fs.rename(req.files.files.path, msa.filepath, function(err, result) {
-      if(err) {
-        // FASTA validation failed, report an error and the form back to the user
-        res.json(200, {'error': { 'file' : err.msg }});
-      } else {
-        msa.save(function (err, result) {
-          res.json(200, {'result': msa});
-        });
-      }
+
+  msa.datatype  = postdata.datatype;
+  msa.gencodeid = postdata.gencodeid;
+
+  msa.dataReader(req.files.files.path, function(err, result) {
+
+    if(err) {
+      // FASTA validation failed, report an error and the form back to the user
+      res.json(200, {'error': err });
+      return;
+    }
+
+    var fpi = result.FILE_PARTITION_INFO;
+    var file_info  = result.FILE_INFO;
+    msa.partitions = file_info.partitions;
+    msa.gencodeid  = file_info.gencodeid;
+    msa.sites      = file_info.sites;
+    msa.sequences  = file_info.sequences;
+    msa.timestamp  = file_info.timestamp;
+    msa.goodtree   = file_info.goodtree;
+    msa.nj         = file_info.nj;
+    msa.rawsites   = file_info.rawsites;
+
+    var sequences = result.SEQUENCES;
+    msa.sequence_info = [];
+    for (i in sequences) {
+      var sequences_i = new Sequences(sequences[i]);
+      msa.sequence_info.push(sequences_i);
+    }
+
+    //Ensure that all information is there
+    var partition_info = new PartitionInfo(fpi);
+    msa.partition_info = partition_info;
+
+    msa.save(function (err, msa) {
+      fs.rename(req.files.files.path, msa.filepath, function(err, result) {
+        if(err) {
+          // FASTA validation failed, report an error and the form back to the user
+          res.json(200, {'error': { 'file' : err.msg }});
+        } else {
+          res.json(200,  msa);
+        }
+      });
     });
   });
 }
 
 /**
  * An AJAX request that verifies the upload is correct
- * app.post('/msa/upload/:id', msa.verifySubmit);
+ * app.post('/msa/:id/map-attributes', msa.mapAttributes);
  */
-exports.verifySubmit = function (req, res) {
+exports.mapAttributes = function (req, res) {
 
-  var postdata = req.body;
   var id = req.params.id;
 
-  Msa.findOne({_id: id}, function (err, sequence_alignment) {
-    sequence_alignment.datatype  = postdata.datatype;
-    sequence_alignment.gencodeid = postdata.gencodeid;
-    sequence_alignment.mailaddr  = postdata.mailaddr;
-
-    sequence_alignment.dataReader(sequence_alignment.filepath, function(result) {
-
-      if ('error' in result) {
+  Msa.findOne({_id: id}, function (err, msa) {
+    if(err) {
+      res.format({
+        html: function() {
+          res.render('msa/attribute_map_assignment.ejs', { 'error' : err});
+        },
+        json: function() {
+          res.json(200, err);
+        }
+      });
+    } else {
+      // Validate that the file uploaded was a FASTA file
+      Msa.createAttributeMap(msa.filepath, function(err, msa_map) {
+        parsed_attributes = Msa.parseHeaderFromMap(msa_map.headers[0], msa_map);
         res.format({
+          html: function() {
+            res.render('msa/attribute_map_assignment.ejs', { 'map'           : msa_map, 
+                                                             'example_parse' : parsed_attributes, 
+                                                             'msa_id'        : msa._id,
+                                                             'error'         : err
+                                                           });
+          },
           json: function(){
-            res.json(200, {'msg': result.error });
+            res.json(200, { 'map'           : msa_map, 
+                            'example_parse' : parsed_attributes, 
+                            'msa_id'        : msa._id, 
+                            'error'         : err
+                            });
           }
         });
+      });
+    }
+  });
+}
 
+
+exports.saveAttributes = function (req, res) {
+  var id = req.params.id;
+  var postdata = req.body;
+
+  Msa.findOne({_id: id}, function (err, msa) {
+    msa.attribute_map = postdata;
+    debugger;
+    msa.save(function (err, msa) {
+      if(err) {
+        // FASTA validation failed, report an error and the form back to the user
+        res.json(200, err);
       } else {
-
-        var fpi = result.FILE_PARTITION_INFO;
-        var file_info = result.FILE_INFO;
-
-        sequence_alignment.partitions = file_info.partitions;
-        sequence_alignment.gencodeid  = file_info.gencodeid;
-        sequence_alignment.sites      = file_info.sites;
-        sequence_alignment.sequences  = file_info.sequences;
-        sequence_alignment.timestamp  = file_info.timestamp;
-        sequence_alignment.goodtree   = file_info.goodtree;
-        sequence_alignment.nj         = file_info.nj;
-        sequence_alignment.rawsites   = file_info.rawsites;
-
-        var sequences = result.SEQUENCES;
-        sequence_alignment.sequence_info = [];
-        for (i in sequences) {
-          var sequences_i = new Sequences(sequences[i]);
-          sequence_alignment.sequence_info.push(sequences_i);
-        }
-
-        //Ensure that all information is there
-        var partition_info = new PartitionInfo(fpi);
-        sequence_alignment.partition_info = partition_info;
-        sequence_alignment.save(function(err, result) {
-          if(err) {
-            res.format({
-              json: function() {
-                res.json(200, err);
-              }
-            });
-          } else {
-              // Validate that the file uploaded was a FASTA file
-              Msa.createAttributeMap(result.filepath, function(err, result) {
-                parsed_attributes = Msa.parseHeaderFromMap(result.headers[0], result);
-                res.format({
-                  html: function() {
-                    res.render('msa/attribute_map_assignment.ejs', { 
-                                                                      'map'           : result, 
-                                                                      'example_parse' : parsed_attributes, 
-                                                                      'msa_id'        : sequence_alignment._id,
-                                                                      'error'         : err
-                                                                   });
-                  },
-                  json: function(){
-                    res.json(200, { 'map'           : result, 
-                                    'example_parse' : parsed_attributes, 
-                                    'msa_id'        : sequence_alignment._id, 
-                                    'error'         : err
-                                    });
-                  }
-                });
-              });
-            }
-          });
-        }
+        res.json(200,  {success: true});
+      }
+    });
   });
 
-  });
+
 }
 
 // app.get('/msa/:id', msa.findById);
@@ -284,17 +299,13 @@ exports.aminoAcidTranslationViewer = function(req, res) {
  * Returns strictly JSON results for requested job id
  * app.get('/hivtrace/:id/attributes', hivtrace.results);
  */
-exports.attributemap = function (req, res) {
+exports.attributeMap = function (req, res) {
   var id = req.params.id;
-
   Msa.findOne({_id: id}, 'attribute_map', function (err, msa) {
-
     if (err || !hivtrace) {
       res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
     } else {
       res.json({msa : msa});
     }
-
   });
-
 }

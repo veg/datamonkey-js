@@ -102,7 +102,6 @@ exports.invokePrime = function(req, res) {
                                                     'status_stack': result.status_stack,
                                                     'type'        : 'prime'}, callback);
             function callback(data) {
-              console.log(result);
               if(data == 'connected') {
                 res.format({
                   html: function() {
