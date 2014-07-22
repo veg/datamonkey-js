@@ -22,6 +22,8 @@ function render_histogram(graph, histogram_tag, histogram_label) {
 }
 
 function hivtrace_render_histogram(counts, fit, w, h, id) {
+    var histogram_tag = id;
+
     var margin = {top: 10, right: 30, bottom: 30, left: 30},
                 width = w - margin.left - margin.right,
                 height = h - margin.top - margin.bottom;

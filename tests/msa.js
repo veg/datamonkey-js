@@ -121,3 +121,21 @@ describe('msa codon translation', function() {
   });
 
 });
+
+describe('hyphy friendly', function() {
+
+  it('should not have attribute map', function(done) {
+
+    var msa = new Msa;
+    msa.gencodeid = 0;
+    fs.writeFileSync(msa.filepath, fs.readFileSync('./tests/res/Flu.fasta'));
+    // save attribute map
+    // "map": ["unknown","unknown1","unknown2","ma3ybe_date"] should turn into
+    // "map": { "0" : "unknown", "1": "unknown1", "2": "unknown2", "3": "maybe_date" }
+    msa.attribute_map =  {"map": ["unknown","unknown1","unknown2","maybe_date"], "delimiter":"_"};
+    (msa.hyphy_friendly.attribute_map == undefined).should.be.true;
+    done();
+
+  });
+
+});

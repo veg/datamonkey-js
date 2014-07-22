@@ -60,8 +60,10 @@ function notEmptyValidator (val) {
  * created            : When the document was created
  */
 var HivTrace = new Schema({
+    reference               : String,
     distance_threshold      : { type: Number, require: true, min : 0, max: 0.02, validate: [notEmptyValidator, 'Distance Threshold is empty'] },
     min_overlap             : { type: Number, require: true, min : 100, max: 1000, validate: [notEmptyValidator, 'Minimum Overlap is empty'] },
+    fraction                : { type: Number, require: true, min : 0, max: 1 },
     ambiguity_handling      : { type: String, require: true, validate: [notEmptyValidator, 'Ambiguity Handling is empty']},
     attribute_map           : Object,
     sequence_length         : Number,
@@ -87,6 +89,7 @@ HivTrace.statics.validators = function () {
   var validators = [];
   validators.min_overlap = HivTrace.paths.min_overlap.options;
   validators.distance_threshold = HivTrace.paths.distance_threshold.options;
+  validators.fraction = HivTrace.paths.fraction.options;
   return validators;
 }
 
@@ -153,6 +156,7 @@ HivTrace.virtual('timestamp').get(function () {
 HivTrace.virtual('url').get(function () {
   return 'http://' + setup.host + '/hivtrace/' + this._id;
 });
+
 
 module.exports = mongoose.model('HivTrace', HivTrace);
 

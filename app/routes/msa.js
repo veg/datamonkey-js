@@ -181,6 +181,7 @@ exports.findById = function (req, res) {
       //Get the count of the different analyses on the job
       if(req.query.format == 'hyphy') {
         // Reformat arrays
+        debugger;
         res.json(200, item.hyphy_friendly);
 
       } else {

@@ -2,7 +2,7 @@
 
   <ul class="nav nav-tabs">
     <li class="active"><a href="#trace-results" data-toggle="tab">Cluster Results</a></li>
-    <%if (hivtrace.lanl_trace_results) { %>
+    <%if (hivtrace.lanl_compare == true) { %>
     <li class=""><a href="#lanl-trace-results" data-toggle="tab">Comparison Results</a></li>
     <% } %>
   </ul>
@@ -40,7 +40,7 @@
       </div>
     </div>
 
-    <%if (hivtrace.lanl_trace_results) { %>
+    <%if (hivtrace.lanl_compare == true) { %>
     <div id="lanl-trace-results" class="tab-pane">
       <h3>LANL Cluster Results</h3>
       <div class="row">

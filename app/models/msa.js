@@ -137,6 +137,9 @@ Msa.virtual('hyphy_friendly').get(function () {
     }
   });
 
+  //Remove attribute_map
+  delete hyphy_obj['attribute_map'];  
+
   return hyphy_obj;
 
 });

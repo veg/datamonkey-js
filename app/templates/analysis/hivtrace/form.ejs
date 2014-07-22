@@ -12,6 +12,27 @@
   <div class="nav nav-list pull-right"><a href="/help#hivtrace-overview" target="_blank">I'm confused</a></div>
   <div class="row col-lg-9">
       <form role="form" class="form-horizontal" name="uploadform" enctype="multipart/form-data" method="post" action="">
+          <div class="form-group">
+            <label class="col-lg-3 control-label">Reference</label>
+            <div class="col-lg-9">
+                <select name="reference">
+                   <option value="HXB2_pol">HXB2_pol</option>
+                   <option value="NL4-3_prrt">NL4-3_prrt</option>
+                   <option value="HXB2_tat">HXB2_tat</option>
+                   <option value="HXB2_int">HXB2_int</option>
+                   <option selected="selected" value="HXB2_prrt">HXB2_prrt</option>
+                   <option value="HXB2_pr">HXB2_pr</option>
+                   <option value="HXB2_vif">HXB2_vif</option>
+                   <option value="HXB2_nef">HXB2_nef</option>
+                   <option value="HXB2_vpu">HXB2_vpu</option>
+                   <option value="HXB2_rev">HXB2_rev</option>
+                   <option value="HXB2_vpr">HXB2_vpr</option>
+                   <option value="HXB2_env">HXB2_env</option>
+                   <option value="HXB2_gag">HXB2_gag</option>
+                   <option value="HXB2_rt">HXB2_rt</option>
+                </select>
+            </div>
+          </div>
           <div class=" form-group <%if (typeof errors != "undefined" && typeof errors.distance_threshold != "undefined") { %>has-error<% } %>">
             <label id="datatype-content" class="col-lg-3 control-label">Distance Threshold</label>
             <div class="col-lg-9">
@@ -43,6 +64,12 @@
                 </select>
             </div>
           </div>
+          <div id="fraction" class="hide form-group <%if (typeof errors != "undefined" && typeof errors.distance_threshold != "undefined") { %>has-error<% } %>">
+            <label id="datatype-content" class="col-lg-3 control-label">Maximum Tolerated Fraction of Ambiguities</label>
+            <div class="col-lg-9">
+                <input class="form-control" name="fraction" type="text" placeholder=".01" data-min=<%= validators.fraction.min %> data-max=<%= validators.fraction.max %>>
+            </div>
+          </div>
           <div class="form-group <%if (typeof errors != "undefined" && typeof errors.mail != "undefined") { %>has-error<% } %>">
             <label id="datatype-content" class="col-lg-3 control-label">Notify When Completed?</label>
             <div class="col-lg-9 input-group mail-group">
@@ -57,8 +84,9 @@
             </div>
             <div class="col-lg-9">
                 <label class="checkbox">
-                  <input type="checkbox" checked name="public_db_compare" value="yes"> Compare to Public Database</input>
+                  <input type="checkbox" checked name="public_db_compare" value="yes"> Compare to public database</input>
                 </label>
+                <div id="compare-notification" class="alert alert-info hide"> Comparing to a public database is only available when using HXB2_prrt as a reference </div>
             </div>
           </div>
           <button type="submit" class="btn btn-primary pull-right">Continue</button>

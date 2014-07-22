@@ -1,4 +1,5 @@
 $(document).ready(function(){
+  $("input[name='public_db_compare']").tooltip()
 });
 
 $("form").submit(function(e) {
@@ -7,6 +8,7 @@ $("form").submit(function(e) {
   //Trigger elements
   $( "input[name='distance_threshold']" ).trigger('focusout');
   $( "input[name='min_overlap']" ).trigger('focusout');
+  $( "input[name='fraction']" ).trigger('focusout');
 
   $(this).next('.help-block').remove();
 
@@ -81,7 +83,7 @@ var validateElement = function () {
  
 }
 
-function ValidateEmail(email) {
+function validateEmail(email) {
 
   if($(this).find("input[name='receive_mail']")[0].checked) {
     var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -108,7 +110,33 @@ function ValidateEmail(email) {
 
 }
 
+function toggleCompare(obj) {
+  if ($(this).val() != "HXB2_prrt") {
+    $("input[name='public_db_compare']")[0].checked  = false;
+    $(".checkbox").hide();
+    $("#compare-notification").removeClass("hide")
+    $("#compare-notification").show();
+  } else {
+    $(".checkbox").show();
+    $("#compare-notification").hide();
+  }
+}
+
+function toggleFraction(obj) {
+  if ($(this).val() != "RESOLVE") {
+    $("input[name='fraction']").val('');
+    $("#fraction").hide();
+  } else {
+    $("#fraction").removeClass("hide")
+    $("#fraction").show();
+  }
+}
 
 $( "input[name='distance_threshold']" ).focusout(validateElement);
 $( "input[name='min_overlap']" ).focusout(validateElement);
-$( ".mail-group" ).change(ValidateEmail);
+$( "input[name='fraction']" ).focusout(validateElement);
+$( ".mail-group" ).change(validateEmail);
+$( "select[name='reference']" ).change(toggleCompare);
+$( "select[name='ambiguity_handling']" ).change(toggleFraction);
+
+

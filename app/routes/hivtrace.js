@@ -58,10 +58,10 @@ exports.invokeClusterAnalysis = function (req, res) {
   var msaid    = req.params.msaid;
 
   Msa.findOne({_id: msaid}, function (err, msa) {
+    console.log(postdata);
 
     var hivtrace = new HivTrace;
-
-    if(postdata.public_db_compare == 'true') {
+    if(postdata.public_db_compare == 'yes') {
       hivtrace.lanl_compare = true;
       hivtrace.status_stack = hiv_setup.valid_lanl_statuses;
     } else {
@@ -72,7 +72,13 @@ exports.invokeClusterAnalysis = function (req, res) {
     hivtrace.distance_threshold = Number(postdata.distance_threshold);
     hivtrace.min_overlap        = Number(postdata.min_overlap);
     hivtrace.ambiguity_handling = postdata.ambiguity_handling;
+    hivtrace.reference          = postdata.reference;
     hivtrace.status             = hivtrace.status_stack[0];
+
+    if(hivtrace.ambiguity_handling == "RESOLVE") {
+      hivtrace.fraction = postdata.fraction;
+    }
+
     if(postdata.receive_mail == 'on') {
       hivtrace.mail = postdata.mail;
     }
@@ -152,10 +158,11 @@ exports.results = function (req, res) {
 
   // HIV Cluster id
   var id = req.params.id;
-  HivTrace.findOne({_id: id}, 'tn93_summary tn93_results trace_results lanl_trace_results', function (err, hivtrace) {
+  HivTrace.findOne({_id: id}, 'tn93_summary tn93_results trace_results lanl_compare', function (err, hivtrace) {
     if (err || !hivtrace) {
       res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
     } else {
+      console.log(hivtrace);
       res.format({
         html: function(){
           res.render('analysis/hivtrace/results.ejs', {hivtrace : hivtrace});
