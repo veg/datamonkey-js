@@ -8,7 +8,7 @@ $("form").submit(function(e) {
   //Trigger elements
   $( "input[name='distance_threshold']" ).trigger('focusout');
   $( "input[name='min_overlap']" ).trigger('focusout');
-  $( "input[name='fraction']" ).trigger('focusout');
+  //$( "input[name='fraction']" ).trigger('focusout');
 
   $(this).next('.help-block').remove();
 
