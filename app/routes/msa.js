@@ -57,8 +57,10 @@ exports.uploadFile = function (req, res) {
   msa.datatype  = postdata.datatype;
   msa.gencodeid = postdata.gencodeid;
 
-  msa.dataReader(req.files.files.path, function(err, result) {
+  console.log(postdata);
+  console.log(msa.datatype);
 
+  msa.dataReader(req.files.files.path, function(err, result) {
     if(err) {
       // FASTA validation failed, report an error and the form back to the user
       res.json(200, {'error': err });

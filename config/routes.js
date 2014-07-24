@@ -28,6 +28,7 @@
 //Routes
 
 module.exports = function(app) {
+
   // HOME PAGE
   home = require( ROOT_PATH + '/app/routes/home');
   app.get('/', home.homePage);
@@ -62,11 +63,14 @@ module.exports = function(app) {
 
   // HIV CLUSTERING ROUTES
   hivtrace = require( ROOT_PATH + '/app/routes/hivtrace');
-  app.get('/msa/:msaid/hivtrace', hivtrace.clusterForm);
-  app.post('/msa/:msaid/hivtrace', hivtrace.invokeClusterAnalysis);
-  app.get('/msa/:msaid/hivtrace/:id', hivtrace.jobPage);
-  app.get('/msa/:msaid/hivtrace/:id/results', hivtrace.results);
+  app.get('/hivtrace', hivtrace.clusterForm);
+  app.post('/hivtrace/uploadfile', hivtrace.uploadFile);
+  app.get('/hivtrace/:id/map-attributes', hivtrace.mapAttributes);
+  app.post('/hivtrace/:id/save-attributes', hivtrace.saveAttributes);
+  //app.post('/hivtrace/upload/:id', hivtrace.verifyUpload);
+  app.post('/hivtrace/invoke/:id', hivtrace.invokeClusterAnalysis);
+  app.get('/hivtrace/:id', hivtrace.jobPage);
+  app.get('/hivtrace/:id/results', hivtrace.results);
+  app.get('/hivtrace/:id/attributes', hivtrace.attributeMap);
 
 }
-
-

@@ -229,7 +229,7 @@ Msa.methods.dataReader = function (file, cb) {
   });
 
   hyphy.stdin.write(file + "\n");
-  hyphy.stdin.write(this.gencodeid.toString());
+  hyphy.stdin.write(this.datatype.toString());
   hyphy.stdin.end();
 
 };
@@ -239,7 +239,8 @@ function isSubtype(supposed_subtype) {
 }
 
 function isDate(supposed_date) {
-  //// check for sampling year/date
+
+  // check for sampling year/date
   var valid_date_formats = [
                         "MM-DD-YYYY",
                         "DD-YY",
@@ -249,12 +250,12 @@ function isDate(supposed_date) {
                         ];
 
   var parsed_date = moment(supposed_date, valid_date_formats, true);
-
   if(parsed_date.isValid()) {
     return parsed_date.isBefore(moment());
   } else {
     return false;
   }
+
 }
 
 function isCountry(supposed_country) {

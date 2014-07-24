@@ -11,7 +11,19 @@
   </div>
   <div class="nav nav-list pull-right"><a href="/help#hivtrace-overview" target="_blank">I'm confused</a></div>
   <div class="row col-lg-9">
-      <form role="form" class="form-horizontal" name="uploadform" enctype="multipart/form-data" method="post" action="">
+      <form role="form" class="form-horizontal" name="uploadform" enctype="multipart/form-data" method="post" action="/hivtrace/uploadfile/">
+          <div id="trace-upload" class="form-group <%if (typeof errors != "undefined" && typeof errors.file != "undefined") { %>has-error<% } %>">
+            <label id="upload-file-label" class="col-lg-3 control-label">Sequence Alignment</label>
+            <div id="seq-file-div" class="col-lg-9">
+                <input id="seq-file" type="file" name="files">
+                <div id="file-progress" class="progress progress-striped active">
+                  <div class="progress-bar" role="progressbar" aria-valuenow="<%= hivtrace.percentage_complete %>" aria-valuemin="1" aria-valuemax="100" style="width: <%= hivtrace.percentage_complete %>">
+                    <span class="sr-only"><%= hivtrace.percentage_complete %> Complete</span>
+                  </div>
+                </div>
+            </div>
+          </div>
+
           <div class="form-group">
             <label class="col-lg-3 control-label">Reference</label>
             <div class="col-lg-9">
@@ -67,7 +79,7 @@
           <div id="fraction" class="hide form-group <%if (typeof errors != "undefined" && typeof errors.distance_threshold != "undefined") { %>has-error<% } %>">
             <label id="datatype-content" class="col-lg-3 control-label">Maximum Tolerated Fraction of Ambiguities</label>
             <div class="col-lg-9">
-                <input class="form-control" name="fraction" type="text" placeholder=".01" data-min=<%= validators.fraction.min %> data-max=<%= validators.fraction.max %>>
+                <input class="form-control" name="fraction" type="text" placeholder="1." data-min=<%= validators.fraction.min %> data-max=<%= validators.fraction.max %>>
             </div>
           </div>
           <div class="form-group <%if (typeof errors != "undefined" && typeof errors.mail != "undefined") { %>has-error<% } %>">

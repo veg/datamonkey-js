@@ -3,7 +3,7 @@ $(document).ready(function(){
 });
 
 $("form").submit(function(e) {
-  //e.preventDefault();
+  e.preventDefault();
 
   //Trigger elements
   $( "input[name='distance_threshold']" ).trigger('focusout');
@@ -21,15 +21,49 @@ $("form").submit(function(e) {
 
   $("#form-has-error").hide();
 
-  //// Collect data to be posted
-  //data = {};
-  //data.distance_threshold = $( "input[name='distance_threshold']" ).val();
-  //data.min_overlap = $( "input[name='min_overlap']" ).val();
-  //data.receive_mail = $( "input[name='receive_mail']" ).prop("checked");
-  //data.mail = $( "input[name='mail']" ).val();
-  //data.public_db_compare = $( "input[name='public_db_compare']" ).prop("checked");
-  //$(this).submit();
-  return true;
+  var formData = new FormData();
+  var file = document.getElementById('seq-file').files[0];
+  var filename = document.getElementById('seq-file').files[0].name;
+
+  formData.append('files', file);
+  formData.append('reference', $( "select[name='reference']" ).val());
+  formData.append('distance_threshold', $( "input[name='distance_threshold']" ).val());
+  formData.append('ambiguity_handling', $( "select[name='ambiguity_handling']" ).val());
+  formData.append('min_overlap', $( "input[name='min_overlap']" ).val());
+  formData.append('fraction', $( "input[name='fraction']" ).val());
+  formData.append('receive_mail',  $( "input[name='receive_mail']" ).prop("checked"));
+  formData.append('mail', $( "input[name='mail']" ).val());
+  formData.append('public_db_compare', $( "input[name='public_db_compare']" ).prop("checked"));
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('post', '/hivtrace/uploadfile', true);
+
+  xhr.upload.onprogress = function(e) {
+    if (e.lengthComputable) {
+      var percentage = (e.loaded / e.total) * 100;
+      $('#file-progress').css("display", "block");
+      $('#seq-file').css("display", "none");
+      $('.progress .progress-bar').css('width', percentage + '%');
+    }
+  };
+  
+  xhr.onerror = function(e) {
+    $('#file-progress').html(e);
+  };
+  
+  xhr.onload = function(res) {
+    // Replace field with green text, name of file
+    var result = JSON.parse(this.responseText);
+    if('_id' in result) {
+      window.location.href =  '/hivtrace/' + result._id + '/map-attributes';
+    } else if ('error' in result) {
+      $('#modal-error-msg').text(result.error);
+      $('#errorModal').modal()
+    }
+  };
+
+  xhr.send(formData);
+
 
 });
 
@@ -138,5 +172,3 @@ $( "input[name='fraction']" ).focusout(validateElement);
 $( ".mail-group" ).change(validateEmail);
 $( "select[name='reference']" ).change(toggleCompare);
 $( "select[name='ambiguity_handling']" ).change(toggleFraction);
-
-

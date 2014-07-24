@@ -40,6 +40,66 @@ var mongoose = require('mongoose'),
     HivTrace = mongoose.model('HivTrace'),
     Msa = mongoose.model('Msa');
 
+
+/**
+* Form submission page
+* app.post('/hivtrace/uploadfile', hivtrace.clusterForm);
+*/
+exports.uploadFile = function (req, res) {
+
+  var postdata = req.body;
+  var id = req.params.id;
+
+  // Validate that the file uploaded was a FASTA file
+  var hivtrace = new HivTrace;
+  if(postdata.public_db_compare == 'true') {
+    hivtrace.lanl_compare = true;
+    hivtrace.status_stack = hiv_setup.valid_lanl_statuses;
+  } else {
+    hivtrace.lanl_compare = false;
+    hivtrace.status_stack = hiv_setup.valid_statuses;
+  }
+
+  hivtrace.distance_threshold = Number(postdata.distance_threshold);
+  hivtrace.min_overlap = Number(postdata.min_overlap);
+  hivtrace.ambiguity_handling = postdata.ambiguity_handling;
+  hivtrace.reference = postdata.reference;
+  //hivtrace.status = hivtrace.status_stack[0];
+
+  if(hivtrace.ambiguity_handling == "RESOLVE") {
+    console.log(postdata.fraction);
+    if(postdata.fraction == undefined) {
+      hivtrace.fraction = 1;
+    } else {
+      hivtrace.fraction = postdata.fraction;
+    }
+  }
+
+  if(postdata.receive_mail == 'on') {
+    hivtrace.mail = postdata.mail;
+  }
+
+
+  hivtrace.save(function (err, ht) {
+    if(err) {
+        res.json(200, {'error' : err,
+                       'validators': HivTrace.validators()});
+        return;
+    }
+
+    fs.rename(req.files.files.path, ht.filepath, function(err, result) {
+      if(err) {
+        res.json(200, {'error' : err.error,
+                       'validators': HivTrace.validators()});
+
+      } else {
+        res.json(200,  ht);
+      }
+    });
+  });
+
+}
+
 /**
  * Form submission page
  * app.get('/hivtrace', hivtrace.clusterForm);
@@ -53,74 +113,27 @@ exports.clusterForm = function (req, res) {
  * app.post('/hivtrace', hivtrace.invokeClusterAnalysis);
  */
 exports.invokeClusterAnalysis = function (req, res) {
+  var id = req.params.id;
+  HivTrace.findOne({_id: id}, function (err, hivtrace) {
+    if(err) {
+        // Redisplay form with error
+        res.format({
+          html: function(){
+            res.render('analysis/hivtrace/form.ejs', {'error': err.error, 
+                       'validators': HivTrace.validators()});
+          },
 
-  var postdata = req.body;
-  var msaid    = req.params.msaid;
+          json: function(){
+            res.json(200, {'result': data});
 
-  Msa.findOne({_id: msaid}, function (err, msa) {
-    console.log(postdata);
+          }
+        });
 
-    var hivtrace = new HivTrace;
-    if(postdata.public_db_compare == 'yes') {
-      hivtrace.lanl_compare = true;
-      hivtrace.status_stack = hiv_setup.valid_lanl_statuses;
     } else {
-      hivtrace.lanl_compare = false;
-      hivtrace.status_stack = hiv_setup.valid_statuses;
+
+
+      
     }
-
-    hivtrace.distance_threshold = Number(postdata.distance_threshold);
-    hivtrace.min_overlap        = Number(postdata.min_overlap);
-    hivtrace.ambiguity_handling = postdata.ambiguity_handling;
-    hivtrace.reference          = postdata.reference;
-    hivtrace.status             = hivtrace.status_stack[0];
-
-    if(hivtrace.ambiguity_handling == "RESOLVE") {
-      hivtrace.fraction = postdata.fraction;
-    }
-
-    if(postdata.receive_mail == 'on') {
-      hivtrace.mail = postdata.mail;
-    }
-
-    hivtrace.save(function (err, result) {
-      if(err) {
-          // Redisplay form with error
-          res.format({
-            html: function(){
-              res.render('analysis/hivtrace/form.ejs', {'error': err.error, 
-                         'validators': HivTrace.validators()});
-            },
-
-            json: function(){
-              res.json(200, {'result': data});
-
-            }
-          });
-
-      } else {
-
-        // Send the MSA, and type
-        var jobproxy = new hpcsocket.HPCSocket({'filepath'    : msa.filepath, 
-                                                'msa'         : msa,
-                                                'analysis'    : result,
-                                                'status_stack': result.status_stack,
-                                                'type'        : 'hivtrace'}, callback);
-
-        function callback(data) {
-          res.format({
-
-            json: function(){
-              res.json(200, 'msa/' + msa._id + '/hivtrace/' + result._id);
-            },
-
-            html: function() {
-              res.redirect('msa/' + msa._id + '/hivtrace/' + String(result._id));
-            }
-          });
-        }
-      }
-    });
   });
 }
 
@@ -137,6 +150,21 @@ exports.jobPage = function (req, res) {
     if (err || !hivtrace) {
       res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
     } else {
+      if(hivtrace.status == undefined) {
+
+        function callback(data) {
+          console.log("success!");
+        }        
+
+        // Send the MSA, and type
+        var jobproxy = new hpcsocket.HPCSocket({'filepath'    : hivtrace.filepath, 
+                                                'msa'         : hivtrace,
+                                                'analysis'    : hivtrace,
+                                                'status_stack': hivtrace.status_stack,
+                                                'type'        : 'hivtrace'}, callback);
+
+      }
+
       res.format({
         json: function(){
           res.json(200, hivtrace);
@@ -176,3 +204,80 @@ exports.results = function (req, res) {
 
 }
 
+/**
+ * An AJAX request that verifies the upload is correct
+ * app.post('/msa/:id/map-attributes', msa.mapAttributes);
+ */
+exports.mapAttributes = function (req, res) {
+
+  var id = req.params.id;
+
+  HivTrace.findOne({_id: id}, function (err, hivtrace) {
+    if(err) {
+      res.format({
+        html: function() {
+          res.render('analysis/hivtrace/attribute_map_assignment.ejs', { 'error' : err});
+        },
+        json: function() {
+          res.json(200, err);
+        }
+      });
+    } else {
+      // Validate that the file uploaded was a FASTA file
+      HivTrace.createAttributeMap(hivtrace.filepath, function(err, hivtrace_map) {
+        parsed_attributes = HivTrace.parseHeaderFromMap(hivtrace_map.headers[0], hivtrace_map);
+        res.format({
+          html: function() {
+            res.render('analysis/hivtrace/attribute_map_assignment.ejs', { 'map'           : hivtrace_map, 
+                                                                  'example_parse' : parsed_attributes, 
+                                                                  'hivtrace_id'   : hivtrace._id,
+                                                                  'error'         : err
+                                                                });
+          },
+          json: function(){
+            res.json(200, { 'map'           : hivtrace_map, 
+                            'example_parse' : parsed_attributes, 
+                            'hivtrace_id'   : hivtrace._id, 
+                            'error'         : err
+                            });
+          }
+        });
+      });
+    }
+  });
+}
+
+exports.saveAttributes = function (req, res) {
+
+  var id = req.params.id;
+  var postdata = req.body;
+
+  HivTrace.findOne({_id: id}, function (err, hivtrace) {
+    hivtrace.attribute_map = postdata;
+    hivtrace.save(function (err, hivtrace) {
+      if(err) {
+        // FASTA validation failed, report an error and the form back to the user
+        res.json(200, err);
+      } else {
+        res.json(200,  {success: true});
+      }
+    });
+  });
+
+}
+
+
+/**
+ * Returns strictly JSON results for requested job id
+ * app.get('/hivtrace/:id/attributes', hivtrace.results);
+ */
+exports.attributeMap = function (req, res) {
+  var id = req.params.id;
+  HivTrace.findOne({_id: id}, 'attribute_map', function (err, hivtrace) {
+    if (err || !hivtrace) {
+      res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
+    } else {
+      res.json({hivtrace : hivtrace});
+    }
+  });
+}
