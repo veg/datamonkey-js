@@ -24,6 +24,8 @@
     "mongoose-schema-extend" : "0.1.3",
     "mocha"                  : "*",
     "nodemailer"             : "*",
+    "grunt"                  : "*",
+    "grunt-contrib-concat"   : "*",
     "less"                   : "*",
     "supertest"              : "*",
     "should"                 : "*",
@@ -34,7 +36,6 @@
     "redis"                  : "*",
     "moment"                 : "*",
     "socket.io-client"       : "*",
-    "socket.io-stream"       : "*",
-    "winston"                : "*"
+    "socket.io-stream"       : "*"
   }
 }

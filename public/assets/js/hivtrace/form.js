@@ -1,57 +1,71 @@
 $(document).ready(function(){
+  $("input[name='public_db_compare']").tooltip()
 });
 
-$("form").submit(function() {
+$("form").submit(function(e) {
+  e.preventDefault();
 
   //Trigger elements
   $( "input[name='distance_threshold']" ).trigger('focusout');
   $( "input[name='min_overlap']" ).trigger('focusout');
-  validateFile();
-
+  //$( "input[name='fraction']" ).trigger('focusout');
 
   $(this).next('.help-block').remove();
 
   if($(this).find(".has-error").length > 0) {
+
     $("#form-has-error").show();
     return false;
+
   }
 
   $("#form-has-error").hide();
-  return true;
+
+  var formData = new FormData();
+  var file = document.getElementById('seq-file').files[0];
+  var filename = document.getElementById('seq-file').files[0].name;
+
+  formData.append('files', file);
+  formData.append('reference', $( "select[name='reference']" ).val());
+  formData.append('distance_threshold', $( "input[name='distance_threshold']" ).val());
+  formData.append('ambiguity_handling', $( "select[name='ambiguity_handling']" ).val());
+  formData.append('min_overlap', $( "input[name='min_overlap']" ).val());
+  formData.append('fraction', $( "input[name='fraction']" ).val());
+  formData.append('receive_mail',  $( "input[name='receive_mail']" ).prop("checked"));
+  formData.append('mail', $( "input[name='mail']" ).val());
+  formData.append('public_db_compare', $( "input[name='public_db_compare']" ).prop("checked"));
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('post', '/hivtrace/uploadfile', true);
+
+  xhr.upload.onprogress = function(e) {
+    if (e.lengthComputable) {
+      var percentage = (e.loaded / e.total) * 100;
+      $('#file-progress').css("display", "block");
+      $('#seq-file').css("display", "none");
+      $('.progress .progress-bar').css('width', percentage + '%');
+    }
+  };
+  
+  xhr.onerror = function(e) {
+    $('#file-progress').html(e);
+  };
+  
+  xhr.onload = function(res) {
+    // Replace field with green text, name of file
+    var result = JSON.parse(this.responseText);
+    if('_id' in result) {
+      window.location.href =  '/hivtrace/' + result._id + '/map-attributes';
+    } else if ('error' in result) {
+      $('#modal-error-msg').text(result.error);
+      $('#errorModal').modal()
+    }
+  };
+
+  xhr.send(formData);
+
 
 });
-
-var validateFile = function() {
-
-  var selector = "#trace-upload";
-  var input_field = "input[type='file']";
-  $(selector).removeClass('has-error');
-
-
-  $(selector).next('.help-div').remove();
-
-  // Ensure that file is not empty
-  if($(input_field).val().length == 0) {
-
-    $(selector).addClass('has-error');
-
-    var help_div = jQuery('<div/>', {
-          class: 'col-lg-9',
-      });
-
-    var help_span = jQuery('<span/>', {
-          class: 'help-block',
-          text : 'Field is empty'
-      });
-
-      $(selector).append(help_div.append(help_span));
-
-    return false;
-  } 
-
-  $(selector).removeClass('has-error');
-  return true;
-}
 
 // Validate an element that has min and max values
 var validateElement = function () {
@@ -103,7 +117,7 @@ var validateElement = function () {
  
 }
 
-function ValidateEmail(email) {
+function validateEmail(email) {
 
   if($(this).find("input[name='receive_mail']")[0].checked) {
     var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -127,10 +141,34 @@ function ValidateEmail(email) {
     $(this).removeClass('has-success');
     $(this).next('.help-block').remove();
   }
+
 }
 
+function toggleCompare(obj) {
+  if ($(this).val() != "HXB2_prrt") {
+    $("input[name='public_db_compare']")[0].checked  = false;
+    $(".checkbox").hide();
+    $("#compare-notification").removeClass("hide")
+    $("#compare-notification").show();
+  } else {
+    $(".checkbox").show();
+    $("#compare-notification").hide();
+  }
+}
+
+function toggleFraction(obj) {
+  if ($(this).val() != "RESOLVE") {
+    $("input[name='fraction']").val('');
+    $("#fraction").hide();
+  } else {
+    $("#fraction").removeClass("hide")
+    $("#fraction").show();
+  }
+}
 
 $( "input[name='distance_threshold']" ).focusout(validateElement);
 $( "input[name='min_overlap']" ).focusout(validateElement);
-$( ".mail-group" ).change(ValidateEmail);
-
+$( "input[name='fraction']" ).focusout(validateElement);
+$( ".mail-group" ).change(validateEmail);
+$( "select[name='reference']" ).change(toggleCompare);
+$( "select[name='ambiguity_handling']" ).change(toggleFraction);

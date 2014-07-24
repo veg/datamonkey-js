@@ -27,7 +27,7 @@
 
 //Routes
 
-module.exports = function(app){
+module.exports = function(app) {
 
   // HOME PAGE
   home = require( ROOT_PATH + '/app/routes/home');
@@ -40,18 +40,22 @@ module.exports = function(app){
   // UPLOAD FILE ROUTES
   msa = require( ROOT_PATH + '/app/routes/msa');
   app.get('/msa', msa.showUploadForm);
-  app.post('/msa', msa.uploadMsa);
+  app.post('/msa/uploadfile', msa.uploadFile);
+  app.get('/msa/:id/map-attributes', msa.mapAttributes);
+  app.post('/msa/:id/save-attributes', msa.saveAttributes);
   app.get('/msa/:id', msa.findById);
-  app.put('/msa/:id', msa.updateMsa);
-  app.delete('/msa/:id', msa.deleteMsa);
+  app.get('/msa/:id/nj', msa.getNeighborJoin);
+  app.get('/msa/:id/aa', msa.aminoAcidTranslation);
+  app.get('/msa/:id/aa/view', msa.aminoAcidTranslationViewer);
+  app.get('/msa/:id/attributes', msa.attributeMap);
 
-  // ANALYSIS ROUTES
-  analysis = require( ROOT_PATH + '/app/routes/analysis');
-  app.get('/msa/:msaid/createanalysis', analysis.createForm);
-  app.post('/msa/:msaid/:type', analysis.invokeJob);
-  app.get('/msa/:msaid/:type/:analysisid', analysis.getAnalysis);
-  app.get('/msa/:msaid/:type/:analysisid/status', analysis.queryStatus);
-  app.delete('/msa/:msaid/:type/:analysisid', analysis.deleteAnalysis);
+  // PRIME ROUTES
+  prime = require( ROOT_PATH + '/app/routes/prime');
+  app.get('/msa/:msaid/prime', prime.createForm);
+  app.post('/msa/:msaid/prime', prime.invokePrime);
+  app.get('/msa/:msaid/prime/:primeid/status', prime.getStatus);
+  app.get('/msa/:msaid/prime/:primeid', prime.getPrime);
+  app.delete('/msa/:msaid/prime/:primeid', prime.deletePrime);
 
   // STATS ROUTES
   stats = require( ROOT_PATH + '/app/routes/stats');
@@ -60,8 +64,13 @@ module.exports = function(app){
   // HIV CLUSTERING ROUTES
   hivtrace = require( ROOT_PATH + '/app/routes/hivtrace');
   app.get('/hivtrace', hivtrace.clusterForm);
-  app.post('/hivtrace', hivtrace.invokeClusterAnalysis);
+  app.post('/hivtrace/uploadfile', hivtrace.uploadFile);
+  app.get('/hivtrace/:id/map-attributes', hivtrace.mapAttributes);
+  app.post('/hivtrace/:id/save-attributes', hivtrace.saveAttributes);
+  //app.post('/hivtrace/upload/:id', hivtrace.verifyUpload);
+  app.post('/hivtrace/invoke/:id', hivtrace.invokeClusterAnalysis);
   app.get('/hivtrace/:id', hivtrace.jobPage);
   app.get('/hivtrace/:id/results', hivtrace.results);
-}
+  app.get('/hivtrace/:id/attributes', hivtrace.attributeMap);
 
+}

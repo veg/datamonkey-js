@@ -27,73 +27,115 @@
 
 */
 
-
-var setup   = require('../config/utsetup');
-var fs = require('fs');
-
-ROOT_PATH = setup.rootpath;
-SPOOL_DIR = setup.spooldir;
-HOST      = setup.host;
-
-var mongoose = require('mongoose');
+var fs = require('fs'),
+    mongoose = require('mongoose'),
+    spawn = require('child_process').spawn,
+    setup = require('../config/setup');
 
 // Bootstrap models
-var models_path = ROOT_PATH + '/app/models';
-
-fs.readdirSync(models_path).forEach(function (file) {
-  require(models_path+'/'+file);
-});
+require('../app/models/msa');
 
 var Msa     = mongoose.model('Msa'),
     should  = require('should');
 
-// app.post('/msa/:msaid/:type', analysis.invokeJob);
-describe('MSA Model tests', function() {
+describe('msa datareader validation', function() {
 
-  before(function(done) {
-    if (mongoose.connection.db) return done();
-    mongoose.connect(setup.database, done);
-  });
+  var Msa  = mongoose.model('Msa');
 
-  it('mail validation', function(done) {
+  it('should parse msa and have all properties', function(done) {
+    var hyphy =  spawn(setup.hyphy,
+                      [__dirname + "/../lib/bfs/datareader.bf"]);
 
-    var Msa  = mongoose.model('Msa');
+    hyphy.stdout.on('data', function (data) {
+      var results = JSON.parse(data);
 
-    var msa  = new Msa({
-      msaid   : 'upload.dupe.1',
-      content : 'finished',
-      mailaddr : 'sweaver@ucsd.edu',
+      //Ensure that all information is there
+      results.should.have.property('FILE_INFO');
+      results.FILE_INFO.should.have.property('partitions');
+      results.FILE_INFO.should.have.property('gencodeid');
+      results.FILE_INFO.should.have.property('sites');
+      results.FILE_INFO.should.have.property('sequences');
+      results.FILE_INFO.should.have.property('timestamp');
+      results.FILE_INFO.should.have.property('goodtree');
+      results.FILE_INFO.should.have.property('nj');
+      results.FILE_INFO.should.have.property('rawsites');
+
+      results.should.have.property('SEQUENCES');
+
+      results.should.have.property('FILE_PARTITION_INFO');
+      results.FILE_PARTITION_INFO.should.have.property('partition');
+      results.FILE_PARTITION_INFO.should.have.property('startcodon');
+      results.FILE_PARTITION_INFO.should.have.property('endcodon');
+      results.FILE_PARTITION_INFO.should.have.property('span');
+      results.FILE_PARTITION_INFO.should.have.property('usertree');
+
     });
 
-    var Analysis = mongoose.model('Meme');
-
-    var type = 'meme';
-    var meme = new Analysis({
-      msaid    : 'upload.958520133127023.1',
-      id       : 1,
-      type     : type,
-      status   : 'finished',
-    });
-
-    msa.save(function (err, result) {
+    hyphy.stdin.write(__dirname + '/res/HIV_gp120.nex\n');
+    hyphy.stdin.write('0');
+    hyphy.stdin.end();
+    hyphy.on('close', function (code) {
       done();
     });
   });
 
-  it('No dupes', function(done) {
-    var Msa  = mongoose.model('Msa');
+  it('should return an error message', function(done) {
+    var hyphy =  spawn(setup.hyphy,
+                      [__dirname + "/../lib/bfs/datareader.bf"]);
 
-    var msa  = new Msa({
-      msaid   : 'upload.dupe.1',
-      content : 'finished'
+    hyphy.stdout.on('data', function (data) {
+      var results = JSON.parse(data);
+      results.should.have.property('error');
     });
 
-    msa.save(function (err, result) {
-      msa.save(function (err, result) {
-        err.code.should.equal(11000);
-        done();
-      });
+    hyphy.stdin.write(__dirname + '/res/mangled_nexus.nex\n');
+    hyphy.stdin.write('0');
+    hyphy.stdin.end();
+
+    hyphy.on('close', function (code) {
+      done();
     });
+
   });
 });
 
+
+describe('msa codon translation', function() {
+
+  it('should be a clean standard translation', function(done) {
+
+    var msa = new Msa;
+    msa.gencodeid = 0;
+    fs.writeFileSync(msa.filepath, fs.readFileSync('./tests/res/Flu.fasta'));
+
+    msa.aminoAcidTranslation(function(err, result) {
+
+      fs.readFile('./tests/res/Flu.aa', function (err, data) {
+        result.should.equal(data.toString());
+        done();
+      });
+
+
+    });
+
+  });
+
+});
+
+describe('hyphy friendly', function() {
+
+  it('should not have attribute map', function(done) {
+
+    var msa = new Msa;
+    msa.gencodeid = 0;
+    fs.writeFileSync(msa.filepath, fs.readFileSync('./tests/res/Flu.fasta'));
+    // save attribute map
+    // "map": ["unknown","unknown1","unknown2","ma3ybe_date"] should turn into
+    // "map": { "0" : "unknown", "1": "unknown1", "2": "unknown2", "3": "maybe_date" }
+    msa.attribute_map =  {"map": ["unknown","unknown1","unknown2","maybe_date"], "delimiter":"_"};
+    (msa.hyphy_friendly.attribute_map == undefined).should.be.true;
+    done();
+
+  });
+
+});

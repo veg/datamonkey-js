@@ -33,35 +33,31 @@ function define(name, value) {
 
 //// PRODUCTION
 //define('host','datamonkey-dev');
-//define('port', 8124);
-//define('database', 'mongodb://localhost/datamonkey');
-//// 'default', 'short', 'tiny', 'dev'
-//define('logger', 'tiny');
-//define('spooldir','/var/lib/datamonkey/www/spool/');
-
+//define('port', 4000);
+//define('socket_port', 4001);
+//define('database', 'mongodb://localhost/datamonkey-dev-steven');
+//define('logger', 'dev');
+//define('cluster_ip','silverback.ucsd.edu:7010');
+//define('fasta_validator', '/home/sweaver/TN93/validate_fasta');
+//define('hyphy', '/home/sweaver/bin/hyphy/HYPHYMP');
 
 //// QA
 //define('host','datamonkey-dev');
-//define('port', 3000);
-//define('database', 'mongodb://localhost/datamonkey-dev');
-//// 'default', 'short', 'tiny', 'dev'
-//define('logger', 'dev');
-//define('rootpath', '/home/sweaver/datamonkey-js');
-//define('root_hivtrace_path', '/home/sweaver/datamonkey-js/uploads/hivtrace/');
-//define('spooldir','/var/lib/datamonkey/www/spool/');
-//define('cluster_ip','silverback.ucsd.edu:7000');
-//define('socket_port', 3001);
-//define('fasta_validator', '/home/sweaver/TN93/FastaValidator');
-
-//// DEV
-//define('host','datamonkey-dev');
 //define('port', 4000);
-//define('database', 'mongodb://localhost/datamonkey-dev-steven');
-//// 'default', 'short', 'tiny', 'dev'
-//define('logger', 'dev');
-//define('rootpath', '/home/sweaver/datamonkey/datamonkey-js-dev');
-//define('hivtrace_upload_path', '/uploads/hivtrace/');
-//define('spooldir','/var/lib/datamonkey/www/spool/');
-//define('cluster_ip','silverback.ucsd.edu:7010');
 //define('socket_port', 4001);
-//define('fasta_validator', '/home/sweaver/TN93/FastaValidator');
+//define('database', 'mongodb://localhost/datamonkey-dev-steven');
+//define('logger', 'dev');
+//define('cluster_ip','silverback.ucsd.edu:7010');
+//define('fasta_validator', '/home/sweaver/TN93/validate_fasta');
+//define('hyphy', '/home/sweaver/bin/hyphy/HYPHYMP');
+
+// DEV
+define('host','datamonkey-dev');
+define('port', 4000);
+define('socket_port', 4001);
+define('database', 'mongodb://localhost/datamonkey-dev-steven');
+define('logger', 'dev');
+define('cluster_ip','silverback.ucsd.edu:7010');
+define('fasta_validator', '/home/sweaver/TN93/validate_fasta');
+define('hyphy', '/home/sweaver/bin/hyphy/HYPHYMP');
+

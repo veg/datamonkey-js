@@ -27,7 +27,6 @@
 
 */
 
-
 var SlacScheme = require(__dirname + '/slac');
 var GardScheme = require(__dirname + '/gard');
 
@@ -42,8 +41,8 @@ var Schema = mongoose.Schema,
 var Mixed = mongoose.Schema.Types.Mixed;
 
 var Prime = AnalysisSchema.extend({
-  treemode              : {type: Number},
-  prime_property_choice : {type: Number},
+  treemode              : Number,
+  property_choice       : {type: Number},
   primeresults          : [PrimeResults],
   primesummary          : [PrimeSummary]
 });
@@ -57,6 +56,20 @@ var PrimeResults = new Schema({
 var PrimeSummary = new Schema({
   col_key   : String,
   col_value : String
+});
+
+/**
+ * Filename of document's file upload
+ */
+Prime.virtual('status_stack').get(function () {
+  return ['In Queue', 
+          'Running',
+          'Completed'];
+});
+
+
+Prime.virtual('off_kilter_statuses').get(function () {
+  return ['Aborted'];
 });
 
 module.exports = mongoose.model('Prime', Prime);

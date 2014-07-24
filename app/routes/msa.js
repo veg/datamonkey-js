@@ -28,93 +28,142 @@
 */
 
 
-var dpl     = require( ROOT_PATH + '/lib/datamonkey-pl.js'),
-    error   = require( ROOT_PATH + '/lib/error.js'),
+var error   = require( ROOT_PATH + '/lib/error.js'),
     helpers = require(ROOT_PATH + '/lib/helpers.js'),
     globals = require(ROOT_PATH + '/config/globals.js'),
     fs      = require('fs');
 
 var mongoose = require('mongoose'),
-    Msa = mongoose.model('Msa');
-
+    Msa = mongoose.model('Msa'),
+    Sequences =  mongoose.model('Sequences'),
+    PartitionInfo =  mongoose.model('PartitionInfo');
 
 
 // app.get('/msa', msa.showUploadForm);
 exports.showUploadForm = function (req, res) {
-  res.render('upload/form.ejs');
+  res.render('msa/form.ejs');
 };
 
-// app.post('/msa', msa.uploadMsa);
-exports.uploadMsa = function (req, res) {
+/**
+ * Form submission page
+ * app.post('/msa/uploadfile', msa.uploadFile);
+ */
+exports.uploadFile = function (req, res) {
 
-  postdata = req.body;
+  // Validate that the file uploaded was a FASTA file
+  var postdata = req.body;
+  var msa = new Msa;
 
-  try {
-    contents = fs.readFileSync(req.files.files.path);
-    postdata.contents = contents;
-  } catch(e) {
-    res.format({
-      html: function(){
-        res.render('error.ejs', error.errorResponse("Missing Parameters: No File"));
-      },
-      json: function(){
-        res.json(500, error.errorResponse("Missing Parameters: No File"));
-      }
-    });
-   return;
-  }
+  msa.datatype  = postdata.datatype;
+  msa.gencodeid = postdata.gencodeid;
 
-  var sequence_alignment = new Msa;
+  console.log(postdata);
+  console.log(msa.datatype);
 
-  try {
-
-    sequence_alignment.contents  = postdata.contents;
-    sequence_alignment.datatype  = postdata.datatype;
-    sequence_alignment.gencodeid = postdata.gencodeid;
-    sequence_alignment.mailaddr  = postdata.mailaddr;
-
-  } catch(e) {
-    res.format({
-      html: function(){
-        res.render('error.ejs', error.errorResponse("Missing Parameters: " + e));
-      },
-      json: function(){
-        res.json(500, error.errorResponse("Missing Parameters: " + e));
-      }
-    });
-
-    return;
-  }
-
-  //Upload to Perl to get all other information
-  dpl.uploadToPerl(sequence_alignment, function(err, upload_file) {
-
+  msa.dataReader(req.files.files.path, function(err, result) {
     if(err) {
-      helpers.logger.error("Error uploading file: " + err);
-      res.json(500, error.errorResponse(err));
+      // FASTA validation failed, report an error and the form back to the user
+      res.json(200, {'error': err });
+      return;
     }
 
-    if(!upload_file) {
-      err = "Unexpected error occured: Empty sequence alignment";
-      helpers.logger.error(err);
-      res.json(500, error.errorResponse(err));
+    var fpi = result.FILE_PARTITION_INFO;
+    var file_info  = result.FILE_INFO;
+    msa.partitions = file_info.partitions;
+    msa.gencodeid  = file_info.gencodeid;
+    msa.sites      = file_info.sites;
+    msa.sequences  = file_info.sequences;
+    msa.timestamp  = file_info.timestamp;
+    msa.goodtree   = file_info.goodtree;
+    msa.nj         = file_info.nj;
+    msa.rawsites   = file_info.rawsites;
+
+    var sequences = result.SEQUENCES;
+    msa.sequence_info = [];
+    for (i in sequences) {
+      var sequences_i = new Sequences(sequences[i]);
+      msa.sequence_info.push(sequences_i);
     }
 
-    upload_file.save(function (err, result) {
-      if (err) {
-        res.json(500, error.errorResponse(err));
-      } else {
+    //Ensure that all information is there
+    var partition_info = new PartitionInfo(fpi);
+    msa.partition_info = partition_info;
+
+    msa.save(function (err, msa) {
+      fs.rename(req.files.files.path, msa.filepath, function(err, result) {
+        if(err) {
+          // FASTA validation failed, report an error and the form back to the user
+          res.json(200, {'error': { 'file' : err.msg }});
+        } else {
+          res.json(200,  msa);
+        }
+      });
+    });
+  });
+}
+
+/**
+ * An AJAX request that verifies the upload is correct
+ * app.post('/msa/:id/map-attributes', msa.mapAttributes);
+ */
+exports.mapAttributes = function (req, res) {
+
+  var id = req.params.id;
+
+  Msa.findOne({_id: id}, function (err, msa) {
+    if(err) {
+      res.format({
+        html: function() {
+          res.render('msa/attribute_map_assignment.ejs', { 'error' : err});
+        },
+        json: function() {
+          res.json(200, err);
+        }
+      });
+    } else {
+      // Validate that the file uploaded was a FASTA file
+      Msa.createAttributeMap(msa.filepath, function(err, msa_map) {
+        parsed_attributes = Msa.parseHeaderFromMap(msa_map.headers[0], msa_map);
         res.format({
-          html: function(){
-            res.redirect('./' + upload_file.upload_id);
+          html: function() {
+            res.render('msa/attribute_map_assignment.ejs', { 'map'           : msa_map, 
+                                                             'example_parse' : parsed_attributes, 
+                                                             'msa_id'        : msa._id,
+                                                             'error'         : err
+                                                           });
           },
           json: function(){
-            res.json(200, details);
+            res.json(200, { 'map'           : msa_map, 
+                            'example_parse' : parsed_attributes, 
+                            'msa_id'        : msa._id, 
+                            'error'         : err
+                            });
           }
         });
+      });
+    }
+  });
+}
+
+
+exports.saveAttributes = function (req, res) {
+  var id = req.params.id;
+  var postdata = req.body;
+
+  Msa.findOne({_id: id}, function (err, msa) {
+    msa.attribute_map = postdata;
+    debugger;
+    msa.save(function (err, msa) {
+      if(err) {
+        // FASTA validation failed, report an error and the form back to the user
+        res.json(200, err);
+      } else {
+        res.json(200,  {success: true});
       }
     });
   });
+
+
 }
 
 // app.get('/msa/:id', msa.findById);
@@ -123,46 +172,64 @@ exports.findById = function (req, res) {
   //We must get count of all analyses for the job, respective of type.
   var id = req.params.id;
 
-  Msa.findOne({upload_id : id}, function (err, item) {
+  Msa.findOne({_id : id}, function (err, item) {
+
     if (err || !item) {
       res.json(500, error.errorResponse('There is no sequence with id of ' + id));
     } else {
+
       var details = item;
 
       //Get the count of the different analyses on the job
-      item.AnalysisCount(function(type_counts) {
+      if(req.query.format == 'hyphy') {
+        // Reformat arrays
+        debugger;
+        res.json(200, item.hyphy_friendly);
 
-        var ftc = []
-
-        for(var t in globals.types) {
-          ftc[t] = {
-            "full_name" : globals.types[t].full_name,
-            "help"      : globals.types[t].help,
-            "count"     : type_counts[t] || 0,
-          }
-        }
+      } else {
 
         res.format({
-          html: function(){
-            res.render('upload/summary.ejs', {'details': details, 'type_count': ftc });
+
+          json: function() {
+            res.json(200, item);
           },
-          json: function(){
-            res.json(200, {'details': details, 'type_count': ftc });
+
+          html: function() {
+            res.render('msa/summary.ejs', { 'details' : details });
           }
+
         });
-      });
+      }
     }
   });
 };
 
+// app.get('/msa/:id', msa.findById);
+exports.getNeighborJoin = function (req, res) {
+
+  //We must get count of all analyses for the job, respective of type.
+  var id = req.params.id;
+
+  Msa.findOne({_id : id}, 'nj', function (err, item) {
+    if (err || !item) {
+      res.json(500, error.errorResponse('There is no sequence with id of ' + id));
+    } else if (!item.nj) {
+      // check if tree is null
+    } else {
+      //Get the count of the different analyses on the job
+      res.json(200, item);
+    }
+  });
+
+};
+
 // app.put('/msa/:id', msa.updateMsa);
 exports.updateMsa = function(req, res) {
-
   var id = req.query.id;
   var postdata = req.query;
   var options = { multi: false };
 
-  Msa.findOne({upload_id : id}, function (err, item) {
+  Msa.findOne({_id: id}, function (err, item) {
     if (err) {
       res.json(500, error.errorResponse('There is no sequence with id of ' + id));
     } else {
@@ -180,10 +247,8 @@ exports.updateMsa = function(req, res) {
 
 // app.delete('/msa/:id', msa.deleteMsa);
 exports.deleteMsa = function(req, res) {
-
   var id = req.params.id;
-
-  Msa.findOneAndRemove({ upload_id: id }, function(err) {
+  Msa.findOneAndRemove({ _id: id }, function(err) {
     if (err) {
       res.json(500, error.errorResponse(err));
     } else {
@@ -192,3 +257,58 @@ exports.deleteMsa = function(req, res) {
   });
 }
 
+// app.get('/msa/:id/aa', msa.aminoAcidTranslation);
+exports.aminoAcidTranslation = function(req, res) {
+  var id = req.params.id;
+  Msa.findOne({ _id: id }, function(err, item) {
+    if (err) {
+      res.json(500, error.errorResponse(err));
+    } else {
+      item.aminoAcidTranslation(function(err, aa) {
+
+        res.set({
+          'Content-Type': 'application/octet-stream'
+        })
+
+        res.set({'Content-Disposition':'attachment; filename="' + id + '_aa.fasta"'});
+
+        res.send(aa);
+
+      });
+    }
+  });
+}
+
+// app.get('/msa/:id/aa/view', msa.aminoAcidTranslation);
+exports.aminoAcidTranslationViewer = function(req, res) {
+  var id = req.params.id;
+  Msa.findOne({ _id: id }, function(err, item) {
+    if (err) {
+      res.json(500, error.errorResponse(err));
+    } else {
+      item.aminoAcidTranslation(function(err, aa) {
+        res.format({
+          html: function() {
+                res.render('msa/alignmentview.ejs', {'sequence' : aa});
+          }
+        });
+      });
+    }
+  });
+}
+
+
+/**
+ * Returns strictly JSON results for requested job id
+ * app.get('/hivtrace/:id/attributes', hivtrace.results);
+ */
+exports.attributeMap = function (req, res) {
+  var id = req.params.id;
+  Msa.findOne({_id: id}, 'attribute_map', function (err, msa) {
+    if (err || !hivtrace) {
+      res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
+    } else {
+      res.json({msa : msa});
+    }
+  });
+}

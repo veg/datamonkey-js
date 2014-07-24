@@ -10,7 +10,6 @@ rect.cluster {
     stroke-width: 1px;
 }
 
-
 .bar rect {
   fill: #ccc;
   stroke: #000;
@@ -37,4 +36,8 @@ rect.cluster {
   stroke: red;
   stroke-width: 1.5px;
   stroke-dasharray: 2,2;
+}
+
+#file-progress {
+  display: none;
 }

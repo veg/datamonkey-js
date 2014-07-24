@@ -29,7 +29,7 @@
 
 //Also needs to include status, and results
 var mongoose = require('mongoose'),
-  extend = require('mongoose-schema-extend');
+    extend = require('mongoose-schema-extend');
 
 var AnalysisSchema = require(__dirname + '/analysis');
 

@@ -54,6 +54,7 @@ function setupJob() {
 
   // Status update
   socket.on('completed', function (data) {
+
     $('.progress .progress-bar').width('100%');
 
     $('.job-status').each(function(index) {
@@ -64,7 +65,6 @@ function setupJob() {
       //Do an AJAX request to get results
       $('#hiv-cluster-report').html(results);
       initialize_cluster_network_graphs();
-      downloadExport();
     });
 
     socket.disconnect();

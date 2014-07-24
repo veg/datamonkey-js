@@ -1,0 +1,71 @@
+<%- include ../includes/header.ejs %>
+<div class="container">
+  <h3> Attribute Mapping </h3>
+  <span hidden id="msa_id"><%= msa_id %></span>
+  <div class="map col-sm-9">
+    <% if (error && error.code == 0) { %>
+      <div class="alert alert-danger">
+        <%= error.msg %>
+      </div>
+      <table class=table>
+        <thead>
+          <th>Incorrectly formatted headers</th>
+        </thead>
+        </tbody>
+        <% for(var i = 0; i < error.failed_headers.length; i++) { %>
+          <tr>
+            <td>
+              <%= error.failed_headers[i] %>
+            </td>
+          </tr>
+        <% } %>
+        </tbody>
+      </table>
+      <button id="attr_skip" type="submit" class="btn btn-primary pull-right">Skip</button>
+    <% } else { %>
+    <table class="table">
+      <thead>
+        <th>Attribute Name</th>
+        <th>Example Field</th>
+      </thead>
+      <tbody>
+        <% for(var i = 0; i < Object.keys(example_parse).length; i++) { %>
+          <tr>
+            <td>
+              <a data-pk=<%= i %> data-type="text" href="#" class="editable editable-click attr_field"><%= Object.keys(example_parse)[i] %></a>
+            </td>
+            <td>
+              <%= example_parse[Object.keys(example_parse)[i]] %>
+            </td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+    <button id="attr_submit" type="submit" class="btn btn-primary pull-right">Save</button>
+    <% } %>
+  </div>
+
+  <div class="col-sm-3 pull-right">
+
+    <div class="alert alert-info">
+      Inferred Delimiter :
+      <span id="delimiter" class="large label label-default delimiter-label"><%= map.delimiter %></span>
+    </div>
+
+    <div class="dash-sidebar" data-spy="scroll">
+      <div class='box-header'>
+        <h3 class="box-title">Found Headers</h3>
+      </div>
+      <div class='box-content'>
+        <ul class="list-unstyled">
+        <% for(var i = 0; i < map.headers.length; i++) { %>
+          <li><%= map.headers[i] %></li>
+        <% } %>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include ../includes/footer.ejs %>
+<script src="/assets/js/msa/editable.js"></script>
+

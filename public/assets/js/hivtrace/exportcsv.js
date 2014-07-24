@@ -1,7 +1,3 @@
-$(document).ready(function(){
-  downloadExport();
-});
-
 function computeNodeDegrees (nodes, edges) {
   for (var n in nodes) {
     nodes[n].degree = 0;
@@ -27,19 +23,8 @@ function convertToCSV(obj) {
   return node_csv;
 }
 
-function exportCSV(tag, callback) {
-  var json_url = $(tag).data('url');
-  if (json_url) {
-    d3.json(json_url, function(obj) {
-      callback(convertToCSV(obj));
-    });
-  } else {
-    return null;
-  }
-}
-
-function downloadExport() {
-  exportCSV('#network_tag', function(data) {
+function exportCSVButton(graph, tag) {
+    var data = convertToCSV(graph);
     if (data != null) {
       var pom = document.createElement('a');
       pom.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(data));
@@ -47,21 +32,6 @@ function downloadExport() {
       pom.className = 'btn btn-default btn-lg';
       pom.innerHTML = '<span class="glyphicon glyphicon-floppy-save"></span> Export to CSV';
       pom.click();
-      $('#csvexport').append(pom);
+      $(tag).append(pom);
     }
-  });
-
-  exportCSV('#lanl_network_tag', function(data) {
-    if (data != null) {
-      var pom = document.createElement('a');
-      pom.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(data));
-      pom.setAttribute('download', 'export.csv');
-      pom.className = 'btn btn-default btn-lg';
-      pom.innerHTML = '<span class="glyphicon glyphicon-floppy-save"></span> Export to CSV';
-      pom.click();
-      $('#csvexport-lanl').append(pom);
-    }
-  });
-
 }
-

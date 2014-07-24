@@ -1,0 +1,32 @@
+<%- include ../../includes/header.ejs %>
+<div class="container">
+<h2 class="page-header">Analysis Options</h2>
+
+  <form action="/msa/<%= uploadfile._id %>/prime" enctype="multipart/form-data" method="POST" name="modelForm">
+    <div class="control-group">
+      <label class="control-label" for="treemode">Tree Mode</label>
+      <label class="radio">
+        <input type="radio" checked name="treemode" value="0">
+          Neighbor Joining Tree
+      </label>
+      <label class="radio">
+        <input type="radio" name="treemode" value="1">
+          User Tree(s)
+      </label>
+    </div>
+    <div class="control-group">
+      <label for="property_choice" class="control-label">Amino-acid property set<a class="info" target="_blank" href="/help#aminoacidproperty"><sup>?</sup></a></label>
+      <select name="property_choice">
+        <option selected="" value="0">Conant-Stadler
+        </option>
+        <option value="1">Atchley
+        </option>
+      </select>
+    </div>
+    <div>
+      <button type="submit" class="btn btn-primary pull-right">Continue</button>
+    </div>
+  </form>
+</div>
+<%- include ../../includes/footer.ejs %>
+<script src="/assets/js/datamonkey/datamonkey.js"></script>
