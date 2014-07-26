@@ -1,56 +1,56 @@
 function compute_shortest_paths(cluster, edges) {
 
-  // Floyd-Warshall implementation
-  var distances = {}
+  //// Floyd-Warshall implementation
+  //var distances = {}
 
-  var nodes =  cluster.nodes;
-  node_ids = []
-  nodes.forEach(function(n) { node_ids.push(n.id)});
+  //var nodes =  cluster.nodes;
+  //node_ids = []
+  //nodes.forEach(function(n) { node_ids.push(n.id)});
 
-  // Step 0: We need to filter out edges that only exist within the cluster
-  // we're looking at
-  var new_edges = edges.filter(function(n) { 
-    if( node_ids.indexOf(n.sequences[0]) != -1 && node_ids.indexOf(n.sequences[1]) != -1) {
-      return true;
-    } else {
-      return false;
-    }
-   });
+  //// Step 0: We need to filter out edges that only exist within the cluster
+  //// we're looking at
+  //var new_edges = edges.filter(function(n) { 
+  //  if( node_ids.indexOf(n.sequences[0]) != -1 && node_ids.indexOf(n.sequences[1]) != -1) {
+  //    return true;
+  //  } else {
+  //    return false;
+  //  }
+  // });
 
-  // Step 1: Initialize distances
-  nodes.forEach(function(n) { distances[n.id] = {} });
-  nodes.forEach(function(n) { distances[n.id][n.id] = 0 });
+  //// Step 1: Initialize distances
+  //nodes.forEach(function(n) { distances[n.id] = {} });
+  //nodes.forEach(function(n) { distances[n.id][n.id] = 0 });
 
-  // Step 2: Initialize distances with edge weights
-  new_edges.forEach(function(e){
-    distances[e.sequences[0]] = {};
-    distances[e.sequences[1]] = {};
-  });
+  //// Step 2: Initialize distances with edge weights
+  //new_edges.forEach(function(e){
+  //  distances[e.sequences[0]] = {};
+  //  distances[e.sequences[1]] = {};
+  //});
 
-  new_edges.forEach(function(e){
-    distances[e.sequences[0]][e.sequences[1]] = 1;
-    distances[e.sequences[1]][e.sequences[0]] = 1;
-  });
+  //new_edges.forEach(function(e){
+  //  distances[e.sequences[0]][e.sequences[1]] = 1;
+  //  distances[e.sequences[1]][e.sequences[0]] = 1;
+  //});
 
-  // Step 3: Get shortest paths
-  nodes.forEach(function(k) {
-    nodes.forEach(function(i) {
-      nodes.forEach(function(j) {
-        if (i.id != j.id) {
-          var d_ik = distances[k.id][i.id];
-          var d_jk = distances[k.id][j.id];
-          var d_ij = distances[i.id][j.id];
-          if (d_ik != null &&  d_jk != null) {
-            d_ik += d_jk;
-            if ( d_ij == null || d_ij > d_ik ) {
-              distances[i.id][j.id] = d_ik;
-              distances[j.id][i.id] = d_ik;
-            }
-          }
-        }
-      });
-    });
-  });
+  //// Step 3: Get shortest paths
+  //nodes.forEach(function(k) {
+  //  nodes.forEach(function(i) {
+  //    nodes.forEach(function(j) {
+  //      if (i.id != j.id) {
+  //        var d_ik = distances[k.id][i.id];
+  //        var d_jk = distances[k.id][j.id];
+  //        var d_ij = distances[i.id][j.id];
+  //        if (d_ik != null &&  d_jk != null) {
+  //          d_ik += d_jk;
+  //          if ( d_ij == null || d_ij > d_ik ) {
+  //            distances[i.id][j.id] = d_ik;
+  //            distances[j.id][i.id] = d_ik;
+  //          }
+  //        }
+  //      }
+  //    });
+  //  });
+  //});
 
   return distances;
 
