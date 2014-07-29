@@ -66,11 +66,17 @@
         </div>
      </div>
      <div class = "row">
-         <div id='lanl_network_tag' class='col-lg-9' data-url=<%= hivtrace.lanl_trace_results %>></div>
+         <div id='lanl_network_tag' class='col-lg-9' data-url=<%= hivtrace.lanl_trace_results %>>
+             <div class="my_progress">
+                  <div class="progress-bar progress-bar-striped active"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                    Loading the network...
+                  </div>
+            </div>        
+         </div>
  
         <div class='col-lg-3'>
             <div class = 'row' id = 'lanl_histogram_tag'> 
-                <p id='histogram_label' class="text-left text-info small"></p><br>
+                <p id='lanl_histogram_label' class="text-left text-info small"></p><br>
              </div>
              
             <div id='csvexport-lanl' class='row'>
