@@ -33,6 +33,17 @@ var initialize_cluster_network_graphs = function () {
             user_graph.collapse_all_clusters(e);
           });
 
+          $('#toggle-hxb2').click(function(e) {
+            if($(this).hasClass("active")) {
+              $(this).text("Hide clusters with HXB2 links");
+              user_graph.toggle_hxb2(false);
+            } else {
+              $(this).text("Show clusters with HXB2 links");
+              user_graph.toggle_hxb2(true);
+            }
+            e.preventDefault();// prevent the default anchor functionality
+          });
+
 
           exportCSVButton(graph, csvexport_label);
           render_histogram(graph, histogram_tag, histogram_label);
@@ -60,6 +71,18 @@ var initialize_cluster_network_graphs = function () {
       $('#lanl-collapse-all-clusters').click(function(e) {
           lanl_graph.collapse_all_clusters(e);
         });
+
+        $('#lanl-toggle-hxb2').click(function(e) {
+          if($(this).hasClass("active")) {
+            $(this).text("Hide clusters with HXB2 links");
+            lanl_graph.toggle_hxb2(false);
+          } else {
+            $(this).text("Show clusters with HXB2 links");
+            lanl_graph.toggle_hxb2(true);
+          }
+          e.preventDefault();// prevent the default anchor functionality
+        });
+
 
       exportCSVButton(graph, lanl_csvexport_label);
       render_histogram(graph, lanl_histogram_tag, lanl_histogram_label);

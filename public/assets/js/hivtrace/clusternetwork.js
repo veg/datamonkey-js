@@ -6,6 +6,7 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
   self.edges = [];
   self.clusters = [];         
   self.cluster_sizes = [];
+  self.hide_hxb2 = false;
 
   var w = 850,
       h = 800,
@@ -52,7 +53,7 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
           
    if (attributes) {
     // map attributes into nodes
-    console.log (attributes);
+    console.log(attributes);
    }
 
 
@@ -91,15 +92,13 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
                       menu_object.style ("display", "none"); 
                       });
       
-      console.log (d3.event);         
-               
       menu_object.style ("position", "absolute")
-        .style ("left", "" + d3.event.offsetX + "px")
-        .style ("top", "" + d3.event.offsetY + "px")
-        .style ("display", "block");
+        .style("left", "" + d3.event.offsetX + "px")
+        .style("top", "" + d3.event.offsetY + "px")
+        .style("display", "block");
 
     } else {
-      menu_object.style ("display", "none");
+      menu_object.style("display", "none");
     }
 
     container.on("click", function (d) {handle_cluster_click(null);}, true);
@@ -173,33 +172,41 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
       
       
       self.clusters.forEach (function (x) {
-          if (x.collapsed) {
-              graphMe.clusters.push (x);
-              graphMe.all.push(x);
-          } else {
-              expandedClusters[x.cluster_id] = 1;
+          // Check if hxb2_linked is in a child
+          var hxb2_exists = x.children.some(function(c) {return c.hxb2_linked == "true"}) && self.hide_hxb2;
+          if(!hxb2_exists) {
+            if (x.collapsed) {
+                graphMe.clusters.push (x);
+                graphMe.all.push(x);
+            } else {
+                expandedClusters[x.cluster_id] = 1;
+            }
           }
       });
       
       self.nodes.forEach (function (x, i) {
           if (expandedClusters[x.cluster] != undefined) {
-              drawnNodes [i] = graphMe.nodes.length +  graphMe.clusters.length;
-              graphMe.nodes.push (x); 
-              graphMe.all.push (x); 
+              drawnNodes[i] = graphMe.nodes.length +  graphMe.clusters.length;
+              graphMe.nodes.push(x); 
+              graphMe.all.push(x); 
           }
       
       });
       
       self.edges.forEach (function (x) {
+
           if (drawnNodes[x.source] != undefined && drawnNodes[x.target] != undefined) {
+
               var y = {};
               for (var prop in x) {
                   y[prop] = x[prop];
               }
+
               y.source = drawnNodes[x.source];
               y.target = drawnNodes[x.target];
               graphMe.edges.push(y);
           }
+
       });
 
       return graphMe;
@@ -317,7 +324,6 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
         .attr('cx', function (d) { return d.x; })
         .attr('cy', function (d) { return d.y; })
         .style('fill', function(d) { 
-          console.log(d);
           if (d.hxb2_linked == "true") { 
             return hxb2_node_color(d);
            } else {
@@ -531,6 +537,11 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
     self.clusters.forEach (function (x) { collapse_cluster (x); });
     update();
     e.preventDefault();// prevent the default anchor functionality
+  }
+
+  self.toggle_hxb2 = function(b)  {
+    self.hide_hxb2 = b;
+    update();
   }
 
   $('#reset_layout').click(function(e) {
