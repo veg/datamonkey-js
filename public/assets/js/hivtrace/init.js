@@ -22,7 +22,7 @@ var initialize_cluster_network_graphs = function () {
   
   d3.json(json_url, function(graph) {
 
-    d3.json (window.location.href + "/attributes", function (attributes, error) {
+    d3.json (window.location.href + "/attributes", function (error, attributes) {
           user_graph = new clusterNetworkGraph(graph, network_container, network_status_string, attributes);
 
           $('#expand-all-clusters').click(function(e) {

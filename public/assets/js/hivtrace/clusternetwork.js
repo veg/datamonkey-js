@@ -1,5 +1,7 @@
-var clusterNetworkGraph = function (json, network_container, network_status_string, attributes,
-                                histogram_tag, histogram_label) {
+var _networkGraphAttrbuteID = "user attributes";
+
+
+var clusterNetworkGraph = function (json, network_container, network_status_string, attributes) {
 
   var self = this;
   self.nodes = [];
@@ -48,11 +50,25 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
       .attr("fill", "#AAAAAA")
       .append("path")
           .attr("d", "M 0,0 V 4 L6,2 Z"); //this is actual shape for arrowhead
-          
-          
-   if (attributes) {
-    // map attributes into nodes
-    console.log (attributes);
+                                      
+   if (attributes && "hivtrace" in attributes && "attribute_map" in attributes["hivtrace"]) {
+     /*  
+        map attributes into nodes and into the graph object itself using 
+        _networkGraphAttrbuteID as the key 
+        
+     */
+     
+     var attribute_map = attributes["hivtrace"]["attribute_map"];
+     
+     if (attribute_map["map"].length > 0) {
+     
+        graph [_networkGraphAttrbuteID] = attribute_map["map"].map (function (a) { return {'label': a, 'values': {}}};
+        
+        graph.Nodes.forEach (function (n) { n[_networkGraphAttrbuteID] = n.id.split (attribute_map["delimiter"]); });
+        
+        console.log (graph);
+        //console.log (graph);
+    }
    }
 
 
@@ -302,6 +318,11 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
     link.exit().remove();
 
     // Differentiate between lanl and regular nodes
+<<<<<<< Updated upstream
+=======
+    var lanl_nodes    = draw_me.nodes.filter(function(d) {return d.is_lanl == "true"});
+    var regular_nodes = draw_me.nodes.filter(function(d) {return d.is_lanl != "true"});
+>>>>>>> Stashed changes
 
     var regular_nodes = draw_me.nodes.filter(function(d) {return d.is_lanl != 'true'});
     var lanl_nodes = draw_me.nodes.filter(function(d) {return d.is_lanl == 'true'});
