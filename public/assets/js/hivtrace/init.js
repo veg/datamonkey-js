@@ -19,21 +19,24 @@ var initialize_cluster_network_graphs = function () {
 
   //Initialize clusternetworkgraph with json url
   var json_url = $(network_container).data('url');
+  
   d3.json(json_url, function(graph) {
 
-    user_graph = new clusterNetworkGraph(graph, network_container, network_status_string);
+    d3.json (window.location.href + "/attributes", function (attributes, error) {
+          user_graph = new clusterNetworkGraph(graph, network_container, network_status_string, attributes);
 
-    $('#expand-all-clusters').click(function(e) {
-      user_graph.expand_all_clusters(e);
-    });
+          $('#expand-all-clusters').click(function(e) {
+            user_graph.expand_all_clusters(e);
+          });
 
-    $('#collapse-all-clusters').click(function(e) {
-      user_graph.collapse_all_clusters(e);
-    });
+          $('#collapse-all-clusters').click(function(e) {
+            user_graph.collapse_all_clusters(e);
+          });
 
 
-    exportCSVButton(graph, csvexport_label);
-    render_histogram(graph, histogram_tag, histogram_label);
+          exportCSVButton(graph, csvexport_label);
+          render_histogram(graph, histogram_tag, histogram_label);
+      });
   });
 
   if($('#lanl-trace-results').length > 0) {
@@ -46,7 +49,6 @@ var initialize_cluster_network_graphs = function () {
         lanl_csvexport_label       = '#csvexport-lanl';
 
     var json_url = $(lanl_network_container).data('url');
-
     d3.json(json_url, function(lanl_graph) {
 
       lanl_graph = new clusterNetworkGraph(lanl_graph, lanl_network_container, lanl_network_status_string);
