@@ -32,7 +32,6 @@ function exportCSVButton(graph, tag) {
       pom.setAttribute('download', 'export.csv');
       pom.className = 'btn btn-default btn-lg';
       pom.innerHTML = '<span class="glyphicon glyphicon-floppy-save"></span> Export to CSV';
-      pom.click();
       $(tag).append(pom);
     }
 }

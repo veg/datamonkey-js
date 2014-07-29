@@ -10,18 +10,18 @@
   <div class="tab-content">
     <div id="trace-results" class="tab-pane active">
       <h3>Cluster Results</h3>
-
       <div class="row">
         <div class="col-lg-6">
           <p class="lead" class='network-tag-caption'>Connected components of the network</p>
           <p class="small muted">Click on clusters/nodes to expand/collapse subnetworks.</p>
         </div>
+      </div>
 
-        <div class="col-lg-6">
-          <div class="alert" class='main-warning' style='display:none;'>
-          </div>
+      <div class="row">
+        <div class="btn-group pull-left">
+          <button id="expand-all-clusters" type="button" class="btn btn-default">Expand All</button>
+          <button id="collapse-all-clusters" type="button" class="btn btn-default">Collapse All</button>
         </div>
-     
      </div>
 
     <div class = "row">
@@ -60,6 +60,16 @@
           <p class="lead" id='network_tag_caption'>Connected components of the network</p>
           <p class="small muted">Click on clusters/nodes to expand/collapse subnetworks.</p>
         </div>
+       </div>
+
+        <div class="row">
+          <div class="btn-group pull-left">
+            <button id="lanl-expand-all-clusters" type="button" class="btn btn-default">Expand All</button>
+            <button id="lanl-collapse-all-clusters" type="button" class="btn btn-default">Collapse All</button>
+          </div>
+        </div>
+
+       <div class="row">
         <div class="col-lg-6">
           <div class="alert" id='lanl_main_warning' style='display:none;'>
           </div>
