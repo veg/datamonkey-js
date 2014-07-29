@@ -52,7 +52,8 @@ function compute_shortest_paths(cluster, edges) {
   //  });
   //});
 
-  return distances;
+  //return distances;
+  return [];
 
 }
 

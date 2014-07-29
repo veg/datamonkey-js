@@ -1,18 +1,18 @@
-
 var clusterNetworkGraph = function (json, network_container, network_status_string, 
                                 histogram_tag, histogram_label) {
+
+  var self = this;
+  self.nodes = [];
+  self.edges = [];
+  self.clusters = [];         
+  self.cluster_sizes = [];
 
   var w = 850,
       h = 800,
       popover = null,
-      cluster_sizes,
       cluster_mapping = {},
       l_scale = 5000,   // link scale
       graph = json,     // the raw JSON network object
-      nodes,            // node objects filtered down to contain only the connected ones
-      edges,            // edges between nodes
-      clusters,         // cluster 'nodes', used either as fixed cluster anchors, or 
-                        // to be a placeholder for the cluster
       max_points_to_render = 400,
       warning_string     = "",
       singletons         = 0,
@@ -49,7 +49,7 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
 
 
   /*------------ Network layout code ---------------*/
-  handle_cluster_click = function (cluster) {
+  var handle_cluster_click = function (cluster) {
     var id = "d3_context_menu_id";
     var menu_object = d3.select("body").select ("#" + id);
     
@@ -95,7 +95,7 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
 
   };
 
-  handle_node_click = function (node) {
+  var handle_node_click = function (node) {
     var id = "d3_context_menu_id";
     var menu_object = d3.select("body").select ("#" + id);
     
@@ -109,7 +109,6 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
     menu_object.selectAll ("li").remove();
 
     if (node) {
-
       node.fixed = 1;
       menu_object.append("li").append ("a")
                    .attr("tabindex", "-1")
@@ -150,27 +149,28 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
   }
 
   function prepare_data_to_graph () {
+
       var graphMe = {};
       graphMe.all = [];
       graphMe.edges = [];
       graphMe.nodes = [];
       graphMe.clusters = [];
-      
+
       expandedClusters = [];
-      drawnNodes       = [];
+      drawnNodes = [];
       
-      clusters.forEach (function (x) {
+      
+      self.clusters.forEach (function (x) {
           if (x.collapsed) {
               graphMe.clusters.push (x);
               graphMe.all.push(x);
           } else {
-              expandedClusters [x.cluster_id] = 1;
+              expandedClusters[x.cluster_id] = 1;
           }
       });
       
-      nodes.forEach (function (x, i) {
+      self.nodes.forEach (function (x, i) {
           if (expandedClusters[x.cluster] != undefined) {
-              //console.log ('Draw node ' + i);
               drawnNodes [i] = graphMe.nodes.length +  graphMe.clusters.length;
               graphMe.nodes.push (x); 
               graphMe.all.push (x); 
@@ -178,8 +178,8 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
       
       });
       
-      edges.forEach (function (x) {
-          if (drawnNodes[x.source] != undefined && drawnNodes [x.target] != undefined) {
+      self.edges.forEach (function (x) {
+          if (drawnNodes[x.source] != undefined && drawnNodes[x.target] != undefined) {
               var y = {};
               for (var prop in x) {
                   y[prop] = x[prop];
@@ -189,11 +189,13 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
               graphMe.edges.push(y);
           }
       });
+
       return graphMe;
+
   }
 
   function default_layout (clusters, nodes, exclude_cluster_ids) {
-        init_layout = get_initial_xy (nodes, cluster_sizes.length, exclude_cluster_ids);
+        init_layout = get_initial_xy (nodes, self.cluster_sizes.length, exclude_cluster_ids);
         clusters = init_layout.filter (function (v,i,obj) { return  !(typeof v.cluster_id === "undefined");});
         nodes = nodes.map (function (v) {v.x += v.dx/2; v.y += v.dy/2; return v;});
         clusters.forEach (collapse_cluster); 
@@ -202,22 +204,21 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
 
 
   /*------------ Constructor ---------------*/
-
   function initial_json_load() {
-    connected_links = [];
-    total = 0;
-    exclude_cluster_ids = {};
-    cluster_sizes = [];
+    var connected_links = [];
+    var total = 0;
+    var exclude_cluster_ids = {};
+    self.cluster_sizes = [];
 
     graph.Nodes.forEach (function (d) { 
-      if (typeof cluster_sizes[d.cluster-1]  === "undefined") {
-        cluster_sizes[d.cluster-1] = 1;
+      if (typeof self.cluster_sizes[d.cluster-1]  === "undefined") {
+        self.cluster_sizes[d.cluster-1] = 1;
       } else {
-        cluster_sizes[d.cluster-1] ++;
+        self.cluster_sizes[d.cluster-1] ++;
       }});
      
-    if (cluster_sizes.length > max_points_to_render) {
-      var sorted_array = cluster_sizes.map (function (d,i) { 
+    if (self.cluster_sizes.length > max_points_to_render) {
+      var sorted_array = self.cluster_sizes.map (function (d,i) { 
           return [d,i+1]; 
         }).sort (function (a,b) {
           return a[0] - b[0];
@@ -230,16 +231,16 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
     }
     
     // Initialize class attributes
-    singletons = graph.Nodes.filter (function (v,i) { return v.cluster === null; }).length; nodes = graph.Nodes.filter (function (v,i) { if (v.cluster && typeof exclude_cluster_ids[v.cluster]  === "undefined"  ) {connected_links[i] = total++; return true;} return false;  });
-    edges = graph.Edges.filter (function (v,i) { return connected_links[v.source] != undefined && connected_links[v.target] != undefined});
-    edges = edges.map (function (v,i) {v.source = connected_links[v.source]; v.target = connected_links[v.target]; v.id = i; return v;});
+    singletons = graph.Nodes.filter (function (v,i) { return v.cluster === null; }).length; self.nodes = graph.Nodes.filter (function (v,i) { if (v.cluster && typeof exclude_cluster_ids[v.cluster]  === "undefined"  ) {connected_links[i] = total++; return true;} return false;  });
+    self.edges = graph.Edges.filter (function (v,i) { return connected_links[v.source] != undefined && connected_links[v.target] != undefined});
+    self.edges = self.edges.map (function (v,i) {v.source = connected_links[v.source]; v.target = connected_links[v.target]; v.id = i; return v;});
 
-    compute_node_degrees(nodes, edges);
+    compute_node_degrees(self.nodes, self.edges);
 
-    r = default_layout(clusters, nodes, exclude_cluster_ids);
-    clusters = r[0];
-    nodes = r[1];
-    clusters.forEach (function (d,i) {cluster_mapping[d.cluster_id] = i;});
+    var r = default_layout(self.clusters, self.nodes, exclude_cluster_ids);
+    self.clusters = r[0];
+    self.nodes = r[1];
+    self.clusters.forEach (function (d,i) {cluster_mapping[d.cluster_id] = i;});
      
     update();
  
@@ -247,20 +248,20 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
 
   /*------------ Update layout code ---------------*/
   function update_network_string (draw_me) {
-      var clusters_shown = clusters.length-draw_me.clusters.length,
-          clusters_removed = graph["Cluster sizes"].length - clusters.length,
-          nodes_removed = graph["Nodes"].length - singletons - nodes.length;
+      var clusters_shown = self.clusters.length-draw_me.clusters.length,
+          clusters_removed = graph["Cluster sizes"].length - self.clusters.length,
+          nodes_removed = graph["Nodes"].length - singletons - self.nodes.length;
           
-      var s = "Displaying a network on <strong>" + nodes.length + "</strong> nodes and <strong>" + clusters.length + "</strong> clusters "
+      var s = "Displaying a network on <strong>" + self.nodes.length + "</strong> nodes and <strong>" + self.clusters.length + "</strong> clusters "
               + (clusters_removed > 0 ? "(an additional " + clusters_removed + " clusters and " + nodes_removed + " nodes have been removed due to network size constraints)" : "") + " and <strong>" 
-              + clusters_shown +"</strong> are expanded. Of <strong>" + edges.length + "</strong> edges, <strong>" + draw_me.edges.length + "</strong> are displayed. ";
+              + clusters_shown +"</strong> are expanded. Of <strong>" + self.edges.length + "</strong> edges, <strong>" + draw_me.edges.length + "</strong> are displayed. ";
       if (singletons > 0) {
           s += "<strong>" +singletons + "</strong> singleton nodes are not shown. ";
       }
-      d3.select (network_status_string).html (s);
+      d3.select (network_status_string).html(s);
   }
 
-  function update () {
+  function update() {
 
     if (warning_string.length) {
       d3.select ("#main-warning").text (warning_string).style ("display", "block");
@@ -274,12 +275,11 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
         .links(draw_me.edges)
         .start ();
         
-    update_network_string(draw_me);  
+    update_network_string(draw_me);
         
     var link = network_svg.selectAll(".link")
         .data(draw_me.edges, function (d) {return d.id;});
         
-    link.exit().remove();
     
     var link_enter = link.enter().append("line")
         .attr("class", function (d) { if (d.removed) return "link removed"; return "link";  });
@@ -287,30 +287,34 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
     var directed_links = link_enter.filter (function (d) {return d.directed;})
       .attr("marker-end", "url(#arrowhead)");
 
-    // Differentiate between lanl and regular nodes
-    var lanl_nodes = draw_me.nodes.filter(function(d) {return d.is_lanl == "true"});
-    var regular_nodes = draw_me.nodes.filter(function(d) {return d.is_lanl != "true"});
+    link.exit().remove();
 
-    var rendered_nodes = network_svg.selectAll(".node")
+    // Differentiate between lanl and regular nodes
+
+    var regular_nodes = draw_me.nodes.filter(function(d) {return d.is_lanl != 'true'});
+    var lanl_nodes = draw_me.nodes.filter(function(d) {return d.is_lanl == 'true'});
+
+    var regular_nodes = draw_me.nodes.filter(function(d) {return d.is_lanl != 'true'});
+    var lanl_nodes = draw_me.nodes.filter(function(d) {return d.is_lanl == 'true'});
+
+    var rendered_nodes = network_svg.selectAll('.node')
         .data(regular_nodes, function (d) {return d.id;});
 
     rendered_nodes.exit().remove();
 
+    rendered_nodes.enter().append('circle')
+        .attr('class', 'node')
+        .attr('r', function (d) { return 3+Math.sqrt(d.degree);} )
+        .attr('cx', function (d) { return d.x; })
+        .attr('cy', function (d) { return d.y; })
+        .style('fill', function(d) { return node_color(d); })
+        .on ('click', handle_node_click)
+        .on ('mouseover', node_pop_on)
+        .on ('mouseout', node_pop_off)
+        .call(network_layout.drag().on('dragstart', node_pop_off));
+        
     var lanl_rendered_nodes = network_svg.selectAll(".node")
         .data(lanl_nodes, function (d) {return d.id;});
-
-
-    rendered_nodes.enter().append("circle")
-        .attr("class", "node")
-        .attr("r", function (d) { return 3+Math.sqrt(d.degree);} )
-        .attr("cx", function (d) { return d.x; })
-        .attr("cy", function (d) { return d.y; })
-        .style("fill", function(d) { return node_color(d); })
-        .on ("click", handle_node_click)
-        .on ("mouseover", node_pop_on)
-        .on ("mouseout", node_pop_off)
-        .call(network_layout.drag().on("dragstart", node_pop_off));
-        
         
     lanl_rendered_nodes.enter().append("path")
         .attr("class", "node")
@@ -324,7 +328,7 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
         .on ("mouseout", node_pop_off)
         .call(network_layout.drag().on("dragstart", node_pop_off));
         
-    
+
     var rendered_clusters = network_svg.selectAll (".cluster").
           data(draw_me.clusters, function (d) {return d.cluster_id;});
           
@@ -373,7 +377,7 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
   }
 
   /*------------ Node Methods ---------------*/
-  function compute_node_degrees(nodes, egdes) {
+  function compute_node_degrees(nodes, edges) {
       for (var n in nodes) {
           nodes[n].degree = 0;
       }
@@ -415,10 +419,10 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
       }
   }
 
-  function collapse_cluster (x, keep_in_q) {
+  function collapse_cluster(x, keep_in_q) {
       x.collapsed = true;
       if (!keep_in_q) {
-          var idx = open_cluster_queue.indexOf (x.cluster_id);
+          var idx = open_cluster_queue.indexOf(x.cluster_id);
           if (idx >= 0) {
            open_cluster_queue.splice (idx,1);
           }
@@ -440,15 +444,13 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
   }
 
   function cluster_info_string (id) {
-      var the_cluster = clusters[id-1],
+      var the_cluster = self.clusters[id-1],
           degrees = the_cluster.children.map (function (d) {return d.degree;});
 
-      var cluster_mean = compute_mean_path(id, graph.Nodes, graph.Edges, cluster_sizes);
 
-      return "<strong>" + cluster_sizes[id-1] + "</strong> nodes." + 
+      return "<strong>" + self.cluster_sizes[id-1] + "</strong> nodes." + 
              "<br>Mean degree <em>" + defaultFloatFormat(d3.mean (degrees)) + "</em>" +
-             "<br>Max degree <em>" + d3.max (degrees) + "</em>" +
-             "<br>Mean Path Length <em>" + cluster_mean.toFixed(2) + "</em>";
+             "<br>Max degree <em>" + d3.max (degrees) + "</em>";
   }
 
   function cluster_pop_on (d) {
@@ -460,13 +462,13 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
   }
 
   function expand_cluster_handler (d, do_update) {
-    var new_nodes = cluster_sizes[d.cluster_id-1];
+    var new_nodes = self.cluster_sizes[d.cluster_id-1];
     var leftover = new_nodes + currently_displayed_objects - max_points_to_render;
     if (leftover > 0) {
       for (k = 0; k < open_cluster_queue.length && leftover > 0; k++) {
           var cluster = clusters[cluster_mapping[open_cluster_queue[k]]];
           leftover -= cluster.children.length - 1;
-          collapse_cluster (cluster,true);
+          collapse_cluster(cluster,true);
       }
       if (k) {
           open_cluster_queue.splice (0, k);
@@ -481,7 +483,7 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
   }
 
   function collapse_cluster_handler (d, do_update) {
-    collapse_cluster (clusters[cluster_mapping[d.cluster]]);
+    collapse_cluster(self.clusters[cluster_mapping[d.cluster]]);
     if (do_update) {
         network_layout.friction (0.4);
         update();
@@ -499,17 +501,17 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
       return 5*Math.sqrt (c.children.length);
   }
 
-  $('#expand_all_clusters').click(function(e) {
-    clusters.forEach (function (x) { expand_cluster_handler (x, false); });
+  self.expand_all_clusters = function(e)  {
+    self.clusters.forEach (function (x) { expand_cluster_handler (x, false); });
     update (); 
     e.preventDefault();// prevent the default anchor functionality
-    });
+  }
 
-  $('#collapse_all_clusters').click(function(e) {
-    clusters.forEach (function (x) { collapse_cluster (x); });
+  self.collapse_all_clusters = function(e) {
+    self.clusters.forEach (function (x) { collapse_cluster (x); });
     update();
     e.preventDefault();// prevent the default anchor functionality
-    });
+  }
 
   $('#reset_layout').click(function(e) {
     default_layout(clusters, nodes);
@@ -540,4 +542,5 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
     }
   }
   initial_json_load();       
+  return this;
 }
