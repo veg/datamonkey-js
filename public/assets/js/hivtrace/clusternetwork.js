@@ -306,9 +306,6 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
     var regular_nodes = draw_me.nodes.filter(function(d) {return d.is_lanl != 'true'});
     var lanl_nodes = draw_me.nodes.filter(function(d) {return d.is_lanl == 'true'});
 
-    var regular_nodes = draw_me.nodes.filter(function(d) {return d.is_lanl != 'true'});
-    var lanl_nodes = draw_me.nodes.filter(function(d) {return d.is_lanl == 'true'});
-
     var rendered_nodes = network_svg.selectAll('.node')
         .data(regular_nodes, function (d) {return d.id;});
 
@@ -319,7 +316,14 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
         .attr('r', function (d) { return 3+Math.sqrt(d.degree);} )
         .attr('cx', function (d) { return d.x; })
         .attr('cy', function (d) { return d.y; })
-        .style('fill', function(d) { return node_color(d); })
+        .style('fill', function(d) { 
+          console.log(d);
+          if (d.hxb2_linked == "true") { 
+            return hxb2_node_color(d);
+           } else {
+            return node_color (d); 
+           }
+           })
         .on ('click', handle_node_click)
         .on ('mouseover', node_pop_on)
         .on ('mouseout', node_pop_off)
@@ -354,7 +358,7 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
       .attr ("ry", 1)
       .attr("x", function(d) { return d.x; })
       .attr("y", function(d) { return d.y; })
-      .style("fill", function(d) { return cluster_color (d); })
+      .style("fill", function(d) {return cluster_color (d);})
       .on ("click", handle_cluster_click)
       .on ("mouseover", cluster_pop_on)
       .on ("mouseout", cluster_pop_off)
@@ -402,6 +406,10 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
 
   function node_color(d) {
     return "#fd8d3c";
+  }
+
+  function hxb2_node_color(d) {
+    return "black";
   }
 
   function node_info_string (n) {
