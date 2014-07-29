@@ -48,7 +48,7 @@ function hivtrace_render_histogram(counts, fit, w, h, id) {
         histogram_svg.remove();
     }
     
-    histogram_svg = d3.select(histogram_tag).append("svg")
+    histogram_svg = d3.select(histogram_tag).insert("svg",".histogram-label")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")

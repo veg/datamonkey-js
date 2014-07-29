@@ -30,8 +30,8 @@ function exportCSVButton(graph, tag) {
       var pom = document.createElement('a');
       pom.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(data));
       pom.setAttribute('download', 'export.csv');
-      pom.className = 'btn btn-default btn-lg';
-      pom.innerHTML = '<span class="glyphicon glyphicon-floppy-save"></span> Export to CSV';
+      pom.className = 'btn btn-default';
+      pom.innerHTML = '<span class="glyphicon glyphicon-floppy-save"></span> Download CSV';
       $(tag).append(pom);
     }
 }
