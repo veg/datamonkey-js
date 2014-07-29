@@ -1,5 +1,5 @@
 
-var clusterNetworkGraph = function (json, network_container, network_status_string, 
+var clusterNetworkGraph = function (json, network_container, network_status_string, attributes,
                                 histogram_tag, histogram_label) {
 
   var w = 850,
@@ -29,6 +29,8 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
     .linkStrength (function (d) { if (d.support != undefined) { return 2*(0.5-d.support);} return 1;})
     .friction (0.5)
     .size([w, h - 160]);
+    
+  d3.select(network_container).selectAll (".my_progress").remove();
 
   var network_svg = d3.select(network_container).append("svg:svg")
       .attr("width", w)
@@ -46,15 +48,22 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
       .attr("fill", "#AAAAAA")
       .append("path")
           .attr("d", "M 0,0 V 4 L6,2 Z"); //this is actual shape for arrowhead
+          
+          
+   if (attributes) {
+    // map attributes into nodes
+    console.log (attributes);
+   }
 
 
   /*------------ Network layout code ---------------*/
-  handle_cluster_click = function (cluster) {
+  var handle_cluster_click = function (cluster) {
+    var container = d3.select(network_container);
     var id = "d3_context_menu_id";
-    var menu_object = d3.select("body").select ("#" + id);
+    var menu_object = container.select ("#" + id);
     
     if (menu_object.empty()) {
-      menu_object = d3.select ("body").append ("ul")
+      menu_object = container.append ("ul")
         .attr ("id", id)
         .attr ("class","dropdown-menu")
         .attr ("role", "menu");
@@ -81,26 +90,29 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
                       center_cluster_handler(cluster);
                       menu_object.style ("display", "none"); 
                       });
+      
+      console.log (d3.event);         
                
       menu_object.style ("position", "absolute")
-        .style ("left", "" + d3.event.pageX + "px")
-        .style ("top", "" + d3.event.pageY + "px")
+        .style ("left", "" + d3.event.offsetX + "px")
+        .style ("top", "" + d3.event.offsetY + "px")
         .style ("display", "block");
 
     } else {
       menu_object.style ("display", "none");
     }
 
-    d3.select ("body").on("click", function (d) {handle_cluster_click(null);}, true);
+    container.on("click", function (d) {handle_cluster_click(null);}, true);
 
   };
 
-  handle_node_click = function (node) {
+  var handle_node_click = function (node) {
+    var container = d3.select(network_container);
     var id = "d3_context_menu_id";
-    var menu_object = d3.select("body").select ("#" + id);
+    var menu_object = container.select ("#" + id);
     
     if (menu_object.empty()) {
-      menu_object = d3.select ("body").append ("ul")
+      menu_object = container.append ("ul")
         .attr ("id", id)
         .attr ("class","dropdown-menu")
         .attr ("role", "menu");
@@ -121,15 +133,15 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
                       });
 
       menu_object.style ("position", "absolute")
-        .style ("left", "" + d3.event.pageX + "px")
-        .style ("top", "" + d3.event.pageY + "px")
+        .style ("left", "" + d3.event.offsetX + "px")
+        .style ("top", "" + d3.event.offsetY + "px")
         .style ("display", "block");
 
     } else {
       menu_object.style("display", "none");
     }
 
-    d3.select ("body").on("click", function (d) {handle_node_click(null);}, true);
+    container.on("click", function (d) {handle_node_click(null);}, true);
 
   };
 
