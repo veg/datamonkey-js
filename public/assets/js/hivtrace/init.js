@@ -19,10 +19,13 @@ var initialize_cluster_network_graphs = function () {
 
   //Initialize clusternetworkgraph with json url
   var json_url = $(network_container).data('url');
+  
   d3.json(json_url, function(graph) {
-    clusterNetworkGraph(graph, network_container, network_status_string);
-    exportCSVButton(graph, csvexport_label);
-    render_histogram(graph, histogram_tag, histogram_label);
+    d3.json (window.location.href + "/attributes", function (attributes, error) {
+        clusterNetworkGraph(graph, network_container, network_status_string, attributes);
+        //exportCSVButton(graph, csvexport_label);
+        render_histogram(graph, histogram_tag, histogram_label);
+    });
   });
 
   if($('#lanl-trace-results').length > 0) {
@@ -37,7 +40,7 @@ var initialize_cluster_network_graphs = function () {
     var json_url = $(lanl_network_container).data('url');
     d3.json(json_url, function(graph) {
       clusterNetworkGraph(graph, lanl_network_container, lanl_network_status_string);
-      exportCSVButton(graph, lanl_csvexport_label);
+      //exportCSVButton(graph, lanl_csvexport_label);
       render_histogram(graph, lanl_histogram_tag, lanl_histogram_label);
     });
   }
