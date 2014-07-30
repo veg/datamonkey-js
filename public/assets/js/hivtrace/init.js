@@ -15,6 +15,7 @@ var initialize_cluster_network_graphs = function () {
       network_warning       = '#main-warning',
       histogram_tag         = '#histogram_tag',
       histogram_label       = '#histogram_label',
+      button_bar_prefix     = 'network_ui_bar',
       csvexport_label       = '#csvexport';
 
 
@@ -24,7 +25,7 @@ var initialize_cluster_network_graphs = function () {
   d3.json(json_url, function(graph) {
 
     d3.json (window.location.href + "/attributes", function (error, attributes) {
-          var user_graph = new clusterNetworkGraph(graph, network_container, network_status_string, network_warning, attributes);
+          var user_graph = new clusterNetworkGraph(graph, network_container, network_status_string, network_warning, button_bar_prefix, attributes);
 
           $('#expand-all-clusters').click(function(e) {
             user_graph.expand_all_clusters(e);
