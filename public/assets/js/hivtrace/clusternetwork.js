@@ -9,7 +9,7 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
   self.clusters = [];         
   self.cluster_sizes = [];
 
-  var w = 850,
+  var w = 875,
       h = 800,
       popover = null,
       cluster_mapping = {},
