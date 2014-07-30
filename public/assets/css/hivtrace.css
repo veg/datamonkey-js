@@ -47,8 +47,14 @@ rect.cluster {
   padding: 15px;
 }
 
+.histogram-group {
+  margin-top: 75px;
+}
+
 .histogram-label {
   color: 'black';
   border: 1px solid #e5e5e5;
   padding: 5px;
 }
+
+
