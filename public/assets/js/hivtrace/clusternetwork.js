@@ -1,16 +1,18 @@
-var _networkGraphAttrbuteID = "user attributes";
+var _networkGraphAttrbuteID   = "user attributes";
 
 
-var clusterNetworkGraph = function (json, network_container, network_status_string, network_warning_tag, attributes) {
+var clusterNetworkGraph = function (json, network_container, network_status_string, network_warning_tag, button_bar_ui, attributes) {
+
 
   var self = this;
-  self.nodes = [];
-  self.edges = [];
-  self.clusters = [];         
-  self.cluster_sizes = [];
-  self.hide_hxb2 = false;
+    self.nodes = [];
+    self.edges = [];
+    self.clusters = [];         
+    self.cluster_sizes = [];
+    self.colorizer = {};
+    self.hide_hxb2 = false;
 
-  var w = 850,
+  var w = 875,
       h = 800,
       popover = null,
       cluster_mapping = {},
@@ -27,9 +29,10 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
 
   var network_layout = d3.layout.force()
     .on("tick", tick)
-    .charge(function(d) { if (d.cluster_id) return -50-2*d.children.length; return -50*Math.sqrt(d.degree); })
+    .charge(function(d) { if (d.cluster_id) return -50-2*Math.sqrt(d.children.length); return -20*Math.sqrt(d.degree); })
     .linkDistance(function(d) { return Math.max(d.length*l_scale,1); })
     .linkStrength (function (d) { if (d.support != undefined) { return 2*(0.5-d.support);} return 1;})
+    .chargeDistance (500)
     .friction (0.5)
     .size([w, h - 160]);
     
@@ -52,24 +55,8 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
       .append("path")
           .attr("d", "M 0,0 V 4 L6,2 Z"); //this is actual shape for arrowhead
                                       
-   if (attributes && "hivtrace" in attributes && "attribute_map" in attributes["hivtrace"]) {
-     /*  
-        map attributes into nodes and into the graph object itself using 
-        _networkGraphAttrbuteID as the key  
-     */
-     
-     var attribute_map = attributes["hivtrace"]["attribute_map"];
-     
-     if ("map" in attribute_map && attribute_map["map"].length > 0) {
-     
-        graph [_networkGraphAttrbuteID] = attribute_map["map"].map (function (a) { return {'label': a, 'values': {}};});
-        
-        graph.Nodes.forEach (function (n) { n[_networkGraphAttrbuteID] = n.id.split (attribute_map["delimiter"]); });
-
-    }
-   }
    
-   graph.Nodes.forEach (function (d) { if ("is_lanl" in d) {d.is_lanl = d.is_lanl == "true";}});
+   
 
 
   /*------------ Network layout code ---------------*/
@@ -188,7 +175,7 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
       
       self.clusters.forEach (function (x) {
           // Check if hxb2_linked is in a child
-          var hxb2_exists = x.children.some(function(c) {return c.hxb2_linked == "true"}) && self.hide_hxb2;
+          var hxb2_exists = x.children.some(function(c) {return c.hxb2_linked}) && self.hide_hxb2;
           if(!hxb2_exists) {
             if (x.collapsed) {
                 graphMe.clusters.push (x);
@@ -249,8 +236,66 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
         self.cluster_sizes[d.cluster-1] = 1;
       } else {
         self.cluster_sizes[d.cluster-1] ++;
-      }});
+      }
+      if ("is_lanl" in d) {
+        d.is_lanl = d.is_lanl == "true";
+      }
+      if ("hxb2_linked" in d) {
+        d.hxb2_linked = d.hxb2_linked == "true";
+      }
+      
+    });
+    
+     if (attributes) {
+        attributes = attributes["hivtrace"];
+     }
      
+     if (attributes && "attribute_map" in attributes) {
+         /*  
+            map attributes into nodes and into the graph object itself using 
+            _networkGraphAttrbuteID as the key  
+         */
+     
+         var attribute_map = attributes["attribute_map"];
+     
+         if ("map" in attribute_map && attribute_map["map"].length > 0) {
+            graph [_networkGraphAttrbuteID] = attribute_map["map"].map (function (a,i) { return {'label': a, 'type' : null, 'values': {}, 'index' : i};});    
+             graph.Nodes.forEach (function (n) { 
+                n[_networkGraphAttrbuteID] = n.id.split (attribute_map["delimiter"]);
+                n[_networkGraphAttrbuteID].forEach (function (v,i) {
+                    graph [_networkGraphAttrbuteID][i]["values"][v] = 1 + (graph [_networkGraphAttrbuteID][i]["values"][v] ? graph [_networkGraphAttrbuteID][i]["values"][v] : 0);
+                });
+            });
+           
+            graph [_networkGraphAttrbuteID].forEach (function (d) {
+                var unique_values = d3.keys (d['values']);
+                if (unique_values.length < graph.Nodes.length && unique_values.length > 1 && unique_values.length <= 20) {
+                    d['type'] = 'category';
+                    d['range'] = unique_values.length;
+                }
+            });
+            
+            
+            // populate the UI elements
+            if (button_bar_ui) {
+                var valid_cats = graph [_networkGraphAttrbuteID].filter (function (d) { return d['type'] == 'category'; });
+                valid_cats.splice (0,0, {'label' : 'None', 'index' : -1});
+               
+                d3.select ("#" + button_bar_ui + "_attributes").selectAll ("li").remove();
+                var cat_menu = d3.select ("#" + button_bar_ui + "_attributes").selectAll ("li")
+                                .data(valid_cats.map (function (d) {return [[d['label'],d['index']]];}));                                             
+                cat_menu.enter ().append ("li");
+                cat_menu.selectAll ("a").data (function (d) {return d;})
+                                        .enter ()
+                                        .append ("a")
+                                        .text (function (d,i,j) {return d[0];})
+                                        .attr ("style", function (d,i,j) {if (j == 0) { return ' font-weight: bold;'}; return null; })
+                                        .attr ('href', '#')
+                                        .on ("click", function (d) { handle_attribute_categorical (d[1]); });
+            }
+        }
+    }
+    
     if (self.cluster_sizes.length > max_points_to_render) {
       var sorted_array = self.cluster_sizes.map (function (d,i) { 
           return [d,i+1]; 
@@ -295,8 +340,13 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
       d3.select (network_status_string).html(s);
   }
 
-  function apply_shared_node_attributes (sel) {
-    sel.attr('class', 'node')
+  
+  function draw_a_node (container, node) {
+    container = d3.select(container);
+    
+    container.attr("d", d3.svg.symbol().size( function(d) { var r = 3+Math.sqrt(d.degree); return 4*r*r; })
+        .type( function(d) { return d.hxb2_linked ? "cross" : (d.is_lanl ? "triangle-down" : "circle") }))
+        .attr('class', 'node')
         .attr("transform", function(d) { return "translate(" + d.x + "," + d.y+ ")"; })
         .style('fill', function(d) { return node_color(d); })
         .on ('click', handle_node_click)
@@ -305,7 +355,43 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
         .call(network_layout.drag().on('dragstart', node_pop_off));
   }
 
-  function update() {
+  function draw_a_link (container, link) {
+     container = d3.select(container);
+     container.attr ("class", "cluster")
+          .attr ("width", function (d) {return cluster_box_size(d); })
+          .attr ("height", function (d) {return cluster_box_size(d); })
+          .attr ("rx", 1)
+          .attr ("ry", 1)
+          .attr("x", function(d) { return d.x; })
+          .attr("y", function(d) { return d.y; })
+          .style("fill", function(d) { return cluster_color (d); })
+          .on ("click", handle_cluster_click)
+          .on ("mouseover", cluster_pop_on)
+          .on ("mouseout", cluster_pop_off)
+          .call(network_layout.drag().on("dragstart", cluster_pop_off));
+  }
+  
+  function handle_attribute_categorical (cat_id) {
+    var set_attr = "None";
+  
+    d3.select ("#" + button_bar_ui + "_attributes").selectAll ("li")
+                                                   .selectAll ("a")
+                                                   .attr ("style", function (d,i,j) {if (j == cat_id) { set_attr = d[0]; return ' font-weight: bold;'}; return null; });
+      
+    d3.select ("#" + button_bar_ui + "_attribute_label").html (set_attr + ' <span class="caret"></span>');
+                                                   
+    if (cat_id >= 0) {
+        self.colorizer['category'] = graph [_networkGraphAttrbuteID][cat_id]['range'] <= 10 ? d3.scale.category10() : d3.scale.category20c();
+        self.colorizer['category_id'] = cat_id;      
+    } else {
+        self.colorizer['category'] = null;
+        self.colorizer['category_id'] = null;
+    }
+    update(true);
+    d3.event.preventDefault();
+  }
+  
+  function update(soft) {
   
     if (warning_string.length) {
       d3.select (network_warning_tag).text (warning_string).style ("display", "block");
@@ -313,85 +399,71 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
       d3.select (network_warning_tag).style ("display", "none");  
     }
 
-    var draw_me = prepare_data_to_graph(); 
+    var rendered_nodes, 
+        rendered_clusters;
+        
+    if (!soft) {
+        var draw_me = prepare_data_to_graph(); 
     
-    network_layout.nodes(draw_me.all)
-        .links(draw_me.edges)
-        .start ();
+        network_layout.nodes(draw_me.all)
+            .links(draw_me.edges)
+            .start ();
         
-    update_network_string(draw_me);
+        update_network_string(draw_me);
         
-    var link = network_svg.selectAll(".link")
-        .data(draw_me.edges, function (d) {return d.id;});
+        var link = network_svg.selectAll(".link")
+            .data(draw_me.edges, function (d) {return d.id;});
         
-    var link_enter = link.enter().append("line")
-        .attr("class", function (d) { if (d.removed) return "link removed"; return "link";  });
+        var link_enter = link.enter().append("line")
+            .attr("class", function (d) { if (d.removed) return "link removed"; return "link";  });
         
-    var directed_links = link_enter.filter (function (d) {return d.directed;})
-      .attr("marker-end", "url(#arrowhead)");
+        var directed_links = link_enter.filter (function (d) {return d.directed;})
+          .attr("marker-end", "url(#arrowhead)");
 
-    link.exit().remove();
+        link.exit().remove();
 
-    // Differentiate between lanl and regular nodes
 
     
-    var rendered_nodes = network_svg.selectAll('.node')
-        .data(draw_me.nodes, function (d) {return d.id;});
-
-    rendered_nodes.exit().remove();
-
-    rendered_nodes.enter().append("path")
-        .attr("d", d3.svg.symbol().size( function(d) { var r = 3+Math.sqrt(d.degree); return 4*r*r; })
-        .type( function(d) { return d.is_lanl ? "triangle-down" : "circle" }))
-        .attr('class', 'node')
-        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y+ ")"; })
-        .style('fill', function(d) { 
-          if (d.hxb2_linked == "true") { 
-            return hxb2_node_color(d);
-           } else {
-            return node_color (d); 
-           }
-           })
-        .on ('click', handle_node_click)
-        .on ('mouseover', node_pop_on)
-        .on ('mouseout', node_pop_off)
-        .call(network_layout.drag().on('dragstart', node_pop_off));
-
+        rendered_nodes  = network_svg.selectAll('.node')
+            .data(draw_me.nodes, function (d) {return d.id;});
+        rendered_nodes.exit().remove();
+        rendered_nodes.enter().append("path");
         
-        
-
-    var rendered_clusters = network_svg.selectAll (".cluster").
+        rendered_clusters = network_svg.selectAll (".cluster").
           data(draw_me.clusters, function (d) {return d.cluster_id;});
-          
-    rendered_clusters.exit().remove();
+ 
+        rendered_clusters.exit().remove();
+        rendered_clusters.enter().append ("rect");
     
-    rendered_clusters.enter().append ("rect")
-      .attr ("class", "cluster")
-      .attr ("width", function (d) {return cluster_box_size(d); })
-      .attr ("height", function (d) {return cluster_box_size(d); })
-      .attr ("rx", 1)
-      .attr ("ry", 1)
-      .attr("x", function(d) { return d.x; })
-      .attr("y", function(d) { return d.y; })
-      .style("fill", function(d) {return cluster_color (d);})
-      .on ("click", handle_cluster_click)
-      .on ("mouseover", cluster_pop_on)
-      .on ("mouseout", cluster_pop_off)
-      .call(network_layout.drag().on("dragstart", cluster_pop_off));
+    } else {
+        rendered_nodes = network_svg.selectAll('.node');
+        rendered_clusters = network_svg.selectAll (".cluster");
+    }
 
-    currently_displayed_objects = rendered_clusters[0].length + rendered_nodes[0].length;
-
-    network_layout.on("tick", function() {
-      link.attr("x1", function(d) { return d.source.x; })
-          .attr("y1", function(d) { return d.source.y; })
-          .attr("x2", function(d) { return d.target.x; })
-          .attr("y2", function(d) { return d.target.y; });
-
-      rendered_nodes.attr("transform", function(d) { return "translate(" + d.x + "," + d.y+ ")"; });
+    rendered_nodes.each (function (d) { 
+              draw_a_node (this, d);
+             });  
           
-      rendered_clusters.attr("x", function(d) { return d.x; })
-              .attr("y", function(d) { return d.y; });
-    });    
+    rendered_clusters.each (function (d) {
+        draw_a_link (this, d);
+    });
+    
+     
+    if (!soft) {
+        currently_displayed_objects = rendered_clusters[0].length + rendered_nodes[0].length;
+
+        network_layout.on("tick", function() {
+          link.attr("x1", function(d) { return d.source.x; })
+              .attr("y1", function(d) { return d.source.y; })
+              .attr("x2", function(d) { return d.target.x; })
+              .attr("y2", function(d) { return d.target.y; });
+
+          rendered_nodes.attr("transform", function(d) { return "translate(" + d.x + "," + d.y+ ")"; });
+          
+          rendered_clusters.attr("x", function(d) { return d.x; })
+                  .attr("y", function(d) { return d.y; });
+        });    
+    }
   }
 
   function tick() {
@@ -416,8 +488,33 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
       }
   }
 
+    
+  function  attribute_node_value_by_id (d, id) {
+     if (_networkGraphAttrbuteID in d ) {
+        if (id) {
+            return d[_networkGraphAttrbuteID][id];
+        }
+     }
+     return null;
+  }
+  
+  function  attribute_name_by_id (id) {
+    if (typeof id == "number") {
+        return graph [_networkGraphAttrbuteID][id]['label'];
+    }
+    return null;
+  }
+
   function node_color(d) {
-    return d.is_lanl ? "red" : "#fd8d3c";
+    var color = attribute_node_value_by_id (d, self.colorizer['category_id']);
+    if (color) {
+        return self.colorizer['category'](color);
+    }
+    return d.hxb2_linked ? "black" : (d.is_lanl ? "red" : "#7fc97f");
+  }
+
+  function cluster_color(d) {
+    return "#beaed4";
   }
 
   function hxb2_node_color(d) {
@@ -425,8 +522,14 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
   }
 
   function node_info_string (n) {
-      return "Degree <em>" + n.degree + "</em>"+
-             "<br>Clustering coefficient <em>" + 1.0 + "</em>";          
+      var str = "Degree <em>" + n.degree + "</em>"+
+             "<br>Clustering coefficient <em>" + 1.0 + "</em>";
+                 
+      var attribute = attribute_node_value_by_id (n, self.colorizer['category_id']);
+      if (attribute) {
+         str += "<br>"  + attribute_name_by_id (self.colorizer['category_id']) + " <em>" + attribute + "</em>"
+      }
+      return str;
   }
 
   function node_pop_on (d) {
@@ -471,9 +574,6 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
       }
   }
 
-  function cluster_color(d) {
-    return "#3182bd";
-  }
 
   function cluster_info_string (id) {
       var the_cluster = self.clusters[id-1],
