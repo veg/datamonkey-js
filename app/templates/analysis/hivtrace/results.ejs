@@ -9,30 +9,44 @@
 
   <div class="tab-content">
     <div id="trace-results" class="tab-pane active">
-      <h3>Cluster Results</h3>
-      <div class="row">
-        <div class="col-lg-6">
-          <p class="lead" class='network-tag-caption'>Connected components of the network</p>
-          <p class="small muted">Click on clusters/nodes to expand/collapse subnetworks.</p>
+
+      <div class="row" style = "margin-top: 10px; margin-bottom: 10 px;">
+        <div class="col-lg-12">
+            <div class="alert alert-info" id='main-warning' style='display:none;'>
+            </div>
         </div>
       </div>
 
-      <div class="row">
-        <div class="btn-group pull-left">
-          <button id="expand-all-clusters" type="button" class="btn btn-default">Expand All</button>
-          <button id="collapse-all-clusters" type="button" class="btn btn-default">Collapse All</button>
-        </div>
-     </div>
+      
 
     <div class = "row">
-        <div id='network_tag' class='col-lg-9' data-url=<%= hivtrace.trace_results %>>
-    
-            <div class="my_progress">
-                  <div class="progress-bar progress-bar-striped active"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                    Loading the network...
-                  </div>
+        <div class='col-lg-9' data-url=<%= hivtrace.trace_results %>>
+            <div class="row">
+                <div class="input-group input-group-sm" id = 'network_ui_bar'>
+                    <span class="input-group-btn">
+                        <button id="expand-all-clusters" type="button" class="btn btn-default btn-sm">Expand All</button>
+                        <button id="collapse-all-clusters" type="button" class="btn btn-default btn-sm">Collapse All</button>
+                    </span>
+                    
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id = 'network_ui_bar_attribute'>Attribute <span class="caret"></span></button>
+                        <ul class="dropdown-menu" role="menu">
+                          <li class = 'disabled'><a href="#">No categorical attributes</a></li>
+                        </ul>
+                   </div>
+                          
+                    <input type="text" class="form-control" placeholder = "search" id = 'network_ui_bar_search'>
+                </div>
+            </div>
+            <div class = 'row' id='network_tag' >
+                <div class="my_progress">
+                      <div class="progress-bar progress-bar-striped active"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                        Loading the network...
+                    </div>
+                </div>
             </div>
         </div>
+        
         
         <div class='col-lg-3'>
             <div class = 'row' id = 'histogram_tag'> 
@@ -52,53 +66,54 @@
       </div>
     </div>
 
-    <%if (hivtrace.lanl_compare == true) { %>
+<%if (hivtrace.lanl_compare == true) { %>
     <div id="lanl-trace-results" class="tab-pane">
-      <h3>LANL Cluster Results</h3>
-      <div class="row">
-        <div class="col-lg-6">
-          <p class="lead" id='network_tag_caption'>Connected components of the network</p>
-          <p class="small muted">Click on clusters/nodes to expand/collapse subnetworks.</p>
-        </div>
-       </div>
-
-        <div class="row">
-          <div class="btn-group pull-left">
-            <button id="lanl-expand-all-clusters" type="button" class="btn btn-default">Expand All</button>
-            <button id="lanl-collapse-all-clusters" type="button" class="btn btn-default">Collapse All</button>
-          </div>
-        </div>
-
-       <div class="row">
-        <div class="col-lg-6">
-          <div class="alert" id='lanl_main_warning' style='display:none;'>
-          </div>
-        </div>
-     </div>
-     <div class = "row">
-         <div id='lanl_network_tag' class='col-lg-9' data-url=<%= hivtrace.lanl_trace_results %>>
-             <div class="my_progress">
-                  <div class="progress-bar progress-bar-striped active"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                    Loading the network...
-                  </div>
-            </div>        
-         </div>
- 
-        <div class='col-lg-3'>
-            <div class = 'row' id = 'lanl_histogram_tag'> 
-                <p id='lanl_histogram_label' class="text-left text-info small"></p><br>
-             </div>
-             
-            <div id='csvexport-lanl' class='row'>
+    
+      <div class="row" style = "margin-top: 10px; margin-bottom: 10 px;">
+        <div class="col-lg-12">
+            <div class="alert alert-info" id='lanl-main-warning' style='display:none;'>
             </div>
-        </div>    
+        </div>
+      </div>
+
+       <div class = "row">
+        <div class='col-lg-9' data-url=<%= hivtrace.lanl_trace_results %>>
+            <div class="row">
+                <div class="btn-group pull-left">
+                    <button id="lanl-expand-all-clusters" type="button" class="btn btn-default btn-sm">Expand All</button>
+                    <button id="lanl-collapse-all-clusters" type="button" class="btn btn-default btn-sm">Collapse All</button>
+                </div>
+            </div>
+            <div class = 'row' id='lanl-network_tag' >
+                <div class="my_progress">
+                      <div class="progress-bar progress-bar-striped active"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                        Loading the network...
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class='col-lg-3'>
+            <div class = 'row' id = 'lanl-histogram_tag'> 
+                <p id='lanl-histogram_label' class="text-left text-info small"></p><br>
+             </div>
+                 
+            <div id='lanl-csvexport' class='row'>
+            </div>
+        </div>     
+            
      </div>
+     
       <div class="row">
         <div class='col-lg-9'>
-          <p id='network_status_string' class='text-info'></p>
+          <p id='lanl-network_status_string' class='text-info'></p>
         </div>
       </div>
     </div>
+    </div>
+
+     
     <% } %>
   </div>
 </div>
