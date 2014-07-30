@@ -345,7 +345,7 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
     container = d3.select(container);
     
     container.attr("d", d3.svg.symbol().size( function(d) { var r = 3+Math.sqrt(d.degree); return 4*r*r; })
-        .type( function(d) { return d.hxb2_linked ? "cross" : (d.is_lanl ? "triangle-down" : "circle") }))
+        .type( function(d) { return (d.hxb2_linked && !d.is_lanl) ? "cross" : (d.is_lanl ? "triangle-down" : "circle") }))
         .attr('class', 'node')
         .attr("transform", function(d) { return "translate(" + d.x + "," + d.y+ ")"; })
         .style('fill', function(d) { return node_color(d); })
