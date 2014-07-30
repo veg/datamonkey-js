@@ -293,15 +293,6 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
       d3.select (network_status_string).html(s);
   }
 
-  function apply_shared_node_attributes (sel) {
-    sel.attr('class', 'node')
-        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y+ ")"; })
-        .style('fill', function(d) { return node_color(d); })
-        .on ('click', handle_node_click)
-        .on ('mouseover', node_pop_on)
-        .on ('mouseout', node_pop_off)
-        .call(network_layout.drag().on('dragstart', node_pop_off));
-  }
   
   function draw_a_node (container, node) {
     container = d3.select(container);
