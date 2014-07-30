@@ -1,8 +1,9 @@
-rect.node {
+circle.node, rect.node, path.node {
   cursor: pointer;
   stroke: #000;
   stroke-width: .5px;
 }
+
 
 rect.cluster {
     cursor: pointer;
