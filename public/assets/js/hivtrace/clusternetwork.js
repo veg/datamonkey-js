@@ -75,8 +75,10 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
 
     menu_object.selectAll ("li").remove();
 
+    var already_fixed = cluster && cluster.fixed == 1;
+    
+
     if (cluster) {
-      cluster.fixed = 1;
       menu_object.append("li").append ("a")
                    .attr("tabindex", "-1")
                    .text("Expand cluster")
@@ -94,8 +96,18 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
                       center_cluster_handler(cluster);
                       menu_object.style ("display", "none"); 
                       });
+                      
+     menu_object.append("li").append ("a")
+               .attr ("tabindex", "-1")
+               .text (function (d) {if (cluster.fixed) return "Release fix"; return "Fix in place";})
+               .on ("click", function (d) {
+                  cluster.fixed = !cluster.fixed;
+                  menu_object.style ("display", "none"); 
+                  });
 
-      menu_object.style ("position", "absolute")
+     cluster.fixed = 1;
+
+     menu_object.style ("position", "absolute")
         .style("left", "" + d3.event.offsetX + "px")
         .style("top", "" + d3.event.offsetY + "px")
         .style("display", "block");
@@ -107,7 +119,7 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
       menu_object.style("display", "none");
     }
 
-    container.on("click", function (d) {handle_cluster_click(null, cluster);}, true);
+    container.on("click", function (d) {handle_cluster_click(null, already_fixed ? null : cluster);}, true);
 
   };
 
@@ -634,13 +646,16 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
                 innerRadius = Math.min(width, height-text_offset) * .41,
                 outerRadius = innerRadius * 1.1;
 
-            var fill = self.colorizer['category'];
+            var fill = self.colorizer['category'],
+                font_size = 12;
+        
+        
         
             var text_label = svg.append ("g")
                                 .attr("transform", "translate(" + width / 2 + "," + (height-text_offset)  + ")")
                                 .append ("text")
                                 .attr ("text-anchor", "middle")
-                                .attr ("font-size", "12")
+                                .attr ("font-size", font_size)
                                 .text ("");
 
             svg = svg.attr("width", width)
