@@ -29,7 +29,7 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
 
   var network_layout = d3.layout.force()
     .on("tick", tick)
-    .charge(function(d) { if (d.cluster_id) return -50-10*Math.sqrt(d.children.length); return -20*Math.sqrt(d.degree); })
+    .charge(function(d) { if (d.cluster_id) return -50-20*Math.pow(d.children.length,0.7); return -20*Math.sqrt(d.degree); })
     .linkDistance(function(d) { return Math.max(d.length*l_scale,1); })
     .linkStrength (function (d) { if (d.support != undefined) { return 2*(0.5-d.support);} return 1;})
     .chargeDistance (500)
@@ -75,8 +75,10 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
 
     menu_object.selectAll ("li").remove();
 
+    var already_fixed = cluster && cluster.fixed == 1;
+    
+
     if (cluster) {
-      cluster.fixed = 1;
       menu_object.append("li").append ("a")
                    .attr("tabindex", "-1")
                    .text("Expand cluster")
@@ -94,8 +96,18 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
                       center_cluster_handler(cluster);
                       menu_object.style ("display", "none"); 
                       });
+                      
+     menu_object.append("li").append ("a")
+               .attr ("tabindex", "-1")
+               .text (function (d) {if (cluster.fixed) return "Release fix"; return "Fix in place";})
+               .on ("click", function (d) {
+                  cluster.fixed = !cluster.fixed;
+                  menu_object.style ("display", "none"); 
+                  });
 
-      menu_object.style ("position", "absolute")
+     cluster.fixed = 1;
+
+     menu_object.style ("position", "absolute")
         .style("left", "" + d3.event.offsetX + "px")
         .style("top", "" + d3.event.offsetY + "px")
         .style("display", "block");
@@ -107,7 +119,7 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
       menu_object.style("display", "none");
     }
 
-    container.on("click", function (d) {handle_cluster_click(null, cluster);}, true);
+    container.on("click", function (d) {handle_cluster_click(null, already_fixed ? null : cluster);}, true);
 
   };
 
@@ -233,22 +245,66 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
     var connected_links = [];
     var total = 0;
     var exclude_cluster_ids = {};
+    var has_hxb2_links = false;
     self.cluster_sizes = [];
 
     graph.Nodes.forEach (function (d) { 
-      if (typeof self.cluster_sizes[d.cluster-1]  === "undefined") {
-        self.cluster_sizes[d.cluster-1] = 1;
-      } else {
-        self.cluster_sizes[d.cluster-1] ++;
-      }
-      if ("is_lanl" in d) {
-        d.is_lanl = d.is_lanl == "true";
-      }
-      if ("hxb2_linked" in d) {
-        d.hxb2_linked = d.hxb2_linked == "true";
-      }
+          if (typeof self.cluster_sizes[d.cluster-1]  === "undefined") {
+            self.cluster_sizes[d.cluster-1] = 1;
+          } else {
+            self.cluster_sizes[d.cluster-1] ++;
+          }
+          if ("is_lanl" in d) {
+            d.is_lanl = d.is_lanl == "true";
+          }
+          if ("hxb2_linked" in d) {
+            d.hxb2_linked = d.hxb2_linked == "true";
+            has_hxb2_links = has_hxb2_links || d.hxb2_linked;
+          }
       
     });
+
+     /* add buttons and handlers */
+     /* clusters first */
+     
+     if (button_bar_ui) {
+     
+         var cluster_container = d3.select ("#" + button_bar_ui + "_cluster_operations_container")
+         cluster_container.append ("li").append ("a")
+                                        .text ("Expand All")
+                                        .attr ("href", "#")
+                                        .attr ("id", button_bar_ui + "_cluster_expand_all_clusters")
+                                        .on ("click", function(e) {
+                                            self.expand_all_clusters();
+                                            d3.event.preventDefault();
+                                          });
+         
+          cluster_container.append ("li").append ("a")
+                                        .text ("Collapse All")
+                                        .attr ("href", "#")
+                                        .attr ("id", button_bar_ui + "_cluster_collapse_all_clusters")
+                                        .on ("click", function(e) {
+                                            self.collapse_all_clusters();
+                                            d3.event.preventDefault();
+                                          });
+        
+         if (has_hxb2_links) {
+            cluster_container.append ("li").append ("a")
+                                        .text ("Hide clusters linking to HXB2")
+                                        .attr ("href", "#")
+                                        .attr ("id", button_bar_ui + "_cluster_hide_hxb2")
+                                        .on ("click", function(e) {
+                                            d3.select (this).text (self.hide_hxb2 ? "Hide clusters linking to HXB2" :  "Show clusters linking to HXB2");
+                                            self.toggle_hxb2 ();
+                                            d3.event.preventDefault();
+                                          });
+       
+         }
+
+    }
+          
+     
+     
     
      if (attributes && "hivtrace" in attributes) {
         attributes = attributes["hivtrace"];
@@ -263,14 +319,16 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
          var attribute_map = attributes["attribute_map"];
      
          if ("map" in attribute_map && attribute_map["map"].length > 0) {
-            graph [_networkGraphAttrbuteID] = attribute_map["map"].map (function (a,i) { return {'label': a, 'type' : null, 'values': {}, 'index' : i, 'range' : 0};});   
+             graph [_networkGraphAttrbuteID] = attribute_map["map"].map (function (a,i) { return {'label': a, 'type' : null, 'values': {}, 'index' : i, 'range' : 0};});   
              
              graph.Nodes.forEach (function (n) { 
                 n[_networkGraphAttrbuteID] = n.id.split (attribute_map["delimiter"]);
                 n[_networkGraphAttrbuteID].forEach (function (v,i) {
-                    if (! (v in graph [_networkGraphAttrbuteID][i]["values"])) {
-                        graph [_networkGraphAttrbuteID][i]["values"][v] = graph [_networkGraphAttrbuteID][i]["range"];
-                        graph [_networkGraphAttrbuteID][i]["range"] += 1;
+                    if (i < graph [_networkGraphAttrbuteID].length) {
+                        if (! (v in graph [_networkGraphAttrbuteID][i]["values"])) {
+                            graph [_networkGraphAttrbuteID][i]["values"][v] = graph [_networkGraphAttrbuteID][i]["range"];
+                            graph [_networkGraphAttrbuteID][i]["range"] += 1;
+                        }
                     }
                     //graph [_networkGraphAttrbuteID][i]["values"][v] = 1 + (graph [_networkGraphAttrbuteID][i]["values"][v] ? graph [_networkGraphAttrbuteID][i]["values"][v] : 0);
                 });
@@ -335,12 +393,12 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
   /*------------ Update layout code ---------------*/
   function update_network_string (draw_me) {
       var clusters_shown = self.clusters.length-draw_me.clusters.length,
-          clusters_removed = graph["Cluster sizes"].length - self.clusters.length,
-          nodes_removed = graph["Nodes"].length - singletons - self.nodes.length;
+          clusters_removed = self.cluster_sizes.length - self.clusters.length,
+          nodes_removed = graph.Nodes.length - singletons - self.nodes.length;
           
-      var s = "Displaying a network on <strong>" + self.nodes.length + "</strong> nodes and <strong>" + self.clusters.length + "</strong> clusters "
+      var s = "Displaying a network on <strong>" + self.nodes.length + "</strong> nodes, <strong>" + self.clusters.length + "</strong> clusters "
               + (clusters_removed > 0 ? "(an additional " + clusters_removed + " clusters and " + nodes_removed + " nodes have been removed due to network size constraints)" : "") + " and <strong>" 
-              + clusters_shown +"</strong> are expanded. Of <strong>" + self.edges.length + "</strong> edges, <strong>" + draw_me.edges.length + "</strong> are displayed. ";
+              + clusters_shown +"</strong> clusters are expanded. Of <strong>" + self.edges.length + "</strong> edges, <strong>" + draw_me.edges.length + "</strong>, and of  <strong>" + self.nodes.length  + " </strong> nodes,  <strong>" + draw_me.nodes.length + " </strong> are displayed. ";
       if (singletons > 0) {
           s += "<strong>" +singletons + "</strong> singleton nodes are not shown. ";
       }
@@ -417,10 +475,14 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
     d3.event.preventDefault();
   }
   
-  function update(soft) {
+  function update(soft, friction) {
   
+    if (friction) {
+        network_layout.friction (friction);
+    }
     if (warning_string.length) {
       d3.select (network_warning_tag).text (warning_string).style ("display", "block");
+      warning_string = "";
     } else {
       d3.select (network_warning_tag).style ("display", "none");  
     }
@@ -590,6 +652,7 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
 
   function collapse_cluster(x, keep_in_q) {
       x.collapsed = true;
+      currently_displayed_objects -= self.cluster_sizes[x.cluster_id-1]-1;
       if (!keep_in_q) {
           var idx = open_cluster_queue.indexOf(x.cluster_id);
           if (idx >= 0) {
@@ -602,6 +665,7 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
 
   function expand_cluster (x, copy_coord) {
       x.collapsed = false;
+      currently_displayed_objects += self.cluster_sizes[x.cluster_id-1]-1;
       open_cluster_queue.push (x.cluster_id);
       if (copy_coord) {
           x.children.forEach (function (n) { n.x = x.x + (Math.random()-0.5)*x.children.length; n.y = x.y + (Math.random()-0.5)*x.children.length; });
@@ -632,13 +696,16 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
                 innerRadius = Math.min(width, height-text_offset) * .41,
                 outerRadius = innerRadius * 1.1;
 
-            var fill = self.colorizer['category'];
+            var fill = self.colorizer['category'],
+                font_size = 12;
+        
+        
         
             var text_label = svg.append ("g")
                                 .attr("transform", "translate(" + width / 2 + "," + (height-text_offset)  + ")")
                                 .append ("text")
                                 .attr ("text-anchor", "middle")
-                                .attr ("font-size", "12")
+                                .attr ("font-size", font_size)
                                 .text ("");
 
             svg = svg.attr("width", width)
@@ -739,32 +806,40 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
 
   function expand_cluster_handler (d, do_update) {
     if (d.collapsed) {  
-        var new_nodes = self.cluster_sizes[d.cluster_id-1];
-        var leftover = new_nodes + currently_displayed_objects - max_points_to_render;
-        if (leftover > 0) {
-          for (k = 0; k < open_cluster_queue.length && leftover > 0; k++) {
-              var cluster = self.clusters[cluster_mapping[open_cluster_queue[k]]];
-              leftover -= cluster.children.length - 1;
-              collapse_cluster(cluster,true);
-          }
-          if (k) {
-              open_cluster_queue.splice (0, k);
-          }
+        var new_nodes = self.cluster_sizes[d.cluster_id-1] - 1;
+        
+        if (new_nodes > max_points_to_render) {
+            warning_string = "This cluster is too large to be displayed";
         }
+        else {
+            var leftover = new_nodes + currently_displayed_objects - max_points_to_render;
+            if (leftover > 0) {
+              for (k = 0; k < open_cluster_queue.length && leftover > 0; k++) {
+                  var cluster = self.clusters[cluster_mapping[open_cluster_queue[k]]];
+                  leftover -= cluster.children.length - 1;
+                  collapse_cluster(cluster,true);
+              }
+              if (k || open_cluster_queue.length) {
+                  open_cluster_queue.splice (0, k);
+              }
+            }
     
-        expand_cluster (d, true);
+            if (leftover <= 0) {
+                expand_cluster (d, true);
+            }
+        }
+            
         if (do_update) {
-            network_layout.friction (0.6);
-            update();
+            update(false, 0.6);
         }
     }
+    return "";
   }
 
   function collapse_cluster_handler (d, do_update) {
     collapse_cluster(self.clusters[cluster_mapping[d.cluster]]);
-    if (do_update) {
-        network_layout.friction (0.4);
-        update();
+    if (do_update) {       
+        update(false, 0.4);
     }
     
   }
@@ -772,8 +847,7 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
   function center_cluster_handler (d) {
     d.x = w/2;
     d.y = h/2;
-    network_layout.friction (0.4);
-    update();
+    update(false, 0.4);
   }
 
   function cluster_box_size (c) {
@@ -783,17 +857,15 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
   self.expand_all_clusters = function(e)  {
     self.clusters.forEach (function (x) { expand_cluster_handler (x, false); });
     update (); 
-    e.preventDefault();// prevent the default anchor functionality
   }
 
   self.collapse_all_clusters = function(e) {
     self.clusters.forEach (function (x) { if (!x.collapsed) collapse_cluster (x); });
     update();
-    e.preventDefault();// prevent the default anchor functionality
   }
 
-  self.toggle_hxb2 = function(b)  {
-    self.hide_hxb2 = b;
+  self.toggle_hxb2 = function()  {
+    self.hide_hxb2 = !self.hide_hxb2;
     update();
   }
 
