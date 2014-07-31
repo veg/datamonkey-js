@@ -4,6 +4,11 @@ circle.node, rect.node, path.node {
   stroke-width: .5px;
 }
 
+g.node-group {
+  cursor: pointer;
+  stroke: #000;
+}
+
 
 path.cluster {
     cursor: pointer;
@@ -39,22 +44,12 @@ path.cluster {
   stroke-dasharray: 2,2;
 }
 
+.chord path {
+  fill-opacity: .67;
+  stroke: #000;
+  stroke-width: .5px;
+}
+
 #file-progress {
   display: none;
 }
-
-.btn-menu {
-  padding: 15px;
-}
-
-.histogram-group {
-  margin-top: 75px;
-}
-
-.histogram-label {
-  color: 'black';
-  border: 1px solid #e5e5e5;
-  padding: 5px;
-}
-
-
