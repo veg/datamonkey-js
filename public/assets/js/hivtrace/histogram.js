@@ -22,9 +22,10 @@ function render_histogram(graph, histogram_tag, histogram_label) {
 }
 
 function hivtrace_render_histogram(counts, fit, w, h, id) {
+
     var histogram_tag = id;
 
-    var margin = {top: 10, right: 30, bottom: 30, left: 30},
+    var margin = {top: 10, right: 30, bottom: 50, left: 30},
                 width = w - margin.left - margin.right,
                 height = h - margin.top - margin.bottom;
     
@@ -48,14 +49,29 @@ function hivtrace_render_histogram(counts, fit, w, h, id) {
         histogram_svg.remove();
     }
     
+    var data_to_plot = counts.map (function (d, i) {return {'x' : i+1, 'y' : d+1};});
+    data_to_plot.push ({'x' : counts.length+1, 'y' : 1});
+    data_to_plot.push ({'x' : 0, 'y' : 1});
+    data_to_plot.push ({'x' : 0, 'y' : counts[0]+1});
+   
     histogram_svg = d3.select(histogram_tag).insert("svg",".histogram-label")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+    .datum (data_to_plot);
+        
+    var histogram_line = d3.svg.line()
+                        .x(function(d) { return x(d.x); })
+                        .y(function(d) { return y(d.y); })
+                        .interpolate("step-before");
+                        
+    histogram_svg.selectAll ("path").remove();
+    histogram_svg.append ("path")
+                 .attr ("d", function(d) { return histogram_line(d) + "Z"; })
+                 .attr ("class", "histogram");
     
-    
-    var bar = histogram_svg.selectAll(".bar")
+    /*var bar = histogram_svg.selectAll(".bar")
     .data(counts.map (function (d) { return d+1; }))
     .enter().append("g")
     .attr("class", "bar")
@@ -63,22 +79,26 @@ function hivtrace_render_histogram(counts, fit, w, h, id) {
       
     bar.append("rect")
         .attr("x", 1)
-        .attr("width", function (d,i) {return x(i+2) - x(i+1) - 1;})
+        .attr("width", function (d,i) {return x(i+2) - x(i+1);})
         .attr("height", function(d) { return height - y(d); })
-        .append ("title").text (function (d,i) { return "" + counts[i] + " nodes with degree " + (i+1);});
+        .append ("title").text (function (d,i) { return "" + counts[i] + " nodes with degree " + (i+1);});*/
+        
+      
 
-  if (fit != undefined) {    
-      var fit_line = d3.svg.line()
-          .interpolate("linear")
-          .x(function(d,i) { return x(i+1) + (x(i+1)-x(i))/2; })
-          .y(function(d) { return y(1+d*total); });
-      histogram_svg.append("path").datum(fit)
-        .attr("class", "line")
-        .attr("d", function(d) { return fit_line(d); });
-  }
+      if (fit != undefined) {    
+          var fit_line = d3.svg.line()
+              .interpolate("linear")
+              .x(function(d,i) { return x(i+1) + (x(i+1)-x(i))/2; })
+              .y(function(d) { return y(1+d*total); });
+          histogram_svg.append("path").datum(fit)
+            .attr("class", "line")
+            .attr("d", function(d) { return fit_line(d); });
+      }
     
-    histogram_svg.append("g")
+    var x_axis = histogram_svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
         .call(xAxis);    
+        
+    x_axis.selectAll ("text").attr ("transform", "rotate(45)").attr("dx","1em").attr("dy","0.5em");
 }

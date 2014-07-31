@@ -16,10 +16,10 @@ path.cluster {
     stroke-width: 1px;
 }
 
-.bar rect {
+.histogram {
   fill: #ccc;
-  stroke: #000;
-  shape-rendering: crispEdges;
+   stroke: #000;
+   stroke-width: 1px;
 }
 
 .bar text {

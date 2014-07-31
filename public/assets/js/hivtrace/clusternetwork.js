@@ -263,14 +263,16 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
          var attribute_map = attributes["attribute_map"];
      
          if ("map" in attribute_map && attribute_map["map"].length > 0) {
-            graph [_networkGraphAttrbuteID] = attribute_map["map"].map (function (a,i) { return {'label': a, 'type' : null, 'values': {}, 'index' : i, 'range' : 0};});   
+             graph [_networkGraphAttrbuteID] = attribute_map["map"].map (function (a,i) { return {'label': a, 'type' : null, 'values': {}, 'index' : i, 'range' : 0};});   
              
              graph.Nodes.forEach (function (n) { 
                 n[_networkGraphAttrbuteID] = n.id.split (attribute_map["delimiter"]);
                 n[_networkGraphAttrbuteID].forEach (function (v,i) {
-                    if (! (v in graph [_networkGraphAttrbuteID][i]["values"])) {
-                        graph [_networkGraphAttrbuteID][i]["values"][v] = graph [_networkGraphAttrbuteID][i]["range"];
-                        graph [_networkGraphAttrbuteID][i]["range"] += 1;
+                    if (i < graph [_networkGraphAttrbuteID].length) {
+                        if (! (v in graph [_networkGraphAttrbuteID][i]["values"])) {
+                            graph [_networkGraphAttrbuteID][i]["values"][v] = graph [_networkGraphAttrbuteID][i]["range"];
+                            graph [_networkGraphAttrbuteID][i]["range"] += 1;
+                        }
                     }
                     //graph [_networkGraphAttrbuteID][i]["values"][v] = 1 + (graph [_networkGraphAttrbuteID][i]["values"][v] ? graph [_networkGraphAttrbuteID][i]["values"][v] : 0);
                 });
