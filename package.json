@@ -25,17 +25,16 @@
     "mocha"                  : "*",
     "nodemailer"             : "*",
     "grunt"                  : "*",
-    "grunt-contrib-concat"   : "*",
     "less"                   : "*",
     "supertest"              : "*",
     "should"                 : "*",
-    "sqlite3"                : "*",
     "validator"              : "1.2.x",
     "ejs"                    : "*",
     "socket.io"              : "*",
     "redis"                  : "*",
     "moment"                 : "*",
     "socket.io-client"       : "*",
-    "socket.io-stream"       : "*"
+    "socket.io-stream"       : "*",
+    "winston"                : "*"
   }
 }
