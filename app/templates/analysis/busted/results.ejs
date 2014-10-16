@@ -1,0 +1,161 @@
+<%- include ../../includes/header.ejs %>
+<script src='http://d3js.org/d3.v3.min.js'></script>
+<script src='http://code.jquery.com/jquery.js'></script>
+<script src='http://www.datamonkey.org/js/PRIME.js'></script>
+<LINK REL=STYLESHEET TYPE='text/css' media='screen' href='http://www.datamonkey.org/css/PRIME.css'>
+
+<div class = 'container '>
+<div class='navbar navbar-static-top'>
+  <div class='navbar-inner'>
+    <ul class='nav'>
+        <a class='brand small' href='/' >Datamonkey.org</a>
+        <li class = 'dropdown'>
+            <a class='dropdown-toggle' data-toggle='dropdown' data-target = '#' href='/' >Analyses<b class='caret'></b></a> 
+        
+            <ul  class='dropdown-menu'>
+              <li>
+                <a href = '/dataupload.php'>Analyze your data</a>
+              </li>
+              <li>
+                <a href = '/help/index.php'>Help</a>
+              </li>
+              <li>
+                <a href = '/help/citations.php'>Citations</a>
+              </li>
+              <li>
+                <a href = '/cgi-bin/datamonkey/mpiJobStatus.pl'>Job Queue</a>
+              </li>
+              <li>
+                <a href = '/2007/usage.php'>Statistics</a>
+              </li>
+            </ul>
+        </li>
+        <li class = 'divider-vertical'/>
+        <li class = 'dropdown' id = 'job_links'>
+            <a  href = '#' class='dropdown-toggle' data-toggle='dropdown'>upload.32671946558993.1<b class='caret'></b></a>  
+            <ul  class='dropdown-menu'>
+              <li>
+                <a href = '/cgi-bin/datamonkey/jobStatus.pl?file=upload.32671946558993.1'>Information/Other analyses</a>
+              </li>
+<li>
+                    <a href = 'http://www.datamonkey.org/cgi-bin/datamonkey/wrapHyPhyBF.pl?file=prime_csv&mode=1&arguments=upload.32671946558993.1'>PRIME results as a .csv file</a>
+                     </li>
+            </ul>
+        </li>
+    </ul>
+ </div>
+</div>
+<div class='page-header'>
+    <h2>PRIME analysis results</h2>
+</div>
+    <div class = 'row'>
+        <div class = 'span9'>
+        <div class='accordion' id='data_info_box'>
+          <div class='accordion-group'>
+            <div class='accordion-heading'>
+              <a class='accordion-toggle label label-info' data-toggle='collapse' data-parent='#data_info_box' href='#collapseOne'>
+                Analysis overview
+              </a>
+            </div>
+            <div id='collapseOne' class='accordion-body collapse in'>
+              <div class='accordion-inner'>            
+                <dl class='dl-horizontal' id = 'summary_div'>
+            
+                </dl>
+               </div>
+            </div>
+          </div>
+         </div>
+
+        <div class='accordion' id='property_plot'>
+          <div class='accordion-group'>
+            <div class='accordion-heading'>
+              <a class='accordion-toggle label label-info' data-toggle='collapse' data-parent='#property_plot' href='#property_plot_collapse'>
+                Property importance plot
+              </a>
+            </div>
+            <div id='property_plot_collapse' class='accordion-body collapse out'>
+              <div class='accordion-inner'>            
+                <svg id = 'property_plot_svg'>
+                </svg>
+                <div class='btn-group' data-toggle='buttons-checkbox' id = 'property_selector'>
+                    <button type='button' class='btn btn-small active' data-property-id = '1' id = 'show_property1'>Property 1</button>
+                    <button type='button' class='btn btn-small active' data-property-id = '2' id = 'show_property2'>Property 2</button>
+                    <button type='button' class='btn btn-small active' data-property-id = '3' id = 'show_property3'>Property 3</button>
+                    <button type='button' class='btn btn-small active' data-property-id = '4' id = 'show_property4'>Property 4</button>
+                    <button type='button' class='btn btn-small active' data-property-id = '5' id = 'show_property5'>Property 5</button>
+                </div>
+               </div>
+            </div>
+          </div>
+         </div>
+                 
+         <div class='accordion' id='property_table'>
+          <div class='accordion-group'>
+            <div class='accordion-heading'>
+              <a class='accordion-toggle label label-info' data-toggle='collapse' data-parent='#property_plot' href='#property_table_collapse'>
+                Site-by-site analysis of property importance.
+              </a>
+            </div>
+            <div id='property_table_collapse' class='accordion-body collapse in'>
+              <div class='accordion-inner'>            
+                <table id = 'prime_table' class = 'table table-condensed'>
+                <caption id = 'total_sites_found'>
+                    <small>
+                    <span class='badge'></span> sites found: 
+                    <span class='badge badge-success'></span> conserved properties, and 
+                    <span class='badge badge-important'></span> changing properties.
+                    </small>
+                </caption>
+                <thead>
+        
+                </thead>
+                <tbody>
+        
+                </tbody>
+                </table>
+               </div>
+            </div>
+          </div>
+         </div>
+           
+        </div>
+        <div class = 'span3'>
+            <form class='form-inline affix' id = 'filter_on_pvalue'>
+              <div class='input-append input-prepend'>
+                <div class='btn-group'>
+                    <button class='btn dropdown-toggle' data-toggle='dropdown' id = 'pq_selector'>
+                      p-value
+                      <span class='caret'></span>
+                    </button>
+                    <ul class='dropdown-menu'>
+                        <li><a href='#' id='set-p-value'>p-value</a></li>
+                        <li><a href='#' id='set-q-value'>q-value</a></li>
+                    </ul>
+                  </div>
+                <input class = 'input-mini' id = 'pvalue' type='text' value = '0.05'>
+                <button type='submit' class='btn btn-info' >Filter</button>
+              </div>
+             
+                
+            </form>  
+        </div>
+
+        <div id='site_rate_display' class='modal hide fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
+          <div class='modal-header'>
+            <button type='button' class='close' data-dismiss='modal' aria-hidden='true'></button>
+            <h3 id='site_rate_display_header'></h3>
+          </div>
+          <div class='modal-body'>
+            <div class = 'row'>
+                <svg id = 'exch_matrix'>
+                </svg>
+            </div>         
+            </div>
+         <div class='modal-footer'>
+            <button class='btn' data-dismiss='modal' aria-hidden='true'>Close</button>
+          </div>
+          </div>
+
+    </div>
+<%- include ../../includes/footer.ejs %>
