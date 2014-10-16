@@ -81,6 +81,7 @@ exports.uploadFile = function (req, res) {
 
   hivtrace.save(function (err, ht) {
     if(err) {
+      console.log(err);
       res.json(200, {'error' : err,
                      'validators': HivTrace.validators()});
       return;
@@ -88,6 +89,7 @@ exports.uploadFile = function (req, res) {
 
     function move_cb(err, result) {
       if(err) {
+        console.log(err);
         res.json(200, {'error' : err.error,
                        'validators': HivTrace.validators()});
       } else {
