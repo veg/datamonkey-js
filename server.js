@@ -45,9 +45,19 @@ var express          = require('express'),
 mongoose.connect(setup.database);
 
 //Ensure that upload paths exists
-fs.mkdir(__dirname + '/uploads', 750, function(e){});
-fs.mkdir(__dirname + '/uploads/hivtrace', 750, function(e){});
-fs.mkdir(__dirname + '/uploads/msa', 750, function(e){});
+fs.mkdir(__dirname + '/uploads', '0750', function(e) {
+  if(e) {
+    console.log(e);
+  } else {
+    // need to do this in the callback to ensure uploads
+    // directory exists first
+    function errCb(e) {
+      if(e) { console.log(e); }
+    }
+    fs.mkdir(__dirname + '/uploads/hivtrace', '0750', errCb);
+    fs.mkdir(__dirname + '/uploads/msa', '0750', errCb);
+  }
+});
 
 // Main app configuration
 var app = express();
