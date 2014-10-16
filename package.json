@@ -37,5 +37,6 @@
     "socket.io-stream"       : "*",
     "winston"                : "*",
     "async"                  : "*",
+    "underscore"             : "*"
   }
 }
