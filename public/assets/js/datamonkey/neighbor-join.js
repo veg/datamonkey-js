@@ -49,7 +49,6 @@ function saveNewickToFile() {
 
 
 function convertSVGtoPNG(image_string) {
-
   var image = document.getElementById("image");
   image.src = image_string;
 

@@ -67,7 +67,6 @@ exports.uploadFile = function (req, res) {
   //hivtrace.status = hivtrace.status_stack[0];
 
   if(hivtrace.ambiguity_handling == "RESOLVE") {
-    console.log(postdata.fraction);
     if(postdata.fraction == undefined) {
       hivtrace.fraction = 1;
     } else {
@@ -153,7 +152,6 @@ exports.jobPage = function (req, res) {
       if(hivtrace.status == undefined) {
 
         function callback(data) {
-          console.log("success!");
         }        
 
         // Send the MSA, and type
@@ -190,7 +188,6 @@ exports.results = function (req, res) {
     if (err || !hivtrace) {
       res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
     } else {
-      console.log(hivtrace);
       res.format({
         html: function(){
           res.render('analysis/hivtrace/results.ejs', {hivtrace : hivtrace});

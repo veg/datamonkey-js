@@ -13,17 +13,28 @@
       </div>  
       <div id="job-timer" data-created="<%= hivtrace.timestamp %>" style="float:right"><h3>Runtime <span class="time">00:00:00</span><h3></div>
       <div style="clear:both"></div>
+
       <% for(var s = 0; s < hivtrace.status_stack.length; s++) { %>
-        <div class="job-status alert 
+        <div class="job-status panel 
         <%if (hivtrace.status_index < s) { %>  
-        alert-info
+        panel-info
         <% } else if (hivtrace.status_index == s) { %>  
-        alert-warning
+        panel-warning
         <% } else { %>
-        alert-success
+        panel-success
         <% } %>
-        "data-index=<%= s %>><%= hivtrace.status_stack[s] %></div>
+        " data-index=<%= s %>>
+        <div class="job-panel-heading panel-heading">
+          <%= hivtrace.status_stack[s] %>
+        </div>
+        <div class="panel-body">
+          <%if (s == 1 && hivtrace.last_status_msg) { %>
+
+          <% } %>
+        </div>
+        </div>
       <% } %>
+
   <% } else { %>
     <%- include ./results.ejs %>
   <% } %>

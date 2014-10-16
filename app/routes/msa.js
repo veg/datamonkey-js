@@ -57,17 +57,15 @@ exports.uploadFile = function (req, res) {
   msa.datatype  = postdata.datatype;
   msa.gencodeid = postdata.gencodeid;
 
-  console.log(postdata);
-  console.log(msa.datatype);
-
   msa.dataReader(req.files.files.path, function(err, result) {
+
     if(err) {
       // FASTA validation failed, report an error and the form back to the user
       res.json(200, {'error': err });
       return;
     }
 
-    var fpi = result.FILE_PARTITION_INFO;
+    var fpi        = result.FILE_PARTITION_INFO;
     var file_info  = result.FILE_INFO;
     msa.partitions = file_info.partitions;
     msa.gencodeid  = file_info.gencodeid;
@@ -77,9 +75,9 @@ exports.uploadFile = function (req, res) {
     msa.goodtree   = file_info.goodtree;
     msa.nj         = file_info.nj;
     msa.rawsites   = file_info.rawsites;
-
-    var sequences = result.SEQUENCES;
+    var sequences  = result.SEQUENCES;
     msa.sequence_info = [];
+
     for (i in sequences) {
       var sequences_i = new Sequences(sequences[i]);
       msa.sequence_info.push(sequences_i);
@@ -122,7 +120,8 @@ exports.mapAttributes = function (req, res) {
       });
     } else {
       // Validate that the file uploaded was a FASTA file
-      Msa.createAttributeMap(msa.filepath, function(err, msa_map) {
+      //Msa.createAttributeMap(msa.filepath, function(err, msa_map) {
+      msa.createAttributeMap(function(err, msa_map) {
         parsed_attributes = Msa.parseHeaderFromMap(msa_map.headers[0], msa_map);
         res.format({
           html: function() {

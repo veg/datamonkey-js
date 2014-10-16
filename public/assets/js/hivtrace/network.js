@@ -21,6 +21,7 @@ function getTime() {
   time_difference -= mm * 1000 * 60;
   var ss = pad(String(Math.floor(time_difference / 1000)));
   $('#job-timer .time').html(hh + ':'+ mm  + ':'+ ss);
+
 }
 
 function setupJob() {
@@ -30,26 +31,33 @@ function setupJob() {
   var socket = io.connect(socket_address);
 
   var changeStatus = function (data) {
+
     $('.progress .progress-bar').width(data.percentage);
 
     //data is index and message
     $('.job-status').each(function(index) {
       if($(this).data('index') < data.index ) {
-        $(this).attr('class', 'job-status alert alert-success')
+        $(this).attr('class', 'job-status panel panel-success')
       } else if ($(this).data("index") == data.index) {
-        $(this).attr('class', 'job-status alert alert-warning')
+        $(this).attr('class', 'job-status panel panel-warning')
+        $(this).children('.panel-body').append(data.msg)
       }
     });
+
   }
 
   socket.on('connected', function () {
+
     // Start job
     socket.emit('acknowledged', { id: hivtraceid });
+
   });
 
   // Status update
   socket.on('status update', function (data) {
+
     changeStatus(data);
+
   });
 
   // Status update
@@ -58,7 +66,7 @@ function setupJob() {
     $('.progress .progress-bar').width('100%');
 
     $('.job-status').each(function(index) {
-      $(this).attr('class', 'alert alert-success')
+      $(this).attr('class', 'panel panel-success')
     });
 
     $.get(hivtraceid + '/results', function(results) {
