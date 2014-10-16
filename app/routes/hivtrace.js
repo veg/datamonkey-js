@@ -34,8 +34,7 @@ var error     = require( ROOT_PATH + '/lib/error.js'),
     fs        = require('fs'),
     hpcsocket = require( ROOT_PATH + '/lib/hpcsocket.js'),
     hiv_setup = require( ROOT_PATH + '/config/hivtrace_globals'),
-    setup     = require( ROOT_PATH + '/config/setup'),
-    path      = require('path');
+    setup     = require( ROOT_PATH + '/config/setup');
 
 
 var mongoose = require('mongoose'),
@@ -48,7 +47,6 @@ var mongoose = require('mongoose'),
 * app.post('/hivtrace/uploadfile', hivtrace.clusterForm);
 */
 exports.uploadFile = function (req, res) {
-
   var postdata = req.body;
   var id = req.params.id;
 
@@ -81,16 +79,14 @@ exports.uploadFile = function (req, res) {
     hivtrace.mail = postdata.mail;
   }
 
-
   hivtrace.save(function (err, ht) {
     if(err) {
-        res.json(200, {'error' : err,
-                       'validators': HivTrace.validators()});
-        return;
+      res.json(200, {'error' : err,
+                     'validators': HivTrace.validators()});
+      return;
     }
 
-    // used for both moving and copying
-    function cb(err, result) {
+    function move_cb(err, result) {
       if(err) {
         res.json(200, {'error' : err.error,
                        'validators': HivTrace.validators()});
@@ -98,24 +94,8 @@ exports.uploadFile = function (req, res) {
         res.json(200,  ht);
       }
     }
-
-    // rename if possible, otherwise copy and remove original
-    // FIXME: do not use syncronous methods
-    var srcStat = fs.statSync(req.files.files.path);
-    var dstStat = fs.statSync(path.dirname(ht.filepath));
-    if(srcStat.dev == dstStat.dev) {
-      fs.rename(req.files.files.path, ht.filepath, cb);
-    } else {
-      helpers.copyFile(req.files.files.path, ht.filepath, cb);
-      fs.unlink(req.files.files.path, function(err) {
-        if(err) {
-          console.log(err)
-        }
-      })
-    }
-
+    helpers.moveSafely(req.files.files.path, ht.filepath, move_cb);
   });
-
 }
 
 /**
