@@ -156,9 +156,13 @@ exports.jobPage = function (req, res) {
     } else {
       if(hivtrace.status == undefined) {
 
-        function callback(data) {
-          logger.log("success!");
-        }        
+        function callback(err) {
+          if (err) {
+            logger.error(err);
+          } else {
+            logger.info("successfully connected to cluster");
+          }
+        }
 
         // Send the MSA, and type
         var jobproxy = new hpcsocket.HPCSocket({'filepath'    : hivtrace.filepath, 
