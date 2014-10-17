@@ -33,7 +33,7 @@ var error     = require( ROOT_PATH + '/lib/error.js'),
     mailer    = require( ROOT_PATH + '/lib/mailer.js'),
     fs        = require('fs'),
     hpcsocket = require( ROOT_PATH + '/lib/hpcsocket.js'),
-    hiv_setup = require( ROOT_PATH + '/config/hivtrace_globals');
+    hiv_setup = require( ROOT_PATH + '/config/hivtrace_globals'),
     setup     = require( ROOT_PATH + '/config/setup');
 
 var mongoose = require('mongoose'),
@@ -82,20 +82,22 @@ exports.uploadFile = function (req, res) {
 
   hivtrace.save(function (err, ht) {
     if(err) {
-        res.json(200, {'error' : err,
-                       'validators': HivTrace.validators()});
-        return;
+      console.log(err);
+      res.json(200, {'error' : err,
+                     'validators': HivTrace.validators()});
+      return;
     }
 
-    fs.rename(req.files.files.path, ht.filepath, function(err, result) {
+    function move_cb(err, result) {
       if(err) {
+        console.log(err);
         res.json(200, {'error' : err.error,
                        'validators': HivTrace.validators()});
-
       } else {
         res.json(200,  ht);
       }
-    });
+    }
+    helpers.moveSafely(req.files.files.path, ht.filepath, move_cb);
   });
 
 }
