@@ -36,7 +36,6 @@ var error     = require( ROOT_PATH + '/lib/error.js'),
     hiv_setup = require( ROOT_PATH + '/config/hivtrace_globals'),
     setup     = require( ROOT_PATH + '/config/setup');
 
-
 var mongoose = require('mongoose'),
     HivTrace = mongoose.model('HivTrace'),
     Msa = mongoose.model('Msa');
@@ -47,6 +46,7 @@ var mongoose = require('mongoose'),
 * app.post('/hivtrace/uploadfile', hivtrace.clusterForm);
 */
 exports.uploadFile = function (req, res) {
+
   var postdata = req.body;
   var id = req.params.id;
 
@@ -79,6 +79,7 @@ exports.uploadFile = function (req, res) {
     hivtrace.mail = postdata.mail;
   }
 
+
   hivtrace.save(function (err, ht) {
     if(err) {
       console.log(err);
@@ -98,6 +99,7 @@ exports.uploadFile = function (req, res) {
     }
     helpers.moveSafely(req.files.files.path, ht.filepath, move_cb);
   });
+
 }
 
 /**
