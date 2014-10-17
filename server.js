@@ -25,11 +25,12 @@
   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+const logger = require('./lib/logger');
 var setup = require('./config/setup');
+var error = require('./lib/error')
 
 ROOT_PATH = __dirname;
 HOST      = setup.host;
-
 
 // Necessary packages
 var express          = require('express'),
@@ -45,25 +46,27 @@ var express          = require('express'),
 mongoose.connect(setup.database);
 
 //Ensure that upload paths exists
+mkdirErrorLogger = error.errorLogger(["EEXIST"]);
 fs.mkdir(__dirname + '/uploads', '0750', function(e) {
   if(e) {
-    console.log(e);
-  } else {
-    // need to do this in the callback to ensure uploads
-    // directory exists first
-    function errCb(e) {
-      if(e) { console.log(e); }
+    if(e.code != "EEXIST") {
+      throw e;
     }
-    fs.mkdir(__dirname + '/uploads/hivtrace', '0750', errCb);
-    fs.mkdir(__dirname + '/uploads/msa', '0750', errCb);
   }
+  // need to do this in the callback to ensure uploads
+  // directory exists first
+  fs.mkdir(__dirname + '/uploads/hivtrace', '0750', mkdirErrorLogger);
+  fs.mkdir(__dirname + '/uploads/msa', '0750', mkdirErrorLogger);
 });
+
+// ensure logging dir exists
+fs.mkdir(__dirname + '/logs', '0750', mkdirErrorLogger);
 
 // Main app configuration
 var app = express();
 app.configure(function () {
     app.use(express.compress());
-    app.use(express.logger(setup.logger));     
+    app.use(require('morgan')({ "stream": logger.stream }));
     app.use(expressValidator);
     app.use(express.bodyParser());
     app.use(express.limit('25mb'));
@@ -86,7 +89,7 @@ app.use('/uploads', express.static(__dirname + '/uploads'));
 //Port to listen on
 app.listen(setup.port);
 
-helpers.logger.info('Listening on port ' + setup.port + '...');
+logger.info('Listening on port ' + setup.port + '...');
 module.exports = app;
 
 // Set up socket.io server
