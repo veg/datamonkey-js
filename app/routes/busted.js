@@ -31,7 +31,8 @@ var querystring = require('querystring'),
     mailer      = require( ROOT_PATH + '/lib/mailer.js'),
     helpers     = require( ROOT_PATH + '/lib/helpers.js'),
     hpcsocket   = require( ROOT_PATH + '/lib/hpcsocket.js'),
-    fs          = require('fs');
+    fs          = require('fs'),
+    logger     = require('../../lib/logger');
 
 var mongoose = require('mongoose'),
     Msa = mongoose.model('Msa'),
@@ -58,8 +59,8 @@ exports.uploadFile = function(req, res) {
   msa.dataReader(fn, function(err, result) {
 
     if(err) {
-      // FASTA validation failed, report an error and the form back to the user
-      cb(err, result);
+      logger.error(err);
+      res.json(500, err);
       return;
     }
 
@@ -89,10 +90,12 @@ exports.uploadFile = function(req, res) {
 
     busted.save(function (err, busted_result) {
       if(err) {
+        logger.error(err);
         res.json(500, {'msg': err});
       } else {
         fs.rename(req.files.files.path, busted_result.filepath, function(err, result) {
           if(err) {
+            logger.error(err);
             res.json(500, {'error' : err.error });
           } else {
             res.json(200, busted);
@@ -192,6 +195,7 @@ exports.getBusted = function(req, res) {
   //Return all results
   Busted.findOne({_id : bustedid}, function(err, busted) {
     if (err || !busted ) {
+      logger.error(err);
       res.json(500, error.errorResponse('Invalid ID : ' + bustedid ));
     } else {
       // Should return results page
@@ -213,6 +217,7 @@ exports.getBustedResults = function(req, res) {
   //Return all results
   Busted.findOne({_id : bustedid}, function(err, busted) {
     if (err || !busted ) {
+      logger.error(err);
       res.json(500, error.errorResponse('invalid id : ' + bustedid ));
     } else {
       // Should return results page
