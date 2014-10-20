@@ -33,7 +33,7 @@ var error     = require( ROOT_PATH + '/lib/error.js'),
     mailer    = require( ROOT_PATH + '/lib/mailer.js'),
     fs        = require('fs'),
     hpcsocket = require( ROOT_PATH + '/lib/hpcsocket.js'),
-    hiv_setup = require( ROOT_PATH + '/config/hivtrace_globals');
+    hiv_setup = require( ROOT_PATH + '/config/hivtrace_globals'),
     setup     = require( ROOT_PATH + '/config/setup');
 
 var mongoose = require('mongoose'),

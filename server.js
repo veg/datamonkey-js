@@ -25,11 +25,10 @@
   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-var setup = require('./config/setup');
+setup = require('./config/setup');
 
 ROOT_PATH = __dirname;
 HOST      = setup.host;
-
 
 // Necessary packages
 var express          = require('express'),
