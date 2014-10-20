@@ -27,6 +27,8 @@
 
 */
 
+var logger = require(ROOT_PATH + '/lib/logger');
+
 var error     = require( ROOT_PATH + '/lib/error.js'),
     helpers   = require( ROOT_PATH + '/lib/helpers.js'),
     globals   = require( ROOT_PATH + '/config/globals.js'),
@@ -67,7 +69,7 @@ exports.uploadFile = function (req, res) {
   //hivtrace.status = hivtrace.status_stack[0];
 
   if(hivtrace.ambiguity_handling == "RESOLVE") {
-    console.log(postdata.fraction);
+    logger.log(postdata.fraction);
     if(postdata.fraction == undefined) {
       hivtrace.fraction = 1;
     } else {
@@ -82,7 +84,7 @@ exports.uploadFile = function (req, res) {
 
   hivtrace.save(function (err, ht) {
     if(err) {
-      console.log(err);
+      logger.log(err);
       res.json(200, {'error' : err,
                      'validators': HivTrace.validators()});
       return;
@@ -90,7 +92,7 @@ exports.uploadFile = function (req, res) {
 
     function move_cb(err, result) {
       if(err) {
-        console.log(err);
+        logger.log(err);
         res.json(200, {'error' : err.error,
                        'validators': HivTrace.validators()});
       } else {
@@ -154,9 +156,13 @@ exports.jobPage = function (req, res) {
     } else {
       if(hivtrace.status == undefined) {
 
-        function callback(data) {
-          console.log("success!");
-        }        
+        function callback(err) {
+          if (err) {
+            logger.error(err);
+          } else {
+            logger.info("successfully connected to cluster");
+          }
+        }
 
         // Send the MSA, and type
         var jobproxy = new hpcsocket.HPCSocket({'filepath'    : hivtrace.filepath, 
@@ -192,7 +198,7 @@ exports.results = function (req, res) {
     if (err || !hivtrace) {
       res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
     } else {
-      console.log(hivtrace);
+      logger.log(hivtrace);
       res.format({
         html: function(){
           res.render('analysis/hivtrace/results.ejs', {hivtrace : hivtrace});

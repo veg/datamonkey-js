@@ -25,6 +25,8 @@
   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+var logger = require(ROOT_PATH + '/lib/logger');
+
 var querystring = require('querystring'),
     error       = require( ROOT_PATH + '/lib/error.js'),
     globals     = require( ROOT_PATH + '/config/globals.js'),
@@ -174,7 +176,7 @@ exports.getStatus = function(req, res) {
     if (err || !item ) {
       res.json(500, error.errorResponse('Item not found'));
     } else {
-      console.log(item);
+      logger.log(item);
       res.format({
         html: function() {
           res.render('analysis/prime/status.ejs', { 'prime' : item, socket_addr: 'http://' + setup.host + ':' + setup.socket_port});

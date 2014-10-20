@@ -27,6 +27,7 @@
 
 */
 
+var logger = require(ROOT_PATH + '/lib/logger');
 
 var error   = require( ROOT_PATH + '/lib/error.js'),
     helpers = require(ROOT_PATH + '/lib/helpers.js'),
@@ -57,8 +58,8 @@ exports.uploadFile = function (req, res) {
   msa.datatype  = postdata.datatype;
   msa.gencodeid = postdata.gencodeid;
 
-  console.log(postdata);
-  console.log(msa.datatype);
+  logger.log(postdata);
+  logger.log(msa.datatype);
 
   msa.dataReader(req.files.files.path, function(err, result) {
     if(err) {
