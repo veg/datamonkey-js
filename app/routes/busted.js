@@ -35,23 +35,97 @@ var querystring = require('querystring'),
 
 var mongoose = require('mongoose'),
     Msa = mongoose.model('Msa'),
+    Sequences =  mongoose.model('Sequences'),
+    PartitionInfo =  mongoose.model('PartitionInfo'),
     Busted = mongoose.model('Busted');
 
-/**
- * Displays a form
- * app.get('/msa/:msaid/busted', busted.createForm)
- */
 exports.createForm = function(req, res) {
-  var msaid = req.params.msaid;
-  Msa.findOne({_id : msaid}, function (err, uploadfile) {
-    if (err || !uploadfile) {
-      res.json(500, error.errorResponse('There is no sequence with id of ' + msaid));
-    } else {
-      var ftc = []
-      res.render('analysis/busted/form.ejs', { 'uploadfile' : uploadfile});
+  res.render('analysis/busted/upload_msa.ejs');
+}
+
+exports.uploadFile = function(req, res) {
+
+  var data = req.body;
+  var fn = req.files.files.path;
+
+  var busted = new Busted;
+  var postdata = req.body;
+
+  var msa = new Msa();
+
+  msa.datatype  = data.datatype;
+  msa.gencodeid = data.gencodeid;
+  msa.dataReader(fn, function(err, result) {
+
+    if(err) {
+      // FASTA validation failed, report an error and the form back to the user
+      cb(err, result);
+      return;
     }
+
+    var fpi        = result.FILE_PARTITION_INFO;
+    var file_info  = result.FILE_INFO;
+    msa.partitions = file_info.partitions;
+    msa.gencodeid  = file_info.gencodeid;
+    msa.sites      = file_info.sites;
+    msa.sequences  = file_info.sequences;
+    msa.timestamp  = file_info.timestamp;
+    msa.goodtree   = file_info.goodtree;
+    msa.nj         = file_info.nj;
+    msa.rawsites   = file_info.rawsites;
+    var sequences  = result.SEQUENCES;
+    msa.sequence_info = [];
+
+    for (i in sequences) {
+      var sequences_i = new Sequences(sequences[i]);
+      msa.sequence_info.push(sequences_i);
+    }
+
+    //Ensure that all information is there
+    var partition_info = new PartitionInfo(fpi);
+    msa.partition_info = partition_info;
+
+    busted.msa = msa;
+
+    busted.save(function (err, busted_result) {
+      if(err) {
+        res.json(500, {'msg': err});
+      } else {
+        fs.rename(req.files.files.path, busted_result.filepath, function(err, result) {
+          if(err) {
+            res.json(500, {'error' : err.error });
+          } else {
+            res.json(200, busted);
+          }
+        });
+      }
+    });
+
+  });
+
+  //busted.tagged_nwk_tree = postdata.nwk_tree;
+  //busted.status          = busted.status_stack[0];
+
+
+  //res.render('analysis/busted/upload_msa.ejs');
+}
+
+exports.selectForeground = function(req, res) {
+
+  var id = req.params.id;
+
+  Busted.findOne({_id: id}, function (err, busted) {
+      res.format({
+        html: function() {
+          res.render('analysis/busted/form.ejs', {'busted' : busted});
+        },
+        json: function(){
+          res.json(200, busted);
+        }
+      });
   });
 }
+
 
 /**
  * Handles a job request by the user
@@ -59,29 +133,27 @@ exports.createForm = function(req, res) {
  */
 exports.invokeBusted = function(req, res) {
 
-  var busted = new Busted;
   var postdata = req.body;
-  var msaid =  req.params.msaid;
-
-  busted.tagged_nwk_tree = postdata.nwk_tree;
-  busted.status          = busted.status_stack[0];
+  var id = req.params.id;
 
   // Find the correct multiple sequence alignment to act upon
-  Msa.findOne({ '_id' : msaid }, function(err, msa) {
-    var num = 0;
-    var highest_countid = 1;
-    highest_countid = num + 1;
+  Busted.findOne({ '_id' : id }, function(err, busted) {
+
+    busted.tagged_nwk_tree = postdata.nwk_tree;
+    busted.status          = busted.status_stack[0];
+
     busted.save(function (err, result) {
+
       if(err) {
         // Redisplay form with errors
         res.format({
           html: function() {
             res.render('analysis/busted/form.ejs', {'errors': err.errors,
-                       'uploadfile' : msa});
+                                                    'busted' : busted});
           },
           json: function() {
             // Save BUSTED analysis
-            res.json(200, {'msg': 'Job with sequence alignment id ' + msaid + ' not found'});
+            res.json(200, {'msg': 'Job with busted id ' + id + ' not found'});
           }
         });
 
@@ -94,10 +166,11 @@ exports.invokeBusted = function(req, res) {
           }
         }
 
-        res.json(200,  {'busted' : result , 'msa' : msa});
+        res.json(200,  {'busted' : result});
+
         // Send the MSA and analysis type
-        var jobproxy = new hpcsocket.HPCSocket({'filepath'    : msa.filepath, 
-                                                'msa'         : msa,
+        var jobproxy = new hpcsocket.HPCSocket({'filepath'    : result.filepath, 
+                                                'msa'         : result.msa,
                                                 'analysis'    : result,
                                                 'status_stack': result.status_stack,
                                                 'type'        : 'busted'}, connect_callback);
@@ -108,17 +181,13 @@ exports.invokeBusted = function(req, res) {
 
 /**
  * Displays id page for analysis
- * app.get('/msa/:msaid/busted/:bustedid', busted.getBusted);
+ * app.get('/busted/:bustedid', busted.getBusted);
  */
 exports.getBusted = function(req, res) {
 
   // Find the analysis
   // Return its results
-  var busted = new Busted;
-
-  var msaid = req.params.msaid,
-      bustedid = req.params.bustedid;
-
+  var bustedid = req.params.bustedid;
 
   //Return all results
   Busted.findOne({_id : bustedid}, function(err, busted) {
@@ -139,13 +208,7 @@ exports.getBusted = function(req, res) {
  */
 exports.getBustedResults = function(req, res) {
 
-  // Find the analysis
-  // Return its results
-  var busted = new Busted;
-
-  var msaid    = req.params.msaid,
-      bustedid = req.params.bustedid;
-
+  var bustedid = req.params.bustedid;
 
   //Return all results
   Busted.findOne({_id : bustedid}, function(err, busted) {

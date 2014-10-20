@@ -28,11 +28,14 @@
 */
 
 var mongoose = require('mongoose'),
-    extend = require('mongoose-schema-extend');
+    extend = require('mongoose-schema-extend'),
+    MsaSchema  = require(__dirname + '/msa');
 
 var AnalysisSchema = require(__dirname + '/analysis');
 
+//TODO: Include an MSA
 var Busted = AnalysisSchema.extend({
+  msa                   : [MsaSchema.Msa],
   treemode              : Number,
   tagged_nwk_tree       : String,
   results               : Object
@@ -46,5 +49,13 @@ Busted.virtual('status_stack').get(function () {
           'Running',
           'Completed'];
 });
+
+/**
+ * Complete file path for document's file upload
+ */
+Busted.virtual('filepath').get(function () {
+  return __dirname + '/../../uploads/msa/' + this._id + '.fasta';
+});
+
 
 module.exports = mongoose.model('Busted', Busted);

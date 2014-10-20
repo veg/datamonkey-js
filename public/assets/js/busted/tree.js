@@ -195,7 +195,7 @@ $("form").submit(function(e) {
     // Replace field with green text, name of file
     var result = JSON.parse(this.responseText);
     if('_id' in result.busted) {
-      window.location.href =  '/msa/' + result.msa._id + '/busted/' + result.busted._id;
+      window.location.href =  '/busted/' + result.busted._id;
     } else if ('error' in result) {
       //TODO
     }

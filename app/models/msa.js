@@ -485,7 +485,6 @@ Msa.statics.validateFasta = function (fn, cb) {
   }); 
 }
 
-
 module.exports = mongoose.model('Msa', Msa);
 module.exports = mongoose.model('PartitionInfo', PartitionInfo);
 module.exports = mongoose.model('Sequences', Sequences);

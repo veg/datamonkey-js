@@ -59,12 +59,15 @@ module.exports = function(app) {
 
   // BUSTED ROUTES
   busted = require( ROOT_PATH + '/app/routes/busted');
-  app.get('/msa/:msaid/busted', busted.createForm);
-  app.post('/msa/:msaid/busted', busted.invokeBusted);
-  //app.get('/msa/:msaid/busted/:bustedid/status', busted.getStatus);
-  app.get('/msa/:msaid/busted/:bustedid', busted.getBusted);
-  app.get('/msa/:msaid/busted/:bustedid/results', busted.getBustedResults);
-  //app.delete('/msa/:msaid/busted/:bustedid', busted.deletebusted);
+  app.get('/busted', busted.createForm);
+  app.post('/busted/uploadfile', busted.uploadFile);
+  app.get('/busted/:id/select-foreground', busted.selectForeground);
+  app.post('/busted/:id/select-foreground', busted.invokeBusted);
+  app.get('/busted/:bustedid', busted.getBusted);
+  app.get('/busted/:bustedid/results', busted.getBustedResults);
+
+  ////app.get('/msa/:msaid/busted/:bustedid/status', busted.getStatus);
+  ////app.delete('/msa/:msaid/busted/:bustedid', busted.deletebusted);
 
   // STATS ROUTES
   stats = require( ROOT_PATH + '/app/routes/stats');

@@ -81,14 +81,14 @@ exports.uploadFile = function (req, res) {
 
   hivtrace.save(function (err, ht) {
     if(err) {
-        res.json(200, {'error' : err,
+        res.json(500, {'error' : err,
                        'validators': HivTrace.validators()});
         return;
     }
 
     fs.rename(req.files.files.path, ht.filepath, function(err, result) {
       if(err) {
-        res.json(200, {'error' : err.error,
+        res.json(500, {'error' : err.error,
                        'validators': HivTrace.validators()});
 
       } else {
@@ -211,6 +211,7 @@ exports.mapAttributes = function (req, res) {
   var id = req.params.id;
 
   HivTrace.findOne({_id: id}, function (err, hivtrace) {
+
     if(err) {
       res.format({
         html: function() {
@@ -220,6 +221,7 @@ exports.mapAttributes = function (req, res) {
           res.json(200, err);
         }
       });
+
     } else {
       // Validate that the file uploaded was a FASTA file
       HivTrace.createAttributeMap(hivtrace.filepath, function(err, hivtrace_map) {
