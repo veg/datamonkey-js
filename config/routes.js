@@ -63,6 +63,7 @@ module.exports = function(app) {
   app.post('/msa/:msaid/busted', busted.invokeBusted);
   //app.get('/msa/:msaid/busted/:bustedid/status', busted.getStatus);
   app.get('/msa/:msaid/busted/:bustedid', busted.getBusted);
+  app.get('/msa/:msaid/busted/:bustedid/results', busted.getBustedResults);
   //app.delete('/msa/:msaid/busted/:bustedid', busted.deletebusted);
 
   // STATS ROUTES

@@ -1,14 +1,15 @@
 <%- include ../../includes/header.ejs %>
-<div class="container">
+<div class="container" id="job-report" data-jobid="<%= job._id %>" data-socket-address="<%= socket_addr %>">
+
+  <% if (job.status == 'Aborted') { %>
+    <div class="alert alert-danger">There was an error! Please try again. <code><%= job.error_message %></code></div>
+  <% } else if (job.status != 'Completed') { %>  
 
   <div class="page-header">
     <h2>BUSTED - In Progress</h2>
   </div>
 
-  <div id="job-report" data-jobid="<%= job._id %>" data-socket-address="<%= socket_addr %>">
-  <% if (job.status == 'Aborted') { %>
-    <div class="alert alert-danger">There was an error! Please try again. <code><%= job.error_message %></code></div>
-  <% } else if (job.status != 'Completed') { %>  
+  <div>
       <div id="time-status">
         <div class="pull-left" id="job-timer" data-created="<%= job.timestamp %>"><h6>Runtime <span class="time">00:00:00</span></h6></div>
       </div>
@@ -45,6 +46,8 @@
           <% } %>
         </div>
         </div>
+        <script src="https://cdn.socket.io/socket.io-1.0.6.js"></script>
+        <script src="/assets/js/busted/job.js"></script>
       <% } %>
   <% } else { %>
     <%- include ./results.ejs %>
@@ -52,6 +55,4 @@
   </div>
 </div>
 <%- include ../../includes/footer.ejs %>
-<script src="https://cdn.socket.io/socket.io-1.0.6.js"></script>
-<script src="http://d3js.org/d3.v3.js"></script>
-<script src="/assets/js/busted/job.js"></script>
+

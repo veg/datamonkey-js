@@ -95,7 +95,6 @@ exports.invokeBusted = function(req, res) {
         }
 
         res.json(200,  {'busted' : result , 'msa' : msa});
-        console.log('creating new socket');
         // Send the MSA and analysis type
         var jobproxy = new hpcsocket.HPCSocket({'filepath'    : msa.filepath, 
                                                 'msa'         : msa,
@@ -134,3 +133,27 @@ exports.getBusted = function(req, res) {
   });
 }
 
+/**
+ * Displays id page for analysis
+ * app.get('/msa/:msaid/busted/:bustedid/results', busted.getBustedResults);
+ */
+exports.getBustedResults = function(req, res) {
+
+  // Find the analysis
+  // Return its results
+  var busted = new Busted;
+
+  var msaid    = req.params.msaid,
+      bustedid = req.params.bustedid;
+
+
+  //Return all results
+  Busted.findOne({_id : bustedid}, function(err, busted) {
+    if (err || !busted ) {
+      res.json(500, error.errorResponse('invalid id : ' + bustedid ));
+    } else {
+      // Should return results page
+      res.json(200, { results : busted.results });
+    }
+  });
+}

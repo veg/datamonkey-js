@@ -184,6 +184,7 @@ exports.results = function (req, res) {
 
   // HIV Cluster id
   var id = req.params.id;
+
   HivTrace.findOne({_id: id}, 'tn93_summary tn93_results trace_results lanl_compare', function (err, hivtrace) {
     if (err || !hivtrace) {
       res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));

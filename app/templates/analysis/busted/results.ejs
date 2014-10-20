@@ -1,161 +1,181 @@
-<%- include ../../includes/header.ejs %>
-<script src='http://d3js.org/d3.v3.min.js'></script>
-<script src='http://code.jquery.com/jquery.js'></script>
-<script src='http://www.datamonkey.org/js/PRIME.js'></script>
-<LINK REL=STYLESHEET TYPE='text/css' media='screen' href='http://www.datamonkey.org/css/PRIME.css'>
+<link href="/assets/css/busted/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/busted/dc.css">
 
-<div class = 'container '>
-<div class='navbar navbar-static-top'>
-  <div class='navbar-inner'>
-    <ul class='nav'>
-        <a class='brand small' href='/' >Datamonkey.org</a>
-        <li class = 'dropdown'>
-            <a class='dropdown-toggle' data-toggle='dropdown' data-target = '#' href='/' >Analyses<b class='caret'></b></a> 
-        
-            <ul  class='dropdown-menu'>
-              <li>
-                <a href = '/dataupload.php'>Analyze your data</a>
-              </li>
-              <li>
-                <a href = '/help/index.php'>Help</a>
-              </li>
-              <li>
-                <a href = '/help/citations.php'>Citations</a>
-              </li>
-              <li>
-                <a href = '/cgi-bin/datamonkey/mpiJobStatus.pl'>Job Queue</a>
-              </li>
-              <li>
-                <a href = '/2007/usage.php'>Statistics</a>
-              </li>
-            </ul>
-        </li>
-        <li class = 'divider-vertical'/>
-        <li class = 'dropdown' id = 'job_links'>
-            <a  href = '#' class='dropdown-toggle' data-toggle='dropdown'>upload.32671946558993.1<b class='caret'></b></a>  
-            <ul  class='dropdown-menu'>
-              <li>
-                <a href = '/cgi-bin/datamonkey/jobStatus.pl?file=upload.32671946558993.1'>Information/Other analyses</a>
-              </li>
-<li>
-                    <a href = 'http://www.datamonkey.org/cgi-bin/datamonkey/wrapHyPhyBF.pl?file=prime_csv&mode=1&arguments=upload.32671946558993.1'>PRIME results as a .csv file</a>
-                     </li>
-            </ul>
-        </li>
-    </ul>
- </div>
-</div>
-<div class='page-header'>
-    <h2>PRIME analysis results</h2>
-</div>
-    <div class = 'row'>
-        <div class = 'span9'>
-        <div class='accordion' id='data_info_box'>
-          <div class='accordion-group'>
-            <div class='accordion-heading'>
-              <a class='accordion-toggle label label-info' data-toggle='collapse' data-parent='#data_info_box' href='#collapseOne'>
-                Analysis overview
-              </a>
-            </div>
-            <div id='collapseOne' class='accordion-body collapse in'>
-              <div class='accordion-inner'>            
-                <dl class='dl-horizontal' id = 'summary_div'>
-            
-                </dl>
-               </div>
-            </div>
-          </div>
-         </div>
+<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<link href="/assets/css/busted/phylotree.css" rel="stylesheet">
+<link href="/assets/css/busted/busted.css" rel="stylesheet">
 
-        <div class='accordion' id='property_plot'>
-          <div class='accordion-group'>
-            <div class='accordion-heading'>
-              <a class='accordion-toggle label label-info' data-toggle='collapse' data-parent='#property_plot' href='#property_plot_collapse'>
-                Property importance plot
-              </a>
-            </div>
-            <div id='property_plot_collapse' class='accordion-body collapse out'>
-              <div class='accordion-inner'>            
-                <svg id = 'property_plot_svg'>
-                </svg>
-                <div class='btn-group' data-toggle='buttons-checkbox' id = 'property_selector'>
-                    <button type='button' class='btn btn-small active' data-property-id = '1' id = 'show_property1'>Property 1</button>
-                    <button type='button' class='btn btn-small active' data-property-id = '2' id = 'show_property2'>Property 2</button>
-                    <button type='button' class='btn btn-small active' data-property-id = '3' id = 'show_property3'>Property 3</button>
-                    <button type='button' class='btn btn-small active' data-property-id = '4' id = 'show_property4'>Property 4</button>
-                    <button type='button' class='btn btn-small active' data-property-id = '5' id = 'show_property5'>Property 5</button>
-                </div>
-               </div>
-            </div>
-          </div>
-         </div>
-                 
-         <div class='accordion' id='property_table'>
-          <div class='accordion-group'>
-            <div class='accordion-heading'>
-              <a class='accordion-toggle label label-info' data-toggle='collapse' data-parent='#property_plot' href='#property_table_collapse'>
-                Site-by-site analysis of property importance.
-              </a>
-            </div>
-            <div id='property_table_collapse' class='accordion-body collapse in'>
-              <div class='accordion-inner'>            
-                <table id = 'prime_table' class = 'table table-condensed'>
-                <caption id = 'total_sites_found'>
-                    <small>
-                    <span class='badge'></span> sites found: 
-                    <span class='badge badge-success'></span> conserved properties, and 
-                    <span class='badge badge-important'></span> changing properties.
-                    </small>
-                </caption>
-                <thead>
-        
-                </thead>
-                <tbody>
-        
-                </tbody>
-                </table>
-               </div>
-            </div>
-          </div>
-         </div>
-           
-        </div>
-        <div class = 'span3'>
-            <form class='form-inline affix' id = 'filter_on_pvalue'>
-              <div class='input-append input-prepend'>
-                <div class='btn-group'>
-                    <button class='btn dropdown-toggle' data-toggle='dropdown' id = 'pq_selector'>
-                      p-value
-                      <span class='caret'></span>
-                    </button>
-                    <ul class='dropdown-menu'>
-                        <li><a href='#' id='set-p-value'>p-value</a></li>
-                        <li><a href='#' id='set-q-value'>q-value</a></li>
-                    </ul>
-                  </div>
-                <input class = 'input-mini' id = 'pvalue' type='text' value = '0.05'>
-                <button type='submit' class='btn btn-info' >Filter</button>
-              </div>
-             
-                
-            </form>  
-        </div>
-
-        <div id='site_rate_display' class='modal hide fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
-          <div class='modal-header'>
-            <button type='button' class='close' data-dismiss='modal' aria-hidden='true'></button>
-            <h3 id='site_rate_display_header'></h3>
-          </div>
-          <div class='modal-body'>
-            <div class = 'row'>
-                <svg id = 'exch_matrix'>
-                </svg>
-            </div>         
-            </div>
-         <div class='modal-footer'>
-            <button class='btn' data-dismiss='modal' aria-hidden='true'>Close</button>
-          </div>
-          </div>
-
+<div class='container'>
+    <div class="loader" title="0">
+      <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+       width="40px" height="40px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
+      <path opacity="0.2" fill="#000" d="M20.201,5.169c-8.254,0-14.946,6.692-14.946,14.946c0,8.255,6.692,14.946,14.946,14.946
+        s14.946-6.691,14.946-14.946C35.146,11.861,28.455,5.169,20.201,5.169z M20.201,31.749c-6.425,0-11.634-5.208-11.634-11.634
+        c0-6.425,5.209-11.634,11.634-11.634c6.425,0,11.633,5.209,11.633,11.634C31.834,26.541,26.626,31.749,20.201,31.749z"/>
+      <path fill="#000" d="M26.013,10.047l1.654-2.866c-2.198-1.272-4.743-2.012-7.466-2.012h0v3.312h0
+        C22.32,8.481,24.301,9.057,26.013,10.047z">
+        <animateTransform attributeType="xml"
+          attributeName="transform"
+          type="rotate"
+          from="0 20 20"
+          to="360 20 20"
+          dur="0.5s"
+          repeatCount="indefinite"/>
+        </path>
+      </svg>
     </div>
-<%- include ../../includes/footer.ejs %>
+
+    <div class='tabbable content hidden'>
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#summary_tab" data-toggle="tab">Summary</a></li>
+        <li class=""><a href="#tree_tab" data-toggle="tab">Tree</a></li>
+      </ul>
+  
+      <div class="tab-content">
+          <div class="tab-pane active" id="summary_tab">
+            <div class = "row" style = 'margin-top: 5px'>
+              <div class = "col-md-12">
+                <ul class="list-group">
+                <li class="list-group-item list-group-item-info">
+                  <h3 class="list-group-item-heading"><i class="fa fa-list" style = 'margin-right: 10px'>
+                  </i><span id = 'summary-method-name'>BUSTED</span> summary</h3>
+                    There is <strong><span id='summary-test-result' ></span></strong> of episodic diversifying selection, with LRT p-value of <span id='summary-test-pvalue'>.
+                    <p>
+                      <small>Please cite <a href = '#' id = 'summary-pmid'>PMID XXX</a> if you use this result in a publication, presentation, or other scientific work.</small>
+                    </p>
+                 </li>
+                </ul>
+              </div>
+            </div>
+
+             <div class = "row">
+                <div class = "col-lg-12">
+                  <ul class="list-group">
+                    <li class="list-group-item">
+                      <h4 class="list-group-item-heading"><i class="fa fa-cubes" style = 'margin-right: 10px'></i>Model fits</h4>
+                      <table class = "table table-hover table-condensed list-group-item-text" style = "margin-top:0.5em;">
+                        <thead>
+                            <tr>
+                              <th>Model</th>
+                              <th><em> log </em>L</th>
+                              <th><abbr title = "Number of estimated model parameters"># par.</abbr></th>
+                              <th><abbr title = "Small Sample AIC">AIC<sub>c</sub></abbr></th>
+                              <th>Time to fit</th>
+                              <th>Total tree length</th>
+                              <th>&omega;<sub>1</sub></th>
+                              <th>&omega;<sub>2</sub></th>
+                              <th>&omega;<sub>3</sub></th>
+                           </tr>
+                        </thead>
+                        <tbody id = 'summary-model-table'></tbody>
+                       </table>                            
+                     </li>
+                   </ul>
+                </div>
+            </div>
+
+            <button id="export-chart-svg" type="button" class="btn btn-default btn-sm pull-right btn-export">
+              <span class="glyphicon glyphicon-floppy-save"></span> Export Chart to SVG
+            </button>
+
+            <button id="export-chart-png" type="button" class="btn btn-default btn-sm pull-right btn-export">
+              <span class="glyphicon glyphicon-floppy-save"></span> Export Chart to PNG
+            </button>
+
+            <div class='row site-table'>
+              <div id="chart-id" class="col-lg-12">
+                <strong>Model Evidence Ratios Per Site</strong>
+                <div class="clearfix"></div>
+              </div>
+            </div>
+
+
+            <div class='row site-table'>
+
+              <div class="col-lg-12 clearfix">
+                <button id="export-csv" type="button" class="btn btn-default btn-sm pull-right btn-export">
+                  <span class="glyphicon glyphicon-floppy-save"></span> Export Table to CSV
+                </button>
+
+                <table id="sites" class="table sites dc-data-table">
+                  <thead>
+                    <tr class="header">
+                      <th>Site Index</th>
+                      <th>Unconstrained Likelihood</th>
+                      <th>Constrained Likelihood</th>
+                      <th>Optimized Null Likelihood</th>
+                      <th>Constrained Evidence Ratio</th>
+                      <th>Optimized Null Evidence Ratio</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="tree_tab">
+
+
+              <div class="row">
+                <div class ="col-lg-8 phylo-nav">
+                   <div class="btn-group">
+                    <button type="button" class="btn btn-default btn-sm" id = "expand_spacing">
+                      <i class="fa fa-expand" ></i>
+                    </button>
+                     <button type="button" class="btn btn-default btn-sm" id = "compress_spacing">
+                      <i class="fa fa-compress"></i>
+                    </button>
+                    <button id="export-phylo-svg" type="button" class="btn btn-default btn-sm">
+                      <span class="glyphicon glyphicon-floppy-save"></span> SVG
+                    </button>
+                    <button id="export-phylo-png" type="button" class="btn btn-default btn-sm">
+                      <span class="glyphicon glyphicon-floppy-save"></span> PNG
+                    </button>
+                  </div>
+                </div>
+              </div>        
+
+              <div class="row">
+
+                <div class="col-lg-8">
+                  <div id="tree_container" class="tree-widget"></div>
+                </div>
+
+                <div class="col-lg-4">
+                  <div class="panel panel-default">
+                    <div id="primary_omega_tag" class="panel-heading">
+                      Foreground
+                      <div class="dist-export btn-group">
+                        <button id="export-dist-svg" type="button" class="btn btn-default btn-sm">
+                          <span class="glyphicon glyphicon-floppy-save"></span> SVG
+                        </button>
+                        <button id="export-dist-png" type="button" class="btn btn-default btn-sm">
+                          <span class="glyphicon glyphicon-floppy-save"></span> PNG
+                        </button>
+                      </div>
+                    </div>
+                    <div id="primary-omega-dist" class="panel-body">
+                      <svg id="primary-omega-plot"></svg>
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+<img id="chart-image" />
+<canvas id="chart-canvas"></canvas>
+
+<!--
+###############################################################################################################################
+-->
+
+<script src="/assets/js/busted/phylotree.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/crossfilter/1.3.9/crossfilter.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/dc/1.7.0/dc.min.js"></script>
+<script src="/assets/js/busted/exports.js"></script>
+<script src="/assets/js/busted/busted-distribution.js"></script>
+<script src="/assets/js/busted/busted-histogram.js"></script>
+<script src="/assets/js/busted/busted.js"></script>

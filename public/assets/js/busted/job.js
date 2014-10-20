@@ -32,18 +32,17 @@ function setupJob() {
   var changeStatus = function (data) {
     //data is index and message
     $('.job-status').each(function(index) {
-      if($(this).data('index') < data.index ) {
+      if($(this).data('index') < 1 ) {
         $(this).attr('class', 'job-status panel panel-success')
-      } else if ($(this).data("index") == data.index) {
+      } else if ($(this).data('index') == 1) {
         $(this).attr('class', 'job-status panel panel-warning')
-        $(this).children('.panel-body').append("<pre> " + data.msg + "</pre>")
+        $(this).children('.panel-body').append('<pre> ' + data.msg + '</pre>')
       }
     });
   }
 
   var updateQueueWithTorqueId = function (data) {
     //data is index and message
-    console.log(data);
     $('.job-status').each(function(index) {
       if($(this).data('index') == 0 ) {
         $(this).find(".panel-body").text("Ticket Number: " + data.msg);
@@ -75,11 +74,10 @@ function setupJob() {
       $(this).attr('class', 'alert alert-success')
     });
 
-    $.get(jobid + '/results', function(results) {
+    $.get(jobid, function(results) {
       //Do an AJAX request to get results
-      $('#job-report').html(results);
-      initialize_cluster_network_graphs();
-      downloadExport();
+      //$('.container').html(results);
+      location.reload();
     });
 
     socket.disconnect();

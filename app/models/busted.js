@@ -34,7 +34,8 @@ var AnalysisSchema = require(__dirname + '/analysis');
 
 var Busted = AnalysisSchema.extend({
   treemode              : Number,
-  tagged_nwk_tree       : String
+  tagged_nwk_tree       : String,
+  results               : Object
 });
 
 /**

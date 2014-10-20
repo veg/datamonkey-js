@@ -1,0 +1,102 @@
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.area {
+  fill: steelblue;
+}
+
+.site-table {
+ margin-top: 20px;
+}
+
+#chart-image {
+  display:none;
+}
+
+#chart-canvas {
+  display:none;
+}
+
+.btn-export {
+  margin: 5px;
+}
+
+.dist-export {
+  margin-left: 5px;
+}
+
+.omega-bar line, .omega-bar path {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.omega-line {
+  stroke: #000;
+  stroke-width: 6px;
+}
+
+.axis path, .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.axis-label {
+  font: 18px sans-serif;
+}
+
+.axis text {
+  font: 12px sans-serif;
+}
+
+.weight-label {
+  font: 14px sans-serif;
+  text-anchor: middle;
+}
+
+.neutral-line {
+  stroke-dasharray: 2,10;
+  stroke: #000;
+  stroke-width: 1px;
+}
+
+.displacement-line {
+  fill: none;
+  stroke: #000;
+  opacity: 0.7;
+  stroke-width: 1.5px;
+}
+
+.loader{
+  margin: 0 0 2em;
+  height: 100px;
+  width: 100%;
+  text-align: center;
+  padding: 1em;
+  margin: 0 auto 1em;
+  display: inline-block;
+  vertical-align: top;
+  flex-align: center;
+  flex-pack: center;
+}
+
+/*
+  Set the color of the icon
+*/
+.loader svg path,
+.loader svg rect{
+  fill: #FF6700;
+}
+
+.phylo-nav {
+  padding-top:5px;
+}
+
+.phylo-nav .glyphicon {
+  font-size: 1em;
+}
