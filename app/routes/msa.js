@@ -68,7 +68,7 @@ exports.uploadFile = function (req, res) {
       return;
     }
 
-    var fpi = result.FILE_PARTITION_INFO;
+    var fpi        = result.FILE_PARTITION_INFO;
     var file_info  = result.FILE_INFO;
     msa.partitions = file_info.partitions;
     msa.gencodeid  = file_info.gencodeid;
@@ -123,7 +123,8 @@ exports.mapAttributes = function (req, res) {
       });
     } else {
       // Validate that the file uploaded was a FASTA file
-      Msa.createAttributeMap(msa.filepath, function(err, msa_map) {
+      //Msa.createAttributeMap(msa.filepath, function(err, msa_map) {
+      msa.createAttributeMap(function(err, msa_map) {
         parsed_attributes = Msa.parseHeaderFromMap(msa_map.headers[0], msa_map);
         res.format({
           html: function() {

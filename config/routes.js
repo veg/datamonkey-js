@@ -57,6 +57,18 @@ module.exports = function(app) {
   app.get('/msa/:msaid/prime/:primeid', prime.getPrime);
   app.delete('/msa/:msaid/prime/:primeid', prime.deletePrime);
 
+  // BUSTED ROUTES
+  busted = require( ROOT_PATH + '/app/routes/busted');
+  app.get('/busted', busted.createForm);
+  app.post('/busted/uploadfile', busted.uploadFile);
+  app.get('/busted/:id/select-foreground', busted.selectForeground);
+  app.post('/busted/:id/select-foreground', busted.invokeBusted);
+  app.get('/busted/:bustedid', busted.getBusted);
+  app.get('/busted/:bustedid/results', busted.getBustedResults);
+
+  ////app.get('/msa/:msaid/busted/:bustedid/status', busted.getStatus);
+  ////app.delete('/msa/:msaid/busted/:bustedid', busted.deletebusted);
+
   // STATS ROUTES
   stats = require( ROOT_PATH + '/app/routes/stats');
   app.get('/:type/usage', stats.usageStatistics);

@@ -1,3 +1,7 @@
+$( document ).ready( function () {
+  createNeighborTree();
+});
+
 function getStyles(doc) {
   var styles = "",
       styleSheets = doc.styleSheets;
@@ -137,15 +141,13 @@ function createNeighborTree() {
 
 
   var valid_id = new RegExp ("^[\\w]+$");
-  var top_modal_container = "#neighbor-tree-modal";
+  var top_modal_container = "#neighbor-tree";
   var tree_container = "#tree-body";
-  var newick_container = "#newick-body";
   var container_id = '#tree_container';
-  $(newick_container).hide().removeClass('hide');
 
   nwk = $(top_modal_container).data("tree");
       
-  var tree = d3.layout.phylotree(tree_container)
+  tree = d3.layout.phylotree(tree_container)
       .size([height, width])
       .separation (function (a,b) {return 0;})
       .count_handler (function (count) { 
@@ -163,35 +165,43 @@ function createNeighborTree() {
   default_tree_settings(tree);
   tree(nwk).svg(svg).layout();
 
-  $('#newick-view').on('click', function (e) {
-    $(newick_container).toggle()  
-    $(tree_container).toggle()  
-    if($("#newick-body").is(":visible")) {
-      $(this).text("View Tree");
-      $('#save-button').text("Save");
-      $('#save-png-button').hide();
-    } else {
-      $(this).text("View Newick");
-      $('#save-button').text("Save as SVG");
-      $('#save-png-button').show();
-    }
-  });
-
-  $('#save-button').on('click', function (e) {
-    if($("#newick-body").is(":visible")) {
-      saveNewickToFile();
-    } else {
-      saveNewickTree("svg");
-    }
-  });
-
-  $('#save-png-button').on('click', function (e) {
-    saveNewickTree("png");
-  });
-
 }
 
-$( document ).ready( function () {
-  createNeighborTree();
+// TODO: Internalize this method
+function exportNewick(tree) {
+  return tree.get_newick (
+    function (node) {
+      var tags = [];
+      if (node.selected) { tags.push("FG") };
+      if (tags.length) {
+        return '{' + tags.join (',') + '}';
+      }
+      return '';
+    }
+  )
+}
+
+$("form").submit(function(e) {
+  e.preventDefault();
+
+  var formData = new FormData();
+  var nwk_tree = exportNewick(tree);
+  console.log(nwk_tree);
+  formData.append('nwk_tree', nwk_tree);
+
+  var xhr = new XMLHttpRequest();
+  xhr.open('post', this.attributes.getNamedItem("action").value, true);
+  xhr.onload = function(res) {
+    // Replace field with green text, name of file
+    var result = JSON.parse(this.responseText);
+    if('_id' in result.busted) {
+      window.location.href =  '/busted/' + result.busted._id;
+    } else if ('error' in result) {
+      //TODO
+    }
+  };
+
+  xhr.send(formData);
+
 });
 

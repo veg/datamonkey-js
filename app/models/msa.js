@@ -211,25 +211,39 @@ Msa.methods.dataReader = function (file, cb) {
   var hyphy =  spawn(setup.hyphy,
                     [__dirname + "/../../lib/bfs/datareader.bf"]);
 
+  var result = '';
+
   hyphy.stdout.on('data', function (data) {
-
-    var results;
-
-    try {
-      results = JSON.parse(data);
-    } catch(e) {
-      cb("An unexpected error occured when parsing the sequence alignment! Here is the full traceback :" + data, {});
-    }
-
-    if ("error" in results) {
-      cb(results.error, '');
-    } else {
-      cb('', results);
-    }
+    result += data.toString();
   });
 
+  hyphy.stdout.on('close', function (code) {
+
+    try {
+      results = JSON.parse(result);
+    } catch(e) {
+      cb("An unexpected error occured when parsing the sequence alignment! Here is the full traceback : " + data, {});
+    }
+
+    if(results != undefined) {
+      if ("error" in results) {
+        cb(results.error, '');
+      } else {
+        cb('', results);
+      }
+    }
+
+  });
+
+
   hyphy.stdin.write(file + "\n");
-  hyphy.stdin.write(this.datatype.toString());
+
+  if(this.datatype == 1) {
+    hyphy.stdin.write("-1\n");
+  } else {
+    hyphy.stdin.write(this.datatype.toString());
+  }
+
   hyphy.stdin.end();
 
 };
@@ -266,10 +280,11 @@ function isCountry(supposed_country) {
  * Create an attribute map based off the header files of
  * a FASTA file
  */
-Msa.statics.createAttributeMap = function (fn, cb) {
+//Msa.statics.createAttributeMap = function (fn, cb) {
+Msa.methods.createAttributeMap = function (cb) {
+
   // SDHC|AEH020|222-4kr|20090619
   // Z|JP|K03455|2036|6 
-
   var testForAttributes = function (id) {
 
     var attr_map = {};
@@ -398,42 +413,31 @@ Msa.statics.createAttributeMap = function (fn, cb) {
 
   }
 
-  // explode by all delimiting varieties
-  fs.readFile(fn, function (err, data) {
-    var err = false;
+  // Reading a file is no longer necessary
+  // Use sequence info
+  var err = false;
 
-    if (err) {
-      cb({'err': err}, false);
-    }
+  var headers = this.sequence_info.map(function(d) { return d.name }) 
 
-    var data  = data.toString();
-    var lines = data.split(/(?:\n|\r\n|\r)/g);
+  // Try exploding and testing for attributes
+  var attr_map = testForAttributes(headers[0]);
 
-    //Collect all headers
-    var headers = lines.filter(function(x) { return x.indexOf('>') != -1 } );
-    var headers = headers.map(function(x) { return x.substring(headers[0].indexOf('>') + 1) } );
+  var max   = -4;
+  var index = -4;
+  for (c in attr_map) {
+      if(attr_map[c].length > max) {
+        max = attr_map[c].length;
+        index = c;
+      }
+  }
 
-    // Try exploding and testing for attributes
-    var attr_map = testForAttributes(headers[0]);
+  var is_consistent = checkForConsistency(headers, index, attr_map[index]);
+  if(is_consistent.status != true) {
+    err = is_consistent.info;
+  }
 
-    // TODO: Check for a tie
-    var max   = -4;
-    var index = -4;
-    for (c in attr_map) {
-        if(attr_map[c].length > max) {
-          max = attr_map[c].length;
-          index = c;
-        }
-    }
+  cb(err, {"headers": headers, "map" : attr_map[index], "delimiter": index});
 
-    var is_consistent = checkForConsistency(headers, index, attr_map[index]);
-    if(is_consistent.status != true) {
-      err = is_consistent.info;
-    }
-
-    cb(err, {"headers": headers, "map" : attr_map[index], "delimiter": index});
-
-  });
 
 }
 
@@ -480,7 +484,6 @@ Msa.statics.validateFasta = function (fn, cb) {
     }
   }); 
 }
-
 
 module.exports = mongoose.model('Msa', Msa);
 module.exports = mongoose.model('PartitionInfo', PartitionInfo);

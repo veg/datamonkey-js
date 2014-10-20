@@ -1,0 +1,28 @@
+<%- include ../../includes/header.ejs %>
+
+<link href="/assets/css/phylotree.css" rel="stylesheet">
+<link href="/assets/css/neighbor-join.css" rel="stylesheet">
+
+<div class="container">
+
+  <h2 class="page-header">Analysis Options</h2>
+
+  <div id="neighbor-tree" data-tree="<%= busted.msa[0].nj %>">
+    <div id="tree-body">
+      <div id='tree_container' class='tree-widget'></div>
+    </div>
+  </div>
+
+  <form action="/busted/<%= busted._id %>/select-foreground" enctype="multipart/form-data" method="POST" name="modelForm">
+    <div>
+      <button type="submit" class="btn btn-primary pull-right">Continue</button>
+    </div>
+  </form>
+
+</div>
+
+<%- include ../../includes/footer.ejs %>
+
+<script src="http://d3js.org/d3.v3.js"></script>
+<script src="/assets/js/lib/phylotree.js"></script>
+<script src="/assets/js/busted/tree.js"></script>
