@@ -36,7 +36,7 @@ function setupJob() {
         $(this).attr('class', 'job-status panel panel-success')
       } else if ($(this).data('index') == 1) {
         $(this).attr('class', 'job-status panel panel-warning')
-        $(this).children('.panel-body').append('<pre> ' + data.msg + '</pre>')
+        $(this).children('.panel-body').html('<pre> ' + data.msg + '</pre>')
       }
     });
   }
@@ -57,7 +57,6 @@ function setupJob() {
 
   // Status update
   socket.on('status update', function (data) {
-    console.log(data);
     changeStatus(data);
   });
 
@@ -71,12 +70,11 @@ function setupJob() {
     $('.progress .progress-bar').width('100%');
 
     $('.job-status').each(function(index) {
-      $(this).attr('class', 'alert alert-success')
+      $(this).attr('class', 'job-status panel panel-success')
     });
 
     $.get(jobid, function(results) {
       //Do an AJAX request to get results
-      //$('.container').html(results);
       location.reload();
     });
 
@@ -95,4 +93,3 @@ function setupJob() {
   });
 
 }
-
