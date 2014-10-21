@@ -47,14 +47,18 @@ exports.uploadFile = function(req, res) {
 
   var data = req.body;
   var fn = req.files.files.path;
-
-  var busted = new Busted;
   var postdata = req.body;
 
+  var busted = new Busted;
   var msa = new Msa();
 
   msa.datatype  = data.datatype;
   msa.gencodeid = data.gencodeid;
+
+  if(postdata.receive_mail == 'true') {
+    busted.mail = postdata.mail;
+  }
+
   msa.dataReader(fn, function(err, result) {
 
     if(err) {
@@ -100,14 +104,7 @@ exports.uploadFile = function(req, res) {
         });
       }
     });
-
   });
-
-  //busted.tagged_nwk_tree = postdata.nwk_tree;
-  //busted.status          = busted.status_stack[0];
-
-
-  //res.render('analysis/busted/upload_msa.ejs');
 }
 
 exports.selectForeground = function(req, res) {

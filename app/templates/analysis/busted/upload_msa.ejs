@@ -6,11 +6,13 @@
   <div class="row col-lg-9">  
 
     <form class="form-horizontal upload-form" name="uploadform" enctype="multipart/form-data" method="post">
+
       <div id="seq-file-div" class="upload-div">
           <input id="seq-file" type="file" name="files">
-          <div id="file-progress" class="progress progress-striped active">
+          <div id="file-progress" class="progress progress-striped active hidden">
           </div>  
       </div>
+
       <div class="upload-div">
         <label id="datatype-content">Data Type<a href="/help#data-types" target="_blank"><sup>?</sup></a></label> 
         <select name="datatype">
@@ -25,6 +27,7 @@
           </option>
         </select> 
       </div>
+
       <div class="upload-div">
         <label id="geneticcode-content">Genetic Code<a href="/help#genetic-code" target="_blank"><sup>?</sup></a></label>
         <select name="gencodeid">
@@ -81,10 +84,19 @@
         </select> 
       </div>
 
+      <div class="form-group <%if (typeof errors != "undefined" && typeof errors.mail != "undefined") { %>has-error<% } %>">
+        <label id="datatype-content" class="col-lg-3 control-label">Notify When Completed?</label>
+        <div class="col-lg-9 input-group mail-group">
+          <span class="input-group-addon">
+            <input name="receive_mail" type="checkbox" value="on">
+          </span>
+          <input name="mail" type="text" class="form-control" placeholder="Email Address">
+        </div>
+      </div><!-- /form-group -->
       <button id="upload-button" type="submit" class="btn btn-primary pull-right">Continue</button>
-
     </form>
   </div>
+
 </div>
 
 <div aria-labelledby="errorModalLabel" role="dialog" id="errorModal" class="modal ng-scope">

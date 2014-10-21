@@ -52,6 +52,7 @@ exports.uploadFile = function (req, res) {
 
   // Validate that the file uploaded was a FASTA file
   var hivtrace = new HivTrace;
+
   if(postdata.public_db_compare == 'true') {
     hivtrace.lanl_compare = true;
     hivtrace.status_stack = hiv_setup.valid_lanl_statuses;
@@ -64,7 +65,6 @@ exports.uploadFile = function (req, res) {
   hivtrace.min_overlap = Number(postdata.min_overlap);
   hivtrace.ambiguity_handling = postdata.ambiguity_handling;
   hivtrace.reference = postdata.reference;
-  //hivtrace.status = hivtrace.status_stack[0];
 
   if(hivtrace.ambiguity_handling == "RESOLVE") {
     if(postdata.fraction == undefined) {

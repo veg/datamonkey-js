@@ -38,6 +38,7 @@ var Busted = AnalysisSchema.extend({
   msa                   : [MsaSchema.Msa],
   treemode              : Number,
   tagged_nwk_tree       : String,
+  mail                  : String,
   results               : Object
 });
 
