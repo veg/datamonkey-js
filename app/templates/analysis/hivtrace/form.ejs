@@ -1,4 +1,5 @@
 <%- include ../../includes/header.ejs %>
+
 <!--<a class="INFO" href="help/data.php">Preparing your data</a>&nbsp;-->
 <!--Examples:-->
 <!--<a class="INFO" href="data/Flu.fasta">Influenza A H5N1 hemagluttinin</a>&nbsp;-->
@@ -16,7 +17,7 @@
             <label id="upload-file-label" class="col-lg-3 control-label">Sequence Alignment</label>
             <div id="seq-file-div" class="col-lg-9">
                 <input id="seq-file" type="file" name="files">
-                <div id="file-progress" class="progress progress-striped active">
+                <div id="file-progress" class="progress progress-striped active hidden">
                   <div class="progress-bar" role="progressbar" aria-valuenow="<%= hivtrace.percentage_complete %>" aria-valuemin="1" aria-valuemax="100" style="width: <%= hivtrace.percentage_complete %>">
                     <span class="sr-only"><%= hivtrace.percentage_complete %> Complete</span>
                   </div>
@@ -105,5 +106,6 @@
       </form>
   </div>
 </div>
+
 <%- include ../../includes/footer.ejs %>
 <script src="/assets/js/hivtrace/form.js"></script>

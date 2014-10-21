@@ -5,6 +5,8 @@ $(document).ready(function(){
 $("form").submit(function(e) {
   e.preventDefault();
 
+  $('#file-progress').removeClass("hidden");
+
   //Trigger elements
   $( "input[name='distance_threshold']" ).trigger('focusout');
   $( "input[name='min_overlap']" ).trigger('focusout');

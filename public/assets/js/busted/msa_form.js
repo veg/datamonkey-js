@@ -4,6 +4,8 @@ $(function() {
 
     e.preventDefault();
 
+    $('#file-progress').removeClass("hidden");
+
     var formData = new FormData();
     var file = document.getElementById('seq-file').files[0];
     var filename = document.getElementById('seq-file').files[0].name;
@@ -11,8 +13,12 @@ $(function() {
     formData.append('files', file);
     formData.append('datatype', $( "select[name='datatype']" ).val());
     formData.append('gencodeid', $( "select[name='gencodeid']" ).val());
+    formData.append('receive_mail',  $( "input[name='receive_mail']" ).prop("checked"));
+    formData.append('mail', $( "input[name='mail']" ).val());
+
 
     var xhr = new XMLHttpRequest();
+
     xhr.open('post', '/busted/uploadfile', true);
 
     xhr.upload.onprogress = function(e) {
