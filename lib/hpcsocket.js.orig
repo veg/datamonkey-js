@@ -35,7 +35,6 @@ var redis = require('redis'),
 var setup = require( ROOT_PATH + '/config/setup'),
     fs = require('fs'),
     ioclient = require('socket.io-client'),
-    mailer = require('./mailer.js'),
     ss = require('socket.io-stream');
 
 var mongoose = require('mongoose');
@@ -120,7 +119,16 @@ HPCSocket.prototype.initializeServer = function (callback) {
                                               status_stack : self.job.status_stack });
 
     fs.createReadStream(self.job.filepath).pipe(stream);
+<<<<<<< HEAD
     callback();
+||||||| merged common ancestors
+    callback('connected');
+
+=======
+
+    callback('connected');
+
+>>>>>>> busted
 
   });
 
@@ -248,10 +256,6 @@ HPCSocket.prototype.initializeServer = function (callback) {
 
     if(data) {
       self.job.analysis.results = data.results;
-    }
-
-    if(self.job.mail) {
-      sendBustedComplete(self.job);
     }
 
     //Update the status for the analysis

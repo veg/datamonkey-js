@@ -2,7 +2,7 @@
 
 <div class="tabbable">
 
-  <ul class="nav nav-tabs">
+  <ul class="nav nav-tabs" id = "top_level_tab_container">
     <li class="active"><a href="#trace-results" data-toggle="tab">Cluster Results</a></li>
     <%if (hivtrace.lanl_compare == true) { %>
     <li class=""><a href="#lanl-trace-results" data-toggle="tab">Comparison Results</a></li>
@@ -11,14 +11,25 @@
 
   <div class="tab-content">
     <div id="trace-results" class="tab-pane active">
+
+      <div class="row" style = "margin-top: 10px; margin-bottom: 10 px;">
+        <div class="col-lg-12">
+            <div class="alert alert-info" id='main-warning' style='display:none;'>
+            </div>
+        </div>
+      </div>
+
+      
+
     <div class = "row">
         <div class='col-lg-9' data-url=<%= hivtrace.trace_results %>>
             <div class="row">
-                <div class="btn-menu input-group input-group-sm" id = 'network_ui_bar'>
+                <div class="input-group input-group-sm" id = 'network_ui_bar'>
                     <span class="input-group-btn">
-                        <button id="expand-all-clusters" type="button" class="btn btn-default btn-sm">Expand All</button>
-                        <button id="collapse-all-clusters" type="button" class="btn btn-default btn-sm">Collapse All</button>
-                        <button id="toggle-hxb2" type="button" class="btn btn-default btn-sm" data-toggle="button">Hide clusters with HXB2 links</button>
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id = "network_ui_bar_cluster_operations_button">Clusters <span class="caret"></span></button>
+                            <ul class="dropdown-menu" role="menu" id = 'network_ui_bar_cluster_operations_container'>
+                                
+                            </ul>
                     </span>
                     
                     <div class="input-group-btn">
@@ -29,9 +40,8 @@
                           
                     <input type="text" class="form-control" placeholder = "search" id = 'network_ui_bar_search'>
                 </div>
-
             </div>
-            <div id='network_tag' >
+            <div class = 'row' id='network_tag' >
                 <div class="my_progress">
                       <div class="progress-bar progress-bar-striped active"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
                         Loading the network...
@@ -41,32 +51,59 @@
         </div>
         
         
-        <div class='histogram-group col-lg-3'>
-            <div id='histogram_tag'>
-                <p id='histogram_label' class="histogram-label small"></p><br>
+        <div class='col-lg-3'>
+            <div class = 'row' id = 'histogram_tag' style = 'margin-left: 5px'> 
+                <p id='histogram_label' class="text-left text-info small"></p><br>
              </div>
-             <div id='csvexport' class="pull-left"></div>
-        </div>
+                 
+            <div id='csvexport' class='row' style = 'margin-left: 5px'>
+            </div>
+     
+            <div id='network_ui_bar_aux_svg_holder' class='row style = 'margin-left: 5px''>
+            </div>
+      </div>     
+            
      </div>
+     
       <div class="row">
         <div class='col-lg-9'>
-          <p id='network_status_string'></p>
+          <p id='network_status_string' class='text-info'></p>
         </div>
       </div>
     </div>
 
 <%if (hivtrace.lanl_compare == true) { %>
     <div id="lanl-trace-results" class="tab-pane">
+    
+      <div class="row" style = "margin-top: 10px; margin-bottom: 10 px;">
+        <div class="col-lg-12">
+            <div class="alert alert-info" id='lanl-main-warning' style='display:none;'>
+            </div>
+        </div>
+      </div>
+
        <div class = "row">
         <div class='col-lg-9' data-url=<%= hivtrace.lanl_trace_results %>>
             <div class="row">
-                <div class="btn-menu btn-group pull-left">
-                    <button id="lanl-expand-all-clusters" type="button" class="btn btn-default btn-sm">Expand All</button>
-                    <button id="lanl-collapse-all-clusters" type="button" class="btn btn-default btn-sm">Collapse All</button>
-                    <button id="lanl-toggle-hxb2" type="button" class="btn btn-default btn-sm" data-toggle="button">Hide clusters with HXB2 links</button>
+                <div class="input-group input-group-sm" id = 'lanl_network_ui_bar'>
+                      <span class="input-group-btn">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id = "lanl_network_ui_bar_cluster_operations_button">Clusters <span class="caret"></span></button>
+                            <ul class="dropdown-menu" role="menu" id = 'lanl_network_ui_bar_cluster_operations_container'>
+                                
+                            </ul>
+                    </span>
+                    
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id = "lanl_network_ui_bar_attribute_label">Attribute <span class="caret"></span></button>
+                        <ul class="dropdown-menu" role="menu" id = 'lanl_network_ui_bar_attributes'>
+                        </ul>
+                   </div>
+                          
+                    <input type="text" class="form-control" placeholder = "search" id = 'lanl_network_ui_bar_search'>
                 </div>
             </div>
-            <div id='lanl-network_tag' >
+            
+            <div class = 'row' id='lanl-network_tag' >
                 <div class="my_progress">
                       <div class="progress-bar progress-bar-striped active"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
                         Loading the network...
@@ -75,14 +112,16 @@
             </div>
         </div>
         
-        <div class='histogram-group col-lg-3'>
-            <div id = 'lanl-histogram_tag'> 
-                <p id='lanl-histogram_label' class="histogram-label small"></p><br>
+        
+        <div class='col-lg-3'>
+            <div class = 'row' id = 'lanl-histogram_tag'> 
+                <p id='lanl-histogram_label' class="text-left text-info small"></p><br>
              </div>
-                 
-            <div id='lanl-csvexport'>
+            
+            <div id='lanl-csvexport' class='row'>
             </div>
-        </div>     
+                 
+         </div>     
             
      </div>
      

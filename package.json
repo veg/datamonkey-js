@@ -35,6 +35,9 @@
     "moment"                 : "*",
     "socket.io-client"       : "*",
     "socket.io-stream"       : "*",
-    "winston"                : "*"
+    "winston"                : "*",
+    "async"                  : "*",
+    "underscore"             : "*",
+    "morgan"                 : "*"
   }
 }

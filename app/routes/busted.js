@@ -31,7 +31,8 @@ var querystring = require('querystring'),
     mailer      = require( ROOT_PATH + '/lib/mailer.js'),
     helpers     = require( ROOT_PATH + '/lib/helpers.js'),
     hpcsocket   = require( ROOT_PATH + '/lib/hpcsocket.js'),
-    fs          = require('fs');
+    fs          = require('fs'),
+    logger     = require('../../lib/logger');
 
 var mongoose = require('mongoose'),
     Msa = mongoose.model('Msa'),
@@ -47,9 +48,10 @@ exports.uploadFile = function(req, res) {
 
   var data = req.body;
   var fn = req.files.files.path;
-  var postdata = req.body;
 
   var busted = new Busted;
+  var postdata = req.body;
+
   var msa = new Msa();
 
   msa.datatype  = data.datatype;
@@ -62,8 +64,8 @@ exports.uploadFile = function(req, res) {
   msa.dataReader(fn, function(err, result) {
 
     if(err) {
-      // FASTA validation failed, report an error and the form back to the user
-      cb(err, result);
+      logger.error(err);
+      res.json(500, err);
       return;
     }
 
@@ -92,18 +94,26 @@ exports.uploadFile = function(req, res) {
     busted.msa = msa;
 
     busted.save(function (err, busted_result) {
+    if(err) {
+      logger.error("busted save failed");
+      logger.error(err);
+      res.json(500, {'error' : err});
+      return;
+    }
+
+    function move_cb(err, result) {
       if(err) {
-        res.json(500, {'msg': err});
+        logger.error(err);
+        logger.error("busted rename failed");
+        res.json(500, {'error' : err});
       } else {
-        fs.rename(req.files.files.path, busted_result.filepath, function(err, result) {
-          if(err) {
-            res.json(500, {'error' : err.error });
-          } else {
-            res.json(200, busted);
-          }
-        });
+        res.json(200,  busted);
       }
-    });
+    }
+    helpers.moveSafely(req.files.files.path, busted_result.filepath, move_cb);
+  });
+
+
   });
 }
 
@@ -189,6 +199,7 @@ exports.getBusted = function(req, res) {
   //Return all results
   Busted.findOne({_id : bustedid}, function(err, busted) {
     if (err || !busted ) {
+      logger.error(err);
       res.json(500, error.errorResponse('Invalid ID : ' + bustedid ));
     } else {
       // Should return results page
@@ -210,6 +221,7 @@ exports.getBustedResults = function(req, res) {
   //Return all results
   Busted.findOne({_id : bustedid}, function(err, busted) {
     if (err || !busted ) {
+      logger.error(err);
       res.json(500, error.errorResponse('invalid id : ' + bustedid ));
     } else {
       // Should return results page

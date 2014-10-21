@@ -27,6 +27,7 @@
 
 */
 
+var logger = require(ROOT_PATH + '/lib/logger');
 
 var error   = require( ROOT_PATH + '/lib/error.js'),
     helpers = require(ROOT_PATH + '/lib/helpers.js'),
@@ -57,8 +58,10 @@ exports.uploadFile = function (req, res) {
   msa.datatype  = postdata.datatype;
   msa.gencodeid = postdata.gencodeid;
 
-  msa.dataReader(req.files.files.path, function(err, result) {
+  logger.log(postdata);
+  logger.log(msa.datatype);
 
+  msa.dataReader(req.files.files.path, function(err, result) {
     if(err) {
       // FASTA validation failed, report an error and the form back to the user
       res.json(200, {'error': err });
@@ -75,9 +78,9 @@ exports.uploadFile = function (req, res) {
     msa.goodtree   = file_info.goodtree;
     msa.nj         = file_info.nj;
     msa.rawsites   = file_info.rawsites;
-    var sequences  = result.SEQUENCES;
-    msa.sequence_info = [];
 
+    var sequences = result.SEQUENCES;
+    msa.sequence_info = [];
     for (i in sequences) {
       var sequences_i = new Sequences(sequences[i]);
       msa.sequence_info.push(sequences_i);
