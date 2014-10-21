@@ -89,20 +89,25 @@ exports.uploadFile = function(req, res) {
     busted.msa = msa;
 
     busted.save(function (err, busted_result) {
+    if(err) {
+      logger.error("busted save failed");
+      logger.error(err);
+      res.json(500, {'error' : err});
+      return;
+    }
+
+    function move_cb(err, result) {
       if(err) {
         logger.error(err);
-        res.json(500, {'msg': err});
+        logger.error("busted rename failed");
+        res.json(500, {'error' : err});
       } else {
-        fs.rename(req.files.files.path, busted_result.filepath, function(err, result) {
-          if(err) {
-            logger.error(err);
-            res.json(500, {'error' : err.error });
-          } else {
-            res.json(200, busted);
-          }
-        });
+        res.json(200,  busted);
       }
-    });
+    }
+    helpers.moveSafely(req.files.files.path, busted_result.filepath, move_cb);
+  });
+
 
   });
 
