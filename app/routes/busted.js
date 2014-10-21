@@ -26,11 +26,11 @@
 */
 
 var querystring = require('querystring'),
-    error       = require( ROOT_PATH + '/lib/error.js'),
-    globals     = require( ROOT_PATH + '/config/globals.js'),
-    mailer      = require( ROOT_PATH + '/lib/mailer.js'),
-    helpers     = require( ROOT_PATH + '/lib/helpers.js'),
-    hpcsocket   = require( ROOT_PATH + '/lib/hpcsocket.js'),
+    error       = require( __dirname + ' /../../lib/error.js'),
+    globals     = require( __dirname + '/../../config/globals.js'),
+    mailer      = require( __dirname + '/../../lib/mailer.js'),
+    helpers     = require( __dirname + '/../../lib/helpers.js'),
+    hpcsocket   = require( __dirname + '/../../lib/hpcsocket.js'),
     fs          = require('fs'),
     logger     = require('../../lib/logger');
 

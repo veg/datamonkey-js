@@ -27,43 +27,26 @@
 
 */
 
-var mongoose = require('mongoose'),
-    extend = require('mongoose-schema-extend'),
-    MsaSchema  = require(__dirname + '/msa');
+var fs = require('fs'),
+    mongoose = require('mongoose'),
+    should   = require('should');
 
-var AnalysisSchema = require(__dirname + '/analysis');
+// Bootstrap models
+require('../app/models/busted');
 
-//TODO: Include an MSA
-var Busted = AnalysisSchema.extend({
-  msa                   : [MsaSchema.Msa],
-  treemode              : Number,
-  tagged_nwk_tree       : String,
-  mail                  : String,
-  results               : Object
+var Busted = mongoose.model('Busted'),
+    mailer = require('../lib/mailer.js'),
+    setup = require('../config/setup');
+
+describe('mailer', function() {
+
+  var busted = new Busted;
+  busted.mail = 'no-reply@datamonkey.org';
+
+  it('should send mail', function(done) {
+    mailer.sendJobComplete(busted);
+    done();
+
+  });
+
 });
-
-/**
- * Filename of document's file upload
- */
-Busted.virtual('status_stack').get(function () {
-  return ['In Queue', 
-          'Running',
-          'Completed'];
-});
-
-/**
- * Complete file path for document's file upload
- */
-Busted.virtual('filepath').get(function () {
-  return __dirname + '/../../uploads/msa/' + this._id + '.fasta';
-});
-
-/**
- * URL for a busted path
- */
-Busted.virtual('url').get(function () {
-  return 'http://' + setup.host + '/busted/' + this._id;
-});
-
-
-module.exports = mongoose.model('Busted', Busted);
