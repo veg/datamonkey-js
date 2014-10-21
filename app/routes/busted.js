@@ -26,7 +26,6 @@
 */
 
 var querystring = require('querystring'),
-    error       = require( ROOT_PATH + '/lib/error.js'),
     setup       = require(ROOT_PATH + '/config/setup.js'),
     globals     = require( ROOT_PATH + '/config/globals.js'),
     mailer      = require( ROOT_PATH + '/lib/mailer.js'),
@@ -201,7 +200,7 @@ exports.getBusted = function(req, res) {
   Busted.findOne({_id : bustedid}, function(err, busted) {
     if (err || !busted ) {
       logger.error(err);
-      res.json(500, error.errorResponse('Invalid ID : ' + bustedid ));
+      res.json(500, helpers.errorResponse('Invalid ID : ' + bustedid ));
     } else {
       // Should return results page
       res.render('analysis/busted/jobpage.ejs', { job : busted, 
@@ -223,7 +222,7 @@ exports.getBustedResults = function(req, res) {
   Busted.findOne({_id : bustedid}, function(err, busted) {
     if (err || !busted ) {
       logger.error(err);
-      res.json(500, error.errorResponse('invalid id : ' + bustedid ));
+      res.json(500, helpers.errorResponse('invalid id : ' + bustedid ));
     } else {
       // Should return results page
       res.json(200, { results : busted.results });

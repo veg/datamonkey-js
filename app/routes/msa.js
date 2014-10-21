@@ -29,8 +29,7 @@
 
 var logger = require(ROOT_PATH + '/lib/logger');
 
-var error   = require( ROOT_PATH + '/lib/error.js'),
-    helpers = require(ROOT_PATH + '/lib/helpers.js'),
+var helpers = require(ROOT_PATH + '/lib/helpers.js'),
     globals = require(ROOT_PATH + '/config/globals.js'),
     fs      = require('fs');
 
@@ -177,7 +176,7 @@ exports.findById = function (req, res) {
   Msa.findOne({_id : id}, function (err, item) {
 
     if (err || !item) {
-      res.json(500, error.errorResponse('There is no sequence with id of ' + id));
+      res.json(500, helpers.errorResponse('There is no sequence with id of ' + id));
     } else {
 
       var details = item;
@@ -214,7 +213,7 @@ exports.getNeighborJoin = function (req, res) {
 
   Msa.findOne({_id : id}, 'nj', function (err, item) {
     if (err || !item) {
-      res.json(500, error.errorResponse('There is no sequence with id of ' + id));
+      res.json(500, helpers.errorResponse('There is no sequence with id of ' + id));
     } else if (!item.nj) {
       // check if tree is null
     } else {
@@ -233,12 +232,12 @@ exports.updateMsa = function(req, res) {
 
   Msa.findOne({_id: id}, function (err, item) {
     if (err) {
-      res.json(500, error.errorResponse('There is no sequence with id of ' + id));
+      res.json(500, helpers.errorResponse('There is no sequence with id of ' + id));
     } else {
       //Should check the postdata before
       Msa.findByIdAndUpdate(item._id, postdata, options, function (err, result) {
         if (err) {
-          res.json(500, error.errorResponse(err));
+          res.json(500, helpers.errorResponse(err));
         } else {
           res.json(result);
         }
@@ -252,7 +251,7 @@ exports.deleteMsa = function(req, res) {
   var id = req.params.id;
   Msa.findOneAndRemove({ _id: id }, function(err) {
     if (err) {
-      res.json(500, error.errorResponse(err));
+      res.json(500, helpers.errorResponse(err));
     } else {
       res.json({"success" : 1});
      }
@@ -264,7 +263,7 @@ exports.aminoAcidTranslation = function(req, res) {
   var id = req.params.id;
   Msa.findOne({ _id: id }, function(err, item) {
     if (err) {
-      res.json(500, error.errorResponse(err));
+      res.json(500, helpers.errorResponse(err));
     } else {
       item.aminoAcidTranslation(function(err, aa) {
 
@@ -286,7 +285,7 @@ exports.aminoAcidTranslationViewer = function(req, res) {
   var id = req.params.id;
   Msa.findOne({ _id: id }, function(err, item) {
     if (err) {
-      res.json(500, error.errorResponse(err));
+      res.json(500, helpers.errorResponse(err));
     } else {
       item.aminoAcidTranslation(function(err, aa) {
         res.format({
@@ -308,7 +307,7 @@ exports.attributeMap = function (req, res) {
   var id = req.params.id;
   Msa.findOne({_id: id}, 'attribute_map', function (err, msa) {
     if (err || !hivtrace) {
-      res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
+      res.json(500, helpers.errorResponse('There is no HIV Cluster job with id of ' + id));
     } else {
       res.json({msa : msa});
     }

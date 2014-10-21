@@ -28,7 +28,6 @@
 var logger = require(ROOT_PATH + '/lib/logger');
 
 var querystring = require('querystring'),
-    error       = require( ROOT_PATH + '/lib/error.js'),
     globals     = require( ROOT_PATH + '/config/globals.js'),
     mailer      = require( ROOT_PATH + '/lib/mailer.js'),
     helpers     = require( ROOT_PATH + '/lib/helpers.js'),
@@ -48,7 +47,7 @@ exports.createForm = function(req, res) {
   var msaid = req.params.msaid;
   Msa.findOne({_id : msaid}, function (err, uploadfile) {
     if (err || !uploadfile) {
-      res.json(500, error.errorResponse('There is no sequence with id of ' + msaid));
+      res.json(500, helpers.errorResponse('There is no sequence with id of ' + msaid));
     } else {
       var ftc = []
       res.render('analysis/prime/form.ejs', { 'uploadfile' : uploadfile});
@@ -76,7 +75,7 @@ exports.invokePrime = function(req, res) {
       var num = 0;
       var highest_countid = 1;
       if(err) {
-        res.json(500, error.errorResponse(err));
+        res.json(500, helpers.errorResponse(err));
       } else {
         if(result != '' &&  result != null) {
           num = result.id;
@@ -149,7 +148,7 @@ exports.getPrime = function(req, res) {
   //Return all results
   Prime.findOne({_id : primeid}, function(err, prime) {
     if (err || !prime ) {
-      res.json(500, error.errorResponse('prime not found'));
+      res.json(500, helpers.errorResponse('prime not found'));
     } else {
       // Should return results page
       res.render('analysis/prime/jobpage.ejs', { job : prime, 
@@ -175,7 +174,7 @@ exports.getStatus = function(req, res) {
   //Return all results
   Prime.findOne({_id : primeid}, function(err, item) {
     if (err || !item ) {
-      res.json(500, error.errorResponse('Item not found'));
+      res.json(500, helpers.errorResponse('Item not found'));
     } else {
       logger.log(item);
       res.format({
@@ -207,7 +206,7 @@ exports.deletePrime = function(req, res) {
   Prime.findOneAndRemove({msaid : msaid, id : primeid}, 
                    function(err, item) {
     if (err || !item) {
-      res.json(500, error.errorResponse('Item not found: msaid: ' + msaid + ', id : ' + prime_id));
+      res.json(500, helpers.errorResponse('Item not found: msaid: ' + msaid + ', id : ' + prime_id));
     } else {
       res.json({ "success" : 1 });
     }

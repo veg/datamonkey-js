@@ -29,8 +29,7 @@
 
 var logger = require(ROOT_PATH + '/lib/logger');
 
-var error     = require( ROOT_PATH + '/lib/error.js'),
-    helpers   = require( ROOT_PATH + '/lib/helpers.js'),
+var helpers   = require( ROOT_PATH + '/lib/helpers.js'),
     globals   = require( ROOT_PATH + '/config/globals.js'),
     mailer    = require( ROOT_PATH + '/lib/mailer.js'),
     fs        = require('fs'),
@@ -152,7 +151,7 @@ exports.jobPage = function (req, res) {
   var id = req.params.id;
   HivTrace.findOne({_id: id}, function (err, hivtrace) {
     if (err || !hivtrace) {
-      res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
+      res.json(500, helpers.errorResponse('There is no HIV Cluster job with id of ' + id));
     } else {
       if(hivtrace.status == undefined) {
 
@@ -196,7 +195,7 @@ exports.results = function (req, res) {
   var id = req.params.id;
   HivTrace.findOne({_id: id}, 'tn93_summary tn93_results trace_results lanl_compare', function (err, hivtrace) {
     if (err || !hivtrace) {
-      res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
+      res.json(500, helpers.errorResponse('There is no HIV Cluster job with id of ' + id));
     } else {
       console.log(hivtrace);
       res.format({
@@ -283,7 +282,7 @@ exports.attributeMap = function (req, res) {
   var id = req.params.id;
   HivTrace.findOne({_id: id}, 'attribute_map', function (err, hivtrace) {
     if (err || !hivtrace) {
-      res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
+      res.json(500, helpers.errorResponse('There is no HIV Cluster job with id of ' + id));
     } else {
       res.json({hivtrace : hivtrace});
     }
