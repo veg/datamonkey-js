@@ -32,6 +32,7 @@ var querystring = require('querystring'),
     globals     = require( ROOT_PATH + '/config/globals.js'),
     mailer      = require( ROOT_PATH + '/lib/mailer.js'),
     helpers     = require( ROOT_PATH + '/lib/helpers.js'),
+    setup       = require(ROOT_PATH + '/config/setup.js'),
     hpcsocket   = require( ROOT_PATH + '/lib/hpcsocket.js'),
     fs          = require('fs');
 

@@ -25,9 +25,7 @@
   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-const logger = require('./lib/logger');
-setup = require('./config/setup');
-var error = require('./lib/error')
+var setup = require('./config/setup');
 
 ROOT_PATH = __dirname;
 HOST      = setup.host;
@@ -36,6 +34,8 @@ HOST      = setup.host;
 var express          = require('express'),
     expressValidator = require('express-validator'),
     helpers          = require('./lib/helpers'),
+    logger           = require('./lib/logger'),
+    error            = require('./lib/error'),
     fs               = require('fs'),
     path             = require("path"),
     mongoose         = require('mongoose'),
