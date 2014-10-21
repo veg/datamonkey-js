@@ -45,22 +45,10 @@ var express          = require('express'),
 // Connect to database
 mongoose.connect(setup.database);
 
-//Ensure that upload paths exists
-mkdirErrorLogger = error.errorLogger(["EEXIST"]);
-fs.mkdir(__dirname + '/uploads', '0750', function(e) {
-  if(e) {
-    if(e.code != "EEXIST") {
-      throw e;
-    }
-  }
-  // need to do this in the callback to ensure uploads
-  // directory exists first
-  fs.mkdir(__dirname + '/uploads/hivtrace', '0750', mkdirErrorLogger);
-  fs.mkdir(__dirname + '/uploads/msa', '0750', mkdirErrorLogger);
-});
-
-// ensure logging dir exists
-fs.mkdir(__dirname + '/logs', '0750', mkdirErrorLogger);
+//Ensure that upload and logging paths exists
+helpers.mkdirpSync(ROOT_PATH + '/uploads/hivtrace', '0750');
+helpers.mkdirpSync(ROOT_PATH + '/uploads/msa', '0750');
+helpers.mkdirpSync(ROOT_PATH + '/logs', '0750');
 
 // Main app configuration
 var app = express();
