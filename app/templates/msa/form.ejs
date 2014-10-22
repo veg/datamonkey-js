@@ -1,4 +1,5 @@
 <%- include ../includes/header.ejs %>
+
 <div id="container" class="container">
   <h2 class="page-header">Upload a Sequence Alignment</h2>
   <div class="nav nav-list pull-right span4i"><a href="/help" target="_blank">I'm confused</a></div>
@@ -88,19 +89,6 @@
   </div>
 </div>
 
-<div aria-labelledby="errorModalLabel" role="dialog" id="errorModal" class="modal ng-scope">
-  <div class="modal-dialog"><div class="modal-content">
-    <div class="modal-header dialog-header-error">
-      <button data-dismiss="modal" class="close" type="button">×</button>
-      <h4 class="modal-title text-danger"><span class="glyphicon glyphicon-warning-sign"></span> Error</h4>
-      </div>
-      <div id="modal-error-msg" class="modal-body text-danger">This is my error message</div>
-      <div class="modal-footer">
-        <button data-dismiss="modal" class="btn btn-primary" type="button">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-
+<%- include ../includes/modal.ejs %>
 <%- include ../includes/footer.ejs %>
 <script src="/assets/js/msa/form.js"></script>
