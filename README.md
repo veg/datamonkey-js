@@ -31,9 +31,9 @@ This requires an SSH key for GitHub, as described [here](https://help.github.com
 
 ###Configure
 
-    cp ./config/setup.js.tpl ./config/setup.js
+    cp ./app/node_modules/config/setup.js.tpl ./app/node_modules/config/setup.js
 
-The settings within ```./config/setup.js``` will have to be changed to reflect the local environment.
+The settings within ```./app/node_modules/config/setup.js``` will have to be changed to reflect the local environment.
 
 ###Run
 
