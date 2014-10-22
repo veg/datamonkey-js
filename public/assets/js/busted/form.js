@@ -1,11 +1,12 @@
 $(function() {
 
+
   $("form").submit(function(e) {
 
     e.preventDefault();
 
     var formData = new FormData();
-    var file = document.getElementById('seq-file').files[0];
+    var file     = document.getElementById('seq-file').files[0];
     var filename = document.getElementById('seq-file').files[0].name;
 
     formData.append('files', file);
@@ -34,8 +35,7 @@ $(function() {
       if('_id' in result) {
         window.location.href =  '/busted/' + result._id + '/select-foreground';
       } else if ('error' in result) {
-        $('#modal-error-msg').text(result.error);
-        $('#errorModal').modal()
+        Datamonkey.errorModal(error);
       }
     };
 
@@ -44,3 +44,6 @@ $(function() {
   });
   
 });
+
+
+

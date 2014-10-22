@@ -6,6 +6,7 @@ lib-cov
 *.out
 *.pid
 *.gz
+tags
 
 pids
 logs
@@ -15,3 +16,6 @@ node_modules
 
 npm-debug.log
 config/setup.js
+bower_components
+uploads
+public/hyphy-absrel
