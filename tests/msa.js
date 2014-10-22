@@ -27,10 +27,14 @@
 
 */
 
-var fs = require('fs'),
-    mongoose = require('mongoose'),
-    spawn = require('child_process').spawn,
-    setup = require('../config/setup');
+var fs = require('fs');
+var path = require('path');
+var spawn = require('child_process').spawn;
+
+var mongoose = require('mongoose');
+
+var setup = require('../app/node_modules/config/setup');
+var globals = require('../app/node_modules/config/globals');
 
 // Bootstrap models
 require('../app/models/msa');
@@ -38,13 +42,17 @@ require('../app/models/msa');
 var Msa     = mongoose.model('Msa'),
     should  = require('should');
 
+function get_hyphy() {
+  return spawn(setup.hyphy,
+               [path.join(globals.app_node_modules_dir, "lib/bfs/datareader.bf")]);
+}
+
 describe('msa datareader validation', function() {
 
   var Msa  = mongoose.model('Msa');
 
   it('should parse msa and have all properties', function(done) {
-    var hyphy =  spawn(setup.hyphy,
-                      [__dirname + "/../lib/bfs/datareader.bf"]);
+    var hyphy = get_hyphy();
 
     hyphy.stdout.on('data', function (data) {
       var results = JSON.parse(data);
@@ -80,8 +88,7 @@ describe('msa datareader validation', function() {
   });
 
   it('should return an error message', function(done) {
-    var hyphy =  spawn(setup.hyphy,
-                      [__dirname + "/../lib/bfs/datareader.bf"]);
+    var hyphy = get_hyphy();
 
     hyphy.stdout.on('data', function (data) {
       var results = JSON.parse(data);
