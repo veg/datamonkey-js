@@ -24,7 +24,7 @@
     "mongoose-schema-extend" : "0.1.3",
     "mocha"                  : "*",
     "nodemailer"             : "*",
-    "nodemailer-smtp-transport" : "*",
+    "nodemailer-sendmail-transport" : "*",
     "grunt"                  : "*",
     "less"                   : "*",
     "supertest"              : "*",
