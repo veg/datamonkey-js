@@ -222,15 +222,14 @@ Msa.methods.dataReader = function (file, cb) {
 
   hyphy.stdout.on('close', function (code) {
 
-    debugger;
     try {
       results = JSON.parse(result);
     } catch(e) {
-      cb("An unexpected error occured when parsing the sequence alignment! Here is the full traceback : " + code, {});
+      cb("An unexpected error occured when parsing the sequence alignment! Here is the full traceback : " + e, {});
       return;
     }
 
-    if(results) {
+    if(results != undefined) {
       if ("error" in results) {
         cb(results.error, '');
       } else {

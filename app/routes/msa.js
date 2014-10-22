@@ -154,7 +154,6 @@ exports.saveAttributes = function (req, res) {
 
   Msa.findOne({_id: id}, function (err, msa) {
     msa.attribute_map = postdata;
-    debugger;
     msa.save(function (err, msa) {
       if(err) {
         // FASTA validation failed, report an error and the form back to the user
@@ -185,7 +184,6 @@ exports.findById = function (req, res) {
       //Get the count of the different analyses on the job
       if(req.query.format == 'hyphy') {
         // Reformat arrays
-        debugger;
         res.json(200, item.hyphy_friendly);
 
       } else {
