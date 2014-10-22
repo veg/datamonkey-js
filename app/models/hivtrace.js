@@ -27,19 +27,21 @@
 
 */
 
-var setup         = require( '../../config/setup'),
-    hiv_setup     = require( '../../config/hivtrace_globals'),
-    country_codes = require( '../../config/country_codes.json'),
-    subtypes      = require( '../../config/subtypes.json');
+var fs = require('fs');
+var path = require('path');
+var readline = require('readline');
+var spawn = require('child_process').spawn;
 
-var mongoose = require('mongoose'),
-    moment   = require('moment'),
-    check    = require('validator').check,
-    globals  = require( '../../config/globals.js'),
-    sanitize = require('validator').sanitize,
-    fs       = require('fs'),
-    readline = require('readline'),
-    spawn    = require('child_process').spawn;
+var mongoose = require('mongoose');
+var moment = require('moment');
+var check = require('validator').check;
+var sanitize = require('validator').sanitize;
+
+var setup = require('config/setup');
+var hiv_setup = require('config/hivtrace_globals');
+var country_codes = require('config/country_codes.json');
+var subtypes = require('config/subtypes.json');
+var globals = require('config/globals.js');
 
 var ident = {
     SUBTYPE : "subtype",
@@ -353,7 +355,7 @@ HivTrace.virtual('filename').get(function () {
 * Complete file path for document's file upload
 */
 HivTrace.virtual('filepath').get(function () {
-  return __dirname + "/../../uploads/hivtrace/" + this._id;
+  return path.join(globals.base_dir, "uploads/hivtrace/" + this._id);
 });
 
 /**

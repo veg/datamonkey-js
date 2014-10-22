@@ -27,16 +27,17 @@
 
 */
 
-var logger = require(ROOT_PATH + '/lib/logger');
+var fs = require('fs');
 
-var helpers = require(ROOT_PATH + '/lib/helpers.js'),
-    globals = require(ROOT_PATH + '/config/globals.js'),
-    fs      = require('fs');
+var mongoose = require('mongoose');
 
-var mongoose = require('mongoose'),
-    Msa = mongoose.model('Msa'),
-    Sequences =  mongoose.model('Sequences'),
-    PartitionInfo =  mongoose.model('PartitionInfo');
+var logger = require('lib/logger');
+var helpers = require('lib/helpers.js');
+var globals = require('config/globals.js');
+
+var Msa = mongoose.model('Msa');
+var Sequences =  mongoose.model('Sequences');
+var PartitionInfo =  mongoose.model('PartitionInfo');
 
 
 // app.get('/msa', msa.showUploadForm);

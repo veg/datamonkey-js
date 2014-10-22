@@ -25,19 +25,20 @@
   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-var logger = require(ROOT_PATH + '/lib/logger');
+var querystring = require('querystring');
+var fs = require('fs');
 
-var querystring = require('querystring'),
-    globals     = require( ROOT_PATH + '/config/globals.js'),
-    mailer      = require( ROOT_PATH + '/lib/mailer.js'),
-    helpers     = require( ROOT_PATH + '/lib/helpers.js'),
-    setup       = require(ROOT_PATH + '/config/setup.js'),
-    hpcsocket   = require( ROOT_PATH + '/lib/hpcsocket.js'),
-    fs          = require('fs');
+var mongoose = require('mongoose');
 
-var mongoose = require('mongoose'),
-    Msa = mongoose.model('Msa'),
-    Prime = mongoose.model('Prime');
+var logger = require('lib/logger');
+var mailer = require('lib/mailer.js');
+var helpers = require('lib/helpers.js');
+var hpcsocket = require('lib/hpcsocket.js');
+var globals = require('config/globals.js');
+var setup = require('config/setup.js');
+
+var Msa = mongoose.model('Msa');
+var Prime = mongoose.model('Prime');
 
 /**
  * Displays a form

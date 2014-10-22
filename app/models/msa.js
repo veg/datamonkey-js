@@ -27,18 +27,20 @@
 
 */
 
-var mongoose    = require('mongoose'),
-    moment      = require('moment'),
-    check       = require('validator').check,
-    globals     = require('../../config/globals.js'),
-    setup       = require(ROOT_PATH + '/config/setup.js'),
-    spawn       = require('child_process').spawn,
-    sanitize    = require('validator').sanitize,
-    fs          = require('fs'),
-    seqio       = require( '../../lib/biohelpers/sequenceio.js'),
-    country_codes = require( '../../config/country_codes.json'),
-    subtypes      = require( '../../config/subtypes.json');
+var fs = require('fs');
+var path = require('path');
+var spawn = require('child_process').spawn;
 
+var mongoose = require('mongoose');
+var moment = require('moment');
+var check = require('validator').check;
+var sanitize = require('validator').sanitize;
+
+var globals = require('config/globals.js');
+var setup = require('config/setup.js');
+var country_codes = require('config/country_codes.json');
+var subtypes = require('config/subtypes.json');
+var seqio = require('lib/biohelpers/sequenceio.js');
 
 var ident = {
     SUBTYPE : "subtype",
@@ -116,7 +118,7 @@ Msa.virtual('filename').get(function () {
  * Complete file path for document's file upload
  */
 Msa.virtual('filepath').get(function () {
-  return __dirname + '/../../uploads/msa/' + this._id + '.fasta';
+  return path.join(globals.base_dir, 'uploads/msa/' + this._id + '.fasta');
 });
 
 Msa.virtual('hyphy_friendly').get(function () {
@@ -210,7 +212,7 @@ Msa.methods.aminoAcidTranslation = function (cb) {
 Msa.methods.dataReader = function (file, cb) {
 
   var hyphy =  spawn(setup.hyphy,
-                    [__dirname + "/../../lib/bfs/datareader.bf"]);
+                     [path.join(globals.app_node_modules_dir, "lib/bfs/datareader.bf")]);
 
   var result = '';
 
@@ -220,13 +222,15 @@ Msa.methods.dataReader = function (file, cb) {
 
   hyphy.stdout.on('close', function (code) {
 
+    debugger;
     try {
       results = JSON.parse(result);
     } catch(e) {
-      cb("An unexpected error occured when parsing the sequence alignment! Here is the full traceback : " + data, {});
+      cb("An unexpected error occured when parsing the sequence alignment! Here is the full traceback : " + code, {});
+      return;
     }
 
-    if(results != undefined) {
+    if(results) {
       if ("error" in results) {
         cb(results.error, '');
       } else {

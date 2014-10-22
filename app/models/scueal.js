@@ -28,13 +28,13 @@
 */
 
 
-var mongoose = require('mongoose'),
-    extend = require('mongoose-schema-extend');
+var mongoose = require('mongoose');
+var extend = require('mongoose-schema-extend');
 
 var AnalysisSchema = require(__dirname + '/analysis');
 
-var Schema = mongoose.Schema,
-    ObjectId = Schema.ObjectId;
+var Schema = mongoose.Schema;
+var ObjectId = Schema.ObjectId;
 
 var Scueal = AnalysisSchema.extend({
   reference              : {type: String},

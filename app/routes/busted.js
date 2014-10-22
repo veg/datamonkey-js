@@ -25,20 +25,22 @@
   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-var querystring = require('querystring'),
-    setup       = require(ROOT_PATH + '/config/setup.js'),
-    globals     = require( ROOT_PATH + '/config/globals.js'),
-    mailer      = require( ROOT_PATH + '/lib/mailer.js'),
-    helpers     = require( ROOT_PATH + '/lib/helpers.js'),
-    hpcsocket   = require( ROOT_PATH + '/lib/hpcsocket.js'),
-    fs          = require('fs'),
-    logger     = require('../../lib/logger');
+var querystring = require('querystring');
+var fs = require('fs');
 
-var mongoose = require('mongoose'),
-    Msa = mongoose.model('Msa'),
-    Sequences =  mongoose.model('Sequences'),
-    PartitionInfo =  mongoose.model('PartitionInfo'),
-    Busted = mongoose.model('Busted');
+var mongoose = require('mongoose');
+
+var setup = require('config/setup.js');
+var globals = require('config/globals.js');
+var mailer = require('lib/mailer.js');
+var helpers = require('lib/helpers.js');
+var hpcsocket = require('lib/hpcsocket.js');
+var logger = require('lib/logger');
+
+var Msa = mongoose.model('Msa');
+var Sequences =  mongoose.model('Sequences');
+var PartitionInfo =  mongoose.model('PartitionInfo');
+var Busted = mongoose.model('Busted');
 
 exports.createForm = function(req, res) {
   res.render('analysis/busted/upload_msa.ejs');

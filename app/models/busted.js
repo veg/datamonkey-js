@@ -27,10 +27,10 @@
 
 */
 
-var mongoose = require('mongoose'),
-    extend = require('mongoose-schema-extend'),
-    MsaSchema  = require(__dirname + '/msa');
+var mongoose = require('mongoose');
+var extend = require('mongoose-schema-extend');
 
+var MsaSchema  = require(__dirname + '/msa');
 var AnalysisSchema = require(__dirname + '/analysis');
 
 //TODO: Include an MSA

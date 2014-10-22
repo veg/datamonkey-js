@@ -27,19 +27,20 @@
 
 */
 
-var logger = require(ROOT_PATH + '/lib/logger');
+var fs = require('fs');
 
-var helpers   = require( ROOT_PATH + '/lib/helpers.js'),
-    globals   = require( ROOT_PATH + '/config/globals.js'),
-    mailer    = require( ROOT_PATH + '/lib/mailer.js'),
-    fs        = require('fs'),
-    hpcsocket = require( ROOT_PATH + '/lib/hpcsocket.js'),
-    hiv_setup = require( ROOT_PATH + '/config/hivtrace_globals'),
-    setup     = require( ROOT_PATH + '/config/setup');
+var mongoose = require('mongoose');
 
-var mongoose = require('mongoose'),
-    HivTrace = mongoose.model('HivTrace'),
-    Msa = mongoose.model('Msa');
+var logger = require('lib/logger');
+var helpers   = require('lib/helpers.js');
+var globals = require('config/globals.js');
+var mailer = require('lib/mailer.js');
+var hpcsocket = require('lib/hpcsocket.js');
+var hiv_setup = require('config/hivtrace_globals');
+var setup = require('config/setup');
+
+var HivTrace = mongoose.model('HivTrace');
+var Msa = mongoose.model('Msa');
 
 
 /**

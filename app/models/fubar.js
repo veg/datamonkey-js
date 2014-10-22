@@ -34,8 +34,8 @@ FelSchema  = require(__dirname + '/fel');
 MemeSchema = require(__dirname + '/meme');
 EvfSchema  = require(__dirname + '/evf');
 
-var mongoose = require('mongoose'),
-  extend = require('mongoose-schema-extend');
+var mongoose = require('mongoose');
+var extend = require('mongoose-schema-extend');
 
 
 var AnalysisSchema = require(__dirname + '/analysis');

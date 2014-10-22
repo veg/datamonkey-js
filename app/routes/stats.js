@@ -27,8 +27,9 @@
 
 */
 
-var mongoose = require('mongoose'),
-    globals  = require( ROOT_PATH + '/config/globals.js');
+var mongoose = require('mongoose');
+
+var globals = require('config/globals.js');
 
 exports.usageStatistics = function(req, res) {
 

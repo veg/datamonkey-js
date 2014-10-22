@@ -28,11 +28,11 @@
 */
 
 
-var mongoose = require('mongoose'),
-    globals  = require( '../../config/globals.js'),
-    moment   = require('moment'),
-    extend   = require('mongoose-schema-extend');
+var mongoose = require('mongoose');
+var moment = require('moment');
+var extend = require('mongoose-schema-extend');
 
+var globals = require('config/globals.js');
 
 var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;

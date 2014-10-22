@@ -34,8 +34,8 @@ var SlacSchema = require(__dirname + '/slac');
 var MemeSchema = require(__dirname + '/meme');
 var FubarSchema = require(__dirname + '/fubar');
 
-var mongoose = require('mongoose'),
-  extend = require('mongoose-schema-extend');
+var mongoose = require('mongoose');
+var extend = require('mongoose-schema-extend');
 
 var AnalysisSchema = require(__dirname + '/analysis');
 

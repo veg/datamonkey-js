@@ -31,8 +31,8 @@
 var SlacScheme = require(__dirname + '/slac');
 var GardScheme = require(__dirname + '/gard');
 
-var mongoose = require('mongoose'),
-    extend = require('mongoose-schema-extend');
+var mongoose = require('mongoose');
+var extend = require('mongoose-schema-extend');
 
 var AnalysisSchema = require(__dirname + '/analysis');
   

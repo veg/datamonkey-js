@@ -25,29 +25,30 @@
   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-var setup = require('./config/setup');
+// core packages
+var fs = require('fs');
+var path = require("path");
 
-ROOT_PATH = __dirname;
-HOST      = setup.host;
+// public packages
+var express = require('express');
+var expressValidator = require('express-validator');
+var mongoose = require('mongoose');
+var socketio = require('socket.io')
 
-// Necessary packages
-var express          = require('express'),
-    expressValidator = require('express-validator'),
-    helpers          = require('./lib/helpers'),
-    logger           = require('./lib/logger'),
-    fs               = require('fs'),
-    path             = require("path"),
-    mongoose         = require('mongoose'),
-    io               = require('socket.io').listen(setup.socket_port);
+// our packages
+var helpers = require('./app/node_modules/lib/helpers');
+var logger = require('./app/node_modules/lib/logger');
+var setup = require('./app/node_modules/config/setup');
 
+var io = socketio.listen(setup.socket_port);
 
 // Connect to database
 mongoose.connect(setup.database);
 
 //Ensure that upload and logging paths exists
-helpers.mkdirpSync(ROOT_PATH + '/uploads/hivtrace', '0750');
-helpers.mkdirpSync(ROOT_PATH + '/uploads/msa', '0750');
-helpers.mkdirpSync(ROOT_PATH + '/logs', '0750');
+helpers.mkdirpSync(__dirname + '/uploads/hivtrace', '0750');
+helpers.mkdirpSync(__dirname + '/uploads/msa', '0750');
+helpers.mkdirpSync(__dirname + '/logs', '0750');
 
 // Main app configuration
 var app = express();
@@ -67,7 +68,7 @@ fs.readdirSync(models_path).forEach(function (file) {
   require(models_path+'/'+file);
 });
 
-require('./config/routes')(app);
+require('./app/node_modules/config/routes')(app);
 app.set('views', __dirname + '/app/templates');
 app.engine('html', require('ejs').renderFile);
 app.use(express.static(__dirname + '/public'));
@@ -80,7 +81,7 @@ logger.info('Listening on port ' + setup.port + '...');
 module.exports = app;
 
 // Set up socket.io server
-var jobproxy = require('./lib/hpcsocket.js');
+var jobproxy = require('./app/node_modules/lib/hpcsocket.js');
 
 io.sockets.on('connection', function (socket) {
   socket.emit('connected');
