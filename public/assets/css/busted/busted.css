@@ -100,3 +100,13 @@
 .phylo-nav .glyphicon {
   font-size: 1em;
 }
+
+.form-group .control-label {
+  text-align: left;  
+}
+
+.form-group .mail-group {
+  padding-left:0px;
+}
+
+

@@ -51,3 +51,32 @@ $(function() {
   });
   
 });
+
+function validateEmail(email) {
+
+  if($(this).find("input[name='receive_mail']")[0].checked) {
+    var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    if(regex.test($(this).find("input[name='mail']").val())) {
+       // Give them green. They like that.
+      $(this).removeClass('has-error');
+      $(this).addClass('has-success');
+      $(this).next('.help-block').remove();
+    } else {
+      $(this).next('.help-block').remove();
+      $(this).removeClass('has-error');
+      $(this).removeClass('has-success');
+      $(this).addClass('has-error');
+      var span = jQuery('<span/>', {
+            class: 'help-block col-lg-9 pull-right',
+            text : 'Invalid Email'
+        }).insertAfter($(this));
+    }
+  } else {
+    $(this).removeClass('has-error');
+    $(this).removeClass('has-success');
+    $(this).next('.help-block').remove();
+  }
+
+}
+
+$( ".mail-group" ).change(validateEmail);
