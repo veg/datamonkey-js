@@ -33,6 +33,8 @@ var extend = require('mongoose-schema-extend');
 var MsaSchema  = require(__dirname + '/msa');
 var AnalysisSchema = require(__dirname + '/analysis');
 
+var setup = require('config/setup');
+
 //TODO: Include an MSA
 var Busted = AnalysisSchema.extend({
   msa                   : [MsaSchema.Msa],
