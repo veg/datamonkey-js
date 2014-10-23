@@ -169,7 +169,8 @@ exports.invokeBusted = function(req, res) {
 
         var connect_callback = function(data) {
           if(data == 'connected') {
-            console.log('connected');
+            // TODO: why is this empty?
+            logger.log('connected');
           }
         }
 
