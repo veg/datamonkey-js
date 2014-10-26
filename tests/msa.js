@@ -30,7 +30,8 @@
 var fs = require('fs'),
     mongoose = require('mongoose'),
     spawn = require('child_process').spawn,
-    setup = require('../config/setup');
+    setup = require('../config/setup'),
+    globals = require('../config/globals');
 
 // Bootstrap models
 require('../app/models/msa');
@@ -43,7 +44,7 @@ describe('msa datareader validation', function() {
   var Msa  = mongoose.model('Msa');
 
   it('should parse msa and have all properties', function(done) {
-    var hyphy =  spawn(setup.hyphy,
+    var hyphy =  spawn(globals.hyphy,
                       [__dirname + "/../lib/bfs/datareader.bf"]);
 
     hyphy.stdout.on('data', function (data) {
@@ -80,7 +81,7 @@ describe('msa datareader validation', function() {
   });
 
   it('should return an error message', function(done) {
-    var hyphy =  spawn(setup.hyphy,
+    var hyphy =  spawn(globals.hyphy,
                       [__dirname + "/../lib/bfs/datareader.bf"]);
 
     hyphy.stdout.on('data', function (data) {

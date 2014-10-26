@@ -208,8 +208,9 @@ Msa.methods.aminoAcidTranslation = function (cb) {
 
 Msa.methods.dataReader = function (file, cb) {
 
-  var hyphy =  spawn(setup.hyphy,
+  var hyphy =  spawn(globals.hyphy,
                     [__dirname + "/../../lib/bfs/datareader.bf"]);
+
 
   var result = '';
 
@@ -469,7 +470,7 @@ Msa.statics.parseHeaderFromMap = function (header, attr_map) {
  * @param fn {String} path to file to be validated
  */
 Msa.statics.validateFasta = function (fn, cb) {
-  var fasta_validator =  spawn(setup.fasta_validator, 
+  var fasta_validator =  spawn(globals.fasta_validator, 
                                [fn]); 
 
   fasta_validator.stderr.on('data', function (data) {
