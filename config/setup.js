@@ -59,5 +59,5 @@ define('database', 'mongodb://localhost/datamonkey-dev');
 define('logger', 'dev');
 define('cluster_ip','http://silverback.ucsd.edu:7000');
 define('fasta_validator', '/home/sweaver/TN93/validate_fasta');
-define('hyphy', '/home/sweaver/bin/hyphy/HYPHYMP');
+define('hyphy', __dirname + '/node_modules/hyphy/HYPHYMP');
 

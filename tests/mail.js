@@ -35,8 +35,7 @@ var fs = require('fs'),
 require('../app/models/busted');
 
 var Busted = mongoose.model('Busted'),
-    mailer = require('../lib/mailer.js'),
-    setup = require('../config/setup');
+    mailer = require('../lib/mailer.js');
 
 describe('mailer', function() {
 
