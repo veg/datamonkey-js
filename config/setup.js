@@ -38,8 +38,6 @@ function define(name, value) {
 //define('database', 'mongodb://localhost/datamonkey-dev-steven');
 //define('logger', 'dev');
 //define('cluster_ip','silverback.ucsd.edu:7010');
-//define('fasta_validator', '/home/sweaver/TN93/validate_fasta');
-//define('hyphy', '/home/sweaver/bin/hyphy/HYPHYMP');
 
 //// QA
 //define('host','datamonkey-dev');
@@ -48,8 +46,6 @@ function define(name, value) {
 //define('database', 'mongodb://localhost/datamonkey-dev-steven');
 //define('logger', 'dev');
 //define('cluster_ip','silverback.ucsd.edu:7010');
-//define('fasta_validator', '/home/sweaver/TN93/validate_fasta');
-//define('hyphy', '/home/sweaver/bin/hyphy/HYPHYMP');
 
 // DEV
 define('host','datamonkey-dev');
@@ -58,6 +54,5 @@ define('socket_port', 4001);
 define('database', 'mongodb://localhost/datamonkey-dev');
 define('logger', 'dev');
 define('cluster_ip','http://silverback.ucsd.edu:7000');
-define('fasta_validator', '/home/sweaver/TN93/validate_fasta');
-define('hyphy', __dirname + '/node_modules/hyphy/HYPHYMP');
+
 
