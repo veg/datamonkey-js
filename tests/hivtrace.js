@@ -41,7 +41,7 @@ var HivTrace = mongoose.model('HivTrace'),
 describe('attribute map check', function() {
 
   it('should return an attribute map', function(done) {
-    var fn = "/home/sweaver/datamonkey/datamonkey-js-dev/tests/res/HIV_B_pol_10k.fa";
+    var fn = __dirname + '/res/HIV_B_pol_10k.fa';
     HivTrace.createAttributeMap(fn, function(err, result) {
 
       err.should.not.be.ok;
@@ -61,7 +61,7 @@ describe('attribute map check', function() {
   });
 
   it('should return an error', function(done) {
-    var fn = "/home/sweaver/datamonkey/datamonkey-js-dev/tests/res/BAD_HIV_B_pol_10k.fa";
+    var fn = __dirname + '/res/BAD_HIV_B_pol_10k.fa';
     HivTrace.createAttributeMap(fn, function(err, result) {
       err.failed_headers[0].should.eql('BUS_M17451_1983');
       done();
@@ -70,7 +70,7 @@ describe('attribute map check', function() {
   });
 
   it('should return an error', function(done) {
-    var fn = "/home/sweaver/datamonkey/datamonkey-js-dev/tests/res/Flu.fasta";
+    var fn = __dirname + '/res/Flu.fasta';
     HivTrace.createAttributeMap(fn, function(err, result) {
       done();
     });
