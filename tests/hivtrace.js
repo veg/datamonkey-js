@@ -40,6 +40,8 @@ var HivTrace = mongoose.model('HivTrace'),
 
 describe('attribute map check', function() {
 
+  this.timeout(5000);
+
   it('should return an attribute map', function(done) {
     var fn = __dirname + '/res/HIV_B_pol_10k.fa';
     HivTrace.createAttributeMap(fn, function(err, result) {
