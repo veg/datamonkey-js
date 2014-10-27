@@ -35,7 +35,6 @@ var error     = require( ROOT_PATH + '/lib/error.js'),
     mailer    = require( ROOT_PATH + '/lib/mailer.js'),
     fs        = require('fs'),
     hpcsocket = require( ROOT_PATH + '/lib/hpcsocket.js'),
-    hiv_setup = require( ROOT_PATH + '/config/hivtrace_globals'),
     setup     = require( ROOT_PATH + '/config/setup');
 
 var mongoose = require('mongoose'),
@@ -57,10 +56,10 @@ exports.uploadFile = function (req, res) {
 
   if(postdata.public_db_compare == 'true') {
     hivtrace.lanl_compare = true;
-    hivtrace.status_stack = hiv_setup.valid_lanl_statuses;
+    hivtrace.status_stack = hivtrace.valid_lanl_statuses;
   } else {
     hivtrace.lanl_compare = false;
-    hivtrace.status_stack = hiv_setup.valid_statuses;
+    hivtrace.status_stack = hivtrace.valid_statuses;
   }
 
   hivtrace.distance_threshold = Number(postdata.distance_threshold);
