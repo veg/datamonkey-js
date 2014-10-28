@@ -1,4 +1,4 @@
-function alignmentViewer(options) {
+function datamonkey_alignment_viewer(options) {
 
   var self = this;
 
@@ -156,3 +156,5 @@ function alignmentViewer(options) {
   return this;
 
 }
+
+datamonkey.alignment_viewer = datamonkey_alignment_viewer;

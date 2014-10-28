@@ -1,63 +1,4 @@
-function compute_shortest_paths(cluster, edges) {
-
-  //// Floyd-Warshall implementation
-  //var distances = {}
-
-  //var nodes =  cluster.nodes;
-  //node_ids = []
-  //nodes.forEach(function(n) { node_ids.push(n.id)});
-
-  //// Step 0: We need to filter out edges that only exist within the cluster
-  //// we're looking at
-  //var new_edges = edges.filter(function(n) { 
-  //  if( node_ids.indexOf(n.sequences[0]) != -1 && node_ids.indexOf(n.sequences[1]) != -1) {
-  //    return true;
-  //  } else {
-  //    return false;
-  //  }
-  // });
-
-  //// Step 1: Initialize distances
-  //nodes.forEach(function(n) { distances[n.id] = {} });
-  //nodes.forEach(function(n) { distances[n.id][n.id] = 0 });
-
-  //// Step 2: Initialize distances with edge weights
-  //new_edges.forEach(function(e){
-  //  distances[e.sequences[0]] = {};
-  //  distances[e.sequences[1]] = {};
-  //});
-
-  //new_edges.forEach(function(e){
-  //  distances[e.sequences[0]][e.sequences[1]] = 1;
-  //  distances[e.sequences[1]][e.sequences[0]] = 1;
-  //});
-
-  //// Step 3: Get shortest paths
-  //nodes.forEach(function(k) {
-  //  nodes.forEach(function(i) {
-  //    nodes.forEach(function(j) {
-  //      if (i.id != j.id) {
-  //        var d_ik = distances[k.id][i.id];
-  //        var d_jk = distances[k.id][j.id];
-  //        var d_ij = distances[i.id][j.id];
-  //        if (d_ik != null &&  d_jk != null) {
-  //          d_ik += d_jk;
-  //          if ( d_ij == null || d_ij > d_ik ) {
-  //            distances[i.id][j.id] = d_ik;
-  //            distances[j.id][i.id] = d_ik;
-  //          }
-  //        }
-  //      }
-  //    });
-  //  });
-  //});
-
-  //return distances;
-  return [];
-
-}
-
-function compute_mean_path (cluster_id, nodes, edges, cluster_sizes) {
+function hivtrace_compute_mean_path(cluster_id, nodes, edges, cluster_sizes) {
 
   //TODO: Create a cluster attribute for the object to pass instead of an id
 
@@ -93,7 +34,8 @@ function compute_mean_path (cluster_id, nodes, edges, cluster_sizes) {
   return mean_path_length;
 }
 
-function compute_node_mean_paths(nodes, edges) {
+function hivtrace_compute_node_mean_paths(nodes, edges) {
+
   //TODO: Create a cluster attribute for the object to pass instead of an id
   // Create a cluster object that is easy to deal with
   var unique_clusters = d3.set(nodes.map(function(d) { return d.cluster })).values();
@@ -104,7 +46,6 @@ function compute_node_mean_paths(nodes, edges) {
   //Object.keys(cluster_map).map(function(d){
   //  cluster_map[d]['size'] = cluster_sizes[parseInt(d)-1];
   //});
-
 
   nodes.map(function(d) { cluster_map[d.cluster]['nodes'].push(d) });
 
@@ -130,4 +71,46 @@ function compute_node_mean_paths(nodes, edges) {
       node.mean_path_length = path_sum / adj_nodes;
     });
   });
+
 }
+
+function hivtrace_compute_node_degrees(nodes, edges) {
+  for (var n in nodes) {
+    nodes[n].degree = 0;
+  }
+  
+  for (var e in edges) {
+    nodes[edges[e].source].degree++;
+    nodes[edges[e].target].degree++;
+  }
+}
+
+function hivtrace_convert_to_csv(obj) {
+  //Translate nodes to rows, and then use d3.format
+  //computeNodeDegrees(obj.Nodes, obj.Edges)
+  //computeMeanPathLengths(obj.Nodes, obj.Edges)
+  //var node_array = obj.Nodes.map(function(d) {return [d.id, d.cluster, d.degree, d.mean_path_length]});
+  var node_array = obj.Nodes.map(function(d) {return [d.id, d.cluster, d.degree]});
+  node_array.unshift(['ID', 'Cluster', 'Degree'])
+  node_csv = d3.csv.format(node_array); 
+  return node_csv;
+}
+
+function hivtrace_export_csv_button(graph, tag) {
+
+  var data = datamonkey.hivtrace.convert_to_csv(graph);
+  if (data != null) {
+    var pom = document.createElement('a');
+    pom.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(data));
+    pom.setAttribute('download', 'export.csv');
+    pom.className = 'btn btn-default btn-sm';
+    pom.innerHTML = '<span class="glyphicon glyphicon-floppy-save"></span> Download CSV';
+    $(tag).append(pom);
+  }
+
+}
+
+datamonkey.hivtrace.compute_node_degrees = hivtrace_compute_node_degrees;
+datamonkey.hivtrace.compute_mean_path = hivtrace_compute_mean_path;
+datamonkey.hivtrace.compute_node_mean_paths = hivtrace_compute_node_mean_paths;
+datamonkey.hivtrace.export_csv_button = hivtrace_export_csv_button;

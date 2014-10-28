@@ -1,55 +1,16 @@
 $(".editable").bind( "click", function() {
-  editable(this);
+  datamonkey.editable(this);
 });
 
-function cancel(self) {
-  $(self).show();
-  $(self).next().remove();
-}
-
-function change(elem, self) {
-  $(self).html($(elem).closest('form').find('input').val());
-  $(self).show();
-  $(self).next().remove();
-}
-
-function editable (self) {
-  $(self).hide();
-  $(self).parent().append(
-    $('<form />', { class: 'form-inline', role: 'form' }).append(
-      $('<span>', { class: 'editable-container editable-inline'}).append(
-        $('<div />', { class: 'editableform-loading' }).append(
-          $('<form />', { class: 'form-inline editableform'}).append(
-            $('<div />', { class: 'editable-input'}).append(
-              $('<input />', { class: 'form-control input-sm', val:  $(self).text()}).append(
-                $('<span />', { class: 'editable-clear-x'})
-              )
-            ),
-            $('<div />', { class: 'editable-buttons'}).append(
-              $('<button />', { class: 'btn btn-primary btn-sm editable-submit', type: 'submit'}).append(
-                $('<i />', { class: 'glyphicon glyphicon-ok'})              
-              ).click(function(e) { change(this, self); }),
-              $('<button />', { class: 'btn btn-primary btn-sm editable-submit', type: 'submit'}).append(
-                $('<i />', { class: 'glyphicon glyphicon-remove'})
-              ).click(function(e) { cancel(self); })
-            ),
-            $('<div />', { class: 'editable-error-block help-block'})
-          )
-        )
-      )
-    )
-  )
-}
-
 $('#attr_submit').bind( 'click', function() {
-  submitNewMap();
+  datamonkey_submit_new_map();
 });
 
 $('#attr_skip').bind('click', function() {
-  submitNewMap();
+  datamonkey_submit_new_map();
 });
 
-function submitNewMap() {
+function datamonkey_submit_new_map() {
   var url = '/msa/' + $('#msa_id').text() + '/save-attributes';
 
   new_map = {};
@@ -71,4 +32,3 @@ function submitNewMap() {
   });
 
 }
-

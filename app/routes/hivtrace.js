@@ -229,14 +229,39 @@ exports.mapAttributes = function (req, res) {
           res.json(200, err);
         }
       });
+    } else if(hivtrace.attribute_map) {
+
+      var hivtrace_map = hivtrace.attribute_map;
+      var headers =  hivtrace.headers;
+      var parsed_attributes = HivTrace.parseHeaderFromMap(headers[0], hivtrace_map);
+      res.format({
+        html: function() {
+          res.render('analysis/hivtrace/attribute_map_assignment.ejs', { 'map'           : hivtrace_map, 
+                                                                         'headers'       : headers, 
+                                                                         'example_parse' : parsed_attributes, 
+                                                                         'hivtrace_id'   : hivtrace._id,
+                                                                         'error'         : err
+                                                                       });
+        },
+        json: function(){
+          res.json(200, { 'map'           : hivtrace_map, 
+                          'headers'       : headers, 
+                          'example_parse' : parsed_attributes, 
+                          'hivtrace_id'   : hivtrace._id, 
+                          'error'         : err
+                          });
+        }
+      });
     } else {
+
       // Validate that the file uploaded was a FASTA file
       HivTrace.createAttributeMap(hivtrace.filepath, function(err, hivtrace_map) {
         parsed_attributes = HivTrace.parseHeaderFromMap(hivtrace_map.headers[0], hivtrace_map);
         res.format({
           html: function() {
-            res.render('analysis/hivtrace/attribute_map_assignment.ejs', { 'map'           : hivtrace_map, 
-                                                                  'example_parse' : parsed_attributes, 
+            res.render('analysis/hivtrace/attribute_map_assignment.ejs', { 'map'  : hivtrace_map,
+                                                                  'example_parse' : parsed_attributes,
+                                                                  'headers'       : hivtrace_map.headers,
                                                                   'hivtrace_id'   : hivtrace._id,
                                                                   'error'         : err
                                                                 });
@@ -244,6 +269,7 @@ exports.mapAttributes = function (req, res) {
           json: function(){
             res.json(200, { 'map'           : hivtrace_map, 
                             'example_parse' : parsed_attributes, 
+                            'headers' : hivtrace_map.headers, 
                             'hivtrace_id'   : hivtrace._id, 
                             'error'         : err
                             });

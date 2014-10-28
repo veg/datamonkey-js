@@ -1,19 +1,15 @@
-$(".editable").bind( "click", function() {
-  editable(this);
-});
-
-function cancel(self) {
+function datamonkey_cancel(self) {
   $(self).show();
   $(self).next().remove();
 }
 
-function change(elem, self) {
+function datamonkey_change(elem, self) {
   $(self).html($(elem).closest('form').find('input').val());
   $(self).show();
   $(self).next().remove();
 }
 
-function editable (self) {
+function datamonkey_editable(self) {
   $(self).hide();
   $(self).parent().append(
     $('<form />', { class: 'form-inline', role: 'form' }).append(
@@ -28,10 +24,10 @@ function editable (self) {
             $('<div />', { class: 'editable-buttons'}).append(
               $('<button />', { class: 'btn btn-primary btn-sm editable-submit', type: 'submit'}).append(
                 $('<i />', { class: 'glyphicon glyphicon-ok'})
-              ).click(function(e) { change(this, self); }),
+              ).click(function(e) { datamonkey_change(this, self); }),
               $('<button />', { class: 'btn btn-primary btn-sm editable-submit', type: 'submit'}).append(
                 $('<i />', { class: 'glyphicon glyphicon-remove'})
-              ).click(function(e) { cancel(self); })
+              ).click(function(e) { datamonkey_cancel(self); })
             ),
             $('<div />', { class: 'editable-error-block help-block'})
           )
@@ -41,36 +37,4 @@ function editable (self) {
   )
 }
 
-$("#attr_submit").bind( "click", function() {
-  submitNewMap();
-});
-
-$("#attr_skip").bind( "click", function() {
-  submitNewMap();
-});
-
-function submitNewMap() {
-
-  var url = '/hivtrace/' + $('#hivtrace_id').text() + '/save-attributes';
-
-  new_map = {};
-  new_map.map = [];
-  new_map.delimiter = $("#delimiter").text()
-                
-  // Collect data
-  for(var i = 0; i < $(".attr_field").length; i++) {
-    new_map.map.push($(".attr_field")[i].text);
-  }
-
-  $.ajax({
-    type: 'POST',
-    url: url,
-    data: new_map,
-    success: function(data) { 
-      window.location.replace('/hivtrace/' + $('#hivtrace_id').text());  
-    }
-  });
-
-}
-
-
+datamonkey.editable = datamonkey_editable;

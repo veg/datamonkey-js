@@ -1,4 +1,4 @@
-function getStyles(doc) {
+function datamonkey_get_styles(doc) {
   var styles = "",
       styleSheets = doc.styleSheets;
 
@@ -29,14 +29,8 @@ function getStyles(doc) {
   return styles;
 }
 
-function default_tree_settings (tree) {
-    tree.branch_length (null);
-    tree.branch_name (null);
-    tree.node_span ('equal');
-    tree.options ({'draw-size-bubbles' : false}, false);
-}
 
-function saveNewickToFile() {
+function datamonkey_save_newick_to_file() {
   var top_modal_container = "#neighbor-tree-modal";
   var nwk = $(top_modal_container).data("tree");
   var pom = document.createElement('a');
@@ -47,8 +41,7 @@ function saveNewickToFile() {
   pom.remove();
 }
 
-
-function convertSVGtoPNG(image_string) {
+function datamonkey_convert_svg_to_png(image_string) {
   var image = document.getElementById("image");
   image.src = image_string;
 
@@ -71,7 +64,7 @@ function convertSVGtoPNG(image_string) {
   }
 }
 
-function saveNewickTree(type) {
+function datamonkey_save_newick_tree(type) {
 
   var prefix = {
     xmlns: "http://www.w3.org/2000/xmlns/",
@@ -81,7 +74,7 @@ function saveNewickTree(type) {
 
   var tree_container = "#tree_container";
   var svg = $("#tree_container").find("svg")[0];
-  var styles = getStyles(window.document);
+  var styles = datamonkey_get_styles(window.document);
 
   svg.setAttribute("version", "1.1");
 
@@ -113,7 +106,7 @@ function saveNewickTree(type) {
   var image_string = 'data:image/svg+xml;base66,' + encodeURIComponent(to_download);
 
   if(type == "png") {
-    convertSVGtoPNG(image_string)
+    datamonkey_convert_svg_to_png(image_string)
   } else {
     var pom = document.createElement('a');
     pom.setAttribute('download', 'phylotree.svg');
@@ -125,73 +118,7 @@ function saveNewickTree(type) {
 
 }
 
-function createNeighborTree() {
-
-  var width                         = 800,
-      height                        = 600,
-      current_selection_name        = $("#selection_name_box").val(),
-      current_selection_id          = 0,
-      max_selections                = 10;
-      color_scheme                  = d3.scale.category10(),
-      selection_menu_element_action = "phylotree_menu_element_action";
-
-
-  var valid_id = new RegExp ("^[\\w]+$");
-  var top_modal_container = "#neighbor-tree-modal";
-  var tree_container = "#tree-body";
-  var newick_container = "#newick-body";
-  var container_id = '#tree_container';
-  $(newick_container).hide().removeClass('hide');
-
-  nwk = $(top_modal_container).data("tree");
-      
-  var tree = d3.layout.phylotree(tree_container)
-      .size([height, width])
-      .separation (function (a,b) {return 0;})
-      .count_handler (function (count) { 
-              $("#selected_branch_counter").text(function (d) {return count[current_selection_name];}); 
-              $("#selected_filtered_counter").text(count.tag);
-          }
-      );
-
-  var svg = d3.select(container_id).append("svg")
-      .attr("width", width)
-      .attr("height", height),
-      svg_defs = svg.append ("defs");
-
-
-  default_tree_settings(tree);
-  tree(nwk).svg(svg).layout();
-
-  $('#newick-view').on('click', function (e) {
-    $(newick_container).toggle()  
-    $(tree_container).toggle()  
-    if($("#newick-body").is(":visible")) {
-      $(this).text("View Tree");
-      $('#save-button').text("Save");
-      $('#save-png-button').hide();
-    } else {
-      $(this).text("View Newick");
-      $('#save-button').text("Save as SVG");
-      $('#save-png-button').show();
-    }
-  });
-
-  $('#save-button').on('click', function (e) {
-    if($("#newick-body").is(":visible")) {
-      saveNewickToFile();
-    } else {
-      saveNewickTree("svg");
-    }
-  });
-
-  $('#save-png-button').on('click', function (e) {
-    saveNewickTree("png");
-  });
-
-}
-
-$( document ).ready( function () {
-  createNeighborTree();
-});
+datamonkey.helpers.save_newick_to_file = datamonkey_save_newick_to_file;
+datamonkey.helpers.convert_svg_to_png = datamonkey_convert_svg_to_png;
+datamonkey.helpers.datamonkey_save_newick_tree = datamonkey_save_newick_tree;
 

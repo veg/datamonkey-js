@@ -144,7 +144,6 @@ function isCountry(supposed_country) {
   return Object.keys(country_codes).indexOf(supposed_country) != -1
 }
 
-
 /**
 * Create an attribute map based off the header files of
 * a FASTA file
@@ -340,6 +339,20 @@ HivTrace.statics.parseHeaderFromMap = function (header, attr_map) {
   }
   return parsed;
 }
+
+
+HivTrace.virtual('headers').get(function () {
+
+  var data = fs.readFileSync(this.filepath);
+  var data = data.toString();
+  var lines = data.split(/(?:\n|\r\n|\r)/g);
+
+  //Collect all headers
+  var headers = lines.filter(function(x) { return x.indexOf('>') != -1 } );
+  var headers = headers.map(function(x) { return x.substring(headers[0].indexOf('>') + 1) } );
+  return headers;
+
+});
 
 HivTrace.virtual('valid_statuses').get(function () {
   return  ['In Queue', 'Aligning', 'Converting to FASTA', 

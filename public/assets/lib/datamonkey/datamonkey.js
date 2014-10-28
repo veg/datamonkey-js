@@ -1,19 +1,18 @@
 var root = this;
 
-var Datamonkey = function () {};
+var datamonkey = function () {};
 
 if (typeof exports !== 'undefined') {
   if (typeof module !== 'undefined' && module.exports) {
     exports = module.exports = Datamonkey;
   }
-  exports.Datamonkey = Datamonkey;
+  exports.datamonkey = datamonkey;
 } else {
-  root.Datamonkey = Datamonkey;
+  root.datamonkey = datamonkey;
 }
 
-Datamonkey.errorModal = function (msg) {
+datamonkey.errorModal = function (msg) {
   $('#modal-error-msg').text(msg);
   $('#errorModal').modal();
 }
-
 

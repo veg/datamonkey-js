@@ -1,4 +1,5 @@
-function render_histogram(graph, histogram_tag, histogram_label) {  
+function hivtrace_histogram(graph, histogram_tag, histogram_label) {  
+
   var defaultFloatFormat = d3.format(",.2f");
   var histogram_w = 300,
   histogram_h = 300;
@@ -16,8 +17,6 @@ function render_histogram(graph, histogram_tag, histogram_label) {
   }
 
   d3.select (histogram_label).html(label);
-  //$('#indicator').hide();
-  //$('#results').show();
 
 }
 
@@ -102,3 +101,5 @@ function hivtrace_render_histogram(counts, fit, w, h, id) {
         
     x_axis.selectAll ("text").attr ("transform", "rotate(45)").attr("dx","1em").attr("dy","0.5em");
 }
+
+datamonkey.hivtrace.histogram = hivtrace_histogram;
