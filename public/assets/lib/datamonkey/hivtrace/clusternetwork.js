@@ -1,8 +1,6 @@
-var _networkGraphAttrbuteID   = "user attributes";
+var _networkGraphAttrbuteID = "user attributes";
 
-
-
-var clusterNetworkGraph = function (json, network_container, network_status_string, network_warning_tag, button_bar_ui, attributes) {
+var hivtrace_cluster_network_graph = function (json, network_container, network_status_string, network_warning_tag, button_bar_ui, attributes) {
 
   var self = this;
     self.nodes = [];
@@ -916,3 +914,5 @@ var clusterNetworkGraph = function (json, network_container, network_status_stri
   initial_json_load();       
   return this;
 }
+
+datamonkey.hivtrace.cluster_network_graph = hivtrace_cluster_network_graph;

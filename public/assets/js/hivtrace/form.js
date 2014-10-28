@@ -1,8 +1,11 @@
 $(document).ready(function(){
+
   $("input[name='public_db_compare']").tooltip()
+
 });
 
 $("form").submit(function(e) {
+
   e.preventDefault();
 
   $('#file-progress').removeClass("hidden");
@@ -66,11 +69,10 @@ $("form").submit(function(e) {
 
   xhr.send(formData);
 
-
 });
 
 // Validate an element that has min and max values
-var validateElement = function () {
+var validate_element = function () {
 
   // Remove any non-numeric characters
   $(this).val($(this).val().replace(/[^\.0-9]/g, ''));
@@ -119,7 +121,7 @@ var validateElement = function () {
  
 }
 
-function validateEmail(email) {
+function validate_email(email) {
 
   if($(this).find("input[name='receive_mail']")[0].checked) {
     var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -146,7 +148,7 @@ function validateEmail(email) {
 
 }
 
-function toggleCompare(obj) {
+function toggle_compare(obj) {
   if ($(this).val() != "HXB2_prrt") {
     $("input[name='public_db_compare']")[0].checked  = false;
     $(".checkbox").hide();
@@ -158,7 +160,7 @@ function toggleCompare(obj) {
   }
 }
 
-function toggleFraction(obj) {
+function toggle_fraction(obj) {
   if ($(this).val() != "RESOLVE") {
     $("input[name='fraction']").val('');
     $("#fraction").hide();
@@ -168,9 +170,9 @@ function toggleFraction(obj) {
   }
 }
 
-$( "input[name='distance_threshold']" ).focusout(validateElement);
-$( "input[name='min_overlap']" ).focusout(validateElement);
-$( "input[name='fraction']" ).focusout(validateElement);
-$( ".mail-group" ).change(validateEmail);
-$( "select[name='reference']" ).change(toggleCompare);
-$( "select[name='ambiguity_handling']" ).change(toggleFraction);
+$( "input[name='distance_threshold']" ).focusout(validate_element);
+$( "input[name='min_overlap']" ).focusout(validate_element);
+$( "input[name='fraction']" ).focusout(validate_element);
+$( ".mail-group" ).change(validate_email);
+$( "select[name='reference']" ).change(toggle_compare);
+$( "select[name='ambiguity_handling']" ).change(toggle_fraction);

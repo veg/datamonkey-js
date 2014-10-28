@@ -1,5 +1,3 @@
-
-
 function siteList(div, test_set) {
 
   // Do not remove headers
@@ -32,8 +30,6 @@ function render_busted_histogram(c, json) {
 
   var test_set = json["test set"].split(",");
   var model_results = [];
-
-  
 
   erc.forEach(function(elem, i) { 
     model_results.push({

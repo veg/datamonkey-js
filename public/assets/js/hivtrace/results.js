@@ -25,9 +25,9 @@ var initialize_cluster_network_graphs = function () {
   d3.json(json_url, function(graph) {
 
     d3.json (window.location.href + "/attributes", function (error, attributes) {
-          var user_graph = new clusterNetworkGraph(graph, network_container, network_status_string, network_warning, button_bar_prefix, attributes);
-          exportCSVButton(graph, csvexport_label);
-          render_histogram(graph, histogram_tag, histogram_label);
+          var user_graph = new datamonkey.hivtrace.cluster_network_graph(graph, network_container, network_status_string, network_warning, button_bar_prefix, attributes);
+          datamonkey.hivtrace.export_csv_button(graph, csvexport_label);
+          datamonkey.hivtrace.histogram(graph, histogram_tag, histogram_label);
       });
   });
 
@@ -45,9 +45,10 @@ var initialize_cluster_network_graphs = function () {
     var json_url = $(lanl_network_container).parent().data('url');
     d3.json(json_url, function(lanl_graph) {
 
-      var lanl_graph_rendered = new clusterNetworkGraph(lanl_graph, lanl_network_container, lanl_network_status_string, lanl_network_warning, lanl_button_bar_prefix);
-      render_histogram(lanl_graph, lanl_histogram_tag, lanl_histogram_label);
-      exportCSVButton (lanl_graph, lanl_csvexport_label);
+      var lanl_graph_rendered = new datamonkey.hivtrace.cluster_network_graph(lanl_graph, lanl_network_container, lanl_network_status_string, lanl_network_warning, lanl_button_bar_prefix);
+      datamonkey.hivtrace.histogram(lanl_graph, lanl_histogram_tag, lanl_histogram_label);
+      datamonkey.hivtrace.export_csv_button(lanl_graph, lanl_csvexport_label);
+
     });
   }
 }
