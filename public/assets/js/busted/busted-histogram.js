@@ -88,7 +88,7 @@ function render_busted_histogram(c, json) {
       .height(300)
       .dimension(site_index)
       .x(d3.scale.linear().domain([1, erc.length]))
-      .yAxisLabel("Ln Evidence Ratio")
+      .yAxisLabel("2 * Ln Evidence Ratio")
       .xAxisLabel("Site Location")
       .legend(dc.legend().x(1020).y(20).itemHeight(13).gap(5))
       .renderHorizontalGridLines(true)
@@ -97,7 +97,7 @@ function render_busted_histogram(c, json) {
           .group(sitesByConstrained, "Constrained")
           .colors(d3.scale.ordinal().range(['green']))
           .valueAccessor(function(d) {
-              return d.value.constrained_evidence;
+              return 2 * d.value.constrained_evidence;
           })
           .keyAccessor(function(d) {
               return d.key;
@@ -105,7 +105,7 @@ function render_busted_histogram(c, json) {
         dc.lineChart(composite)
           .group(sitesByON, "Optimized Null")
           .valueAccessor(function(d) {
-              return d.value.optimized_null_evidence;
+              return 2 * d.value.optimized_null_evidence;
           })
           .keyAccessor(function(d) {
               return d.key;

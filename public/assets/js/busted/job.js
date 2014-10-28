@@ -83,7 +83,7 @@ function setupJob() {
   });
 
   // Error
-  socket.on('error', function (data) {
+  socket.on('script error', function (data) {
     jQuery('<div/>', {
           class: 'alert alert-danger',
           html : 'There was an error! Please try again. Message : <code>' + data.msg + '</code>'
