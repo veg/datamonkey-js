@@ -28,7 +28,11 @@ function setupJob() {
 
   var hivtraceid = $('#hiv-cluster-report').data('hivtraceid')
   var socket_address = $('#hiv-cluster-report').data('socket-address')
-  var socket = io.connect(socket_address);
+  var socket = io.connect(socket_address, {
+        reconnect: false
+      });
+
+  var was_error = false;
 
   var changeStatus = function (data) {
 
@@ -52,6 +56,18 @@ function setupJob() {
     socket.emit('acknowledged', { id: hivtraceid });
 
   });
+
+  socket.on('connect_error', function () {
+    if(!was_error) {
+      was_error = true;
+      datamonkey.errorModal('Could not contact server for job status updates');
+    }
+  });
+
+  socket.on('connect_timeout', function () {
+    datamonkey.errorModal('Could not contact server for job status updates');
+  });
+
 
   // Status update
   socket.on('status update', function (data) {
