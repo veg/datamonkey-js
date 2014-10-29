@@ -1,26 +1,26 @@
+function busted_draw_distribution(node_name, omegas, weights, settings) {
 
-function make_plot_data (omegas, weights) {
+  var make_plot_data = function(omegas, weights) {
 
-  var data_to_plot = [],
-      norm  = weights.reduce (function (p, c) {return p + c;}, 0),
-      mean  = 0.;
-              
-  for (var i = 0; i < omegas.length; i++) {
+    var data_to_plot = [],
+        norm  = weights.reduce (function (p, c) {return p + c;}, 0),
+        mean  = 0.;
+                
+    for (var i = 0; i < omegas.length; i++) {
 
-    if (omegas[i] == null || weights[i] == null) {
-        return;
+      if (omegas[i] == null || weights[i] == null) {
+          return;
+      }
+
+      var this_class = {'omega' : omegas[i], 'weight' : weights[i]/norm};
+      data_to_plot.push (this_class);
+
     }
-    var this_class = {'omega' : omegas[i], 'weight' : weights[i]/norm};
-    data_to_plot.push (this_class);
+
+    return data_to_plot;
 
   }
 
-  return data_to_plot;
-
-}
-
-
-function drawDistribution(node_name, omegas, weights, settings) {
 
   var svg_id = settings["svg"] || "primary-omega-plot",
       tag_id = settings["tag"] || "primary-omega-tag";
@@ -67,6 +67,13 @@ function drawDistribution(node_name, omegas, weights, settings) {
 
   plot.attr("transform", "translate(" + margins["left"] + " , " + margins["top"] + ")");
 
+  var scaling_exponent = 0.33;       
+  var omega_color = d3.scale.pow().exponent(scaling_exponent)                    
+                      .domain([0, 0.25, 1, 5, 10])
+                      .range([ "#5e4fa2", "#3288bd", "#e6f598","#f46d43","#9e0142"])
+                      .clamp(true);
+
+
   var omega_lines = plot.selectAll(".omega-line").data(data_to_plot);
   omega_lines.enter().append("line");
   omega_lines.exit().remove();
@@ -86,7 +93,6 @@ function drawDistribution(node_name, omegas, weights, settings) {
     return omega_color(d.omega);
   })
   .attr("class", "omega-line");
-
 
   var neutral_line = plot.selectAll(".neutral-line").data([1]);
   neutral_line.enter().append("line").attr("class", "neutral-line");
@@ -167,3 +173,5 @@ function drawDistribution(node_name, omegas, weights, settings) {
     .attr("dy", "-1em")
 
 }
+
+datamonkey.busted.draw_distribution = busted_draw_distribution;
