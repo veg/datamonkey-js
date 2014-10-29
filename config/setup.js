@@ -57,7 +57,7 @@ define('port', 4000);
 define('socket_port', 4001);
 define('database', 'mongodb://localhost/datamonkey-dev');
 define('logger', 'dev');
-define('cluster_ip','http://silverback.ucsd.edu:7000');
+define('cluster_ip','http://silverback.ucsd.edu:7010');
 define('fasta_validator', '/home/sweaver/TN93/validate_fasta');
 define('hyphy', __dirname + '/node_modules/hyphy/HYPHYMP');
 

@@ -45,6 +45,7 @@ var AnalysisSchema = new Schema({
   last_status_msg     : Object,
   torque_id           : String,
   sendmail            : Boolean,
+  error_message       : String,
   cpu_time            : Number
 });
 

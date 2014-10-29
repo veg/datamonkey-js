@@ -1,7 +1,7 @@
 var global_test_set;
 
-var width  = 600, //$(container_id).width(),
-    height = 600, //$(container_id).height()
+var width  = 600,
+    height = 600,
     color_scheme = d3.scale.category10(),
     branch_omegas = {},
     branch_p_values = {},
@@ -34,25 +34,6 @@ var omega_color = d3.scale.pow().exponent(scaling_exponent)
                     .range([ "#5e4fa2", "#3288bd", "#e6f598","#f46d43","#9e0142"])
                     .clamp(true);
     
-// *** HANDLERS ***
-//$("#json_file").on ("change", function (e) {
-
-//  // FileList object
-//  var files = e.target.files; 
-//  if (files.length == 1) {
-//    var f = files[0];
-//    var reader = new FileReader();
-//    reader.onload = (function(theFile) {
-//      return function(e) {
-//        analysis_data = JSON.parse (e.target.result);
-//        render_bs_rel (analysis_data);
-//      };
-//    })(f);
-//    reader.readAsText(f);
-//  }
-
-//});
-
 $("#expand_spacing").on("click", function (e) {
   tree.spacing_x (tree.spacing_x() + 1).update(true);
 });
@@ -497,7 +478,6 @@ function init(json) {
 
 
 $( document ).ready( function () {
-
   $(".content").addClass('hidden');
   d3.json ($("#job-report").data('jobid') + '/results', function (json) {
     init(JSON.parse(json.results));
@@ -505,23 +485,4 @@ $( document ).ready( function () {
     $(".loader").addClass('hidden');
     $(".content").removeClass('hidden');
   });
-
-  //$("#json_file").on("change", function (e) {
-  //    var files = e.target.files; // FileList object
-
-  //    if (files.length == 1) {
-  //      var f = files[0];
-  //      var reader = new FileReader();
-
-  //      reader.onload = (function(theFile) {
-  //        return function(e) {
-  //            analysis_data = JSON.parse (e.target.result);
-  //            init(analysis_data);
-  //        };
-  //      })(f);
-
-  //      reader.readAsText(f);
-  //    }
-  //});
-
 });
