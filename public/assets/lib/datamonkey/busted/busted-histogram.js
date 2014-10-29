@@ -1,28 +1,4 @@
-function siteList(div, test_set) {
-
-  // Do not remove headers
-  var trs = d3.select(div).selectAll("tr");
-  trs[0].shift();
-  trs.remove();
-
-  var trs = d3.select(div).selectAll("tr");
-  trs[0].shift();
-
-  var tr = trs
-      .attr("class", "name")
-      .data(test_set)
-      .enter().append("tr");
-
-  var td = tr.append("td")
-        .text(function(d) { return d.name; });
-
-  var td = tr.append("td")
-        .text(function(d) { return d.constrained; });
-
-
-}
-
-function render_busted_histogram(c, json) {
+function busted_render_histogram(c, json) {
 
   // Massage data for use with crossfilter
   var erc = json["evidence ratios"]["constrained"][0];
@@ -158,19 +134,19 @@ function render_busted_histogram(c, json) {
           table.selectAll(".dc-table-group").classed("info", true);
       });
 
-  $("#export-csv").on('click', function(e) { exportCSVButton(site_index.top(Infinity)); } );
+  $("#export-csv").on('click', function(e) { datamonkey.export_csv_button(site_index.top(Infinity)); } );
 
   $("#export-chart-svg").on('click', function(e) { 
     // class manipulation for the image to display correctly
     $("#chart-id").find("svg")[0].setAttribute("class", "dc-chart");
-    saveImage("svg", "#chart-id"); 
+    datamonkey.save_image("svg", "#chart-id"); 
     $("#chart-id").find("svg")[0].setAttribute("class", "");
   });
 
   $("#export-chart-png").on('click', function(e) { 
     // class manipulation for the image to display correctly
     $("#chart-id").find("svg")[0].setAttribute("class", "dc-chart");
-    saveImage("png", "#chart-id"); 
+    datamonkey.save_image("png", "#chart-id"); 
     $("#chart-id").find("svg")[0].setAttribute("class", "");
   });
 
@@ -178,4 +154,5 @@ function render_busted_histogram(c, json) {
 
 }
 
+datamonkey.busted.render_histogram = busted_render_histogram;
 

@@ -40,8 +40,7 @@ function busted_create_neighbor_tree() {
   var svg = d3.select(container_id).append("svg")
       .attr("width", width)
       .attr("height", height),
-      svg_defs = svg.append ("defs");
-
+      svg_defs = svg.append("defs");
 
   default_tree_settings(tree);
   tree(nwk).svg(svg).layout();
