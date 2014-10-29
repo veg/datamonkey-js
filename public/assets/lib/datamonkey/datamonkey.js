@@ -30,8 +30,6 @@ datamonkey.export_csv_button = function(data) {
   }
 }
 
-
-
 datamonkey.save_image = function(type, container) {
 
   var prefix = {

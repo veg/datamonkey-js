@@ -27,7 +27,12 @@ function setupJob() {
 
   var jobid = $('#job-report').data('jobid')
   var socket_address = $('#job-report').data('socket-address')
-  var socket = io.connect(socket_address);
+  var socket = io.connect(socket_address, {
+        reconnect: false
+      });
+
+  var was_error = false;
+
 
   var changeStatus = function (data) {
     //data is index and message
@@ -49,6 +54,17 @@ function setupJob() {
        }
     });
   }
+
+  socket.on('connect_error', function () {
+    if(!was_error) {
+      was_error = true;
+      datamonkey.errorModal('Could not contact server for job status updates');
+    }
+  });
+
+  socket.on('connect_timeout', function () {
+    datamonkey.errorModal('Could not contact server for job status updates');
+  });
 
   socket.on('connected', function () {
     // Start job
