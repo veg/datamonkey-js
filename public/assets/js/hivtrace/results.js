@@ -44,11 +44,9 @@ var initialize_cluster_network_graphs = function () {
 
     var json_url = $(lanl_network_container).parent().data('url');
     d3.json(json_url, function(lanl_graph) {
-
       var lanl_graph_rendered = new datamonkey.hivtrace.cluster_network_graph(lanl_graph, lanl_network_container, lanl_network_status_string, lanl_network_warning, lanl_button_bar_prefix);
       datamonkey.hivtrace.histogram(lanl_graph, lanl_histogram_tag, lanl_histogram_label);
       datamonkey.hivtrace.export_csv_button(lanl_graph, lanl_csvexport_label);
-
     });
   }
 }

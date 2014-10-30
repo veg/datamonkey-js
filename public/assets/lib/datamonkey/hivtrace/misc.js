@@ -98,7 +98,7 @@ function hivtrace_convert_to_csv(obj) {
 
 function hivtrace_export_csv_button(graph, tag) {
 
-  var data = datamonkey.hivtrace.convert_to_csv(graph);
+  var data = hivtrace_convert_to_csv(graph);
   if (data != null) {
     var pom = document.createElement('a');
     pom.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(data));
