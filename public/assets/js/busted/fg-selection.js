@@ -183,4 +183,3 @@ $("#display_dengrogram").on("click", function (e) {
     tree.options({'branches' : 'step'}, true);
 });
 
-

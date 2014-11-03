@@ -1,0 +1,511 @@
+<div class="bs-docs-section">
+
+  <h1 id="data-files" class="page-header">Data Files</h1>
+
+  <h4>General Remarks</h4>
+
+  <p>
+  To perform a selection analysis, datamonkey.org needs a multiple alignment of at
+  least three homologous coding nucleotide sequences.  Codon based methods for
+  estimating dN and dS can be applied to any sequence alignment, but there are
+  several considerations to keep in mind:
+  </p>
+
+  <p>
+  Ideally, the alignment should represent a single gene, or protein product,
+  sampled over multiple taxa (e.g. mammalian interferon genes), or a diverse
+  population sample (e.g. Influenza A viruses infecting different individuals).
+  Because comparative methods estimate relative rates of synonymous and
+  non-synonymous substitution, substantial sequence diversity is needed for
+  reliable inference. For example when, Suzuki and Nei applied a REL-type method
+  to a very low divergence (1 or 2 substitutions per sequence along a star
+  phylogeny) sample of the Human T-lymphotropic virus (HTLV), they found that the
+  method performed poorly. Yang and colleagues have suggested that the total
+  length of the phylogenetic tree should be at least one expected substitution per
+  codon site, but it is impossible to give a generally valid range for desirable
+  sequence divergence. However, sequences that are too divergent could lead to
+  saturation, i.e. our inability to reliably infer branch lengths and substitution
+  parameters.  The number of sequences in the alignment is important: too few
+  sequences will contain too little information for meaningful inference, while
+  too many may take too long to run. At the time of this writing, Datamonkey
+  permits up to 150 sequences for SLAC analyses, 100 for FEL/IFEL analyses, 40 for
+  REL and PARRIS and 25 for GA-Branch. As a rule of thumb, at least 10 sequences
+  are needed to detect selection at a single site (SLAC/FEL/IFEL/REL) with any
+  degree of reliability, while as few as 4 may be sufficient for alignment-wide
+  inference (PARRIS/GA-Branch). The median number of sequences in an alignment
+  submitted to Datamonkey is 19.  Comparative methods are ill suited to study
+  certain kinds of selection. For example, they should not be applied to the
+  detection of selective sweeps (rapid replacement of one allele with a more fit
+  one, resulting in a homogeneous population), unless sequences sampled prior to
+  and following the selective sweep are included in the sample. A number of
+  publications have dealt with this issue extensively (e.g. Selection using
+  HyPhy), and we refer an interested reader to one of these works for further
+  insight.
+  </p>
+
+  <p>
+  It is a good practice to visually inspect your data to make sure that the
+  sequences are alignment correctly. Of course, one can never be sure that an
+  alignment is objectively correct, but gross misalignments (e.g. sequences that
+  are out of frame) are easy to spot with software that provides a graphical
+  visualization of the alignment, such as HyPhy, Se-Al, or BioEdit. Datamonkey
+  uses the HyPhy package as its processing engine, and if an alignment does not
+  open in HyPhy on your machine (using the File:Open:Open Data File command), then
+  it will not be properly read by Datamonkey.
+  </p>
+
+  <p>
+  You should verify that the alignment is in frame, i.e. that it does not contain
+  stop codons, including premature stop codons (indicative of a frame shift, e.g.
+  due to misalignment, or a non-functional coding sequence) and the terminal stop
+  codon. Your alignment should exclude any non-coding region of the nucleotide
+  sequence, such as introns or promoter regions, for which existing models of
+  codon substitution would not apply. When coding nucleotide sequences are aligned
+  directly, frameshifting (i.e. not in multiples of 3) gaps may be inserted, since
+  the alignment program often does not take the coding nature of the sequence into
+  account. Therefore it is generally a good idea to align translated protein
+  sequences and then map them back onto constituent nucleotides. Datamonkey will
+  perform a number of checks when it receives coding sequences and report all
+  problems it encounters.
+  </p>
+
+  <p>
+  If the alignment contains identical sequences, Datamonkey will discard all but
+  one copy before proceeding. This is done to speed up the analyses, because
+  identical sequences do not contribute any information to the likelihood
+  inference procedure (except via base frequencies), but the computational
+  complexity of phylogenetic analyses grows with the number of sequences.
+  </p>
+
+  <p>
+  Finally, Datamonkey may rename some of the sequences to conform to HyPhy naming
+  conventions for technical reasons (all sequence names must be valid identifiers,
+  e.g. they cannot contain spaces). This is done automatically and has no effect
+  on the subsequent analyses.
+  </p>
+
+  <h4>Common issues</h4>
+
+  <div class="bs-callout bs-callout-danger">
+    <h4>Non-text files</h4>
+    Datamonkey expects sequence alignments to be uploaded as text files. Any other
+    format (Word, RTF, PDF) will not be recognized and must be converted into plain
+    text prior to submission. 
+  </div>
+
+  <div class="bs-callout bs-callout-danger">
+    <h4>Nonstandard characters in the alignment</h4>
+    For instance, BioEdit may use the tilde ('~') character to denote a gap. The
+    dot ('.') character is sometimes used as "match the first sequence" character
+    and sometimes as the gap character. Datamonkey will accept 
+    <a  href='http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html#300'>IUPAC nucleotide characters</a> (ACGT/U and ambiguity characters) and
+    '?', 'X', 'N' or '-' for gap or missing data (Datamonkey is not case
+    sensitive). All other characters in sequence data will be skipped and could
+    result in frame shifts.
+  </div>
+
+  <div class="bs-callout bs-callout-danger">
+    <h4>Uploading an amino-acid alignment</h4>
+    Datamonkey employs codon models which require the knowledge of silent substitutions, lost upon translation to amino-acids. 
+  </div>
+
+  <div class="bs-callout bs-callout-danger">
+    <h4>Termination codons</h4>
+    Datamonkey will reject any alignments that contains stop codons, even if the
+    stop codon is at the end of the sequence (i.e. is a proper termination codon).
+    Please strip all stop codons out of the alignment prior to uploading it (the
+    HyPhy standard analysis <tt>Data File Tools:CleanStopCodons.bf</tt> can do this
+    by replacing all stop codons with indels).
+  </div>
+
+  <div class="bs-callout bs-callout-danger">
+    <h4>Alignments that are too gappy</h4>
+    If an alignment contains more than 50% of indels, it may not be properly
+    processed (e.g. it could be read as a protein alignment, depending on the
+    alignment format).
+  </div>
+
+  <div class="bs-callout bs-callout-danger">
+    <h4>Alignments that are too large</h4>
+    If your alignment exceeds the size currently allowed by Datamonkey, consider
+    running your analysis locally in HyPhy.  A detailed discussion of how HyPhy can
+    be used for that purpose can be found in <a
+    href='http://www.hyphy.org/pubs/hyphybook2007.pdf' CLASS =
+    'REFERENCE'>Selection using HyPhy</a>.
+  </div>
+
+  <div class="bs-callout bs-callout-danger">
+    <h4>Incorrect genetic code</h4>
+    If the genetic code is misspecified (e.g. the mitochondrial code is applied to
+    nuclear sequences), valid alignments may fail to upload and if they do, then
+    the results may be compromised (because codons are mistranslated). Make sure
+    the correct genetic code is selected on the data upload page.
+  </div>
+
+  <h3 id="data-types" class="page-header">Data Types</h3>
+  <p>Sequence types accepted by various Datamonkey components. Available analyses are automatically determined by the server based on the contents of the alignment and user description from the upload page.</p>
+
+  <table class="table table-bordered table-striped">
+    <tr>
+      <th>Analysis</th><th>Sequence Type</th><th>Comments</th>
+    </tr>
+    <tr>
+      <td>HIV Trace</td>
+      <td>Nucleotide</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>BUSTED</td>
+      <td>Protein</td>
+      <td></td>
+    </tr>
+  </table>
+
+</div>
+
+<h3 id="genetic-codes" class="page-header">Genetic Codes</h3>
+
+<h4>Universal Genetic Code</h4>
+<table class="table table-bordered table-striped">
+  <tr>
+    <td><B>Amino acid</B></td> 
+    <td><B>Codons</B></td>
+  </tr>
+  <tr>
+    <td>Phe</td> 
+    <td>TTC,TTT</td> 
+  </tr>
+  <tr>
+    <td>Leu</td> 
+    <td>CTA,CTC,CTG,CTT,TTA,TTG</td> 
+  </tr>
+  <tr>
+    <td>Ile</td> 
+    <td>ATA,ATC,ATT</td> 
+  </tr>
+  <tr>
+    <td>Met</td> 
+    <td>ATG</td> 
+  </tr>
+  <tr>
+    <td>Val</td> 
+    <td>GTA,GTC,GTG,GTT</td> 
+  </tr>
+  <tr>
+    <td>Ser</td> 
+    <td>AGC,AGT,TCA,TCC,TCG,TCT</td> 
+  </tr>
+  <tr>
+    <td>Pro</td> 
+    <td>CCA,CCC,CCG,CCT</td> 
+  </tr>
+  <tr>
+    <td>Thr</td> 
+    <td>ACA,ACC,ACG,ACT</td> 
+  </tr>
+  <tr>
+    <td>Ala</td> 
+    <td>GCA,GCC,GCG,GCT</td> 
+  </tr>
+  <tr>
+    <td>Tyr</td> 
+    <td>TAC,TAT</td> 
+  </tr>
+  <tr>
+    <td>His</td> 
+    <td>CAC,CAT</td> 
+  </tr>
+  <tr>
+    <td>Gln</td> 
+    <td>CAA,CAG</td> 
+  </tr>
+  <tr>
+    <td>Asn</td> 
+    <td>AAC,AAT</td> 
+  </tr>
+  <tr>
+    <td>Lys</td> 
+    <td>AAA,AAG</td> 
+  </tr>
+  <tr>
+    <td>Asp</td> 
+    <td>GAC,GAT</td> 
+  </tr>
+  <tr>
+    <td>Glu</td> 
+    <td>GAA,GAG</td> 
+  </tr>
+  <tr>
+    <td>Cys</td> 
+    <td>TGC, TGT</td> 
+  </tr>
+  <tr>
+    <td>Trp</td> 
+    <td>TGG</td> 
+  </tr>
+  <tr>
+    <td>Arg</td> 
+    <td>AGA,AGG,CGA,CGC,CGG,CGT</td> 
+  </tr>
+  <tr>
+    <td>Gly</td> 
+    <td>GGA,GGC,GGG,GGT</td> 
+  </tr>
+  <tr>
+    <td>Stop</td>
+    <td>TAA,TAG,TGA</td> 
+  </tr>
+</table></P>
+
+<div class="bs-callout bs-callout-warning">
+  <p>
+    Other genetic codes are defined in terms of differences with the Universal
+    code.
+  </p>
+</div>
+
+
+<table class="table table-bordered table-striped">
+<h4>Vertebrate mtDNA</h4>
+  <tr>
+    <td><B>Codon</B></td> 
+    <td><B>New translation</B></td> 
+  </tr>
+  <tr>
+    <td>AGA</td> 
+    <td>Stop</td> 
+  </tr>
+  <tr>
+    <td>AGG</td> 
+    <td>Stop</td> 
+  </tr>
+  <tr>
+    <td>ATA</td> 
+    <td>Met</td> 
+  </tr>
+  <tr>
+    <td>TGA</td> 
+    <td>Trp</td> 
+  </tr>
+</table>
+
+<h4>Yeast mtDNA</h4>
+<table class="table table-bordered table-striped">
+  <tr>
+    <td><B>Codon</B></td> 
+    <td><B>New translation</B></td> 
+  </tr>
+  <tr>
+    <td>ATA</td> 
+    <td>Met</td> 
+  </tr>
+  <tr>
+    <td>CTA</td> 
+    <td>Thr</td> 
+  </tr>
+  <tr>
+    <td>CTC</td> 
+    <td>Thr</td> 
+  </tr>
+  <tr>
+    <td>CTG</td> 
+    <td>Thr</td> 
+  </tr>
+  <tr>
+    <td>CTT</td> 
+    <td>Thr</td> 
+  </tr>
+  <tr>
+    <td>TGA</td> 
+    <td>Trp</td> 
+  </tr>
+</table>
+
+<h4>Mold, Protozoan and Coelenterate mtDNA</h4>
+<table class="table table-bordered table-striped">
+  <tr>
+    <td><B>Codon</B></td> 
+    <td><B>New translation</B></td> 
+  </tr>
+  <tr>
+    <td>TGA</td> 
+    <td>Trp</td> 
+  </tr>
+</table>
+
+<h4>Invertebrate mtDNA</h4>
+<table class="table table-bordered table-striped">
+  <tr>
+    <td><B>Codon</B></td> 
+    <td><B>New translation</B></td> 
+  </tr>
+  <tr>
+    <td>AGA</td> 
+    <td>Ser</td> 
+  </tr>
+  <tr>
+    <td>AGG</td> 
+    <td>Ser</td> 
+  </tr>
+  <tr>
+    <td>ATA</td> 
+    <td>Met</td> 
+  </tr>
+  <tr>
+    <td>TGA</td> 
+    <td>Trp</td> 
+  </tr>
+</table>
+
+<h4>Ciliate Nuclear Code</h4>
+
+<table class="table table-bordered table-striped">
+  <tr>
+    <td><B>Codon</B></td> 
+    <td><B>New translation</B></td> 
+  </tr>
+  <tr>
+    <td>TAA</td> 
+    <td>Gln</td> 
+  </tr>
+  <tr>
+    <td>TAG</td> 
+    <td>Gln</td> 
+  </tr>
+</table>
+
+<h4>Echinoderm mtDNA</h4>
+<table class="table table-bordered table-striped">
+  <tr>
+    <td><B>Codon</B></td> 
+    <td><B>New translation</B></td> 
+  </tr>
+  <tr>
+    <td>AAA</td> 
+    <td>Asn</td> 
+  </tr>
+  <tr>
+    <td>AGA</td> 
+    <td>Ser</td> 
+  </tr>
+  <tr>
+    <td>AGG</td> 
+    <td>Ser</td> 
+  </tr>
+  <tr>
+    <td>TGA</td> 
+    <td>Trp</td> 
+  </tr>
+</table></P>
+
+<h4>Euplotid mtDNA</h4>
+<table class="table table-bordered table-striped">
+  <tr>
+    <td><B>Codon</B></td> 
+    <td><B>New translation</B></td> 
+  </tr>
+  <tr>
+    <td>TGA</td> 
+    <td>Cys</td> 
+  </tr>
+</table></P>
+
+<h4>Alternative Yeast Nuclear</h4>
+<table class="table table-bordered table-striped">
+  <tr>
+    <td><B>Codon</B></td> 
+    <td><B>New translation</B></td> 
+  </tr>
+  <tr>
+    <TD HEIGHT="19">CTG</td> 
+    <td>Ser</td> 
+  </tr>
+</table></P>
+
+<h4>Ascidian mtDNA</h4>
+<table class="table table-bordered table-striped">
+  <tr>
+    <td><B>Codon</B></td> 
+    <td><B>New translation</B></td> 
+  </tr>
+  <tr>
+    <td>AGA</td> 
+    <td>Gly</td> 
+  </tr>
+  <tr>
+    <td>AGG</td> 
+    <td>Gly</td> 
+  </tr>
+  <tr>
+    <td>AGG</td> 
+    <td>Met</td> 
+  </tr>
+  <tr>
+    <td>TGA</td> 
+    <td>Trp</td> 
+  </tr>
+</table>
+
+<h4>Flatworm mtDNA</h4>
+<table class="table table-bordered table-striped">
+  <tr>
+    <td><B>Codon</B></td> 
+    <td><B>New translation</B></td> 
+  </tr>
+  <tr>
+    <td>AAA</td> 
+    <td>Asn</td> 
+  </tr>
+  <tr>
+    <td>AGA</td> 
+    <td>Ser</td> 
+  </tr>
+  <tr>
+    <td>AGG</td> 
+    <td>Ser</td> 
+  </tr>
+  <tr>
+    <td>TAA</td> 
+    <td>Tyr</td> 
+  </tr>
+  <tr>
+    <td>TGA</td> 
+    <td>Trp</td> 
+  </tr>
+</table></P>
+
+<h4>Blepharisma Nuclear</h4>
+<table class="table table-bordered table-striped">
+  <tr>
+    <td><B>Codon</B></td> 
+    <td><B>New translation</B></td> 
+  </tr>
+  <tr>
+    <td>TAG</td> 
+    <td>Gln</td> 
+  </tr>
+</table>
+
+<h3 id="data-formats" class="page-header">Data Formats</h3>
+
+<p>Datamonkey automatically recognizes five aligned sequence data formats and also autodetects whether the data is nucleotide (codon) or aminoacid.</p>
+
+<div class="bs-callout bs-callout-warning">
+  <h4>NEXUS</h4>
+  <p>The following NEXUS blocks are supported: <code>DATA</code>, <code>CHARACTERS</code>,<code>TAXA</code>, <code>ASSUMPTIONS</code> (for data partitioning) and <code>TREES</code>.</p>
+</div>
+
+<div class="bs-callout bs-callout-warning">
+  <h4>PHYLIP</h4>
+  <p>PHYLIP option characters in the first line are ignored for both sequential and interleaved formats.</p>
+</div>
+
+<div class="bs-callout bs-callout-warning">
+  <h4>FASTA</h4>
+  <ul>
+  <li><b>Sequential:</b> Taxa names are preceded by <code>></code> (or <code>#</code>), and complete sequence data follow the name of the taxon.</li>
+  <li><b>Interleaved:</b> List of taxa names preceded by <code>></code> (or <code>#_ </code>, and blocks of sequence data follow in the same order as the names of the taxa.</li>
+  </ul>
+</div>
+
+For examples of each format, please visit the <a href="http://hyphy.org/w/index.php/DATA_FILE_PRINT_FORMAT">hyphy wiki page</a>

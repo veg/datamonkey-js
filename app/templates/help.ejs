@@ -1,79 +1,54 @@
 <%- include includes/header.ejs %>
 
-<div role="complementary" class="bs-sidebarhidden-print">
-
-<ul class="nav bs-sidenav navbar-help col-sm-2">
-
-  <li class="active"><a href="#general" data-toggle="tab">General</a></li>
-  <li class="">Uploading Files</li>
-  <li class=""><a href="#preparing-data" data-toggle="tab">Preparing Data</a></li>
-  <li class=""><a href="#data-types" data-toggle="tab">Data Types</a></li>
-  <li class=""><a href="#genetic-code" data-toggle="tab">Genetic Code</a></li>
-  <li class=""><a href="#data-formats" data-toggle="tab">Data Formats</a></li>
-
-  <li class="">Analyzing Data</li>
-  <li class=""><a href="#nucleotide-models" data-toggle="tab">Nucleotide Models</a></li>
-  <li class=""><a href="#rooting" data-toggle="tab">Rooting</a></li>
-  <li class=""><a href="#dnds" data-toggle="tab">dN/DS</a></li>
-  <li class=""><a href="#ambiguities" data-toggle="tab">Handling Ambiguities</a></li>
-  <li class=""><a href="#pvalue" data-toggle="tab">Significance Levels</a></li>
-  <li class=""><a href="#aminoacidproperty" data-toggle="tab">Amino Acid Property Set</a></li>
-  <li class=""><a href="#ratevariation" data-toggle="tab">Rate Variation</a></li>
-
-  <li class="">HIV TRACE</li>
-  <li class=""><a href="#hivtrace-overview" data-toggle="tab">Overview</a></li>
-
-</ul>
-
-<div class="tab-content col-sm-8">
-  <div id="general" class="tab-pane col-sm-10 active">
-    <%- include includes/help/general.ejs %>
-  </div>
-
-  <!-- Uploading Files -->
-  <div id="preparing-data" class="tab-pane col-sm-10">
-    <%- include includes/help/uploads/preparingdata.ejs %>
-  </div>
-  <div id="data-types" class="tab-pane col-sm-10">
-    <%- include includes/help/uploads/datatypes.ejs %>
-  </div>
-  <div id="genetic-code" class="tab-pane col-sm-10">
-    <%- include includes/help/uploads/geneticcode.ejs %>
-  </div>
-  <div id="data-formats" class="tab-pane col-sm-10">
-    <%- include includes/help/uploads/dataformats.ejs %>
-  </div>
-
-  <!-- HIV TRACE -->
-  <div id="hivtrace-overview" class="tab-pane col-sm-10">
-    <%- include includes/help/hivtrace/general.ejs %>
+<div id="help-container" class="container">
+  <div class="help-content tab-content col-sm-8">
+    <%- include includes/help/datafiles.ejs %>
+    <%- include includes/help/analyzing_data.ejs %>
+    <%- include includes/help/hivtrace.ejs %>
+    <%- include includes/help/busted.ejs %>
   </div>
 
 
-  <!-- Analyzing Data -->
-  <div id="nucleotide-models" class="tab-pane col-sm-10">
-    <%- include includes/help/analysis/nucleotide_models.ejs %>
-  </div>
-  <div id="rooting" class="tab-pane col-sm-10">
-    <%- include includes/help/analysis/rooting.ejs %>
-  </div>
-  <div id="dnds" class="tab-pane col-sm-10">
-    <%- include includes/help/analysis/dnds.ejs %>
-  </div>
-  <div id="ambiguities" class="tab-pane col-sm-10">
-    <%- include includes/help/analysis/ambiguities.ejs %>
-  </div>
-  <div id="pvalue" class="tab-pane col-sm-10">
-    <%- include includes/help/analysis/significance.ejs %>
-  </div>
-  <div id="aminoacidproperty" class="tab-pane col-sm-10">
-    <%- include includes/help/analysis/aminoacidproperty.ejs %>
-  </div>
-  <div id="ratevariation" class="tab-pane col-sm-10">
-    <%- include includes/help/analysis/ratevariation.ejs %>
-  </div>
+  <!--Nav Bar -->
+  <nav id="sidebar" class="col-xs-3 bs-docs-sidebar pull-right">
+    <ul class="nav nav-stacked fixed">
+      <li>
+        <a href="#data-files">Data Files</a>
+        <ul class="nav nav-stacked">
+            <li><a href="#data-types">Data Types</a></li>
+            <li><a href="#genetic-codes">Genetic Codes</a></li>
+            <li><a href="#data-formats">Data Formats</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#analyzing-data">Analyzing Data</a>
+        <ul class="nav nav-stacked">
+          <li><a href="#nucleotide-selection">Selecting a nucleotide model</a></li>
+          <li><a href="#rooting">Rooting</a></li>
+          <li><a href="#ambiguities">Ambiguities</a></li>
+          <li><a href="#significance-levels">Significance Levels</a></li>
+          <li><a href="#amino-acid-properties">Amino Acid Property Set</a></li>
+          <li><a href="#rate-variation">Rate Variation</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#hivtrace">HIV Trace</a>
+        <ul class="nav nav-stacked">
+          <li><a href="#hivtrace-usage">Usage</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#busted">BUSTED</a>
+        <ul class="nav nav-stacked">
+          <li><a href="#busted-usage">Usage</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
 </div>
-</div>
+
+
 <span class="clear"></span>
+<script src="/assets/js/help.js"></script>
 <%- include includes/footer.ejs %>
 
