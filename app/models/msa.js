@@ -36,7 +36,8 @@ var mongoose    = require('mongoose'),
     fs          = require('fs'),
     seqio       = require( '../../lib/biohelpers/sequenceio.js'),
     country_codes = require( '../../config/country_codes.json'),
-    subtypes      = require( '../../config/subtypes.json');
+    subtypes      = require( '../../config/subtypes.json'),
+    logger        = require('../../lib/logger');
 
 
 var ident = {
@@ -185,7 +186,6 @@ Msa.methods.AnalysisCount = function (cb) {
 
 };
 
-
 Msa.methods.aminoAcidTranslation = function (cb) {
   var self = this;
 
@@ -205,7 +205,6 @@ Msa.methods.aminoAcidTranslation = function (cb) {
 
 };
 
-
 Msa.methods.dataReader = function (file, cb) {
 
   var hyphy =  spawn(globals.hyphy,
@@ -223,7 +222,7 @@ Msa.methods.dataReader = function (file, cb) {
     try {
       results = JSON.parse(result);
     } catch(e) {
-      cb("An unexpected error occured when parsing the sequence alignment! Here is the full traceback : " + data, {});
+      cb("An unexpected error occured when parsing the sequence alignment! Here is the full traceback : " + result, {});
     }
 
     if(results != undefined) {
@@ -484,6 +483,67 @@ Msa.statics.validateFasta = function (fn, cb) {
       cb({success: true});
     }
   }); 
+}
+
+Msa.statics.validateFasta = function (fn, cb) {
+  var fasta_validator =  spawn(globals.fasta_validator, 
+                               [fn]); 
+
+  fasta_validator.stderr.on('data', function (data) {
+    // Failed return the error
+    cb({success: false, msg: String(data).replace(/(\r\n|\n|\r)/gm,"")});
+  }); 
+
+  fasta_validator.on('close', function (code) {
+    // Check the error code, but probably success!
+    if(code != 1) {
+      cb({success: true});
+    }
+  }); 
+}
+
+Msa.statics.parseFile = function(fn, datatype, gencodeid, cb) {
+
+  var msa = new this;
+
+  msa.datatype  = datatype;
+  msa.gencodeid = gencodeid;
+
+  msa.dataReader(fn, function(err, result) {
+
+    if(err) {
+      logger.error(err);
+      cb(err, null)
+      return;
+    }
+
+    var fpi        = result.FILE_PARTITION_INFO;
+    var file_info  = result.FILE_INFO;
+    msa.partitions = file_info.partitions;
+    msa.gencodeid  = file_info.gencodeid;
+    msa.sites      = file_info.sites;
+    msa.sequences  = file_info.sequences;
+    msa.timestamp  = file_info.timestamp;
+    msa.goodtree   = file_info.goodtree;
+    msa.nj         = file_info.nj;
+    msa.rawsites   = file_info.rawsites;
+    var sequences  = result.SEQUENCES;
+    msa.sequence_info = [];
+
+    var Sequences = mongoose.model('Sequences', Sequences);
+    for (i in sequences) {
+      var sequences_i = new Sequences(sequences[i]);
+      msa.sequence_info.push(sequences_i);
+    }
+
+    //Ensure that all information is there
+    var PartitionInfo = mongoose.model('PartitionInfo', PartitionInfo);
+    var partition_info = new PartitionInfo(fpi);
+    msa.partition_info = partition_info;
+    cb(null, msa)
+
+  });
+
 }
 
 module.exports = mongoose.model('Msa', Msa);

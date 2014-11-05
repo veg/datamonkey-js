@@ -118,7 +118,35 @@ function datamonkey_save_newick_tree(type) {
 
 }
 
+function datamonkey_validate_email(email) {
+  if($(this).find("input[name='receive_mail']")[0].checked) {
+    var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    if(regex.test($(this).find("input[name='mail']").val())) {
+       // Give them green. They like that.
+      $(this).removeClass('has-error');
+      $(this).addClass('has-success');
+      $(this).next('.help-block').remove();
+    } else {
+      $(this).next('.help-block').remove();
+      $(this).removeClass('has-error');
+      $(this).removeClass('has-success');
+      $(this).addClass('has-error');
+      var span = jQuery('<span/>', {
+            class: 'help-block col-lg-9 pull-right',
+            text : 'Invalid Email'
+        }).insertAfter($(this));
+    }
+  } else {
+    $(this).removeClass('has-error');
+    $(this).removeClass('has-success');
+    $(this).next('.help-block').remove();
+  }
+
+}
+
+datamonkey.helpers = function(){};
 datamonkey.helpers.save_newick_to_file = datamonkey_save_newick_to_file;
 datamonkey.helpers.convert_svg_to_png = datamonkey_convert_svg_to_png;
-datamonkey.helpers.datamonkey_save_newick_tree = datamonkey_save_newick_tree;
+datamonkey.helpers.save_newick_tree = datamonkey_save_newick_tree;
+datamonkey.helpers.validate_email = datamonkey_validate_email;
 

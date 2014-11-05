@@ -66,8 +66,16 @@ module.exports = function(app) {
   app.get('/busted/:bustedid', busted.getBusted);
   app.get('/busted/:bustedid/results', busted.getBustedResults);
 
-  ////app.get('/msa/:msaid/busted/:bustedid/status', busted.getStatus);
-  ////app.delete('/msa/:msaid/busted/:bustedid', busted.deletebusted);
+  // RELAX ROUTES
+  relax = require( ROOT_PATH + '/app/routes/relax');
+  app.get('/relax', relax.createForm);
+  app.post('/relax/uploadfile', relax.uploadFile);
+  app.get('/relax/:id/select-foreground', relax.selectForeground);
+  app.post('/relax/:id/select-foreground', relax.invokeRelax);
+  app.get('/relax/:relaxid', relax.getRelax);
+  app.get('/relax/:relaxid/results', relax.getRelaxResults);
+  ////app.get('/msa/:msaid/relax/:relaxid/status', relax.getStatus);
+  ////app.delete('/msa/:msaid/relax/:relaxid', relax.deleterelax);
 
   // STATS ROUTES
   stats = require( ROOT_PATH + '/app/routes/stats');

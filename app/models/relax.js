@@ -33,10 +33,11 @@ var mongoose = require('mongoose'),
 
 var AnalysisSchema = require(__dirname + '/analysis');
 
-var Busted = AnalysisSchema.extend({
+var Relax = AnalysisSchema.extend({
   msa                   : [MsaSchema.Msa],
   treemode              : Number,
   tagged_nwk_tree       : String,
+  analysis_type         : Number,
   mail                  : String,
   results               : Object
 });
@@ -44,7 +45,7 @@ var Busted = AnalysisSchema.extend({
 /**
  * Filename of document's file upload
  */
-Busted.virtual('status_stack').get(function () {
+Relax.virtual('status_stack').get(function () {
   return ['In Queue', 
           'Running',
           'Completed'];
@@ -53,16 +54,17 @@ Busted.virtual('status_stack').get(function () {
 /**
  * Complete file path for document's file upload
  */
-Busted.virtual('filepath').get(function () {
+Relax.virtual('filepath').get(function () {
   return __dirname + '/../../uploads/msa/' + this._id + '.fasta';
 });
 
 /**
  * URL for a busted path
  */
-Busted.virtual('url').get(function () {
+Relax.virtual('url').get(function () {
   return 'http://' + setup.host + '/busted/' + this._id;
 });
 
 
-module.exports = mongoose.model('Busted', Busted);
+module.exports = mongoose.model('Relax', Relax);
+

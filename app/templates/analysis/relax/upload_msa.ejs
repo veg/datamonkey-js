@@ -1,0 +1,122 @@
+<%- include ../../includes/header.ejs %>
+
+<link href="/assets/lib/datamonkey/relax/ui/css/datamonkey.relax.css" rel="stylesheet">
+
+<div id="container" class="container">
+  <h2 class="page-header">Upload a Sequence Alignment</h2>
+  <div class="nav nav-list pull-right span4i"><a href="/help" target="_blank">I'm confused</a></div>
+  <div class="row col-lg-9">  
+
+    <form class="form-horizontal upload-form" name="uploadform" enctype="multipart/form-data" method="post">
+
+      <div id="seq-file-div" class="upload-div">
+          <input id="seq-file" type="file" name="files">
+          <div id="file-progress" class="progress progress-striped active hidden">
+              <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="1" aria-valuemax="100" style="width: <%= hivtrace.percentage_complete %>">
+                <span class="sr-only">0% Complete</span>
+              </div>
+          </div>  
+      </div>
+
+      <div class="upload-div">
+        <label id="datatype-content">Data Type<a href="/help#data-types" target="_blank"><sup>?</sup></a></label> 
+        <select name="datatype">
+          <option selected value="0">
+            Codon
+          </option>
+          <option value="1">
+            Nucleotide (DNA/RNA)
+          </option>
+          <option value="2">
+            Protein
+          </option>
+        </select> 
+      </div>
+
+      <div class="upload-div">
+        <label id="geneticcode-content">Genetic Code<a href="/help#genetic-code" target="_blank"><sup>?</sup></a></label>
+        <select name="gencodeid">
+
+          <option value="0">
+            Universal code
+          </option>
+
+          <option value="1">
+            Vertebrate mitochondrial DNA code
+          </option>
+
+          <option value="2">
+            Yeast mitochondrial DNA code
+          </option>
+
+          <option value="3">
+            Mold, Protozoan and Coelenterate mt;
+            Mycloplasma/Spiroplasma
+          </option>
+
+          <option value="4">
+            Invertebrate mitochondrial DNA code
+          </option>
+
+          <option value="5">
+            Ciliate, Dasycladacean and Hexamita Nuclear code
+          </option>
+
+          <option value="6">
+            Echinoderm mitochondrial DNA code
+          </option>
+
+          <option value="7">
+            Euplotid Nuclear code
+          </option>
+
+          <option value="8">
+            Alternative Yeast Nuclear code
+          </option>
+
+          <option value="9">
+            Ascidian mitochondrial DNA code
+          </option>
+
+          <option value="10">
+            Flatworm mitochondrial DNA code
+          </option>
+
+          <option value="11">
+            Blepharisma Nuclear code
+          </option>
+
+        </select> 
+      </div>
+
+      <div class="form-group <%if (typeof errors != "undefined" && typeof errors.mail != "undefined") { %>has-error<% } %>">
+        <label id="datatype-content" class="col-lg-3 control-label">Notify When Completed?</label>
+        <div class="col-lg-9 input-group mail-group">
+          <span class="input-group-addon">
+            <input name="receive_mail" type="checkbox" value="on" checked>
+          </span>
+          <input name="mail" type="text" class="form-control" placeholder="Email Address">
+        </div>
+      </div><!-- /form-group -->
+      <button id="upload-button" type="submit" class="btn btn-primary pull-right">Continue</button>
+    </form>
+  </div>
+
+</div>
+
+<div aria-labelledby="errorModalLabel" role="dialog" id="errorModal" class="modal ng-scope">
+  <div class="modal-dialog"><div class="modal-content">
+    <div class="modal-header dialog-header-error">
+      <button data-dismiss="modal" class="close" type="button">×</button>
+      <h4 class="modal-title text-danger"><span class="glyphicon glyphicon-warning-sign"></span> Error</h4>
+      </div>
+      <div id="modal-error-msg" class="modal-body text-danger">This is my error message</div>
+      <div class="modal-footer">
+        <button data-dismiss="modal" class="btn btn-primary" type="button">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include ../../includes/footer.ejs %>
+<script src="/assets/js/relax/msa_form.js"></script>

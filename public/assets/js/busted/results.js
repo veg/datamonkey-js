@@ -68,14 +68,17 @@ function init(json) {
 }
 
 $( document ).ready( function () {
+
   $(".content").addClass('hidden');
   d3.json ($("#job-report").data('jobid') + '/results', function (json) {
+
     init(JSON.parse(json.results));
 
     var svg = d3.select('#tree_container').select("svg");
     add_dc_legend(svg);
     $(".loader").addClass('hidden');
     $(".content").removeClass('hidden');
+
   });
 
 });

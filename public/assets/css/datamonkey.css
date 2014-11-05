@@ -383,3 +383,65 @@ span.glyphicon {
 .help-content .jumbotron {
   margin-top: 50px;
 }
+
+#neighbor-tree {
+  margin-bottom : 50px;
+}
+
+.phylotree-header {
+  padding-left: 15px; 
+}
+
+.export-btn-group {
+  margin-left: 5px;
+}
+
+.export-save-row {
+  margin-top: 5px;
+}
+
+#chart-image {
+  display:none;
+}
+
+#chart-canvas {
+  display:none;
+}
+
+.loader{
+  margin: 0 0 2em;
+  height: 100px;
+  width: 100%;
+  text-align: center;
+  padding: 1em;
+  margin: 0 auto 1em;
+  display: inline-block;
+  vertical-align: top;
+  flex-align: center;
+  flex-pack: center;
+}
+
+
+
+.loader svg path,
+.loader svg rect{
+  fill: #FF6700;
+}
+
+.form-group .control-label {
+  text-align: left;  
+}
+
+.form-group .mail-group {
+  padding-left:0px;
+}
+
+.phylo-nav {
+  padding-top:5px;
+}
+
+.phylo-nav .glyphicon {
+  font-size: 1em;
+}
+
+

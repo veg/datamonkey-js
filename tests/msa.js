@@ -140,3 +140,24 @@ describe('hyphy friendly', function() {
   });
 
 });
+
+describe('parse file', function() {
+
+  it('should return a well formed msa', function(done) {
+
+    var msa = new Msa;
+    var datatype  = 0;
+    var gencodeid = globals.genetic_code[0];
+    var fn = __dirname + '/res/Flu.fasta';
+
+    Msa.parseFile(fn, datatype, gencodeid, function(err, result) {
+      result.sequence_info.should.have.length(21);
+      result.sites.should.eql(566);
+      result.sequences.should.eql(21);
+      done();
+    });
+
+  });
+
+});
+

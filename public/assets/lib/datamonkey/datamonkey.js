@@ -41,21 +41,25 @@ datamonkey.save_image = function(type, container) {
   function get_styles(doc) {
 
     function process_stylesheet(ss) {
-      if (ss.cssRules) {
-        for (var i = 0; i < ss.cssRules.length; i++) {
-          var rule = ss.cssRules[i];
-          if (rule.type === 3) {
-            // Import Rule
-            process_stylesheet(rule.styleSheet);
-          } else {
-            // hack for illustrator crashing on descendent selectors
-            if (rule.selectorText) {
-              if (rule.selectorText.indexOf(">") === -1) {
-                styles += "\n" + rule.cssText;
+      try {
+        if (ss.cssRules) {
+          for (var i = 0; i < ss.cssRules.length; i++) {
+            var rule = ss.cssRules[i];
+            if (rule.type === 3) {
+              // Import Rule
+              process_stylesheet(rule.styleSheet);
+            } else {
+              // hack for illustrator crashing on descendent selectors
+              if (rule.selectorText) {
+                if (rule.selectorText.indexOf(">") === -1) {
+                  styles += "\n" + rule.cssText;
+                }
               }
             }
           }
         }
+      } catch (e) {
+        console.log('Could not process stylesheet : ' + ss);
       }
     }
 
@@ -99,6 +103,10 @@ datamonkey.save_image = function(type, container) {
 
 
   var svg = $(container).find("svg")[0];
+  if (!svg) {
+    svg = $(container)[0];
+  }
+
   var styles = get_styles(window.document);
 
   svg.setAttribute("version", "1.1");
