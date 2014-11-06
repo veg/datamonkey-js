@@ -37,14 +37,6 @@ var AnalysisSchema = require(__dirname + '/analysis');
 var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
-var Fel = AnalysisSchema.extend({
-  modelstring : {type: String},
-  treemode    : {type: Number},
-  pvalue      : {type: Number},
-  felresults : [FelResults],
-  felsummary : [FelSummary]
-});
-
 var FelResults = new Schema({
   codon      : Number,
   ds         : Number,
@@ -60,6 +52,15 @@ var FelSummary = new Schema({
   col_key   : String,
   col_value : String
 });
+
+var Fel = AnalysisSchema.extend({
+  modelstring : {type: String},
+  treemode    : {type: Number},
+  pvalue      : {type: Number},
+  felresults : [FelResults],
+  felsummary : [FelSummary]
+});
+
 
 module.exports = mongoose.model('Fel', Fel);
 module.exports = mongoose.model('FelResults', FelResults);

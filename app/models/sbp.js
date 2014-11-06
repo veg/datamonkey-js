@@ -28,58 +28,58 @@
 */
 
 
-var SlacScheme = require(__dirname + '/slac');
-var GardScheme = require(__dirname + '/gard');
+//var SlacScheme = require(__dirname + '/slac');
+//var GardScheme = require(__dirname + '/gard');
 
-var mongoose = require('mongoose'),
-    extend = require('mongoose-schema-extend');
+//var mongoose = require('mongoose'),
+//    extend = require('mongoose-schema-extend');
 
-var AnalysisSchema = require(__dirname + '/analysis');
+//var AnalysisSchema = require(__dirname + '/analysis');
   
-var Schema = mongoose.Schema,
-    ObjectId = Schema.ObjectId;
+//var Schema = mongoose.Schema,
+//    ObjectId = Schema.ObjectId;
 
-var Mixed = mongoose.Schema.Types.Mixed;
+//var Mixed = mongoose.Schema.Types.Mixed;
 
-var Sbp = AnalysisSchema.extend({
-  //ratematrix  : Mixed,  //Protein
-  //frequencies : Number, //Protein
-  rateoption  : {type: Number},
-  rateclasses : {type: Number},
-  modelstring : String, //Non-protein
-  sbpsummary  : [SbpSummary],
-  sbptrees    : [SbpTrees],
-  slacmodel   : [SlacScheme.SlacModel],
-  gardsplits  : [GardScheme.GardSplits],
-  gardsummary : [GardScheme.GardSummary],
-  garddetails : [GardScheme.GardDetails],
-});
+//var SbpTrees = new Schema({
+//  _creator    : { type   : Schema.Types.ObjectId, ref : 'Sbp' },
+//  site        : Number,
+//  tree1       : String,
+//  tree2       : String,
+//  tree1length : Number,
+//  tree2length : Number,
+//  aic         : Number,
+//  caic        : Number,
+//  bic         : Number,
+//  waic        : Number,
+//  wcaic       : Number,
+//  wbic        : Number,
+//  splitsmatch : Number,
+//  rf          : Number
+//});
 
-var SbpTrees = new Schema({
-  _creator    : { type   : Schema.Types.ObjectId, ref : 'Sbp' },
-  site        : Number,
-  tree1       : String,
-  tree2       : String,
-  tree1length : Number,
-  tree2length : Number,
-  aic         : Number,
-  caic        : Number,
-  bic         : Number,
-  waic        : Number,
-  wcaic       : Number,
-  wbic        : Number,
-  splitsmatch : Number,
-  rf          : Number
-});
+//var SbpSummary = new Schema({
+//  _creator : { type: Schema.Types.ObjectId, ref: 'Sbp' },
+//  col_key   : String,
+//  col_value : String
+//});
 
-var SbpSummary = new Schema({
-  _creator : { type: Schema.Types.ObjectId, ref: 'Sbp' },
-  col_key   : String,
-  col_value : String
-});
+//var Sbp = AnalysisSchema.extend({
+//  //ratematrix  : Mixed,  //Protein
+//  //frequencies : Number, //Protein
+//  rateoption  : {type: Number},
+//  rateclasses : {type: Number},
+//  modelstring : String, //Non-protein
+//  sbpsummary  : [SbpSummary],
+//  sbptrees    : [SbpTrees],
+//  slacmodel   : [SlacScheme.SlacModel],
+//  gardsplits  : [GardScheme.GardSplits],
+//  gardsummary : [GardScheme.GardSummary],
+//  garddetails : [GardScheme.GardDetails],
+//});
 
-module.exports = mongoose.model('Sbp', Sbp);
-module.exports = mongoose.model('SbpTrees', SbpTrees);
-module.exports = mongoose.model('SbpSummary', SbpSummary);
+//module.exports = mongoose.model('Sbp', Sbp);
+//module.exports = mongoose.model('SbpTrees', SbpTrees);
+//module.exports = mongoose.model('SbpSummary', SbpSummary);
 
 

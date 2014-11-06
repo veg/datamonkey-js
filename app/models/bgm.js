@@ -28,35 +28,36 @@
 */
 
 //Also needs to include status, and results
-var mongoose = require('mongoose'),
-    extend = require('mongoose-schema-extend');
 
-var AnalysisSchema = require(__dirname + '/analysis');
+//var mongoose = require('mongoose'),
+//    extend = require('mongoose-schema-extend');
 
-var SlacSchema = require(__dirname + '/slac');
+//var AnalysisSchema = require(__dirname + '/analysis');
 
-var Schema = mongoose.Schema,
-  ObjectId = Schema.ObjectId;
+//var SlacSchema = require(__dirname + '/slac');
 
-var Bgm = AnalysisSchema.extend({
-  bgmmodel            : [BgmModel],
-  slacmutation        : [SlacSchema.SlacMutation],
-  slactrees           : [SlacSchema.SlacTrees],
-  //Parameters
-  modelstring : {type: String, require: true},
-  pvalue      : {type: Number, require: true},
-  dnds        : {type: Number, require: true},
-  ambchoice   : {type: Number, require: true},
-  //treemode    : Number,
-  //roptions    : Number,
-});
+//var Schema = mongoose.Schema,
+//  ObjectId = Schema.ObjectId;
 
-var BgmModel = new Schema({
-  _creator : { type: Schema.Types.ObjectId, ref: 'Bgm' },
-  model : String,
-  treemode : String
-});
+//var BgmModel = new Schema({
+//  _creator : { type: Schema.Types.ObjectId, ref: 'Bgm' },
+//  model : String,
+//  treemode : String
+//});
 
-module.exports = mongoose.model('Bgm', Bgm);
-module.exports = mongoose.model('BgmModel', BgmModel);
+//var Bgm = AnalysisSchema.extend({
+//  bgmmodel            : [BgmModel],
+//  slacmutation        : [SlacSchema.SlacMutation],
+//  slactrees           : [SlacSchema.SlacTrees],
+//  //Parameters
+//  modelstring : {type: String, require: true},
+//  pvalue      : {type: Number, require: true},
+//  dnds        : {type: Number, require: true},
+//  ambchoice   : {type: Number, require: true},
+//  //treemode    : Number,
+//  //roptions    : Number,
+//});
+
+//module.exports = mongoose.model('Bgm', Bgm);
+//module.exports = mongoose.model('BgmModel', BgmModel);
 

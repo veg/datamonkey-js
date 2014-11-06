@@ -37,16 +37,17 @@ var AnalysisSchema = require(__dirname + '/analysis');
 var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
-var Gabranch = AnalysisSchema.extend({
-  modelstring : {type: String},
-  treemode    : {type: Number},
-  gabsummary : [GabSummary]
-});
-
 var GabSummary = new Schema({
   _creator  : { type: Schema.Types.ObjectId, ref: 'Meme' },
   col_key   : String,
   col_value : String
+});
+
+
+var Gabranch = AnalysisSchema.extend({
+  modelstring : {type: String},
+  treemode    : {type: Number},
+  gabsummary : [GabSummary]
 });
 
 module.exports = mongoose.model('Gabranch', Gabranch);

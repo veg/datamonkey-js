@@ -37,11 +37,6 @@ var AnalysisSchema = require(__dirname + '/analysis');
 var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
-var Bsrel = AnalysisSchema.extend({
-  treemode   : {type: Number},
-  bsrresults : [BsrResults],
-});
-
 var BsrResults = new Schema({
   branch     : String,
   mean       : Number,
@@ -60,6 +55,12 @@ var BsrelSummary = new Schema({
   col_key   : String,
   col_value : String
 });
+
+var Bsrel = AnalysisSchema.extend({
+  treemode   : {type: Number},
+  bsrresults : [BsrResults],
+});
+
 
 module.exports = mongoose.model('Bsrel', Bsrel);
 module.exports = mongoose.model('BsrResults', BsrResults);

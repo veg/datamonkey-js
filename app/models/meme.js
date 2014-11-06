@@ -37,16 +37,6 @@ var AnalysisSchema = require(__dirname + '/analysis');
 var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
-
-var Meme = AnalysisSchema.extend({
-  modelstring           : {type: String},
-  treemode              : {type: Number},
-  pvalue                : {type: Number},
-  memeresults           : [MemeResults],
-  mememappings          : [MemeMappings],
-  memesummary           : [MemeSummary]
-});
-
 var MemeResults = new Schema({
   codon   : Number,
   beta1   : Number,
@@ -73,6 +63,15 @@ var MemeMappings = new Schema({
 var MemeSummary = new Schema({
   col_key   : String,
   col_value : String
+});
+
+var Meme = AnalysisSchema.extend({
+  modelstring           : {type: String},
+  treemode              : {type: Number},
+  pvalue                : {type: Number},
+  memeresults           : [MemeResults],
+  mememappings          : [MemeMappings],
+  memesummary           : [MemeSummary]
 });
 
 Meme.index({ id: 1 });

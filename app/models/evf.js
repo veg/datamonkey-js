@@ -37,15 +37,6 @@ var AnalysisSchema = require(__dirname + '/analysis');
 var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
-var Evf = AnalysisSchema.extend({
-  treemode            : {type: Number},
-  evfsamples          : [EvfSamples],
-  evfposteriorsamples : [EvfPosteriorSamples],
-  evfposteriors       : [EvfPosteriors],
-  evfsummary          : [EvfSummary],
-  evfrateinfosummary  : [EvfRateInfoSummary],
-});
-
 var EvfSamples = new Schema({
   _creator : { type: Schema.Types.ObjectId, ref: 'Evf' },
 });
@@ -64,6 +55,15 @@ var EvfSummary = new Schema({
 
 var EvfRateInfoSummary = new Schema({
   _creator : { type: Schema.Types.ObjectId, ref: 'Evf' },
+});
+
+var Evf = AnalysisSchema.extend({
+  treemode            : {type: Number},
+  evfsamples          : [EvfSamples],
+  evfposteriorsamples : [EvfPosteriorSamples],
+  evfposteriors       : [EvfPosteriors],
+  evfsummary          : [EvfSummary],
+  evfrateinfosummary  : [EvfRateInfoSummary],
 });
 
 module.exports = mongoose.model('Evf', Evf);

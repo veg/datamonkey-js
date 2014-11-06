@@ -36,11 +36,6 @@ var AnalysisSchema = require(__dirname + '/analysis');
 var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
 
-var Scueal = AnalysisSchema.extend({
-  reference              : {type: String},
-  scuealsubtypingresults : [ScuealSubtypingResults],
-});
-
 var ScuealSubtypingResults = new Schema({
   id                : String,
   file_index        : Number,
@@ -53,6 +48,12 @@ var ScuealSubtypingResults = new Schema({
   breakpoints       : String,
   sequence          : String
 });
+
+var Scueal = AnalysisSchema.extend({
+  reference              : {type: String},
+  scuealsubtypingresults : [ScuealSubtypingResults],
+});
+
 
 module.exports = mongoose.model('Scueal', Scueal);
 module.exports = mongoose.model('ScuealSubtypingResults', ScuealSubtypingResults);

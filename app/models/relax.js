@@ -34,7 +34,7 @@ var mongoose = require('mongoose'),
 var AnalysisSchema = require(__dirname + '/analysis');
 
 var Relax = AnalysisSchema.extend({
-  msa                   : [MsaSchema.Msa],
+  msa                   : [MsaSchema],
   treemode              : Number,
   tagged_nwk_tree       : String,
   analysis_type         : Number,
@@ -67,4 +67,3 @@ Relax.virtual('url').get(function () {
 
 
 module.exports = mongoose.model('Relax', Relax);
-

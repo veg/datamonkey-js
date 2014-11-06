@@ -37,15 +37,6 @@ var AnalysisSchema = require(__dirname + '/analysis');
 var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
-var Cms = AnalysisSchema.extend({
-  modelstring           : {type: String},
-  treemode              : {type: Number},
-  cmssummary            : [CmsSummary],
-  cmsbyresidue          : [CmsByresidue],
-  rateclassbics         : [Rateclassbics],
-  crediblemodelssummary : [CrediblemodelsSummary],
-  crediblemodelsrates   : [CrediblemodelsRates]
-});
 
 var CmsSummary = new Schema({
   col_value : String,
@@ -88,6 +79,16 @@ var CrediblemodelsRates = new Schema({
   residue_idx2 : Number,
   subs_rate    : Number
 })
+
+var Cms = AnalysisSchema.extend({
+  modelstring           : {type: String},
+  treemode              : {type: Number},
+  cmssummary            : [CmsSummary],
+  cmsbyresidue          : [CmsByresidue],
+  rateclassbics         : [Rateclassbics],
+  crediblemodelssummary : [CrediblemodelsSummary],
+  crediblemodelsrates   : [CrediblemodelsRates]
+});
 
 module.exports = mongoose.model('Cms', Cms);
 module.exports = mongoose.model('Rateclassbics', Rateclassbics);

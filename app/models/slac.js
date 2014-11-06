@@ -37,18 +37,6 @@ var AnalysisSchema = require(__dirname + '/analysis');
 var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
-var Slac = AnalysisSchema.extend({
-  pvalue       : {type: Number},
-  dnds         : {type: Number},
-  ambchoice    : {type: Number},
-  modelstring  : {type: String},
-  slacsummary  : [SlacSummary],
-  slacmutation : [SlacMutation],
-  slactrees    : [SlacTrees],
-  slacmodel    : [SlacModel],
-  slacresults  : [SlacResults],
-});
-
 var SlacTrees = new Schema({
   _creator    : { type   : Schema.Types.ObjectId, ref : 'Slac' },
   site        : Number,
@@ -102,6 +90,18 @@ var SlacResults = new Schema({
 var SlacSummary = new Schema({
   col_key   : String,
   col_value : String
+});
+
+var Slac = AnalysisSchema.extend({
+  pvalue       : {type: Number},
+  dnds         : {type: Number},
+  ambchoice    : {type: Number},
+  modelstring  : {type: String},
+  slacsummary  : [SlacSummary],
+  slacmutation : [SlacMutation],
+  slactrees    : [SlacTrees],
+  slacmodel    : [SlacModel],
+  slacresults  : [SlacResults],
 });
 
 module.exports = mongoose.model('Slac', Slac);

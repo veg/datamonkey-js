@@ -37,14 +37,6 @@ var AnalysisSchema = require(__dirname + '/analysis');
 var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
-var Ifel = AnalysisSchema.extend({
-  modelstring : {type: String, require: true},
-  treemode    : {type: Number, require: true},
-  pvalue      : {type: Number, require: true},
-  ifelresults : [IfelResults],
-  ifelsummary : [IfelSummary]
-});
-
 var IfelResults = new Schema({
   codon      : Number,
   ds         : Number,
@@ -59,6 +51,14 @@ var IfelResults = new Schema({
 var IfelSummary = new Schema({
   col_key   : String,
   col_value : String
+});
+
+var Ifel = AnalysisSchema.extend({
+  modelstring : {type: String, require: true},
+  treemode    : {type: Number, require: true},
+  pvalue      : {type: Number, require: true},
+  ifelresults : [IfelResults],
+  ifelsummary : [IfelSummary]
 });
 
 module.exports = mongoose.model('Ifel', Ifel);

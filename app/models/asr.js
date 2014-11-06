@@ -38,22 +38,6 @@ var Schema = mongoose.Schema,
 
 var Mixed = mongoose.Schema.Types.Mixed;
 
-var Asr = AnalysisSchema.extend({
-  //Parameters
-  //ratematrix  : Mixed,  //For protein data
-  //frequencies : Number, //For protein data
-  modelstring : String, //For non-protein data
-  rateoption  : {type: Number, require: true}, //Required 
-  rateclasses : {type: Number, require: true}, //Required
-  treemode    : Number,
-  //root        : Number
-  asrresiduestable   : [AsrResiduesTable],
-  asrpartitiontables : [AsrPartitionTables],
-  asrmarginaldump    : [AsrMarginalDump],
-  asrsampleddump     : [AsrSampledDump],
-  asrsummary         : [AsrSummary]
-});
-
 var AsrParameters = new Schema({
   //ratematrix  : Mixed,  //For protein data
   //frequencies : Number, //For protein data
@@ -110,6 +94,24 @@ var AsrSummary = new Schema({
   col_key   : String,
   col_value : String
 });
+
+
+var Asr = AnalysisSchema.extend({
+  //Parameters
+  //ratematrix  : Mixed,  //For protein data
+  //frequencies : Number, //For protein data
+  modelstring : String, //For non-protein data
+  rateoption  : {type: Number, require: true}, //Required 
+  rateclasses : {type: Number, require: true}, //Required
+  treemode    : Number,
+  //root        : Number
+  asrresiduestable   : [AsrResiduesTable],
+  asrpartitiontables : [AsrPartitionTables],
+  asrmarginaldump    : [AsrMarginalDump],
+  asrsampleddump     : [AsrSampledDump],
+  asrsummary         : [AsrSummary]
+});
+
 
 module.exports = mongoose.model('Asr', Asr);
 module.exports = mongoose.model('AsrParameters', AsrParameters);

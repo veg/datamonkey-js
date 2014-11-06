@@ -40,13 +40,6 @@ var Schema = mongoose.Schema,
 
 var Mixed = mongoose.Schema.Types.Mixed;
 
-var Prime = AnalysisSchema.extend({
-  treemode              : Number,
-  property_choice       : {type: Number},
-  primeresults          : [PrimeResults],
-  primesummary          : [PrimeSummary]
-});
-
 var PrimeResults = new Schema({
   codon     : Number,
   attribute : String,
@@ -58,9 +51,14 @@ var PrimeSummary = new Schema({
   col_value : String
 });
 
-/**
- * Filename of document's file upload
- */
+var Prime = AnalysisSchema.extend({
+  treemode              : Number,
+  property_choice       : {type: Number},
+  primeresults          : [PrimeResults],
+  primesummary          : [PrimeSummary]
+});
+
+// Filename of document's file upload
 Prime.virtual('status_stack').get(function () {
   return ['In Queue', 
           'Running',
