@@ -60,6 +60,22 @@ function notEmptyValidator (val) {
 var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
+var PartitionInfo = new Schema({
+    _creator   : { type : Schema.Types.ObjectId, ref : 'Msa' },
+    partition  : Number,
+    startcodon : Number,
+    endcodon   : Number,
+    span       : Number,
+    usertree   : String
+});
+
+var Sequences = new Schema({
+    _creator : { type : Schema.Types.ObjectId, ref : 'Msa' },
+    seqindex : Number,
+    name     : String
+});
+
+
 var Msa = new Schema({
     datatype       : {type : Number, require : true},
     partition_info : [PartitionInfo],
@@ -74,21 +90,6 @@ var Msa = new Schema({
     nj             : String,
     mailaddr       : String,
     created        : {type : Date, default : Date.now}
-});
-
-var PartitionInfo = new Schema({
-    _creator   : { type : Schema.Types.ObjectId, ref : 'Msa' },
-    partition  : Number,
-    startcodon : Number,
-    endcodon   : Number,
-    span       : Number,
-    usertree   : String
-});
-
-var Sequences = new Schema({
-    _creator : { type : Schema.Types.ObjectId, ref : 'Msa' },
-    seqindex : Number,
-    name     : String
 });
 
 Msa.virtual('genetic_code').get(function () {
