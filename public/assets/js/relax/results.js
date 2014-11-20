@@ -22,14 +22,6 @@ $( document ).ready( function () {
     $(".content").removeClass('hidden');
   });
 
-  //TODO : Change these to data- binds
-  $("#export-primary-omega-svg").on('click', function(e) { 
-    datamonkey.save_image("svg", "#primary_omega_plot"); 
-  });
-
-  $("#export-primary-omega-png").on('click', function(e) { 
-    datamonkey.save_image("png", "#primary_omega_plot"); 
-  });
 
   $("#export-phylo-svg").on('click', function(e) { 
     datamonkey.save_image("svg", "#tree_container"); 
@@ -39,8 +31,4 @@ $( document ).ready( function () {
     datamonkey.save_image("png", "#tree_container"); 
   });
 
-
-
 });
-
-

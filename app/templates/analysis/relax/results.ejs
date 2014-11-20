@@ -83,53 +83,34 @@
                        </li>
                      </ul>
               </div>
-
           </div>
              <div class = "row">
-                  <div class = "col-lg-6">
-                     <div class="panel panel-default" id = 'primary_omega_plot_container' style = 'display : none'>
-                      <div class="panel-heading">
-                        <h3 class="panel-title">&omega; distributions under the <strong>Alternative</strong> model</h3>
-                        <p>
-                          <small>Test branches are shown in <span style = 'color: #d62728;'>red</span> and reference branches are shown in <span style = 'color:#1f77b4;'>blue</span></small>
-                        </p>
-                        <div class="btn-group">
-                          <button id="export-primary-omega-svg" type="button" class="btn btn-default btn-sm">
-                            <span class="glyphicon glyphicon-floppy-save"></span> SVG
-                          </button>
-                          <button id="export-primary-omega-png" type="button" class="btn btn-default btn-sm">
-                            <span class="glyphicon glyphicon-floppy-save"></span> PNG
-                          </button>
+                  <div id="omega-plots" class="col-lg-12">
+                    <script type="text/template" class="omega-plots">
+                      {% _.each(rc, function(item, key) { %}
+                        <div class="panel panel-default" id='{{ item.key }}'>
+                          <div class="panel-heading">
+                            <h3 class="panel-title">&omega; distributions under the <strong>{{ item.label }}</strong> model</h3>
+                            <p>
+                              <small>Test branches are shown in <span class="datamonkey-blue">blue</span> and reference branches are shown in <span class=datamonkey-red>red</span></small>
+                            </p>
+                            <div class="btn-group">
+                              <button id="export-{{ item.key }}-svg" type="button" class="btn btn-default btn-sm">
+                                <span class="glyphicon glyphicon-floppy-save"></span> SVG
+                              </button>
+                              <button id="export-{{ item.key }}-png" type="button" class="btn btn-default btn-sm">
+                                <span class="glyphicon glyphicon-floppy-save"></span> PNG
+                              </button>
+                            </div>
+                          </div>
+                          <div class="panel-body">
+                            <svg id = {{ item.key }}-svg />
+                          </div>
                         </div>
-                      </div>
-                      <div class="panel-body">
-                        <svg id = 'primary_omega_plot'/>
-                      </div>
-                    </div>
-                  </div>
-                  <div class = "col-lg-6">
-                     <div class="panel panel-default" id = 'secondary_omega_plot_container' style = 'display : none'>
-                      <div class="panel-heading">
-                        <h3 class="panel-title">&omega; distributions under the <strong>Partitioned Exploratory</strong> model</h3>
-                        <small>Test branches are shown in <span style = 'color: #d62728;'>red</span> and reference branches are shown in <span style = 'color:#1f77b4;'>blue</span></small>
-                      </div>
-
-                      <div class="btn-group">
-                        <button id="export-dist-svg" type="button" class="btn btn-default btn-sm">
-                          <span class="glyphicon glyphicon-floppy-save"></span> SVG
-                        </button>
-                        <button id="export-dist-png" type="button" class="btn btn-default btn-sm">
-                          <span class="glyphicon glyphicon-floppy-save"></span> PNG
-                        </button>
-                      </div>
-
-                      <div class="panel-body">
-                        <svg id = 'secondary_omega_plot'/>
-                      </div>
-                    </div>
-                  </div>
-            </div>
-
+                      {% }) %}
+                    </script>
+                </div>
+             </div>
         </div>
 
         <div class = 'tab-pane' id = "datamonkey-relax-tree-tab">

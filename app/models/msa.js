@@ -2,7 +2,7 @@
 
   Datamonkey - An API for comparative analysis of sequence alignments using state-of-the-art statistical models.
 
-  Copyright (C) 2013
+  Copyright (C) 2014
   Sergei L Kosakovsky Pond (spond@ucsd.edu)
   Steven Weaver (sweaver@ucsd.edu)
 
@@ -74,7 +74,6 @@ var Sequences = new Schema({
     seqindex : Number,
     name     : String
 });
-
 
 var Msa = new Schema({
     datatype       : {type : Number, require : true},
@@ -155,6 +154,7 @@ MsaModel.schema.path('mailaddr').validate(function (value) {
     return true;
   }
 }, 'Invalid email');
+
 
 Msa.methods.AnalysisCount = function (cb) {
 
@@ -547,7 +547,33 @@ Msa.statics.parseFile = function(fn, datatype, gencodeid, cb) {
 
 }
 
-module.exports = mongoose.model('Msa', Msa);
-module.exports = mongoose.model('PartitionInfo', PartitionInfo);
-module.exports = mongoose.model('Sequences', Sequences);
+Msa.statics.scrubUserTree = function(fn, cb) {
 
+  // Match newick tree
+
+  fs.readFile(fn, function (err, data) {
+    if (err) {
+      cb(err);
+    }
+
+    // Split data sequences out
+    var seq_array = seqio.parseFile(data.toString());
+    var translated_arr = seqio.translateSequenceArray(seq_array, self.gencodeid.toString());
+    var translated_fasta = seqio.toFasta(translated_arr);
+
+    cb(null, translated_fasta);
+
+  });
+
+}
+
+
+
+exports = {
+  MsaSchema : Msa,
+  Msa : mongoose.model('Msa', Msa),
+  PartitionInfo :  mongoose.model('PartitionInfo', PartitionInfo),
+  Sequences :  mongoose.model('Sequences', Sequences)
+}
+
+module.exports = exports;

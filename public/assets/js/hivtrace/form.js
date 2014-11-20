@@ -1,7 +1,5 @@
 $(document).ready(function(){
-
   $("input[name='public_db_compare']").tooltip()
-
 });
 
 $("form").submit(function(e) {

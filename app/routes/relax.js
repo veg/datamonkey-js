@@ -1,7 +1,7 @@
 /*
   Datamonkey - An API for comparative analysis of sequence alignments using state-of-the-art statistical models.
 
-  Copyright (C) 2013
+  Copyright (C) 2014
   Sergei L Kosakovsky Pond (spond@ucsd.edu)
   Steven Weaver (sweaver@ucsd.edu)
 
@@ -58,9 +58,11 @@ exports.uploadFile = function(req, res) {
   Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
 
     var relax = new Relax;
+
     relax.msa = msa;
 
     relax.save(function (err, relax_result) {
+
       if(err) {
         logger.error("relax save failed");
         logger.error(err);

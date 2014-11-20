@@ -421,8 +421,6 @@ span.glyphicon {
   flex-pack: center;
 }
 
-
-
 .loader svg path,
 .loader svg rect{
   fill: #FF6700;
@@ -443,5 +441,4 @@ span.glyphicon {
 .phylo-nav .glyphicon {
   font-size: 1em;
 }
-
 

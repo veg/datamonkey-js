@@ -27,14 +27,14 @@
 
 */
 
-var mongoose = require('mongoose'),
-    extend = require('mongoose-schema-extend'),
-    MsaSchema  = require(__dirname + '/msa');
+var mongoose  = require('mongoose'),
+    extend    = require('mongoose-schema-extend'),
+    Msa       = require(__dirname + '/msa');
 
 var AnalysisSchema = require(__dirname + '/analysis');
 
 var Relax = AnalysisSchema.extend({
-  msa                   : [MsaSchema],
+  msa                   : [Msa.MsaSchema],
   treemode              : Number,
   tagged_nwk_tree       : String,
   analysis_type         : Number,

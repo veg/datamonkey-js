@@ -29,14 +29,14 @@
 
 var mongoose = require('mongoose'),
     extend = require('mongoose-schema-extend'),
-    MsaSchema  = require(__dirname + '/msa');
+    Msa = require(__dirname + '/msa');
 
 var AnalysisSchema = require(__dirname + '/analysis');
 
 debugger;
 
 var Busted = AnalysisSchema.extend({
-  msa                   : [MsaSchema],
+  msa                   : [Msa.MsaSchema],
   treemode              : Number,
   tagged_nwk_tree       : String,
   mail                  : String,

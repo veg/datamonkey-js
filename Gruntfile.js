@@ -17,8 +17,8 @@ module.exports = function(grunt) {
     },
     mochaTest: {
       test: {
-          //src: ['tests/hivtrace.js', 'tests/msa.js'],
-          src: ['tests/relax.js'],
+          //src: ['tests/*.js'],
+          src: ['tests/msa.js'],
           options: {
                 run: true,
                 debug: true,
