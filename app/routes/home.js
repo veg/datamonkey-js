@@ -40,6 +40,11 @@ exports.help = function (req, res) {
   res.render('help.ejs');
 };
 
+exports.analyses = function (req, res) {
+  res.render('analyses.ejs');
+};
+
+
 exports.jobQueue = function(req, res) {
 
   var all_jobs = [];

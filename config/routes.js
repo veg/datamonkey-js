@@ -36,6 +36,7 @@ module.exports = function(app) {
   app.get('/jobqueue', home.jobQueue);
   app.get('/stats', home.stats);
   app.get('/stats_test', home.stats_test);
+  app.get('/analyses', home.analyses);
 
   // UPLOAD FILE ROUTES
   msa = require( ROOT_PATH + '/app/routes/msa');

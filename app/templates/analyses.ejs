@@ -1,0 +1,73 @@
+<%- include includes/header.ejs %>
+<div class="datamonkey-sm-header">
+  <h1>Datamonkey Analysis Selection</h1>
+  <p>State of the Art Statistical Models</p>
+</div>
+
+<div class="container-fluid">
+
+  <div class="row"> 
+
+    <div class="col-md-2">
+      <nav id="sidebar" class="col-xs-3 bs-docs-sidebar">
+        <ul class="nav nav-stacked fixed">
+          <li>
+            <a href="/relax">RELAX</a>
+          </li>
+          <li>
+            <a href="/busted">BUSTED</a>
+          </li>
+          <li>
+            <a href="/hivtrace">HIV Trace</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="col-md-10">  
+    <div class="row">
+      <div class="panel panel-default panel-datamonkey">
+        <a href="relax">
+          <div class="panel-heading">
+            <h3 class="panel-title">RELAX</h3>
+            <span class="pull-right glyphicon glyphicon-chevron-right hide"></span>
+          </div>
+        </a>
+        <div class="panel-body">
+          Detect relaxed selection in a codon-based phylogenetic framework.
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="panel panel-default panel-datamonkey">
+        <a href="busted">
+          <div class="panel-heading">
+            <h3 class="panel-title">BUSTED</h3>
+            <span class="pull-right glyphicon glyphicon-chevron-right hide"></span>
+          </div>
+        </a>
+        <div class="panel-body">
+          A new approach to identify gene-wide evidence of episodic positive selection.
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <a href="hivtrace">
+      <div class="panel panel-default panel-datamonkey">
+        <div class="panel-heading">
+          <h3 class="panel-title">HIV Trace</h3>
+          <span class="pull-right glyphicon glyphicon-chevron-right hide"></span>
+        </div>
+        </a>
+        <div class="panel-body">
+          Network level analysis of HIV nucleotide sequences
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<%- include includes/footer.ejs %>
+<script src="/assets/js/datamonkey/analyses.js"></script>

@@ -44,11 +44,41 @@
 
 }
 
-.datamonkey-header h1{
- font-family: courier; 
- font-size: 12em;
+.datamonkey-sm-header h1{
+ font-family: "Droid Serif", Georgia;; 
+ margin-left: 15px;
+ font-size: 3em;
 }
 
+.datamonkey-sm-header p {
+ margin-left: 15px;
+}
+
+.datamonkey-sm-header {
+  fill: none;
+  stroke: #000;
+  background-color: #E7E6F2;
+  /*background-image: url('../img/dm_whole.png');*/
+  background-repeat: no-repeat;
+  background-position: bottom right;
+  padding : 10px;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 1.4;
+  margin-bottom: 15px;
+
+
+  /*color: #cdbfe3;*/
+  padding: 30px 15px;
+  position: relative;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+
+}
+
+.datamonkey-header h1{
+ font-family: "Droid Serif", Georgia;; 
+ font-size: 12em;
+}
 .lead {
   font-size: 16px;
   font-weight: 300;
@@ -440,5 +470,47 @@ span.glyphicon {
 
 .phylo-nav .glyphicon {
   font-size: 1em;
+}
+
+.panel-datamonkey {
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-bottom: 30px;
+}
+
+.panel-datamonkey h3 {
+ font-family: "Droid Serif", Georgia; 
+ display : inline;
+ font-size: 1em;
+}
+
+.panel-datamonkey .panel-heading {
+  background-color: #F5F5F5;
+  border-color: #dddddd;
+  font-size: 3em;
+}
+
+.panel-datamonkey .panel-title {
+  padding : 10px;
+}
+
+.panel-datamonkey .panel-body {
+ font-family: "Helvetica Neue"; 
+ /*font-size: 12em;*/
+}
+
+/* all links */
+.panel-datamonkey a {
+  color: #444;
+  font-weight: 400;
+}
+
+/* active & hover links */
+.panel-datamonkey a:hover, 
+.panel-datamonkey a:focus {
+  color: #563d7c;         
+  text-decoration: none;      
+  background-color: transparent;  
+  border-left-color: #563d7c; 
 }
 
