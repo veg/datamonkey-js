@@ -1,10 +1,9 @@
 <%- include ../../includes/header.ejs %>
-<%- include header.ejs %>
 
 <link href="/assets/css/busted/busted.css" rel="stylesheet">
 
 <div id="container" class="container">
-  <h2 class="page-header">Upload a Sequence Alignment</h2>
+  <%- include header.ejs %>
   <div class="nav nav-list pull-right span4i"><a href="/help" target="_blank"><span class="glyphicon glyphicon-info-sign"></span></a></div>
   <div class="row col-lg-9">  
 
@@ -99,7 +98,7 @@
           <input name="mail" type="text" class="form-control" placeholder="Email Address">
         </div>
       </div><!-- /form-group -->
-      <button id="upload-button" type="submit" class="btn btn-primary pull-right">Continue</button>
+      <button type="submit" class="btn pull-right"><span class="glyphicon glyphicon-play"></span></button>
     </form>
   </div>
 

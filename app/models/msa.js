@@ -541,6 +541,7 @@ Msa.statics.parseFile = function(fn, datatype, gencodeid, cb) {
     var PartitionInfo = mongoose.model('PartitionInfo', PartitionInfo);
     var partition_info = new PartitionInfo(fpi);
     msa.partition_info = partition_info;
+    debugger;
     cb(null, msa)
 
   });

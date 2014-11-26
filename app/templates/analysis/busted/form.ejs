@@ -1,5 +1,4 @@
 <%- include ../../includes/header.ejs %>
-<%- include header.ejs %>
 
 <link href="/assets/css/busted/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
 <link href="/assets/lib/phylotree/phylotree.css" rel="stylesheet">
@@ -7,6 +6,7 @@
 <link href="/assets/css/neighbor-join.css" rel="stylesheet">
 
 <div class="container">
+   <%- include header.ejs %>
 
   <h2 class="page-header">Analysis Options</h2>
 
@@ -45,7 +45,7 @@
 
   <form action="/busted/<%= busted._id %>/select-foreground" enctype="multipart/form-data" method="POST" name="modelForm">
     <div>
-      <button type="submit" class="btn btn-primary pull-right">Continue</button>
+      <button type="submit" class="btn pull-right"><span class="glyphicon glyphicon-play"></span></button>
     </div>
   </form>
 

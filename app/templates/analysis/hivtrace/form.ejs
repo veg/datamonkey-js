@@ -1,5 +1,4 @@
 <%- include ../../includes/header.ejs %>
-<%- include header.ejs %>
 
 <!--<a class="INFO" href="help/data.php">Preparing your data</a>&nbsp;-->
 <!--Examples:-->
@@ -7,6 +6,8 @@
 <!--<a class="INFO" href="data/pol.nex">HIV-1 pol (recombinant data)</a>-->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <div id="container" class="container">
+
+  <%- include header.ejs %>
   <div id="form-error" class="alert alert-danger" <%if (typeof errors == "undefined") { %>style="display: none;"<% } %>>
       There were errors with your request. Errors are highlighted in red.
   </div>
@@ -102,7 +103,7 @@
                 <div id="compare-notification" class="alert alert-info hide"> Comparing to a public database is only available when using HXB2_prrt as a reference </div>
             </div>
           </div>
-          <button type="submit" class="btn btn-primary pull-right">Continue</button>
+          <button type="submit" class="btn pull-right"><span class="glyphicon glyphicon-play"></span></button>
       </form>
   </div>
 </div>

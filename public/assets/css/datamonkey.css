@@ -44,20 +44,24 @@
 
 }
 
+label {
+ font-family: "Droid Serif", Georgia;; 
+}
+
 .datamonkey-sm-header h1{
  font-family: "Droid Serif", Georgia;; 
- margin-left: 15px;
+ /*margin-left: 15px;*/
  font-size: 3em;
 }
 
 .datamonkey-sm-header p {
- margin-left: 15px;
+ /*margin-left: 15px;*/
 }
 
 .datamonkey-sm-header {
   fill: none;
   stroke: #000;
-  background-color: #E7E6F2;
+  background-color: #white;
   /*background-image: url('../img/dm_whole.png');*/
   background-repeat: no-repeat;
   background-position: bottom right;
