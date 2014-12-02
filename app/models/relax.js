@@ -62,7 +62,7 @@ Relax.virtual('filepath').get(function () {
  * URL for a busted path
  */
 Relax.virtual('url').get(function () {
-  return 'http://' + setup.host + '/busted/' + this._id;
+  return 'http://' + setup.host + '/relax/' + this._id;
 });
 
 

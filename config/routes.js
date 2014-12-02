@@ -75,14 +75,10 @@ module.exports = function(app) {
   app.post('/relax/:id/select-foreground', relax.invokeRelax);
   app.get('/relax/:relaxid', relax.getRelax);
   app.get('/relax/:relaxid/results', relax.getRelaxResults);
-  ////app.get('/msa/:msaid/relax/:relaxid/status', relax.getStatus);
-  ////app.delete('/msa/:msaid/relax/:relaxid', relax.deleterelax);
+  //app.get('/msa/:msaid/relax/:relaxid/status', relax.getStatus);
+  //app.delete('/msa/:msaid/relax/:relaxid', relax.deleterelax);
 
-  // STATS ROUTES
-  stats = require( ROOT_PATH + '/app/routes/stats');
-  app.get('/:type/usage', stats.usageStatistics);
-
-  // HIV CLUSTERING ROUTES
+  // HIV TRACE ROUTES
   hivtrace = require( ROOT_PATH + '/app/routes/hivtrace');
   app.get('/hivtrace', hivtrace.clusterForm);
   app.post('/hivtrace/uploadfile', hivtrace.uploadFile);
@@ -93,5 +89,21 @@ module.exports = function(app) {
   app.get('/hivtrace/:id', hivtrace.jobPage);
   app.get('/hivtrace/:id/results', hivtrace.results);
   app.get('/hivtrace/:id/attributes', hivtrace.attributeMap);
+
+  // Env Monkey ROUTES
+  envmonkey = require( ROOT_PATH + '/app/routes/envmonkey');
+  app.get('/envmonkey', envmonkey.createForm);
+  app.post('/envmonkey/uploadfile', envmonkey.uploadFile);
+  app.post('/envmonkey/:id/invoke', envmonkey.invokeEnvMonkey);
+  app.get('/envmonkey/:envmonkeyid', envmonkey.getEnvMonkey);
+  app.get('/envmonkey/:envmonkeyid/results', envmonkey.getEnvMonkeyResults);
+  //app.get('/msa/:msaid/envmonkey/:envmonkeyid/status', envmonkey.getStatus);
+  //app.delete('/msa/:msaid/envmonkey/:envmonkeyid', envmonkey.deleteenvmonkey);
+
+
+  // STATS ROUTES
+  stats = require( ROOT_PATH + '/app/routes/stats');
+  app.get('/:type/usage', stats.usageStatistics);
+
 
 }
