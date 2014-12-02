@@ -53,3 +53,16 @@ path.cluster {
 #file-progress {
   display: none;
 }
+
+.removed {
+  stroke: #CC3333;
+  stroke-opacity:0.3;
+}
+
+#network_tag {
+  margin-top: 15px;
+}
+
+.nav-trace {
+  margin-top: 5px;
+}

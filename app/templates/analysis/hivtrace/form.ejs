@@ -50,23 +50,23 @@
           <div class=" form-group <%if (typeof errors != "undefined" && typeof errors.distance_threshold != "undefined") { %>has-error<% } %>">
             <label id="datatype-content" class="col-lg-3 control-label">Distance Threshold</label>
             <div class="col-lg-9">
-                <input class="form-control" name="distance_threshold" type="text" placeholder=".015" data-min=<%= validators.distance_threshold.min %> data-max=<%= validators.distance_threshold.max %>>
+                <input class="form-control" name="distance_threshold" type="text" placeholder=<%= validators.distance_threshold.default%> data-min=<%= validators.distance_threshold.min %> data-max=<%= validators.distance_threshold.max %>>
             </div>
           </div>
           <div class="form-group <%if (typeof errors != "undefined" && typeof errors.min_overlap != "undefined") { %>has-error<% } %>">
             <label id="datatype-content" class="col-lg-3 control-label">Minimum Overlap</label>
             <div class="col-lg-9">
-                <input class="form-control" name="min_overlap" type="text" placeholder="500" data-min=<%= validators.min_overlap.min %> data-max=<%= validators.min_overlap.max %>>
+                <input class="form-control" name="min_overlap" type="text" placeholder=<%= validators.min_overlap.default %> data-min=<%= validators.min_overlap.min %> data-max=<%= validators.min_overlap.max %>>
             </div>
           </div>
           <div class="form-group">
             <label class="col-lg-3 control-label">Handle Ambiguities</label>
             <div class="col-lg-9">
                 <select name="ambiguity_handling">
-                  <option value="RESOLVE">
+                  <option selected="selected" value="RESOLVE">
                     Resolve
                   </option>
-                  <option selected="selected" value="AVERAGE">
+                  <option value="AVERAGE">
                     Average
                   </option>
                   <option value="SKIP">
@@ -78,10 +78,10 @@
                 </select>
             </div>
           </div>
-          <div id="fraction" class="hide form-group <%if (typeof errors != "undefined" && typeof errors.distance_threshold != "undefined") { %>has-error<% } %>">
+          <div id="fraction" class="form-group <%if (typeof errors != "undefined" && typeof errors.distance_threshold != "undefined") { %>has-error<% } %>">
             <label id="datatype-content" class="col-lg-3 control-label">Maximum Tolerated Fraction of Ambiguities</label>
             <div class="col-lg-9">
-                <input class="form-control" name="fraction" type="text" placeholder="1." data-min=<%= validators.fraction.min %> data-max=<%= validators.fraction.max %>>
+                <input class="form-control" name="fraction" type="text" placeholder=<%= validators.fraction.default %> data-min=<%= validators.fraction.min %> data-max=<%= validators.fraction.max %>>
             </div>
           </div>
           <div class="form-group <%if (typeof errors != "undefined" && typeof errors.mail != "undefined") { %>has-error<% } %>">
@@ -93,6 +93,7 @@
               <input name="mail" type="text" class="form-control" placeholder="Email Address">
             </div>
           </div><!-- /form-group -->
+
           <div class="form-group">
             <div class="col-lg-3">
             </div>
@@ -103,6 +104,7 @@
                 <div id="compare-notification" class="alert alert-info hide"> Comparing to a public database is only available when using HXB2_prrt as a reference </div>
             </div>
           </div>
+
           <button type="submit" class="btn pull-right"><span class="glyphicon glyphicon-play"></span></button>
       </form>
   </div>

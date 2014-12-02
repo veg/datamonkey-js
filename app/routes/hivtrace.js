@@ -68,7 +68,6 @@ exports.uploadFile = function (req, res) {
   hivtrace.reference = postdata.reference;
 
   if(hivtrace.ambiguity_handling == "RESOLVE") {
-    console.log(postdata.fraction);
     if(postdata.fraction == undefined) {
       hivtrace.fraction = 1;
     } else {

@@ -23,8 +23,15 @@
 
     <div class = "row">
         <div class='col-lg-9' data-url=<%= hivtrace.trace_results %>>
-            <div class="row">
+            <div class="nav-trace">
                 <div class="input-group input-group-sm" id = 'network_ui_bar'>
+
+                    <span class="input-group-btn">
+                      <button id="network_ui_bar_toggle_filter_edges" type="button" class="btn btn-default active" data-toggle="button">
+                         Filter Edges 
+                      </button>
+                    </span>
+
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id = "network_ui_bar_cluster_operations_button">Clusters <span class="caret"></span></button>
                             <ul class="dropdown-menu" role="menu" id = 'network_ui_bar_cluster_operations_container'>
@@ -41,7 +48,7 @@
                     <input type="text" class="form-control" placeholder = "search" id = 'network_ui_bar_search'>
                 </div>
             </div>
-            <div class = 'row' id='network_tag' >
+            <div id='network_tag'>
                 <div class="my_progress">
                       <div class="progress-bar progress-bar-striped active"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
                         Loading the network...
