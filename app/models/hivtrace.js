@@ -83,7 +83,7 @@ var HivTrace = new Schema({
     status                  : { type: String },
     lanl_compare            : Boolean,
     filter_edges            : Boolean,
-    remove_drams            : String,
+    strip_drams             : String,
     torque_id               : String,
     mail                    : String,
     tn93_summary            : String,

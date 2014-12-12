@@ -33,8 +33,6 @@ var mongoose = require('mongoose'),
 
 var AnalysisSchema = require(__dirname + '/analysis');
 
-debugger;
-
 var Busted = AnalysisSchema.extend({
   msa                   : [Msa.MsaSchema],
   treemode              : Number,

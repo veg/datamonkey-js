@@ -65,7 +65,7 @@ exports.uploadFile = function (req, res) {
   hivtrace.distance_threshold = Number(postdata.distance_threshold);
   hivtrace.min_overlap = Number(postdata.min_overlap);
   hivtrace.ambiguity_handling = postdata.ambiguity_handling;
-  hivtrace.remove_drams = postdata.remove_drams;
+  hivtrace.strip_drams = postdata.strip_drams;
   hivtrace.reference = postdata.reference;
 
   if(hivtrace.ambiguity_handling == "RESOLVE") {

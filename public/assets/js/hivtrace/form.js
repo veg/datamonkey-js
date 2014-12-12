@@ -32,7 +32,7 @@ $(document).ready(function(){
     formData.append('distance_threshold', $( "input[name='distance_threshold']" ).val());
     formData.append('ambiguity_handling', $( "select[name='ambiguity_handling']" ).val());
     formData.append('min_overlap', $( "input[name='min_overlap']" ).val());
-    formData.append('remove_drams', $( "input[name='remove_drams']" ).val());
+    formData.append('strip_drams', $( "select[name='strip_drams']" ).val());
     formData.append('fraction', $( "input[name='fraction']" ).val());
     formData.append('receive_mail',  $( "input[name='receive_mail']" ).prop("checked"));
     formData.append('mail', $( "input[name='mail']" ).val());
