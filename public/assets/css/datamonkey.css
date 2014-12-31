@@ -470,6 +470,7 @@ span.glyphicon {
 
 .phylo-nav {
   padding-top:5px;
+  padding-bottom: 15px;
 }
 
 .phylo-nav .glyphicon {
@@ -517,4 +518,19 @@ span.glyphicon {
   background-color: transparent;  
   border-left-color: #563d7c; 
 }
+
+/* RELAX */
+
+#relax-highlighter-btn-group {
+  float: right;
+}
+
+#test-branch-highlighter {
+  color: blue;
+}
+
+#reference-branch-highlighter {
+  color: red;
+}
+
 

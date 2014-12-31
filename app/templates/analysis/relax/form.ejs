@@ -9,41 +9,58 @@
   <%- include header.ejs %>
 
 
-  <div class='phylotree-container'>
-    <h5 class='phylotree-header'>Foreground Selection<a href="/help#relax-foreground-selection" target="_blank"><sup>?</sup></a></h5> 
+   <div class='phylotree-container'>
 
-    <div class="col-lg-8 phylo-nav">
-      <div class="btn-group">
-        <button title="Expand spacing" id="expand_spacing" class="btn btn-default btn-sm" type="button">
-            <i class="fa fa-expand"></i>
-        </button>
-         <button title="Compress spacing" id="compress_spacing" class="btn btn-default btn-sm" type="button">
-            <i class="fa fa-compress"></i>
-        </button>
-         <button title="Sort deepest clades to the bototm" id="sort_ascending" class="btn btn-default btn-sm" type="button">
-            <i class="fa fa-sort-amount-asc"></i>
-        </button>
-         <button title="Sort deepsest clades to the top" id="sort_descending" class="btn btn-default btn-sm" type="button">
-            <i class="fa fa-sort-amount-desc"></i>
-        </button>
-         <button title="Restore original order" id="sort_original" class="btn btn-default btn-sm" type="button">
-            <i class="fa fa-sort"></i>
-        </button>
-        <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" type="button">Selection <span class="caret"></span></button>
-            <ul class="dropdown-menu">
-              <li><a id="select_all" href="#">Select all</a></li>
-              <li><a id="select_all_internal" href="#">Select only internal nodes</a></li>
-              <li><a id="select_all_leaves" href="#">Select only leaf nodes</a></li>
-              <li><a id="select_none" href="#">Clear selection</a></li>
-           </ul>
-      </div>
-   </div>
+     <h5 class='phylotree-header'>Select Test and Reference Branches<a href="/help#relax-foreground-selection" target="_blank"><sup>?</sup></a></h5> 
 
-    <div id="neighbor-tree" data-tree="<%= relax.msa[0].nj %>">
-      <div id="tree-body">
-        <div id='tree_container' class='tree-widget'></div>
+     <div id="phylo-nav">
+
+        <div class="col-lg-8 phylo-nav">
+          <div class="btn-group">
+            <button title="Expand spacing" id="expand_spacing" class="btn btn-default btn-sm" type="button">
+                <i class="fa fa-expand"></i>
+            </button>
+             <button title="Compress spacing" id="compress_spacing" class="btn btn-default btn-sm" type="button">
+                <i class="fa fa-compress"></i>
+            </button>
+             <button title="Sort deepest clades to the bototm" id="sort_ascending" class="btn btn-default btn-sm" type="button">
+                <i class="fa fa-sort-amount-asc"></i>
+            </button>
+             <button title="Sort deepsest clades to the top" id="sort_descending" class="btn btn-default btn-sm" type="button">
+                <i class="fa fa-sort-amount-desc"></i>
+            </button>
+             <button title="Restore original order" id="sort_original" class="btn btn-default btn-sm" type="button">
+                <i class="fa fa-sort"></i>
+            </button>
+            <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" type="button">Selection <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><a id="select_all" href="#">Select all</a></li>
+                  <li><a id="select_all_internal" href="#">Select only internal nodes</a></li>
+                  <li><a id="select_all_leaves" href="#">Select only leaf nodes</a></li>
+                  <li><a id="select_none" href="#">Clear selection</a></li>
+               </ul>
+          </div>
+        </div>
+
+        <div id="relax-highlighter-btn-group" class="col-lg-4 phylo-nav">
+          <label>Selecting </label>
+          <div class="btn-group" data-toggle="buttons">
+            <label title="Highlight Test Branches" id="test-branch-highlighter" class="btn btn-default btn-sm active" data-name='test'>
+              <input type="radio" name="options" id="relax-tbh" autocomplete="off" checked>Test Branches</input>
+            </label>
+            <label title="Highlight Reference Branches" id="reference-branch-highlighter" class="btn btn-default btn-sm" data-name='reference'>
+              <input type="radio" name="options" id="relax-rbh" autocomplete="off" checked>Reference Branches</input>
+            </label>
+          </div>
+        </div>
       </div>
-    </div>
+
+      <div id="neighbor-tree" data-tree="<%= relax.msa[0].nj %>">
+        <div id="tree-body">
+          <div id='tree_container' class='tree-widget'></div>
+        </div>
+      </div>
+
   </div>
   
   <div class="select-element">
