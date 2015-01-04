@@ -41,6 +41,7 @@ function relax_create_neighbor_tree() {
     tree.branch_name (null);
     tree.node_span ('equal');
     tree.options ({'draw-size-bubbles' : false}, false);
+    tree.options ({'tag-branches' : false}, false);
     tree.options({'binary-selectable' : true});
     tree.options({'attribute-list' : ['reference', 'test']});
     //tree.options({'selectable' : false});
@@ -106,10 +107,18 @@ $("form").submit(function(e) {
 
   var validate_selection = function(tree, callback) {
 
-    if(tree.nodes.get_selection().length) {
-      callback();
-    } else {
+    // Get reference and test count
+    var at_least_one_test = tree.nodes.get_nodes().some(function(d) { return d.test })
+    var at_least_one_reference = tree.nodes.get_nodes().some(function(d) { return d.reference})
+
+    if(!tree.nodes.get_selection().length) {
       callback({ msg : 'No branch selections were made, please select one. Alternatively, you can choose to select all via the menu.'});
+    } else if(!at_least_one_test) {
+      callback({ msg : 'No test branch selections were made, please select one.'});
+    } else if(!at_least_one_reference) {
+      callback({ msg : 'No reference branch selections were made, please select one.'});
+    } else {
+      callback();
     }
 
   }
@@ -142,6 +151,7 @@ $("form").submit(function(e) {
       var xhr = new XMLHttpRequest();
       xhr.open('post', self.attributes.getNamedItem("action").value, true);
       xhr.onload = function(res) {
+
         // Replace field with green text, name of file
         var result = JSON.parse(this.responseText);
         if('_id' in result.relax) {
@@ -149,9 +159,13 @@ $("form").submit(function(e) {
         } else if ('error' in result) {
           datamonkey.errorModal(result.error);
         }
+
       };
+
       xhr.send(formData);
+
     }
+
   });
 });
 
