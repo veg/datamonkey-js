@@ -125,15 +125,19 @@ function busted_render_summary(json) {
           }
       }
       
-      model_rows[k].push (only_distro ? '' : fit_format(json['fits'][access_key]['log-likelihood']));
-      model_rows[k].push (only_distro ? '' : json['fits'][access_key]['parameters']);
-      model_rows[k].push (only_distro ? '' : fit_format(json['fits'][access_key]['AIC-c']));
-      model_rows[k].push (only_distro ? '' : format_run_time(json['fits'][access_key]['runtime']));
-      model_rows[k].push (only_distro ? '' : fit_format(json['fits'][access_key]['tree length']));
+      try {
+        model_rows[k].push (only_distro ? '' : fit_format(json['fits'][access_key]['log-likelihood']));
+        model_rows[k].push (only_distro ? '' : json['fits'][access_key]['parameters']);
+        model_rows[k].push (only_distro ? '' : fit_format(json['fits'][access_key]['AIC-c']));
+        model_rows[k].push (only_distro ? '' : format_run_time(json['fits'][access_key]['runtime']));
+        model_rows[k].push (only_distro ? '' : fit_format(json['fits'][access_key]['tree length']));
 
-      for (j = 0; j < 3; j++) {
-       model_rows[k].push (   omega_format(json['fits'][access_key]['rate distributions'][secondary_key][j][0]) + " (" +
-                              prop_format(json['fits'][access_key]['rate distributions'][secondary_key][j][1]) + ")");
+        for (j = 0; j < 3; j++) {
+         model_rows[k].push (   omega_format(json['fits'][access_key]['rate distributions'][secondary_key][j][0]) + " (" +
+                                prop_format(json['fits'][access_key]['rate distributions'][secondary_key][j][1]) + ")");
+        }
+      } catch(e) {
+        datamonkey.errorModal(e);
       }
   }
                              

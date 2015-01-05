@@ -80,27 +80,42 @@ exports.uploadFile = function (req, res) {
     hivtrace.mail = postdata.mail;
   }
 
+  var file_path = req.files.files.path;
 
-  hivtrace.save(function (err, ht) {
-    if(err) {
-      logger.log(err);
-      res.json(500, {'error' : err,
-                     'validators': HivTrace.validators()});
-      return;
+  Msa.validateFasta(file_path, function(err, result) {
+    console.log(err);
+
+    if(!result) {
+        logger.log(err);
+        res.json(500, {'error' : err.msg,
+                       'validators': HivTrace.validators()});
+        return;
     }
 
-    function move_cb(err, result) {
+    hivtrace.save(function (err, ht) {
       if(err) {
         logger.log(err);
-        res.json(500, {'error' : err.error,
+        res.json(500, {'error' : err,
                        'validators': HivTrace.validators()});
-      } else {
-        res.json(200,  ht);
+        return;
       }
-    }
-    helpers.moveSafely(req.files.files.path, ht.filepath, move_cb);
-  });
 
+      function move_cb(err, result) {
+        if(err) {
+          logger.log(err);
+          res.json(500, {'error' : err.error,
+                         'validators': HivTrace.validators()});
+        } else {
+          res.json(200,  ht);
+        }
+      }
+
+      // Check if file is FASTA before moving forward
+      helpers.moveSafely(file_path, ht.filepath, move_cb);
+
+    });
+
+  });
 }
 
 /**

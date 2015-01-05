@@ -1,4 +1,5 @@
 $(document).ready(function(){
+
   $("input[name='public_db_compare']").tooltip()
 
   $("form").submit(function(e) {
@@ -60,8 +61,10 @@ $(document).ready(function(){
       if('_id' in result) {
         window.location.href =  '/hivtrace/' + result._id + '/map-attributes';
       } else if ('error' in result) {
-        $('#modal-error-msg').text(result.error);
-        $('#errorModal').modal()
+        $('#file-progress').css("display", "none");
+        $('#seq-file').css("display", "block");
+        $('.progress .progress-bar').css('width', '0%');
+        datamonkey.errorModal(result.error);
       }
     };
 
