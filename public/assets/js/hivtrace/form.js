@@ -25,10 +25,17 @@ $(document).ready(function(){
     $("#form-has-error").hide();
 
     var formData = new FormData();
+
     var file = document.getElementById('seq-file').files[0];
     var filename = document.getElementById('seq-file').files[0].name;
 
+    var ref_file = document.getElementById('reference-file').files[0];
+    var ref_filename = document.getElementById('reference-file').files[0].name;
+
+
     formData.append('files', file);
+    formData.append('ref_file', ref_file);
+
     formData.append('reference', $( "select[name='reference']" ).val());
     formData.append('distance_threshold', $( "input[name='distance_threshold']" ).val());
     formData.append('ambiguity_handling', $( "select[name='ambiguity_handling']" ).val());
@@ -80,7 +87,6 @@ $(document).ready(function(){
 
     // Check that it is not empty
     if($(this).val().length == 0) {
-      // Empty 
       $(this).next('.help-block').remove();
       $(this).parent().removeClass('has-success');
       $(this).parent().addClass('has-error');
@@ -91,8 +97,6 @@ $(document).ready(function(){
         }).insertAfter($(this));
 
     } else if($(this).val() < $(this).data('min')) {
-
-      // We're being cheated
       $(this).next('.help-block').remove();
       $(this).parent().removeClass('has-success');
       $(this).parent().addClass('has-error');
@@ -103,8 +107,6 @@ $(document).ready(function(){
         }).insertAfter($(this));
 
     } else if($(this).val() > $(this).data('max')) {
-
-      // They're being too kind
       $(this).next('.help-block').remove();
       $(this).parent().removeClass('has-success');
       $(this).parent().addClass('has-error');
@@ -114,7 +116,6 @@ $(document).ready(function(){
         }).insertAfter($(this));
 
     } else {
-      // Give them green. They like that.
       $(this).parent().removeClass('has-error');
       $(this).parent().addClass('has-success');
       $(this).next('.help-block').remove();
@@ -127,7 +128,6 @@ $(document).ready(function(){
     if($(this).find("input[name='receive_mail']")[0].checked) {
       var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
       if(regex.test($(this).find("input[name='mail']").val())) {
-         // Give them green. They like that.
         $(this).removeClass('has-error');
         $(this).addClass('has-success');
         $(this).next('.help-block').remove();
@@ -150,6 +150,7 @@ $(document).ready(function(){
   }
 
   function toggle_compare(obj) {
+
     if ($(this).val() != "HXB2_prrt") {
       $("input[name='public_db_compare']")[0].checked  = false;
       $(".checkbox").hide();
@@ -159,6 +160,14 @@ $(document).ready(function(){
       $(".checkbox").show();
       $("#compare-notification").hide();
     }
+
+    if ($(this).val() != "Custom") {
+      $("#trace-reference-upload").hide();
+    } else {
+      $("#trace-reference-upload").removeClass('hide');
+      $("#trace-reference-upload").show();
+    }
+
   }
 
   function toggle_fraction(obj) {
@@ -178,8 +187,6 @@ $(document).ready(function(){
   $( "select[name='reference']" ).change(toggle_compare);
   $( "select[name='ambiguity_handling']" ).change(toggle_fraction);
   $( "select[name='ambiguity_handling']" ).trigger('change');
-
-
 
 });
 

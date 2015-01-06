@@ -80,17 +80,10 @@ exports.uploadFile = function (req, res) {
     hivtrace.mail = postdata.mail;
   }
 
+
   var file_path = req.files.files.path;
 
-  Msa.validateFasta(file_path, function(err, result) {
-    console.log(err);
-
-    if(!result) {
-        logger.log(err);
-        res.json(500, {'error' : err.msg,
-                       'validators': HivTrace.validators()});
-        return;
-    }
+  var save_document = function(hivtrace) {
 
     hivtrace.save(function (err, ht) {
       if(err) {
@@ -115,6 +108,43 @@ exports.uploadFile = function (req, res) {
 
     });
 
+
+  }
+
+  Msa.validateFasta(file_path, function(err, result) {
+
+    if(!result) {
+        logger.log(err);
+        res.json(500, {'error' : err.msg,
+                       'validators': HivTrace.validators()});
+        return;
+    }
+
+    if(hivtrace.reference == 'Custom') {
+
+      var ref_file_name = req.files.ref_file.name;
+      var ref_file_path = req.files.ref_file.path;
+
+      Msa.validateFasta(file_path, function(err, result) {
+
+        if(!result) {
+          logger.log(err);
+          res.json(500, {'error'     : ref_file_name + ':' + err.msg,
+                         'validators': HivTrace.validators()});
+          return;
+
+        } else {
+          // Open reference file and read it into database
+          fs.readFile(ref_file_path, function (err, data) {
+            hivtrace.custom_reference = data.toString();
+            save_document(hivtrace);
+          });
+        }
+
+      });
+    } else {
+      save_document(hivtrace);
+    }
   });
 }
 
