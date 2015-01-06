@@ -29,14 +29,21 @@ $(document).ready(function(){
     var file = document.getElementById('seq-file').files[0];
     var filename = document.getElementById('seq-file').files[0].name;
 
-    var ref_file = document.getElementById('reference-file').files[0];
-    var ref_filename = document.getElementById('reference-file').files[0].name;
-
-
     formData.append('files', file);
-    formData.append('ref_file', ref_file);
 
     formData.append('reference', $( "select[name='reference']" ).val());
+
+    if( $( "select[name='reference']" ).val() == 'Custom') {
+      if( document.getElementById('reference-file').files.length == 0) {
+        datamonkey.errorModal('You selected to upload your own reference, but did not supply one');
+        return;
+      } else {
+        var ref_file = document.getElementById('reference-file').files[0];
+        var ref_filename = document.getElementById('reference-file').files[0].name;
+        formData.append('ref_file', ref_file);
+      }
+    }
+
     formData.append('distance_threshold', $( "input[name='distance_threshold']" ).val());
     formData.append('ambiguity_handling', $( "select[name='ambiguity_handling']" ).val());
     formData.append('min_overlap', $( "input[name='min_overlap']" ).val());
