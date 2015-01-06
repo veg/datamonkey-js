@@ -116,7 +116,12 @@ $("form").submit(function(e) {
     } else if(!at_least_one_test) {
       callback({ msg : 'No test branch selections were made, please select one.'});
     } else if(!at_least_one_reference) {
-      callback({ msg : 'No reference branch selections were made, please select one.'});
+      // If there are test branches selected, then mark the rest as reference.
+      var current_selection_name = tree.selection_label();
+      tree.selection_label('reference');
+      tree.modify_selection(function (d) { return !d.test;});
+      tree.selection_label(current_selection_name);
+      callback();
     } else {
       callback();
     }
