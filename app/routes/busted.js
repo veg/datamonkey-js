@@ -65,7 +65,7 @@ exports.uploadFile = function(req, res) {
 
     if(err) {
       logger.error(err);
-      res.json(500, err);
+      res.json(500, {'error' : err});
       return;
     }
 

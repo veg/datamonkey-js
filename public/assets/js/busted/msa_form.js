@@ -43,6 +43,10 @@ $(function() {
       } else if ('error' in result) {
         $('#modal-error-msg').text(result.error);
         $('#errorModal').modal()
+        $('#file-progress').css("display", "none");
+        $('#seq-file').css("display", "block");
+        $('.progress .progress-bar').css('width', '0%');
+
       }
     };
 

@@ -61,6 +61,11 @@ exports.uploadFile = function(req, res) {
 
     relax.msa = msa;
 
+    if(err) {
+      res.json(500, {'error' : err});
+      return;
+    }
+
     relax.save(function (err, relax_result) {
 
       if(err) {
