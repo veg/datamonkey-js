@@ -50,7 +50,7 @@ function setupJob() {
     //data is index and message
     $('.job-status').each(function(index) {
       if($(this).data('index') == 0 ) {
-        $(this).find(".panel-body").text("Ticket Number: " + data.msg);
+        $(this).find(".panel-body").text("Ticket Number: " + data);
        }
     });
   }
@@ -74,11 +74,15 @@ function setupJob() {
   // Status update
   socket.on('status update', function (data) {
     changeStatus(data);
+    console.log(data);
+    if('torque_id' in data) {
+      updateQueueWithTorqueId(data.torque_id);
+    }
   });
 
   // Torque ID
   socket.on('job created', function (data) {
-    updateQueueWithTorqueId(data);
+    updateQueueWithTorqueId(data.msg);
   });
 
   // Completed

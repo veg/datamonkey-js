@@ -406,9 +406,6 @@ d3.layout.phylotree = function (container) {
                                          .attr ("tabindex", "-1")
                                          .text ("Hide this " + (d3_phylotree_is_leafnode (node)? "node":"subtree"))
                                          .on ("click", function (d) {menu_object.style ("display", "none"); phylotree.modify_selection ([node], "notshown", true, true).update_has_hidden_nodes().update(true);});
-                                         
-                
-                                         
             }
             
             if (d3_phylotree_has_hidden_nodes (node)) {
@@ -418,7 +415,7 @@ d3.layout.phylotree = function (container) {
                                              .on ("click", function (d) {menu_object.style ("display", "none"); phylotree.modify_selection (phylotree.select_all_descendants (node, true, true), "notshown", true, true, "false").update_has_hidden_nodes().update(true);});
             }
 
-            var tree_container = $(".phylotree-container");
+            var tree_container = $("body");
             var coordinates = d3.mouse(tree_container[0]);
             menu_object.style ("position", "absolute")
                         .style("left", "" + (coordinates[0]) + "px")

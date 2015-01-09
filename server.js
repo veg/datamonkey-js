@@ -1,7 +1,7 @@
 /*
   Datamonkey - An API for comparative analysis of sequence alignments using state-of-the-art statistical models.
 
-  Copyright (C) 2013
+  Copyright (C) 2015
   Sergei L Kosakovsky Pond (spond@ucsd.edu)
   Steven Weaver (sweaver@ucsd.edu)
 
@@ -66,7 +66,7 @@ fs.mkdir(__dirname + '/logs', '0750', mkdirErrorLogger);
 var app = express();
 app.configure(function () {
     app.use(express.compress());
-    app.use(require('morgan')({ "stream": logger.stream }));
+    app.use(require('morgan')({ 'stream': logger.stream }));
     app.use(expressValidator);
     app.use(express.bodyParser());
     app.use(express.limit('25mb'));

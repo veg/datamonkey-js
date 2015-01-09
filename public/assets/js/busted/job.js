@@ -74,11 +74,16 @@ function setupJob() {
   // Status update
   socket.on('status update', function (data) {
     changeStatus(data);
+
+    if('torque_id' in data) {
+      updateQueueWithTorqueId(data.torque_id);
+    }
+
   });
 
   // Torque ID
   socket.on('job created', function (data) {
-    updateQueueWithTorqueId(data);
+    updateQueueWithTorqueId(data.msg);
   });
 
   // Completed
