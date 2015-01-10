@@ -526,3 +526,8 @@ span.glyphicon {
 #reference-branch-highlighter {
   color: red;
 }
+
+/* Safari/Chrome modal fix */
+.modal-dialog {
+  position: relative;
+}

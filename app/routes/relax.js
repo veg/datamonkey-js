@@ -202,8 +202,12 @@ exports.getRelaxResults = function(req, res) {
       res.json(500, error.errorResponse('invalid id : ' + relaxid ));
     } else {
       // Should return results page
-      res.json(200, JSON.parse(relax.results));
+      // Append PMID to results
+      var relax_results =  JSON.parse(relax.results);
+      relax_results['PMID'] = relax.pmid;
+      res.json(200, relax_results);
     }
   });
 }
+
 

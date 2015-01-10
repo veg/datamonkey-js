@@ -32,17 +32,9 @@
             Ticket Number: <%= job.torque_id%>
           <% } %>
           <%if (s == 1 && job.last_status_msg) { %>
-            <% try { %>
-              <% for(var m = 0; m < Object.keys(job.last_status_msg).length; m++) { %>
-                <h4><%= job.last_status_msg[Object.keys(job.last_status_msg)[m]]["Phase"] %></h4>
-                <ul>
-                  <% for(var n = 0; n < Object.keys(job.last_status_msg[Object.keys(job.last_status_msg)[m]]["Information"]).length; n++) {  %>
-                    <li><%= job.last_status_msg[Object.keys(job.last_status_msg)[m]]["Information"]
-                            [Object.keys(job.last_status_msg[Object.keys(job.last_status_msg)[m]]["Information"])[n]] %></li>
-                  <% } %>
-                </ul>
-              <% } %>
-            <% } catch (e) {} %>
+            <pre>
+            <%= job.last_status_msg %>
+            </pre>
           <% } %>
         </div>
         </div>

@@ -88,7 +88,7 @@ AnalysisSchema.virtual('timestamp').get(function () {
  * Index of status
  */
 AnalysisSchema.virtual('status_index').get(function () {
-  return this.status_stack.indexOf(this.status);
+  return this.status_stack.map(function(d) {return d.toLowerCase()}).indexOf(this.status);
 });
 
 
