@@ -34,11 +34,8 @@ var mongoose  = require('mongoose'),
 var AnalysisSchema = require(__dirname + '/analysis');
 
 var Relax = AnalysisSchema.extend({
-  msa                   : [Msa.MsaSchema],
-  treemode              : Number,
   tagged_nwk_tree       : String,
   analysis_type         : Number,
-  mail                  : String,
   last_status_msg       : String,
   results               : Object
 });
@@ -64,7 +61,7 @@ Relax.virtual('filepath').get(function () {
 });
 
 /**
- * URL for a busted path
+ * URL for a relax path
  */
 Relax.virtual('url').get(function () {
   return 'http://' + setup.host + '/busted/' + this._id;

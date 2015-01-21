@@ -1,7 +1,7 @@
 /*
   Datamonkey - An API for comparative analysis of sequence alignments using state-of-the-art statistical models.
 
-  Copyright (C) 2013
+  Copyright (C) 2015
   Sergei L Kosakovsky Pond (spond@ucsd.edu)
   Steven Weaver (sweaver@ucsd.edu)
 
@@ -37,6 +37,7 @@ module.exports = function(app) {
   app.get('/stats', home.stats);
   app.get('/stats_test', home.stats_test);
   app.get('/analyses', home.analyses);
+  app.get('/development', home.development);
 
   // UPLOAD FILE ROUTES
   msa = require( ROOT_PATH + '/app/routes/msa');
@@ -50,13 +51,13 @@ module.exports = function(app) {
   app.get('/msa/:id/aa/view', msa.aminoAcidTranslationViewer);
   app.get('/msa/:id/attributes', msa.attributeMap);
 
-  // PRIME ROUTES
-  prime = require( ROOT_PATH + '/app/routes/prime');
-  app.get('/msa/:msaid/prime', prime.createForm);
-  app.post('/msa/:msaid/prime', prime.invokePrime);
-  app.get('/msa/:msaid/prime/:primeid/status', prime.getStatus);
-  app.get('/msa/:msaid/prime/:primeid', prime.getPrime);
-  app.delete('/msa/:msaid/prime/:primeid', prime.deletePrime);
+  //// PRIME ROUTES
+  //prime = require( ROOT_PATH + '/app/routes/prime');
+  //app.get('/msa/:msaid/prime', prime.createForm);
+  //app.post('/msa/:msaid/prime', prime.invokePrime);
+  //app.get('/msa/:msaid/prime/:primeid/status', prime.getStatus);
+  //app.get('/msa/:msaid/prime/:primeid', prime.getPrime);
+  //app.delete('/msa/:msaid/prime/:primeid', prime.deletePrime);
 
   // BUSTED ROUTES
   busted = require( ROOT_PATH + '/app/routes/busted');
@@ -75,20 +76,24 @@ module.exports = function(app) {
   app.post('/relax/:id/select-foreground', relax.invokeRelax);
   app.get('/relax/:relaxid', relax.getRelax);
   app.get('/relax/:relaxid/results', relax.getRelaxResults);
-  ////app.get('/msa/:msaid/relax/:relaxid/status', relax.getStatus);
-  ////app.delete('/msa/:msaid/relax/:relaxid', relax.deleterelax);
 
-  // STATS ROUTES
+  // aBSREL ROUTES
+  absrel = require( ROOT_PATH + '/app/routes/absrel');
+  app.get('/absrel', absrel.form);
+  app.post('/absrel', absrel.invoke);
+  app.get('/absrel/:id', absrel.getPage);
+  app.get('/absrel/:id/results', absrel.getResults);
+
+  // Stats ROUTES
   stats = require( ROOT_PATH + '/app/routes/stats');
   app.get('/:type/usage', stats.usageStatistics);
 
-  // HIV CLUSTERING ROUTES
+  // HIV TRACE ROUTES
   hivtrace = require( ROOT_PATH + '/app/routes/hivtrace');
   app.get('/hivtrace', hivtrace.clusterForm);
   app.post('/hivtrace/uploadfile', hivtrace.uploadFile);
   app.get('/hivtrace/:id/map-attributes', hivtrace.mapAttributes);
   app.post('/hivtrace/:id/save-attributes', hivtrace.saveAttributes);
-  //app.post('/hivtrace/upload/:id', hivtrace.verifyUpload);
   app.post('/hivtrace/invoke/:id', hivtrace.invokeClusterAnalysis);
   app.get('/hivtrace/:id', hivtrace.jobPage);
   app.get('/hivtrace/:id/results', hivtrace.results);

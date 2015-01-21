@@ -1,7 +1,7 @@
 /*
   Datamonkey - An API for comparative analysis of sequence alignments using state-of-the-art statistical models.
 
-  Copyright (C) 2014
+  Copyright (C) 2015
   Sergei L Kosakovsky Pond (spond@ucsd.edu)
   Steven Weaver (sweaver@ucsd.edu)
 
@@ -41,7 +41,7 @@ var mongoose = require('mongoose'),
     Relax = mongoose.model('Relax');
 
 exports.createForm = function(req, res) {
-  res.render('analysis/relax/upload_msa.ejs');
+  res.render('relax/upload_msa.ejs');
 }
 
 exports.uploadFile = function(req, res) {
@@ -98,7 +98,7 @@ exports.selectForeground = function(req, res) {
   Relax.findOne({_id: id}, function (err, relax) {
       res.format({
         html: function() {
-          res.render('analysis/relax/form.ejs', {'relax' : relax});
+          res.render('relax/form.ejs', {'relax' : relax});
         },
         json: function(){
           res.json(200, relax);
@@ -131,7 +131,7 @@ exports.invokeRelax = function(req, res) {
         // Redisplay form with errors
         res.format({
           html: function() {
-            res.render('analysis/relax/form.ejs', {'errors': err.errors,
+            res.render('relax/form.ejs', {'errors': err.errors,
                                                     'relax' : relax});
           },
           json: function() {
@@ -180,7 +180,7 @@ exports.getRelax = function(req, res) {
       res.json(500, error.errorResponse('Invalid ID : ' + relaxid ));
     } else {
       // Should return results page
-      res.render('analysis/relax/jobpage.ejs', { job : relax, 
+      res.render('relax/jobpage.ejs', { job : relax, 
                                                  socket_addr: 'http://' + setup.host + ':' + setup.socket_port 
                                                });
     }

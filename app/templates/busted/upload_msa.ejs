@@ -1,18 +1,23 @@
 <%- include ../includes/header.ejs %>
 
+<link href="/assets/css/busted/busted.css" rel="stylesheet">
+
 <div id="container" class="container">
-  <h2 class="page-header">Upload a Sequence Alignment</h2>
-  <div class="nav nav-list pull-right span4i"><a href="/help" target="_blank">I'm confused</a></div>
+  <%- include header.ejs %>
+  <div class="nav nav-list pull-right span4i"><a href="/help" target="_blank"><span class="glyphicon glyphicon-info-sign"></span></a></div>
   <div class="row col-lg-9">  
+
     <form class="form-horizontal upload-form" name="uploadform" enctype="multipart/form-data" method="post">
+
       <div id="seq-file-div" class="upload-div">
           <input id="seq-file" type="file" name="files">
-          <div id="file-progress" class="progress progress-striped active">
-            <div class="progress-bar" role="progressbar" aria-valuenow="<%= hivtrace.percentage_complete %>" aria-valuemin="1" aria-valuemax="100" style="width: <%= hivtrace.percentage_complete %>">
-              <span class="sr-only"><%= hivtrace.percentage_complete %> Complete</span> 
-            </div>
+          <div id="file-progress" class="progress progress-striped active hidden">
+              <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="1" aria-valuemax="100" style="width: <%= hivtrace.percentage_complete %>">
+                <span class="sr-only">0% Complete</span>
+              </div>
           </div>  
       </div>
+
       <div class="upload-div">
         <label id="datatype-content">Data Type<a href="/help#data-types" target="_blank"><sup>?</sup></a></label> 
         <select name="datatype">
@@ -27,6 +32,7 @@
           </option>
         </select> 
       </div>
+
       <div class="upload-div">
         <label id="geneticcode-content">Genetic Code<a href="/help#genetic-code" target="_blank"><sup>?</sup></a></label>
         <select name="gencodeid">
@@ -83,12 +89,34 @@
         </select> 
       </div>
 
-      <button id="upload-button" type="submit" class="btn btn-primary pull-right">Continue</button>
-
+      <div class="form-group <%if (typeof errors != "undefined" && typeof errors.mail != "undefined") { %>has-error<% } %>">
+        <label id="datatype-content" class="col-lg-3 control-label">Notify When Completed?</label>
+        <div class="col-lg-9 input-group mail-group">
+          <span class="input-group-addon">
+            <input name="receive_mail" type="checkbox" value="on" checked>
+          </span>
+          <input name="mail" type="text" class="form-control" placeholder="Email Address">
+        </div>
+      </div><!-- /form-group -->
+      <button type="submit" class="btn pull-right"><span class="glyphicon glyphicon-play"></span></button>
     </form>
+  </div>
+
+</div>
+
+<div aria-labelledby="errorModalLabel" role="dialog" id="errorModal" class="modal ng-scope">
+  <div class="modal-dialog"><div class="modal-content">
+    <div class="modal-header dialog-header-error">
+      <button data-dismiss="modal" class="close" type="button">×</button>
+      <h4 class="modal-title text-danger"><span class="glyphicon glyphicon-warning-sign"></span> Error</h4>
+      </div>
+      <div id="modal-error-msg" class="modal-body text-danger">This is my error message</div>
+      <div class="modal-footer">
+        <button data-dismiss="modal" class="btn btn-primary" type="button">Close</button>
+      </div>
+    </div>
   </div>
 </div>
 
-<%- include ../includes/modal.ejs %>
 <%- include ../includes/footer.ejs %>
-<script src="/assets/js/msa/form.js"></script>
+<script src="/assets/js/busted/msa_form.js"></script>

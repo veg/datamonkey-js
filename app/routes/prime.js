@@ -1,7 +1,7 @@
 /*
   Datamonkey - An API for comparative analysis of sequence alignments using state-of-the-art statistical models.
 
-  Copyright (C) 2013
+  Copyright (C) 2015
   Sergei L Kosakovsky Pond (spond@ucsd.edu)
   Steven Weaver (sweaver@ucsd.edu)
 
@@ -50,7 +50,7 @@ exports.createForm = function(req, res) {
       res.json(500, error.errorResponse('There is no sequence with id of ' + msaid));
     } else {
       var ftc = []
-      res.render('analysis/prime/form.ejs', { 'uploadfile' : uploadfile});
+      res.render('prime/form.ejs', { 'uploadfile' : uploadfile});
     }
   });
 }
@@ -86,7 +86,7 @@ exports.invokePrime = function(req, res) {
             // Redisplay form with errors
             res.format({
               html: function() {
-                res.render('analysis/prime/form.ejs', {'errors': err.errors,
+                res.render('prime/form.ejs', {'errors': err.errors,
                            'uploadfile' : msa});
               },
               json: function() {
@@ -151,7 +151,7 @@ exports.getPrime = function(req, res) {
       res.json(500, error.errorResponse('prime not found'));
     } else {
       // Should return results page
-      res.render('analysis/prime/jobpage.ejs', { job : prime, 
+      res.render('prime/jobpage.ejs', { job : prime, 
                                                  socket_addr: 'http://' + setup.host + ':' + setup.socket_port 
                                                });
     }
@@ -179,7 +179,7 @@ exports.getStatus = function(req, res) {
       logger.log(item);
       res.format({
         html: function() {
-          res.render('analysis/prime/status.ejs', { 'prime' : item, socket_addr: 'http://' + setup.host + ':' + setup.socket_port});
+          res.render('prime/status.ejs', { 'prime' : item, socket_addr: 'http://' + setup.host + ':' + setup.socket_port});
         },
         json: function() {
           // Save PRIME analysis

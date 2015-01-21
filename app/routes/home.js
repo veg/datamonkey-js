@@ -40,10 +40,14 @@ exports.help = function (req, res) {
   res.render('help.ejs');
 };
 
+exports.development = function (req, res) {
+  res.render('development.ejs');
+};
+
+
 exports.analyses = function (req, res) {
   res.render('analyses.ejs');
 };
-
 
 exports.jobQueue = function(req, res) {
 
