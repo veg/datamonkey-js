@@ -74,6 +74,7 @@ module.exports = function(app) {
   app.get('/relax/:id/select-foreground', relax.selectForeground);
   app.post('/relax/:id/select-foreground', relax.invokeRelax);
   app.get('/relax/:relaxid', relax.getRelax);
+  app.get('/relax/:relaxid/restart', relax.restartRelax);
   app.get('/relax/:relaxid/results', relax.getRelaxResults);
   ////app.get('/msa/:msaid/relax/:relaxid/status', relax.getStatus);
   ////app.delete('/msa/:msaid/relax/:relaxid', relax.deleterelax);

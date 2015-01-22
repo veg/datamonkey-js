@@ -210,4 +210,48 @@ exports.getRelaxResults = function(req, res) {
   });
 }
 
+/**
+ * Handles a job request by the user
+ * app.post('/msa/:msaid/relax', Relax.invokeRelax);
+ */
+exports.restartRelax = function(req, res) {
+
+  var id = req.params.relaxid;
+
+  // Find the correct multiple sequence alignment to act upon
+  Relax.findOne({ '_id' : id }, function(err, result) {
+    if(err) {
+      // Redisplay form with errors
+      res.format({
+        html: function() {
+          res.render('analysis/relax/form.ejs', {'errors': err.errors,
+                                                  'relax' : relax});
+        },
+        json: function() {
+          // Save relax analysis
+          res.json(200, {'msg': 'Job with relax id ' + id + ' not found'});
+        }
+      });
+
+    // Successful upload, spawn job
+    } else {
+
+      var connect_callback = function(data) {
+        if(data == 'connected') {
+          // TODO: why is this empty?
+          logger.log('connected');
+        }
+      }
+
+      res.json(200,  {'relax' : result});
+
+      // Send the MSA and analysis type
+      var jobproxy = new hpcsocket.HPCSocket({'filepath'    : result.filepath, 
+                                              'msa'         : result.msa,
+                                              'analysis'    : result,
+                                              'status_stack': result.status_stack,
+                                              'type'        : 'relax'}, connect_callback);
+    }
+  });
+}
 
