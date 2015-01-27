@@ -27,20 +27,49 @@
 
 */
 
-var mongoose = require('mongoose'),
-    globals  = require( ROOT_PATH + '/config/globals.js');
+var mongoose  = require('mongoose'),
+    extend    = require('mongoose-schema-extend'),
+    Msa       = require(__dirname + '/msa');
 
-exports.usageStatistics = function(req, res) {
+var AnalysisSchema = require(__dirname + '/analysis');
 
-  // Find the analysis
-  // Return its results
-  var type =  req.params.type,
-    Analysis = mongoose.model(type.capitalize());
+var aBSREL = AnalysisSchema.extend({
+  analysis_type         : Number,
+  last_status_msg       : String,
+  results               : Object
+});
 
-  //Return all results
-  Analysis.usageStatistics(function(err, analysis_stats){
-    res.json(analysis_stats);
-  });
+aBSREL.virtual('pmid').get(function() {
+  return '25540451';
+});
 
-}
+aBSREL.virtual('upload_redirect_path').get(function() {
+  return '/absrel/' + this._id;
+});
+
+/**
+ * Complete file path for document's file upload
+ */
+aBSREL.virtual('filepath').get(function () {
+  return __dirname + '/../../uploads/msa/' + this._id + '.fasta';
+});
+
+
+/**
+ * Filename of document's file upload
+ */
+aBSREL.virtual('status_stack').get(function () {
+  return ['Queueing', 
+          'Running',
+          'Completed'];
+});
+
+/**
+ * Complete file path for document's file upload
+ */
+aBSREL.virtual('filepath').get(function () {
+  return __dirname + '/../../uploads/msa/' + this._id + '.fasta';
+});
+
+module.exports = mongoose.model('aBSREL', aBSREL);
 

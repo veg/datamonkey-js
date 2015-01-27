@@ -28,6 +28,7 @@
 */
 
 var mongoose = require('mongoose'),
+    hpcsocket   = require( __dirname + '/../../lib/hpcsocket.js'),
     globals  = require( ROOT_PATH + '/config/globals.js');
 
 //find sequence by id
@@ -40,10 +41,14 @@ exports.help = function (req, res) {
   res.render('help.ejs');
 };
 
+exports.development = function (req, res) {
+  res.render('development.ejs');
+};
+
+
 exports.analyses = function (req, res) {
   res.render('analyses.ejs');
 };
-
 
 exports.jobQueue = function(req, res) {
 
@@ -65,6 +70,18 @@ exports.jobQueue = function(req, res) {
     });
   }
 }
+
+exports.clusterhealth= function (req, res) {
+
+  function connect_callback(result) {
+    res.json(200, result);
+  }
+
+  var jobproxy = new hpcsocket.ClusterStatus(connect_callback);
+
+
+};
+
 
 exports.stats = function (req, res) {
   res.render('stats.ejs', {'types' : globals.types });

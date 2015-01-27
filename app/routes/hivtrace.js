@@ -2,7 +2,7 @@
 
   Datamonkey - An API for comparative analysis of sequence alignments using state-of-the-art statistical models.
 
-  Copyright (C) 2013
+  Copyright (C) 2015
   Sergei L Kosakovsky Pond (spond@ucsd.edu)
   Steven Weaver (sweaver@ucsd.edu)
 
@@ -153,7 +153,7 @@ exports.uploadFile = function (req, res) {
  * app.get('/hivtrace', hivtrace.clusterForm);
  */
 exports.clusterForm = function (req, res) {
-  res.render('analysis/hivtrace/form.ejs', {'validators': HivTrace.validators()});
+  res.render('hivtrace/form.ejs', {'validators': HivTrace.validators()});
 }
 
 /**
@@ -167,7 +167,7 @@ exports.invokeClusterAnalysis = function (req, res) {
         // Redisplay form with error
         res.format({
           html: function(){
-            res.render('analysis/hivtrace/form.ejs', {'error': err.error, 
+            res.render('hivtrace/form.ejs', {'error': err.error, 
                        'validators': HivTrace.validators()});
           },
 
@@ -222,7 +222,7 @@ exports.jobPage = function (req, res) {
           res.json(200, hivtrace);
         },
         html: function(){
-          res.render('analysis/hivtrace/jobpage.ejs', {hivtrace : hivtrace, socket_addr: 'http://' + setup.host + ':' + setup.socket_port });
+          res.render('hivtrace/jobpage.ejs', {hivtrace : hivtrace, socket_addr: 'http://' + setup.host + ':' + setup.socket_port });
         }
       });
     }
@@ -245,10 +245,10 @@ exports.results = function (req, res) {
       console.log(hivtrace);
       res.format({
         html: function(){
-          res.render('analysis/hivtrace/results.ejs', {hivtrace : hivtrace});
+          res.render('hivtrace/results.ejs', {hivtrace : hivtrace});
         },
         json: function(){
-          res.render('analysis/hivtrace/results.ejs', {hivtrace : hivtrace});
+          res.render('hivtrace/results.ejs', {hivtrace : hivtrace});
         }
       });
     }
@@ -268,7 +268,7 @@ exports.mapAttributes = function (req, res) {
     if(err) {
       res.format({
         html: function() {
-          res.render('analysis/hivtrace/attribute_map_assignment.ejs', { 'error' : err});
+          res.render('hivtrace/attribute_map_assignment.ejs', { 'error' : err});
         },
         json: function() {
           res.json(200, err);
@@ -281,7 +281,7 @@ exports.mapAttributes = function (req, res) {
       var parsed_attributes = HivTrace.parseHeaderFromMap(headers[0], hivtrace_map);
       res.format({
         html: function() {
-          res.render('analysis/hivtrace/attribute_map_assignment.ejs', { 'map'           : hivtrace_map, 
+          res.render('hivtrace/attribute_map_assignment.ejs', { 'map'           : hivtrace_map, 
                                                                          'headers'       : headers, 
                                                                          'example_parse' : parsed_attributes, 
                                                                          'hivtrace_id'   : hivtrace._id,
@@ -304,7 +304,7 @@ exports.mapAttributes = function (req, res) {
         parsed_attributes = HivTrace.parseHeaderFromMap(hivtrace_map.headers[0], hivtrace_map);
         res.format({
           html: function() {
-            res.render('analysis/hivtrace/attribute_map_assignment.ejs', { 'map'  : hivtrace_map,
+            res.render('hivtrace/attribute_map_assignment.ejs', { 'map'  : hivtrace_map,
                                                                   'example_parse' : parsed_attributes,
                                                                   'headers'       : hivtrace_map.headers,
                                                                   'hivtrace_id'   : hivtrace._id,

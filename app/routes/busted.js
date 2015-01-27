@@ -1,7 +1,7 @@
 /*
   Datamonkey - An API for comparative analysis of sequence alignments using state-of-the-art statistical models.
 
-  Copyright (C) 2014
+  Copyright (C) 2015
   Sergei L Kosakovsky Pond (spond@ucsd.edu)
   Steven Weaver (sweaver@ucsd.edu)
 
@@ -41,7 +41,7 @@ var mongoose = require('mongoose'),
     Busted = mongoose.model('Busted');
 
 exports.createForm = function(req, res) {
-  res.render('analysis/busted/upload_msa.ejs');
+  res.render('busted/upload_msa.ejs');
 }
 
 exports.uploadFile = function(req, res) {
@@ -124,7 +124,7 @@ exports.selectForeground = function(req, res) {
   Busted.findOne({_id: id}, function (err, busted) {
       res.format({
         html: function() {
-          res.render('analysis/busted/form.ejs', {'busted' : busted});
+          res.render('busted/form.ejs', {'busted' : busted});
         },
         json: function(){
           res.json(200, busted);
@@ -155,7 +155,7 @@ exports.invokeBusted = function(req, res) {
         // Redisplay form with errors
         res.format({
           html: function() {
-            res.render('analysis/busted/form.ejs', {'errors': err.errors,
+            res.render('busted/form.ejs', {'errors': err.errors,
                                                     'busted' : busted});
           },
           json: function() {
@@ -204,7 +204,7 @@ exports.getBusted = function(req, res) {
       res.json(500, error.errorResponse('Invalid ID : ' + bustedid ));
     } else {
       // Should return results page
-      res.render('analysis/busted/jobpage.ejs', { job : busted, 
+      res.render('busted/jobpage.ejs', { job : busted, 
                                                  socket_addr: 'http://' + setup.host + ':' + setup.socket_port 
                                                });
     }

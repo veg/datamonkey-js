@@ -34,12 +34,16 @@ var mongoose = require('mongoose'),
 var AnalysisSchema = require(__dirname + '/analysis');
 
 var Busted = AnalysisSchema.extend({
-  msa                   : [Msa.MsaSchema],
-  treemode              : Number,
   tagged_nwk_tree       : String,
-  mail                  : String,
+  last_status_msg       : String,
   results               : Object
 });
+
+
+Busted.virtual('pmid').get(function() {
+  return 'NA';
+});
+
 
 /**
  * Filename of document's file upload

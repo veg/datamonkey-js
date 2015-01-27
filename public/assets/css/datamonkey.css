@@ -531,3 +531,12 @@ span.glyphicon {
 .modal-dialog {
   position: relative;
 }
+
+.status-healthy {
+  fill: green;
+}
+
+.status-troubled {
+  fill: red;
+}
+
