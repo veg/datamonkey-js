@@ -55,6 +55,7 @@ exports.uploadFile = function(req, res) {
     relax.mail = postdata.mail;
   }
 
+
   Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
 
     var relax = new Relax;
@@ -210,4 +211,36 @@ exports.getRelaxResults = function(req, res) {
   });
 }
 
+/**
+ * Displays id page for analysis
+ * app.get('/relax/:relaxid', relax.getRelax);
+ */
+exports.getRelaxRecheck = function(req, res) {
+
+  // Find the analysis
+  // Return its results
+  var relaxid = req.params.relaxid;
+
+  //Return all results
+  Relax.findOne({_id : relaxid}, function(err, relax) {
+    if (err || !relax ) {
+      logger.error(err);
+      res.json(500, error.errorResponse('Invalid ID : ' + relaxid ));
+    } else {
+
+        var callback = function(data) {
+          res.json(200,  data);
+        }
+
+
+      // Send the MSA and analysis type
+      var jobproxy = new hpcsocket.HPCSocketRecheck({'filepath'    : relax.filepath, 
+                                              'msa'         : relax.msa,
+                                              'analysis'    : relax,
+                                              'status_stack': relax.status_stack,
+                                              'type'        : 'relax'}, callback);
+    }
+
+  });
+}
 

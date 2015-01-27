@@ -35,6 +35,7 @@ module.exports = function(app) {
   app.get('/help', home.help);
   app.get('/jobqueue', home.jobQueue);
   app.get('/stats', home.stats);
+  app.get('/clusterhealth', home.clusterhealth);
   app.get('/stats_test', home.stats_test);
   app.get('/analyses', home.analyses);
   app.get('/development', home.development);
@@ -76,6 +77,7 @@ module.exports = function(app) {
   app.post('/relax/:id/select-foreground', relax.invokeRelax);
   app.get('/relax/:relaxid', relax.getRelax);
   app.get('/relax/:relaxid/results', relax.getRelaxResults);
+  app.get('/relax/:relaxid/recheck', relax.getRelaxRecheck);
 
   // aBSREL ROUTES
   absrel = require( ROOT_PATH + '/app/routes/absrel');

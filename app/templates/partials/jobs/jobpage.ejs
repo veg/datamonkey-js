@@ -1,0 +1,39 @@
+  <% if (job.status == 'Aborted') { %>
+    <div class="alert alert-danger">There was an error! Please try again. <code><%= job.error_message %></code></div>
+  <% } else { %>  
+  <div>
+      <div id="time-status">
+        <div class="pull-left" id="job-timer" data-created="<%= job.timestamp %>"><h6>Runtime <span class="time">00:00:00</span></h6></div>
+      </div>
+      <div style="clear:both"></div>
+      <% for(var s = 0; s < job.status_stack.length; s++) { %>
+        <div class="job-status panel 
+        <%if (job.status_index < s) { %>  
+        panel-info
+        <% } else if (job.status_index == s) { %>  
+        panel-warning
+        <% } else { %>
+        panel-success
+        <% } %>
+        " data-index=<%= s %>>
+        <div class="job-panel-heading panel-heading">
+          <%= job.status_stack[s] %>
+        </div>
+        <div class="panel-body">
+          <%if (s == 0 && job.torque_id) { %>
+            Ticket Number: <%= job.torque_id%>
+          <% } %>
+          <%if (s == 1 && job.last_status_msg) { %>
+            <pre>
+            <%= job.last_status_msg %>
+            </pre>
+          <% } %>
+        </div>
+        </div>
+      <% } %>
+  <% } %>
+  </div>
+</div>
+
+<script src="https://cdn.socket.io/socket.io-1.0.6.js"></script>
+<script src="/assets/js/job.js"></script>

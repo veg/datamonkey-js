@@ -16,7 +16,7 @@
     "url": "git://github.com/veg/datamonkey-js.git"
   },
   "dependencies": {
-    "hyphy"                  : "git+https://github.com/veg/hyphy.git",
+    "hyphy"                  : "git+https://github.com/stevenweaver/hyphy.git",
     "express"                : "3.x",
     "express-validator"      : "0.3.x",
     "jade"                   : "0.x",

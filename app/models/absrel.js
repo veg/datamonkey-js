@@ -2,7 +2,7 @@
 
   Datamonkey - An API for comparative analysis of sequence alignments using state-of-the-art statistical models.
 
-  Copyright (C) 2014
+  Copyright (C) 2015
   Sergei L Kosakovsky Pond (spond@ucsd.edu)
   Steven Weaver (sweaver@ucsd.edu)
 
@@ -27,29 +27,39 @@
 
 */
 
-var mongoose = require('mongoose'),
-    extend = require('mongoose-schema-extend'),
-    Msa = require(__dirname + '/msa');
+var mongoose  = require('mongoose'),
+    extend    = require('mongoose-schema-extend'),
+    Msa       = require(__dirname + '/msa');
 
 var AnalysisSchema = require(__dirname + '/analysis');
 
-var Busted = AnalysisSchema.extend({
-  tagged_nwk_tree       : String,
+var aBSREL = AnalysisSchema.extend({
+  analysis_type         : Number,
   last_status_msg       : String,
   results               : Object
 });
 
+aBSREL.virtual('pmid').get(function() {
+  return '25540451';
+});
 
-Busted.virtual('pmid').get(function() {
-  return 'NA';
+aBSREL.virtual('upload_redirect_path').get(function() {
+  return '/absrel/' + this._id;
+});
+
+/**
+ * Complete file path for document's file upload
+ */
+aBSREL.virtual('filepath').get(function () {
+  return __dirname + '/../../uploads/msa/' + this._id + '.fasta';
 });
 
 
 /**
  * Filename of document's file upload
  */
-Busted.virtual('status_stack').get(function () {
-  return ['In Queue', 
+aBSREL.virtual('status_stack').get(function () {
+  return ['Queueing', 
           'Running',
           'Completed'];
 });
@@ -57,16 +67,9 @@ Busted.virtual('status_stack').get(function () {
 /**
  * Complete file path for document's file upload
  */
-Busted.virtual('filepath').get(function () {
+aBSREL.virtual('filepath').get(function () {
   return __dirname + '/../../uploads/msa/' + this._id + '.fasta';
 });
 
-/**
- * URL for a busted path
- */
-Busted.virtual('url').get(function () {
-  return 'http://' + setup.host + '/busted/' + this._id;
-});
+module.exports = mongoose.model('aBSREL', aBSREL);
 
-
-module.exports = mongoose.model('Busted', Busted);

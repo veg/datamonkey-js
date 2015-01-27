@@ -1,0 +1,114 @@
+<%- include includes/header.ejs %>
+
+<div id="tutorial-container" class="container">
+  <div class="datamonkey-sm-header">
+    <h1>Tutorial</h1>
+    <p>Creating a new analysis</p>
+  </div>
+
+  <div class="help-content tab-content col-sm-8">
+    <h1 id="analyzing-data" class="page-header">Technologies used</h1>
+  </div>
+
+  <div class="help-content tab-content col-sm-8">
+
+    <h4>General Steps</h4>
+    <ul>
+      <li> Create a new file entitled <code>app/routes/&lt;analysis name.js&gt;</code></li>
+      <li> Create a new file entitled <code>app/models/&lt;analysis name.js&gt;</code></li>
+      <li> Create a new directory entitled <code>app/templates/&lt;analysis name.js&gt;</code></li>
+      <li> Open <code>config/routes.js</code></li>
+    </ul>
+
+    <p> managing static assets </p>
+    <h1 id="analyzing-data" class="page-header">Routes</h1>
+
+    <p> Four basic routes </p>
+    <ul>
+      <li>Form</li>
+      <li>Form Submittal</li>
+      <li>Job ID Page</li>
+      <li>Job ID Results JSON</li>
+    </ul>
+
+    <p> In order to create a new route.</p>
+
+    <h4> Example </h4>
+    <code>
+      // aBSREL ROUTES
+      absrel = require( ROOT_PATH + '/app/routes/absrel');
+      app.get('/absrel', absrel.form);
+      app.post('/absrel', absrel.upload);
+      app.get('/absrel/:id', absrel.getPage);
+      app.get('/absrel/:id/results', absrel.getResults);
+    </code>
+    <p> blurb </p>
+
+    <h1 id="analyzing-data" class="page-header">Models</h1>
+
+    <p> In order to create a new model. Include from Analysis Schema. Include
+    any additional parameters that are unique to the analysis</p>
+
+    <p> virtual functions </p>
+    <p> static functions </p>
+
+    <code>
+    var AnalysisSchema = require(__dirname + '/analysis');
+
+    var Relax = AnalysisSchema.extend({
+      msa                   : [Msa.MsaSchema],
+      treemode              : Number,
+      tagged_nwk_tree       : String,
+      analysis_type         : Number,
+      mail                  : String,
+      last_status_msg       : String,
+      results               : Object
+    });
+    </code>
+
+    <h1 id="analyzing-data" class="page-header">Templates</h1>
+    <p>Create an msa form</p>
+    <p>Create a form (if applicable)</p>
+    <p>Create a job status page</p>
+    <p>Create a results page</p>
+
+    <h2 id="analyzing-data" class="page-header">MSA Form</h1>
+    Need to create stub per analysis
+
+    <h2 id="analyzing-data" class="page-header">Parameter Form</h1>
+
+    <h2 id="analyzing-data" class="page-header">Job Page</h1>
+
+
+    <h1 id="analyzing-data" class="page-header">Dispatcher on Silverback</h1>
+    <p>Create a new directory in app/</p>
+    <p>Edit server.js to include new analysis</p>
+
+    <!--<div class="bs-callout bs-callout-info">-->
+    <!--  <p>-->
+    <!--    Complete model selection procedure details can be found in this <a  href='http://mbe.oxfordjournals.org/cgi/content/short/22/5/1208'> MBE paper</a>-->
+    <!--  </p>-->
+    <!--</div>-->
+
+  </div>
+
+  <!--[>Nav Bar <]-->
+  <!--<nav id="sidebar" class="col-xs-3 bs-docs-sidebar pull-right">-->
+  <!--  <ul class="nav nav-stacked fixed">-->
+  <!--    <li>-->
+  <!--      <a href="#data-files">Data Files</a>-->
+  <!--      <ul class="nav nav-stacked">-->
+  <!--          <li><a href="#data-types">Data Types</a></li>-->
+  <!--          <li><a href="#genetic-codes">Genetic Codes</a></li>-->
+  <!--          <li><a href="#data-formats">Data Formats</a></li>-->
+  <!--      </ul>-->
+  <!--    </li>-->
+  <!--  </ul>-->
+  <!--</nav>-->
+</div>
+
+
+
+<span class="clear"></span>
+<%- include includes/footer.ejs %>
+
