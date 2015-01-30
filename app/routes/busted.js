@@ -199,6 +199,16 @@ exports.getBusted = function(req, res) {
 
   //Return all results
   Busted.findOne({_id : bustedid}, function(err, busted) {
+
+    if(!busted.last_status_msg) {
+      busted.last_status_msg = '';
+    }
+
+    if(!busted.torque_id) {
+      busted.torque_id = '';
+    }
+
+
     if (err || !busted ) {
       logger.error(err);
       res.json(500, error.errorResponse('Invalid ID : ' + bustedid ));
@@ -230,3 +240,4 @@ exports.getBustedResults = function(req, res) {
     }
   });
 }
+

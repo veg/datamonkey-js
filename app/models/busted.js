@@ -49,9 +49,9 @@ Busted.virtual('pmid').get(function() {
  * Filename of document's file upload
  */
 Busted.virtual('status_stack').get(function () {
-  return ['In Queue', 
-          'Running',
-          'Completed'];
+  return ['queue', 
+          'running',
+          'completed'];
 });
 
 /**

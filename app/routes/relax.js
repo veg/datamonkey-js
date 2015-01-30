@@ -180,10 +180,13 @@ exports.getRelax = function(req, res) {
       logger.error(err);
       res.json(500, error.errorResponse('Invalid ID : ' + relaxid ));
     } else {
+      if(!relax.torque_id) {
+        relax.torque_id = 'N/A';
+      }
       // Should return results page
       res.render('relax/jobpage.ejs', { job : relax, 
-                                                 socket_addr: 'http://' + setup.host + ':' + setup.socket_port 
-                                               });
+                                        socket_addr: 'http://' + setup.host + ':' + setup.socket_port 
+                                       });
     }
   });
 }
