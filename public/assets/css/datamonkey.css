@@ -540,3 +540,32 @@ span.glyphicon {
   fill: red;
 }
 
+.job-status circle {
+  fill-opacity:.5;
+}
+
+.job-status .queue {
+  fill:#B94A48;
+  border-color:#EBCCD1;
+}
+
+.job-status .running {
+  fill:#C09853;
+  border-color:#C09853;
+}
+
+.job-status .completed {
+  fill:#468847;
+  border-color: #D6E9C6;
+}
+
+.job-status {
+  margin: 10px;
+  display : inline;
+}
+
+#job-pre {
+  background-color: #FFF;
+  height: 370px;
+  overflow:scroll;
+}

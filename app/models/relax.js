@@ -48,9 +48,9 @@ Relax.virtual('pmid').get(function() {
  * Filename of document's file upload
  */
 Relax.virtual('status_stack').get(function () {
-  return ['Queueing', 
-          'Running',
-          'Completed'];
+  return ['queue', 
+          'running',
+          'completed'];
 });
 
 /**
