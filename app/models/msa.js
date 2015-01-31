@@ -87,6 +87,7 @@ var Msa = new Schema({
     gencodeid      : Number,
     goodtree       : Number,
     nj             : String,
+    usertree       : String,
     mailaddr       : String,
     created        : {type : Date, default : Date.now}
 });
@@ -514,6 +515,7 @@ Msa.statics.parseFile = function(fn, datatype, gencodeid, cb) {
     msa.timestamp  = file_info.timestamp;
     msa.goodtree   = file_info.goodtree;
     msa.nj         = file_info.nj;
+    msa.usertree   = fpi.usertree;
     msa.rawsites   = file_info.rawsites;
     var sequences  = result.SEQUENCES;
     msa.sequence_info = [];
