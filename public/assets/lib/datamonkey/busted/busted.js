@@ -82,7 +82,7 @@ function busted_render_summary(json) {
   for_branch_table = for_branch_table.sort (function (a,b) {return a[4]-b[4];});
 
   d3.select ('#summary-test-result').text (json['test results']['p'] <= 0.05 ? "evidence" : "no evidence");
-  //d3.select ('#summary-test-pvalue').text (branch_table_format(json['test results']['p']));
+  d3.select ('#summary-test-pvalue').text (d3.format(".3f")(json['test results']['p']));
   d3.select ('#summary-pmid').text ("PubMed ID " + json['PMID'])
                              .attr ("href", "http://www.ncbi.nlm.nih.gov/pubmed/" + json['PMID']);
   d3.select ('#summary-total-runtime').text (format_run_time(json['timers']['overall']));
