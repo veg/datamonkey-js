@@ -1,16 +1,80 @@
 $( document ).ready( function () {
-  relax_create_neighbor_tree();
-});
 
-function relax_create_neighbor_tree() {
+  // If there is a user tree, allow the user to select which they want to use
+  var top_modal_container = "#neighbor-tree";
+  nj_nwk = $(top_modal_container).data("tree");
+  user_tree_nwk = $(top_modal_container).data("usertree");
 
-  var default_tree_settings = function(tree) {
-      tree.branch_length (null);
-      tree.branch_name (null);
-      tree.node_span ('equal');
-      tree.options ({'draw-size-bubbles' : false}, false);
+  if(user_tree_nwk) {
+    relax_create_neighbor_tree(user_tree_nwk);
+  } else {
+    relax_create_neighbor_tree(nj_nwk);
   }
 
+  if("#tree-select-btn-group") {
+    $("#tree-select-btn-group").find('.btn').each(
+      function(i, obj){
+        $(obj).on('click', function(d) { 
+          d3.select('#tree_container').html('');
+          current_selection_name = $(this).data('name');
+          if(current_selection_name == 'nj') {
+            relax_create_neighbor_tree(nj_nwk);
+          } else {
+            relax_create_neighbor_tree(user_tree_nwk);
+          }
+        })
+    });
+  }
+
+});
+
+function relax_create_neighbor_tree(nwk) {
+
+  function node_colorizer (element, data) {
+
+    var reference_style = 'red'
+    var test_style      = 'rgb(31, 119, 180)';
+
+    if(data['reference']) {
+      element.style ('fill', reference_style, 'important');
+    } else if (data['test']) {
+      element.style ('fill', test_style, 'important');
+    } else {
+      element.style ("fill", '');
+    }
+
+  }
+
+  function edge_colorizer (element, data) {
+
+    var reference_style = 'red'
+    var test_style      = 'rgb(31, 119, 180)';
+
+    if(data['reference']) {
+      element.style ('stroke', reference_style, 'important');
+    } else if (data['test']) {
+      element.style ('stroke', test_style, 'important');
+    } else {
+      element.style ('stroke', '');
+    }
+
+  }
+
+
+  
+  var default_tree_settings = function(tree) {
+    tree.branch_length (null);
+    tree.branch_name (null);
+    tree.node_span ('equal');
+    tree.options ({'draw-size-bubbles' : false}, false);
+    tree.options ({'tag-branches' : false}, false);
+    tree.options({'binary-selectable' : true});
+    tree.options({'attribute-list' : ['reference', 'test']});
+    //tree.options({'selectable' : false});
+    tree.selection_label(current_selection_name);
+    tree.style_nodes(node_colorizer);
+    tree.style_edges(edge_colorizer)
+  }
 
   var width                         = 800,
       height                        = 600,
@@ -26,8 +90,6 @@ function relax_create_neighbor_tree() {
   var tree_container = "#tree-body";
   var container_id = '#tree_container';
 
-  nwk = $(top_modal_container).data("tree");
-      
   tree = d3.layout.phylotree(tree_container)
       .size([height, width])
       .separation (function (a,b) {return 0;})
@@ -45,6 +107,21 @@ function relax_create_neighbor_tree() {
   default_tree_settings(tree);
   tree(nwk).svg(svg).layout();
 
+  var reference_id    = '#reference-branch-highlighter';
+  var test_id         = '#test-branch-highlighter';
+
+  var current_selection_name = 'test';
+  $(test_id).find("input")[0].checked = true;
+  tree.selection_label(current_selection_name);
+
+  $("#relax-highlighter-btn-group").find('.btn').each(
+    function(i, obj){
+      $(obj).on('click', function(d) { 
+        current_selection_name = $(this).data('name');
+        tree.selection_label(current_selection_name);
+      })
+  });
+
 }
 
 $("form").submit(function(e) {
@@ -54,22 +131,35 @@ $("form").submit(function(e) {
 
   var validate_selection = function(tree, callback) {
 
-    if(tree.nodes.get_selection().length) {
+    // Get reference and test count
+    var at_least_one_test = tree.nodes.get_nodes().some(function(d) { return d.test })
+    var at_least_one_reference = tree.nodes.get_nodes().some(function(d) { return d.reference})
+
+    if(!tree.nodes.get_selection().length) {
+      callback({ msg : 'No branch selections were made, please select one. Alternatively, you can choose to select all via the menu.'});
+    } else if(!at_least_one_test) {
+      callback({ msg : 'No test branch selections were made, please select one.'});
+    } else if(!at_least_one_reference) {
+      // If there are test branches selected, then mark the rest as reference.
+      var current_selection_name = tree.selection_label();
+      tree.selection_label('reference');
+      tree.modify_selection(function (d) { return !d.test;});
+      tree.selection_label(current_selection_name);
       callback();
     } else {
-      callback({ msg : 'No branch selections were made, please select one. Alternatively, you can choose to select all via the menu.'});
+      callback();
     }
+
   }
 
   var export_newick = function(tree) {
     return tree.get_newick (
       function (node) {
-        var tags = [];
-        if (node.selected) { tags.push("FG") };
-        if (tags.length) {
-          return '{' + tags.join (',') + '}';
+        if(node.reference) {
+          return '{REFERENCE}';
+        } else if(node.test) {
+          return '{TEST}';
         }
-        return '';
       }
     )
   }
@@ -90,6 +180,7 @@ $("form").submit(function(e) {
       var xhr = new XMLHttpRequest();
       xhr.open('post', self.attributes.getNamedItem("action").value, true);
       xhr.onload = function(res) {
+
         // Replace field with green text, name of file
         var result = JSON.parse(this.responseText);
         if('_id' in result.relax) {
@@ -97,9 +188,13 @@ $("form").submit(function(e) {
         } else if ('error' in result) {
           datamonkey.errorModal(result.error);
         }
+
       };
+
       xhr.send(formData);
+
     }
+
   });
 });
 
@@ -178,7 +273,6 @@ $("#select_all_leaves").on("click", function (e) {
     tree.modify_selection(function (d) { return d3_phylotree_is_leafnode (d.target);});
 });
 
-
 $("#select_none").on("click", function (e) {
     tree.modify_selection(function (d) { return false;});
 });
@@ -186,4 +280,6 @@ $("#select_none").on("click", function (e) {
 $("#display_dengrogram").on("click", function (e) {
     tree.options({'branches' : 'step'}, true);
 });
+
+
 

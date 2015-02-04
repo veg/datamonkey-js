@@ -33,39 +33,43 @@ var mongoose  = require('mongoose'),
 
 var AnalysisSchema = require(__dirname + '/analysis');
 
-var Relax = AnalysisSchema.extend({
-  tagged_nwk_tree       : String,
+var aBSREL = AnalysisSchema.extend({
   analysis_type         : Number,
   last_status_msg       : String,
   results               : Object
 });
 
-Relax.virtual('pmid').get(function() {
+aBSREL.virtual('pmid').get(function() {
   return '25540451';
 });
 
-/**
- * Filename of document's file upload
- */
-Relax.virtual('status_stack').get(function () {
-  return ['queue', 
-          'running',
-          'completed'];
+aBSREL.virtual('upload_redirect_path').get(function() {
+  return '/absrel/' + this._id;
 });
 
 /**
  * Complete file path for document's file upload
  */
-Relax.virtual('filepath').get(function () {
+aBSREL.virtual('filepath').get(function () {
   return __dirname + '/../../uploads/msa/' + this._id + '.fasta';
 });
 
+
 /**
- * URL for a relax path
+ * Filename of document's file upload
  */
-Relax.virtual('url').get(function () {
-  return 'http://' + setup.host + '/relax/' + this._id;
+aBSREL.virtual('status_stack').get(function () {
+  return ['Queueing', 
+          'Running',
+          'Completed'];
 });
 
+/**
+ * Complete file path for document's file upload
+ */
+aBSREL.virtual('filepath').get(function () {
+  return __dirname + '/../../uploads/msa/' + this._id + '.fasta';
+});
 
-module.exports = mongoose.model('Relax', Relax);
+module.exports = mongoose.model('aBSREL', aBSREL);
+

@@ -2,7 +2,7 @@
 
   Datamonkey - An API for comparative analysis of sequence alignments using state-of-the-art statistical models.
 
-  Copyright (C) 2013
+  Copyright (C) 2015
   Sergei L Kosakovsky Pond (spond@ucsd.edu)
   Steven Weaver (sweaver@ucsd.edu)
 
@@ -31,6 +31,7 @@
 var mongoose = require('mongoose'),
     globals  = require( '../../config/globals.js'),
     moment   = require('moment'),
+    Msa       = require(__dirname + '/msa');
     extend   = require('mongoose-schema-extend');
 
 
@@ -38,6 +39,8 @@ var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
 var AnalysisSchema = new Schema({
+  msa                 : [Msa.MsaSchema],
+  treemode            : Number,
   created             : {type: Date, default: Date.now},
   id                  : {type: Number, require: true},
   type                : {type: String, require: true},
@@ -45,6 +48,7 @@ var AnalysisSchema = new Schema({
   last_status_msg     : Object,
   torque_id           : String,
   sendmail            : Boolean,
+  mail                : String,
   error_message       : String,
   cpu_time            : Number
 });
@@ -88,7 +92,7 @@ AnalysisSchema.virtual('timestamp').get(function () {
  * Index of status
  */
 AnalysisSchema.virtual('status_index').get(function () {
-  return this.status_stack.indexOf(this.status);
+  return this.status_stack.map(function(d) {return d.toLowerCase()}).indexOf(this.status);
 });
 
 

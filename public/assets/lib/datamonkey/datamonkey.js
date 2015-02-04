@@ -150,3 +150,28 @@ datamonkey.save_image = function(type, container) {
   }
 
 }
+
+datamonkey.status_check = function () {
+
+  // Check if there are any status checkers on the page
+  if($(".status-checker").length) {
+    // Check health status and report back to element
+    var url = "/clusterhealth";
+    d3.json(url, function(data) {
+      // Add appropriate class based on result
+      if (data["successful_connection"]) {
+        d3.select('.status-checker').classed({'status-healthy': true, 'status-troubled': false})
+        $(".status-checker").attr( "title", 'Cluster Status : Healthy');
+      } else {
+        d3.select('.status-checker').classed({'status-healthy': false, 'status-troubled': true})
+        $(".status-checker").attr( "title", 'Cluster Status : Troubled; ' + data.msg.description);
+      }
+    });
+  }
+}
+
+
+$( document ).ready( function () {
+  datamonkey.status_check();
+});
+

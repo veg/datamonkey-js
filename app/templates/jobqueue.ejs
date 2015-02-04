@@ -1,13 +1,34 @@
 <%- include includes/header.ejs %>
+
 <div class="container">
   <h1 class="page-header">Job Queue</h1>
-  <table class="table table-bordered table-striped table-hover" >
-    <tr><td>Status</td><td>Position</td><td>Kind</td><td>Tree Mode</td><td>Sequences</td><td>Sites</td><td>Time in queue</td><td>Action</td></tr>
+  <table class="table table-bordered table-striped table-hover tablesorter" >
+    <thead>
+    <tr><td>Ticket Number</td><td>Status</td><td>Kind</td><td>Sequences</td><td>Sites</td><td>Running Time</td><td>Creation Time</td><td>Queue Time</td></tr>
+    </thead>
+    <tbody>
     <% for(var l in jobs) { %>
-      <%if (jobs[l].upload_id) { %>
-        <tr><td><%=jobs[l].status.capitalize()%></td><td><%=jobs[l].position%></td><td><%=jobs[l].type.toUpperCase()%></td><td><%=globals.treemode[jobs[l].parameters[0].treemode]%></td><td><%=jobs[l].upload_id.sequences%></td><td><%=jobs[l].upload_id.sites %></td><td><%=jobs[l].since_created%></td><td>N/A</td></tr>
-      <%}%>
+      <% if (jobs[l].job_info.id) { %>
+        <tr><td><a href="/<%=jobs[l].job_info.type%>/<%=jobs[l].job_info.id%>"><%=jobs[l].torque_info.id%></a></td>
+      <% } else { %>
+        <tr><td><%=jobs[l].torque_info.id%></td>
+      <% } %>
+
+      <td><%=jobs[l].torque_info.status.capitalize()%></td><td><%=jobs[l].job_info.type.toUpperCase()%></td><td><%=jobs[l].job_info.sequences%></td><td><%=jobs[l].job_info.sites %></td><td><%=jobs[l].torque_info.running_time%></td><td><%=jobs[l].torque_info.creation_time%></td><td><%=jobs[l].torque_info.queue_time%></td></tr>
     <% } %>
+    </tbody>
   </table>
 </div>
+
+<script src="/assets/lib/jquery.tablesorter/js/jquery.tablesorter.min.js"></script>
+
+<script>
+
+$(document).ready(function() { 
+    // call the tablesorter plugin 
+    $("table").tablesorter({ }); 
+}); 
+
+</script>
+
 <%- include includes/footer.ejs %>

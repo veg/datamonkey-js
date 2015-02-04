@@ -31,6 +31,7 @@ var fs = require('fs'),
     mongoose = require('mongoose'),
     spawn = require('child_process').spawn,
     setup = require('../config/setup'),
+    //seqio = require('../lib/biohelpers/sequenceio.js'),
     globals = require('../config/globals');
 
 // Bootstrap models
@@ -158,5 +159,31 @@ describe('parse file', function() {
     });
 
   });
+
+});
+
+describe('validate fasta file', function() {
+
+  it('should be valid', function(done) {
+
+    var fn = __dirname + '/res/Flu.fasta';
+    Msa.validateFasta(fn, function(err, result) {
+      result.should.be.true;
+      done();
+    });
+
+  });
+
+  it('should be not valid', function(done) {
+
+    var fn = __dirname + '/res/HIV_gp120.nex';
+
+    Msa.validateFasta(fn, function(err, result) {
+      result.should.be.false;
+      done();
+    });
+
+  });
+
 
 });

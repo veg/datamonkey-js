@@ -1,5 +1,7 @@
 $(document).ready(function(){
   setupJob();
+  var current_status = $("#job-status-animation").data("status");
+  animateStatusButton(current_status);
 });
 
 var intervalID = window.setInterval(getTime, 1000);
@@ -20,7 +22,7 @@ function getTime() {
   var mm = pad(String(Math.floor(time_difference / 1000 / 60)));
   time_difference -= mm * 1000 * 60;
   var ss = pad(String(Math.floor(time_difference / 1000)));
-  $('#job-timer .time').html(hh + ':'+ mm  + ':'+ ss);
+  $('#job-timer .time').html(' ' + hh + ':'+ mm  + ':'+ ss);
 }
 
 function setupJob() {
@@ -35,24 +37,18 @@ function setupJob() {
 
 
   var changeStatus = function (data) {
+
     //data is index and message
-    $('.job-status').each(function(index) {
-      if($(this).data('index') < 1 ) {
-        $(this).attr('class', 'job-status panel panel-success')
-      } else if ($(this).data('index') == 1) {
-        $(this).attr('class', 'job-status panel panel-warning')
-        $(this).children('.panel-body').html('<pre> ' + data.msg + '</pre>')
-      }
-    });
+    animateStatusButton(data.phase)
+
+    if(data.msg != undefined) {
+      $('#job-pre').html(data.msg)
+    }
+
   }
 
-  var updateQueueWithTorqueId = function (data) {
-    //data is index and message
-    $('.job-status').each(function(index) {
-      if($(this).data('index') == 0 ) {
-        $(this).find(".panel-body").text("Ticket Number: " + data);
-       }
-    });
+  var updateQueueWithTorqueId = function (torque_id) {
+    $("#torque_id").text(' ' + torque_id);
   }
 
   socket.on('connect_error', function () {
@@ -73,14 +69,13 @@ function setupJob() {
 
   // Status update
   socket.on('status update', function (data) {
-    console.log(data);
     changeStatus(data);
     if('torque_id' in data) {
       updateQueueWithTorqueId(data.torque_id);
     }
   });
 
-  // Torque ID
+  // Torque id
   socket.on('job created', function (data) {
     updateQueueWithTorqueId(data.msg);
   });
@@ -108,3 +103,27 @@ function setupJob() {
   });
 
 }
+
+function animateStatusButton(status) {
+
+  function transition(element, start, end) {
+    var duration = 2000;
+    element.transition()
+      .duration(duration)
+      .attr("r", end)
+      .each("end", function() { d3.select(this).call(transition, end, start); });
+  }
+  
+  minRadius = 23;
+  maxRadius = 27;
+
+  var circle = d3.selectAll(".job-status circle")
+               .style("fill-opacity", 0.5)
+               .transition().duration(0);
+
+  var circle = d3.selectAll("." + status)
+               .style("fill-opacity", 0.9)
+               .call(transition, minRadius, maxRadius);
+  
+}
+

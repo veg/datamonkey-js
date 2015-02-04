@@ -87,6 +87,7 @@ var Msa = new Schema({
     gencodeid      : Number,
     goodtree       : Number,
     nj             : String,
+    usertree       : String,
     mailaddr       : String,
     created        : {type : Date, default : Date.now}
 });
@@ -188,21 +189,16 @@ Msa.methods.AnalysisCount = function (cb) {
 };
 
 Msa.methods.aminoAcidTranslation = function (cb) {
+
   var self = this;
 
-  fs.readFile(this.filepath, function (err, data) {
-    if (err) {
-      cb(err);
-    }
-
-    // Split data sequences out
-    var seq_array = seqio.parseFile(data.toString());
+  // Split data sequences out
+  var seq_array = seqio.parseFile(this.filepath, function(err, seq_array) {
     var translated_arr = seqio.translateSequenceArray(seq_array, self.gencodeid.toString());
     var translated_fasta = seqio.toFasta(translated_arr);
-
     cb(null, translated_fasta);
-
   });
+
 
 };
 
@@ -465,42 +461,34 @@ Msa.statics.parseHeaderFromMap = function (header, attr_map) {
 
 /**
  * Ensure that the file is in valid FASTA format
- * The function relies on "FastaValidator" from 
- * git@github.com:veg/TN93.git to be installed and defined in setup
  * @param fn {String} path to file to be validated
  */
 Msa.statics.validateFasta = function (fn, cb) {
-  var fasta_validator =  spawn(globals.fasta_validator, 
-                               [fn]); 
 
-  fasta_validator.stderr.on('data', function (data) {
-    // Failed return the error
-    cb({success: false, msg: String(data).replace(/(\r\n|\n|\r)/gm,"")});
-  }); 
+  seqio.parseFile(fn, function(err, result) {
 
-  fasta_validator.on('close', function (code) {
-    // Check the error code, but probably success!
-    if(code != 1) {
-      cb({success: true});
+    if(err) {
+      cb(err, result) 
+      return;
     }
-  }); 
-}
 
-Msa.statics.validateFasta = function (fn, cb) {
-  var fasta_validator =  spawn(globals.fasta_validator, 
-                               [fn]); 
-
-  fasta_validator.stderr.on('data', function (data) {
-    // Failed return the error
-    cb({success: false, msg: String(data).replace(/(\r\n|\n|\r)/gm,"")});
-  }); 
-
-  fasta_validator.on('close', function (code) {
-    // Check the error code, but probably success!
-    if(code != 1) {
-      cb({success: true});
+    if(result.length <= 1) {
+      cb({'msg': '1 sequences or less found'}, false)
+      return;
     }
-  }); 
+
+    // Check that all sequences are the same length
+    var reference_length = result[0].seq.length
+    var all_the_same = result.every(function(d) {return d.seq.length == reference_length}); 
+
+    if(!all_the_same) {
+      cb({'msg': 'Sequence lengths do not all match'}, false)
+    }
+
+    cb('', true)
+
+  });
+
 }
 
 Msa.statics.parseFile = function(fn, datatype, gencodeid, cb) {
@@ -527,6 +515,7 @@ Msa.statics.parseFile = function(fn, datatype, gencodeid, cb) {
     msa.timestamp  = file_info.timestamp;
     msa.goodtree   = file_info.goodtree;
     msa.nj         = file_info.nj;
+    msa.usertree   = fpi.usertree;
     msa.rawsites   = file_info.rawsites;
     var sequences  = result.SEQUENCES;
     msa.sequence_info = [];
@@ -541,7 +530,6 @@ Msa.statics.parseFile = function(fn, datatype, gencodeid, cb) {
     var PartitionInfo = mongoose.model('PartitionInfo', PartitionInfo);
     var partition_info = new PartitionInfo(fpi);
     msa.partition_info = partition_info;
-    debugger;
     cb(null, msa)
 
   });

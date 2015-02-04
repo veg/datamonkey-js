@@ -16,8 +16,8 @@ var initialize_cluster_network_graphs = function () {
       histogram_tag         = '#histogram_tag',
       histogram_label       = '#histogram_label',
       button_bar_prefix     = 'network_ui_bar',
-      csvexport_label       = '#csvexport';
-
+      csvexport_label       = '#csvexport',
+      filter_edges_toggle   = '#network_ui_bar_toggle_filter_edges';
 
   //Initialize clusternetworkgraph with json url
   var json_url = $(network_container).parent().data('url');
@@ -25,7 +25,7 @@ var initialize_cluster_network_graphs = function () {
   d3.json(json_url, function(graph) {
 
     d3.json (window.location.href + "/attributes", function (error, attributes) {
-          var user_graph = new datamonkey.hivtrace.cluster_network_graph(graph, network_container, network_status_string, network_warning, button_bar_prefix, attributes);
+          var user_graph = new datamonkey.hivtrace.cluster_network_graph(graph, network_container, network_status_string, network_warning, button_bar_prefix, attributes, filter_edges_toggle);
           datamonkey.hivtrace.export_csv_button(graph, csvexport_label);
           datamonkey.hivtrace.histogram(graph, histogram_tag, histogram_label);
       });
@@ -41,6 +41,7 @@ var initialize_cluster_network_graphs = function () {
         lanl_histogram_label       = '#lanl-histogram_label',
         lanl_csvexport_label       = '#lanl-csvexport',
         lanl_button_bar_prefix     = 'lanl_network_ui_bar';
+
 
     var json_url = $(lanl_network_container).parent().data('url');
     d3.json(json_url, function(lanl_graph) {

@@ -82,7 +82,7 @@ function busted_render_summary(json) {
   for_branch_table = for_branch_table.sort (function (a,b) {return a[4]-b[4];});
 
   d3.select ('#summary-test-result').text (json['test results']['p'] <= 0.05 ? "evidence" : "no evidence");
-  //d3.select ('#summary-test-pvalue').text (branch_table_format(json['test results']['p']));
+  d3.select ('#summary-test-pvalue').text (d3.format(".3f")(json['test results']['p']));
   d3.select ('#summary-pmid').text ("PubMed ID " + json['PMID'])
                              .attr ("href", "http://www.ncbi.nlm.nih.gov/pubmed/" + json['PMID']);
   d3.select ('#summary-total-runtime').text (format_run_time(json['timers']['overall']));
@@ -125,15 +125,19 @@ function busted_render_summary(json) {
           }
       }
       
-      model_rows[k].push (only_distro ? '' : fit_format(json['fits'][access_key]['log-likelihood']));
-      model_rows[k].push (only_distro ? '' : json['fits'][access_key]['parameters']);
-      model_rows[k].push (only_distro ? '' : fit_format(json['fits'][access_key]['AIC-c']));
-      model_rows[k].push (only_distro ? '' : format_run_time(json['fits'][access_key]['runtime']));
-      model_rows[k].push (only_distro ? '' : fit_format(json['fits'][access_key]['tree length']));
+      try {
+        model_rows[k].push (only_distro ? '' : fit_format(json['fits'][access_key]['log-likelihood']));
+        model_rows[k].push (only_distro ? '' : json['fits'][access_key]['parameters']);
+        model_rows[k].push (only_distro ? '' : fit_format(json['fits'][access_key]['AIC-c']));
+        model_rows[k].push (only_distro ? '' : format_run_time(json['fits'][access_key]['runtime']));
+        model_rows[k].push (only_distro ? '' : fit_format(json['fits'][access_key]['tree length']));
 
-      for (j = 0; j < 3; j++) {
-       model_rows[k].push (   omega_format(json['fits'][access_key]['rate distributions'][secondary_key][j][0]) + " (" +
-                              prop_format(json['fits'][access_key]['rate distributions'][secondary_key][j][1]) + ")");
+        for (j = 0; j < 3; j++) {
+         model_rows[k].push (   omega_format(json['fits'][access_key]['rate distributions'][secondary_key][j][0]) + " (" +
+                                prop_format(json['fits'][access_key]['rate distributions'][secondary_key][j][1]) + ")");
+        }
+      } catch(e) {
+        datamonkey.errorModal(e);
       }
   }
                              

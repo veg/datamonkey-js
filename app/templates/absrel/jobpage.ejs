@@ -1,0 +1,15 @@
+<%- include ../includes/header.ejs %>
+
+<div class="container" id="job-report" data-jobid="<%= job._id %>" data-socket-address="<%= socket_addr %>">
+  <%- include header.ejs %>
+  <% if (job.status != 'Completed') { %>
+    <%- include ../partials/jobs/jobpage.ejs %>
+  <% } else { %>
+    <%- include ./results.ejs %>
+  <% } %>
+  </div>
+</div>
+
+<%- include ../includes/modal.ejs %>
+<%- include ../includes/footer.ejs %>
+

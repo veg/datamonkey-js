@@ -1,4 +1,4 @@
-<%- include ../../includes/header.ejs %>
+<%- include ../includes/header.ejs %>
 
 <!--<a class="INFO" href="help/data.php">Preparing your data</a>&nbsp;-->
 <!--Examples:-->
@@ -12,8 +12,10 @@
       There were errors with your request. Errors are highlighted in red.
   </div>
   <div class="nav nav-list pull-right"><a href="/help#hivtrace" target="_blank"><span class="glyphicon glyphicon-info-sign"></span></a></div>
+
   <div class="row col-lg-9">
       <form role="form" class="form-horizontal" name="uploadform" enctype="multipart/form-data" method="post" action="/hivtrace/uploadfile/">
+
           <div id="trace-upload" class="form-group <%if (typeof errors != "undefined" && typeof errors.file != "undefined") { %>has-error<% } %>">
             <label id="upload-file-label" class="col-lg-3 control-label">Sequence Alignment</label>
             <div id="seq-file-div" class="col-lg-9">
@@ -44,29 +46,40 @@
                    <option value="HXB2_env">HXB2_env</option>
                    <option value="HXB2_gag">HXB2_gag</option>
                    <option value="HXB2_rt">HXB2_rt</option>
+                   <option value="Custom">Custom</option>
                 </select>
             </div>
           </div>
-          <div class=" form-group <%if (typeof errors != "undefined" && typeof errors.distance_threshold != "undefined") { %>has-error<% } %>">
-            <label id="datatype-content" class="col-lg-3 control-label">Distance Threshold</label>
-            <div class="col-lg-9">
-                <input class="form-control" name="distance_threshold" type="text" placeholder=".015" data-min=<%= validators.distance_threshold.min %> data-max=<%= validators.distance_threshold.max %>>
+
+          <div id="trace-reference-upload" class="form-group hide <%if (typeof errors != "undefined" && typeof errors.file != "undefined") { %>has-error<% } %>">
+            <label id="upload-reference" class="col-lg-3 control-label">Upload Your Own Reference</label>
+            <div id="reference-file-div" class="col-lg-9">
+              <input id="reference-file" type="file" name="files">
             </div>
           </div>
+
+          <div class="form-group <%if (typeof errors != "undefined" && typeof errors.distance_threshold != "undefined") { %>has-error<% } %>">
+            <label id="datatype-content" class="col-lg-3 control-label">Distance Threshold</label>
+            <div class="col-lg-9">
+              <input class="form-control" name="distance_threshold" type="text" placeholder=<%= validators.distance_threshold.default%> data-min=<%= validators.distance_threshold.min %> data-max=<%= validators.distance_threshold.max %>>
+            </div>
+          </div>
+
           <div class="form-group <%if (typeof errors != "undefined" && typeof errors.min_overlap != "undefined") { %>has-error<% } %>">
             <label id="datatype-content" class="col-lg-3 control-label">Minimum Overlap</label>
             <div class="col-lg-9">
-                <input class="form-control" name="min_overlap" type="text" placeholder="500" data-min=<%= validators.min_overlap.min %> data-max=<%= validators.min_overlap.max %>>
+              <input class="form-control" name="min_overlap" type="text" placeholder=<%= validators.min_overlap.default %> data-min=<%= validators.min_overlap.min %> data-max=<%= validators.min_overlap.max %>>
             </div>
           </div>
+
           <div class="form-group">
             <label class="col-lg-3 control-label">Handle Ambiguities</label>
             <div class="col-lg-9">
                 <select name="ambiguity_handling">
-                  <option value="RESOLVE">
+                  <option selected="selected" value="RESOLVE">
                     Resolve
                   </option>
-                  <option selected="selected" value="AVERAGE">
+                  <option value="AVERAGE">
                     Average
                   </option>
                   <option value="SKIP">
@@ -78,12 +91,31 @@
                 </select>
             </div>
           </div>
-          <div id="fraction" class="hide form-group <%if (typeof errors != "undefined" && typeof errors.distance_threshold != "undefined") { %>has-error<% } %>">
-            <label id="datatype-content" class="col-lg-3 control-label">Maximum Tolerated Fraction of Ambiguities</label>
+
+          <div class="form-group">
+            <label class="col-lg-3 control-label">Remove DRAMS?</label>
             <div class="col-lg-9">
-                <input class="form-control" name="fraction" type="text" placeholder="1." data-min=<%= validators.fraction.min %> data-max=<%= validators.fraction.max %>>
+                <select name="strip_drams">
+                  <option selected="selected" value="no">
+                    No
+                  </option>
+                  <option value="lewis">
+                    Yes, using Lewis
+                  </option>
+                  <option value="wheeler">
+                    Yes, using Wheeler
+                  </option>
+                </select>
             </div>
           </div>
+
+          <div id="fraction" class="form-group <%if (typeof errors != "undefined" && typeof errors.distance_threshold != "undefined") { %>has-error<% } %>">
+            <label id="datatype-content" class="col-lg-3 control-label">Maximum Tolerated Fraction of Ambiguities</label>
+            <div class="col-lg-9">
+                <input class="form-control" name="fraction" type="text" placeholder=<%= validators.fraction.default %> data-min=<%= validators.fraction.min %> data-max=<%= validators.fraction.max %>>
+            </div>
+          </div>
+
           <div class="form-group <%if (typeof errors != "undefined" && typeof errors.mail != "undefined") { %>has-error<% } %>">
             <label id="datatype-content" class="col-lg-3 control-label">Notify When Completed?</label>
             <div class="col-lg-9 input-group mail-group">
@@ -93,20 +125,23 @@
               <input name="mail" type="text" class="form-control" placeholder="Email Address">
             </div>
           </div><!-- /form-group -->
+
           <div class="form-group">
-            <div class="col-lg-3">
-            </div>
+            <label id="datatype-content" class="col-lg-3 control-label">Compare to public database?</label>
             <div class="col-lg-9">
                 <label class="checkbox">
-                  <input type="checkbox" checked name="public_db_compare" value="yes"> Compare to public database</input>
+                  <input type="checkbox" checked name="public_db_compare" value="yes"></input>
                 </label>
                 <div id="compare-notification" class="alert alert-info hide"> Comparing to a public database is only available when using HXB2_prrt as a reference </div>
             </div>
           </div>
+
           <button type="submit" class="btn pull-right"><span class="glyphicon glyphicon-play"></span></button>
+
       </form>
   </div>
 </div>
 
-<%- include ../../includes/footer.ejs %>
+<%- include ../includes/modal.ejs %>
+<%- include ../includes/footer.ejs %>
 <script src="/assets/js/hivtrace/form.js"></script>

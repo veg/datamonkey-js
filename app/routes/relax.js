@@ -1,7 +1,7 @@
 /*
   Datamonkey - An API for comparative analysis of sequence alignments using state-of-the-art statistical models.
 
-  Copyright (C) 2014
+  Copyright (C) 2015
   Sergei L Kosakovsky Pond (spond@ucsd.edu)
   Steven Weaver (sweaver@ucsd.edu)
 
@@ -41,7 +41,7 @@ var mongoose = require('mongoose'),
     Relax = mongoose.model('Relax');
 
 exports.createForm = function(req, res) {
-  res.render('analysis/relax/upload_msa.ejs');
+  res.render('relax/upload_msa.ejs');
 }
 
 exports.uploadFile = function(req, res) {
@@ -55,11 +55,17 @@ exports.uploadFile = function(req, res) {
     relax.mail = postdata.mail;
   }
 
+
   Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
 
     var relax = new Relax;
 
     relax.msa = msa;
+
+    if(err) {
+      res.json(500, {'error' : err});
+      return;
+    }
 
     relax.save(function (err, relax_result) {
 
@@ -93,7 +99,7 @@ exports.selectForeground = function(req, res) {
   Relax.findOne({_id: id}, function (err, relax) {
       res.format({
         html: function() {
-          res.render('analysis/relax/form.ejs', {'relax' : relax});
+          res.render('relax/form.ejs', {'relax' : relax});
         },
         json: function(){
           res.json(200, relax);
@@ -126,7 +132,7 @@ exports.invokeRelax = function(req, res) {
         // Redisplay form with errors
         res.format({
           html: function() {
-            res.render('analysis/relax/form.ejs', {'errors': err.errors,
+            res.render('relax/form.ejs', {'errors': err.errors,
                                                     'relax' : relax});
           },
           json: function() {
@@ -174,10 +180,13 @@ exports.getRelax = function(req, res) {
       logger.error(err);
       res.json(500, error.errorResponse('Invalid ID : ' + relaxid ));
     } else {
+      if(!relax.torque_id) {
+        relax.torque_id = 'N/A';
+      }
       // Should return results page
-      res.render('analysis/relax/jobpage.ejs', { job : relax, 
-                                                 socket_addr: 'http://' + setup.host + ':' + setup.socket_port 
-                                               });
+      res.render('relax/jobpage.ejs', { job : relax, 
+                                        socket_addr: 'http://' + setup.host + ':' + setup.socket_port 
+                                       });
     }
   });
 }
@@ -197,7 +206,89 @@ exports.getRelaxResults = function(req, res) {
       res.json(500, error.errorResponse('invalid id : ' + relaxid ));
     } else {
       // Should return results page
-      res.json(200, JSON.parse(relax.results));
+      // Append PMID to results
+      var relax_results =  JSON.parse(relax.results);
+      relax_results['PMID'] = relax.pmid;
+      res.json(200, relax_results);
     }
   });
 }
+
+/**
+ * Handles a job request by the user
+ * app.post('/msa/:msaid/relax', Relax.invokeRelax);
+ */
+exports.restartRelax = function(req, res) {
+
+  var id = req.params.relaxid;
+
+  // Find the correct multiple sequence alignment to act upon
+  Relax.findOne({ '_id' : id }, function(err, result) {
+    if(err) {
+      // Redisplay form with errors
+      res.format({
+        html: function() {
+          res.render('analysis/relax/form.ejs', {'errors': err.errors,
+                                                  'relax' : relax});
+        },
+        json: function() {
+          // Save relax analysis
+          res.json(200, {'msg': 'Job with relax id ' + id + ' not found'});
+        }
+      });
+
+    // Successful upload, spawn job
+    } else {
+
+      var connect_callback = function(data) {
+        if(data == 'connected') {
+          // TODO: why is this empty?
+          logger.log('connected');
+        }
+      }
+
+      res.json(200,  {'relax' : result});
+
+      // Send the MSA and analysis type
+      var jobproxy = new hpcsocket.HPCSocket({'filepath'    : result.filepath, 
+                                              'msa'         : result.msa,
+                                              'analysis'    : result,
+                                              'status_stack': result.status_stack,
+                                              'type'        : 'relax'}, connect_callback);
+    }
+  });
+}
+
+/*
+ * Displays id page for analysis
+ * app.get('/relax/:relaxid', relax.getRelax);
+ */
+exports.getRelaxRecheck = function(req, res) {
+
+  // Find the analysis
+  // Return its results
+  var relaxid = req.params.relaxid;
+
+  //Return all results
+  Relax.findOne({_id : relaxid}, function(err, relax) {
+    if (err || !relax ) {
+      logger.error(err);
+      res.json(500, error.errorResponse('Invalid ID : ' + relaxid ));
+    } else {
+
+        var callback = function(data) {
+          res.json(200,  data);
+        }
+
+
+      // Send the MSA and analysis type
+      var jobproxy = new hpcsocket.HPCSocketRecheck({'filepath'    : relax.filepath, 
+                                              'msa'         : relax.msa,
+                                              'analysis'    : relax,
+                                              'status_stack': relax.status_stack,
+                                              'type'        : 'relax'}, callback);
+    }
+
+  });
+}
+

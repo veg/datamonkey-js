@@ -1,0 +1,31 @@
+  <div id="job-status-animation" class="job-status" data-status="<%= job.status %>">
+    <svg width="720" height="60">
+      <circle class="queue"     cx="27" cy="30" r="25"></circle>
+      <circle class="running"   cx="127" cy="30" r="25"></circle>
+      <circle class="completed" cx="227" cy="30" r="25"></circle>
+    </svg> 
+  </div>
+
+  <div class="job-info pull-right">
+    <div class="ticket"><a href="/jobqueue" target="_blank"><span class="glyphicon glyphicon-tag"></span><span id="torque_id"> <%= job.torque_id %></span></a></div>
+    <div id="time-status">
+      <div id="job-timer" data-created="<%= job.timestamp%>"><h6><span class="glyphicon glyphicon-time"></span><span class="time"> 00:00:00</span></h6></div>
+    </div>
+  </div>
+
+  <% if (job.status == 'Aborted') { %>
+    <div class="alert alert-danger">There was an error! Please try again. <code><%= job.error_message %></code></div>
+  <% } else { %>  
+  <div>
+      <div class="panel-body">
+        <h6> Standard Output </h6>
+        <pre id="job-pre">
+          <%= job.last_status_msg %>
+        </pre>
+      </div>
+  <% } %>
+  </div>
+</div>
+
+<script src="https://cdn.socket.io/socket.io-1.0.6.js"></script>
+<script src="/assets/js/job.js"></script>

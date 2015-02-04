@@ -16,10 +16,11 @@ $(function() {
     formData.append('receive_mail',  $( "input[name='receive_mail']" ).prop("checked"));
     formData.append('mail', $( "input[name='mail']" ).val());
 
+    var action_url = $('#msa-form').attr('action'); 
 
     var xhr = new XMLHttpRequest();
 
-    xhr.open('post', '/relax/uploadfile', true);
+    xhr.open('post', action_url, true);
 
     xhr.upload.onprogress = function(e) {
       if (e.lengthComputable) {
@@ -35,25 +36,33 @@ $(function() {
     };
     
     xhr.onload = function(res) {
+
       // Replace field with green text, name of file
       var result = JSON.parse(this.responseText);
-      if('_id' in result) {
-        window.location.href =  '/relax/' + result._id + '/select-foreground';
-      } else if ('error' in result) {
 
+      if ('error' in result.analysis) {
         $('#modal-error-msg').text(result.error);
         $('#errorModal').modal()
         $('#file-progress').css("display", "none");
         $('#seq-file').css("display", "block");
         $('.progress .progress-bar').css('width', '0%');
-
+      } else if('upload_redirect_path' in result) {
+        window.location.href =  result.upload_redirect_path;
+      } else {
+        $('#modal-error-msg').text("We received data in an unexpected format from the server.");
+        $('#errorModal').modal()
+        $('#file-progress').css("display", "none");
+        $('#seq-file').css("display", "block");
+        $('.progress .progress-bar').css('width', '0%');
       }
+
     };
 
     xhr.send(formData);
 
   });
   
+  $( ".mail-group" ).change(datamonkey.helpers.validate_email);
+
 });
 
-$( ".mail-group" ).change(datamonkey.helpers.validate_email);

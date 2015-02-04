@@ -2,7 +2,7 @@
 
   Datamonkey - An API for comparative analysis of sequence alignments using state-of-the-art statistical models.
 
-  Copyright (C) 2013
+  Copyright (C) 2014
   Sergei L Kosakovsky Pond (spond@ucsd.edu)
   Steven Weaver (sweaver@ucsd.edu)
 
@@ -73,21 +73,22 @@ function notEmptyValidator (val) {
  */
 var HivTrace = new Schema({
     reference               : String,
-    distance_threshold      : { type: Number, require: true, min : 0, max: 0.02, validate: [notEmptyValidator, 'Distance Threshold is empty'] },
-    min_overlap             : { type: Number, require: true, min : 100, max: 1000, validate: [notEmptyValidator, 'Minimum Overlap is empty'] },
-    fraction                : { type: Number, require: true, min : 0, max: 1, default: 1 },
+    distance_threshold      : { type: Number, require: true, min : 0, max: 0.02, default: .015, validate: [notEmptyValidator, 'Distance Threshold is empty'] },
+    min_overlap             : { type: Number, require: true, min : 100, max: 1000, default: 500, validate: [notEmptyValidator, 'Minimum Overlap is empty'] },
+    fraction                : { type: Number, require: true, min : 0, max: 1, default: .015 },
     ambiguity_handling      : { type: String, require: true, validate: [notEmptyValidator, 'Ambiguity Handling is empty']},
     attribute_map           : Object,
     sequence_length         : Number,
     status_stack            : Array,
     status                  : { type: String },
     lanl_compare            : Boolean,
+    filter_edges            : Boolean,
+    strip_drams             : String,
     torque_id               : String,
+    custom_reference        : String,
     mail                    : String,
     tn93_summary            : String,
     tn93_results            : String,
-    //trace_results           : String,
-    //lanl_trace_results      : String,
     lanl_tn93_results       : String,
     error_message           : String,
     created                 : {type: Date, default: Date.now}

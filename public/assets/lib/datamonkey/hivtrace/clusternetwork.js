@@ -1,6 +1,6 @@
 var _networkGraphAttrbuteID = "user attributes";
 
-var hivtrace_cluster_network_graph = function (json, network_container, network_status_string, network_warning_tag, button_bar_ui, attributes) {
+var hivtrace_cluster_network_graph = function (json, network_container, network_status_string, network_warning_tag, button_bar_ui, attributes, filter_edges_toggle) {
 
   var self = this;
     self.nodes = [];
@@ -8,6 +8,7 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
     self.clusters = [];         
     self.cluster_sizes = [];
     self.colorizer = {};
+    self.filter_edges = true,
     self.hide_hxb2 = false;
 
   var w = 875,
@@ -55,7 +56,11 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
                                       
    
    
-
+  /* ----------- Trigger Events ------------------- */
+  $(filter_edges_toggle).on("click", function(e) {
+    self.filter_edges = !$(this).hasClass("active");
+    update();
+  });
 
   /*------------ Network layout code ---------------*/
   var handle_cluster_click = function (cluster, release) {
@@ -211,18 +216,19 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
       
       self.edges.forEach (function (x) {
 
-          if (drawnNodes[x.source] != undefined && drawnNodes[x.target] != undefined) {
+          if(!(x.removed && self.filter_edges)) {
+            if (drawnNodes[x.source] != undefined && drawnNodes[x.target] != undefined) {
 
-              var y = {};
-              for (var prop in x) {
-                  y[prop] = x[prop];
-              }
+                var y = {};
+                for (var prop in x) {
+                    y[prop] = x[prop];
+                }
 
-              y.source = drawnNodes[x.source];
-              y.target = drawnNodes[x.target];
-              graphMe.edges.push(y);
+                y.source = drawnNodes[x.source];
+                y.target = drawnNodes[x.target];
+                graphMe.edges.push(y);
+            }
           }
-
       });
 
       return graphMe;
@@ -490,8 +496,10 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
         link;
         
     if (!soft) {
+
         var draw_me = prepare_data_to_graph(); 
-    
+        
+
         network_layout.nodes(draw_me.all)
             .links(draw_me.edges)
             .start ();
@@ -837,6 +845,7 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
   function collapse_cluster_handler (d, do_update) {
     collapse_cluster(self.clusters[cluster_mapping[d.cluster]]);
     if (do_update) {       
+    update();
         update(false, 0.4);
     }
     

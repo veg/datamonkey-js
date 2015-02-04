@@ -65,7 +65,6 @@ label {
   /*background-image: url('../img/dm_whole.png');*/
   background-repeat: no-repeat;
   background-position: bottom right;
-  padding : 10px;
   font-size: 16px;
   font-weight: 300;
   line-height: 1.4;
@@ -73,7 +72,7 @@ label {
 
 
   /*color: #cdbfe3;*/
-  padding: 30px 15px;
+  padding: 30px 0px;
   position: relative;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
 
@@ -464,12 +463,9 @@ span.glyphicon {
   text-align: left;  
 }
 
-.form-group .mail-group {
-  padding-left:0px;
-}
-
 .phylo-nav {
   padding-top:5px;
+  padding-bottom: 15px;
 }
 
 .phylo-nav .glyphicon {
@@ -518,3 +514,58 @@ span.glyphicon {
   border-left-color: #563d7c; 
 }
 
+/* RELAX */
+#relax-highlighter-btn-group {
+  float: right;
+}
+
+#test-branch-highlighter {
+  color: blue;
+}
+
+#reference-branch-highlighter {
+  color: red;
+}
+
+/* Safari/Chrome modal fix */
+.modal-dialog {
+  position: relative;
+}
+
+.status-healthy {
+  fill: green;
+}
+
+.status-troubled {
+  fill: red;
+}
+
+.job-status circle {
+  fill-opacity:.5;
+}
+
+.job-status .queue {
+  fill:#B94A48;
+  border-color:#EBCCD1;
+}
+
+.job-status .running {
+  fill:#C09853;
+  border-color:#C09853;
+}
+
+.job-status .completed {
+  fill:#468847;
+  border-color: #D6E9C6;
+}
+
+.job-status {
+  margin: 10px;
+  display : inline;
+}
+
+#job-pre {
+  background-color: #FFF;
+  height: 370px;
+  overflow:scroll;
+}

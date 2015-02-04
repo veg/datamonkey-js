@@ -2,7 +2,7 @@
 
   Datamonkey - An API for comparative analysis of sequence alignments using state-of-the-art statistical models.
 
-  Copyright (C) 2013
+  Copyright (C) 2015
   Sergei L Kosakovsky Pond (spond@ucsd.edu)
   Steven Weaver (sweaver@ucsd.edu)
 
@@ -65,10 +65,10 @@ exports.uploadFile = function (req, res) {
   hivtrace.distance_threshold = Number(postdata.distance_threshold);
   hivtrace.min_overlap = Number(postdata.min_overlap);
   hivtrace.ambiguity_handling = postdata.ambiguity_handling;
+  hivtrace.strip_drams = postdata.strip_drams;
   hivtrace.reference = postdata.reference;
 
   if(hivtrace.ambiguity_handling == "RESOLVE") {
-    console.log(postdata.fraction);
     if(postdata.fraction == undefined) {
       hivtrace.fraction = 1;
     } else {
@@ -81,26 +81,71 @@ exports.uploadFile = function (req, res) {
   }
 
 
-  hivtrace.save(function (err, ht) {
-    if(err) {
-      logger.log(err);
-      res.json(500, {'error' : err,
-                     'validators': HivTrace.validators()});
-      return;
-    }
+  var file_path = req.files.files.path;
 
-    function move_cb(err, result) {
+  var save_document = function(hivtrace) {
+
+    hivtrace.save(function (err, ht) {
       if(err) {
         logger.log(err);
-        res.json(500, {'error' : err.error,
+        res.json(500, {'error' : err,
                        'validators': HivTrace.validators()});
-      } else {
-        res.json(200,  ht);
+        return;
       }
-    }
-    helpers.moveSafely(req.files.files.path, ht.filepath, move_cb);
-  });
 
+      function move_cb(err, result) {
+        if(err) {
+          logger.log(err);
+          res.json(500, {'error' : err.error,
+                         'validators': HivTrace.validators()});
+        } else {
+          res.json(200,  ht);
+        }
+      }
+
+      // Check if file is FASTA before moving forward
+      helpers.moveSafely(file_path, ht.filepath, move_cb);
+
+    });
+
+
+  }
+
+  Msa.validateFasta(file_path, function(err, result) {
+
+    if(!result) {
+        logger.log(err);
+        res.json(500, {'error' : err.msg,
+                       'validators': HivTrace.validators()});
+        return;
+    }
+
+    if(hivtrace.reference == 'Custom') {
+
+      var ref_file_name = req.files.ref_file.name;
+      var ref_file_path = req.files.ref_file.path;
+
+      Msa.validateFasta(file_path, function(err, result) {
+
+        if(!result) {
+          logger.log(err);
+          res.json(500, {'error'     : ref_file_name + ':' + err.msg,
+                         'validators': HivTrace.validators()});
+          return;
+
+        } else {
+          // Open reference file and read it into database
+          fs.readFile(ref_file_path, function (err, data) {
+            hivtrace.custom_reference = data.toString();
+            save_document(hivtrace);
+          });
+        }
+
+      });
+    } else {
+      save_document(hivtrace);
+    }
+  });
 }
 
 /**
@@ -108,7 +153,7 @@ exports.uploadFile = function (req, res) {
  * app.get('/hivtrace', hivtrace.clusterForm);
  */
 exports.clusterForm = function (req, res) {
-  res.render('analysis/hivtrace/form.ejs', {'validators': HivTrace.validators()});
+  res.render('hivtrace/form.ejs', {'validators': HivTrace.validators()});
 }
 
 /**
@@ -122,7 +167,7 @@ exports.invokeClusterAnalysis = function (req, res) {
         // Redisplay form with error
         res.format({
           html: function(){
-            res.render('analysis/hivtrace/form.ejs', {'error': err.error, 
+            res.render('hivtrace/form.ejs', {'error': err.error, 
                        'validators': HivTrace.validators()});
           },
 
@@ -177,7 +222,7 @@ exports.jobPage = function (req, res) {
           res.json(200, hivtrace);
         },
         html: function(){
-          res.render('analysis/hivtrace/jobpage.ejs', {hivtrace : hivtrace, socket_addr: 'http://' + setup.host + ':' + setup.socket_port });
+          res.render('hivtrace/jobpage.ejs', {hivtrace : hivtrace, socket_addr: 'http://' + setup.host + ':' + setup.socket_port });
         }
       });
     }
@@ -200,10 +245,10 @@ exports.results = function (req, res) {
       console.log(hivtrace);
       res.format({
         html: function(){
-          res.render('analysis/hivtrace/results.ejs', {hivtrace : hivtrace});
+          res.render('hivtrace/results.ejs', {hivtrace : hivtrace});
         },
         json: function(){
-          res.render('analysis/hivtrace/results.ejs', {hivtrace : hivtrace});
+          res.render('hivtrace/results.ejs', {hivtrace : hivtrace});
         }
       });
     }
@@ -223,7 +268,7 @@ exports.mapAttributes = function (req, res) {
     if(err) {
       res.format({
         html: function() {
-          res.render('analysis/hivtrace/attribute_map_assignment.ejs', { 'error' : err});
+          res.render('hivtrace/attribute_map_assignment.ejs', { 'error' : err});
         },
         json: function() {
           res.json(200, err);
@@ -236,7 +281,7 @@ exports.mapAttributes = function (req, res) {
       var parsed_attributes = HivTrace.parseHeaderFromMap(headers[0], hivtrace_map);
       res.format({
         html: function() {
-          res.render('analysis/hivtrace/attribute_map_assignment.ejs', { 'map'           : hivtrace_map, 
+          res.render('hivtrace/attribute_map_assignment.ejs', { 'map'           : hivtrace_map, 
                                                                          'headers'       : headers, 
                                                                          'example_parse' : parsed_attributes, 
                                                                          'hivtrace_id'   : hivtrace._id,
@@ -259,7 +304,7 @@ exports.mapAttributes = function (req, res) {
         parsed_attributes = HivTrace.parseHeaderFromMap(hivtrace_map.headers[0], hivtrace_map);
         res.format({
           html: function() {
-            res.render('analysis/hivtrace/attribute_map_assignment.ejs', { 'map'  : hivtrace_map,
+            res.render('hivtrace/attribute_map_assignment.ejs', { 'map'  : hivtrace_map,
                                                                   'example_parse' : parsed_attributes,
                                                                   'headers'       : hivtrace_map.headers,
                                                                   'hivtrace_id'   : hivtrace._id,
