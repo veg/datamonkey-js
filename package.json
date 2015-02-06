@@ -41,6 +41,7 @@
     "async"                  : "*",
     "underscore"             : "*",
     "morgan"                 : "*",
-    "owl-deepcopy"           : "*"
+    "owl-deepcopy"           : "*",
+    "jquery-file-upload-middleware" : "*"
   }
 }
