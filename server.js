@@ -35,6 +35,7 @@ HOST      = setup.host;
 // Necessary packages
 var express          = require('express'),
     expressValidator = require('express-validator'),
+    upload           = require('jquery-file-upload-middleware'),
     helpers          = require('./lib/helpers'),
     fs               = require('fs'),
     path             = require("path"),
@@ -62,17 +63,32 @@ fs.mkdir(__dirname + '/uploads', '0750', function(e) {
 // ensure logging dir exists
 fs.mkdir(__dirname + '/logs', '0750', mkdirErrorLogger);
 
+// TODO: Move this out of main
+upload.configure({
+  uploadDir: __dirname + '/uploads/flea/tmp',
+  uploadUrl: '/fleaupload',
+  imageVersions: {
+      thumbnail: {
+          width: 80,
+          height: 80
+      }
+  }
+});
+
 // Main app configuration
 var app = express();
+
 app.configure(function () {
-    app.use(express.compress());
-    app.use(require('morgan')({ 'stream': logger.stream }));
-    app.use(expressValidator);
-    app.use(express.bodyParser());
-    app.use(express.limit('25mb'));
-    app.use(app.router);
-    app.set('json spaces', 0);
+  app.use(express.compress());
+  app.use(require('morgan')({ 'stream': logger.stream }));
+  app.use(expressValidator);
+  app.use('/fleaupload', upload.fileHandler());
+  app.use(express.bodyParser());
+  app.use(express.limit('25mb'));
+  app.use(app.router);
+  app.set('json spaces', 0);
 });
+
 
 // Bootstrap models
 var models_path = __dirname + '/app/models';

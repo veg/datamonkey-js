@@ -102,20 +102,15 @@ module.exports = function(app) {
   app.get('/hivtrace/:id/results', hivtrace.results);
   app.get('/hivtrace/:id/attributes', hivtrace.attributeMap);
 
-  // Env Monkey ROUTES
-  envmonkey = require( ROOT_PATH + '/app/routes/envmonkey');
-  app.get('/envmonkey', envmonkey.createForm);
-  app.post('/envmonkey/uploadfile', envmonkey.uploadFile);
-  app.post('/envmonkey/:id/invoke', envmonkey.invokeEnvMonkey);
-  app.get('/envmonkey/:envmonkeyid', envmonkey.getEnvMonkey);
-  app.get('/envmonkey/:envmonkeyid/results', envmonkey.getEnvMonkeyResults);
-  //app.get('/msa/:msaid/envmonkey/:envmonkeyid/status', envmonkey.getStatus);
-  //app.delete('/msa/:msaid/envmonkey/:envmonkeyid', envmonkey.deleteenvmonkey);
-
+  // FLEA ROUTES
+  flea = require( ROOT_PATH + '/app/routes/flea');
+  app.get('/flea', flea.form);
+  app.post('/flea', flea.invoke);
+  app.get('/flea/:id', flea.getPage);
+  app.get('/flea/:id/results', flea.getResults);
 
   // STATS ROUTES
   stats = require( ROOT_PATH + '/app/routes/stats');
   app.get('/:type/usage', stats.usageStatistics);
-
 
 }
