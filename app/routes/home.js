@@ -46,9 +46,12 @@ exports.development = function (req, res) {
   res.render('development.ejs');
 };
 
-
 exports.analyses = function (req, res) {
   res.render('analyses.ejs');
+};
+
+exports.treeviewer = function (req, res) {
+  res.render('tools/treeviewer.ejs');
 };
 
 exports.jobQueue = function(req, res) {
@@ -188,7 +191,6 @@ exports.clusterhealth= function (req, res) {
 
 
 };
-
 
 exports.stats = function (req, res) {
   res.render('stats.ejs', {'types' : globals.types });
