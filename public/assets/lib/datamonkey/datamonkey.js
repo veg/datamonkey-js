@@ -170,6 +170,36 @@ datamonkey.status_check = function () {
   }
 }
 
+datamonkey.validate_date = function () {
+
+  // Check that it is not empty
+  if($(this).val().length == 0) {
+    $(this).next('.help-block').remove();
+    $(this).parent().removeClass('has-success');
+    $(this).parent().addClass('has-error');
+
+    jQuery('<span/>', {
+          class: 'help-block',
+          text : 'Field is empty'
+      }).insertAfter($(this));
+
+  } else if(isNaN(Date.parse($(this).val()))) {
+    $(this).next('.help-block').remove();
+    $(this).parent().removeClass('has-success');
+    $(this).parent().addClass('has-error');
+
+    jQuery('<span/>', {
+          class: 'help-block',
+          text : 'Date format should be in the format YYYY-mm-dd'
+      }).insertAfter($(this));
+
+  } else {
+    $(this).parent().removeClass('has-error');
+    $(this).parent().addClass('has-success');
+    $(this).next('.help-block').remove();
+  }
+
+}
 
 $( document ).ready( function () {
   datamonkey.status_check();

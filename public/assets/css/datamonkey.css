@@ -532,6 +532,8 @@ span.glyphicon {
   position: relative;
 }
 
+
+/* Job Page */
 .status-healthy {
   fill: green;
 }
@@ -569,3 +571,11 @@ span.glyphicon {
   height: 370px;
   overflow:scroll;
 }
+
+/* FLEA */
+.flea-form {
+  margin-top    : 50px;
+  margin-bottom : 50px;
+}
+
+

@@ -65,14 +65,13 @@ fs.mkdir(__dirname + '/logs', '0750', mkdirErrorLogger);
 
 // TODO: Move this out of main
 upload.configure({
+  //TODO: customize filename
   uploadDir: __dirname + '/uploads/flea/tmp',
   uploadUrl: '/fleaupload',
-  imageVersions: {
-      thumbnail: {
-          width: 80,
-          height: 80
-      }
-  }
+});
+
+upload.on('end', function (fileInfo, req, res) { 
+  console.log(fileInfo);
 });
 
 // Main app configuration
