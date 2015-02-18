@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "main" : "datamonkey.js",
   "dependencies": {
-    "datamonkey.relax": "git@github.com:veg/relax.git"
+    "datamonkey.relax"  : "git@github.com:veg/relax.git",
+    "hyphy.absrel"      : "git@github.com:veg/hyphy-absrel.git"
   }
 }
