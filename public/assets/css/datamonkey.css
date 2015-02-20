@@ -544,10 +544,16 @@ span.glyphicon {
   fill-opacity:.5;
 }
 
+.job-status .queueing {
+  fill:#B94A48;
+  border-color:#EBCCD1;
+}
+
 .job-status .queue {
   fill:#B94A48;
   border-color:#EBCCD1;
 }
+
 
 .job-status .running {
   fill:#C09853;
@@ -569,3 +575,14 @@ span.glyphicon {
   height: 370px;
   overflow:scroll;
 }
+
+.borderless tbody tr td, .borderless tbody tr th, .borderless thead tr th {
+    border: none;
+}
+
+#job-queue-panel {
+  max-height : 290px;
+  overflow: scroll;
+}
+
+

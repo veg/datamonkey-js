@@ -151,6 +151,28 @@ datamonkey.save_image = function(type, container) {
 
 }
 
+datamonkey.jobQueue = function(container) {
+
+  // Load template
+  _.templateSettings = {
+    evaluate:    /\{\%(.+?)\%\}/g,
+    interpolate: /\{\{(.+?)\}\}/g,
+    variable    : "rc"
+  };
+
+  d3.json( '/jobqueue', function(data) {
+
+    var job_queue = _.template(
+      $("script.job-queue").html()
+    );
+
+    var job_queue_html = job_queue(data);
+    $(container).append(job_queue_html);
+
+  });
+
+}
+
 datamonkey.status_check = function () {
 
   // Check if there are any status checkers on the page
