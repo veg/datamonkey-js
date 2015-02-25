@@ -167,6 +167,7 @@ datamonkey.jobQueue = function(container) {
     );
 
     var job_queue_html = job_queue(data);
+    $("#job-queue-panel").find('table').remove();
     $(container).append(job_queue_html);
 
   });

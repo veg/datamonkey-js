@@ -87,6 +87,9 @@ function setupJob() {
       d3.select("#run-time-row").classed({'hidden': true})
     }
 
+    // Update job queue panel
+    datamonkey.jobQueue('#job-queue-panel');
+
 
   }
 
