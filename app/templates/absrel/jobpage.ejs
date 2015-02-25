@@ -2,7 +2,7 @@
 
 <div class="container" id="job-report" data-jobid="<%= job._id %>" data-socket-address="<%= socket_addr %>">
   <%- include header.ejs %>
-  <% if (job.status != 'Completed') { %>
+  <% if (job.status != 'completed') { %>
     <%- include ../partials/jobs/jobpage.ejs %>
   <% } else { %>
     <%- include ./results.ejs %>

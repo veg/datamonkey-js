@@ -1,6 +1,6 @@
 {
   "name": "datamonkey",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A free public server for comparative analysis of sequence alignments using state-of-the-art statistical models.",
   "private": true,
   "author": {
