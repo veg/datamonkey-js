@@ -109,6 +109,12 @@ module.exports = function(app) {
   app.post('/flea', flea.invoke);
   app.get('/flea/:id', flea.getPage);
   app.get('/flea/:id/results', flea.getResults);
+  app.get('/flea/:id/rates', flea.getRates);
+  app.get('/flea/:id/frequencies', flea.getFrequencies);
+  app.get('/flea/:id/trajectory', flea.getTrajectory);
+  app.get('/flea/:id/gene', flea.getGenes);
+  app.get('/flea/:id/trees', flea.getTrees);
+  app.get('/flea/:id/neutralization', flea.getNeutralization);
 
   // STATS ROUTES
   stats = require( ROOT_PATH + '/app/routes/stats');

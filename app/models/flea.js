@@ -38,9 +38,14 @@ var AnalysisSchema = require(__dirname + '/analysis');
 var Flea = AnalysisSchema.extend({
   msas                  : [Msa.MsaSchema],
   mail                  : String,
-  results               : Object
+  results               : Object,
+  rates                 : Object,
+  frequencies           : Object,
+  trajectory            : Object,
+  gene                  : Object,
+  trees                 : Object,
+  neutralization        : Object
 });
-
 
 /**
  * Filename of document's file upload

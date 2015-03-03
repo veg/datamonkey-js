@@ -185,7 +185,6 @@ exports.getPage = function(req, res) {
 
 /**
  * Displays id page for analysis
- * app.get('/msa/:msaid/flea/:id/results', flea.getFleaResults);
  */
 exports.getResults = function(req, res) {
 
@@ -201,5 +200,116 @@ exports.getResults = function(req, res) {
       res.json(200, JSON.parse(flea.results));
     }
   });
+
 }
 
+/**
+ * Displays id page for analysis
+ */
+exports.getRates = function(req, res) {
+
+  var fleaid = req.params.id;
+
+  //Return all results
+  Flea.findOne({_id : fleaid}, function(err, flea) {
+    if (err || !flea ) {
+      logger.error(err);
+      res.json(500, error.errorResponse('invalid id : ' + fleaid ));
+    } else {
+      // Should return results page
+      res.json(200, JSON.parse(flea.frequencies));
+    }
+  });
+
+}
+
+/**
+ * Displays id page for analysis
+ */
+exports.getFrequencies = function(req, res) {
+
+  var fleaid = req.params.id;
+
+  //Return all results
+  Flea.findOne({_id : fleaid}, function(err, flea) {
+    if (err || !flea ) {
+      logger.error(err);
+      res.json(500, error.errorResponse('invalid id : ' + fleaid ));
+    } else {
+      // Should return results page
+      res.json(200, JSON.parse(flea.frequencies));
+    }
+  });
+
+}
+
+exports.getTrajectory = function(req, res) {
+
+  var fleaid = req.params.id;
+
+  //Return all results
+  Flea.findOne({_id : fleaid}, function(err, flea) {
+    if (err || !flea ) {
+      logger.error(err);
+      res.json(500, error.errorResponse('invalid id : ' + fleaid ));
+    } else {
+      // Should return results page
+      res.json(200, JSON.parse(flea.trajectory));
+    }
+  });
+
+}
+
+/**
+ * Displays id page for analysis
+ */
+exports.getGenes = function(req, res) {
+
+  var fleaid = req.params.id;
+
+  //Return all results
+  Flea.findOne({_id : fleaid}, function(err, flea) {
+    if (err || !flea ) {
+      logger.error(err);
+      res.json(500, error.errorResponse('invalid id : ' + fleaid ));
+    } else {
+      // Should return results page
+      res.json(200, JSON.parse(flea.gene));
+    }
+  });
+
+}
+
+exports.getTrees = function(req, res) {
+
+  var fleaid = req.params.id;
+
+  //Return all results
+  Flea.findOne({_id : fleaid}, function(err, flea) {
+    if (err || !flea ) {
+      logger.error(err);
+      res.json(500, error.errorResponse('invalid id : ' + fleaid ));
+    } else {
+      // Should return results page
+      res.json(200, JSON.parse(flea.trees));
+    }
+  });
+
+}
+
+exports.getNeutralization = function(req, res) {
+
+  var fleaid = req.params.id;
+
+  //Return all results
+  Flea.findOne({_id : fleaid}, function(err, flea) {
+    if (err || !flea ) {
+      logger.error(err);
+      res.json(500, error.errorResponse('invalid id : ' + fleaid ));
+    } else {
+      // Should return results page
+      res.json(200, JSON.parse(flea.neutralization));
+    }
+  });
+
+}

@@ -42,7 +42,7 @@
     "underscore"             : "*",
     "morgan"                 : "*",
     "owl-deepcopy"           : "*",
-    "jquery-file-upload-middleware" : "*"
+    "jquery-file-upload-middleware" : "*",
     "tar-fs"                 : "1.4.2"
   }
 }
