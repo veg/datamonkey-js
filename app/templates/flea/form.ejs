@@ -1,0 +1,76 @@
+<%- include ../includes/header.ejs %>
+
+<link rel="stylesheet" href="/assets/lib/jquery-file-upload/css/jquery.fileupload.css">
+
+<div id="container" class="container">
+
+  <%- include header.ejs %>
+
+  <div class="nav nav-list pull-right span4i"><a href="/help" target="_blank"><span class="glyphicon glyphicon-info-sign"></span></a></div>
+
+  <div class="col-md-12">
+    <span class="btn btn-success fileinput-button">
+      <i class="glyphicon glyphicon-plus"></i>
+      <span>Add files...</span>
+      <!-- The file input field used as target for the file upload widget -->
+      <input id="fileupload" name="files[]" multiple="" type="file" data-url="/fleaupload">
+    </span>
+  </div>
+
+  <div class="col-md-12">
+    <div id="files" class="files">
+      <script type="text/template" class="fastq-file">
+        {% _.each(rc, function(file) { %}
+
+            <form class="form-inline flea-form row">
+              <div class="form-group col-md-4">
+                <label for="name">Name</label>
+                <p>{{ file.name }}</p>
+              </div>
+
+              <div class="form-group col-md-4 flea-visit-code">
+                <label for="{{ file.name }}_visit_code">Visit Code</label>
+                <input type="text" class="form-control" name="{{ file.name }}_visit_code" placeholder="V00">
+              </div>
+
+              <div class="form-group col-md-4 flea-visit-date">
+                <label for="{{ file.name }}_visit_date">Visit Date</label>
+                <input type="date" class="form-control" name="{{ file.name }}_visit_date" placeholder="2009-12-25">
+              </div>
+
+            </form>
+
+         {% }) %}
+      </script>
+    </div>
+  </div>
+
+  <form class="form-horizontal upload-form" name="uploadform" enctype="multipart/form-data" method="post" action="/flea">
+    <button id="upload-button" type="submit" class="btn pull-right"><span class="glyphicon glyphicon-play"></span></button>
+  </form>
+
+</div>
+
+<div aria-labelledby="errorModalLabel" role="dialog" id="errorModal" class="modal ng-scope">
+  <div class="modal-dialog"><div class="modal-content">
+    <div class="modal-header dialog-header-error">
+      <button data-dismiss="modal" class="close" type="button">×</button>
+      <h4 class="modal-title text-danger"><span class="glyphicon glyphicon-warning-sign"></span> Error</h4>
+      </div>
+      <div id="modal-error-msg" class="modal-body text-danger">This is my error message</div>
+      <div class="modal-footer">
+        <button data-dismiss="modal" class="btn btn-primary" type="button">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include ../includes/footer.ejs %>
+
+<!-- The basic File Upload plugin -->
+<script src="/assets/lib/jquery-file-upload/js/vendor/jquery.ui.widget.js"></script>
+<script src="/assets/lib/jquery-file-upload/js/jquery.fileupload.js"></script>
+<script src="/assets/lib/jquery-file-upload/js/jquery.fileupload-process.js"></script>
+<script src="/assets/js/envmonkey/form.js"></script>
+
+

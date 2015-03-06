@@ -1,0 +1,17 @@
+<script type="text/template" class="job-queue">
+  <table id="job-queue" class="table table-bordered table-striped table-hover tablesorter" >
+    <thead>
+    <tr><td>Ticket Number</td><td>Status</td><td>Kind</td><td>Running Time</td><td>Creation Time</td><td>Queue Time</td></tr>
+    </thead>
+    <tbody>
+    {% for(var l in rc) { %}
+      {% if (rc[l].job_info.id) { %}
+        <tr><td><a href="/{{ rc[l].job_info.type }}/{{ rc[l].job_info.id }}">{{ rc[l].torque_info.id }}</a></td>
+      {% } else { %}
+        <tr><td>{{ rc[l].torque_info.id }}</td>
+      {% } %}
+      <td>{{ rc[l].torque_info.status }}</td><td>{{ rc[l].job_info.type.toUpperCase() }}</td><td>{{ rc[l].torque_info.running_time }}</td><td>{{ rc[l].torque_info.creation_time }}</td><td>{{ rc[l].torque_info.queue_time }}</td></tr>
+    {% } %}
+    </tbody>
+  </table>
+</script>

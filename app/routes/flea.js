@@ -185,6 +185,40 @@ exports.getPage = function(req, res) {
 
 /**
  * Displays id page for analysis
+ * app.get('/flea/:id', flea.getFlea);
+ */
+exports.restart = function(req, res) {
+
+  // Find the analysis
+  // Return its results
+  var fleaid = req.params.id;
+
+  var connect_callback = function (err, result) {
+    logger.log(result);
+  }
+
+
+  //Return all results
+  Flea.findOne({_id : fleaid}, function(err, flea) {
+    if (err || !flea ) {
+      logger.error(err);
+      res.json(500, error.errorResponse('Invalid ID : ' + fleaid ));
+    } else {
+      flea.status = "running";
+      flea.save(function (err, flea_result) {
+        res.redirect('/flea/' + fleaid); 
+        var jobproxy = new hpcsocket.HPCSocket({'filepath'    : flea_result.filepath, 
+                                                'msas'        : flea_result.msas,
+                                                'analysis'    : flea_result,
+                                                'status_stack': flea_result.status_stack,
+                                                'type'        : 'flea'}, connect_callback);
+      });
+    }
+  });
+}
+
+/**
+ * Displays id page for analysis
  */
 exports.getResults = function(req, res) {
 
@@ -197,7 +231,7 @@ exports.getResults = function(req, res) {
       res.json(500, error.errorResponse('invalid id : ' + fleaid ));
     } else {
       // Should return results page
-      res.json(200, JSON.parse(flea.results));
+      res.json(200, flea.results);
     }
   });
 
@@ -217,7 +251,7 @@ exports.getRates = function(req, res) {
       res.json(500, error.errorResponse('invalid id : ' + fleaid ));
     } else {
       // Should return results page
-      res.json(200, JSON.parse(flea.frequencies));
+      res.json(200, JSON.parse(flea.results.rates));
     }
   });
 
@@ -237,13 +271,16 @@ exports.getFrequencies = function(req, res) {
       res.json(500, error.errorResponse('invalid id : ' + fleaid ));
     } else {
       // Should return results page
-      res.json(200, JSON.parse(flea.frequencies));
+      res.json(200, flea.results.frequencies);
     }
   });
 
 }
 
-exports.getTrajectory = function(req, res) {
+/**
+ * Displays id page for analysis
+ */
+exports.getSequences = function(req, res) {
 
   var fleaid = req.params.id;
 
@@ -254,7 +291,24 @@ exports.getTrajectory = function(req, res) {
       res.json(500, error.errorResponse('invalid id : ' + fleaid ));
     } else {
       // Should return results page
-      res.json(200, JSON.parse(flea.trajectory));
+      res.json(200, flea.results.sequences);
+    }
+  });
+
+}
+
+exports.getRatesPheno = function(req, res) {
+
+  var fleaid = req.params.id;
+
+  //Return all results
+  Flea.findOne({_id : fleaid}, function(err, flea) {
+    if (err || !flea ) {
+      logger.error(err);
+      res.json(500, error.errorResponse('invalid id : ' + fleaid ));
+    } else {
+      // Should return results page
+      res.json(200, flea.results.rates_pheno);
     }
   });
 
@@ -274,7 +328,7 @@ exports.getGenes = function(req, res) {
       res.json(500, error.errorResponse('invalid id : ' + fleaid ));
     } else {
       // Should return results page
-      res.json(200, JSON.parse(flea.gene));
+      res.json(200, flea.results);
     }
   });
 
@@ -291,7 +345,7 @@ exports.getTrees = function(req, res) {
       res.json(500, error.errorResponse('invalid id : ' + fleaid ));
     } else {
       // Should return results page
-      res.json(200, JSON.parse(flea.trees));
+      res.json(200, JSON.parse(flea.results.trees));
     }
   });
 

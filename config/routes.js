@@ -108,11 +108,12 @@ module.exports = function(app) {
   app.get('/flea', flea.form);
   app.post('/flea', flea.invoke);
   app.get('/flea/:id', flea.getPage);
+  app.get('/flea/:id/restart', flea.restart);
   app.get('/flea/:id/results', flea.getResults);
   app.get('/flea/:id/rates', flea.getRates);
   app.get('/flea/:id/frequencies', flea.getFrequencies);
-  app.get('/flea/:id/trajectory', flea.getTrajectory);
-  app.get('/flea/:id/gene', flea.getGenes);
+  app.get('/flea/:id/sequences', flea.getSequences);
+  app.get('/flea/:id/rates_pheno', flea.getRatesPheno);
   app.get('/flea/:id/trees', flea.getTrees);
   app.get('/flea/:id/neutralization', flea.getNeutralization);
 
