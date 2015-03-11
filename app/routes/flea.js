@@ -175,10 +175,13 @@ exports.getPage = function(req, res) {
       logger.error(err);
       res.json(500, error.errorResponse('Invalid ID : ' + fleaid ));
     } else {
-      // Should return results page
-      res.render('flea/jobpage.ejs', { job : flea, 
-                                                 socket_addr: 'http://' + setup.host + ':' + setup.socket_port 
-                                               });
+      //// Should return results page
+      //res.render('flea/jobpage.ejs', { job : flea, 
+      //                                           socket_addr: 'http://' + setup.host + ':' + setup.socket_port 
+      //                                         });
+      var html_dir = './public/assets/lib/';
+      res.sendfile(path.resolve(html_dir + 'flea/index.html'));
+
     }
   });
 }
@@ -291,7 +294,7 @@ exports.getSequences = function(req, res) {
       res.json(500, error.errorResponse('invalid id : ' + fleaid ));
     } else {
       // Should return results page
-      res.json(200, flea.results.sequences);
+      res.json(200,  JSON.parse(flea.results.sequences));
     }
   });
 
@@ -307,9 +310,24 @@ exports.getRatesPheno = function(req, res) {
       logger.error(err);
       res.json(500, error.errorResponse('invalid id : ' + fleaid ));
     } else {
-      // Should return results page
-      res.json(200, flea.results.rates_pheno);
+
+      // Convert tsv file to json
+      var rates_pheno = flea.results.rates_pheno.split('\n');
+      var headers = rates_pheno[0].split('\t');
+      rates_pheno.shift();
+      var content = rates_pheno.map(function(x) { return x.split('\t')});
+
+      function toObj(x) {
+        var cols = {};
+        x.forEach(function(x,i) { cols[headers[i]] = x });
+        return cols;
+      }
+
+      var rates_pheno_json = content.map(toObj);
+
+      res.send(200, rates_pheno_json);
     }
+
   });
 
 }
