@@ -13,7 +13,6 @@
       <% } else { %>
         <tr><td><%=jobs[l].torque_info.id%></td>
       <% } %>
-
       <td><%=jobs[l].torque_info.status.capitalize()%></td><td><%=jobs[l].job_info.type.toUpperCase()%></td><td><%=jobs[l].job_info.sequences%></td><td><%=jobs[l].job_info.sites %></td><td><%=jobs[l].torque_info.running_time%></td><td><%=jobs[l].torque_info.creation_time%></td><td><%=jobs[l].torque_info.queue_time%></td></tr>
     <% } %>
     </tbody>

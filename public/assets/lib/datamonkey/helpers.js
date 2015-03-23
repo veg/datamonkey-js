@@ -144,9 +144,14 @@ function datamonkey_validate_email(email) {
 
 }
 
+function datamonkey_capitalize(s) {
+    return s[0].toUpperCase() + s.slice(1);
+}
+
 datamonkey.helpers = function(){};
 datamonkey.helpers.save_newick_to_file = datamonkey_save_newick_to_file;
 datamonkey.helpers.convert_svg_to_png = datamonkey_convert_svg_to_png;
 datamonkey.helpers.save_newick_tree = datamonkey_save_newick_tree;
 datamonkey.helpers.validate_email = datamonkey_validate_email;
+datamonkey.helpers.capitalize = datamonkey_capitalize;
 

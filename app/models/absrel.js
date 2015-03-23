@@ -59,9 +59,9 @@ aBSREL.virtual('filepath').get(function () {
  * Filename of document's file upload
  */
 aBSREL.virtual('status_stack').get(function () {
-  return ['Queueing', 
-          'Running',
-          'Completed'];
+  return ['queue', 
+          'running',
+          'completed'];
 });
 
 /**
