@@ -175,12 +175,15 @@ exports.getPage = function(req, res) {
       logger.error(err);
       res.json(500, error.errorResponse('Invalid ID : ' + fleaid ));
     } else {
-      //// Should return results page
-      //res.render('flea/jobpage.ejs', { job : flea, 
-      //                                           socket_addr: 'http://' + setup.host + ':' + setup.socket_port 
-      //                                         });
-      var html_dir = './public/assets/lib/';
-      res.sendfile(path.resolve(html_dir + 'flea/index.html'));
+      if(flea.status != "completed") {
+        // Should return results page
+        res.render('flea/jobpage.ejs', { job : flea, 
+                                                   socket_addr: 'http://' + setup.host + ':' + setup.socket_port 
+                                                 });
+      } else {
+        var html_dir = './public/assets/lib/';
+        res.sendfile(path.resolve(html_dir + 'flea/dist/index.html'));
+      }
 
     }
   });

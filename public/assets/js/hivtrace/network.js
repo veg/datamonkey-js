@@ -39,12 +39,12 @@ function setupJob() {
     $('.progress .progress-bar').width(data.percentage);
 
     //data is index and message
-    $('.job-status').each(function(index) {
+    $('.hivtrace-status').each(function(index) {
       if($(this).data('index') < data.index ) {
-        $(this).attr('class', 'job-status panel panel-success')
+        $(this).attr('class', 'hivtrace-status alert alert-success')
       } else if ($(this).data("index") == data.index) {
-        $(this).attr('class', 'job-status panel panel-warning')
-        $(this).children('.panel-body').append(data.msg)
+        $(this).attr('class', 'hivtrace-status alert alert-warning')
+        //$(this).children('.panel-body').append(data.msg)
       }
     });
 
@@ -81,8 +81,8 @@ function setupJob() {
 
     $('.progress .progress-bar').width('100%');
 
-    $('.job-status').each(function(index) {
-      $(this).attr('class', 'panel panel-success')
+    $('.hivtrace-status').each(function(index) {
+      $(this).attr('class', 'alert alert-success')
     });
 
     $.get(hivtraceid + '/results', function(results) {
