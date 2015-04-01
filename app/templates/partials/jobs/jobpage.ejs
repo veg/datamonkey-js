@@ -28,7 +28,9 @@
     </div>
 
     <div class="col-lg-6 job-status">
+
        <div class="panel panel-default">
+
         <div class="panel-heading">
           <h3 class="panel-title">
             Job Queue
@@ -40,6 +42,7 @@
           <%- include ../jobqueue.ejs %>
         </div>
       </div>
+
     </div>
 
 
@@ -60,9 +63,10 @@
           <%= job.last_status_msg %>
         </pre>
       </div>
+  </div>
   <% } %>
   </div>
 </div>
 
-<script src="https://cdn.socket.io/socket.io-1.0.6.js"></script>
+<script src="/assets/lib/socket.io-client/socket.io.js"></script>
 <script src="/assets/js/job.js"></script>

@@ -110,10 +110,18 @@ $(function () {
 
     var validate_uploads = function(callback) {
 
-      if(flea_files.length) {
-        callback();
-      } else {
+      // Ensure they are fastq files
+      var validate_fastq = flea_files.every(function(elem) { return elem.name.indexOf('.fastq') != -1; });
+      if (!validate_fastq) {
         callback({ msg : 'No files uploaded'});
+      }
+
+      if(!flea_files.length) {
+        callback({ msg : 'No files uploaded'});
+      } else if (!validate_fastq) {
+        callback({ msg : 'All files must be in fastq format'});
+      } else {
+        callback();
       }
 
     }

@@ -71,7 +71,6 @@ upload.configure({
 });
 
 upload.on('end', function (fileInfo, req, res) { 
-  console.log(fileInfo);
 });
 
 // Main app configuration
@@ -100,7 +99,6 @@ app.set('views', __dirname + '/app/templates');
 app.engine('html', require('ejs').renderFile);
 app.use(express.static(__dirname + '/public'));
 app.use('/flea/', express.static(__dirname + '/public/assets/lib/flea/dist/'));
-console.log( __dirname + '/public/assets/lib/flea/dist/');
 app.use('/uploads', express.static(__dirname + '/uploads'));
 
 //Port to listen on

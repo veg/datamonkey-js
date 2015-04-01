@@ -611,3 +611,6 @@ span.glyphicon {
   overflow: scroll;
 }
 
+#job-stdout-copy-button {
+  margin-left : 5px;
+}

@@ -37,6 +37,7 @@ var AnalysisSchema = require(__dirname + '/analysis');
 
 var Flea = AnalysisSchema.extend({
   msas                  : [Msa.MsaSchema],
+  last_status_msg       : String,
   mail                  : String,
   results               : Object,
   rates                 : Object,

@@ -1,15 +1,28 @@
 <%- include ../includes/header.ejs %>
 
-<div class="container" id="job-report" data-jobid="<%= job._id %>" data-socket-address="<%= socket_addr %>">
+<div class='container' id='job-report' data-jobid='<%= job._id %>' data-socket-address='<%= socket_addr %>'>
   <%- include header.ejs %>
   <% if (job.status != 'completed') { %>
-    <%- include ../partials/jobs/jobpage.ejs %>
+  <div id='standard-output'  <% if(!job.last_status_msg) { %> class='hidden' <% } %> >
+      <div class='panel-body'>
+        <h6> Standard Output </h6>
+        <button id="job-stdout-copy-button" class="btn btn-default btn-sm pull-right" type="button">
+          Copy Output
+        </button>
+        <pre id='job-pre'>
+          <%= job.last_status_msg %>
+        </pre>
+      </div>
+  </div>
   <% } else { %>
     <%- include ./results.ejs %>
   <% } %>
   </div>
 </div>
 
+<script src='/assets/lib/jquery-zclip/jquery.zclip.js'></script>
+<script src='/assets/lib/socket.io-client/socket.io.js'></script>
+<script src='/assets/js/flea/job.js'></script>
+
 <%- include ../includes/modal.ejs %>
 <%- include ../includes/footer.ejs %>
-
