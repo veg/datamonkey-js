@@ -26,6 +26,8 @@ function getTime() {
 
 function setupJob() {
 
+  localStorage.debug = '*';
+
   var hivtraceid = $('#hiv-cluster-report').data('hivtraceid')
   var socket_address = $('#hiv-cluster-report').data('socket-address')
   var socket = io.connect(socket_address, {
@@ -68,12 +70,16 @@ function setupJob() {
     datamonkey.errorModal('Could not contact server for job status updates');
   });
 
-
+  /*
+  socket.on ('disconnect', function (d) {
+        console.log (d);
+    }
+  );*/
+  
   // Status update
   socket.on('status update', function (data) {
-
+    //console.log (data);
     changeStatus(data);
-
   });
 
   // Status update
@@ -87,6 +93,7 @@ function setupJob() {
 
     $.get(hivtraceid + '/results', function(results) {
       //Do an AJAX request to get results
+      location.reload();
       $('#hiv-cluster-report').html(results);
       initialize_cluster_network_graphs();
     });

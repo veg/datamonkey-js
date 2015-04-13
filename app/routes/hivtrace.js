@@ -50,9 +50,14 @@ exports.uploadFile = function (req, res) {
 
   var postdata = req.body;
   var id = req.params.id;
+  
 
   // Validate that the file uploaded was a FASTA file
   var hivtrace = new HivTrace;
+    
+  hivtrace.on ('error', function (m,e) {
+    
+  } );
 
   if(postdata.public_db_compare == 'true') {
     hivtrace.lanl_compare = true;
@@ -67,6 +72,7 @@ exports.uploadFile = function (req, res) {
   hivtrace.ambiguity_handling = postdata.ambiguity_handling;
   hivtrace.strip_drams = postdata.strip_drams;
   hivtrace.reference = postdata.reference;
+  hivtrace.filter_edges = postdata.filter_edges;
 
   if(hivtrace.ambiguity_handling == "RESOLVE") {
     if(postdata.fraction == undefined) {
@@ -86,18 +92,16 @@ exports.uploadFile = function (req, res) {
   var save_document = function(hivtrace) {
 
     hivtrace.save(function (err, ht) {
-      if(err) {
+     if(err) {
         logger.log(err);
-        res.json(500, {'error' : err,
-                       'validators': HivTrace.validators()});
+        res.json(500, error.errorResponse (err.message));
         return;
       }
 
       function move_cb(err, result) {
         if(err) {
           logger.log(err);
-          res.json(500, {'error' : err.error,
-                         'validators': HivTrace.validators()});
+          res.json(500, error.errorResponse (err.message));
         } else {
           res.json(200,  ht);
         }
