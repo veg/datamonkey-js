@@ -1,3 +1,5 @@
+/*jslint node: true */
+
 /*
   Datamonkey - An API for comparative analysis of sequence alignments using state-of-the-art statistical models.
 
@@ -42,7 +44,7 @@ var mongoose = require('mongoose'),
 
 exports.createForm = function(req, res) {
   res.render('relax/upload_msa.ejs');
-}
+};
 
 exports.uploadFile = function(req, res) {
 
@@ -58,7 +60,7 @@ exports.uploadFile = function(req, res) {
 
   Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
 
-    var relax = new Relax;
+    var relax = new Relax();
 
     relax.msa = msa;
 
@@ -90,7 +92,7 @@ exports.uploadFile = function(req, res) {
 
     });
   });
-}
+};
 
 exports.selectForeground = function(req, res) {
 
@@ -106,7 +108,7 @@ exports.selectForeground = function(req, res) {
         }
       });
   });
-}
+};
 
 
 /**
@@ -146,10 +148,9 @@ exports.invokeRelax = function(req, res) {
 
         var connect_callback = function(data) {
           if(data == 'connected') {
-            // TODO: why is this empty?
             logger.log('connected');
           }
-        }
+        };
 
         res.json(200,  {'relax' : result});
 
@@ -162,7 +163,7 @@ exports.invokeRelax = function(req, res) {
       }
     });
   });
-}
+};
 
 /**
  * Displays id page for analysis
@@ -189,7 +190,7 @@ exports.getRelax = function(req, res) {
                                        });
     }
   });
-}
+};
 
 /**
  * Displays id page for analysis
@@ -212,7 +213,7 @@ exports.getRelaxResults = function(req, res) {
       res.json(200, relax_results);
     }
   });
-}
+};
 
 /**
  * Handles a job request by the user
@@ -242,22 +243,18 @@ exports.restartRelax = function(req, res) {
 
       var connect_callback = function(data) {
         if(data == 'connected') {
-          // TODO: why is this empty?
           logger.log('connected');
         }
-      }
+      };
 
       res.json(200,  {'relax' : result});
 
       // Send the MSA and analysis type
-      var jobproxy = new hpcsocket.HPCSocket({'filepath'    : result.filepath, 
-                                              'msa'         : result.msa,
-                                              'analysis'    : result,
-                                              'status_stack': result.status_stack,
-                                              'type'        : 'relax'}, connect_callback);
+      Relax.submitJob(result, connect_callback);
+
     }
   });
-}
+};
 
 /*
  * Displays id page for analysis
@@ -265,11 +262,8 @@ exports.restartRelax = function(req, res) {
  */
 exports.getRelaxRecheck = function(req, res) {
 
-  // Find the analysis
-  // Return its results
   var relaxid = req.params.relaxid;
 
-  //Return all results
   Relax.findOne({_id : relaxid}, function(err, relax) {
     if (err || !relax ) {
       logger.error(err);
@@ -278,7 +272,7 @@ exports.getRelaxRecheck = function(req, res) {
 
         var callback = function(data) {
           res.json(200,  data);
-        }
+        };
 
 
       // Send the MSA and analysis type
@@ -290,5 +284,9 @@ exports.getRelaxRecheck = function(req, res) {
     }
 
   });
-}
+};
+
+exports.resubscribePendingJobs = function(req, res) {
+  Relax.subscribePendingJobs();
+};
 

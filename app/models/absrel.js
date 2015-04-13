@@ -43,6 +43,10 @@ aBSREL.virtual('pmid').get(function() {
   return '25540451';
 });
 
+aBSREL.virtual('analysistype').get(function() {
+  return 'absrel';
+});
+
 aBSREL.virtual('upload_redirect_path').get(function() {
   return '/absrel/' + this._id;
 });
@@ -54,14 +58,13 @@ aBSREL.virtual('filepath').get(function () {
   return __dirname + '/../../uploads/msa/' + this._id + '.fasta';
 });
 
-
 /**
  * Filename of document's file upload
  */
 aBSREL.virtual('status_stack').get(function () {
-  return ['Queueing', 
-          'Running',
-          'Completed'];
+  return ['queue', 
+          'running',
+          'completed'];
 });
 
 /**
@@ -72,4 +75,3 @@ aBSREL.virtual('filepath').get(function () {
 });
 
 module.exports = mongoose.model('aBSREL', aBSREL);
-

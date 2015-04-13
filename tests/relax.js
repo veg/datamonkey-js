@@ -23,7 +23,7 @@ describe('create and save job', function() {
 
   it('should return a well formed msa', function(done) {
 
-    var relax = new Relax;
+    var relax = new Relax();
 
     var datatype  = 0;
     var gencodeid = globals.genetic_code[0];

@@ -27,7 +27,7 @@
 
 const logger = require('./lib/logger');
 setup = require('./config/setup');
-var error = require('./lib/error')
+var error = require('./lib/error');
 
 ROOT_PATH = __dirname;
 HOST      = setup.host;
@@ -35,11 +35,11 @@ HOST      = setup.host;
 // Necessary packages
 var express          = require('express'),
     expressValidator = require('express-validator'),
-    helpers          = require('./lib/helpers'),
+    mongoose         = require('mongoose'),
     fs               = require('fs'),
     path             = require("path"),
-    mongoose         = require('mongoose'),
     io               = require('socket.io').listen(setup.socket_port);
+
 
 
 // Connect to database
@@ -89,6 +89,7 @@ app.use('/uploads', express.static(__dirname + '/uploads'));
 //Port to listen on
 app.listen(setup.port);
 
+var helpers = require('./lib/helpers');
 logger.info('Listening on port ' + setup.port + '...');
 module.exports = app;
 

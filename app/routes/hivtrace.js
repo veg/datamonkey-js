@@ -52,7 +52,7 @@ exports.uploadFile = function (req, res) {
   var id = req.params.id;
 
   // Validate that the file uploaded was a FASTA file
-  var hivtrace = new HivTrace;
+  var hivtrace = new HivTrace();
 
   if(postdata.public_db_compare == 'true') {
     hivtrace.lanl_compare = true;
@@ -69,7 +69,7 @@ exports.uploadFile = function (req, res) {
   hivtrace.reference = postdata.reference;
 
   if(hivtrace.ambiguity_handling == "RESOLVE") {
-    if(postdata.fraction == undefined) {
+    if(postdata.fraction === undefined) {
       hivtrace.fraction = 1;
     } else {
       hivtrace.fraction = postdata.fraction;
@@ -109,7 +109,7 @@ exports.uploadFile = function (req, res) {
     });
 
 
-  }
+  };
 
   Msa.validateFasta(file_path, function(err, result) {
 
@@ -146,7 +146,7 @@ exports.uploadFile = function (req, res) {
       save_document(hivtrace);
     }
   });
-}
+};
 
 /**
  * Form submission page
@@ -154,7 +154,7 @@ exports.uploadFile = function (req, res) {
  */
 exports.clusterForm = function (req, res) {
   res.render('hivtrace/form.ejs', {'validators': HivTrace.validators()});
-}
+};
 
 /**
  * Handles a job request by the user
@@ -183,7 +183,7 @@ exports.invokeClusterAnalysis = function (req, res) {
       
     }
   });
-}
+};
 
 
 /**
@@ -192,23 +192,22 @@ exports.invokeClusterAnalysis = function (req, res) {
  */
 exports.jobPage = function (req, res) {
 
-  // HIV Cluster id
   var id = req.params.id;
+
   HivTrace.findOne({_id: id}, function (err, hivtrace) {
     if (err || !hivtrace) {
       res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
     } else {
-      if(hivtrace.status == undefined) {
+      if(hivtrace.status === undefined) {
 
-        function callback(err) {
+        var callback = function(err) {
           if (err) {
             logger.error(err);
           } else {
             logger.info("successfully connected to cluster");
           }
-        }
+        };
 
-        // Send the MSA, and type
         var jobproxy = new hpcsocket.HPCSocket({'filepath'    : hivtrace.filepath, 
                                                 'msa'         : hivtrace,
                                                 'analysis'    : hivtrace,
@@ -227,8 +226,7 @@ exports.jobPage = function (req, res) {
       });
     }
   });
-
-}
+};
 
 /**
  * Returns strictly JSON results for requested job id
@@ -236,7 +234,6 @@ exports.jobPage = function (req, res) {
  */
 exports.results = function (req, res) {
 
-  // HIV Cluster id
   var id = req.params.id;
   HivTrace.findOne({_id: id}, 'tn93_summary tn93_results trace_results lanl_compare', function (err, hivtrace) {
     if (err || !hivtrace) {
@@ -254,7 +251,7 @@ exports.results = function (req, res) {
     }
   });
 
-}
+};
 
 /**
  * An AJAX request that verifies the upload is correct
@@ -323,7 +320,7 @@ exports.mapAttributes = function (req, res) {
       });
     }
   });
-}
+};
 
 exports.saveAttributes = function (req, res) {
 
@@ -334,7 +331,7 @@ exports.saveAttributes = function (req, res) {
     hivtrace.attribute_map = postdata;
     hivtrace.save(function (err, hivtrace) {
       if(err) {
-        // FASTA validation failed, report an error and the form back to the user
+        // FASTA validation failed
         res.json(200, err);
       } else {
         res.json(200,  {success: true});
@@ -342,7 +339,7 @@ exports.saveAttributes = function (req, res) {
     });
   });
 
-}
+};
 
 
 /**
@@ -358,4 +355,4 @@ exports.attributeMap = function (req, res) {
       res.json({hivtrace : hivtrace});
     }
   });
-}
+};

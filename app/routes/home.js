@@ -32,12 +32,10 @@ var mongoose = require('mongoose'),
     hpcsocket   = require( __dirname + '/../../lib/hpcsocket.js'),
     globals  = require( ROOT_PATH + '/config/globals.js');
 
-//find sequence by id
 exports.homePage = function (req, res) {
   res.render('index.ejs');
 };
 
-//find sequence by id
 exports.help = function (req, res) {
   res.render('help.ejs');
 };
@@ -87,7 +85,7 @@ exports.jobQueue = function(req, res) {
         job_info = { 'type' : result.__t,
                      'sequences' : result.msa[0].sequences,
                      'id' : result._id,
-                     'sites' : result.msa[0].sites} 
+                     'sites' : result.msa[0].sites};
       } else {
         job_info = null;
       }
@@ -179,7 +177,7 @@ exports.jobQueue = function(req, res) {
 
   var jobproxy = new hpcsocket.JobQueue(connect_callback);
 
-}
+};
 
 exports.clusterhealth= function (req, res) {
 

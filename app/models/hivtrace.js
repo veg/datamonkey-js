@@ -46,18 +46,18 @@ var ident = {
     ID      : "id",
     COUNTRY : "country",
     UNKNOWN : "unknown"
-}
+};
 
 var error_codes = {
     INCORRECT_SPLIT   : 0,
     FAILED_ASSIGNMENT : 1
-}
+};
 
 var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
 function notEmptyValidator (val) {
-  return val != null;
+  return val !== null;
 }
 
 /**
@@ -94,6 +94,10 @@ var HivTrace = new Schema({
     created                 : {type: Date, default: Date.now}
 });
 
+HivTrace.virtual('analysistype').get(function() {
+  return 'hivtrace';
+});
+
 /**
  * Validators to be passed to an html template as data attributes for 
  * form validation
@@ -104,7 +108,7 @@ HivTrace.statics.validators = function () {
   validators.distance_threshold = HivTrace.paths.distance_threshold.options;
   validators.fraction = HivTrace.paths.fraction.options;
   return validators;
-}
+};
 
 /**
  * Validators to be passed to an html template as data attributes for 
@@ -115,7 +119,7 @@ HivTrace.statics.lanl_validators = function () {
   validators.min_overlap = HivTrace.paths.lanl_min_overlap.options;
   validators.distance_threshold = HivTrace.paths.lanl_distance_threshold.options;
   return validators;
-}
+};
 
 function isSubtype(supposed_subtype) {
   return subtypes.subtypes.indexOf(supposed_subtype) != -1;
@@ -142,7 +146,7 @@ function isDate(supposed_date) {
 }
 
 function isCountry(supposed_country) {
-  return Object.keys(country_codes).indexOf(supposed_country) != -1
+  return Object.keys(country_codes).indexOf(supposed_country) != -1;
 }
 
 /**
@@ -202,7 +206,7 @@ HivTrace.statics.createAttributeMap = function (fn, cb) {
 
     return attr_map;
 
-  }
+  };
 
   var validateAttrMap = function (id, delimiter, attr_map) {
 
@@ -228,7 +232,7 @@ HivTrace.statics.createAttributeMap = function (fn, cb) {
       }
     }
     return true;
-  }
+  };
 
   var checkForConsistency = function (headers, delimiter, attr_map) {
 
@@ -236,7 +240,9 @@ HivTrace.statics.createAttributeMap = function (fn, cb) {
     lengths = {};
 
     //Sort by file lengths
-    headers.map( function(x) { lengths[x.split(delimiter).length] = lengths[x.split(delimiter).length] + 1 || 1});
+    headers.map( function(x) { 
+      lengths[x.split(delimiter).length] = lengths[x.split(delimiter).length] + 1 || 1;
+    });
 
     if(Object.keys(lengths).length > 1) {
       // Sort and return problematic headers
@@ -249,7 +255,10 @@ HivTrace.statics.createAttributeMap = function (fn, cb) {
         }
       }
 
-      var failed_headers = headers.filter(function(x) { return x.split(delimiter).length != index} );
+      var failed_headers = headers.filter(function(x) { 
+        return x.split(delimiter).length != index;
+      });
+
       return { 'status': false,
                'info' : {
                  'type': 'parse_fail',
@@ -263,38 +272,27 @@ HivTrace.statics.createAttributeMap = function (fn, cb) {
 
     // If more than one, return a problem with the problem headers
     //Change attribute map to maybe_ if some fail
-    headers.map(function(x) { validateAttrMap(x, delimiter, attr_map) } );
+    headers.map(function(x) { 
+      validateAttrMap(x, delimiter, attr_map);
+    });
 
-    //var failed_headers = headers.filter(function(x) { return !validateAttrMap(x, delimiter, attr_map)} );
-    //if(failed_headers.length > 0) {
-    // return { 'status': false,
-    // 'info' : {
-    // 'type': 'parse_fail',
-    // 'code': error_codes.FAILED_ASSIGNMENT,
-    // 'msg': 'Some headers failed parsing',
-    // 'failed_headers': failed_headers
-    // }
-    // };
-    //}
+    return {'status': true};
 
-    return {'status': true}
-
-  }
+  };
 
   // explode by all delimiting varieties
   fs.readFile(fn, function (err, data) {
-    var err = false;
 
     if (err) {
       cb({'err': err}, false);
     }
 
-    var data = data.toString();
+    data = data.toString();
     var lines = data.split(/(?:\n|\r\n|\r)/g);
 
     //Collect all headers
-    var headers = lines.filter(function(x) { return x.indexOf('>') != -1 } );
-    var headers = headers.map(function(x) { return x.substring(headers[0].indexOf('>') + 1) } );
+    var headers = lines.filter(function(x) { return x.indexOf('>') != -1; } );
+    headers = headers.map(function(x) { return x.substring(headers[0].indexOf('>') + 1); } );
 
     // Try exploding and testing for attributes
     var attr_map = testForAttributes(headers[0]);
@@ -302,7 +300,7 @@ HivTrace.statics.createAttributeMap = function (fn, cb) {
     // TODO: Check for a tie
     var max = -4;
     var index = -4;
-    for (c in attr_map) {
+    for (var c in attr_map) {
         if(attr_map[c].length > max) {
           max = attr_map[c].length;
           index = c;
@@ -310,7 +308,8 @@ HivTrace.statics.createAttributeMap = function (fn, cb) {
     }
 
     var is_consistent = checkForConsistency(headers, index, attr_map[index]);
-    if(is_consistent.status != true) {
+
+    if(is_consistent.status !== true) {
       err = is_consistent.info;
     }
 
@@ -318,7 +317,7 @@ HivTrace.statics.createAttributeMap = function (fn, cb) {
 
   });
 
-}
+};
 
 HivTrace.statics.parseHeaderFromMap = function (header, attr_map) {
   parsed = {};
@@ -331,7 +330,8 @@ HivTrace.statics.parseHeaderFromMap = function (header, attr_map) {
       var new_key = attr_map.map[i] + c;
 
       while(parsed[new_key]) {
-        new_key = attr_map.map[i] + ++c;
+        ++c;
+        new_key = attr_map.map[i] + c;
       }
 
       parsed[new_key] = arr[i];
@@ -339,18 +339,18 @@ HivTrace.statics.parseHeaderFromMap = function (header, attr_map) {
     }
   }
   return parsed;
-}
+};
 
 
 HivTrace.virtual('headers').get(function () {
 
   var data = fs.readFileSync(this.filepath);
-  var data = data.toString();
+  data = data.toString();
   var lines = data.split(/(?:\n|\r\n|\r)/g);
 
   //Collect all headers
-  var headers = lines.filter(function(x) { return x.indexOf('>') != -1 } );
-  var headers = headers.map(function(x) { return x.substring(headers[0].indexOf('>') + 1) } );
+  var headers = lines.filter(function(x) { return x.indexOf('>') != -1; } );
+  headers = headers.map(function(x) { return x.substring(headers[0].indexOf('>') + 1); });
   return headers;
 
 });
@@ -406,7 +406,7 @@ HivTrace.virtual('lanl_trace_results').get(function () {
  * Index of status
  */
 HivTrace.virtual('status_index').get(function () {
-  if(this.status != undefined) {
+  if(this.status !== undefined) {
     return this.status_stack.indexOf(this.status);
   } else {
     return -1;

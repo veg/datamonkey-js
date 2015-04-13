@@ -43,7 +43,7 @@ var mongoose = require('mongoose'),
 exports.form = function(req, res) {
   var post_to = '/absrel';
   res.render('absrel/form.ejs', {'post_to' : post_to} );
-}
+};
 
 exports.invoke = function(req, res) {
 
@@ -53,7 +53,7 @@ exports.invoke = function(req, res) {
       logger.log('connected');
     }
 
-  }
+  };
 
   var fn = req.files.files.path;
   var postdata  = req.body;
@@ -66,7 +66,7 @@ exports.invoke = function(req, res) {
 
   Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
 
-    var absrel = new aBSREL;
+    var absrel = new aBSREL();
 
     // Create neighbor joining tree
 
@@ -99,14 +99,7 @@ exports.invoke = function(req, res) {
                            "upload_redirect_path": absrel.upload_redirect_path});
 
           // Send the MSA and analysis type
-          console.log('sending job proxy');
-
-          //TODO: Properly handle errors
-          var jobproxy = new hpcsocket.HPCSocket({'filepath'    : absrel_result.filepath, 
-                                                  'msa'         : absrel_result.msa,
-                                                  'analysis'    : absrel_result,
-                                                  'status_stack': absrel_result.status_stack,
-                                                  'type'        : 'absrel'}, connect_callback);
+          absrel.submitJob(absrel_result, connect_callback);
 
         }
       }
@@ -117,7 +110,7 @@ exports.invoke = function(req, res) {
 
   });
 
-}
+};
 
 exports.getPage = function(req, res) {
 
@@ -138,13 +131,11 @@ exports.getPage = function(req, res) {
     }
   });
 
-}
+};
 
 exports.getResults = function(req, res) {
 
   var absrelid = req.params.id;
-
-  //Return all results
   aBSREL.findOne({_id : absrelid}, function(err, absrel) {
     if (err || !absrel ) {
       logger.error(err);
@@ -158,6 +149,10 @@ exports.getResults = function(req, res) {
       res.json(200, absrel_results);
     }
   });
-}
 
+};
+
+exports.resubscribePendingJobs = function(req, res) {
+  aBSREL.subscribePendingJobs();
+};
 

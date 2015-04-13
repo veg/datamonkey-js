@@ -40,6 +40,10 @@ var Relax = AnalysisSchema.extend({
   results               : Object
 });
 
+Relax.virtual('analysistype').get(function() {
+  return 'relax';
+});
+
 Relax.virtual('pmid').get(function() {
   return '25540451';
 });

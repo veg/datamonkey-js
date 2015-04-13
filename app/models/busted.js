@@ -39,11 +39,13 @@ var Busted = AnalysisSchema.extend({
   results               : Object
 });
 
+Busted.virtual('analysistype').get(function() {
+  return 'busted';
+});
 
 Busted.virtual('pmid').get(function() {
   return 'NA';
 });
-
 
 /**
  * Filename of document's file upload
