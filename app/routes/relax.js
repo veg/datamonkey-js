@@ -110,7 +110,6 @@ exports.selectForeground = function(req, res) {
   });
 };
 
-
 /**
  * Handles a job request by the user
  * app.post('/msa/:msaid/relax', Relax.invokeRelax);
