@@ -26,7 +26,7 @@ function getTime() {
 
 function setupJob() {
 
-  localStorage.debug = '*';
+  //localStorage.debug = '*';
 
   var hivtraceid = $('#hiv-cluster-report').data('hivtraceid')
   var socket_address = $('#hiv-cluster-report').data('socket-address')
