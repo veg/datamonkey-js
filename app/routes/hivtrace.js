@@ -64,6 +64,8 @@ exports.uploadFile = function (req, res) {
     hivtrace.lanl_compare = false;
     hivtrace.status_stack = hivtrace.valid_statuses;
   }
+  
+  //console.log (hivtrace.status_stack);
 
   hivtrace.distance_threshold = Number(postdata.distance_threshold);
   hivtrace.min_overlap = Number(postdata.min_overlap);
@@ -71,6 +73,7 @@ exports.uploadFile = function (req, res) {
   hivtrace.strip_drams = postdata.strip_drams;
   hivtrace.reference = postdata.reference;
   hivtrace.filter_edges = postdata.filter_edges;
+  hivtrace.reference_strip = postdata.reference_strip;
 
   if(hivtrace.ambiguity_handling == "RESOLVE") {
     if(postdata.fraction === undefined) {
