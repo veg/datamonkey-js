@@ -76,7 +76,7 @@ function notEmptyValidator (val) {
  */
 var HivTrace = new Schema({
     reference               : String,
-    distance_threshold      : { type: Number, require: true, min : 0, max: 0.05, default: .015, validate: [notEmptyValidator, 'Distance Threshold is empty'] },
+    distance_threshold      : { type: Number, require: true, min : 0, max: 0.02, default: .015, validate: [notEmptyValidator, 'Distance Threshold is empty'] },
     min_overlap             : { type: Number, require: true, min : 50, max: 5000, default: 500, validate: [notEmptyValidator, 'Minimum Overlap is empty'] },
     fraction                : { type: Number, require: true, min : 0, max: 1, default: .05 },
     ambiguity_handling      : { type: String, require: true, validate: [notEmptyValidator, 'Ambiguity Handling is empty']},
@@ -87,6 +87,7 @@ var HivTrace = new Schema({
     lanl_compare            : Boolean,
     filter_edges            : { type: String, enum: ['no','report','remove']},
     strip_drams             : { type: String, enum: ['no','wheeler','lewis']},
+    reference_strip         : { type: String, enum: ['no','report','remove']},
     torque_id               : String,
     custom_reference        : String,
     mail                    : String,
