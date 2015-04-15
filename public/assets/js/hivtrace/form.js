@@ -58,6 +58,7 @@ $(document).ready(function(){
     formData.append('strip_drams', $( "select[name='strip_drams']" ).val());
     formData.append('fraction', $( "input[name='fraction']" ).val());
     formData.append('filter_edges', $( "select[name='filter_edges']" ).val());
+    formData.append('reference_strip', $( "select[name='reference_strip']" ).val());
     formData.append('receive_mail',  $( "input[name='receive_mail']" ).prop("checked"));
     formData.append('mail', $( "input[name='mail']" ).val());
     formData.append('public_db_compare', $( "input[name='public_db_compare']" ).prop("checked"));
@@ -218,13 +219,10 @@ $(document).ready(function(){
     handle_helper_element (this);
   }
 
-  function toggle_dram(obj) {    
+  function toggle_helper (obj) {    
     handle_helper_element (this);
   }
   
-  function toggle_filter(obj) {    
-    handle_helper_element (this);
-  }  
 
   $( "input[name='distance_threshold']" ).focusout(validate_element);
   $( "input[name='min_overlap']" ).focusout(validate_element);
@@ -235,8 +233,9 @@ $(document).ready(function(){
   });
   $( "select[name='reference']" ).change(toggle_compare).trigger ('change');
   $( "select[name='ambiguity_handling']" ).change(toggle_fraction).trigger('change');
-  $( "select[name='strip_drams']" ).change(toggle_dram).trigger('change');
-  $( "select[name='filter_edges']" ).change(toggle_filter).trigger('change');
+  $( "select[name='strip_drams']" ).change(toggle_helper).trigger('change');
+  $( "select[name='filter_edges']" ).change(toggle_helper).trigger('change');
+  $( "select[name='reference_strip']" ).change(toggle_helper).trigger('change');
   
   // set shared attributes on helper_text element
   $( ".helper_text").attr ("data-container", "body")
