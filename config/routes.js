@@ -40,7 +40,9 @@ module.exports = function(app) {
   app.get('/analyses', home.analyses);
   app.get('/treeviewer', home.treeviewer);
   app.get('/development', home.development);
-
+  app.get('/copyright_notice', home.copyright);
+  app.get('/uploads', home.data_privacy);
+  
   // UPLOAD FILE ROUTES
   msa = require( ROOT_PATH + '/app/routes/msa');
   app.get('/msa', msa.showUploadForm);
