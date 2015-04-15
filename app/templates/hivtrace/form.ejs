@@ -74,6 +74,33 @@
             </div>
           </div>
 
+          <div class="form-group" id = "reference_stripping">
+            <label class="col-lg-3 control-label">
+            <i class="fa fa-question-circle fa-fw helper_text" 
+                    data-title = "Handle possible contaminants"
+                    data-content="What should be done if query sequences belong to the same cluster as the reference. If the reference is a database/lab strain (e.g. HXB2), such sequences are likely mislabeled/contaminated.">
+               </i>    
+             Contaminant screen
+           </label>
+            <div class="col-lg-4">
+                <select name="reference_strip"  id = 'trace-reference-strip'>
+                  <option value="no" data-help_text = "Do nothing">
+                    None
+                  </option>
+                  <option  value="report" data-help_text = "Flag all sequences sharing a cluster with the reference">
+                    Report
+                  </option>
+                  <option selected="selected"  value="remove" data-help_text = "Remove all sequences sharing a cluster with the reference">
+                    Remove
+                  </option>
+                </select>
+            </div>
+            <div class="col-lg-5">
+                <p class = "text-info text-right" id = 'trace-reference-strip-help'>
+                </p>
+            </div>
+          </div>
+
           <div id="trace-reference-upload" class="form-group hide <%if (typeof errors != "undefined" && typeof errors.file != "undefined") { %>has-error<% } %>">
             <label id="upload-reference" class="col-lg-3 control-label">Upload Your Own Reference</label>
             <div id="reference-file-div" class="col-lg-9">
@@ -115,7 +142,7 @@
             <label class="col-lg-3 control-label">
             <i class="fa fa-question-circle fa-fw helper_text" 
                     data-title = "Remove spurious connections"
-                    data-content="Use a phylogenetic test of conditional independence on each triangle in the network to remove spurious <i>transitive</i> connections which convert A&rarr;B&rarr;C chains to A-B-C triangles. ">
+                    data-content="Use a phylogenetic test of conditional independence on each triangle in the network to remove spurious <i>transitive</i> connections which make A&rarr;B&rarr;C chains look like A-B-C triangles. ">
                </i>    
              Filter edges
            </label>
@@ -124,10 +151,10 @@
                   <option value="no" data-help_text = "Do not perform filtering">
                     No
                   </option>
-                  <option selected="selected"  value="report" data-help_text = "Annotate spurious edges in the inferred network">
+                  <option value="report" data-help_text = "Annotate spurious edges in the inferred network">
                     Report
                   </option>
-                  <option value="remove" data-help_text = "Remove spurious edges from the inferred network">
+                  <option selected="selected" value="remove" data-help_text = "Remove spurious edges from the inferred network">
                     Remove
                   </option>
                 </select>
@@ -139,6 +166,8 @@
           </div>
 
  
+
+
           <div class="form-group">
             <label class="col-lg-3 control-label">
             <i class="fa fa-question-circle fa-fw helper_text" 
