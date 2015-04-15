@@ -65,8 +65,6 @@ exports.uploadFile = function (req, res) {
     hivtrace.status_stack = hivtrace.valid_statuses;
   }
   
-  //console.log (hivtrace.status_stack);
-
   hivtrace.distance_threshold = Number(postdata.distance_threshold);
   hivtrace.min_overlap = Number(postdata.min_overlap);
   hivtrace.ambiguity_handling = postdata.ambiguity_handling;
@@ -231,11 +229,10 @@ exports.jobPage = function (req, res) {
 exports.results = function (req, res) {
 
   var id = req.params.id;
-  HivTrace.findOne({_id: id}, 'tn93_summary tn93_results trace_results lanl_compare', function (err, hivtrace) {
+  HivTrace.findOne({_id: id}, 'tn93_summary tn93_results lanl_compare', function (err, hivtrace) {
     if (err || !hivtrace) {
       res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
     } else {
-      console.log(hivtrace);
       res.format({
         html: function(){
           res.render('hivtrace/results.ejs', {hivtrace : hivtrace});
@@ -248,6 +245,53 @@ exports.results = function (req, res) {
   });
 
 };
+
+/**
+ * Returns strictly JSON results for requested job id
+ * app.get('/hivtrace/:id/results', hivtrace.results);
+ */
+exports.trace_results = function (req, res) {
+
+  var id = req.params.id;
+  HivTrace.findOne({_id: id}, 'results', function (err, hivtrace) {
+    if (err || !hivtrace) {
+      res.json(500, error.errorResponse('There is no HIV Trace job with id of ' + id));
+    } else {
+      try {
+        var trace_results = JSON.parse(hivtrace.results.trace_results);
+        res.json(200, trace_results);
+      } catch(e) {
+        res.json(500, '');
+      }
+    }
+  });
+
+};
+
+/**
+ * Returns strictly JSON results for requested job id
+ * app.get('/hivtrace/:id/results', hivtrace.results);
+ */
+exports.lanl_trace_results = function (req, res) {
+
+  var id = req.params.id;
+  HivTrace.findOne({_id: id}, 'results', function (err, hivtrace) {
+    if (err || !hivtrace) {
+      res.json(500, error.errorResponse('There is no HIV Trace job with id of ' + id));
+    } else {
+      try {
+        var lanl_trace_results = JSON.parse(hivtrace.results.lanl_trace_results);
+        res.json(200, hivtrace.results);
+      } catch(e) {
+        res.json(500, '');
+      }
+    }
+  });
+
+};
+
+
+
 
 /**
  * An AJAX request that verifies the upload is correct

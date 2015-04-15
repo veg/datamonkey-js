@@ -20,7 +20,7 @@ var initialize_cluster_network_graphs = function () {
       filter_edges_toggle   = '#network_ui_bar_toggle_filter_edges';
 
   //Initialize clusternetworkgraph with json url
-  var json_url = $(network_container).parent().data('url');
+  var json_url = $("#hiv-cluster-report").data('hivtraceid') + '/trace_results';
   
   d3.json(json_url, function(graph) {
 
@@ -43,7 +43,7 @@ var initialize_cluster_network_graphs = function () {
         lanl_button_bar_prefix     = 'lanl_network_ui_bar';
 
 
-    var json_url = $(lanl_network_container).parent().data('url');
+    var json_url = $("#hiv-cluster-report").data('hivtraceid') + '/lanl_trace_results';
     d3.json(json_url, function(lanl_graph) {
       var lanl_graph_rendered = new datamonkey.hivtrace.cluster_network_graph(lanl_graph, lanl_network_container, lanl_network_status_string, lanl_network_warning, lanl_button_bar_prefix);
       datamonkey.hivtrace.histogram(lanl_graph, lanl_histogram_tag, lanl_histogram_label);

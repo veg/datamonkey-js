@@ -26,7 +26,7 @@ function getTime() {
 
 function setupJob() {
 
-  localStorage.debug = '*';
+  //localStorage.debug = '*';
 
   var hivtraceid = $('#hiv-cluster-report').data('hivtraceid')
   var socket_address = $('#hiv-cluster-report').data('socket-address')
@@ -38,15 +38,12 @@ function setupJob() {
 
   var changeStatus = function (data) {
 
-    $('.progress .progress-bar').width(data.percentage);
-
     //data is index and message
     $('.hivtrace-status').each(function(index) {
       if($(this).data('index') < data.index ) {
         $(this).attr('class', 'hivtrace-status alert alert-success')
       } else if ($(this).data("index") == data.index) {
         $(this).attr('class', 'hivtrace-status alert alert-warning')
-        //$(this).children('.panel-body').append(data.msg)
       }
     });
 
@@ -70,22 +67,14 @@ function setupJob() {
     datamonkey.errorModal('Could not contact server for job status updates');
   });
 
-  /*
-  socket.on ('disconnect', function (d) {
-        console.log (d);
-    }
-  );*/
-  
   // Status update
   socket.on('status update', function (data) {
-    //console.log (data);
+    console.log (data);
     changeStatus(data);
   });
 
   // Status update
   socket.on('completed', function (data) {
-
-    $('.progress .progress-bar').width('100%');
 
     $('.hivtrace-status').each(function(index) {
       $(this).attr('class', 'alert alert-success')

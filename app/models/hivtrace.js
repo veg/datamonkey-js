@@ -67,11 +67,9 @@ function notEmptyValidator (val) {
  * HivTrace Schema Type
  * distance threshold : Parameter set by user
  * min_overlap        : Parameter set by user
- * ambiguity_handling : Current status of job
+ * ambiguity_handling : Parameter set by user
  * status             : Current status of job
  * mailaddr           : User's email address
- * graph_dot          : Results
- * cluster_csv        : Results
  * created            : When the document was created
  */
 var HivTrace = new Schema({
@@ -95,7 +93,8 @@ var HivTrace = new Schema({
     tn93_results            : String,
     lanl_tn93_results       : String,
     error_message           : String,
-    created                 : {type: Date, default: Date.now}
+    created                 : {type: Date, default: Date.now},
+    results                 : Object
 });
 
 HivTrace.virtual('analysistype').get(function() {
@@ -361,20 +360,6 @@ HivTrace.virtual('filepath').get(function () {
 });
 
 /**
- * TODO: Change storage to mongodb instead of file
- */
-HivTrace.virtual('trace_results').get(function () {
-  return '/uploads/hivtrace/' + this._id + '_user.trace.json';
-});
-
-/**
- * TODO: Change storage to mongodb instead of file
- */
-HivTrace.virtual('lanl_trace_results').get(function () {
-  return '/uploads/hivtrace/' + this._id + '_lanl_user.trace.json';
-});
-
-/**
  * Index of status
  */
 HivTrace.virtual('status_index').get(function () {
@@ -416,7 +401,6 @@ HivTrace.statics.submitJob = function (result, cb) {
                                           'type'        : result.analysistype}, 'spawn', cb);
 
 };
-
 
 module.exports = mongoose.model('HivTrace', HivTrace);
 

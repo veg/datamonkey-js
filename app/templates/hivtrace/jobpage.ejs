@@ -6,11 +6,6 @@
     <div class="alert alert-danger">There was an error! Please try again. <code><%= hivtrace.error_message %></code></div>
   <% } else if (hivtrace.status != 'completed') { %>  
       <h2>Job in Progress</h2>
-      <div class="progress progress-striped active">
-        <div class="progress-bar" role="progressbar" aria-valuenow="<%= hivtrace.percentage_complete %>" aria-valuemin="1" aria-valuemax="100" style="width: <%= hivtrace.percentage_complete %>">
-          <span class="sr-only"><%= hivtrace.percentage_complete %> Complete</span> 
-        </div>
-      </div>  
       <div id="job-timer" data-created="<%= hivtrace.timestamp %>" style="float:right"><h3>Runtime <span class="time">00:00:00</span><h3></div>
      
       <div style="clear:both"></div>
