@@ -425,7 +425,10 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
     var r = default_layout(self.clusters, self.nodes, exclude_cluster_ids);
     self.clusters = r[0];
     self.nodes = r[1];
-    self.clusters.forEach (function (d,i) {cluster_mapping[d.cluster_id] = i;});
+    self.clusters.forEach (function (d,i) {
+            cluster_mapping[d.cluster_id] = i;
+            d.hxb2_linked = d.children.some(function(c) {return c.hxb2_linked});
+            });
      
     update();
  
@@ -478,7 +481,9 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
      var paths = container_group.selectAll ("path").data (draw_from);
      paths.enter ().append ("path");
      paths.exit ().remove();
-     paths.attr ("class", "cluster")
+     
+     paths.classed ("cluster", true)
+          .classed ("hiv-trace-problematic", function (d) {return the_cluster.hxb2_linked;})
           .attr ("d", d3.svg.arc().innerRadius(0).outerRadius(arc_radius))
           .style ("fill", function (d,i) {return cluster_color (the_cluster, d.name);});
     
@@ -551,7 +556,9 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
             .data(draw_me.edges, function (d) {return d.id;});
         
         var link_enter = link.enter().append("line")
-            .attr("class", function (d) { if (d.removed) return "link removed"; return "link";  })
+            .classed ("link", true)
+            .classed ("removed", function (d) {return d.removed;})
+            .classed ("unsupported", function (d) { return "support" in d && d["support"] > 0.05;})
             .filter (function (d) {return d.directed;})
             .attr("marker-end", "url(#arrowhead)");
 
@@ -716,6 +723,8 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
       open_cluster_queue.push (x.cluster_id);
       if (copy_coord) {
           x.children.forEach (function (n) { n.x = x.x + (Math.random()-0.5)*x.children.length; n.y = x.y + (Math.random()-0.5)*x.children.length; });
+      } else {
+          x.children.forEach (function (n) { n.x = self.width * 0.25 + (Math.random()-0.5)*x.children.length; n.y = 0.25*self.height + (Math.random()-0.5)*x.children.length; })
       }
   }
 
@@ -851,7 +860,7 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
       toggle_tooltip (this, false);
   }
 
-  function expand_cluster_handler (d, do_update) {
+  function expand_cluster_handler (d, do_update, move_out) {
     if (d.collapsed) {  
         var new_nodes = self.cluster_sizes[d.cluster_id-1] - 1;
         
@@ -872,7 +881,7 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
             }
     
             if (leftover <= 0) {
-                expand_cluster (d, true);
+                expand_cluster (d, !move_out);
             }
         }
             
@@ -941,7 +950,7 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
 
   /*------------ Event Functions ---------------*/
   function toggle_tooltip(element, turn_on, title, tag) {
-    if (d3.event.defaultPrevented) return;
+    //if (d3.event.defaultPrevented) return;
     if (turn_on && element.tooltip == undefined) {
       var this_box = $(element);
       var this_data = d3.select(element).datum();
