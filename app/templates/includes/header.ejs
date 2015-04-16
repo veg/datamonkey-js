@@ -67,7 +67,19 @@
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
           <!--<li><a href="/msa">Analyze Your Data</a></li>-->
-          <li><a href="/analyses">Methods and Tools</a></li>
+          <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Methods and Tools <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li data-toggle="tooltip" data-placement="right" title="An adaptive branch-site REL test for episodic diversification"><a href="/absrel">aBSREL</a></li>
+            <li data-toggle="tooltip" data-placement="right" title="A test for relaxed/intensified selection"><a href="/relax">RELAX</a></li>
+            <li data-toggle="tooltip" data-placement="right" title="Bayesian Unrestricted Test for Episodic Diversification"><a href="/busted">BUSTED</a></li>
+            <li data-toggle="tooltip" data-placement="right" title="HIV Transmission Cluster Engine"><a href="/hivtrace">HIV-Trace</a></li>
+            <li class="divider"></li>
+            <li data-toggle="tooltip" data-placement="right" title="An interactive tree viewer/annotator for phylogenetic trees"><a href="/treeviewer">Tree viewer</a></li>
+            <li class="divider"></li>
+            <li><a href="/analyses">List of all methods</a></li>
+          </ul>
+          </li>
           <li><a href="/jobqueue">Job Queue</a></li>
           <!--<li><a href="/stats">Statistics</a></li>-->
           <!--<li><a href="http://datamonkey-dev/help/citations.php">Citations</a></li>-->
