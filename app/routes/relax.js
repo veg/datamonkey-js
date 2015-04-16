@@ -152,13 +152,8 @@ exports.invokeRelax = function(req, res) {
         };
 
         res.json(200,  {'relax' : result});
+        Relax.submitJob(result, connect_callback);
 
-        // Send the MSA and analysis type
-        var jobproxy = new hpcsocket.HPCSocket({'filepath'    : result.filepath, 
-                                                'msa'         : result.msa,
-                                                'analysis'    : result,
-                                                'status_stack': result.status_stack,
-                                                'type'        : 'relax'}, connect_callback);
       }
     });
   });
@@ -247,8 +242,6 @@ exports.restartRelax = function(req, res) {
       };
 
       res.json(200,  {'relax' : result});
-
-      // Send the MSA and analysis type
       Relax.submitJob(result, connect_callback);
 
     }
@@ -273,13 +266,8 @@ exports.getRelaxRecheck = function(req, res) {
           res.json(200,  data);
         };
 
+      Relax.submitJob(result, callback);
 
-      // Send the MSA and analysis type
-      var jobproxy = new hpcsocket.HPCSocketRecheck({'filepath'    : relax.filepath, 
-                                              'msa'         : relax.msa,
-                                              'analysis'    : relax,
-                                              'status_stack': relax.status_stack,
-                                              'type'        : 'relax'}, callback);
     }
 
   });

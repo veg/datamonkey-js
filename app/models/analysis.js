@@ -32,6 +32,7 @@ var mongoose  = require('mongoose'),
     globals   = require( '../../config/globals.js'),
     moment    = require('moment'),
     _         = require('underscore'),
+    winston   = require('winston'),
     hpcsocket = require( __dirname + '/../../lib/hpcsocket.js'),
     Msa       = require(__dirname + '/msa'),
     extend    = require('mongoose-schema-extend');
@@ -80,6 +81,8 @@ AnalysisSchema.statics.pendingJobs = function (cb) {
 };
 
 AnalysisSchema.statics.submitJob = function (result, cb) {
+
+  winston.info('submitting ' + result.analysistype + ' : ' + result._id + ' to cluster');
   var jobproxy = new hpcsocket.HPCSocket({'filepath'    : result.filepath, 
                                           'msa'         : result.msa,
                                           'analysis'    : result,

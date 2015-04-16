@@ -31,15 +31,17 @@ var setup         = require( '../../config/setup'),
     country_codes = require( '../../config/country_codes.json'),
     subtypes      = require( '../../config/subtypes.json');
 
-var mongoose = require('mongoose'),
-    moment   = require('moment'),
-    check    = require('validator').check,
-    globals  = require( '../../config/globals.js'),
-    sanitize = require('validator').sanitize,
-    fs       = require('fs'),
-    readline = require('readline'),
-    spawn    = require('child_process').spawn,
-    _        = require ('underscore');
+var mongoose  = require('mongoose'),
+    moment    = require('moment'),
+    check     = require('validator').check,
+    globals   = require( '../../config/globals.js'),
+    sanitize  = require('validator').sanitize,
+    fs        = require('fs'),
+    readline  = require('readline'),
+    spawn     = require('child_process').spawn,
+    _         = require ('underscore'),
+    hpcsocket = require( __dirname + '/../../lib/hpcsocket.js'),
+    winston   = require ('winston');
 
 var ident = {
     SUBTYPE : "subtype",
@@ -402,6 +404,17 @@ HivTrace.virtual('timestamp').get(function () {
 HivTrace.virtual('url').get(function () {
   return 'http://' + setup.host + '/hivtrace/' + this._id;
 });
+
+HivTrace.statics.submitJob = function (result, cb) {
+
+  winston.info('submitting ' + result.analysistype + ' : ' + result._id + ' to cluster');
+  var jobproxy = new hpcsocket.HPCSocket({'filepath'    : result.filepath, 
+                                          'msa'         : result.msa,
+                                          'analysis'    : result,
+                                          'status_stack': result.status_stack,
+                                          'type'        : result.analysistype}, 'spawn', cb);
+
+};
 
 
 module.exports = mongoose.model('HivTrace', HivTrace);

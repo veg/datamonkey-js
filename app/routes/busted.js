@@ -175,7 +175,6 @@ exports.invokeBusted = function(req, res) {
 
         res.json(200,  {'busted' : result});
 
-        // Send the MSA and analysis type
         Busted.submitJob(result, connect_callback);
 
       }
