@@ -264,6 +264,26 @@ exports.results = function (req, res) {
 }
 
 /**
+ * Returns strictly JSON results for requested job id
+ * app.get('/hivtrace/:id/results', hivtrace.results);
+ */
+exports.settings = function (req, res) {
+  // HIV Cluster id
+  var id = req.params.id;
+  HivTrace.findOne({_id: id}, function (err, hivtrace) {
+    if (err || !hivtrace) {
+          res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
+    } else {
+        res.format({
+            json: function(){
+              res.json(200, hivtrace);
+            }
+          });          
+    }    
+  });
+}
+
+/**
  * An AJAX request that verifies the upload is correct
  * app.post('/msa/:id/map-attributes', msa.mapAttributes);
  */

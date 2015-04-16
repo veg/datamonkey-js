@@ -369,6 +369,14 @@ HivTrace.virtual('lanl_trace_results').get(function () {
 });
 
 /**
+ * TODO: Change storage to mongodb instead of file
+ */
+HivTrace.virtual('input_sequences').get(function () {
+  return '/uploads/hivtrace/' + this._id;
+});
+
+
+/**
  * Index of status
  */
 HivTrace.virtual('status_index').get(function () {
