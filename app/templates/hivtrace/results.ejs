@@ -3,9 +3,9 @@
 <div class="tabbable">
 
   <ul class="nav nav-tabs" id = "top_level_tab_container">
-    <li class="active"><a href="#trace-results" data-toggle="tab">Cluster Results</a></li>
+    <li class="active"><a href="#trace-results" data-toggle="tab">Network</a></li>
     <%if (hivtrace.lanl_compare == true) { %>
-    <li class=""><a href="#lanl-trace-results" data-toggle="tab">Comparison Results</a></li>
+    <li class=""><a href="#lanl-trace-results" data-toggle="tab">Network + DB</a></li>
     <% } %>
   </ul>
 
@@ -25,24 +25,19 @@
         <div class='col-lg-9' data-url=<%= hivtrace.trace_results %>>
             <div class="nav-trace">
                 <div class="input-group input-group-sm" id = 'network_ui_bar'>
-
-                    <span class="input-group-btn">
-                      <button id="network_ui_bar_toggle_filter_edges" type="button" class="btn btn-default active" data-toggle="button">
-                         Filter Edges 
-                      </button>
-                    </span>
-
+                    
+                    <div class="btn-group" id = 'network_ui_bar_button_group'>
+                        
+                    </div>
+ 
                     <span class="input-group-btn">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id = "network_ui_bar_cluster_operations_button">Clusters <span class="caret"></span></button>
-                            <ul class="dropdown-menu" role="menu" id = 'network_ui_bar_cluster_operations_container'>
-                                
-                            </ul>
+                        <ul class="dropdown-menu" role="menu" id = 'network_ui_bar_cluster_operations_container'></ul>
                     </span>
                     
                     <div class="input-group-btn">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id = "network_ui_bar_attribute_label">Attribute <span class="caret"></span></button>
-                        <ul class="dropdown-menu" role="menu" id = 'network_ui_bar_attributes'>
-                        </ul>
+                        <ul class="dropdown-menu" role="menu" id = 'network_ui_bar_attributes'></ul>
                    </div>
                           
                     <input type="text" class="form-control" placeholder = "search" id = 'network_ui_bar_search'>
@@ -95,15 +90,12 @@
                 <div class="input-group input-group-sm" id = 'lanl_network_ui_bar'>
                       <span class="input-group-btn">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id = "lanl_network_ui_bar_cluster_operations_button">Clusters <span class="caret"></span></button>
-                            <ul class="dropdown-menu" role="menu" id = 'lanl_network_ui_bar_cluster_operations_container'>
-                                
-                            </ul>
+                        <ul class="dropdown-menu" role="menu" id = 'lanl_network_ui_bar_cluster_operations_container'></ul>
                     </span>
                     
                     <div class="input-group-btn">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id = "lanl_network_ui_bar_attribute_label">Attribute <span class="caret"></span></button>
-                        <ul class="dropdown-menu" role="menu" id = 'lanl_network_ui_bar_attributes'>
-                        </ul>
+                        <ul class="dropdown-menu" role="menu" id = 'lanl_network_ui_bar_attributes'></ul>
                    </div>
                           
                     <input type="text" class="form-control" placeholder = "search" id = 'lanl_network_ui_bar_search'>

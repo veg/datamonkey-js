@@ -1,6 +1,19 @@
 var _networkGraphAttrbuteID = "user attributes";
 
 var hivtrace_cluster_network_graph = function (json, network_container, network_status_string, network_warning_tag, button_bar_ui, attributes, filter_edges_toggle) {
+/*
+[REQ] json                        :          the JSON object containing network nodes, edges, and meta-information
+[REQ] network_container           :          the CSS selector of the DOM element where the SVG containing the network will be placed (e.g. '#element')
+[OPT] network_status_string       :          the CSS selector of the DOM element where the text describing the current state of the network is shown (e.g. '#element')
+[OPT] network_warning_tag         :          the CSS selector of the DOM element where the any warning messages would go (e.g. '#element')
+[OPT] button_bar_ui               :          the ID of the control bar which can contain the following elements (prefix = button_bar_ui value)
+                                                - [prefix]_cluster_operations_container : a drop-down for operations on clusters
+                                                - [prefix]_attributes :  a drop-down for operations on attributes
+                                                - [prefix]_filter : a text box used to search the graph
+[OPT] network_status_string       :          the CSS selector of the DOM element where the text describing the current state of the network is shown (e.g. '#element')
+[OPT] attributes                  :          A JSON object with mapped node attributes
+                                                
+*/
 
   var self = this;
     self.nodes = [];
@@ -9,12 +22,12 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
     self.cluster_sizes = [];
     self.colorizer = {};
     self.filter_edges = true,
-    self.hide_hxb2 = false;
+    self.hide_hxb2 = false,
+    self.charge_correction = 1,
+    self.width = 875,
+    self.height = 800;
 
-  var w = 875,
-      h = 800,
-      popover = null,
-      cluster_mapping = {},
+  var cluster_mapping = {},
       l_scale = 5000,   // link scale
       graph = json,     // the raw JSON network object
       max_points_to_render = 500,
@@ -26,20 +39,19 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
   /*------------ D3 globals and SVG elements ---------------*/
   var defaultFloatFormat = d3.format(",.2f");
 
+
+
   var network_layout = d3.layout.force()
     .on("tick", tick)
-    .charge(function(d) { if (d.cluster_id) return -50-20*Math.pow(d.children.length,0.7); return -20*Math.sqrt(d.degree); })
+    .charge(function(d) { if (d.cluster_id) return self.charge_correction*(-50-20*Math.pow(d.children.length,0.7)); return self.charge_correction*(-20*Math.sqrt(d.degree)); })
     .linkDistance(function(d) { return Math.max(d.length*l_scale,1); })
     .linkStrength (function (d) { if (d.support != undefined) { return 2*(0.5-d.support);} return 1;})
     .chargeDistance (500)
-    .friction (0.5)
-    .size([w, h - 160]);
-    
+    .friction (0.25);
+        
   d3.select(network_container).selectAll (".my_progress").remove();
 
   var network_svg = d3.select(network_container).append("svg:svg")
-      .attr("width", w)
-      .attr("height", h)
       .style ("border", "solid black 1px");
 
   network_svg.append("defs").append("marker")
@@ -53,15 +65,9 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
       .attr("fill", "#AAAAAA")
       .append("path")
           .attr("d", "M 0,0 V 4 L6,2 Z"); //this is actual shape for arrowhead
-                                      
    
+  change_window_size();                                   
    
-  /* ----------- Trigger Events ------------------- */
-  $(filter_edges_toggle).on("click", function(e) {
-    self.filter_edges = !$(this).hasClass("active");
-    update();
-  });
-
   /*------------ Network layout code ---------------*/
   var handle_cluster_click = function (cluster, release) {
 
@@ -172,7 +178,7 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
       }   
       
       var treemap = d3.layout.treemap()
-      .size([w, h])
+      .size([self.width, self.height])
       .sticky(true)
       .children (function (d)  {return d.children;})
       .value(function(d) { return 1;});
@@ -242,6 +248,30 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
         clusters.forEach (collapse_cluster); 
         return [clusters, nodes];
     }
+    
+ function change_spacing (delta) {
+    self.charge_correction = self.charge_correction * delta;
+    network_layout.start ();
+ }
+
+ function change_window_size (delta, trigger) {
+ 
+    if (delta) {
+        self.width  += delta;
+        self.height += delta;
+    
+        self.width  = Math.min (Math.max (self.width, 200), 4000); 
+        self.height = Math.min (Math.max (self.height, 200), 4000);
+    } 
+    
+    network_layout.size ([self.width, self.height - 160]);
+    network_svg.attr ("width", self.width).attr ("height", self.height);
+    
+    if (trigger) {
+        network_layout.start ();       
+    }
+    
+ }
 
 
   /*------------ Constructor ---------------*/
@@ -249,7 +279,7 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
     var connected_links = [];
     var total = 0;
     var exclude_cluster_ids = {};
-    var has_hxb2_links = false;
+    self.has_hxb2_links = false;
     self.cluster_sizes = [];
 
     graph.Nodes.forEach (function (d) { 
@@ -261,9 +291,10 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
           if ("is_lanl" in d) {
             d.is_lanl = d.is_lanl == "true";
           }
-          if ("hxb2_linked" in d) {
-            d.hxb2_linked = d.hxb2_linked == "true";
-            has_hxb2_links = has_hxb2_links || d.hxb2_linked;
+          
+          
+          if (d.attributes.indexOf ("problematic") >= 0) {
+            self.has_hxb2_links = d.hxb2_linked = true;
           }
       
     });
@@ -273,37 +304,43 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
      
      if (button_bar_ui) {
      
-         var cluster_container = d3.select ("#" + button_bar_ui + "_cluster_operations_container")
-         cluster_container.append ("li").append ("a")
+         var cluster_ui_container = d3.select ("#" + button_bar_ui + "_cluster_operations_container")
+         cluster_ui_container.append ("li").append ("a")
                                         .text ("Expand All")
                                         .attr ("href", "#")
-                                        .attr ("id", button_bar_ui + "_cluster_expand_all_clusters")
                                         .on ("click", function(e) {
                                             self.expand_all_clusters();
                                             d3.event.preventDefault();
                                           });
          
-          cluster_container.append ("li").append ("a")
+          cluster_ui_container.append ("li").append ("a")
                                         .text ("Collapse All")
                                         .attr ("href", "#")
-                                        .attr ("id", button_bar_ui + "_cluster_collapse_all_clusters")
                                         .on ("click", function(e) {
                                             self.collapse_all_clusters();
                                             d3.event.preventDefault();
                                           });
         
-         if (has_hxb2_links) {
-            cluster_container.append ("li").append ("a")
+         if (self.has_hxb2_links) {
+            cluster_ui_container.append ("li").append ("a")
                                         .text ("Hide clusters linking to HXB2")
                                         .attr ("href", "#")
-                                        .attr ("id", button_bar_ui + "_cluster_hide_hxb2")
                                         .on ("click", function(e) {
                                             d3.select (this).text (self.hide_hxb2 ? "Hide clusters linking to HXB2" :  "Show clusters linking to HXB2");
                                             self.toggle_hxb2 ();
                                             d3.event.preventDefault();
                                           });
-       
          }
+         
+         var button_group  = d3.select ("#" + button_bar_ui + "_button_group");
+         
+         if (! button_group.empty()) {
+            button_group.append ("button").classed ("btn btn-default btn-sm", true).attr ("title", "Expand spacing").on ("click", function (d) {change_spacing (5/4);}).append ("i").classed ("fa fa-arrows", true);
+            button_group.append ("button").classed ("btn btn-default btn-sm", true).attr ("title", "Compress spacing").on ("click", function (d) {change_spacing (4/5);}).append ("i").classed ("fa fa-arrows-alt", true);
+            button_group.append ("button").classed ("btn btn-default btn-sm", true).attr ("title", "Enlarge window").on ("click", function (d) {change_window_size (20, true);}).append ("i").classed ("fa fa-expand", true);
+            button_group.append ("button").classed ("btn btn-default btn-sm", true).attr ("title", "Shrink window").on ("click", function (d) {change_window_size (-20, true);}).append ("i").classed ("fa fa-compress", true);
+         }
+         
 
     }
           
@@ -396,17 +433,19 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
 
   /*------------ Update layout code ---------------*/
   function update_network_string (draw_me) {
-      var clusters_shown = self.clusters.length-draw_me.clusters.length,
-          clusters_removed = self.cluster_sizes.length - self.clusters.length,
-          nodes_removed = graph.Nodes.length - singletons - self.nodes.length;
+      if (network_status_string) {
+          var clusters_shown = self.clusters.length-draw_me.clusters.length,
+              clusters_removed = self.cluster_sizes.length - self.clusters.length,
+              nodes_removed = graph.Nodes.length - singletons - self.nodes.length;
           
-      var s = "Displaying a network on <strong>" + self.nodes.length + "</strong> nodes, <strong>" + self.clusters.length + "</strong> clusters "
-              + (clusters_removed > 0 ? "(an additional " + clusters_removed + " clusters and " + nodes_removed + " nodes have been removed due to network size constraints)" : "") + " and <strong>" 
-              + clusters_shown +"</strong> clusters are expanded. Of <strong>" + self.edges.length + "</strong> edges, <strong>" + draw_me.edges.length + "</strong>, and of  <strong>" + self.nodes.length  + " </strong> nodes,  <strong>" + draw_me.nodes.length + " </strong> are displayed. ";
-      if (singletons > 0) {
-          s += "<strong>" +singletons + "</strong> singleton nodes are not shown. ";
-      }
-      d3.select (network_status_string).html(s);
+          var s = "Displaying a network on <strong>" + self.nodes.length + "</strong> nodes, <strong>" + self.clusters.length + "</strong> clusters"
+                  + (clusters_removed > 0 ? " (an additional " + clusters_removed + " clusters and " + nodes_removed + " nodes have been removed due to network size constraints)" : "") + ". <strong>" 
+                  + clusters_shown +"</strong> clusters are expanded. Of <strong>" + self.edges.length + "</strong> edges, <strong>" + draw_me.edges.length + "</strong>, and of  <strong>" + self.nodes.length  + " </strong> nodes,  <strong>" + draw_me.nodes.length + " </strong> are displayed. ";
+          if (singletons > 0) {
+              s += "<strong>" +singletons + "</strong> singleton nodes are not shown. ";
+          }
+          d3.select (network_status_string).html(s);
+    }
   }
 
   
@@ -484,11 +523,13 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
     if (friction) {
         network_layout.friction (friction);
     }
-    if (warning_string.length) {
-      d3.select (network_warning_tag).text (warning_string).style ("display", "block");
-      warning_string = "";
-    } else {
-      d3.select (network_warning_tag).style ("display", "none");  
+    if (network_warning_tag) {
+        if (warning_string.length) {
+          d3.select (network_warning_tag).text (warning_string).style ("display", "block");
+          warning_string = "";
+        } else {
+          d3.select (network_warning_tag).style ("display", "none");  
+        }
     }
 
     var rendered_nodes, 
@@ -852,8 +893,8 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
   }
 
   function center_cluster_handler (d) {
-    d.x = w/2;
-    d.y = h/2;
+    d.x = self.width/2;
+    d.y = self.height/2;
     update(false, 0.4);
   }
 
