@@ -31,14 +31,17 @@ var setup         = require( '../../config/setup'),
     country_codes = require( '../../config/country_codes.json'),
     subtypes      = require( '../../config/subtypes.json');
 
-var mongoose = require('mongoose'),
-    moment   = require('moment'),
-    check    = require('validator').check,
-    globals  = require( '../../config/globals.js'),
-    sanitize = require('validator').sanitize,
-    fs       = require('fs'),
-    readline = require('readline'),
-    spawn    = require('child_process').spawn;
+var mongoose  = require('mongoose'),
+    moment    = require('moment'),
+    check     = require('validator').check,
+    globals   = require( '../../config/globals.js'),
+    sanitize  = require('validator').sanitize,
+    fs        = require('fs'),
+    readline  = require('readline'),
+    spawn     = require('child_process').spawn,
+    _         = require ('underscore'),
+    hpcsocket = require( __dirname + '/../../lib/hpcsocket.js'),
+    winston   = require ('winston');
 
 var ident = {
     SUBTYPE : "subtype",
@@ -46,44 +49,43 @@ var ident = {
     ID      : "id",
     COUNTRY : "country",
     UNKNOWN : "unknown"
-}
+};
 
 var error_codes = {
     INCORRECT_SPLIT   : 0,
     FAILED_ASSIGNMENT : 1
-}
+};
 
 var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
 function notEmptyValidator (val) {
-  return val != null;
+  return val !== null;
 }
 
 /**
  * HivTrace Schema Type
  * distance threshold : Parameter set by user
  * min_overlap        : Parameter set by user
- * ambiguity_handling : Current status of job
+ * ambiguity_handling : Parameter set by user
  * status             : Current status of job
  * mailaddr           : User's email address
- * graph_dot          : Results
- * cluster_csv        : Results
  * created            : When the document was created
  */
 var HivTrace = new Schema({
     reference               : String,
     distance_threshold      : { type: Number, require: true, min : 0, max: 0.02, default: .015, validate: [notEmptyValidator, 'Distance Threshold is empty'] },
-    min_overlap             : { type: Number, require: true, min : 100, max: 1000, default: 500, validate: [notEmptyValidator, 'Minimum Overlap is empty'] },
-    fraction                : { type: Number, require: true, min : 0, max: 1, default: .015 },
+    min_overlap             : { type: Number, require: true, min : 50, max: 5000, default: 500, validate: [notEmptyValidator, 'Minimum Overlap is empty'] },
+    fraction                : { type: Number, require: true, min : 0, max: 1, default: .05 },
     ambiguity_handling      : { type: String, require: true, validate: [notEmptyValidator, 'Ambiguity Handling is empty']},
     attribute_map           : Object,
     sequence_length         : Number,
     status_stack            : Array,
     status                  : { type: String },
     lanl_compare            : Boolean,
-    filter_edges            : Boolean,
-    strip_drams             : String,
+    filter_edges            : { type: String, enum: ['no','report','remove']},
+    strip_drams             : { type: String, enum: ['no','wheeler','lewis']},
+    reference_strip         : { type: String, enum: ['no','report','remove']},
     torque_id               : String,
     custom_reference        : String,
     mail                    : String,
@@ -91,7 +93,12 @@ var HivTrace = new Schema({
     tn93_results            : String,
     lanl_tn93_results       : String,
     error_message           : String,
-    created                 : {type: Date, default: Date.now}
+    created                 : {type: Date, default: Date.now},
+    results                 : Object
+});
+
+HivTrace.virtual('analysistype').get(function() {
+  return 'hivtrace';
 });
 
 /**
@@ -104,7 +111,7 @@ HivTrace.statics.validators = function () {
   validators.distance_threshold = HivTrace.paths.distance_threshold.options;
   validators.fraction = HivTrace.paths.fraction.options;
   return validators;
-}
+};
 
 /**
  * Validators to be passed to an html template as data attributes for 
@@ -115,10 +122,10 @@ HivTrace.statics.lanl_validators = function () {
   validators.min_overlap = HivTrace.paths.lanl_min_overlap.options;
   validators.distance_threshold = HivTrace.paths.lanl_distance_threshold.options;
   return validators;
-}
+};
 
 function isSubtype(supposed_subtype) {
-  return subtypes.subtypes.indexOf(supposed_subtype) != -1;
+  return subtypes.subtypes.indexOf(supposed_subtype) != -1 ? ident.SUBTYPE : null;
 }
 
 function isDate(supposed_date) {
@@ -134,15 +141,15 @@ function isDate(supposed_date) {
   var parsed_date = moment(supposed_date, valid_date_formats, true);
 
   if(parsed_date.isValid()) {
-    return parsed_date.isBefore(moment());
+    return ident.DATE;
   } else {
-    return false;
+    return null;
   }
 
 }
 
 function isCountry(supposed_country) {
-  return Object.keys(country_codes).indexOf(supposed_country) != -1
+  return Object.keys(country_codes).indexOf(supposed_country) != -1 ? ident.COUNTRY : null;
 }
 
 /**
@@ -152,57 +159,35 @@ function isCountry(supposed_country) {
 HivTrace.statics.createAttributeMap = function (fn, cb) {
   // SDHC|AEH020|222-4kr|20090619
   // Z|JP|K03455|2036|6
+  
+  var attr_validators = [isSubtype, isCountry, isDate, function (x) { return ident.UNKNOWN; }];
 
   var testForAttributes = function (id) {
 
     var attr_map = {};
-    var possible_delimiters = ['_', '|','.',',',';','\t',':'];
-
-    for(var i in possible_delimiters) {
-      cur_dl = possible_delimiters[i];
-      attr_map[cur_dl] = [];
-
-      var arr = id.split(possible_delimiters[i]);
-
-      for (var j in arr) {
-
-        // Find subtype
-        if (isSubtype(arr[j])) {
-          attr_map[cur_dl][j] = ident.SUBTYPE;
-        }
-
-        // check if sampling country
-        else if (isCountry(arr[j])) {
-          attr_map[cur_dl][j] = ident.COUNTRY;
-        }
-
-        else if (isDate(arr[j])) {
-          attr_map[cur_dl][j] = ident.DATE;
-        }
-
-        else {
-          attr_map[cur_dl][j] = ident.UNKNOWN;
-        }
-
-      }
-
+    ['_', '|','.',',',';','\t',':'].forEach (function (cur_dl) {
+          attr_map[cur_dl] = [];
+          id.split(cur_dl).forEach (function (value, index) {
+                attr_validators.some (function (validator) {
+                    var test = validator (value);
+                    if (test) {
+                        attr_map[cur_dl][index] = test;
+                        return true;
+                    }
+                    return false;
+                });
+            });
+ 
       // If there is only one null attribute, we can guess that it's the id
-      var c = 0;
-      var index = -1;
-      for(var j = 0; j < attr_map[cur_dl].length; j++) {
-        if(attr_map[cur_dl][j] == ident.UNKNOWN) {
-          c++;
-          index = j;
-        }
+      var unknowns = attr_map[cur_dl].map (function (v,i) {return v ==  ident.UNKNOWN ? i : -1;}).filter (function (v) { return v>=0;});
+      if (unknowns.length == 1) {
+        attr_map [cur_dl][unknowns[0]] = "id";
       }
-      if (c == 1) {
-       attr_map[cur_dl][index] = "id";
-      }
-    }
-
+    });
+    
     return attr_map;
 
-  }
+  };
 
   var validateAttrMap = function (id, delimiter, attr_map) {
 
@@ -228,33 +213,30 @@ HivTrace.statics.createAttributeMap = function (fn, cb) {
       }
     }
     return true;
-  }
+  };
 
   var checkForConsistency = function (headers, delimiter, attr_map) {
 
-    // Ensure all headers are the same length
-    lengths = {};
+    // Ensure all headers are the same same # of fields as attr_map
+    var field_count = {};
 
     //Sort by file lengths
-    headers.map( function(x) { lengths[x.split(delimiter).length] = lengths[x.split(delimiter).length] + 1 || 1});
+    headers.forEach( function(x) { field_count[x.split(delimiter).length] = field_count[x.split(delimiter).length] + 1 || 1});
+    
+    
+    var lengths = _.keys (field_count),
+        expected_count = _.keys (attr_map).length;
+    
 
-    if(Object.keys(lengths).length > 1) {
-      // Sort and return problematic headers
-      var max = 0;
-      var index = 0;
-      for(var j in lengths) {
-        if(lengths[j] > max) {
-          max = lengths[j];
-          index = j;
-        }
-      }
+    if(lengths.length > 1 && _.sortBy (lengths, function (v) {return +v;}) [0] < expected_count) {
+          
+      var failed_headers = headers.filter(function(x) { return x.split(delimiter).length < expected_count} );
 
-      var failed_headers = headers.filter(function(x) { return x.split(delimiter).length != index} );
       return { 'status': false,
                'info' : {
                  'type': 'parse_fail',
                  'code': error_codes.INCORRECT_SPLIT,
-                 'msg': 'Based on a delimiter of "' + delimiter + '", you have inconsistent formatting. The following headers either have too little or too many fields. Please revise your FASTA file and resubmit once reconciled. Alternatively, you can skip attributes altogether and continue.',
+                 'msg': 'Based on a delimiter of "' + delimiter + '", you have inconsistent formatting. The following headers either have too few or too many fields. Please revise your FASTA file and resubmit once reconciled. Alternatively, you can skip attributes altogether and continue.',
                  'failed_headers': failed_headers
                 }
               };
@@ -263,62 +245,50 @@ HivTrace.statics.createAttributeMap = function (fn, cb) {
 
     // If more than one, return a problem with the problem headers
     //Change attribute map to maybe_ if some fail
-    headers.map(function(x) { validateAttrMap(x, delimiter, attr_map) } );
-
-    //var failed_headers = headers.filter(function(x) { return !validateAttrMap(x, delimiter, attr_map)} );
-    //if(failed_headers.length > 0) {
-    // return { 'status': false,
-    // 'info' : {
-    // 'type': 'parse_fail',
-    // 'code': error_codes.FAILED_ASSIGNMENT,
-    // 'msg': 'Some headers failed parsing',
-    // 'failed_headers': failed_headers
-    // }
-    // };
-    //}
-
+    headers.forEach(function(x) { validateAttrMap(x, delimiter, attr_map) } );
     return {'status': true}
 
-  }
+  };
 
   // explode by all delimiting varieties
   fs.readFile(fn, function (err, data) {
-    var err = false;
 
     if (err) {
       cb({'err': err}, false);
     }
 
-    var data = data.toString();
+    data = data.toString();
     var lines = data.split(/(?:\n|\r\n|\r)/g);
 
     //Collect all headers
-    var headers = lines.filter(function(x) { return x.indexOf('>') != -1 } );
-    var headers = headers.map(function(x) { return x.substring(headers[0].indexOf('>') + 1) } );
+    var headers = lines.filter(function(x) { return x.indexOf('>') != -1; } )
+                       .map (function(x) { return x.substring(x.indexOf('>') + 1) } );
 
-    // Try exploding and testing for attributes
+    // Derive the attribute based on the first sequence
     var attr_map = testForAttributes(headers[0]);
 
-    // TODO: Check for a tie
-    var max = -4;
-    var index = -4;
-    for (c in attr_map) {
-        if(attr_map[c].length > max) {
-          max = attr_map[c].length;
-          index = c;
+    // Find the delimiter which yielded the most fields
+    var best_delimiter = null;
+    
+    var field_count = _.reduce (attr_map, function (memo, value, key) {
+        if (value.length > memo) {
+            best_delimiter = key;
+            return value.length;
         }
-    }
-
-    var is_consistent = checkForConsistency(headers, index, attr_map[index]);
-    if(is_consistent.status != true) {
+        return memo;
+        
+    }, -1);
+    
+    var is_consistent = checkForConsistency(headers, best_delimiter, attr_map[best_delimiter]);
+    if(! is_consistent.status) {
       err = is_consistent.info;
     }
 
-    cb(err, {"headers": headers, "map" : attr_map[index], "delimiter": index});
+    cb(err, {"headers": headers, "map" : attr_map[best_delimiter], "delimiter": best_delimiter});
 
   });
 
-}
+};
 
 HivTrace.statics.parseHeaderFromMap = function (header, attr_map) {
   parsed = {};
@@ -331,7 +301,8 @@ HivTrace.statics.parseHeaderFromMap = function (header, attr_map) {
       var new_key = attr_map.map[i] + c;
 
       while(parsed[new_key]) {
-        new_key = attr_map.map[i] + ++c;
+        ++c;
+        new_key = attr_map.map[i] + c;
       }
 
       parsed[new_key] = arr[i];
@@ -339,39 +310,39 @@ HivTrace.statics.parseHeaderFromMap = function (header, attr_map) {
     }
   }
   return parsed;
-}
+};
 
 
 HivTrace.virtual('headers').get(function () {
 
   var data = fs.readFileSync(this.filepath);
-  var data = data.toString();
+  data = data.toString();
   var lines = data.split(/(?:\n|\r\n|\r)/g);
 
   //Collect all headers
-  var headers = lines.filter(function(x) { return x.indexOf('>') != -1 } );
-  var headers = headers.map(function(x) { return x.substring(headers[0].indexOf('>') + 1) } );
+  var headers = lines.filter(function(x) { return x.indexOf('>') != -1; } );
+  headers = headers.map(function(x) { return x.substring(headers[0].indexOf('>') + 1); });
   return headers;
 
 });
 
 HivTrace.virtual('valid_statuses').get(function () {
-  return  ['In Queue', 'Aligning', 'Converting to FASTA', 
-           'TN93 Analysis', 'HIV Network Analysis', 'Completed'];
+  return  ['In Queue', 'Aligning', 'BAM to FASTA conversion', 
+           'Computing pairwise TN93 distances', 'Inferring, filtering, and analyzing molecular transmission network', 'Completed'];
 });
 
 HivTrace.virtual('valid_lanl_statuses').get(function () {
-  return ['In Queue', 'Aligning', 'Converting to FASTA', 
-          'TN93 Analysis', 'HIV Network Analysis', 
-          'Public Database TN93 Analysis', 
-          'Public Database HIV Network Analysis', 'Completed'];
+  return ['In Queue', 'Aligning', 'BAM to FASTA conversion', 
+          'Computing pairwise TN93 distances', 'Inferring, filtering, and analyzing molecular transmission network',
+          'Computing pairwise TN93 distances against a public database', 
+          'Inferring connections to sequences in a public database', 'Completed'];
 });
 
 HivTrace.virtual('off_kilter_statuses').get(function () {
-  return ['In Queue', 'Aligning', 'Converting to FASTA', 
-          'TN93 Analysis', 'HIV Network Analysis', 
-          'Public Database TN93 Analysis', 
-          'Public Database HIV Network Analysis', 'Completed'];
+  return ['In Queue', 'Aligning', 'BAM to FASTA conversion', 
+          'Computing pairwise TN93 distances', 'Inferring, filtering, and analyzing molecular transmission network', 
+          'Computing pairwise TN93 distances against a public database', 
+          'Inferring connections to sequences in a public database', 'Completed'];
 });
 
 /**
@@ -389,24 +360,10 @@ HivTrace.virtual('filepath').get(function () {
 });
 
 /**
- * TODO: Change storage to mongodb instead of file
- */
-HivTrace.virtual('trace_results').get(function () {
-  return '/uploads/hivtrace/' + this._id + '_user.trace.json';
-});
-
-/**
- * TODO: Change storage to mongodb instead of file
- */
-HivTrace.virtual('lanl_trace_results').get(function () {
-  return '/uploads/hivtrace/' + this._id + '_lanl_user.trace.json';
-});
-
-/**
  * Index of status
  */
 HivTrace.virtual('status_index').get(function () {
-  if(this.status != undefined) {
+  if(this.status !== undefined) {
     return this.status_stack.indexOf(this.status);
   } else {
     return -1;
@@ -434,6 +391,16 @@ HivTrace.virtual('url').get(function () {
   return 'http://' + setup.host + '/hivtrace/' + this._id;
 });
 
+HivTrace.statics.submitJob = function (result, cb) {
+
+  winston.info('submitting ' + result.analysistype + ' : ' + result._id + ' to cluster');
+  var jobproxy = new hpcsocket.HPCSocket({'filepath'    : result.filepath, 
+                                          'msa'         : result.msa,
+                                          'analysis'    : result,
+                                          'status_stack': result.status_stack,
+                                          'type'        : result.analysistype}, 'spawn', cb);
+
+};
 
 module.exports = mongoose.model('HivTrace', HivTrace);
 

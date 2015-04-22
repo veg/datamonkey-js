@@ -42,14 +42,14 @@ var mongoose = require('mongoose'),
 
 exports.createForm = function(req, res) {
   res.render('busted/upload_msa.ejs');
-}
+};
 
 exports.uploadFile = function(req, res) {
 
   var data = req.body;
   var fn = req.files.files.path;
 
-  var busted = new Busted;
+  var busted = new Busted();
   var postdata = req.body;
 
   var msa = new Msa();
@@ -82,7 +82,7 @@ exports.uploadFile = function(req, res) {
     var sequences  = result.SEQUENCES;
     msa.sequence_info = [];
 
-    for (i in sequences) {
+    for (var i in sequences) {
       var sequences_i = new Sequences(sequences[i]);
       msa.sequence_info.push(sequences_i);
     }
@@ -115,7 +115,7 @@ exports.uploadFile = function(req, res) {
 
 
   });
-}
+};
 
 exports.selectForeground = function(req, res) {
 
@@ -131,8 +131,7 @@ exports.selectForeground = function(req, res) {
         }
       });
   });
-}
-
+};
 
 /**
  * Handles a job request by the user
@@ -169,23 +168,19 @@ exports.invokeBusted = function(req, res) {
 
         var connect_callback = function(data) {
           if(data == 'connected') {
-            // TODO: why is this empty?
+            //TODO
             logger.log('connected');
           }
-        }
+        };
 
         res.json(200,  {'busted' : result});
 
-        // Send the MSA and analysis type
-        var jobproxy = new hpcsocket.HPCSocket({'filepath'    : result.filepath, 
-                                                'msa'         : result.msa,
-                                                'analysis'    : result,
-                                                'status_stack': result.status_stack,
-                                                'type'        : 'busted'}, connect_callback);
+        Busted.submitJob(result, connect_callback);
+
       }
     });
   });
-}
+};
 
 /**
  * Displays id page for analysis
@@ -219,7 +214,7 @@ exports.getBusted = function(req, res) {
                                                });
     }
   });
-}
+};
 
 /**
  * Displays id page for analysis
@@ -239,5 +234,9 @@ exports.getBustedResults = function(req, res) {
       res.json(200, { results : busted.results });
     }
   });
-}
+};
+
+exports.resubscribePendingJobs = function(req, res) {
+  Busted.subscribePendingJobs();
+};
 

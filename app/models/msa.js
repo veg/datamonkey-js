@@ -34,6 +34,7 @@ var mongoose    = require('mongoose'),
     spawn       = require('child_process').spawn,
     sanitize    = require('validator').sanitize,
     fs          = require('fs'),
+    winston     = require('winston'),
     seqio       = require( '../../lib/biohelpers/sequenceio.js'),
     country_codes = require( '../../config/country_codes.json'),
     subtypes      = require( '../../config/subtypes.json'),
@@ -46,15 +47,15 @@ var ident = {
     ID      : "id",
     COUNTRY : "country",
     UNKNOWN : "unknown"
-}
+};
 
 var error_codes = {
     INCORRECT_SPLIT   : 0,
     FAILED_ASSIGNMENT : 1
-}
+};
 
 function notEmptyValidator (val) {
-  return val != null;
+  return val !== null;
 }
 
 var Schema = mongoose.Schema,
@@ -157,37 +158,6 @@ MsaModel.schema.path('mailaddr').validate(function (value) {
 }, 'Invalid email');
 
 
-Msa.methods.AnalysisCount = function (cb) {
-
-  var type_counts = {};
-  var c = 0;
-
-  var count_increment = function(err, analysis) {
-
-    c += 1;
-    if(analysis != null) {
-      type_counts[analysis.type] = analysis.id || 0; 
-    }
-
-    if(c == Object.keys(globals.types).length) {
-      cb(type_counts);
-    }
-
-  }
-
-  //TODO: Change to get children
-  for(var t in globals.types) {
-
-    Analysis = mongoose.model(t.capitalize());
-    //Get count of this analysis
-    Analysis 
-    .findOne({ upload_id: this._id })
-    .sort('-id')
-    .exec(count_increment)
-  }
-
-};
-
 Msa.methods.aminoAcidTranslation = function (cb) {
 
   var self = this;
@@ -204,9 +174,11 @@ Msa.methods.aminoAcidTranslation = function (cb) {
 
 Msa.methods.dataReader = function (file, cb) {
 
+  var hyphy_process = globals.hyphy +  ' ' + __dirname + "/../../lib/bfs/datareader.bf";
+  winston.info(globals.hyphy +  ' ' + __dirname + '/../../lib/bfs/datareader.bf' + ' : ' + 'spawning process');
+
   var hyphy =  spawn(globals.hyphy,
                     [__dirname + "/../../lib/bfs/datareader.bf"]);
-
 
   var result = '';
 
@@ -222,7 +194,7 @@ Msa.methods.dataReader = function (file, cb) {
       cb("An unexpected error occured when parsing the sequence alignment! Here is the full traceback : " + result, {});
     }
 
-    if(results != undefined) {
+    if(results !== undefined) {
       if ("error" in results) {
         cb(results.error, '');
       } else {
@@ -234,12 +206,9 @@ Msa.methods.dataReader = function (file, cb) {
 
 
   hyphy.stdin.write(file + "\n");
-
-  if(this.datatype == 1) {
-    hyphy.stdin.write("-1\n");
-  } else {
-    hyphy.stdin.write(this.datatype.toString());
-  }
+  winston.info(hyphy_process + ' : ' + 'file : ' + file) 
+  hyphy.stdin.write(this.gencodeid.toString());
+  winston.info(hyphy_process + ' : ' + 'gencodeid : ' + this.gencodeid) 
 
   hyphy.stdin.end();
 
@@ -270,7 +239,7 @@ function isDate(supposed_date) {
 }
 
 function isCountry(supposed_country) {
-  return Object.keys(country_codes).indexOf(supposed_country) != -1
+  return Object.keys(country_codes).indexOf(supposed_country) != -1;
 }
 
 /**
@@ -331,7 +300,7 @@ Msa.methods.createAttributeMap = function (cb) {
 
     return attr_map;
 
-  }
+  };
 
   var validateAttrMap = function (id, delimiter, attr_map) {
 
@@ -357,7 +326,7 @@ Msa.methods.createAttributeMap = function (cb) {
       }
     }
     return true;
-  }
+  };
 
   var checkForConsistency = function (headers, delimiter, attr_map) {
 
@@ -365,9 +334,12 @@ Msa.methods.createAttributeMap = function (cb) {
     lengths = {};
 
     //Sort by file lengths
-    headers.map( function(x) { lengths[x.split(delimiter).length] = lengths[x.split(delimiter).length] + 1 || 1});
+    headers.map( function(x) { 
+      lengths[x.split(delimiter).length] = lengths[x.split(delimiter).length] + 1 || 1;
+    });
 
     if(Object.keys(lengths).length > 1) {
+
       // Sort and return problematic headers
       var max   = 0;
       var index = 0;
@@ -378,7 +350,10 @@ Msa.methods.createAttributeMap = function (cb) {
         }
       }
 
-      var failed_headers = headers.filter(function(x) { return x.split(delimiter).length != index} );
+      var failed_headers = headers.filter(function(x) { 
+        return x.split(delimiter).length != index;
+      });
+
       return { 'status': false,
                'info'  : {
                  'type': 'parse_fail', 
@@ -392,36 +367,28 @@ Msa.methods.createAttributeMap = function (cb) {
 
     // If more than one, return a problem with the problem headers
     //Change attribute map to maybe_ if some fail
-    headers.map(function(x) { validateAttrMap(x, delimiter, attr_map) } );
+    headers.map(function(x) { 
+      validateAttrMap(x, delimiter, attr_map);
+    });
 
-    //var failed_headers = headers.filter(function(x) { return !validateAttrMap(x, delimiter, attr_map)} );
-    //if(failed_headers.length > 0) {
-    //  return { 'status': false,
-    //           'info'  : {
-    //             'type': 'parse_fail', 
-    //             'code': error_codes.FAILED_ASSIGNMENT, 
-    //             'msg': 'Some headers failed parsing', 
-    //             'failed_headers': failed_headers
-    //            }
-    //          };
-    //}
+    return {'status': true};
 
-    return {'status': true}
-
-  }
+  };
 
   // Reading a file is no longer necessary
   // Use sequence info
   var err = false;
 
-  var headers = this.sequence_info.map(function(d) { return d.name }) 
+  var headers = this.sequence_info.map(function(d) { 
+    return d.name;
+  });
 
   // Try exploding and testing for attributes
   var attr_map = testForAttributes(headers[0]);
 
   var max   = -4;
   var index = -4;
-  for (c in attr_map) {
+  for (var c in attr_map) {
       if(attr_map[c].length > max) {
         max = attr_map[c].length;
         index = c;
@@ -429,14 +396,14 @@ Msa.methods.createAttributeMap = function (cb) {
   }
 
   var is_consistent = checkForConsistency(headers, index, attr_map[index]);
-  if(is_consistent.status != true) {
+  if(is_consistent.status !== true) {
     err = is_consistent.info;
   }
 
   cb(err, {"headers": headers, "map" : attr_map[index], "delimiter": index});
 
 
-}
+};
 
 Msa.statics.parseHeaderFromMap = function (header, attr_map) {
   parsed = {};
@@ -449,7 +416,8 @@ Msa.statics.parseHeaderFromMap = function (header, attr_map) {
       var new_key = attr_map.map[i] + c;
 
       while(parsed[new_key]) {
-        new_key = attr_map.map[i] + ++c;
+        ++c;
+        new_key = attr_map.map[i] + c;
       }
 
       parsed[new_key] = arr[i];
@@ -457,7 +425,7 @@ Msa.statics.parseHeaderFromMap = function (header, attr_map) {
     }
   }
   return parsed;
-}
+};
 
 /**
  * Ensure that the file is in valid FASTA format
@@ -468,28 +436,30 @@ Msa.statics.validateFasta = function (fn, cb) {
   seqio.parseFile(fn, function(err, result) {
 
     if(err) {
-      cb(err, result) 
+      cb(err, result);
       return;
     }
 
     if(result.length <= 1) {
-      cb({'msg': '1 sequences or less found'}, false)
+      cb({'msg': '1 sequences or less found'}, false);
       return;
     }
 
     // Check that all sequences are the same length
-    var reference_length = result[0].seq.length
-    var all_the_same = result.every(function(d) {return d.seq.length == reference_length}); 
+    var reference_length = result[0].seq.length;
+    var all_the_same = result.every(function(d) {
+      return d.seq.length == reference_length;
+    }); 
 
     if(!all_the_same) {
-      cb({'msg': 'Sequence lengths do not all match'}, false)
+      cb({'msg': 'Sequence lengths do not all match'}, false);
     }
 
-    cb('', true)
+    cb('', true);
 
   });
 
-}
+};
 
 Msa.statics.parseFile = function(fn, datatype, gencodeid, cb) {
 
@@ -502,7 +472,7 @@ Msa.statics.parseFile = function(fn, datatype, gencodeid, cb) {
 
     if(err) {
       logger.error(err);
-      cb(err, null)
+      cb(err, null);
       return;
     }
 
@@ -521,7 +491,7 @@ Msa.statics.parseFile = function(fn, datatype, gencodeid, cb) {
     msa.sequence_info = [];
 
     var Sequences = mongoose.model('Sequences', Sequences);
-    for (i in sequences) {
+    for (var i in sequences) {
       var sequences_i = new Sequences(sequences[i]);
       msa.sequence_info.push(sequences_i);
     }
@@ -530,11 +500,10 @@ Msa.statics.parseFile = function(fn, datatype, gencodeid, cb) {
     var PartitionInfo = mongoose.model('PartitionInfo', PartitionInfo);
     var partition_info = new PartitionInfo(fpi);
     msa.partition_info = partition_info;
-    cb(null, msa)
-
+    cb(null, msa);
   });
 
-}
+};
 
 Msa.statics.scrubUserTree = function(fn, cb) {
 
@@ -554,7 +523,7 @@ Msa.statics.scrubUserTree = function(fn, cb) {
 
   });
 
-}
+};
 
 
 
@@ -563,6 +532,6 @@ exports = {
   Msa : mongoose.model('Msa', Msa),
   PartitionInfo :  mongoose.model('PartitionInfo', PartitionInfo),
   Sequences :  mongoose.model('Sequences', Sequences)
-}
+};
 
 module.exports = exports;

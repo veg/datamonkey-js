@@ -22,7 +22,7 @@
       
 
     <div class = "row">
-        <div class='col-lg-9' data-url=<%= hivtrace.trace_results %>>
+        <div class='col-lg-9'>
             <div class="nav-trace">
                 <div class="input-group input-group-sm" id = 'network_ui_bar'>
 
@@ -90,7 +90,7 @@
       </div>
 
        <div class = "row">
-        <div class='col-lg-9' data-url=<%= hivtrace.lanl_trace_results %>>
+        <div class='col-lg-9'>
             <div class="row">
                 <div class="input-group input-group-sm" id = 'lanl_network_ui_bar'>
                       <span class="input-group-btn">
@@ -144,4 +144,9 @@
     <% } %>
   </div>
 </div>
-<div id=""></div>
+
+<script src="/assets/lib/datamonkey/hivtrace/hivtrace.js"></script>
+<script src="/assets/lib/datamonkey/hivtrace/misc.js"></script>
+<script src="/assets/lib/datamonkey/hivtrace/histogram.js"></script>
+<script src="/assets/lib/datamonkey/hivtrace/clusternetwork.js"></script>
+<script src="/assets/js/hivtrace/results.js"></script>

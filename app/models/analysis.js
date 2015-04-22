@@ -28,11 +28,14 @@
 */
 
 
-var mongoose = require('mongoose'),
-    globals  = require( '../../config/globals.js'),
-    moment   = require('moment'),
-    Msa       = require(__dirname + '/msa');
-    extend   = require('mongoose-schema-extend');
+var mongoose  = require('mongoose'),
+    globals   = require( '../../config/globals.js'),
+    moment    = require('moment'),
+    _         = require('underscore'),
+    winston   = require('winston'),
+    hpcsocket = require( __dirname + '/../../lib/hpcsocket.js'),
+    Msa       = require(__dirname + '/msa'),
+    extend    = require('mongoose-schema-extend');
 
 
 var Schema = mongoose.Schema,
@@ -61,14 +64,43 @@ AnalysisSchema.virtual('since_created').get(function () {
     return time.fromNow();
 });
 
+/**
+ * Filename of document's file upload
+ */
+AnalysisSchema.virtual('valid_statuses').get(function () {
+  return ['queue', 
+          'running',
+          'completed'];
+});
 
-AnalysisSchema.statics.jobs = function (cb) {
-  this.find({ $or: [ { "status": globals.running }, 
-                     { "status": globals.queue} ] })
+AnalysisSchema.statics.pendingJobs = function (cb) {
+  this.find({ $or: [ { "status": "queue" }, 
+                     { "status": "running"} ] })
                         .populate('upload_id')
                         .exec(function(err, items) {
-                          cb(err, items)
+                          cb(err, items);
                          });
+};
+
+AnalysisSchema.statics.submitJob = function (result, cb) {
+
+  winston.info('submitting ' + result.analysistype + ' : ' + result._id + ' to cluster');
+  var jobproxy = new hpcsocket.HPCSocket({'filepath'    : result.filepath, 
+                                          'msa'         : result.msa,
+                                          'analysis'    : result,
+                                          'status_stack': result.status_stack,
+                                          'type'        : result.analysistype}, 'spawn', cb);
+
+};
+
+
+
+AnalysisSchema.statics.subscribePendingJobs = function () {
+  this.pendingJobs(function(err, items) {
+    _.each(items, function(item) { 
+      item.resubscribe();
+    });
+  });
 };
 
 AnalysisSchema.statics.usageStatistics = function (cb) {
@@ -78,7 +110,7 @@ AnalysisSchema.statics.usageStatistics = function (cb) {
         .limit(1000)
         .populate('upload_id', 'sequences sites')        
         .exec( function(err, items) {
-              cb(err, items)
+              cb(err, items);
              });
 
 };
@@ -94,8 +126,22 @@ AnalysisSchema.virtual('timestamp').get(function () {
  * Index of status
  */
 AnalysisSchema.virtual('status_index').get(function () {
-  return this.status_stack.map(function(d) {return d.toLowerCase()}).indexOf(this.status);
+
+  return this.status_stack.map(function(d) {
+    return d.toLowerCase();
+  }).indexOf(this.status);
+
 });
+
+AnalysisSchema.methods.resubscribe = function () {
+
+  var jobproxy = new hpcsocket.HPCSocket({'filepath'    : this.filepath, 
+                                          'msa'         : this.msa,
+                                          'analysis'    : this,
+                                          'status_stack': this.status_stack,
+                                          'type'        : this.analysistype}, 'resubscribe');
+
+}
 
 
 module.exports = AnalysisSchema;

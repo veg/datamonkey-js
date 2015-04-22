@@ -28,7 +28,8 @@
 */
 
 var mongoose = require('mongoose'),
-    extend = require('mongoose-schema-extend'),
+    extend  = require('mongoose-schema-extend'),
+    winston = require('winston'),
     Msa = require(__dirname + '/msa');
 
 var AnalysisSchema = require(__dirname + '/analysis');
@@ -39,11 +40,13 @@ var Busted = AnalysisSchema.extend({
   results               : Object
 });
 
+Busted.virtual('analysistype').get(function() {
+  return 'busted';
+});
 
 Busted.virtual('pmid').get(function() {
   return 'NA';
 });
-
 
 /**
  * Filename of document's file upload

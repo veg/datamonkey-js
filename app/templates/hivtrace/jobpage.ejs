@@ -2,36 +2,25 @@
 <div class="container">
   <h1 class="page-header">HIV TRACE</h1>
   <div id="hiv-cluster-report" data-hivtraceid="<%= hivtrace._id %>" data-socket-address="<%= socket_addr %>">
-  <% if (hivtrace.status == 'Aborted') { %>
+  <% if (hivtrace.status == 'aborted') { %>
     <div class="alert alert-danger">There was an error! Please try again. <code><%= hivtrace.error_message %></code></div>
-  <% } else if (hivtrace.status != 'Completed') { %>  
+  <% } else if (hivtrace.status != 'completed') { %>  
       <h2>Job in Progress</h2>
-      <div class="progress progress-striped active">
-        <div class="progress-bar" role="progressbar" aria-valuenow="<%= hivtrace.percentage_complete %>" aria-valuemin="1" aria-valuemax="100" style="width: <%= hivtrace.percentage_complete %>">
-          <span class="sr-only"><%= hivtrace.percentage_complete %> Complete</span> 
-        </div>
-      </div>  
       <div id="job-timer" data-created="<%= hivtrace.timestamp %>" style="float:right"><h3>Runtime <span class="time">00:00:00</span><h3></div>
+     
       <div style="clear:both"></div>
 
       <% for(var s = 0; s < hivtrace.status_stack.length; s++) { %>
-        <div class="job-status panel 
+        <div class="hivtrace-status alert 
         <%if (hivtrace.status_index < s) { %>  
-        panel-info
+        alert-info
         <% } else if (hivtrace.status_index == s) { %>  
-        panel-warning
+        alert-warning
         <% } else { %>
-        panel-success
+        alert-success
         <% } %>
-        " data-index=<%= s %>>
-        <div class="job-panel-heading panel-heading">
-          <%= hivtrace.status_stack[s] %>
-        </div>
-        <div class="panel-body">
-          <%if (s == 1 && hivtrace.last_status_msg) { %>
-
-          <% } %>
-        </div>
+        " data-index=<%= s %> role="alert">
+        <%= hivtrace.status_stack[s] %>
         </div>
       <% } %>
 
@@ -42,12 +31,7 @@
 </div>
 <%- include ../includes/footer.ejs %>
 
-<script src="https://cdn.socket.io/socket.io-1.0.6.js"></script>
-<script src="http://d3js.org/d3.v3.js"></script>
+<script src="//cdn.socket.io/socket.io-1.0.6.js"></script>
+<script src="//d3js.org/d3.v3.js"></script>
 <script src="/assets/js/hivtrace/network.js"></script>
 
-<script src="/assets/lib/datamonkey/hivtrace/hivtrace.js"></script>
-<script src="/assets/lib/datamonkey/hivtrace/misc.js"></script>
-<script src="/assets/lib/datamonkey/hivtrace/histogram.js"></script>
-<script src="/assets/lib/datamonkey/hivtrace/clusternetwork.js"></script>
-<script src="/assets/js/hivtrace/results.js"></script>
