@@ -28,6 +28,16 @@ function setupJob() {
 
   //localStorage.debug = '*';
 
+  _.templateSettings = {
+    evaluate:    /\{\%(.+?)\%\}/g,
+    interpolate: /\{\{(.+?)\}\}/g,
+    variable    : "rc"
+  };
+
+  var status_update_template = _.template(
+    $("script.hivtrace-status").html()
+  );
+
   var hivtraceid = $('#hiv-cluster-report').data('hivtraceid')
   var socket_address = $('#hiv-cluster-report').data('socket-address')
   var socket = io.connect(socket_address, {
@@ -38,14 +48,19 @@ function setupJob() {
 
   var changeStatus = function (data) {
 
-    //data is index and message
-    $('.hivtrace-status').each(function(index) {
-      if($(this).data('index') < data.index ) {
-        $(this).attr('class', 'hivtrace-status alert alert-success')
-      } else if ($(this).data("index") == data.index) {
-        $(this).attr('class', 'hivtrace-status alert alert-warning')
-      }
-    });
+    var statuses = {
+      1 : 'info',
+      2 : 'warning',
+      3 : 'success'
+    }
+
+    var status_update = { statuses : statuses, elems : data };
+
+    // data is index and message
+    // If the status update contains a msg, then replace template
+    $("#status-update-container").empty();
+    var status_update_html = status_update_template(status_update);
+    $("#status-update-container").append(status_update_html);
 
   }
 
@@ -69,8 +84,7 @@ function setupJob() {
 
   // Status update
   socket.on('status update', function (data) {
-    console.log (data);
-    changeStatus(data);
+    changeStatus(data.msg);
   });
 
   // Status update
@@ -100,6 +114,13 @@ function setupJob() {
 
       socket.disconnect();
   });
+
+  // get last status update
+  try {
+    data = JSON.parse($("#last-status-update").text())
+    changeStatus(data);
+  } catch (e) {}
+
 }
 
 

@@ -215,7 +215,10 @@ exports.jobPage = function (req, res) {
           res.json(200, hivtrace);
         },
         html: function(){
-          res.render('hivtrace/jobpage.ejs', {hivtrace : hivtrace, socket_addr: 'http://' + setup.host + ':' + setup.socket_port });
+          res.render('hivtrace/jobpage.ejs', {
+                                              hivtrace : hivtrace, 
+                                              last_status_msg : hivtrace.last_status_msg,
+                                              socket_addr: 'http://' + setup.host + ':' + setup.socket_port });
         }
       });
     }

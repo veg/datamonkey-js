@@ -82,6 +82,7 @@ var HivTrace = new Schema({
     sequence_length         : Number,
     status_stack            : Array,
     status                  : { type: String },
+    last_status_msg         : { type: String },
     lanl_compare            : Boolean,
     filter_edges            : { type: String, enum: ['no','report','remove']},
     strip_drams             : { type: String, enum: ['no','wheeler','lewis']},
@@ -327,15 +328,15 @@ HivTrace.virtual('headers').get(function () {
 });
 
 HivTrace.virtual('valid_statuses').get(function () {
-  return  ['In Queue', 'Aligning', 'BAM to FASTA conversion', 
-           'Computing pairwise TN93 distances', 'Inferring, filtering, and analyzing molecular transmission network', 'Completed'];
+  return  ['Aligning', 'BAM to FASTA conversion', 
+           'Computing pairwise TN93 distances', 'Inferring, filtering, and analyzing molecular transmission network'];
 });
 
 HivTrace.virtual('valid_lanl_statuses').get(function () {
-  return ['In Queue', 'Aligning', 'BAM to FASTA conversion', 
+  return ['Aligning', 'BAM to FASTA conversion', 
           'Computing pairwise TN93 distances', 'Inferring, filtering, and analyzing molecular transmission network',
           'Computing pairwise TN93 distances against a public database', 
-          'Inferring connections to sequences in a public database', 'Completed'];
+          'Inferring connections to sequences in a public database'];
 });
 
 HivTrace.virtual('off_kilter_statuses').get(function () {
