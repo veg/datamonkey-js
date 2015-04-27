@@ -130,7 +130,8 @@ function isDate(supposed_date) {
                         "DD-YY",
                         "DD-MM-YYYY",
                         "YYYY",
-                        "YYYYMMDD"
+                        "YYYYMMDD",
+                        "MMDDYYYY"
                         ];
 
   var parsed_date = moment(supposed_date, valid_date_formats, true);
@@ -175,7 +176,7 @@ HivTrace.statics.createAttributeMap = function (fn, cb) {
  
       // If there is only one null attribute, we can guess that it's the id
       var unknowns = attr_map[cur_dl].map (function (v,i) {return v ==  ident.UNKNOWN ? i : -1;}).filter (function (v) { return v>=0;});
-      if (unknowns.length == 1) {
+      if (unknowns.length) {
         attr_map [cur_dl][unknowns[0]] = "id";
       }
     });

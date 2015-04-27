@@ -3,77 +3,92 @@
 <div class="tabbable">
 
   <ul class="nav nav-tabs" id = "top_level_tab_container">
-    <li class="active"><a href="#trace-results" data-toggle="tab">Network</a></li>
+    <li class="active" id = "main-tab"><a href="#trace-results" data-toggle="tab">Network</a></li>
     <%if (hivtrace.lanl_compare == true) { %>
-    <li class=""><a href="#lanl-trace-results" data-toggle="tab">Network + DB</a></li>
+    <li><a href="#lanl-trace-results" data-toggle="tab">Network + DB</a></li>
     <% } %>
+    <li class = 'disabled' id = "graph-tab"><a href="#trace-graph" data-toggle="tab">Graph</a></li>
+    <li class = 'disabled' id = "clusters-tab"><a href="#trace-clusters" data-toggle="tab">Clusters</a></li>
+    <li class = 'disabled' id = "nodes-tab"><a href="#trace-nodes" data-toggle="tab">Nodes</a></li>
+    <li class = 'disabled'><a href="#trace-attributes" data-toggle="tab">Attributes</a></li>
+    <li class = 'disabled'><a href="#trace-settings" data-toggle="tab">Settings</a></li>
   </ul>
 
   <div class="tab-content">
     <div id="trace-results" class="tab-pane active">
-
-      <div class="row" style = "margin-top: 10px; margin-bottom: 10 px;">
-        <div class="col-lg-12">
-            <div class="alert alert-info" id='main-warning' style='display:none;'>
+        <!-- Warning bar -->
+        <div class="row" style = "margin-top: 10px; margin-bottom: 10 px;">
+            <div class="col-lg-12">
+                <div class="alert alert-info" id='main-warning' style='display:none;'></div>
             </div>
         </div>
-      </div>
+       
+        <!-- Main network display -->
+        <div class = "row">
+            <div class='col-lg-12' data-url=<%= hivtrace.trace_results %>>
 
-      
-
-    <div class = "row">
-        <div class='col-lg-9' data-url=<%= hivtrace.trace_results %>>
-            <div class="nav-trace">
-                <div class="input-group input-group-sm" id = 'network_ui_bar'>
-                    
-                    <div class="btn-group" id = 'network_ui_bar_button_group'>
-                        
-                    </div>
+                <!-- UI Bar -->
+                <div class="nav-trace">
+                    <div class="input-group input-group-sm" id = 'network_ui_bar'>
+                        <div class="input-group-btn" id = 'network_ui_bar_button_group'></div>
  
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id = "network_ui_bar_cluster_operations_button">Clusters <span class="caret"></span></button>
-                        <ul class="dropdown-menu" role="menu" id = 'network_ui_bar_cluster_operations_container'></ul>
-                    </span>
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id = "network_ui_bar_cluster_operations_button">Clusters <span class="caret"></span></button>
+                            <ul class="dropdown-menu" role="menu" id = 'network_ui_bar_cluster_operations_container'></ul>
+                        </span>
                     
-                    <div class="input-group-btn">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id = "network_ui_bar_attribute_label">Attribute <span class="caret"></span></button>
-                        <ul class="dropdown-menu" role="menu" id = 'network_ui_bar_attributes'></ul>
-                   </div>
+                        <div class="input-group-btn">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id = "network_ui_bar_attribute_label">Attribute <span class="caret"></span></button>
+                            <ul class="dropdown-menu" role="menu" id = 'network_ui_bar_attributes'></ul>
+                        </div>
                           
-                    <input type="text" class="form-control" placeholder = "search" id = 'network_ui_bar_search'>
-                </div>
-            </div>
-            <div id='network_tag'>
-                <div class="my_progress">
-                      <div class="progress-bar progress-bar-striped active"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                        Loading the network...
+                        <input type="text" class="form-control" placeholder = "Search for nodes" id = 'network_ui_bar_filter'/>
                     </div>
                 </div>
-            </div>
-        </div>
-        
-        
-        <div class='col-lg-3'>
-            <div class = 'row' id = 'histogram_tag' style = 'margin-left: 5px'> 
-                <p id='histogram_label' class="text-left text-info small"></p><br>
-             </div>
+                
+                 <!-- Main SVG -->
+                 <div id='network_tag'>
+                    <div class="my_progress">
+                          <div class="progress-bar progress-bar-striped active"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                            Loading the network...
+                        </div>
+                    </div>
+                </div>
+                
+            </div>  
+        </div>  
                  
-            <div id='csvexport' class='row' style = 'margin-left: 5px'>
+        <!-- Main network tagline -->
+        <div class="row">
+            <div class='col-lg-12'>
+              <p id='network_status_string' class='text-info'></p>
             </div>
-     
-            <div id='network_ui_bar_aux_svg_holder' class='row style = 'margin-left: 5px''>
-            </div>
-      </div>     
-            
-     </div>
-     
-      <div class="row">
-        <div class='col-lg-9'>
-          <p id='network_status_string' class='text-info'></p>
-        </div>
-      </div>
+      </div> 
     </div>
+  
+    <div id="trace-graph" class="tab-pane">
+        <div class = 'row'>
+             <div class='col-lg-6'>
+                 <p class = "lead"> Graph Statistics </p>
+                 <table class = "table table-striped table-condensed" id = "graph_summary_table">
+                 </table>
+            </div>  
+                    
+             <div class='col-lg-6'>
+                  <p id='histogram_label' class="lead"></p>
+  
+                  <div class = 'row' id = 'histogram_tag' style = 'margin-left: 5px'> 
+                  </div>
+            
+ 
+                <div id='network_ui_bar_aux_svg_holder' class='row style = 'margin-left: 5px'>
+                </div>
+           </div>  
 
+
+        </div>   
+    </div>
+  
 <%if (hivtrace.lanl_compare == true) { %>
     <div id="lanl-trace-results" class="tab-pane">
     
@@ -116,9 +131,6 @@
             <div class = 'row' id = 'lanl-histogram_tag'> 
                 <p id='lanl-histogram_label' class="text-left text-info small"></p><br>
              </div>
-            
-            <div id='lanl-csvexport' class='row'>
-            </div>
                  
          </div>     
             
@@ -134,8 +146,32 @@
 
      
     <% } %>
+    <div id="trace-clusters" class="tab-pane">
+        <div class = 'row'>
+             <div class='col-lg-12'>
+                 <span class = "pull-right" id = "cluster-table-export"> </span>
+                 <p class = "lead"> Clusters (connected components) </p>
+                 <table class = "table table-striped table-condensed table-hover" id = "cluster_table">
+                 </table>
+            </div>  
+        </div>   
+    </div>
+
+    <div id="trace-nodes" class="tab-pane">
+        <div class = 'row'>
+             <div class='col-lg-12'>
+                 <span class = "pull-right" id = "node-table-export"> </span>
+                 <p class = "lead"> Nodes </p>
+                 <table class = "table table-striped table-condensed table-hover" id = "node_table">
+                 </table>
+            </div>  
+        </div>   
+    </div>
+
+
   </div>
 </div>
+
 
 <script src="/assets/lib/datamonkey/hivtrace/hivtrace.js"></script>
 <script src="/assets/lib/datamonkey/hivtrace/misc.js"></script>

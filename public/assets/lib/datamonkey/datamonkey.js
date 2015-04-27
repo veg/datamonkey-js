@@ -174,5 +174,15 @@ datamonkey.status_check = function () {
 $( document ).ready( function () {
   datamonkey.status_check();
   $(function () {$('[data-toggle="tooltip"]').tooltip()});
+  $('#datamonkey-header').collapse ();
+  
+  var initial_padding = $("body").css("padding-top");
+  
+  $("#collapse_nav_bar").on ("click", function (e) {
+    $('#datamonkey-header').collapse ('toggle');
+    $(this).find ("i").toggleClass ("fa-times-circle fa-eye");
+    var new_padding =  $("body").css("padding-top") == initial_padding ? "5px" : initial_padding;
+    d3.select ("body").transition ().style ("padding-top", new_padding);
+  });
 });
 

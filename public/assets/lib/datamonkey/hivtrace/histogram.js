@@ -17,12 +17,9 @@ function hivtrace_histogram(graph, histogram_tag, histogram_label) {
   }
 
   d3.select (histogram_label).html(label);
-
 }
 
 function hivtrace_render_histogram(counts, fit, w, h, id) {
-
-    var histogram_tag = id;
 
     var margin = {top: 10, right: 30, bottom: 50, left: 30},
                 width = w - margin.left - margin.right,
@@ -53,7 +50,7 @@ function hivtrace_render_histogram(counts, fit, w, h, id) {
     data_to_plot.push ({'x' : 0, 'y' : 1});
     data_to_plot.push ({'x' : 0, 'y' : counts[0]+1});
    
-    histogram_svg = d3.select(histogram_tag).insert("svg",".histogram-label")
+    histogram_svg = d3.select(id).insert("svg",".histogram-label")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")

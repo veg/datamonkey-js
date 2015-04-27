@@ -144,9 +144,62 @@ function datamonkey_validate_email(email) {
 
 }
 
+function datamonkey_describe_vector (vector, as_list) {
+
+    vector.sort (d3.ascending);
+
+    var d = {'min' : d3.min (vector),
+             'max' : d3.max (vector),
+             'median' : d3.median (vector),
+             'Q1' : d3.quantile (vector, 0.25),
+             'Q3' : d3.quantile (vector, 0.75),
+             'mean': d3.mean (vector)};
+             
+    if (as_list) {
+        
+        d = "<pre>Range  :" + d['min'] + "-" + d['max'] + "\n"
+            +    "IQR    :" + d['Q1'] + "-" + d['Q3'] + "\n"
+            +    "Mean   :" + d['mean'] + "\n"
+            +    "Median :" + d['median'] + "\n"
+            + "</pre>";
+        
+        /*d =   
+        "<dl class = 'dl-horizontal'>" + 
+        "<dt>Range</dt><dd>" + d['min'] + "-" + d['max'] + "</dd>" + 
+        "<dt>IQR</dt><dd>" + d['Q1'] + "-" + d['Q3'] +  "</dd>" +
+        "<dt>Mean</dt><dd>" + d['mean'] +  "</dd>" +
+        "<dt>Median</dt><dd>" + d['median'] + "</dd></dl>";*/
+    }
+    
+    return d;
+    
+}
+
+function datamonkey_export_handler (data, filename, mimeType) {
+    var link = $('body').add('a');
+    link.attr('download', filename || "download.tsv")
+        .attr('href', 'data:' + (mimeType || 'text/plain')  +  ';charset=utf-8,' + encodeURIComponent(data))
+        .click()
+        .detach(); 
+}
+    
+
+function datamonkey_table_to_text (table_id, sep) {
+    sep = sep || "\t";
+    var header_row = [];
+    d3.select (table_id + " thead").selectAll ("th").each (function () {header_row.push (d3.select(this).text())});
+    var data_rows = [];
+    d3.select (table_id + " tbody").selectAll ("tr").each (function (d,i) {data_rows.push ([]); d3.select (this).selectAll ("td").each (function () {data_rows[i].push (d3.select(this).text())})});
+    
+    return header_row.join (sep) + "\n" +
+           data_rows.map (function (d) {return d.join (sep);}).join ("\n");
+}
+
 datamonkey.helpers = function(){};
 datamonkey.helpers.save_newick_to_file = datamonkey_save_newick_to_file;
 datamonkey.helpers.convert_svg_to_png = datamonkey_convert_svg_to_png;
 datamonkey.helpers.save_newick_tree = datamonkey_save_newick_tree;
 datamonkey.helpers.validate_email = datamonkey_validate_email;
-
+datamonkey.helpers.describe_vector = datamonkey_describe_vector;
+datamonkey.helpers.table_to_text = datamonkey_table_to_text;
+datamonkey.helpers.export_handler = datamonkey_export_handler;

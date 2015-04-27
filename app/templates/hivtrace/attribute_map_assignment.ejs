@@ -2,7 +2,7 @@
 <div class="container">
   <h3> Attribute Mapping </h3>
   <span hidden id="hivtrace_id"><%= hivtrace_id %></span>
-  <div class="map col-sm-9">
+  <div class="map col-sm-7">
     <% if (error && error.code == 0) { %>
       <div class="alert alert-danger">
         <%= error.msg %>
@@ -25,7 +25,7 @@
     <% } else { %>
     <table class="table">
       <thead>
-        <th>Attribute Name</th>
+        <th>Description</th>
         <th>Example Field</th>
       </thead>
       <tbody>
@@ -41,11 +41,17 @@
         <% } %>
       </tbody>
     </table>
-    <button id="attr_submit" type="submit" class="btn btn-primary pull-right">Save</button>
+    <div class = "row">
+          <label>
+            <input type="checkbox" id = "group_dates_by_id" disabled>
+            Group multiple sequences with the same ID
+          </label>
+        <button id="attr_submit" type="submit" class="btn btn-primary pull-right">Continue</button>
+    </div>
     <% } %>
   </div>
 
-  <div class="col-sm-3 pull-right">
+  <div class="col-sm-5 pull-right">
 
     <div class="alert alert-info">
       Inferred Delimiter :
@@ -54,7 +60,7 @@
 
     <div class="dash-sidebar" data-spy="scroll">
       <div class='box-header'>
-        <h3 class="box-title">Found Headers</h3>
+        <h3 class="box-title">Parsed Headers</h3>
       </div>
       <div class='box-content'>
         <ul class="list-unstyled">

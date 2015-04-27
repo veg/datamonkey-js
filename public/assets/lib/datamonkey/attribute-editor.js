@@ -1,12 +1,11 @@
 function datamonkey_cancel(self) {
-  $(self).show();
-  $(self).next().remove();
+  $(self).show().next().remove();
 }
 
 function datamonkey_change(elem, self) {
-  $(self).html($(elem).closest('form').find('input').val());
-  $(self).show();
-  $(self).next().remove();
+  $(self).html($(elem).closest('form').find('input').val())
+         .show()
+         .next().remove();
 }
 
 function datamonkey_editable(self) {
