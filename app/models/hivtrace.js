@@ -35,6 +35,7 @@ var mongoose = require('mongoose'),
     moment   = require('moment'),
     check    = require('validator').check,
     globals  = require( '../../config/globals.js'),
+    seqio    = require( '../../lib/biohelpers/sequenceio.js'),
     sanitize = require('validator').sanitize,
     fs       = require('fs'),
     readline = require('readline'),
@@ -310,15 +311,15 @@ HivTrace.statics.parseHeaderFromMap = function (header, attr_map) {
 
 
 HivTrace.virtual('headers').get(function () {
-
-  var data = fs.readFileSync(this.filepath);
-  var data = data.toString();
+  return seqio.parseFasta (fs.readFileSync(this.filepath).toString, true).map (function (e) {return e.name;});
+  
+  /*var data = data.toString();
   var lines = data.split(/(?:\n|\r\n|\r)/g);
 
   //Collect all headers
   var headers = lines.filter(function(x) { return x.indexOf('>') != -1 } );
   var headers = headers.map(function(x) { return x.substring(headers[0].indexOf('>') + 1) } );
-  return headers;
+  return headers;*/
 
 });
 

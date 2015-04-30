@@ -34,6 +34,7 @@ var initialize_cluster_network_graphs = function () {
           d3.select ("#graph-tab").classed ("disabled", false);
           d3.select ("#clusters-tab").classed ("disabled", false);
           d3.select ("#nodes-tab").classed ("disabled", false);
+          d3.select ("#attributes-tab").classed ("disabled", false);
           datamonkey.hivtrace.export_table_to_text ("#cluster-table-export", cluster_table);
           datamonkey.hivtrace.export_table_to_text ("#node-table-export", node_table);
           $("#main-tab a[data-toggle='tab']").on ("shown.bs.tab", function (e) {

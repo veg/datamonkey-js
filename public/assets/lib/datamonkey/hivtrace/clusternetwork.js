@@ -1,5 +1,5 @@
 var _networkGraphAttrbuteID = "user attributes";
-var _defaultFloatFormat = d3.format(",.2f");
+var _defaultFloatFormat = d3.format(",.2r");
 
 
 
@@ -334,7 +334,7 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
                 if (cluster_size < 3) {
                     a_cluster.cc = datamonkey.hivtrace.undefined;     
                 } else {
-                    if (estimate_cubic_compute_cost (a_cluster, true) >= 100000) {
+                    if (estimate_cubic_compute_cost (a_cluster, true) >= 5000000) {
                         a_cluster.cc = datamonkey.hivtrace.too_large;     
                     } else {
                         // pull out all the nodes that have this cluster id
@@ -414,17 +414,26 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
             ["Hide problematic clusters", function (item) {
                                             d3.select (item).text (self.hide_hxb2 ? "Hide problematic clusters" :  "Show problematic clusters");
                                             self.toggle_hxb2 ();
-                                          }, self.has_hxb2_links]
+                                          }, self.has_hxb2_links],
+                                          
+            ["Show removed edges",   function (item) {
+                                        self.filter_edges = !self.filter_edges; 
+                                        d3.select (item).text (self.filter_edges ? "Show removed edges" :  "Hide removed edges");
+                                        self.update (false); 
+                                     }
+                                    , function () {return _.some (self.edges, function (d) {return d.removed;});}]
             
          ].forEach (function (item,index) {
             var handler_callback = item[1];
-            this.append ("li").append ("a")
-                              .text (item[0])
-                              .attr ("href", "#")
-                              .on ("click", function(e) {
-                                handler_callback(this);
-                                d3.event.preventDefault();
-                              });
+            if (item[2]) {
+                this.append ("li").append ("a")
+                                  .text (item[0])
+                                  .attr ("href", "#")
+                                  .on ("click", function(e) {
+                                    handler_callback(this);
+                                    d3.event.preventDefault();
+                                  });
+            }
          },cluster_ui_container);
          
          
@@ -487,19 +496,23 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
             if (button_bar_ui) {
                 var valid_cats = graph_data [_networkGraphAttrbuteID].filter (function (d) { return d['type'] == 'category'; });
                 //valid_cats.splice (0,0, {'label' : 'None', 'index' : -1});
-               
-                d3.select ("#" + button_bar_ui + "_attributes").selectAll ("li").remove();
-                var cat_menu = d3.select ("#" + button_bar_ui + "_attributes").selectAll ("li")
-                                .data([[['None',-1]],[['Categorical', -2]]].concat(valid_cats.map (function (d) {return [[d['label'],d['index']]];})));        
+                               
+                [d3.select ("#" + button_bar_ui + "_attributes"),d3.select ("#" + button_bar_ui + "_attributes_cat")].forEach (function (m) {
+                
+                    m.selectAll ("li").remove();
+                
+                    var cat_menu = m.selectAll ("li")
+                                    .data([[['None',-1]],[['Categorical', -2]]].concat(valid_cats.map (function (d) {return [[d['label'],d['index']]];})));        
                                                                      
-                cat_menu.enter ().append ("li").classed ("disabled", function (d) {return d[0][1] < -1;});
-                cat_menu.selectAll ("a").data (function (d) {return d;})
-                                        .enter ()
-                                        .append ("a")
-                                        .text (function (d,i,j) {return d[0];})
-                                        .attr ("style", function (d,i,j) {if (d[1] < -1) return 'font-style: italic'; if (j == 0) { return ' font-weight: bold;'}; return null; })
-                                        .attr ('href', '#')
-                                        .on ("click", function (d) { handle_attribute_categorical (d[1]); });
+                    cat_menu.enter ().append ("li").classed ("disabled", function (d) {return d[0][1] < -1;});
+                    cat_menu.selectAll ("a").data (function (d) {return d;})
+                                            .enter ()
+                                            .append ("a")
+                                            .text (function (d,i,j) {return d[0];})
+                                            .attr ("style", function (d,i,j) {if (d[1] < -1) return 'font-style: italic'; if (j == 0) { return ' font-weight: bold;'}; return null; })
+                                            .attr ('href', '#')
+                                            .on ("click", function (d) { handle_attribute_categorical (d[1]); });
+                });
             }
         }
     }
@@ -820,27 +833,33 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
   
     var set_attr = "None";
 
-    d3.select ("#" + button_bar_ui + "_attributes").selectAll ("li")
-                                                   .selectAll ("a")
-                                                   .attr ("style", function (d,i) {if (d[1] == cat_id) { set_attr = d[0]; return ' font-weight: bold;'}; return null; });
+    ["#" + button_bar_ui + "_attributes","#" + button_bar_ui + "_attributes_cat"].forEach (function (m) {
+        d3.select (m).selectAll ("li")
+                                                       .selectAll ("a")
+                                                       .attr ("style", function (d,i) {if (d[1] == cat_id) { set_attr = d[0]; return ' font-weight: bold;'}; return null; });
       
-    d3.select ("#" + button_bar_ui + "_attribute_label").html (set_attr + ' <span class="caret"></span>');
+        d3.select (m + "_label").html (set_attr + ' <span class="caret"></span>');
+    });
                                                    
-    self.clusters.forEach (function (the_cluster) { console.log (the_cluster['binned_attributes'] = stratify(attribute_cluster_distribution (the_cluster, cat_id)));});
 
-    if (cat_id >= 0) {
+
+     self.clusters.forEach (function (the_cluster) {the_cluster['binned_attributes'] = stratify(attribute_cluster_distribution (the_cluster, cat_id));});
+    
+     if (cat_id >= 0) {
         self.colorizer['category']    = graph_data [_networkGraphAttrbuteID][cat_id]['range'] <= 10 ? d3.scale.category10() : d3.scale.category20c();
         self.colorizer['category_id'] = cat_id;  
         self.colorizer['category_map'] = graph_data [_networkGraphAttrbuteID][cat_id]['values'];
         self.colorizer['category_map'][null] =  graph_data [_networkGraphAttrbuteID][cat_id]['range'];
         self.colorizer['category_pairwise'] = attribute_pairwise_distribution(cat_id, graph_data [_networkGraphAttrbuteID][cat_id]['range'] + 1, self.colorizer['category_map']);
         render_chord_diagram ("#" + button_bar_ui + "_aux_svg_holder", self.colorizer['category_map'], self.colorizer['category_pairwise']);
+        render_binned_table  ("#" + button_bar_ui + "_attribute_table", self.colorizer['category_map'], self.colorizer['category_pairwise']);
     } else {
         self.colorizer['category']          = null;
         self.colorizer['category_id']       = null;
         self.colorizer['category_pairwise'] = null;
         self.colorizer['category_map']      = null;
         render_chord_diagram ("#" + button_bar_ui + "_aux_svg_holder", null, null);
+        render_binned_table  ("#" + button_bar_ui + "_attribite_table", null, null);
     }
     
     console.log (self.colorizer, graph_data [_networkGraphAttrbuteID]);
@@ -1074,7 +1093,7 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
   }
 
   function edge_pop_on (e) {
-      toggle_tooltip (this, true, "", edge_info_string (e));
+      toggle_tooltip (this, true, e.source.id + " - " + e.target.id, edge_info_string (e));
   }
 
   function edge_pop_off (d) {
@@ -1121,15 +1140,58 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
       }
   }
 
+  function render_binned_table (id, the_map, matrix) {
+  
+    var the_table = d3.select (id);
+  
+    the_table.selectAll ("thead").remove();
+    the_table.selectAll ("tbody").remove();
+    
+    if (matrix) {
+        
+        var fill = self.colorizer['category'];
+        lookup = _.invert (the_map);
+        
+        
+        var headers = the_table.append ("thead").append ("tr")
+                      .selectAll ("th").data ([""].concat (matrix[0].map (function (d,i) {return lookup [i];})));
+                      
+        headers.enter().append ("th");
+        headers.html (function (d) { return "<span>&nbsp;" + d + "</span>";}).each (
+            function (d,i) {
+                if (i) {
+                    d3.select (this).insert ("i",":first-child")
+                        .classed ("fa fa-circle", true)
+                        .style ("color", function () {return fill (d);});
+                }
+            }
+        );
+
+        var rows = the_table.append ("tbody").selectAll ("tr").data (matrix.map (function (d, i) {return [lookup[i]].concat (d);}));
+        rows.enter ().append ("tr");
+        rows.selectAll ("td").data (function (d) {return d}).enter().append ("td").html (function (d, i) {
+            return i == 0 ? ("<span>&nbsp;" + d + "</span>") : d;
+        }).each (function (d, i) {
+                if (i == 0) {
+                    d3.select (this).insert ("i",":first-child")
+                        .classed ("fa fa-circle", true)
+                        .style ("color", function () {return fill (d);});
+                }
+        
+        });
+                      
+        
+
+    }
+  }
+  
   function render_chord_diagram (id, the_map, matrix) {
          
         d3.select (id).selectAll ("svg").remove();
         if (matrix) {
         
-            var lookup = matrix[0].map (function (d) {return 0;});
-            for (k in the_map) {
-                lookup[the_map[k]] = k;
-            }   
+            lookup = _.invert (the_map);
+            
   
             var svg = d3.select (id).append ("svg");
         
@@ -1140,8 +1202,8 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
                 .matrix(matrix);
 
             var text_offset = 20,
-                width  = 300,
-                height = 300,
+                width  = 450,
+                height = 450,
                 innerRadius = Math.min(width, height-text_offset) * .41,
                 outerRadius = innerRadius * 1.1;
 
@@ -1221,7 +1283,7 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
   }
     
   function attribute_cluster_distribution (the_cluster, attribute_id) {
-        if (attribute_id && the_cluster) {
+        if (attribute_id >= 0 && the_cluster) {
             return the_cluster.children.map (function (d) {return (_networkGraphAttrbuteID in d) ? d[_networkGraphAttrbuteID][attribute_id] : null;});
         }
         return null;
@@ -1355,19 +1417,20 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
     
       // check to see if there are any other tooltips shown
      ($("[role='tooltip']")).each (function (d) {
-        $(d).remove();
+        $(this).remove();
      });
     
       var this_box = $(element);
       var this_data = d3.select(element).datum();
       element.tooltip = this_box.tooltip({
-                 'title': title + "<br>" + tag,
-                 'html': true,
-                 'container': 'body'
+                 title: title + "<br>" + tag,
+                 html: true,
+                 container: 'body',
                });
                
       //this_data.fixed = true;
-      element.tooltip.tooltip ('show');
+      
+      _.delay (_.bind(element.tooltip.tooltip, element.tooltip), 500, 'show');
     } else {
       if (turn_on == false && element.tooltip) {
         element.tooltip.tooltip('destroy');
