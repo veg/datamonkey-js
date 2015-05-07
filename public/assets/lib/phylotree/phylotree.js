@@ -11,6 +11,8 @@ d3.layout.phylotree = function (container) {
         size                    = [1,1],
         newick_string           = null,
         separation              = function (_node,_previos) { return 0;},
+        node_span               = function (_node)   { return 1; },
+        relative_node_span      = function (_node)   { return node_span (_node) / rescale_node_span},
         def_branch_length_accessor  = function (_node) {
             if ("attribute" in _node && _node["attribute"] && _node["attribute"].length) {
                 var bl = parseFloat(_node["attribute"]);
@@ -45,11 +47,7 @@ d3.layout.phylotree = function (container) {
                                     'y-spacing' : 'fit-to-size',
                                     'x-spacing' : 'fixed-width',
                                     'show-scale' : 'top',
-                                    'draw-size-bubbles': false,
-                                    'min-bubble-size': 1,
-                                    'max-bubble-size': 10,
-                                    'binary-selectable': false,
-                                    'attribute-list': []
+                                    'draw-size-bubbles': false
                                   },
                                   
         css_classes             = {'tree-container': 'phylotree-container',
@@ -64,15 +62,7 @@ d3.layout.phylotree = function (container) {
                                    'tagged-branch': 'branch-tagged',
                                    'tree-selection-brush': 'tree-selection-brush',
                                    'clade' : 'clade'
-                                  },
-
-        min_node_span           = 1,  // used in node_span_scale; updated when tree gets built
-        max_node_span           = 1,
-        node_span               = function (_node)   { return 1; },
-        node_span_scale         = d3.scale.linear().domain([min_node_span, max_node_span])
-                                  .range([options['min-bubble-size'], options['max-bubble-size']]),
-        relative_node_span      = function (_node) { return node_span_scale(node_span(_node)); },
-        node_radius             = function (_node) { return relative_node_span(_node) * scales[0] * 0.5;},
+                                   },
                                    
         nodes                   = [],
         links                   = [],
@@ -91,6 +81,7 @@ d3.layout.phylotree = function (container) {
                                  .interpolate ("step-before"),
                                                 
         draw_scale_bar          = null,
+        rescale_node_span       = 1,
         count_listener_handler  = undefined,
         node_styler             = undefined,
         edge_styler             = undefined,
@@ -157,7 +148,7 @@ d3.layout.phylotree = function (container) {
             }
 
             if (is_leaf) {
-                var _node_span = relative_node_span(a_node);
+                var _node_span = node_span (a_node) / rescale_node_span;
                 x = a_node.x = x + separation (last_node, a_node) + (last_span + _node_span) * 0.5;
                 last_node = a_node;
                 _extents[0][1] = Math.max (_extents[0][1], x + _node_span * 0.5 + separation (last_node, a_node));
@@ -206,9 +197,7 @@ d3.layout.phylotree = function (container) {
             return a_node.x;
         }
         
-        min_node_span = nodes.map (function (d) { return node_span (d); }).reduce (function (p,c) {return Math.min (c,p || 1e200)}, null) || 1;
-        max_node_span = nodes.map (function (d) { return node_span (d); }).reduce (function (p,c) {return Math.max (c,p || 1)}, null) || 1;
-        node_span_scale.domain([min_node_span, max_node_span])
+        rescale_node_span = nodes.map (function (d) { return node_span (d); }).reduce (function (p,c) {return Math.min (c,p || 1e200)}, null) || 1;          
          
         nodes[0].x = tree_layout (nodes[0], do_scaling);
          
@@ -217,6 +206,8 @@ d3.layout.phylotree = function (container) {
             max_depth = nodes.reduce (function (p, c) { return Math.max (p,c.depth); }, 0);
             nodes[0].x = tree_layout (nodes[0]);
         }
+        
+        //console.log (_extents[1][0], node_span (nodes[0]) / rescale_node_span, nodes[0], rescale_node_span);
         
         if (options['y-spacing'] == 'fixed-width') {
             size[1] = _extents[1][1] * fixed_width[1];
@@ -341,7 +332,7 @@ d3.layout.phylotree = function (container) {
     phylotree.selection_label = function(attr) {
         if (!arguments.length) return selection_attribute_name;
         selection_attribute_name = attr;
-        phylotree.sync_edge_labels();
+        phylotree.sync_edge_labels ();
         return phylotree;
     };
         
@@ -450,7 +441,6 @@ d3.layout.phylotree = function (container) {
     };
     
     phylotree.get_newick = function (annotator) {
-
         function node_display (n) {
             if (!d3_phylotree_is_leafnode (n)) {
                 element_array.push ("(");
@@ -472,15 +462,14 @@ d3.layout.phylotree = function (container) {
             
         }
     
+    
         var element_array = [],
         annotator = annotator || "";  
         node_display (nodes[0]);
         return element_array.join ("");
-
     }
     
     phylotree.update_layout = function (new_json, do_hierarchy) {
-
         if (do_hierarchy) {
             nodes = d3_hierarchy.call (this, new_json);
             nodes.forEach (function (d) { d.id = null;});
@@ -488,7 +477,6 @@ d3.layout.phylotree = function (container) {
         phylotree.placenodes();
         links = phylotree.links (nodes);
         phylotree.sync_edge_labels ();
-
     }
     
     phylotree.sync_edge_labels = function () {
@@ -498,8 +486,7 @@ d3.layout.phylotree = function (container) {
             d.tag = d.target.tag || false;
         });
             
-        d3_phylotree_trigger_refresh(phylotree);
-
+        d3_phylotree_trigger_refresh      (phylotree);
         if (phylotree.count_handler()) {
             var counts = {};
             counts[selection_attribute_name] = links.reduce (function (p, c) { return p + (c[selection_attribute_name] ? 1 : 0);}, 0);
@@ -508,16 +495,16 @@ d3.layout.phylotree = function (container) {
             d3_phylotree_trigger_count_update (phylotree, 
             counts, phylotree.count_handler());
         }     
-
     };
+    
+    
 
     phylotree.modify_selection = function (callback, attr, place, skip_refresh, mode) {
             
         attr = attr || selection_attribute_name;        
         mode = mode || "toggle";
         
-        if (options["selectable"] && !options["binary-selectable"] ) {
-
+        if (options["selectable"]) {
             var do_refresh = false;
         
             if (typeof callback === 'function') {
@@ -531,9 +518,7 @@ d3.layout.phylotree = function (container) {
                         d.target[attr] = select_me;
                     }
                 });
-
-            }  else {
-
+            } else {
                 callback.forEach (function (d) {
                     var new_value; 
                     switch (mode) {
@@ -564,6 +549,7 @@ d3.layout.phylotree = function (container) {
         
             if (do_refresh) {
                 if (!skip_refresh) {
+                    //console.log ("Refresh");
                     d3_phylotree_trigger_refresh      (phylotree);
                 }
                 if (phylotree.count_handler()) {
@@ -578,76 +564,6 @@ d3.layout.phylotree = function (container) {
                     phylotree.placenodes();
                 }
             }    
-
-        } else if (options['binary-selectable']) {
-
-            if (typeof callback === 'function') {
-                links.forEach (function (d) {
-
-                    var select_me = callback (d);
-                    d[attr] = d[attr] || false;
-
-
-                    if (d[attr] != select_me) {
-                        d[attr] = select_me;
-                        do_refresh = true;
-                        d.target[attr] = select_me;
-                    }
-
-                    options['attribute-list'].forEach(function(type) {
-                      if(type != attr && d[attr] == true) {
-                        d[type] = false;
-                        d.target[type] = false;
-                      }
-
-                    });
-
-                });
-
-            }  else {
-
-              callback.forEach (function (d) {
-
-                 var new_value; 
-                 new_value = !d[attr];
-
-                 if (d[attr] != new_value) {
-                     d[attr] = new_value;
-                     do_refresh = true;
-                 }
-
-              });
-              
-              links.forEach (function(d) {
-                  d[attr] = d.target[attr];
-                  options['attribute-list'].forEach(function(type) {
-                    if(type != attr && d[attr] == true) {
-                      d[type] = false;
-                      d.target[type] = false;
-                    }
-
-                  });
-
-              });
-            }
-
-            if (do_refresh) {
-                if (!skip_refresh) {
-                    d3_phylotree_trigger_refresh      (phylotree);
-                }
-                if (phylotree.count_handler()) {
-                    var counts = {};
-                    counts[attr] = links.reduce (function (p, c) { return p + (c[attr] ? 1 : 0);}, 0);
-                    d3_phylotree_trigger_count_update (phylotree, 
-                    counts, 
-                    phylotree.count_handler());
-                }
-                
-                if (place) {
-                    phylotree.placenodes();
-                }
-            }    
-
         }
         
         return phylotree;
@@ -1048,14 +964,14 @@ d3.layout.phylotree = function (container) {
       enclosure.enter().append ("g")
                       .attr ("class", css_classes["tree-container"]);
                       
-      enclosure.attr ("transform", function (d) { return "translate(0," + (phylotree.pad_height()) + ")";});
+      enclosure.attr ("transform", function (d) { return "translate(" + offsets[1] + "," + (phylotree.pad_height()) + ")";}); 
                
       if (draw_scale_bar) {
           var scale_bar = svg.selectAll ("." + css_classes["tree-scale-bar"]).data ([0]);
           scale_bar.enter().append("g");
           scale_bar.attr ("class", css_classes["tree-scale-bar"])
                    .style ("font-size", "" + scale_bar_font_size)
-                   .attr ("transform", function (d) { return "translate(0," + (phylotree.pad_height()-10) + ")";})
+                   .attr ("transform", function (d) { return "translate(" + offsets[1] + "," + (phylotree.pad_height()-10) + ")";}) 
                    .call (draw_scale_bar);
           scale_bar.selectAll ("text")
                    .style ("text-anchor", "end");
@@ -1133,20 +1049,8 @@ d3.layout.phylotree = function (container) {
           drawn_nodes.exit().remove();
       }
           
-      drawn_nodes.attr("transform", function(d) {
-          d.screen_x = x_coord(d);
-          if(options['draw-size-bubbles']) {
-              // move node to the right, so tree branches are visible
-              if(d3_phylotree_is_leafnode(d)) {
-                  d.screen_x += node_radius(d);
-              }
-          }
-          d.screen_y = y_coord(d);
-          return "translate(" + d.screen_x + "," + d.screen_y + ")";
-      });
-      drawn_nodes.attr("class", phylotree.reclass_node).each (function (d) {
-          label_width = Math.max (label_width,phylotree.draw_node (this, d, transitions));
-      });
+      drawn_nodes.attr("transform", function(d) { d.screen_x = x_coord(d); d.screen_y = y_coord(d); return "translate(" + d.screen_x + "," + d.screen_y + ")"; })
+          .attr("class", phylotree.reclass_node).each (function (d) { label_width = Math.max (label_width,phylotree.draw_node (this, d, transitions)); });                             
       
       var sizes =   d3_phylotree_resize_svg (phylotree, svg, transitions);
       
@@ -1267,9 +1171,7 @@ d3.layout.phylotree = function (container) {
       container = d3.select(container);
       
       container.attr("class", phylotree.reclass_edge)
-               .on ("click", function (d) { 
-                  phylotree.modify_selection ([d.target], selection_attribute_name); 
-                });
+               .on ("click", function (d) { phylotree.modify_selection ([d.target], selection_attribute_name); });
                 
       var new_branch_path = draw_branch ([edge.source, edge.target]);
                
@@ -1337,7 +1239,7 @@ d3.layout.phylotree = function (container) {
           
       
           if (options['draw-size-bubbles']) {
-              var shift = node_radius(node);
+              var shift = relative_node_span (node) * scales[0] * 0.5;
               var circles = container.selectAll ("circle").data ([shift]);
               circles.enter().append ("circle");
               if (transitions) {

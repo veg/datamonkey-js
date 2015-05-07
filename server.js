@@ -101,6 +101,12 @@ app.use(express.static(__dirname + '/public'));
 app.use('/flea/', express.static(__dirname + '/public/assets/lib/flea/dist/'));
 app.use('/uploads', express.static(__dirname + '/uploads'));
 
+
+app.use(function(err, req, res, next) {
+    res.json(500, {'error' : err.message}); // this catches the error!!
+});
+
+
 //Port to listen on
 app.listen(setup.port);
 

@@ -34,6 +34,7 @@ var mongoose    = require('mongoose'),
     spawn       = require('child_process').spawn,
     sanitize    = require('validator').sanitize,
     fs          = require('fs'),
+    winston     = require('winston'),
     seqio       = require( '../../lib/biohelpers/sequenceio.js'),
     country_codes = require( '../../config/country_codes.json'),
     subtypes      = require( '../../config/subtypes.json'),
@@ -227,9 +228,11 @@ Msa.methods.dataReader = function (file, cb) {
     return;
   }
 
+  var hyphy_process = globals.hyphy +  ' ' + __dirname + "/../../lib/bfs/datareader.bf";
+  winston.info(globals.hyphy +  ' ' + __dirname + '/../../lib/bfs/datareader.bf' + ' : ' + 'spawning process');
+
   var hyphy =  spawn(globals.hyphy,
                     [__dirname + "/../../lib/bfs/datareader.bf"]);
-
 
   var result = '';
 
@@ -257,12 +260,9 @@ Msa.methods.dataReader = function (file, cb) {
 
 
   hyphy.stdin.write(file + "\n");
-
-  if(this.datatype == 1) {
-    hyphy.stdin.write("-1\n");
-  } else {
-    hyphy.stdin.write(this.datatype.toString());
-  }
+  winston.info(hyphy_process + ' : ' + 'file : ' + file) 
+  hyphy.stdin.write(this.gencodeid.toString());
+  winston.info(hyphy_process + ' : ' + 'gencodeid : ' + this.gencodeid) 
 
   hyphy.stdin.end();
 

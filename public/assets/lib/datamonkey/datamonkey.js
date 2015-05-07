@@ -225,6 +225,6 @@ datamonkey.validate_date = function () {
 }
 
 $( document ).ready( function () {
-  datamonkey.status_check();
+  //datamonkey.status_check();
 });
 

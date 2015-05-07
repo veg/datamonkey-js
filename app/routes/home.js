@@ -54,6 +54,15 @@ exports.treeviewer = function (req, res) {
   res.render('tools/treeviewer.ejs');
 };
 
+exports.copyright = function (req, res) {
+    res.render ('copyright.ejs');
+}
+
+exports.data_privacy = function (req, res) {
+    res.render ('data.ejs');
+}
+
+
 exports.jobQueue = function(req, res) {
 
   function formatJobs (x) {
