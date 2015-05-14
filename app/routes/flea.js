@@ -182,7 +182,7 @@ exports.getPage = function(req, res) {
                                                  });
       } else {
         var html_dir = './public/assets/lib/';
-        res.sendfile(path.resolve(html_dir + 'flea/dist/index.html'));
+        res.sendfile(path.resolve(html_dir,'flea/dist/index.html'));
       }
 
     }
@@ -221,6 +221,7 @@ exports.restart = function(req, res) {
       });
     }
   });
+
 }
 
 /**
@@ -277,7 +278,7 @@ exports.getFrequencies = function(req, res) {
       res.json(500, error.errorResponse('invalid id : ' + fleaid ));
     } else {
       // Should return results page
-      res.json(200, flea.results.frequencies);
+      res.json(200, JSON.parse(flea.results.frequencies));
     }
   });
 
@@ -315,20 +316,23 @@ exports.getRatesPheno = function(req, res) {
     } else {
 
       // Convert tsv file to json
-      var rates_pheno = flea.results.rates_pheno.split('\n');
-      var headers = rates_pheno[0].split('\t');
-      rates_pheno.shift();
-      var content = rates_pheno.map(function(x) { return x.split('\t')});
+      if(flea.results.rates_pheno) {
+        var rates_pheno = flea.results.rates_pheno.split('\n');
+        var headers = rates_pheno[0].split('\t');
+        rates_pheno.shift();
+        var content = rates_pheno.map(function(x) { return x.split('\t')});
 
-      function toObj(x) {
-        var cols = {};
-        x.forEach(function(x,i) { cols[headers[i]] = x });
-        return cols;
+        function toObj(x) {
+          var cols = {};
+          x.forEach(function(x,i) { cols[headers[i]] = x });
+          return cols;
+        }
+
+        var rates_pheno_json = content.map(toObj);
+        res.send(200, rates_pheno_json);
+      } else {
+        res.send(500, {'error' : 'rates pheno not found'});
       }
-
-      var rates_pheno_json = content.map(toObj);
-
-      res.send(200, rates_pheno_json);
     }
 
   });
@@ -384,6 +388,40 @@ exports.getNeutralization = function(req, res) {
     } else {
       // Should return results page
       res.json(200, JSON.parse(flea.neutralization));
+    }
+  });
+
+}
+
+exports.getTurnover = function(req, res) {
+
+  var fleaid = req.params.id;
+
+  //Return all results
+  Flea.findOne({_id : fleaid}, function(err, flea) {
+    if (err || !flea ) {
+      logger.error(err);
+      res.json(500, error.errorResponse('invalid id : ' + fleaid ));
+    } else {
+      // Should return results page
+      res.json(200, JSON.parse(flea.results.turnover));
+    }
+  });
+
+}
+
+exports.getCopyNumbers = function(req, res) {
+
+  var fleaid = req.params.id;
+
+  //Return all results
+  Flea.findOne({_id : fleaid}, function(err, flea) {
+    if (err || !flea ) {
+      logger.error(err);
+      res.json(500, error.errorResponse('invalid id : ' + fleaid ));
+    } else {
+      // Should return results page
+      res.json(200, JSON.parse(flea.results.copynumbers));
     }
   });
 

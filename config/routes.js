@@ -118,6 +118,8 @@ module.exports = function(app) {
   app.get('/flea/data/:id/rates_pheno', flea.getRatesPheno);
   app.get('/flea/data/:id/trees', flea.getTrees);
   app.get('/flea/data/:id/neutralization', flea.getNeutralization);
+  app.get('/flea/data/:id/turnover', flea.getTurnover);
+  app.get('/flea/data/:id/copynumbers', flea.getCopyNumbers);
 
   // STATS ROUTES
   stats = require( ROOT_PATH + '/app/routes/stats');

@@ -4,7 +4,7 @@
   "main" : "datamonkey.js",
   "dependencies": {
     "hyphy-vision"  : "git@github.com:veg/hyphy-vision.git",
-    "flea"          : "git@github.com:veg/flea.git",
+    "flea"          : "git@github.com:veg/flea.git#0.1.0",
     "socket.io"     : "1.*"
   }
 }
