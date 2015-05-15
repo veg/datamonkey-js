@@ -40,8 +40,9 @@
     "winston"                       : "0.8.x",
     "async"                         : "0.9.x",
     "underscore"                    : "1.7.x",
-    "morgan"                        : "2.8.x",
+    "morgan"                        : "x.x.x",
     "jquery-file-upload-middleware" : "0.1.x",
-    "tar-fs"                        : "1.4.2"
+    "tar-fs"                        : "1.4.2",
+    "q"                             : "1.4.x"
   }
 }
