@@ -15,7 +15,11 @@ var Flea    = mongoose.model('Flea'),
 
 describe('create and save job', function() {
 
-  mongoose.connect(setup.database);
+  before(function() {
+    // runs before all tests in this block
+    mongoose.connect(setup.database + '_unit_test');
+  })
+
 
   it('should return a well formed flea with results', function(done) {
 
@@ -41,6 +45,7 @@ describe('create and save job', function() {
 
     // Parse each fastq
     flea_files.forEach(function(flea_file) {
+
       Msa.parseFile(flea_file.fn, datatype, gencodeid, function(err, msa) {
 
         msa.visit_code = flea_file.visit_code;
@@ -78,5 +83,12 @@ describe('create and save job', function() {
       });
     });
   });
+
+  after(function(done){
+      //clear out db
+      mongoose.connection.close();
+      done();
+  });
+
 
 });

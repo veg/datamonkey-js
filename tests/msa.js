@@ -8,7 +8,7 @@
 
   Permission is hereby granted, free of charge, to any person obtaining a
   copy of this software and associated documentation files (the
-  "Software"), to deal in the Software without restriction, including
+  'Software'), to deal in the Software without restriction, including
   without limitation the rights to use, copy, modify, merge, publish,
   distribute, sublicense, and/or sell copies of the Software, and to
   permit persons to whom the Software is furnished to do so, subject to
@@ -17,7 +17,7 @@
   The above copyright notice and this permission notice shall be included
   in all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+  THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS
   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
@@ -29,9 +29,9 @@
 
 var fs = require('fs'),
     mongoose = require('mongoose'),
+    path = require('path'),
     spawn = require('child_process').spawn,
     setup = require('../config/setup'),
-    //seqio = require('../lib/biohelpers/sequenceio.js'),
     globals = require('../config/globals');
 
 // Bootstrap models
@@ -46,7 +46,7 @@ describe('msa datareader validation', function() {
 
   it('should parse msa and have all properties', function(done) {
     var hyphy =  spawn(globals.hyphy,
-                      [__dirname + "/../lib/bfs/datareader.bf"]);
+                      [path.join(__dirname, '/../lib/bfs/datareader.bf')]);
 
     hyphy.stdout.on('data', function (data) {
       var results = JSON.parse(data);
@@ -73,7 +73,7 @@ describe('msa datareader validation', function() {
 
     });
 
-    hyphy.stdin.write(__dirname + '/res/HIV_gp120.nex\n');
+    hyphy.stdin.write(path.join(__dirname, '/res/HIV_gp120.nex\n'));
     hyphy.stdin.write('0');
     hyphy.stdin.end();
     hyphy.on('close', function (code) {
@@ -83,14 +83,14 @@ describe('msa datareader validation', function() {
 
   it('should return an error message', function(done) {
     var hyphy =  spawn(globals.hyphy,
-                      [__dirname + "/../lib/bfs/datareader.bf"]);
+                      [path.join(__dirname, '/../lib/bfs/datareader.bf')]);
 
     hyphy.stdout.on('data', function (data) {
       var results = JSON.parse(data);
       results.should.have.property('error');
     });
 
-    hyphy.stdin.write(__dirname + '/res/mangled_nexus.nex\n');
+    hyphy.stdin.write(path.join(__dirname, '/res/mangled_nexus.nex\n'));
     hyphy.stdin.write('0');
     hyphy.stdin.end();
 
@@ -131,10 +131,14 @@ describe('hyphy friendly', function() {
     var msa = new Msa;
     msa.gencodeid = 0;
     fs.writeFileSync(msa.filepath, fs.readFileSync('./tests/res/Flu.fasta'));
+
     // save attribute map
-    // "map": ["unknown","unknown1","unknown2","ma3ybe_date"] should turn into
-    // "map": { "0" : "unknown", "1": "unknown1", "2": "unknown2", "3": "maybe_date" }
-    msa.attribute_map =  {"map": ["unknown","unknown1","unknown2","maybe_date"], "delimiter":"_"};
+
+    // Example : 
+    // 'map': ['unknown','unknown1','unknown2','ma3ybe_date'] should transform to
+    // 'map': { '0' : 'unknown', '1': 'unknown1', '2': 'unknown2', '3': 'maybe_date' }
+
+    msa.attribute_map =  {'map': ['unknown','unknown1','unknown2','maybe_date'], 'delimiter':'_'};
     (msa.hyphy_friendly.attribute_map == undefined).should.be.true;
     done();
 
@@ -148,8 +152,8 @@ describe('parse file', function() {
 
     var msa = new Msa;
     var datatype  = 0;
-    var gencodeid = globals.genetic_code[0];
-    var fn = __dirname + '/res/Flu.fasta';
+    var gencodeid = 0;
+    var fn = path.join(__dirname, '/res/Flu.fasta');
 
     Msa.parseFile(fn, datatype, gencodeid, function(err, result) {
       result.sequence_info.should.have.length(21);
@@ -166,7 +170,7 @@ describe('validate fasta file', function() {
 
   it('should be valid', function(done) {
 
-    var fn = __dirname + '/res/Flu.fasta';
+    var fn = path.join(__dirname, '/res/Flu.fasta');
     Msa.validateFasta(fn, function(err, result) {
       result.should.be.true;
       done();
@@ -176,7 +180,7 @@ describe('validate fasta file', function() {
 
   it('should be not valid', function(done) {
 
-    var fn = __dirname + '/res/HIV_gp120.nex';
+    var fn = path.join(__dirname, '/res/HIV_gp120.nex');
 
     Msa.validateFasta(fn, function(err, result) {
       result.should.be.false;

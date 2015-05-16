@@ -1,10 +1,10 @@
 var fs = require('fs'),
+    path = require('path'),
+    crypto = require('crypto'),
     setup = require('../config/setup'),
     globals = require('../config/globals');
 
 var mongoose = require('mongoose');
-
-// Bootstrap models
 var models_path = '../app/models';
 
 require('../app/models/msa');
@@ -16,18 +16,19 @@ var Relax   = mongoose.model('Relax'),
 
 describe('create and save job', function() {
 
-  mongoose.connect(setup.database + '_unit_test');
-
-  var Relax   = mongoose.model('Relax');
-  var Msa     = mongoose.model('Msa');
+  before(function() {
+    // runs before all tests in this block
+    var random_id = crypto.randomBytes(20).toString('hex');
+    mongoose.connect(setup.database + '_unit_test_' + random_id);
+  })
 
   it('should return a well formed msa', function(done) {
 
     var relax = new Relax;
 
     var datatype  = 0;
-    var gencodeid = globals.genetic_code[0];
-    var fn = __dirname + '/res/Flu.fasta';
+    var gencodeid = 0;
+    var fn = path.join(__dirname, '/res/Flu.fasta');
 
     Msa.parseFile(fn, datatype, gencodeid, function(err, result) {
       relax.msa = result;
@@ -38,4 +39,13 @@ describe('create and save job', function() {
     });
   });
 
+  after(function(done){
+      //clear out db
+      mongoose.connection.db.dropDatabase();
+      mongoose.connection.close();
+      done();
+  });
+
 });
+
+

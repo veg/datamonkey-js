@@ -208,6 +208,7 @@ Msa.methods.aminoAcidTranslation = function (cb) {
 
 Msa.methods.dataReader = function (file, cb) {
   if (file.indexOf('fastq') != -1) {
+
     // TODO: Support FASTQ 
     var result = {};
     result.FILE_INFO = {};
