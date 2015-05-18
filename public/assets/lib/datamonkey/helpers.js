@@ -145,7 +145,11 @@ function datamonkey_validate_email(email) {
 }
 
 function datamonkey_capitalize(s) {
+  if(s.length > 0) {
     return s[0].toUpperCase() + s.slice(1);
+  } else {
+    return s;
+  }
 }
 
 datamonkey.helpers = function(){};

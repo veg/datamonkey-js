@@ -42,8 +42,8 @@ function jobRuntime() {
 
 function setupJob() {
 
-  var jobid = $('#job-report').data('jobid')
-  var socket_address = $('#job-report').data('socket-address')
+  var jobid = $('#job-report').data('jobid');
+  var socket_address = $('#job-report').data('socket-address');
   var socket = io.connect(socket_address, {
         reconnect: false
       });
@@ -60,10 +60,8 @@ function setupJob() {
 
 
   var changeStatus = function (data) {
-    console.log(data);
-
     //data is index and message
-    colorStatusButton(data.phase)
+    colorStatusButton(data.phase.status)
     if(data.msg != undefined) {
       d3.select("#standard-output").classed({'hidden': false})
       $('#job-pre').html(data.msg)
@@ -118,6 +116,8 @@ function setupJob() {
   socket.on('status update', function (data) {
 
     if(data) {
+      console.log('status changing!');
+      console.log(data);
       changeStatus(data);
       if('torque_id' in data) {
         updateQueueWithTorqueId(data.torque_id);
@@ -158,7 +158,6 @@ function setupJob() {
 
 function colorStatusButton(status) {
 
-  console.log(datamonkey.helpers.capitalize(status));
   $("#job-status-text").text(datamonkey.helpers.capitalize(status));
 
   var circle = d3.selectAll(".job-status circle")
