@@ -27,7 +27,6 @@ function getTime() {
 function setupJob() {
 
   //localStorage.debug = '*';
-
   _.templateSettings = {
     evaluate:    /\{\%(.+?)\%\}/g,
     interpolate: /\{\{(.+?)\}\}/g,

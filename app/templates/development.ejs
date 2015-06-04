@@ -1,94 +1,494 @@
 <%- include includes/header.ejs %>
 
 <div id="tutorial-container" class="container">
+
   <div class="datamonkey-sm-header">
     <h1>Tutorial</h1>
     <p>Creating a new analysis</p>
   </div>
 
   <div class="help-content tab-content col-sm-8">
-    <h1 id="analyzing-data" class="page-header">Technologies used</h1>
-  </div>
-
-  <div class="help-content tab-content col-sm-8">
+    <h1 class="page-header">Technologies used</h1>
+    <ul>
+      <li>Node.js</li>
+      <li>Express.js</li>
+      <li>Mongoose</li>
+      <li>Redis</li>
+      <li>Socket.io</li>
+    </ul>
 
     <h4>General Steps</h4>
     <ul>
+      <li> Edit <code>config/routes.js</code></li>
       <li> Create a new file entitled <code>app/routes/&lt;analysis name.js&gt;</code></li>
       <li> Create a new file entitled <code>app/models/&lt;analysis name.js&gt;</code></li>
       <li> Create a new directory entitled <code>app/templates/&lt;analysis name.js&gt;</code></li>
-      <li> Open <code>config/routes.js</code></li>
+      <li> Add analysis job runner to Silverback </li>
     </ul>
 
-    <p> managing static assets </p>
-    <h1 id="analyzing-data" class="page-header">Routes</h1>
+    <h1 class="page-header">Installation</h1>
+     <div class="bs-callout bs-callout-danger">
+      <h4> Dependencies </h4>
+      <ul>
+        <li>Node.js</li>
+        <li>Redis</li>
+        <li>MongoDB</li>
+      </ul>
+    </div>
 
-    <p> Four basic routes </p>
-    <ul>
-      <li>Form</li>
-      <li>Form Submittal</li>
-      <li>Job ID Page</li>
-      <li>Job ID Results JSON</li>
-    </ul>
+    <h2>Install Node.js</h2>
+    <code>sudo yum install nodejs</code>
 
-    <p> In order to create a new route.</p>
+    <h2>Install Redis</h2>
+    <p><code>sudo yum install redis</code></p>
+    <p><code>sudo service redis-server start</code></p>
 
-    <h4> Example </h4>
+    <h2>Install MongoDB Server</h2>
+    <p><code>sudo yum install mongodb-server</code></p>
+    <p><code>sudo service mongod start</code></p>
+
+    <h2>Install datamonkey-js from Github</h2>
+    <p><code>git clone git@github.com:veg/datamonkey-js.git</code></p>
+    <p><code>cd ./datamonkey-js</code></p>
+    <p><code>npm install</code></p>
+    <p><code>bower install</code></p>
+
+    <h2>Configure and start datamonkey-js</h2>
+    <p><code>cp config/setup.js.tpl config/setup.js</code></p>
+    <p> Configure appropriate settings </p>
+    <p><code>supervisor server.js</code></p>
+
+    <h1 class="page-header">Routes <a href="https://github.com/veg/datamonkey-js/blob/master/app/routes/"><code>app/routes/</code></a></h1>
+
+    <p>
+      <p>There are four basic routes that each analysis needs</p>
+      <ul>
+        <li>Form</li>
+        <li>Form Submittal</li>
+        <li>Job ID Page</li>
+        <li>Job ID Results JSON</li>
+      </ul>
+    </p>
+
+    <div class="bs-docs-example">
+    <div class="bs-callout bs-callout-info">
+      <p>
+        <a href="http://expressjs.com/4x/api.html#app.METHOD">Express.js app.METHOD Documentation</a>
+      </p>
+    </div>
+
+    <h4>Example <a href="https://github.com/veg/datamonkey-js/blob/master/config/routes.js"><code>config/routes.js</code></a></h4>
+    <pre>
+// aBSREL ROUTES
+absrel = require( ROOT_PATH + '/app/routes/absrel');
+app.get('/absrel', absrel.form);
+app.post('/absrel', absrel.upload);
+app.get('/absrel/:id', absrel.getPage);
+app.get('/absrel/:id/results', absrel.getResults);
+    </pre>
+
+
+
+    <p> 
+      Above is a list of all the routes defined for absrel. The url maps to the methods declared in <code>app/routes/absrel.js</code>. 
+      <code>:id</code> refers to a variable in the url itself, and can be accessed in the method by <code>req.params.id</code>.
+    </p>
+
+    </div>
+     
+    <div class="bs-docs-example">
+
+    <div class="bs-callout bs-callout-info">
+      <p>
+        <a href="http://expressjs.com/4x/api.html#res.render">Express.js res.render Documentation</a>
+      </p>
+    </div>
+
+    <h4>Example <a href="https://github.com/veg/datamonkey-js/blob/master/app/routes/absrel.js"><code>app/routes/absrel.js</code></a></h4>
+    <pre>
+exports.form = function(req, res) {
+  var post_to = '/absrel';
+  res.render('absrel/form.ejs', {'post_to' : post_to} );
+}
+    </pre>
+
+
+    <p>
+      <code>exports.form</code> is the method mapped to <code>app.get('/absrel', absrel.form);</code> in the routes example.
+      <code>res.render</code> renders the template found in <code>app/templates/absrel/form.ejs</code>.
+      The JSON object contains the parameters to be sent to the template. 
+    </p>
+
+
+    </div>
+
+    <h1 class="page-header">Models <a href="https://github.com/veg/datamonkey-js/blob/master/app/models/"><code>app/models/</code></a></h1>
+
+    <div class="bs-callout bs-callout-info">
+      <p>
+        Each analysis extends the <code>AnalysisSchema</code> defined in
+        <a href="https://github.com/veg/datamonkey-js/blob/master/app/models/analysis.js"><code>app/models/analysis.js</code></a>, which holds
+        generic attributes that are applicable to all analyses. 
+      </p>
+    </div>
+
+    <h4>Example <a href="https://github.com/veg/datamonkey-js/blob/master/app/models/relax.js"><code>app/models/relax.js</code></a></h4>
+
+    <pre class="code">
+var AnalysisSchema = require(__dirname + '/analysis');
+
+var Relax = AnalysisSchema.extend({
+  msa                   : [Msa.MsaSchema],
+  treemode              : Number,
+  tagged_nwk_tree       : String,
+  analysis_type         : Number,
+  mail                  : String,
+  last_status_msg       : String,
+  results               : Object
+});
+    </pre>
+
+
+    <h2>Virtual Properties</h2>
+
+    <div class="bs-callout bs-callout-info">
+      <p>
+        <a href="http://mongoosejs.com/docs/guide.html#Virtuals">Mongoose Virtuals Documentation</a>
+      </p>
+    </div>
+
+
+<h4>Example <a href="https://github.com/veg/datamonkey-js/blob/master/app/models/absrel.js"><code>app/models/absrel.js</code></a></h4>
+<pre class="code">
+aBSREL.virtual('pmid').get(function() {
+  return '25540451';
+});
+
+aBSREL.virtual('upload_redirect_path').get(function() {
+  return '/absrel/' + this._id;
+});
+</pre>
+
+
+    <p>
+      Virtuals are document properties that you can get and set but that do not
+      persist in the database.
+    </p>
+
+    <h2>Static Methods</h2>
+
+    <div class="bs-callout bs-callout-info">
+      <p>
+        <a href="http://mongoosejs.com/docs/guide.html#Statics">Mongoose Statics Documentation</a>
+      </p>
+    </div>
+
+    <h4>Example <a href="https://github.com/veg/datamonkey-js/blob/master/app/models/msa.js"><code>app/models/msa.js</code></a></h4>
+
+    <pre class="code">
+/**
+ * Ensure that the file is in valid FASTA format
+ * @param fn {String} path to file to be validated
+ */
+Msa.statics.validateFasta = function (fn, cb) {
+
+  seqio.parseFile(fn, function(err, result) {
+
+    if(err) {
+      cb(err, result) 
+      return;
+    }
+
+    if(result.length <= 1) {
+      cb({'msg': '1 sequences or less found'}, false)
+      return;
+    }
+
+    // Check that all sequences are the same length
+    var reference_length = result[0].seq.length
+    var all_the_same = result.every(function(d) {return d.seq.length == reference_length}); 
+
+    if(!all_the_same) {
+      cb({'msg': 'Sequence lengths do not all match'}, false)
+    }
+
+    cb('', true)
+
+  });
+
+}
+    </pre>
+
+
+    <p>
+      A static method is a function that can be called directly. 
+      Define static methods for functions that pertain to the model, 
+      but do not require an initial instantiation. In this example,
+      <code>Msa.validateFasta</code> can be called on a file before creating an
+      msa object.
+    </p>
+
+    <h1 class="page-header">Templates <a href="https://github.com/veg/datamonkey-js/blob/master/app/templates"><code>app/templates/</code></a></h1>
+
+    <div class="bs-callout bs-callout-info">
+      <p>
+        Datamonkey-js uses <a href="http://www.embeddedjs.com/">ejs</a> as the
+        templating engine.
+      </p>
+    </div>
+
+    <p>
+      There are generally four forms for each analysis. 
+    </p>
+
+    <p>
+      <ol>
+        <li>MSA Upload Form</li>
+        <li>Analysis-specific Form (if applicable)</li>
+        <li>Job Status Page</li>
+        <li>Results Page</li>
+      </ol>
+    </p>
+
+
+    <h2>MSA Form</h2>
+    <h4>Example <a href="https://github.com/veg/datamonkey-js/blob/master/app/templates/absrel/form.ejs"><code>app/templates/absrel/form.ejs</code></a></h4>
+
+    <pre>
+<code class="language-html">
+&lt;%- include ../includes/header.ejs %&gt;
+&lt;link href=&quot;/assets/css/absrel.css&quot; rel=&quot;stylesheet&quot;&gt;
+&lt;div id=&quot;container&quot; class=&quot;container&quot;&gt;
+  &lt;%- include header.ejs %&gt;
+  &lt;%- include ../partials/msa/form.ejs %&gt;
+  &lt;%- include ../includes/modal.ejs %&gt;
+&lt;/div&gt;
+&lt;%- include ../includes/footer.ejs %&gt;
+</code>
+    </pre>
+
+
+    <p> 
+      Typically, not much needs to be done for the multiple sequence alignment
+      upload form. Currently, a stub needs to be made for each analysis simply
+      for the header include portion. Once this is parameterized, the form can
+      be generic.
+    </p>
+
+    <h2>Parameter Form</h2>
+    <h4>Example <a href="https://github.com/veg/datamonkey-js/blob/master/app/templates/relax/form.ejs"><code>app/templates/relax/form.ejs</code></a></h4>
+    Frequently, additional parameters need to be specified beyond the multiple sequence alignment. 
+    Choices like which branches to test against may need to be tagged before job submittal. 
+
+    <h2>Job Page</h2>
+    <h4>Example <code>app/templates/absrel/jobpage.ejs</code></h4>
+    <pre>
     <code>
-      // aBSREL ROUTES
-      absrel = require( ROOT_PATH + '/app/routes/absrel');
-      app.get('/absrel', absrel.form);
-      app.post('/absrel', absrel.upload);
-      app.get('/absrel/:id', absrel.getPage);
-      app.get('/absrel/:id/results', absrel.getResults);
+&lt;%- include ../includes/header.ejs %&gt;
+
+&lt;div class=&quot;container&quot; id=&quot;job-report&quot; data-jobid=&quot;&lt;%= job._id %&gt;&quot; data-socket-address=&quot;&lt;%= socket_addr %&gt;&quot;&gt;
+  &lt;%- include header.ejs %&gt;
+  &lt;% if (job.status != &#39;completed&#39;) { %&gt;
+    &lt;%- include ../partials/jobs/jobpage.ejs %&gt;
+  &lt;% } else { %&gt;
+    &lt;%- include ./results.ejs %&gt;
+  &lt;% } %&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;%- include ../includes/modal.ejs %&gt;
+&lt;%- include ../includes/footer.ejs %&gt;
     </code>
-    <p> blurb </p>
+    </pre>
 
-    <h1 id="analyzing-data" class="page-header">Models</h1>
+    <p> 
+      Typically, not much needs to be done for the job page. Currently, a stub
+      needs to be made for each analysis simply for the header include portion. Once
+      this is parameterized, the page can be generic.
+    </p>
 
-    <p> In order to create a new model. Include from Analysis Schema. Include
-    any additional parameters that are unique to the analysis</p>
+    <h2>Results Page</h2>
+    <h4>Example <a href="https://github.com/veg/datamonkey-js/blob/master/app/templates/absrel/results.ejs"><code>app/templates/absrel/results.ejs</code></a></h4>
 
-    <p> virtual functions </p>
-    <p> static functions </p>
+    <div class="bs-callout bs-callout-info">
+      <p>
+        HyPhy-Vision is a shared repository that is used by datamonkey, stand-alone applications, and HyPhy 3.
+      </p>
+    </div>
 
-    <code>
-    var AnalysisSchema = require(__dirname + '/analysis');
-
-    var Relax = AnalysisSchema.extend({
-      msa                   : [Msa.MsaSchema],
-      treemode              : Number,
-      tagged_nwk_tree       : String,
-      analysis_type         : Number,
-      mail                  : String,
-      last_status_msg       : String,
-      results               : Object
-    });
-    </code>
-
-    <h1 id="analyzing-data" class="page-header">Templates</h1>
-    <p>Create an msa form</p>
-    <p>Create a form (if applicable)</p>
-    <p>Create a job status page</p>
-    <p>Create a results page</p>
-
-    <h2 id="analyzing-data" class="page-header">MSA Form</h1>
-    Need to create stub per analysis
-
-    <h2 id="analyzing-data" class="page-header">Parameter Form</h1>
-
-    <h2 id="analyzing-data" class="page-header">Job Page</h1>
+    <p>
+      Results pages are custom for each analysis. The results JavaScript found
+      in a different repo entitled <a href="https://github.com/veg/hyphy-vision">hyphy-vision</a>, 
+      and is installed via <a href="http://bower.io/">bower</a>.
+    </p>
 
 
-    <h1 id="analyzing-data" class="page-header">Dispatcher on Silverback</h1>
-    <p>Create a new directory in app/</p>
-    <p>Edit server.js to include new analysis</p>
+    <h1 class="page-header">Static Assets</h1>
+
+    <p>
+      Static assets are located in <a href="https://github.com/veg/datamonkey-js/blob/master/public/assets/"><code>public/assets</code></a>. 
+      The location for static assets is set in <code>server.js</code> by the
+      line <code>app.use(express.static(__dirname + '/public'));</code>.
+    </p>
+
+    <h1 class="page-header">Dispatcher on Silverback</h1>
+
+    <h4>Job Format</h4>
+    <pre>
+var jobproxy = new hpcsocket.HPCSocket({'filepath'    : absrel_result.filepath, 
+                                        'msa'         : absrel_result.msa,
+                                        'analysis'    : absrel_result,
+                                        'status_stack': absrel_result.status_stack,
+                                        'type'        : 'absrel'}, connect_callback);
+    </pre>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>property</th>
+          <th>description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>filepath</code></td>
+          <td>Typically, this will be declared as a virtual for the object.</td>
+        </tr>
+        <tr>
+          <td><code>msa</code></td>
+          <td>Typically, this will be a property of the analysis object.</td>
+        </tr>
+        <tr>
+          <td><code>analysis</code></td>
+          <td>The analysis object.</td>
+        </tr>
+        <tr>
+          <td><code>status stauck</code></td>
+          <td>Obsolete</td>
+        </tr>
+        <tr>
+          <td><code>type</code></td>
+          <td>Type of analysis being sent. <code>TODO:</code> This should be a virtual property of the analysis object.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h4>Edit server.js <code>server.js</code></h4>
+
+    <pre>
+      switch(params.job.type) {
+
+        case 'hivtrace':
+          new hivtrace.HIVTraceAnalysis(socket, stream, params.job.analysis);
+          break;
+        case 'prime':
+          new prime.PrimeAnalysis(socket, stream, params);
+          break;
+        case 'busted':
+          new busted.BustedAnalysis(socket, stream, params.job);
+          break;
+        case 'relax':
+          new relax.RelaxAnalysis(socket, stream, params.job);
+          break;
+        case 'absrel':
+          new absrel.aBSRELAnalysis(socket, stream, params.job);
+          break;
+        default:
+          socket.emit('error', 'type not recognized');
+          socket.disconnect();
+      }
+    </pre>
+
+    <p>Edit <code>server.js</code> to include new analysis in the case statement.</p>
+
+    <h4>Create a New Directory Example <a href="https://github.com/veg/datamonkey-server/blob/socketio/app/absrel/"><code>app/absrel/</code></a></h4>
+    <pre>
+16:20:41 sweaver@silverback absrel socketio ls -lath
+total 116K
+drwxr-xr-x  3 sweaver sweaver   96 Mar  2 16:19 .
+drwxr-xr-x  2 sweaver sweaver  40K Feb 25 16:36 output
+-rw-r--r--  1 sweaver veg     6.3K Feb 25 16:29 spawn_absrel.js
+-rwxr-xr-x  1 sweaver veg      703 Feb 25 16:26 absrel.sh
+-rw-r--r--  1 sweaver veg     3.0K Feb 25 16:26 absrel.js
+-rw-r--r--  1 sweaver veg      37K Feb 25 16:26 BranchSiteREL.bf
+    </pre>
+
+
+    <p>
+      <ul>
+
+        <li>
+            <a href="https://github.com/veg/datamonkey-server/blob/socketio/app/absrel/absrel.js"><code>absrel.js</code></a> - Holds main <code>aBSRELAnalysis</code> class
+            definition. Wraps events triggerd by <code>spawn_absrel.js</code> and emits
+            them to socket. Starts analysis once file and parameters have completed
+            transferring.
+        </li>
+        <li>
+          <a href="https://github.com/veg/datamonkey-server/blob/socketio/app/absrel/spawn_absrel.js"><code>spawn_absrel.js</code></a> - Holds <code>aBSRELRunner</code> class. Submits job to qsub and emits status updates.
+        </li>
+        <li>
+          <a href="https://github.com/veg/datamonkey-server/blob/socketio/app/absrel/absrel.sh"><code>absrel.sh</code></a> - The qsub shell script run by <code>spawn_absrel.js</code>.
+        </li>
+        <li>
+          <a href="https://github.com/veg/datamonkey-server/blob/socketio/app/absrel/BranchSiteRel.bf"><code>BranchSiteRel.bf</code></a> - Batch file used by
+          <code>absrel.sh</code> (Should use batch file held in
+          <code>node_modules/hyphy/res/TemplateBatchFiles</code> instead.
+        </li>
+      </ul>
+
+      <p>
+        <h2>Supported Socket.io Keywords</h2>
+
+        <div class="bs-callout bs-callout-info">
+          The class responsible for socket.io communication between the
+          cluster and datamonkey is <code>HPCSocket</code> located in
+          <a href="https://github.com/veg/datamonkey-js/blob/master/lib/hpcsocket.js"><code>lib/hpcsocket.js</code></a> 
+          in the datamonkey-js repo.
+        </div>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>keyword</th>
+              <th>description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>job created</code></td>
+              <td>Job has successfully been submitted via qsub; returns torque id</td>
+            </tr>
+            <tr>
+              <td><code>status update</code></td>
+              <td>Status Update from job. Typically triggers when a change has been made to the progress file.</td>
+            </tr>
+            <tr>
+              <td><code>completed</code></td>
+              <td>Job has completed, sends results files, if any.</td>
+            </tr>
+            <tr>
+              <td><code>script error</code></td>
+              <td>A fatal error has occured with the dispatched job.</td>
+            </tr>
+          </tbody>
+        </table>
+      </p>
+    </p>
 
     <!--<div class="bs-callout bs-callout-info">-->
     <!--  <p>-->
     <!--    Complete model selection procedure details can be found in this <a  href='http://mbe.oxfordjournals.org/cgi/content/short/22/5/1208'> MBE paper</a>-->
     <!--  </p>-->
     <!--</div>-->
+
+    <h1 class="page-header">Future Work</h1>
+    <ul>
+      <li>Change case statement in <code>server.js</code> to routes on the cluster</li>
+      <li>Generalize event to socket.io methods</li>
+      <li>Standardize socket.io keyword messages</li>
+    </ul>
+
+
 
   </div>
 

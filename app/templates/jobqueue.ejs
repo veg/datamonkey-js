@@ -9,7 +9,7 @@
     <tbody>
     <% for(var l in jobs) { %>
       <% if (jobs[l].job_info.id) { %>
-        <tr><td><a href="/<%=jobs[l].job_info.type%>/<%=jobs[l].job_info.id%>"><%=jobs[l].torque_info.id%></a></td>
+        <tr><td><%=jobs[l].torque_info.id%></td>
       <% } else { %>
         <tr><td><%=jobs[l].torque_info.id%></td>
       <% } %>

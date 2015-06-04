@@ -2,7 +2,7 @@
 
   Datamonkey - An API for comparative analysis of sequence alignments using state-of-the-art statistical models.
 
-  Copyright (C) 2014
+  Copyright (C) 2015
   Sergei L Kosakovsky Pond (spond@ucsd.edu)
   Steven Weaver (sweaver@ucsd.edu)
 
@@ -77,20 +77,23 @@ var Sequences = new Schema({
 });
 
 var Msa = new Schema({
-    datatype       : {type : Number, require : true},
-    partition_info : [PartitionInfo],
-    sequence_info  : [Sequences],
-    attribute_map  : Object,
-    partitions     : Number,
-    sites          : Number,
-    rawsites       : Number,
-    sequences      : Number,
-    gencodeid      : Number,
-    goodtree       : Number,
-    nj             : String,
-    usertree       : String,
-    mailaddr       : String,
-    created        : {type : Date, default : Date.now}
+    datatype          : {type : Number, require : true},
+    partition_info    : [PartitionInfo],
+    sequence_info     : [Sequences],
+    attribute_map     : Object,
+    partitions        : Number,
+    sites             : Number,
+    rawsites          : Number,
+    sequences         : Number,
+    gencodeid         : Number,
+    goodtree          : Number,
+    nj                : String,
+    usertree          : String,
+    visit_code        : String,
+    visit_date        : Date,
+    original_filename : String,
+    mailaddr          : String,
+    created           : {type : Date, default : Date.now}
 });
 
 Msa.virtual('genetic_code').get(function () {
@@ -173,6 +176,27 @@ Msa.methods.aminoAcidTranslation = function (cb) {
 };
 
 Msa.methods.dataReader = function (file, cb) {
+  if (file.indexOf('fastq') != -1) {
+
+    // TODO: Support FASTQ 
+    var result = {};
+    result.FILE_INFO = {};
+    result.FILE_PARTITION_INFO = {};
+    result.SEQUENCES = [];
+
+    result.FILE_INFO.partitions = -1;
+    result.FILE_INFO.gencodeid  = -1;
+    result.FILE_INFO.sites      = -1;
+    result.FILE_INFO.sequences  = -1;
+    result.FILE_INFO.timestamp  = -1;
+    result.FILE_INFO.goodtree   = 0;
+    result.FILE_INFO.nj         = '';
+    result.FILE_PARTITION_INFO.usertree = '';
+    result.FILE_INFO.rawsites   = -1;
+    cb('', result);
+
+    return;
+  }
 
   var hyphy_process = globals.hyphy +  ' ' + __dirname + "/../../lib/bfs/datareader.bf";
   winston.info(globals.hyphy +  ' ' + __dirname + '/../../lib/bfs/datareader.bf' + ' : ' + 'spawning process');

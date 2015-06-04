@@ -29,30 +29,30 @@
 
 var mongoose  = require('mongoose'),
     extend    = require('mongoose-schema-extend'),
+    fs        = require('fs'),
+    tar       = require('tar-fs'),
     Msa       = require(__dirname + '/msa');
 
 var AnalysisSchema = require(__dirname + '/analysis');
 
-var Relax = AnalysisSchema.extend({
-  tagged_nwk_tree       : String,
-  analysis_type         : Number,
+var Flea = AnalysisSchema.extend({
+  msas                  : [Msa.MsaSchema],
   last_status_msg       : String,
-  results               : Object
-});
-
-Relax.virtual('analysistype').get(function() {
-  return 'relax';
-});
-
-Relax.virtual('pmid').get(function() {
-  return '25540451';
+  mail                  : String,
+  results               : Object,
+  rates                 : Object,
+  frequencies           : Object,
+  trajectory            : Object,
+  gene                  : Object,
+  trees                 : Object,
+  neutralization        : Object
 });
 
 /**
  * Filename of document's file upload
  */
-Relax.virtual('status_stack').get(function () {
-  return ['queue', 
+Flea.virtual('status_stack').get(function () {
+  return ['queueing', 
           'running',
           'completed'];
 });
@@ -60,16 +60,29 @@ Relax.virtual('status_stack').get(function () {
 /**
  * Complete file path for document's file upload
  */
-Relax.virtual('filepath').get(function () {
-  return __dirname + '/../../uploads/msa/' + this._id + '.fasta';
+Flea.virtual('filepath').get(function () {
+  return __dirname + '/../../uploads/flea/' + this._id + '.tar';
 });
 
 /**
- * URL for a relax path
+ * Complete file path for document's file upload
  */
-Relax.virtual('url').get(function () {
-  return 'http://' + setup.host + '/relax/' + this._id;
+Flea.virtual('filedir').get(function () {
+  return __dirname + '/../../uploads/flea/' + this._id + '/';
 });
 
 
-module.exports = mongoose.model('Relax', Relax);
+/**
+ * URL for a envmonkey path
+ */
+Flea.virtual('url').get(function () {
+  return 'http://' + setup.host + '/flea/' + this._id;
+});
+
+Flea.statics.pack = function(flea) {
+  return tar.pack(flea.filedir).pipe(fs.createWriteStream(flea.filepath));
+}
+
+
+module.exports = mongoose.model('Flea', Flea);
+

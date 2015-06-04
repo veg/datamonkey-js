@@ -36,6 +36,8 @@ HOST      = setup.host;
 var express          = require('express'),
     expressValidator = require('express-validator'),
     mongoose         = require('mongoose'),
+    upload           = require('jquery-file-upload-middleware'),
+    helpers          = require('./lib/helpers'),
     fs               = require('fs'),
     path             = require("path"),
     io               = require('socket.io').listen(setup.socket_port);
@@ -62,17 +64,30 @@ fs.mkdir(__dirname + '/uploads', '0750', function(e) {
 // ensure logging dir exists
 fs.mkdir(__dirname + '/logs', '0750', mkdirErrorLogger);
 
+// TODO: Move this out of main
+upload.configure({
+  //TODO: customize filename
+  uploadDir: __dirname + '/uploads/flea/tmp',
+  uploadUrl: '/fleaupload',
+});
+
+upload.on('end', function (fileInfo, req, res) { 
+});
+
 // Main app configuration
 var app = express();
+
 app.configure(function () {
-    app.use(express.compress());
-    app.use(require('morgan')({ 'stream': logger.stream }));
-    app.use(expressValidator);
-    app.use(express.bodyParser());
-    app.use(express.limit('25mb'));
-    app.use(app.router);
-    app.set('json spaces', 0);
+  app.use(express.compress());
+  app.use(require('morgan')({ 'stream': logger.stream }));
+  app.use(expressValidator);
+  app.use('/fleaupload', upload.fileHandler());
+  app.use(express.bodyParser());
+  app.use(express.limit('25mb'));
+  app.use(app.router);
+  app.set('json spaces', 0);
 });
+
 
 // Bootstrap models
 var models_path = __dirname + '/app/models';
@@ -84,6 +99,7 @@ require('./config/routes')(app);
 app.set('views', __dirname + '/app/templates');
 app.engine('html', require('ejs').renderFile);
 app.use(express.static(__dirname + '/public'));
+app.use('/flea/', express.static(__dirname + '/public/assets/lib/flea/dist/'));
 app.use('/uploads', express.static(__dirname + '/uploads'));
 
 

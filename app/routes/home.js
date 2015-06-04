@@ -107,7 +107,6 @@ exports.jobQueue = function(req, res) {
   }
 
   function connect_callback(result) {
-    console.log(result);
 
     var analyses = Object.keys(mongoose.modelSchemas);
 
@@ -195,7 +194,18 @@ exports.jobQueue = function(req, res) {
     });
   }
 
-  var jobproxy = new hpcsocket.JobQueue(connect_callback);
+  //var jobproxy = new hpcsocket.JobQueue(connect_callback);
+  //res.json(200, jobs);
+  var jobs = [];
+  res.format({
+    html: function(){
+      res.render('jobqueue.ejs', {'jobs' : jobs});
+    },
+    json: function() {
+      res.json(200, jobs);
+    }
+  });
+
 
 };
 

@@ -68,8 +68,6 @@ exports.invoke = function(req, res) {
 
     var absrel = new aBSREL();
 
-    // Create neighbor joining tree
-
     absrel.msa = msa;
     absrel.status = absrel.status_stack[0];
 
@@ -143,7 +141,6 @@ exports.getResults = function(req, res) {
     } else {
       // Should return results page
       // Append PMID to results
-      console.log(absrel.results);
       var absrel_results =  JSON.parse(absrel.results);
       absrel_results['PMID'] = absrel.pmid;
       res.json(200, absrel_results);

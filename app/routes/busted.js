@@ -154,8 +154,9 @@ exports.invokeBusted = function(req, res) {
         // Redisplay form with errors
         res.format({
           html: function() {
-            res.render('busted/form.ejs', {'errors': err.errors,
-                                                    'busted' : busted});
+            res.render('busted/form.ejs', { 'errors': err.errors,
+                                            'busted' : busted
+                                          });
           },
           json: function() {
             // Save BUSTED analysis
@@ -195,19 +196,19 @@ exports.getBusted = function(req, res) {
   //Return all results
   Busted.findOne({_id : bustedid}, function(err, busted) {
 
-    if(!busted.last_status_msg) {
-      busted.last_status_msg = '';
-    }
-
-    if(!busted.torque_id) {
-      busted.torque_id = '';
-    }
-
-
     if (err || !busted ) {
       logger.error(err);
       res.json(500, error.errorResponse('Invalid ID : ' + bustedid ));
     } else {
+
+      if(!busted.last_status_msg) {
+        busted.last_status_msg = '';
+      }
+
+      if(!busted.torque_id) {
+        busted.torque_id = '';
+      }
+
       // Should return results page
       res.render('busted/jobpage.ejs', { job : busted, 
                                                  socket_addr: 'http://' + setup.host + ':' + setup.socket_port 

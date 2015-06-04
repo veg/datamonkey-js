@@ -196,6 +196,7 @@ exports.jobPage = function (req, res) {
     if (err || !hivtrace) {
       res.json(500, error.errorResponse('hivtrace : ' + id + ' : missing id'));
     } else {
+
       if(hivtrace.status === undefined) {
 
         var callback = function(err) {
