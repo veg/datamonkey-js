@@ -285,19 +285,23 @@ HivTrace.statics.createAttributeMap = function (fn, cb) {
       err = is_consistent.info;
     }
 
-    cb(err, {"headers": headers, "map" : attr_map[best_delimiter], "delimiter": best_delimiter});
+    cb(err, {"headers" : headers, "map" : attr_map[best_delimiter], "delimiter" : best_delimiter });
 
   });
 
 };
 
 HivTrace.statics.parseHeaderFromMap = function (header, attr_map) {
+
   parsed = {};
+
   var arr = header.split(attr_map.delimiter);
   for(var i in arr) {
+
     if(!parsed[attr_map.map[i]]) {
       parsed[attr_map.map[i]] = arr[i];
     } else {
+
       var c = 1;
       var new_key = attr_map.map[i] + c;
 
@@ -310,7 +314,9 @@ HivTrace.statics.parseHeaderFromMap = function (header, attr_map) {
 
     }
   }
+
   return parsed;
+
 };
 
 

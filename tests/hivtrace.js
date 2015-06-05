@@ -27,7 +27,9 @@
 
 */
 
-var fs = require('fs');
+var fs      = require('fs');
+    path    = require('path'),
+    winston = require('winston');
 
 var mongoose = require('mongoose');
 
@@ -43,10 +45,11 @@ describe('attribute map check', function() {
   this.timeout(5000);
 
   it('should return an attribute map', function(done) {
-    var fn = __dirname + '/res/HIV_B_pol_10k.fa';
+    var fn = path.join(__dirname, '/res/HIV_B_pol_10k.fa');
     HivTrace.createAttributeMap(fn, function(err, result) {
 
-      err.should.not.be.ok;
+      (err === null).should.be.ok;
+
       result['map'][0].should.be.exactly("subtype");
       result['map'][1].should.be.exactly("country");
       result['map'][2].should.be.exactly("id");
@@ -58,12 +61,14 @@ describe('attribute map check', function() {
       parsed_attributes['date'].should.be.exactly("1982");
 
       done();
+
     });
 
   });
 
   it('should return an error', function(done) {
-    var fn = __dirname + '/res/BAD_HIV_B_pol_10k.fa';
+
+    var fn = path.join(__dirname, '/res/BAD_HIV_B_pol_10k.fa');
     HivTrace.createAttributeMap(fn, function(err, result) {
       err.failed_headers[0].should.eql('BUS_M17451_1983');
       done();
@@ -72,7 +77,8 @@ describe('attribute map check', function() {
   });
 
   it('should return an error', function(done) {
-    var fn = __dirname + '/res/Flu.fasta';
+
+    var fn = path.join(__dirname, '/res/Flu.fasta');
     HivTrace.createAttributeMap(fn, function(err, result) {
       done();
     });
