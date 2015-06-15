@@ -1,72 +1,51 @@
-  <div class="row">
+<div class="row">
 
-    <div id="job-status-animation" class="col-lg-5 job-status" data-status="<%= job.status %>">
-       <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title">
-            <svg width="100" height="20">
-              <circle class="queue" cx="7" cy="10" r="5"></circle>
-              <circle class="running" cx="27" cy="10" r="5"></circle>
-              <circle class="completed" cx="47" cy="10" r="5"></circle>
-            </svg> 
-          </h3>
-        </div>
+  <section class="bs-callout bs-callout-warning panel panel-status">
 
-        <div class="panel-body">
-          <table class="table borderless">
-            <tbody>
-              <tr><td><span class="glyphicon glyphicon-dashboard"></span><b> Job Status</b></td><td id="job-status-text"><%= job.status.capitalize() %></td></tr>
-              <tr><td><span class="glyphicon glyphicon-tag"></span><b> Ticket Number</b></td><td id="torque_id">
-              <% if(job.torque_id) { %> <%= job.torque_id %> <% } else { %> Waiting for Ticket Number <% } %> </td></tr>
-              <tr id="wait-time-row" class="hidden"><td><span class="glyphicon glyphicon-time"></span><b> Waiting Time</b></td><td id="job-wait-time" data-created="<%=job.create_time %>">00:00:00</td></tr>
-              <tr id="run-time-row" class="hidden"><td><span class="glyphicon glyphicon-time"></span><b> Running Time</b></td><td id="job-run-time" data-started="<%=job.start_time %>">00:00:00</td></tr>
-              <!--<tr><td><span class="glyphicon glyphicon-time"></span><b> Time Since Last Status Update</b></td><td>00:00:00</td></tr>-->
-            </tbody>
-          </table>
-        </div>
+    <div class="panel-body">
+
+      <div class="col-lg-4">
+        <ul class="list-unstyled">
+          <li><span class="glyphicon glyphicon-dashboard"></span><h6> Job is currently </h6><span id="job-status-text"><%= job.status %></span></li>
+          <li><span class="glyphicon glyphicon-tag"></span><h6> Ticket Number </h6><span id="torque_id"><% if(job.torque_id) { %> <%= job.torque_id %> <% } else { %> Waiting for Ticket Number <% } %> </span></li>
+        </ul>
       </div>
-    </div>
 
-    <div class="col-lg-6 job-status">
+      <div class="col-lg-4">
+        <ul class="list-unstyled">
+          <li id="run-time-row"><span class="glyphicon glyphicon-time"></span><h6> Running for </h6><span id="job-run-time" data-started="<%=job.start_time %>">-</span></li>
+          <li id="job-submitted-time-row"><span class="glyphicon glyphicon-calendar"></span><h6> Job submitted </h6><span id="job-created" data-started="<%=job.creation_time %>">-</span></li>
+        </ul>
+      </div>
 
-       <div class="panel panel-default">
-
-        <div class="panel-heading">
-          <h3 class="panel-title">
-            Job Queue
-          </h3>
-        </div>
-
-        <div id="job-queue-panel" class="panel-body">
-          <!-- include partial -->
-          <%- include ../jobqueue.ejs %>
-        </div>
+      <div class="col-lg-4 pull-right">
+        <ul class="list-unstyled pull-right">
+          <li class="job-cancel"><a href="void(0)" alt="Cancel Job"><span class="glyphicon glyphicon-remove-circle"></span></a></li>
+        </ul>
       </div>
 
     </div>
 
+  </section>
 
+<% if (job.status == 'aborted') { %>
+  <div class="alert alert-danger">There was an error! Please try again. <code><%= job.error_message %></code></div>
+<% } %>
 
-  </div>
-
-  <!--<div id="time-status">
-    <div id="job-timer" data-created="<%= job.timestamp%>"><h6><span class="glyphicon glyphicon-time"></span><span class="time"> 00:00:00</span></h6></div>
-  </div>-->
-
-  <% if (job.status == 'aborted') { %>
-    <div class="alert alert-danger">There was an error! Please try again. <code><%= job.error_message %></code></div>
-  <% } else { %>  
-  <div id="standard-output"  <% if(!job.last_status_msg) { %> class="hidden" <% } %> >
-      <div class="panel-body">
-        <h6> Standard Output </h6>
-        <pre id="job-pre">
-          <%= job.last_status_msg %>
-        </pre>
-      </div>
-  </div>
-  <% } %>
+<div id="standard-output"  <% if(!job.last_status_msg) { %> class="hidden" <% } %> >
+  <div class="panel-body">
+    <h6> Standard Output </h6>
+    <a href="<%= job._id%>/log.txt">
+    <button id="job-stdout-copy-button" class="btn btn-default btn-sm pull-right" type="button">
+      <span class="glyphicon glyphicon-download"></span> Download Log
+    </button>
+    </a>
+    <pre id="job-pre"><%= job.last_status_msg %></pre>
   </div>
 </div>
 
+</div>
+
 <script src="/assets/lib/socket.io-client/socket.io.js"></script>
+<script src="/assets/lib/moment/moment.js"></script>
 <script src="/assets/js/job.js"></script>

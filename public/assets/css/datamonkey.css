@@ -42,18 +42,14 @@
 
 }
 
+.datamonkey-header h1{
+ font-family: "Droid Serif", Georgia;; 
+ font-size: 12em;
+}
+
+
 label {
  font-family: "Droid Serif", Georgia;; 
-}
-
-.datamonkey-sm-header h1{
- font-family: "Droid Serif", Georgia;; 
- /*margin-left: 15px;*/
- font-size: 3em;
-}
-
-.datamonkey-sm-header p {
- /*margin-left: 15px;*/
 }
 
 .datamonkey-sm-header {
@@ -67,7 +63,7 @@ label {
   font-size: 16px;
   font-weight: 300;
   line-height: 1.4;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 
   /*color: #cdbfe3;*/
   padding: 30px 0px;
@@ -76,10 +72,20 @@ label {
 
 }
 
-.datamonkey-header h1{
+
+.datamonkey-sm-header h1{
  font-family: "Droid Serif", Georgia;; 
- font-size: 12em;
+ /*margin-left: 15px;*/
+ font-size: 3em;
+ display : inline;
+ padding-bottom:5px;
 }
+
+.datamonkey-sm-header p {
+ margin-left: 15px;
+ display:inline;
+}
+
 
 .lead {
   font-size: 16px;
@@ -613,4 +619,28 @@ span.glyphicon {
 
 #job-stdout-copy-button {
   margin-left : 5px;
+}
+
+.panel-status {
+  /*max-height : 145px;*/
+  background-color: #FAFAF8;
+  font-family : "Droid Serif",Georgia;
+  font-size : 12px;
+  padding : 0px;
+}
+
+.panel-status h6 {
+  display : inline;
+}
+
+.panel-body {
+  /*padding : 0px;*/
+}
+
+.panel-status li {
+  padding : 3px; 
+}
+
+.job-concel {
+  font-size : 25px;
 }

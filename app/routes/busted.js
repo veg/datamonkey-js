@@ -32,7 +32,8 @@ var querystring = require('querystring'),
     helpers     = require( __dirname + '/../../lib/helpers.js'),
     hpcsocket   = require( __dirname + '/../../lib/hpcsocket.js'),
     fs          = require('fs'),
-    logger     = require('../../lib/logger');
+    winston     = require('winston'),
+    logger      = require('../../lib/logger');
 
 var mongoose = require('mongoose'),
     Msa = mongoose.model('Msa'),
@@ -169,7 +170,6 @@ exports.invokeBusted = function(req, res) {
 
         var connect_callback = function(data) {
           if(data == 'connected') {
-            //TODO
             logger.log('connected');
           }
         };
@@ -210,9 +210,10 @@ exports.getBusted = function(req, res) {
       }
 
       // Should return results page
-      res.render('busted/jobpage.ejs', { job : busted, 
-                                                 socket_addr: 'http://' + setup.host + ':' + setup.socket_port 
-                                               });
+      res.render('busted/jobpage.ejs', {  
+                                         job         : busted, 
+                                         socket_addr : 'http://' + setup.host + ':' + setup.socket_port 
+                                       });
     }
   });
 };
@@ -239,5 +240,27 @@ exports.getBustedResults = function(req, res) {
 
 exports.resubscribePendingJobs = function(req, res) {
   Busted.subscribePendingJobs();
+};
+
+
+/**
+ * Returns log txt file 
+ * app.get('/msa/:msaid/busted/:bustedid/results', busted.getBustedResults);
+ */
+exports.getBustedLog = function(req, res) {
+
+  var bustedid = req.params.bustedid;
+
+  //Return all results
+  Busted.findOne({_id : bustedid}, function(err, busted) {
+    if (err || !busted ) {
+      winston.info(err);
+      res.json(500, error.errorResponse('invalid id : ' + bustedid ));
+    } else {
+      res.set({'Content-Disposition' : 'attachment; filename=\"log.txt\"'});
+      res.set({'Content-type' : 'text/plain'});
+      res.send(busted.last_status_msg);
+    }
+  });
 };
 

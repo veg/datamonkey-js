@@ -25,7 +25,8 @@
   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-//Routes
+
+var path = require('path');
 
 module.exports = function(app) {
 
@@ -59,6 +60,7 @@ module.exports = function(app) {
   app.post('/busted/:id/select-foreground', busted.invokeBusted);
   app.get('/busted/:bustedid', busted.getBusted);
   app.get('/busted/:bustedid/results', busted.getBustedResults);
+  app.get('/busted/:bustedid/log.txt', busted.getBustedLog);
   busted.resubscribePendingJobs();
 
   // RELAX ROUTES
@@ -111,7 +113,7 @@ module.exports = function(app) {
   app.get('/flea/data/:id/copynumbers', flea.getCopyNumbers);
 
   // STATS ROUTES
-  stats = require( ROOT_PATH + '/app/routes/stats');
-  app.get('/:type/usage', stats.usageStatistics);
+  //stats = require( ROOT_PATH + '/app/routes/stats');
+  //app.get('/:type/usage', stats.usageStatistics);
 
 }

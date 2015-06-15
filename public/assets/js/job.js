@@ -1,8 +1,6 @@
-$(document).ready(function(){
+$(document).ready(function() {
   setupJob();
-  var current_status = $("#job-status-animation").data("status");
-  colorStatusButton(current_status);
-  datamonkey.jobQueue('#job-queue-panel');
+  //datamonkey.jobQueue('#job-queue-panel');
 });
 
 
@@ -39,11 +37,11 @@ function jobRuntime() {
   }
 }
 
-
 function setupJob() {
 
   var jobid = $('#job-report').data('jobid');
   var socket_address = $('#job-report').data('socket-address');
+
   var socket = io.connect(socket_address, {
         reconnect: false
       });
@@ -51,43 +49,38 @@ function setupJob() {
   var was_error = false;
 
   if($('#job-run-time').data('started') != "undefined") {
-    d3.select("#run-time-row").classed({'hidden': false})
+    d3.select("#run-time-row").classed({'hidden' : false})
     var intervalID = window.setInterval(jobRuntime, 1000);
   } else if($('#job-wait-time').data('created')) {
-    d3.select("#wait-time-row").classed({'hidden': false})
+    d3.select("#wait-time-row").classed({'hidden' : false})
     var intervalID = window.setInterval(jobWaitTime, 1000);
   }
 
 
   var changeStatus = function (data) {
-    //data is index and message
-    colorStatusButton(data.phase.status)
+
     if(data.msg != undefined) {
-      d3.select("#standard-output").classed({'hidden': false})
+      d3.select("#standard-output").classed({'hidden' : false})
       $('#job-pre').html(data.msg)
     }
 
-    // Update times
-
-    // If phase is queue, then update jobWaitTime
     if(data.creation_time) {
-      d3.select("#wait-time-row").classed({'hidden': false})
+      d3.select("#wait-time-row").classed({'hidden' : false})
       $('#job-wait-time').data('created', data.creation_time);
       var intervalID = window.setInterval(jobWaitTime, 1000);
     }
 
     if(data.start_time) {
-      // If phase is running, then update jobRunningTime
-      d3.select("#wait-time-row").classed({'hidden': true})
+      d3.select("#wait-time-row").classed({'hidden' : true})
       $('#job-run-time').data('started', data.start_time);
       var intervalID = window.setInterval(jobRuntime, 1000);
     } else {
-      d3.select("#run-time-row").classed({'hidden': true})
+      d3.select("#run-time-row").classed({'hidden' : true})
     }
 
-    // Update job queue panel
-    datamonkey.jobQueue('#job-queue-panel');
-
+    if(data.phase) {
+      $('#job-status-text').html(data.phase)
+    }
 
   }
 
@@ -156,14 +149,3 @@ function setupJob() {
 
 }
 
-function colorStatusButton(status) {
-
-  $("#job-status-text").text(datamonkey.helpers.capitalize(status));
-
-  var circle = d3.selectAll(".job-status circle")
-               .style("fill-opacity", 0.5);
-
-  var circle = d3.selectAll("." + status)
-               .style("fill-opacity", 0.9);
-  
-}
