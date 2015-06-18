@@ -31,7 +31,7 @@ var path = require('path');
 module.exports = function(app) {
 
   // HOME PAGE
-  home = require( ROOT_PATH + '/app/routes/home');
+  home = require(path.join(__dirname, '../app/routes/home'));
   app.get('/', home.homePage);
   app.get('/help', home.help);
   app.get('/jobqueue', home.jobQueue);
@@ -44,27 +44,21 @@ module.exports = function(app) {
   app.get('/copyright_notice', home.copyright);
   app.get('/uploads', home.data_privacy);
   
-  //// PRIME ROUTES
-  //prime = require( ROOT_PATH + '/app/routes/prime');
-  //app.get('/msa/:msaid/prime', prime.createForm);
-  //app.post('/msa/:msaid/prime', prime.invokePrime);
-  //app.get('/msa/:msaid/prime/:primeid/status', prime.getStatus);
-  //app.get('/msa/:msaid/prime/:primeid', prime.getPrime);
-  //app.delete('/msa/:msaid/prime/:primeid', prime.deletePrime);
-
   // BUSTED ROUTES
-  busted = require( ROOT_PATH + '/app/routes/busted');
+  busted = require(path.join(__dirname, '../app/routes/busted'));
   app.get('/busted', busted.createForm);
   app.post('/busted/uploadfile', busted.uploadFile);
   app.get('/busted/:id/select-foreground', busted.selectForeground);
   app.post('/busted/:id/select-foreground', busted.invokeBusted);
   app.get('/busted/:bustedid', busted.getBusted);
+  app.get('/busted/:bustedid/info', busted.getBustedInfo);
+  app.get('/busted/:bustedid/cancel', busted.cancel);
   app.get('/busted/:bustedid/results', busted.getBustedResults);
   app.get('/busted/:bustedid/log.txt', busted.getBustedLog);
-  busted.resubscribePendingJobs();
+  //busted.resubscribePendingJobs();
 
   // RELAX ROUTES
-  relax = require( ROOT_PATH + '/app/routes/relax');
+  relax = require(path.join(__dirname, '../app/routes/relax'));
   app.get('/relax', relax.createForm);
   app.post('/relax/uploadfile', relax.uploadFile);
   app.get('/relax/:id/select-foreground', relax.selectForeground);
@@ -73,18 +67,18 @@ module.exports = function(app) {
   app.get('/relax/:relaxid/restart', relax.restartRelax);
   app.get('/relax/:relaxid/results', relax.getRelaxResults);
   app.get('/relax/:relaxid/recheck', relax.getRelaxRecheck);
-  relax.resubscribePendingJobs();
+  //relax.resubscribePendingJobs();
 
   // aBSREL ROUTES
-  absrel = require( ROOT_PATH + '/app/routes/absrel');
+  absrel = require(path.join(__dirname, '../app/routes/absrel'));
   app.get('/absrel', absrel.form);
   app.post('/absrel', absrel.invoke);
   app.get('/absrel/:id', absrel.getPage);
   app.get('/absrel/:id/results', absrel.getResults);
-  absrel.resubscribePendingJobs();
+  //absrel.resubscribePendingJobs();
 
   // HIV TRACE ROUTES
-  hivtrace = require( ROOT_PATH + '/app/routes/hivtrace');
+  hivtrace = require(path.join(__dirname, '../app/routes/hivtrace'));
   app.get('/hivtrace', hivtrace.clusterForm);
   app.post('/hivtrace/uploadfile', hivtrace.uploadFile);
   app.get('/hivtrace/:id/map-attributes', hivtrace.mapAttributes);
@@ -97,7 +91,7 @@ module.exports = function(app) {
   app.get('/hivtrace/:id/attributes', hivtrace.attributeMap);
 
   // FLEA ROUTES
-  flea = require( ROOT_PATH + '/app/routes/flea');
+  flea = require(path.join(__dirname, '../app/routes/flea'));
   app.get('/flea', flea.form);
   app.post('/flea', flea.invoke);
   app.get('/flea/:id', flea.getPage);
@@ -111,9 +105,5 @@ module.exports = function(app) {
   app.get('/flea/data/:id/neutralization', flea.getNeutralization);
   app.get('/flea/data/:id/turnover', flea.getTurnover);
   app.get('/flea/data/:id/copynumbers', flea.getCopyNumbers);
-
-  // STATS ROUTES
-  //stats = require( ROOT_PATH + '/app/routes/stats');
-  //app.get('/:type/usage', stats.usageStatistics);
 
 }

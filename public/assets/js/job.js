@@ -1,8 +1,7 @@
 $(document).ready(function() {
   setupJob();
-  //datamonkey.jobQueue('#job-queue-panel');
-});
 
+});
 
 function pad (s) {
   if(s.length == 1) {
@@ -11,30 +10,29 @@ function pad (s) {
   return s;
 }
 
-function jobWaitTime() {
-  var created_time = new Date($('#job-wait-time').data('created'));
-  var time_difference = new Date() - created_time;
-  if(time_difference > 0) {
-    var hh = pad(String(Math.floor(time_difference / 1000 / 60 / 60)));
-    time_difference -= hh * 1000 * 60 * 60;
-    var mm = pad(String(Math.floor(time_difference / 1000 / 60)));
-    time_difference -= mm * 1000 * 60;
-    var ss = pad(String(Math.floor(time_difference / 1000)));
-    $('#job-wait-time').html(' ' + hh + ':'+ mm  + ':'+ ss);
+var job_start_time    = 0,
+    job_creation_time = 0;
+
+
+function jobSubmittedAt(creation_time) {
+
+  if(moment() > creation_time) {
+    d3.select("#job-created").text(creation_time.fromNow());
+  } else {
+    d3.select("#job-created").text('less than a minute ago');
   }
+
 }
 
-function jobRuntime() {
-  var created_time = new Date($('#job-run-time').data('started'));
-  var time_difference = new Date() - created_time;
-  if(time_difference > 0) {
-    var hh = pad(String(Math.floor(time_difference / 1000 / 60 / 60)));
-    time_difference -= hh * 1000 * 60 * 60;
-    var mm = pad(String(Math.floor(time_difference / 1000 / 60)));
-    time_difference -= mm * 1000 * 60;
-    var ss = pad(String(Math.floor(time_difference / 1000)));
-    $('#job-run-time').html(' ' + hh + ':'+ mm  + ':'+ ss);
-  }
+function jobRuntime(start_time) {
+
+  var zero = d3.format("02d");
+  hours = moment().diff(start_time, 'hours');
+  mins  = moment().diff(start_time, 'minutes') % 60;
+  secs  = moment().diff(start_time, 'seconds') % 60;
+
+  d3.select("#job-run-time").text(zero(hours) + ':' + zero(mins) + ':' + zero(secs) );
+
 }
 
 function setupJob() {
@@ -48,14 +46,25 @@ function setupJob() {
 
   var was_error = false;
 
-  if($('#job-run-time').data('started') != "undefined") {
-    d3.select("#run-time-row").classed({'hidden' : false})
-    var intervalID = window.setInterval(jobRuntime, 1000);
-  } else if($('#job-wait-time').data('created')) {
-    d3.select("#wait-time-row").classed({'hidden' : false})
-    var intervalID = window.setInterval(jobWaitTime, 1000);
-  }
+  d3.json(jobid + '/info', function(data) {
 
+    job_start_time    = moment(data.start_time);
+    job_creation_time = moment(data.creation_time);
+
+    if(job_start_time) {
+      setInterval(jobRuntime, 1000, job_start_time);
+      d3.select('#job-status-text').html('running')
+      d3.select("#job-info-pane").classed({ 'bs-callout-danger bs-callout-warning bs-callout-success': false })
+      d3.select("#job-info-pane").classed({ 'bs-callout-warning' : true })
+    }
+
+    if(job_creation_time) {
+      setInterval(jobSubmittedAt, 1000, job_creation_time);
+    }
+
+
+
+  });
 
   var changeStatus = function (data) {
 
@@ -64,22 +73,31 @@ function setupJob() {
       $('#job-pre').html(data.msg)
     }
 
-    if(data.creation_time) {
-      d3.select("#wait-time-row").classed({'hidden' : false})
-      $('#job-wait-time').data('created', data.creation_time);
-      var intervalID = window.setInterval(jobWaitTime, 1000);
+    if(data.creation_time && !job_creation_time) {
+
+      job_creation_time = moment(data.creation_time);
+
+      if(job_creation_time) {
+        setInterval(jobSubmittedAt, 100, job_creation_time);
+      }
+
     }
 
-    if(data.start_time) {
-      d3.select("#wait-time-row").classed({'hidden' : true})
-      $('#job-run-time').data('started', data.start_time);
-      var intervalID = window.setInterval(jobRuntime, 1000);
-    } else {
-      d3.select("#run-time-row").classed({'hidden' : true})
-    }
+    if(data.start_time && !job_start_time) {
 
-    if(data.phase) {
-      $('#job-status-text').html(data.phase)
+      job_start_time = moment(data.start_time);
+      if(job_start_time) {
+        setInterval(jobRuntime, 100, job_start_time);
+      }
+
+    } 
+
+    if(job_start_time) {
+
+      d3.select('#job-status-text').html('running')
+      d3.select("#job-info-pane").classed({ 'bs-callout-danger bs-callout-running bs-callout-completed': false })
+      d3.select("#job-info-pane").classed({ 'bs-callout-running' : true })
+
     }
 
   }

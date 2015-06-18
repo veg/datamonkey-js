@@ -49,9 +49,8 @@ var AnalysisSchema = new Schema({
   type                : {type: String, require: true},
   status              : String,
   torque_id           : String,
-  job_queue_time      : Number,
-  job_start_time      : Number,
-  total_runtime       : Number,
+  creation_time       : Date,
+  start_time          : Date,
   sendmail            : Boolean,
   mail                : String,
   error_message       : String,
@@ -122,17 +121,6 @@ AnalysisSchema.virtual('timestamp').get(function () {
   return moment(this.created).unix();
 });
 
-/**
- * Index of status
- */
-AnalysisSchema.virtual('status_index').get(function () {
-
-  return this.status_stack.map(function(d) {
-    return d.toLowerCase();
-  }).indexOf(this.status);
-
-});
-
 AnalysisSchema.methods.resubscribe = function () {
 
   var jobproxy = new hpcsocket.HPCSocket({'filepath'    : this.filepath, 
@@ -143,5 +131,14 @@ AnalysisSchema.methods.resubscribe = function () {
 
 }
 
+AnalysisSchema.methods.cancel = function (callback) {
+
+  var jobproxy = new hpcsocket.HPCSocket({'filepath'    : this.filepath, 
+                                          'msa'         : this.msa,
+                                          'analysis'    : this,
+                                          'status_stack': this.status_stack,
+                                          'type'        : this.analysistype}, 'cancel job');
+
+}
 
 module.exports = AnalysisSchema;

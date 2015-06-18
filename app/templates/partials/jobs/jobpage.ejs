@@ -1,6 +1,6 @@
 <div class="row">
 
-  <section class="bs-callout bs-callout-warning panel panel-status">
+  <section id="job-info-pane" class="bs-callout bs-callout-danger panel panel-status">
 
     <div class="panel-body">
 
@@ -13,7 +13,7 @@
 
       <div class="col-lg-4">
         <ul class="list-unstyled">
-          <li id="run-time-row"><span class="glyphicon glyphicon-time"></span><h6> Running for </h6><span id="job-run-time" data-started="<%=job.start_time %>">-</span></li>
+          <li id="job-run-time-row"><span class="glyphicon glyphicon-time"></span><h6> Running for </h6><span id="job-run-time" data-started="<%=job.start_time %>">-</span></li>
           <li id="job-submitted-time-row"><span class="glyphicon glyphicon-calendar"></span><h6> Job submitted </h6><span id="job-created" data-started="<%=job.creation_time %>">-</span></li>
         </ul>
       </div>

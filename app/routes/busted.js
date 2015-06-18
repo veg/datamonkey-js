@@ -136,7 +136,7 @@ exports.selectForeground = function(req, res) {
 
 /**
  * Handles a job request by the user
- * app.post('/msa/:msaid/busted', Busted.invokeBusted);
+ * app.post('/busted', Busted.invokeBusted);
  */
 exports.invokeBusted = function(req, res) {
 
@@ -210,6 +210,7 @@ exports.getBusted = function(req, res) {
       }
 
       // Should return results page
+      //res.json(200, busted);
       res.render('busted/jobpage.ejs', {  
                                          job         : busted, 
                                          socket_addr : 'http://' + setup.host + ':' + setup.socket_port 
@@ -217,6 +218,25 @@ exports.getBusted = function(req, res) {
     }
   });
 };
+
+// app.get('/busted/:bustedid/info', busted.getBustedInfo);
+
+exports.getBustedInfo = function(req, res) {
+
+  var bustedid = req.params.bustedid;
+
+  //Return all results
+  Busted.findOne({_id : bustedid}, {creation_time: 1, start_time: 1}, function(err, busted_info) {
+    if (err || !busted_info ) {
+      logger.error(err);
+      res.json(500, error.errorResponse('Invalid ID : ' + bustedid ));
+    } else {
+      // Should return results page
+      res.json(200, busted_info);
+    }
+  });
+};
+
 
 /**
  * Displays id page for analysis
@@ -245,7 +265,7 @@ exports.resubscribePendingJobs = function(req, res) {
 
 /**
  * Returns log txt file 
- * app.get('/msa/:msaid/busted/:bustedid/results', busted.getBustedResults);
+ * app.get('/busted/:bustedid/results', busted.getBustedResults);
  */
 exports.getBustedLog = function(req, res) {
 
@@ -262,5 +282,27 @@ exports.getBustedLog = function(req, res) {
       res.send(busted.last_status_msg);
     }
   });
+};
+
+/**
+ * cancels existing job
+ * app.get('/busted/:bustedid/cancel', busted.cancel);
+ */
+exports.cancel = function(req, res) {
+
+  var bustedid = req.params.bustedid;
+
+  //Return all results
+  Busted.findOne({_id : bustedid}, function(err, busted) {
+    if (err || !busted ) {
+      winston.info(err);
+      res.json(500, error.errorResponse('invalid id : ' + bustedid ));
+    } else {
+      res.set({'Content-Disposition' : 'attachment; filename=\"log.txt\"'});
+      res.set({'Content-type' : 'text/plain'});
+      res.send(busted.last_status_msg);
+    }
+  });
+
 };
 
