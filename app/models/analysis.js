@@ -115,7 +115,7 @@ AnalysisSchema.statics.usageStatistics = function (cb) {
 };
 
 /**
- * Unix timestamp
+ * unix timestamp
  */
 AnalysisSchema.virtual('timestamp').get(function () {
   return moment(this.created).unix();
@@ -137,7 +137,7 @@ AnalysisSchema.methods.cancel = function (callback) {
                                           'msa'         : this.msa,
                                           'analysis'    : this,
                                           'status_stack': this.status_stack,
-                                          'type'        : this.analysistype}, 'cancel job');
+                                          'type'        : this.analysistype}, 'cancel', callback);
 
 }
 

@@ -163,11 +163,11 @@ exports.invokeRelax = function(req, res) {
  * Displays id page for analysis
  * app.get('/relax/:relaxid', relax.getRelax);
  */
-exports.getRelax = function(req, res) {
+exports.getPage = function(req, res) {
 
   // Find the analysis
   // Return its results
-  var relaxid = req.params.relaxid;
+  var relaxid = req.params.id;
 
   //Return all results
   Relax.findOne({_id : relaxid}, function(err, relax) {
@@ -190,9 +190,9 @@ exports.getRelax = function(req, res) {
  * Displays id page for analysis
  * app.get('/msa/:msaid/relax/:relaxid/results', relax.getRelaxResults);
  */
-exports.getRelaxResults = function(req, res) {
+exports.getResults = function(req, res) {
 
-  var relaxid = req.params.relaxid;
+  var relaxid = req.params.id;
 
   //Return all results
   Relax.findOne({_id : relaxid}, function(err, relax) {
@@ -213,9 +213,9 @@ exports.getRelaxResults = function(req, res) {
  * Handles a job request by the user
  * app.post('/msa/:msaid/relax', Relax.invokeRelax);
  */
-exports.restartRelax = function(req, res) {
+exports.restart = function(req, res) {
 
-  var id = req.params.relaxid;
+  var id = req.params.id;
 
   // Find the correct multiple sequence alignment to act upon
   Relax.findOne({ '_id' : id }, function(err, result) {
@@ -252,9 +252,9 @@ exports.restartRelax = function(req, res) {
  * Displays id page for analysis
  * app.get('/relax/:relaxid', relax.getRelax);
  */
-exports.getRelaxRecheck = function(req, res) {
+exports.getRecheck = function(req, res) {
 
-  var relaxid = req.params.relaxid;
+  var relaxid = req.params.id;
 
   Relax.findOne({_id : relaxid}, function(err, relax) {
     if (err || !relax ) {
@@ -271,6 +271,70 @@ exports.getRelaxRecheck = function(req, res) {
     }
 
   });
+};
+
+// app.get('/relax/:id/info', relax.getInfo);
+exports.getInfo = function(req, res) {
+
+  var id = req.params.id;
+
+  //Return all results
+  Relax.findOne({_id : id}, {creation_time: 1, start_time: 1, status: 1}, function(err, relax_info) {
+    if (err || !relax_info ) {
+      logger.error(err);
+      res.json(500, error.errorResponse('Invalid ID : ' + id));
+    } else {
+      // Should return results page
+      res.json(200, relax_info);
+    }
+  });
+};
+
+/**
+ * Returns log txt file 
+ * app.get('/relax/:id/log.txt', relax.getLog);
+ */
+exports.getLog = function(req, res) {
+
+  var id = req.params.id;
+
+  //Return all results
+  Relax.findOne({_id : id}, function(err, relax) {
+    if (err || !busted ) {
+      winston.info(err);
+      res.json(500, error.errorResponse('invalid id : ' + id));
+    } else {
+      res.set({'Content-Disposition' : 'attachment; filename=\"log.txt\"'});
+      res.set({'Content-type' : 'text/plain'});
+      res.send(relax.last_status_msg);
+    }
+  });
+};
+
+/**
+ * cancels existing job
+ * app.get('/relax/:id/cancel', relax.cancel);
+ */
+exports.cancel = function(req, res) {
+
+  var id = req.params.id;
+
+  //Return all results
+  Relax.findOne({_id : id}, function(err, relax) {
+    if (err || !relax) {
+      winston.info(err);
+      res.json(500, error.errorResponse('invalid id : ' + id));
+    } else {
+      relax.cancel(function(err, success) {
+        if(success) {
+          res.json(200, { success : 'yes' });
+        } else {
+          res.json(500, { success : 'no' });
+        }
+      })
+    }
+  });
+
 };
 
 exports.resubscribePendingJobs = function(req, res) {

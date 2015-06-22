@@ -50,11 +50,11 @@ module.exports = function(app) {
   app.post('/busted/uploadfile', busted.uploadFile);
   app.get('/busted/:id/select-foreground', busted.selectForeground);
   app.post('/busted/:id/select-foreground', busted.invokeBusted);
-  app.get('/busted/:bustedid', busted.getBusted);
-  app.get('/busted/:bustedid/info', busted.getBustedInfo);
+  app.get('/busted/:bustedid', busted.getPage);
+  app.get('/busted/:bustedid/info', busted.getInfo);
   app.get('/busted/:bustedid/cancel', busted.cancel);
-  app.get('/busted/:bustedid/results', busted.getBustedResults);
-  app.get('/busted/:bustedid/log.txt', busted.getBustedLog);
+  app.get('/busted/:bustedid/results', busted.getResults);
+  app.get('/busted/:bustedid/log.txt', busted.getLog);
   //busted.resubscribePendingJobs();
 
   // RELAX ROUTES
@@ -63,19 +63,25 @@ module.exports = function(app) {
   app.post('/relax/uploadfile', relax.uploadFile);
   app.get('/relax/:id/select-foreground', relax.selectForeground);
   app.post('/relax/:id/select-foreground', relax.invokeRelax);
-  app.get('/relax/:relaxid', relax.getRelax);
-  app.get('/relax/:relaxid/restart', relax.restartRelax);
-  app.get('/relax/:relaxid/results', relax.getRelaxResults);
-  app.get('/relax/:relaxid/recheck', relax.getRelaxRecheck);
-  //relax.resubscribePendingJobs();
+  app.get('/relax/:id', relax.getPage);
+  app.get('/relax/:id/info', relax.getInfo);
+  app.get('/relax/:id/cancel', relax.cancel);
+  app.get('/relax/:id/restart', relax.restart);
+  app.get('/relax/:id/results', relax.getResults);
+  app.get('/relax/:id/recheck', relax.getRecheck);
+  app.get('/relax/:id/log.txt', relax.getLog);
+  relax.resubscribePendingJobs();
 
   // aBSREL ROUTES
   absrel = require(path.join(__dirname, '../app/routes/absrel'));
   app.get('/absrel', absrel.form);
   app.post('/absrel', absrel.invoke);
   app.get('/absrel/:id', absrel.getPage);
+  app.get('/absrel/:id/info', absrel.getInfo);
   app.get('/absrel/:id/results', absrel.getResults);
-  //absrel.resubscribePendingJobs();
+  app.get('/absrel/:id/cancel', absrel.cancel);
+  app.get('/absrel/:id/log.txt', absrel.getLog);
+  absrel.resubscribePendingJobs();
 
   // HIV TRACE ROUTES
   hivtrace = require(path.join(__dirname, '../app/routes/hivtrace'));

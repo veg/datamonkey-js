@@ -97,7 +97,7 @@ exports.invoke = function(req, res) {
                            "upload_redirect_path": absrel.upload_redirect_path});
 
           // Send the MSA and analysis type
-          absrel.submitJob(absrel_result, connect_callback);
+          aBSREL.submitJob(absrel_result, connect_callback);
 
         }
       }
@@ -144,6 +144,70 @@ exports.getResults = function(req, res) {
       var absrel_results =  JSON.parse(absrel.results);
       absrel_results['PMID'] = absrel.pmid;
       res.json(200, absrel_results);
+    }
+  });
+
+};
+
+// app.get('/absrel/:id/info', absrel.getInfo);
+exports.getInfo = function(req, res) {
+
+  var id = req.params.id;
+
+  //Return all results
+  aBSREL.findOne({_id : id}, {creation_time: 1, start_time: 1, status: 1}, function(err, absrel_info) {
+    if (err || !absrel_info) {
+      logger.error(err);
+      res.json(500, error.errorResponse('Invalid ID : ' + id));
+    } else {
+      // Should return results page
+      res.json(200, absrel_info);
+    }
+  });
+};
+
+/**
+ * Returns log txt file 
+ * app.get('/absrel/:id/results', absrel.getLog);
+ */
+exports.getLog = function(req, res) {
+
+  var id = req.params.id;
+
+  //Return all results
+  aBSREL.findOne({_id : id}, function(err, absrel) {
+    if (err || !busted ) {
+      winston.info(err);
+      res.json(500, error.errorResponse('invalid id : ' + id));
+    } else {
+      res.set({'Content-Disposition' : 'attachment; filename=\"log.txt\"'});
+      res.set({'Content-type' : 'text/plain'});
+      res.send(absrel.last_status_msg);
+    }
+  });
+};
+
+/**
+ * cancels existing job
+ * app.get('/busted/:id/cancel', absrel.cancel);
+ */
+exports.cancel = function(req, res) {
+
+  var id = req.params.id;
+
+  //Return all results
+  aBSREL.findOne({_id : id}, function(err, absrel) {
+    if (err || !busted ) {
+      winston.info(err);
+      res.json(500, error.errorResponse('invalid id : ' + id));
+    } else {
+      absrel.cancel(function(err, success) {
+        if(success) {
+          res.json(200, { success : 'yes' });
+        } else {
+          res.json(500, { success : 'no' });
+        }
+      })
     }
   });
 

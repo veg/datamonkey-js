@@ -3,16 +3,8 @@ $(document).ready(function() {
 
 });
 
-function pad (s) {
-  if(s.length == 1) {
-    return "0" + s;
-  }
-  return s;
-}
-
 var job_start_time    = 0,
     job_creation_time = 0;
-
 
 function jobSubmittedAt(creation_time) {
 
@@ -48,18 +40,26 @@ function setupJob() {
 
   d3.json(jobid + '/info', function(data) {
 
-    job_start_time    = moment(data.start_time);
-    job_creation_time = moment(data.creation_time);
+    if(data.status == 'aborted') {
 
-    if(job_start_time) {
-      setInterval(jobRuntime, 1000, job_start_time);
-      d3.select('#job-status-text').html('running')
-      d3.select("#job-info-pane").classed({ 'bs-callout-danger bs-callout-warning bs-callout-success': false })
-      d3.select("#job-info-pane").classed({ 'bs-callout-warning' : true })
-    }
-
-    if(job_creation_time) {
+      d3.select('#job-status-text').html('aborted')
+      job_creation_time = moment(data.creation_time);
       setInterval(jobSubmittedAt, 1000, job_creation_time);
+
+    } else {
+      job_start_time    = moment(data.start_time);
+      job_creation_time = moment(data.creation_time);
+
+      if(job_start_time) {
+        setInterval(jobRuntime, 1000, job_start_time);
+        d3.select('#job-status-text').html('running')
+        d3.select("#job-info-pane").classed({ 'bs-callout-danger bs-callout-warning bs-callout-success': false })
+        d3.select("#job-info-pane").classed({ 'bs-callout-warning' : true })
+      }
+
+      if(job_creation_time) {
+        setInterval(jobSubmittedAt, 1000, job_creation_time);
+      }
     }
 
 
@@ -69,8 +69,8 @@ function setupJob() {
   var changeStatus = function (data) {
 
     if(data.msg != undefined) {
-      d3.select("#standard-output").classed({'hidden' : false})
-      $('#job-pre').html(data.msg)
+      d3.select("#standard-output").classed({'hidden' : false});
+      $('#job-pre').html(data.msg);
     }
 
     if(data.creation_time && !job_creation_time) {
@@ -94,16 +94,16 @@ function setupJob() {
 
     if(job_start_time) {
 
-      d3.select('#job-status-text').html('running')
-      d3.select("#job-info-pane").classed({ 'bs-callout-danger bs-callout-running bs-callout-completed': false })
-      d3.select("#job-info-pane").classed({ 'bs-callout-running' : true })
+      d3.select('#job-status-text').html('running');
+      d3.select("#job-info-pane").classed({ 'bs-callout-danger bs-callout-warning bs-callout-success': false });
+      d3.select("#job-info-pane").classed({ 'bs-callout-warning' : true });
 
     }
 
   }
 
   var updateQueueWithTorqueId = function (torque_id) {
-    d3.select("#torque_id").classed({'hidden': false})
+    d3.select("#torque_id").classed({'hidden': false});
     $("#torque_id").text(torque_id);
   }
 
@@ -165,5 +165,24 @@ function setupJob() {
     datamonkey.errorModal(data.msg);
   });
 
-}
 
+  $('#job-cancel-button').on('click', function () {
+
+   d3.select(this).classed({ 'disabled' : true })
+
+   d3.json($('#job-report').data("jobid") + "/cancel", function(error, json) {
+      if (error) {
+        return console.warn(error);
+        datamonkey.errorModal('job could not be cancelled');
+      } else {
+        datamonkey.errorModal('job cancelled');
+        d3.select('#job-status-text').html('aborted');
+        d3.select("#job-run-time").classed({'hidden' : true});
+        d3.select("#job-info-pane").classed({ 'bs-callout-danger bs-callout-warning bs-callout-success': false });
+        d3.select("#job-info-pane").classed({ 'bs-callout-danger' : true });
+      }
+    }); 
+
+  });
+
+}

@@ -187,7 +187,7 @@ exports.invokeBusted = function(req, res) {
  * Displays id page for analysis
  * app.get('/busted/:bustedid', busted.getBusted);
  */
-exports.getBusted = function(req, res) {
+exports.getPage = function(req, res) {
 
   // Find the analysis
   // Return its results
@@ -220,13 +220,12 @@ exports.getBusted = function(req, res) {
 };
 
 // app.get('/busted/:bustedid/info', busted.getBustedInfo);
-
-exports.getBustedInfo = function(req, res) {
+exports.getInfo = function(req, res) {
 
   var bustedid = req.params.bustedid;
 
   //Return all results
-  Busted.findOne({_id : bustedid}, {creation_time: 1, start_time: 1}, function(err, busted_info) {
+  Busted.findOne({_id : bustedid}, {creation_time: 1, start_time: 1, status: 1}, function(err, busted_info) {
     if (err || !busted_info ) {
       logger.error(err);
       res.json(500, error.errorResponse('Invalid ID : ' + bustedid ));
@@ -242,7 +241,7 @@ exports.getBustedInfo = function(req, res) {
  * Displays id page for analysis
  * app.get('/msa/:msaid/busted/:bustedid/results', busted.getBustedResults);
  */
-exports.getBustedResults = function(req, res) {
+exports.getResults = function(req, res) {
 
   var bustedid = req.params.bustedid;
 
@@ -267,7 +266,7 @@ exports.resubscribePendingJobs = function(req, res) {
  * Returns log txt file 
  * app.get('/busted/:bustedid/results', busted.getBustedResults);
  */
-exports.getBustedLog = function(req, res) {
+exports.getLog = function(req, res) {
 
   var bustedid = req.params.bustedid;
 
@@ -298,9 +297,13 @@ exports.cancel = function(req, res) {
       winston.info(err);
       res.json(500, error.errorResponse('invalid id : ' + bustedid ));
     } else {
-      res.set({'Content-Disposition' : 'attachment; filename=\"log.txt\"'});
-      res.set({'Content-type' : 'text/plain'});
-      res.send(busted.last_status_msg);
+      busted.cancel(function(err, success) {
+        if(success) {
+          res.json(200, { success : 'yes' });
+        } else {
+          res.json(500, { success : 'no' });
+        }
+      })
     }
   });
 
