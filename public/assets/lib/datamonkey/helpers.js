@@ -193,9 +193,17 @@ function datamonkey_table_to_text (table_id, sep) {
     
     return header_row.join (sep) + "\n" +
            data_rows.map (function (d) {return d.join (sep);}).join ("\n");
+
+
+function datamonkey_capitalize(s) {
+  if(s.length > 0) {
+    return s[0].toUpperCase() + s.slice(1);
+  } else {
+    return s;
+  }
 }
 
-datamonkey.helpers = function(){};
+datamonkey.helpers = new Object;
 datamonkey.helpers.save_newick_to_file = datamonkey_save_newick_to_file;
 datamonkey.helpers.convert_svg_to_png = datamonkey_convert_svg_to_png;
 datamonkey.helpers.save_newick_tree = datamonkey_save_newick_tree;
@@ -203,3 +211,4 @@ datamonkey.helpers.validate_email = datamonkey_validate_email;
 datamonkey.helpers.describe_vector = datamonkey_describe_vector;
 datamonkey.helpers.table_to_text = datamonkey_table_to_text;
 datamonkey.helpers.export_handler = datamonkey_export_handler;
+datamonkey.helpers.capitalize = datamonkey_capitalize;

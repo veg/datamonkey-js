@@ -68,6 +68,10 @@ exports.jobQueue = function(req, res) {
   function formatJobs (x) {
 
     //format x
+    if(!('status'in x)) {
+      x.status = 'n/a';
+    }
+
     if(x.running_time) {
       x.running_time = moment.utc(0).seconds(x.running_time).format("HH:mm:ss");
     } else {
@@ -100,13 +104,12 @@ exports.jobQueue = function(req, res) {
       } else {
         job_info = null;
       }
-
       callback(job_info);
-
     });
   }
 
   function connect_callback(result) {
+
     var analyses = Object.keys(mongoose.modelSchemas);
 
     // Decorate each one of the jobs from database queries
@@ -136,12 +139,14 @@ exports.jobQueue = function(req, res) {
     // Decorate result with queue time
     result = result.map(formatJobs);
 
+    var found = false;
+    var found_all = false;
+    var count = 0;
+    var res_sent = false;
+
     result.forEach(function(torque_elem, i, job_arr) {
 
       torque_id = torque_elem.id;
-
-      var found = false;
-      var count = 0;
 
       analyses.forEach(function(elem, index, arr) {
 
@@ -156,29 +161,34 @@ exports.jobQueue = function(req, res) {
             jobs.push({'job_info' : default_job_info, 'torque_info' : torque_elem});
           }
 
-          if(jobs.length == job_arr.length) {
+          if(jobs.length == job_arr.length && !found_all) {
 
             jobs = jobs.sort(function (a, b) {
+
               if (a.torque_info.status > b.torque_info.status) {
                 return 1;
               }
+
               if (a.torque_info.status < b.torque_info.status) {
                 return -1;
               }
+
               // a must be equal to b
               return 0;
-            });
 
-            res.format({
-              html: function(){
-                res.render('jobqueue.ejs', {'jobs' : jobs});
-                res.json(200, jobs);
-
-              },
-              json: function() {
-                res.json(200, jobs);
-              }
             });
+            
+            if(!res_sent) {
+              res_sent = true;
+              res.format({
+                html: function(){
+                  res.render('jobqueue.ejs', {'jobs' : jobs});
+                },
+                json: function() {
+                  res.json(200, jobs);
+                }
+              });
+            }
           }
 
         });
@@ -186,7 +196,18 @@ exports.jobQueue = function(req, res) {
     });
   }
 
-  var jobproxy = new hpcsocket.JobQueue(connect_callback);
+  //var jobproxy = new hpcsocket.JobQueue(connect_callback);
+  //res.json(200, jobs);
+  var jobs = [];
+  res.format({
+    html: function(){
+      res.render('jobqueue.ejs', {'jobs' : jobs});
+    },
+    json: function() {
+      res.json(200, jobs);
+    }
+  });
+
 
 }
 

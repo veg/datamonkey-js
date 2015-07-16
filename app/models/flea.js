@@ -29,37 +29,30 @@
 
 var mongoose  = require('mongoose'),
     extend    = require('mongoose-schema-extend'),
+    fs        = require('fs'),
+    tar       = require('tar-fs'),
     Msa       = require(__dirname + '/msa');
 
 var AnalysisSchema = require(__dirname + '/analysis');
 
-var aBSREL = AnalysisSchema.extend({
-  analysis_type         : Number,
+var Flea = AnalysisSchema.extend({
+  msas                  : [Msa.MsaSchema],
   last_status_msg       : String,
-  results               : Object
+  mail                  : String,
+  results               : Object,
+  rates                 : Object,
+  frequencies           : Object,
+  trajectory            : Object,
+  gene                  : Object,
+  trees                 : Object,
+  neutralization        : Object
 });
-
-aBSREL.virtual('pmid').get(function() {
-  return '25540451';
-});
-
-aBSREL.virtual('upload_redirect_path').get(function() {
-  return '/absrel/' + this._id;
-});
-
-/**
- * Complete file path for document's file upload
- */
-aBSREL.virtual('filepath').get(function () {
-  return __dirname + '/../../uploads/msa/' + this._id + '.fasta';
-});
-
 
 /**
  * Filename of document's file upload
  */
-aBSREL.virtual('status_stack').get(function () {
-  return ['queue', 
+Flea.virtual('status_stack').get(function () {
+  return ['queueing', 
           'running',
           'completed'];
 });
@@ -67,9 +60,29 @@ aBSREL.virtual('status_stack').get(function () {
 /**
  * Complete file path for document's file upload
  */
-aBSREL.virtual('filepath').get(function () {
-  return __dirname + '/../../uploads/msa/' + this._id + '.fasta';
+Flea.virtual('filepath').get(function () {
+  return __dirname + '/../../uploads/flea/' + this._id + '.tar';
 });
 
-module.exports = mongoose.model('aBSREL', aBSREL);
+/**
+ * Complete file path for document's file upload
+ */
+Flea.virtual('filedir').get(function () {
+  return __dirname + '/../../uploads/flea/' + this._id + '/';
+});
+
+
+/**
+ * URL for a envmonkey path
+ */
+Flea.virtual('url').get(function () {
+  return 'http://' + setup.host + '/flea/' + this._id;
+});
+
+Flea.statics.pack = function(flea) {
+  return tar.pack(flea.filedir).pipe(fs.createWriteStream(flea.filepath));
+}
+
+
+module.exports = mongoose.model('Flea', Flea);
 

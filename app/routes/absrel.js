@@ -98,9 +98,6 @@ exports.invoke = function(req, res) {
           res.json(200,  { "analysis" : absrel, 
                            "upload_redirect_path": absrel.upload_redirect_path});
 
-          // Send the MSA and analysis type
-          console.log('sending job proxy');
-
           //TODO: Properly handle errors
           var jobproxy = new hpcsocket.HPCSocket({'filepath'    : absrel_result.filepath, 
                                                   'msa'         : absrel_result.msa,
@@ -152,7 +149,6 @@ exports.getResults = function(req, res) {
     } else {
       // Should return results page
       // Append PMID to results
-      console.log(absrel.results);
       var absrel_results =  JSON.parse(absrel.results);
       absrel_results['PMID'] = absrel.pmid;
       res.json(200, absrel_results);

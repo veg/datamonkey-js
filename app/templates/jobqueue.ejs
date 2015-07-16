@@ -9,11 +9,10 @@
     <tbody>
     <% for(var l in jobs) { %>
       <% if (jobs[l].job_info.id) { %>
-        <tr><td><a href="/<%=jobs[l].job_info.type%>/<%=jobs[l].job_info.id%>"><%=jobs[l].torque_info.id%></a></td>
+        <tr><td><%=jobs[l].torque_info.id%></td>
       <% } else { %>
         <tr><td><%=jobs[l].torque_info.id%></td>
       <% } %>
-
       <td><%=jobs[l].torque_info.status.capitalize()%></td><td><%=jobs[l].job_info.type.toUpperCase()%></td><td><%=jobs[l].job_info.sequences%></td><td><%=jobs[l].job_info.sites %></td><td><%=jobs[l].torque_info.running_time%></td><td><%=jobs[l].torque_info.creation_time%></td><td><%=jobs[l].torque_info.queue_time%></td></tr>
     <% } %>
     </tbody>

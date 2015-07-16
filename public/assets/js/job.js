@@ -1,10 +1,10 @@
 $(document).ready(function(){
   setupJob();
   var current_status = $("#job-status-animation").data("status");
-  animateStatusButton(current_status);
+  colorStatusButton(current_status);
+  datamonkey.jobQueue('#job-queue-panel');
 });
 
-var intervalID = window.setInterval(getTime, 1000);
 
 function pad (s) {
   if(s.length == 1) {
@@ -13,42 +13,87 @@ function pad (s) {
   return s;
 }
 
-function getTime() {
-
-  var created_time = new Date($('#job-timer').data('created') * 1000);
+function jobWaitTime() {
+  var created_time = new Date($('#job-wait-time').data('created'));
   var time_difference = new Date() - created_time;
-  var hh = pad(String(Math.floor(time_difference / 1000 / 60 / 60)));
-  time_difference -= hh * 1000 * 60 * 60;
-  var mm = pad(String(Math.floor(time_difference / 1000 / 60)));
-  time_difference -= mm * 1000 * 60;
-  var ss = pad(String(Math.floor(time_difference / 1000)));
-  $('#job-timer .time').html(' ' + hh + ':'+ mm  + ':'+ ss);
+  if(time_difference > 0) {
+    var hh = pad(String(Math.floor(time_difference / 1000 / 60 / 60)));
+    time_difference -= hh * 1000 * 60 * 60;
+    var mm = pad(String(Math.floor(time_difference / 1000 / 60)));
+    time_difference -= mm * 1000 * 60;
+    var ss = pad(String(Math.floor(time_difference / 1000)));
+    $('#job-wait-time').html(' ' + hh + ':'+ mm  + ':'+ ss);
+  }
 }
+
+function jobRuntime() {
+  var created_time = new Date($('#job-run-time').data('started'));
+  var time_difference = new Date() - created_time;
+  if(time_difference > 0) {
+    var hh = pad(String(Math.floor(time_difference / 1000 / 60 / 60)));
+    time_difference -= hh * 1000 * 60 * 60;
+    var mm = pad(String(Math.floor(time_difference / 1000 / 60)));
+    time_difference -= mm * 1000 * 60;
+    var ss = pad(String(Math.floor(time_difference / 1000)));
+    $('#job-run-time').html(' ' + hh + ':'+ mm  + ':'+ ss);
+  }
+}
+
 
 function setupJob() {
 
-  var jobid = $('#job-report').data('jobid')
-  var socket_address = $('#job-report').data('socket-address')
+  var jobid = $('#job-report').data('jobid');
+  var socket_address = $('#job-report').data('socket-address');
   var socket = io.connect(socket_address, {
         reconnect: false
       });
 
   var was_error = false;
 
+  if($('#job-run-time').data('started') != "undefined") {
+    d3.select("#run-time-row").classed({'hidden': false})
+    var intervalID = window.setInterval(jobRuntime, 1000);
+  } else if($('#job-wait-time').data('created')) {
+    d3.select("#wait-time-row").classed({'hidden': false})
+    var intervalID = window.setInterval(jobWaitTime, 1000);
+  }
+
 
   var changeStatus = function (data) {
-
     //data is index and message
-    animateStatusButton(data.phase)
-
+    colorStatusButton(data.phase.status)
     if(data.msg != undefined) {
+      d3.select("#standard-output").classed({'hidden': false})
       $('#job-pre').html(data.msg)
     }
+
+    // Update times
+
+    // If phase is queue, then update jobWaitTime
+    if(data.creation_time) {
+      d3.select("#wait-time-row").classed({'hidden': false})
+      $('#job-wait-time').data('created', data.creation_time);
+      var intervalID = window.setInterval(jobWaitTime, 1000);
+    }
+
+    if(data.start_time) {
+      // If phase is running, then update jobRunningTime
+      d3.select("#wait-time-row").classed({'hidden': true})
+      $('#job-run-time').data('started', data.start_time);
+      var intervalID = window.setInterval(jobRuntime, 1000);
+    } else {
+      d3.select("#run-time-row").classed({'hidden': true})
+    }
+
+    // Update job queue panel
+    datamonkey.jobQueue('#job-queue-panel');
+
 
   }
 
   var updateQueueWithTorqueId = function (torque_id) {
-    $("#torque_id").text(' ' + torque_id);
+    d3.select("#torque_id").classed({'hidden': false})
+    $("#torque_id").text(torque_id);
   }
 
   socket.on('connect_error', function () {
@@ -69,10 +114,16 @@ function setupJob() {
 
   // Status update
   socket.on('status update', function (data) {
-    changeStatus(data);
-    if('torque_id' in data) {
-      updateQueueWithTorqueId(data.torque_id);
+
+    if(data) {
+      console.log('status changing!');
+      console.log(data);
+      changeStatus(data);
+      if('torque_id' in data) {
+        updateQueueWithTorqueId(data.torque_id);
+      }
     }
+
   });
 
   // Torque id
@@ -82,6 +133,7 @@ function setupJob() {
 
   // Completed
   socket.on('completed', function (data) {
+
     $('.progress .progress-bar').width('100%');
 
     $('.job-status').each(function(index) {
@@ -104,26 +156,14 @@ function setupJob() {
 
 }
 
-function animateStatusButton(status) {
+function colorStatusButton(status) {
 
-  function transition(element, start, end) {
-    var duration = 2000;
-    element.transition()
-      .duration(duration)
-      .attr("r", end)
-      .each("end", function() { d3.select(this).call(transition, end, start); });
-  }
-  
-  minRadius = 23;
-  maxRadius = 27;
+  $("#job-status-text").text(datamonkey.helpers.capitalize(status));
 
   var circle = d3.selectAll(".job-status circle")
-               .style("fill-opacity", 0.5)
-               .transition().duration(0);
+               .style("fill-opacity", 0.5);
 
   var circle = d3.selectAll("." + status)
-               .style("fill-opacity", 0.9)
-               .call(transition, minRadius, maxRadius);
+               .style("fill-opacity", 0.9);
   
 }
-

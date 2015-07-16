@@ -1,8 +1,14 @@
 {
   "name": "datamonkey.js",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "main" : "datamonkey.js",
   "dependencies": {
-    "hyphy-vision"      : "git@github.com:veg/hyphy-vision.git"
+    "hyphy-vision"       : "git@github.com:veg/hyphy-vision.git",
+    "phylotree"          : "git@github.com:veg/phylotree.js.git",
+    "flea"               : "git@github.com:veg/flea.git#0.1.0",
+    "jquery-file-upload" : "9.x.x",
+    "jquery-zclip"       : "1.x.x",
+    "underscore"         : "1.8.x",
+    "socket.io-client"   : "1.*"
   }
 }
