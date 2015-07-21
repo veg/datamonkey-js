@@ -193,7 +193,7 @@ function datamonkey_table_to_text (table_id, sep) {
     
     return header_row.join (sep) + "\n" +
            data_rows.map (function (d) {return d.join (sep);}).join ("\n");
-
+}
 
 function datamonkey_capitalize(s) {
   if(s.length > 0) {

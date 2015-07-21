@@ -152,7 +152,9 @@ exports.uploadFile = function (req, res) {
     } else {
       save_document(hivtrace);
     }
-  });
+  },
+  {'no-equal-length' : 1,
+   'headers-only' : 1});
 }
 
 /**

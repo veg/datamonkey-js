@@ -1,78 +1,83 @@
 <%- include ../includes/header.ejs %>
+
+
 <div class="container">
-  <h3> Attribute Mapping </h3>
-  <span hidden id="hivtrace_id"><%= hivtrace_id %></span>
-  <div class="map col-sm-7">
-    <% if (error && error.code == 0) { %>
-      <div class="alert alert-danger">
-        <%= error.msg %>
-      </div>
-      <table class=table>
-        <thead>
-          <th>Incorrectly formatted headers</th>
-        </thead>
-        </tbody>
-        <% for(var i = 0; i < error.failed_headers.length; i++) { %>
-          <tr>
-            <td>
-              <%= error.failed_headers[i] %>
-            </td>
-          </tr>
-        <% } %>
-        </tbody>
-      </table>
-      <button id="attr_skip" type="submit" class="btn btn-primary pull-right">Skip</button>
-    <% } else { %>
-    <table class="table">
-      <thead>
-        <th>Description</th>
-        <th>Example Field</th>
-      </thead>
-      <tbody>
-        <% for(var i = 0; i < Object.keys(example_parse).length; i++) { %>
-          <tr>
-            <td>
-              <a data-pk=<%= i %> data-type="text" href="#" class="editable editable-click attr_field"><%= Object.keys(example_parse)[i] %></a>
-            </td>
-            <td>
-              <%= example_parse[Object.keys(example_parse)[i]] %>
-            </td>
-          </tr>
-        <% } %>
-      </tbody>
-    </table>
-    <div class = "row">
-          <label>
-            <input type="checkbox" id = "group_dates_by_id" disabled>
-            Group multiple sequences with the same ID
-          </label>
-        <button id="attr_submit" type="submit" class="btn btn-primary pull-right">Continue</button>
-    </div>
-    <% } %>
-  </div>
-
-  <div class="col-sm-5 pull-right">
-
-    <div class="alert alert-info">
-      Inferred Delimiter :
-      <span id="delimiter" class="large label label-default delimiter-label"><%= map.delimiter %></span>
+    <h3> Attribute Mapping </h3>
+    <span hidden id="hivtrace_id"><%= hivtrace_id %></span>
+    <div class="map col-sm-7">
+        <% if (error && error.code == 0) { %>
+            <div class="alert alert-danger">
+                <%= error.msg %>
+            </div>
+            <table class=table>
+                <thead>
+                    <th>Incorrectly formatted headers</th>
+                </thead>
+                </tbody>
+                <% for(var i = 0; i < error.failed_headers.length; i++) { %>
+                    <tr>
+                        <td>
+                            <%= error.failed_headers[i] %>
+                        </td>
+                    </tr>
+                    <% } %>
+                        </tbody>
+            </table>
+            <button id="attr_skip" type="submit" class="btn btn-primary pull-right">Skip</button>
+            <% } else { %>
+                <table class="table">
+                    <thead>
+                        <th><abbr title="Click to edit">Description</abbr></th>
+                        <th>Example Field</th>
+                    </thead>
+                    <tbody>
+                        <% for(var i = 0; i < Object.keys(example_parse).length; i++) { %>
+                            <tr>
+                                <td>
+                                    <a data-pk=<%=i %> data-type="text" href="#" class="editable editable-click attr_field"><%= Object.keys(example_parse)[i] %></a>
+                                </td>
+                                <td>
+                                    <%= example_parse[Object.keys(example_parse)[i]] %>
+                                </td>
+                            </tr>
+                            <% } %>
+                    </tbody>
+                </table>
+                <div class="row">
+                    <label>
+                        <input type="checkbox" id="group_dates_by_id" disabled> Group multiple sequences with the same ID
+                    </label>
+                    <button id="attr_submit" type="submit" class="btn btn-primary pull-right">Continue</button>
+                </div>
+                <% } %>
     </div>
 
-    <div class="dash-sidebar" data-spy="scroll">
-      <div class='box-header'>
-        <h3 class="box-title">Parsed Headers</h3>
-      </div>
-      <div class='box-content'>
-        <ul class="list-unstyled">
-        <% for(var i = 0; i < headers.length; i++) { %>
-          <li><%= headers[i] %></li>
-        <% } %>
-        </ul>
-      </div>
+    <div class="col-sm-5 pull-right">
+
+        <div class="alert alert-info">
+            Inferred Delimiter :
+            <span id="delimiter" class="large label label-default delimiter-label"><%= map.delimiter %></span>
+        </div>
+
+        <div class="dash-sidebar" data-spy="scroll">
+            <div class='box-header'>
+                <h3 class="box-title">Parsed Headers</h3>
+            </div>
+            <div class='box-content'>
+                <ul class="list-unstyled">
+                    <% for(var i = 0; i < headers.length; i++) { %>
+                        <li>
+                            <%= headers[i] %>
+                        </li>
+                        <% } %>
+                </ul>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
-<%- include ../includes/footer.ejs %>
+
 <script src="/assets/lib/datamonkey/attribute-editor.js"></script>
 <script src="/assets/js/hivtrace/attribute_map_assignment.js"></script>
 
+
+<%- include ../includes/footer.ejs %>
