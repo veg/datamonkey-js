@@ -95,6 +95,7 @@ module.exports = function(app) {
   app.get('/hivtrace/:id/trace_results', hivtrace.trace_results);
   app.get('/hivtrace/:id/lanl_trace_results', hivtrace.lanl_trace_results);
   app.get('/hivtrace/:id/attributes', hivtrace.attributeMap);
+  app.get('/hivtrace/:id/aligned.fasta', hivtrace.aligned_fasta);
 
   // FLEA ROUTES
   flea = require(path.join(__dirname, '../app/routes/flea'));

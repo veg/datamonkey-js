@@ -17,6 +17,7 @@ var initialize_cluster_network_graphs = function () {
       histogram_label       = '#histogram_label',
       button_bar_prefix     = 'network_ui_bar',
       csvexport_label       = '#csvexport',
+      fasta_export_label    = '#fasta-export',
       filter_edges_toggle   = '#network_ui_bar_toggle_filter_edges';
 
   //Initialize clusternetworkgraph with json url

@@ -400,3 +400,40 @@ exports.attributeMap = function (req, res) {
     }
   });
 };
+
+
+/**
+ * Returns strictly JSON results for requested job id
+ * app.get('/hivtrace/:id/aligned.fasta', hivtrace.aligned_fasta);
+ */
+exports.aligned_fasta = function (req, res) {
+  var id = req.params.id;
+  HivTrace.findOne({_id: id}, function (err, hivtrace) {
+
+    if (err || !hivtrace) {
+      res.json(500, error.errorResponse('There is no HIV Trace job with id of ' + id));
+    } else {
+
+      var options = {
+        root: __dirname + '/../../uploads/hivtrace/',
+        dotfiles: 'deny',
+        headers: {
+            'x-timestamp': Date.now(),
+            'x-sent': true
+        }
+      };
+
+      res.sendfile(hivtrace.rel_aligned_fasta_fn, options, function (err) {
+        if (err) {
+          console.log(err);
+          res.status(err.status).end();
+        }
+        else {
+          console.log('Sent:', fileName);
+        }
+      })
+
+    }
+  });
+
+}

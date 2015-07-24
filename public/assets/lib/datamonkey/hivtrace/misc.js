@@ -91,7 +91,7 @@ function hivtrace_convert_to_csv(obj) {
   //computeMeanPathLengths(obj.Nodes, obj.Edges)
   //var node_array = obj.Nodes.map(function(d) {return [d.id, d.cluster, d.degree, d.mean_path_length]});
   var node_array = obj.Nodes.map(function(d) {return [d.id, d.cluster, d.degree]});
-  node_array.unshift(['ID', 'Cluster', 'Degree'])
+  node_array.unshift(['seqid', 'cluster', 'degree'])
   node_csv = d3.csv.format(node_array); 
   return node_csv;
 }
@@ -104,7 +104,7 @@ function hivtrace_export_csv_button(graph, tag) {
     pom.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(data));
     pom.setAttribute('download', 'export.csv');
     pom.className = 'btn btn-default btn-sm';
-    pom.innerHTML = '<span class="glyphicon glyphicon-floppy-save"></span> Download CSV';
+    pom.innerHTML = '<span class="glyphicon glyphicon-floppy-save"></span> Export Results';
     $(tag).append(pom);
   }
 

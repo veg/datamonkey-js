@@ -63,11 +63,12 @@
                 <p id='histogram_label' class="text-left text-info small"></p><br>
              </div>
                  
-            <div id='csvexport' class='row' style = 'margin-left: 5px'>
+            <div id='fasta-export' class='row hivtrace-download-button'>
+              <a href='' class='btn btn-default btn-sm'><span class="glyphicon glyphicon-floppy-save"></span> HXB2 Alignment</a>
             </div>
-     
-            <div id='network_ui_bar_aux_svg_holder' class='row style = 'margin-left: 5px''>
-            </div>
+            <div id='csvexport' class='row hivtrace-download-button'></div>
+            <div id='network_ui_bar_aux_svg_holder' class='row style = 'margin-left: 5px''></div>
+
       </div>     
             
      </div>
@@ -95,18 +96,14 @@
                 <div class="input-group input-group-sm" id = 'lanl_network_ui_bar'>
                       <span class="input-group-btn">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id = "lanl_network_ui_bar_cluster_operations_button">Clusters <span class="caret"></span></button>
-                            <ul class="dropdown-menu" role="menu" id = 'lanl_network_ui_bar_cluster_operations_container'>
-                                
-                            </ul>
+                            <ul class="dropdown-menu" role="menu" id = 'lanl_network_ui_bar_cluster_operations_container'></ul>
                     </span>
                     
                     <div class="input-group-btn">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id = "lanl_network_ui_bar_attribute_label">Attribute <span class="caret"></span></button>
-                        <ul class="dropdown-menu" role="menu" id = 'lanl_network_ui_bar_attributes'>
-                        </ul>
+                        <ul class="dropdown-menu" role="menu" id = 'lanl_network_ui_bar_attributes'></ul>
                    </div>
-                          
-                    <input type="text" class="form-control" placeholder = "search" id = 'lanl_network_ui_bar_search'>
+                   <input type="text" class="form-control" placeholder = "search" id = 'lanl_network_ui_bar_search'>
                 </div>
             </div>
             
@@ -124,10 +121,7 @@
             <div class = 'row' id = 'lanl-histogram_tag'> 
                 <p id='lanl-histogram_label' class="text-left text-info small"></p><br>
              </div>
-            
-            <div id='lanl-csvexport' class='row'>
-            </div>
-                 
+            <div id='lanl-csvexport' class='row'></div>
          </div>     
             
      </div>

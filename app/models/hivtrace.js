@@ -369,6 +369,22 @@ HivTrace.virtual('filepath').get(function () {
 });
 
 /**
+* file path for aligned document
+*/
+HivTrace.virtual('aligned_fasta_fn').get(function () {
+  return __dirname + "/../../uploads/hivtrace/" + this._id + '.aligned.fa';
+});
+
+/**
+* relative file path for aligned document
+*/
+HivTrace.virtual('rel_aligned_fasta_fn').get(function () {
+  return this._id + '.aligned.fa';
+});
+
+
+
+/**
  * Index of status
  */
 HivTrace.virtual('status_index').get(function () {
