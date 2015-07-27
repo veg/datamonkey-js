@@ -2,7 +2,7 @@
 
   Datamonkey - An API for comparative analysis of sequence alignments using state-of-the-art statistical models.
 
-  Copyright (C) 2013
+  Copyright (C) 2013-2105
   Sergei L Kosakovsky Pond (spond@ucsd.edu)
   Steven Weaver (sweaver@ucsd.edu)
 
@@ -128,16 +128,16 @@ exports.mapAttributes = function (req, res) {
         parsed_attributes = Msa.parseHeaderFromMap(msa_map.headers[0], msa_map);
         res.format({
           html: function() {
-            res.render('msa/attribute_map_assignment.ejs', { 'map'           : msa_map, 
-                                                             'example_parse' : parsed_attributes, 
+            res.render('msa/attribute_map_assignment.ejs', { 'map'           : msa_map,
+                                                             'example_parse' : parsed_attributes,
                                                              'msa_id'        : msa._id,
                                                              'error'         : err
                                                            });
           },
           json: function(){
-            res.json(200, { 'map'           : msa_map, 
-                            'example_parse' : parsed_attributes, 
-                            'msa_id'        : msa._id, 
+            res.json(200, { 'map'           : msa_map,
+                            'example_parse' : parsed_attributes,
+                            'msa_id'        : msa._id,
                             'error'         : err
                             });
           }

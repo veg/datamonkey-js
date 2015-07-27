@@ -38,15 +38,6 @@ var mongoose = require('mongoose'),
     seqio = require('../../lib/biohelpers/sequenceio.js'),
     logger = require('../../lib/logger');
 
-
-var ident = {
-    SUBTYPE: "subtype",
-    DATE: "date",
-    ID: "id",
-    COUNTRY: "country",
-    UNKNOWN: "unknown"
-}
-
 var error_codes = {
     INCORRECT_SPLIT: 0,
     FAILED_ASSIGNMENT: 1
@@ -221,7 +212,7 @@ Msa.methods.aminoAcidTranslation = function(cb) {
 Msa.methods.dataReader = function(file, cb) {
     if (file.indexOf('fastq') != -1) {
 
-        // TODO: Support FASTQ 
+        // TODO: Support FASTQ
         var result = {};
         result.FILE_INFO = {};
         result.FILE_PARTITION_INFO = {};
@@ -296,7 +287,7 @@ Msa.statics.validateFasta = function(fn, cb, options) {
 
         if (result.length <= 1) {
             cb({
-                'msg': '1 sequences or fewer found'
+                'msg': 'The FASTA file must have more than one sequence record'
             }, false)
             return;
         }
@@ -314,11 +305,11 @@ Msa.statics.validateFasta = function(fn, cb, options) {
             if (!all_the_same) {
                 cb({
                     'msg': 'Sequence lengths do not all match'
-                }, false)
+                }, result)
             }
         }
 
-        cb('', true)
+        cb('', result)
 
     }, options);
 

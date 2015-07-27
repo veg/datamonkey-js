@@ -1,5 +1,9 @@
+var attribute_unique_values = {};
+
 $(".editable").bind( "click", function() {
-  datamonkey.editable(this);
+  datamonkey.editable(this, attribute_unique_values);
+}).each (function (){
+    attribute_unique_values [$(this).text()] = true;
 });
 
 $("#attr_submit").bind( "click", function() {
@@ -16,7 +20,7 @@ function submit_new_map() {
   new_map = {};
   new_map.map = [];
   new_map.delimiter = $("#delimiter").text()
-                
+
   // Collect data
   for(var i = 0; i < $(".attr_field").length; i++) {
     new_map.map.push($(".attr_field")[i].text);
@@ -26,8 +30,8 @@ function submit_new_map() {
     type: 'POST',
     url: url,
     data: new_map,
-    success: function(data) { 
-      window.location.replace('/hivtrace/' + $('#hivtrace_id').text());  
+    success: function(data) {
+      window.location.replace('/hivtrace/' + $('#hivtrace_id').text());
     }
   });
 

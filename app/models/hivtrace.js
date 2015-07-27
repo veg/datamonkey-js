@@ -41,18 +41,12 @@ var mongoose = require('mongoose'),
     d3 = require('d3'),
     _ = require('underscore');
 
-var ident = {
-    SUBTYPE: "subtype",
-    DATE: "date",
-    ID: "id",
-    COUNTRY: "country",
-    UNKNOWN: "unknown"
-}
+
 
 var error_codes = {
     INCORRECT_SPLIT: 0,
     FAILED_ASSIGNMENT: 1
-}
+};
 
 var Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
@@ -72,8 +66,39 @@ function notEmptyValidator(val) {
  * cluster_csv        : Results
  * created            : When the document was created
  */
+var SequenceAttribute = new Schema({
+    calculated: {
+        type: String,
+        require: false,
+        enum: _.map(attributes.types, function(value) {
+            return value;
+        })
+    },
+    calculated_proportion: Number,
+    category: {
+        type: String,
+        require: true,
+        enum: ["categorical", "individual", "temporal"]
+    },
+    annotation: {
+        type: String,
+        require: true
+    },
+    unique_values: Number,
+    value_examples: Array,
+    failed_examples: Array,
+    failed_count: 0
+});
+
+var AttributeModel = mongoose.model('AttributeModel', SequenceAttribute);
+
 var HivTrace = new Schema({
     reference: String,
+    headers: Array,
+    delimiter: String,
+    attributes: [
+        SequenceAttribute
+    ],
     distance_threshold: {
         type: Number,
         require: true,
@@ -100,9 +125,8 @@ var HivTrace = new Schema({
     ambiguity_handling: {
         type: String,
         require: true,
-        validate: [notEmptyValidator, 'Ambiguity Handling is empty']
+        validate: [notEmptyValidator, 'Ambiguity Handling field is empty']
     },
-    attribute_map: Object,
     sequence_length: Number,
     status_stack: Array,
     status: {
@@ -135,7 +159,7 @@ var HivTrace = new Schema({
 });
 
 /**
- * Validators to be passed to an html template as data attributes for 
+ * Validators to be passed to an html template as data attributes for
  * form validation
  */
 HivTrace.statics.validators = function() {
@@ -147,7 +171,7 @@ HivTrace.statics.validators = function() {
 }
 
 /**
- * Validators to be passed to an html template as data attributes for 
+ * Validators to be passed to an html template as data attributes for
  * form validation
  */
 HivTrace.statics.lanl_validators = function() {
@@ -162,7 +186,7 @@ HivTrace.statics.lanl_validators = function() {
  * Create an attribute map based off the header files of
  * a FASTA file
  */
-HivTrace.statics.createAttributeMap = function(fn, cb) {
+HivTrace.statics.createAttributeMap = function(instance, cb) {
     // SDHC|AEH020|222-4kr|20090619
     // Z|JP|K03455|2036|6
 
@@ -201,31 +225,55 @@ HivTrace.statics.createAttributeMap = function(fn, cb) {
     var testForAttributes = function(id) {
         /** split each sequence tag by all possible delimiters
             and return putative attribute maps for each one.
-            For example 
-            
+            For example
+
             testForAttributes("050106508|06252003|pol|plasma|pool|1|ViroLogic|03_120785|NULL")
-            
-            returns 
-            
+
+            returns
+
             {
-                _: ['id', 'unknown'],
-                '|': ['id',
-                    'date',
-                    'unknown',
-                    'unknown',
-                    'unknown',
-                    'unknown',
-                    'unknown',
-                    'unknown',
-                    'unknown'
+                _: [
+                    ['id', '050106508|06252003|pol|plasma|pool|1|ViroLogic|03'],
+                    ['unknown', '120785|NULL']
                 ],
-                '.': ['id'],
-                ',': ['id'],
-                ';': ['id'],
-                '\t': ['id'],
-                ':': ['id']
+                '|': [
+                    ['id', '050106508'],
+                    ['date', '06252003'],
+                    ['unknown', 'pol'],
+                    ['unknown', 'plasma'],
+                    ['unknown', 'pool'],
+                    ['unknown', '1'],
+                    ['unknown', 'ViroLogic'],
+                    ['unknown', '03_120785'],
+                    ['unknown', 'NULL']
+                ],
+                '.': [
+                    ['id',
+                        '050106508|06252003|pol|plasma|pool|1|ViroLogic|03_120785|NULL'
+                    ]
+                ],
+                ',': [
+                    ['id',
+                        '050106508|06252003|pol|plasma|pool|1|ViroLogic|03_120785|NULL'
+                    ]
+                ],
+                ';': [
+                    ['id',
+                        '050106508|06252003|pol|plasma|pool|1|ViroLogic|03_120785|NULL'
+                    ]
+                ],
+                '\t': [
+                    ['id',
+                        '050106508|06252003|pol|plasma|pool|1|ViroLogic|03_120785|NULL'
+                    ]
+                ],
+                ':': [
+                    ['id',
+                        '050106508|06252003|pol|plasma|pool|1|ViroLogic|03_120785|NULL'
+                    ]
+                ]
             }
-            
+
 
         */
 
@@ -236,8 +284,14 @@ HivTrace.statics.createAttributeMap = function(fn, cb) {
                 attr_validators.some(function(validator) {
                     var test = validator(value);
                     if (test) {
-                        attr_map[cur_dl][index] = test;
+                        attr_map[cur_dl][index] = [test, value];
                         return true;
+                    } else {
+                        var uc = value.toUpperCase();
+                        if (validator (uc)) {
+                            attr_map[cur_dl][index] = [test, uc];
+                            return true;
+                        }
                     }
                     return false;
                 });
@@ -245,12 +299,12 @@ HivTrace.statics.createAttributeMap = function(fn, cb) {
 
             // We guess that the first unknown attribute is the ID
             var unknowns = attr_map[cur_dl].map(function(v, i) {
-                return v == attributes.types.UNKNOWN ? i : -1;
+                return v[0] == attributes.types.UNKNOWN ? i : -1;
             }).filter(function(v) {
                 return v >= 0;
             });
             if (unknowns.length > 0) {
-                attr_map[cur_dl][unknowns[0]] = attributes.types.ID;
+                attr_map[cur_dl][unknowns[0]][0] = attributes.types.ID;
             }
         });
 
@@ -258,199 +312,149 @@ HivTrace.statics.createAttributeMap = function(fn, cb) {
 
     }
 
-    var validateAttrMap = function(id, delimiter, attr_map) {
-        /**
-                
-        */
 
-        header = id.split(delimiter);
 
-        for (var i = 0; i < attr_map.length; i++) {
-            if (attr_map[i] == attributes.types.SUBTYPE) {
-                if (!isSubtype(header[i])) {
-                    attr_map[i] = 'maybe_' + attributes.types.SUBTYPE;
-                    return false;
-                }
-                //Checking if a date is too expensive
-            } else if (attr_map[i] == attributes.types.DATE) {
-                if (!isDate(header[i])) {
-                    attr_map[i] = 'maybe_' + attributes.types.DATE;
-                    return false;
-                }
-            } else if (attr_map[i] == attributes.types.COUNTRY) {
-                if (!isCountry(header[i])) {
-                    attr_map[i] = 'maybe_' + attributes.types.COUNTRY;
-                    return false;
-                }
+    var all_maps = instance.headers.map(function(header) {
+        return testForAttributes(header);
+    });
+
+
+    var binned_by_delimiter = attributes.delimiters.map(function(delimiter) {
+        var fields = [];
+        _.each(_.pluck(all_maps, delimiter), function(field_list) {
+
+            for (var i = fields.length; i < field_list.length; i++) {
+                var new_entry = new Object;
+                new_entry[field_list[i][0]] = 0;
+                fields.push(new_entry);
             }
-        }
-        return true;
-    }
 
-    var checkForConsistency = function(headers, delimiter, attr_map) {
-
-        // Ensure all headers are the same same # of fields as attr_map
-        var field_count = {};
-
-        //Sort by file lengths
-        headers.forEach(function(x) {
-            field_count[x.split(delimiter).length] = field_count[x.split(delimiter).length] + 1 || 1
-        });
-
-
-        var lengths = _.keys(field_count),
-            expected_count = _.keys(attr_map).length;
-
-
-        if (lengths.length > 1 && _.sortBy(lengths, function(v) {
-                return +v;
-            })[0] < expected_count) {
-
-            var failed_headers = headers.filter(function(x) {
-                return x.split(delimiter).length < expected_count
-            });
-            return {
-                'status': false,
-                'info': {
-                    'type': 'parse_fail',
-                    'code': error_codes.INCORRECT_SPLIT,
-                    'msg': 'Based on a delimiter of "' + delimiter + '", your file has inconsistent sequence name formatting. \
-                    The following headers either have too few or too many fields. Please revise your FASTA file and resubmit \
-                    once reconciled. Alternatively, you can skip attributes altogether and continue, but then you will not be able to\
-                    perform attribute-based analyses.',
-                    'failed_headers': failed_headers
-                }
-            };
-        }
-
-
-        // If more than one, return a problem with the problem headers
-        //Change attribute map to maybe_ if some fail
-
-        headers.forEach(function(x) {
-            validateAttrMap(x, delimiter, attr_map)
-        });
-        return {
-            'status': true
-        }
-
-    }
-
-    fs.readFile(fn, function(err, data) {
-        /** 
-            1. read the file (raw)
-            
-            2. split into lines
-            
-            3. chop out FASTA headers
-            
-            4. for each header, compute a putative attribute map,
-               (with testForAttributes), then
-               select the best attribute map
-               
-               Best map is defined as having the most fields of types
-               other than UNKNOWN, upon which more than 50% of the sequences
-               agree. Ties are broken by the proportion of sequences that have 
-               the same type of field in a given position, and by the order
-               of appearance (left-to-right);
-        
-        */
-
-        console.log("Starting header parsing");
-
-        var err = false;
-
-        if (err) {
-            cb({
-                'err': err
-            }, false);
-        }
-
-        var data = data.toString();
-        var lines = data.split(/(?:\n|\r\n|\r)/g);
-
-        //Collect all headers
-        var headers = lines.filter(function(x) {
-                return x.indexOf('>') != -1;
-            })
-            .map(function(x) {
-                return x.substring(x.indexOf('>') + 1)
-            });
-
-
-        var all_maps = headers.map(function(header) {
-            return testForAttributes(header);
-        });
-
-
-        console.log("Done with testForAttributes");
-
-        var binned_by_delimiter = attributes.delimiters.map(function(delimiter) {
-            var fields = [];
-            _.each(_.pluck(all_maps, delimiter), function(field_list) {
-
-                for (var i = fields.length; i < field_list.length; i++) {
-                    var new_entry = new Object;
-                    new_entry[field_list[i]] = 0;
-                    fields.push(new_entry);
-                }
-
-                _.each(field_list, function(a_field, i) {
-                    fields[i][a_field] = (a_field in fields[i]) ? fields[i][a_field] + 1 : 1;
-                });
-            });
-            return [delimiter, fields];
-        });
-
-        /*
-            for each delimiter;
-            
-            1). Count how many 
-        */
-        
-        _.each(binned_by_delimiter, function(pair) {
-            console.log(pair[0]);
-            _.each(pair[1], function(value, key) {
-                console.log(key, value);
+            _.each(field_list, function(a_field, i) {
+                fields[i][a_field[0]] = (a_field[0] in fields[i]) ? fields[i][a_field[0]] + 1 : 1;
             });
         });
+        return [delimiter, fields];
+    });
 
-        
+    var ranked_delimiters = _.sortBy(binned_by_delimiter, function(delimiter) {
+        return _.reduce(delimiter[1].map(function(mapping) {
+                return _.reduce(mapping, function(memo, count, kind) {
+                    var value = (kind != attributes.types.UNKNOWN && kind != attributes.types.ID && count * 2 >= all_maps.length) ? count / all_maps.length : 0;
+                    return value > memo ? value : memo;
+                }, 0.)
+            }),
+            function(memo, d) {
+                return memo - d * d;
+            }, 0)
+    });
 
-        console.log("Done with binned_by_delimiter");
-        
-        // select the best mapping
-        
-        
-        
-        
 
-        var attr_map = testForAttributes(headers[0]), // Derive the attribute based on the first sequence
-            best_delimiter = null, // Find the delimiter which yielded the most fields
-            field_count = _.reduce(attr_map, function(memo, value, key) {
-                if (value.length > memo) {
-                    best_delimiter = key;
-                    return value.length;
+    var best_delimiter = ranked_delimiters[0][0],
+        best_attr_map = ranked_delimiters[0][1];
+
+    all_maps = _.pluck(all_maps, best_delimiter);
+
+    var err = '',
+        mapped_attributes = [],
+        used_ids = {};
+
+    best_attr_map.forEach(function(mapping) {
+        var label = attributes.types.UNKNOWN,
+            label_prop = _.reduce(mapping, function(memo, count, kind) {
+                var value = count / all_maps.length;
+                if (value > memo) {
+                    label = kind;
+                    return value;
                 }
                 return memo;
+            }, 0.);
 
-            }, -1);
+        var current_attribute = new AttributeModel;
 
-        var is_consistent = checkForConsistency(headers, best_delimiter, attr_map[best_delimiter]);
-        if (!is_consistent.status) {
-            err = is_consistent.info;
+        current_attribute.calculated = label;
+        current_attribute.calculated_proportion = label_prop;
+        if (label in used_ids) {
+            current_attribute.annotation = label + "-" + (++used_ids[label]);
+        } else {
+            current_attribute.annotation = label;
+            used_ids[label] = 1;
         }
 
 
-        cb(err, {
-            "headers": headers,
-            /*_.map(all_maps, function (value, key) {
-                return [key, value[best_delimiter]];
-            }),*/
-            "map": attr_map[best_delimiter],
-            "delimiter": best_delimiter
+        mapped_attributes.push(current_attribute);
+
+    });
+
+    console.log(mapped_attributes, all_maps[0]);
+
+    mapped_attributes.forEach(function(ca, index) {
+
+        var value_range = {},
+            mismatched = {};
+
+        all_maps.forEach(function(mapping) {
+            if (index < mapping.length) {
+                attr = mapping[index];
+                if (attr[0] == ca.calculated) {
+                    if (attr[1] in value_range) {
+                        value_range[attr[1]] += 1;
+                    } else {
+                        value_range[attr[1]] = 1;
+                    }
+                } else {
+                    if (attr[1] in mismatched) {
+                        mismatched[attr[1]] += 1;
+                    } else {
+                        mismatched[attr[1]] = 1;
+                    }
+                }
+            }
         });
 
+
+        var keys = _.keys(value_range);
+
+        if (ca.calculated != attributes.types.DATE) {
+            var count = keys.length;
+            if (count * 5 < all_maps.length) {
+                ca.category = "categorical";
+            } else {
+                ca.category = "individual";
+            }
+        } else {
+            ca.category = "temporal";
+        }
+
+
+        ca.unique_values = keys.length;
+        ca.value_examples = _.first(keys, 5);
+        var mm = _.keys(mismatched);
+        if (mm.length) {
+            ca.failed_examples = _.first(mm, 5);
+        }
+        ca.failed_count = mm.length;
+    });
+
+
+
+
+
+
+    /**
+        categorize the individual attributes
+        by estimating the range of values, and
+        guessing what they represent.
+    */
+
+
+
+
+    cb(err, {
+        /*_.map(all_maps, function (value, key) {
+            return [key, value[best_delimiter]];
+        }),*/
+        "annotated_map": mapped_attributes,
+        "delimiter": best_delimiter
     });
 
 }
@@ -476,21 +480,6 @@ HivTrace.statics.parseHeaderFromMap = function(header, attr_map) {
     return parsed;
 }
 
-
-HivTrace.virtual('headers').get(function() {
-    return seqio.parseFasta(fs.readFileSync(this.filepath).toString, true).map(function(e) {
-        return e.name;
-    });
-
-    /*var data = data.toString();
-    var lines = data.split(/(?:\n|\r\n|\r)/g);
-
-    //Collect all headers
-    var headers = lines.filter(function(x) { return x.indexOf('>') != -1 } );
-    var headers = headers.map(function(x) { return x.substring(headers[0].indexOf('>') + 1) } );
-    return headers;*/
-
-});
 
 HivTrace.virtual('valid_statuses').get(function() {
     return ['In Queue', 'Aligning', 'BAM to FASTA conversion',
@@ -576,7 +565,7 @@ HivTrace.virtual('timestamp').get(function() {
 });
 
 /**
- * URL 
+ * URL
  */
 HivTrace.virtual('url').get(function() {
     return 'http://' + setup.host + '/hivtrace/' + this._id;
