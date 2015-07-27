@@ -5,7 +5,8 @@ module.exports = function(grunt) {
 
     mochaTest: {
       test: {
-          src: ['tests/*.js'],
+          //src: ['tests/*.js', 'tests/**/*.js'],
+          src: ['tests/hivtrace/*.js'],
           options: {
                 run: true,
                 debug: true,
@@ -23,8 +24,9 @@ module.exports = function(grunt) {
     },
 
     watch: {
-      files: ['lib/**/*.js', 'app/**/*.js', 'tests/*.js', 'lib/**/*.js*'],
-      tasks: ['mochaTest', 'jshint']
+      files: ['lib/**/*.js', 'app/**/*.js', 'tests/*.js', 'lib/**/*.js*', 'public/assets/lib/datamonkey/**/*.js', 'tests/**/*.js*'],
+      //tasks: ['mochaTest', 'jshint']
+      tasks: ['mochaTest']
     }
 
   });

@@ -429,7 +429,7 @@ exports.aligned_fasta = function (req, res) {
           res.status(err.status).end();
         }
         else {
-          console.log('Sent:', fileName);
+          console.log('sent:', hivtrace.rel_aligned_fasta_fn);
         }
       })
 

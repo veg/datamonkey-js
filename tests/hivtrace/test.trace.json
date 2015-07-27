@@ -1,0 +1,434 @@
+{
+    "Cluster sizes": [
+        3, 
+        2, 
+        2, 
+        2, 
+        3, 
+        2, 
+        3, 
+        3, 
+        2
+    ], 
+    "Degrees": {
+        "Distribution": [
+            16, 
+            6
+        ], 
+        "Model": "Yule", 
+        "fitted": [
+            0.8131468054972956, 
+            0.12801842629786794
+        ], 
+        "rho": 5.351795042420486, 
+        "rho CI": [
+            2.343066398681009, 
+            20.392608748516114
+        ]
+    }, 
+    "Directed Edges": {
+        "Count": 0, 
+        "Reasons for unresolved directions": {
+            "Missing dates": 14
+        }
+    }, 
+    "Edge Stages": {}, 
+    "Edges": [
+        {
+            "attributes": [
+                "BULK"
+            ], 
+            "directed": false, 
+            "length": 0.000799751, 
+            "removed": false, 
+            "sequences": [
+                "5702_2", 
+                "5702"
+            ], 
+            "source": 6, 
+            "support": 0.0, 
+            "target": 5
+        }, 
+        {
+            "attributes": [
+                "BULK"
+            ], 
+            "directed": false, 
+            "length": -0.0, 
+            "removed": false, 
+            "sequences": [
+                "12815", 
+                "12815_2"
+            ], 
+            "source": 3, 
+            "support": 0.0, 
+            "target": 4
+        }, 
+        {
+            "attributes": [
+                "BULK"
+            ], 
+            "directed": false, 
+            "length": 0.013817, 
+            "removed": false, 
+            "sequences": [
+                "HXB2_env", 
+                "B07-G2"
+            ], 
+            "source": 1, 
+            "support": 0.0, 
+            "target": 2
+        }, 
+        {
+            "attributes": [
+                "BULK"
+            ], 
+            "directed": false, 
+            "length": -0.0, 
+            "removed": false, 
+            "sequences": [
+                "14064", 
+                "14064_3"
+            ], 
+            "source": 19, 
+            "support": 0.5, 
+            "target": 17
+        }, 
+        {
+            "attributes": [
+                "BULK"
+            ], 
+            "directed": false, 
+            "length": -0.0, 
+            "removed": false, 
+            "sequences": [
+                "14064", 
+                "14064_2"
+            ], 
+            "source": 19, 
+            "support": 0.5, 
+            "target": 18
+        }, 
+        {
+            "attributes": [
+                "BULK"
+            ], 
+            "directed": false, 
+            "length": 0.0138225, 
+            "removed": false, 
+            "sequences": [
+                "HXB2_env", 
+                "NL4-3"
+            ], 
+            "source": 2, 
+            "support": 0.0, 
+            "target": 0
+        }, 
+        {
+            "attributes": [
+                "BULK"
+            ], 
+            "directed": false, 
+            "length": -0.0, 
+            "removed": false, 
+            "sequences": [
+                "10997", 
+                "10997_3"
+            ], 
+            "source": 14, 
+            "support": 0.0, 
+            "target": 16
+        }, 
+        {
+            "attributes": [
+                "BULK"
+            ], 
+            "directed": false, 
+            "length": -0.0, 
+            "removed": false, 
+            "sequences": [
+                "12191", 
+                "12191_2"
+            ], 
+            "source": 7, 
+            "support": 0.0, 
+            "target": 8
+        }, 
+        {
+            "attributes": [
+                "BULK"
+            ], 
+            "directed": false, 
+            "length": 0.000396789, 
+            "removed": false, 
+            "sequences": [
+                "14359_tp2", 
+                "14359"
+            ], 
+            "source": 21, 
+            "support": 0.0, 
+            "target": 20
+        }, 
+        {
+            "attributes": [
+                "BULK"
+            ], 
+            "directed": false, 
+            "length": -0.0, 
+            "removed": false, 
+            "sequences": [
+                "7324_2", 
+                "7324_3_colin"
+            ], 
+            "source": 10, 
+            "support": 1.0467737787678288e-12, 
+            "target": 11
+        }, 
+        {
+            "attributes": [
+                "BULK"
+            ], 
+            "directed": false, 
+            "length": -0.0, 
+            "removed": false, 
+            "sequences": [
+                "NL4-3", 
+                "B07-G2"
+            ], 
+            "source": 1, 
+            "support": 0.0, 
+            "target": 0
+        }, 
+        {
+            "attributes": [
+                "BULK"
+            ], 
+            "directed": false, 
+            "length": -0.0, 
+            "removed": false, 
+            "sequences": [
+                "12758", 
+                "12758_2"
+            ], 
+            "source": 12, 
+            "support": 0.0, 
+            "target": 13
+        }, 
+        {
+            "attributes": [
+                "BULK"
+            ], 
+            "directed": false, 
+            "length": 0.00118797, 
+            "removed": false, 
+            "sequences": [
+                "7324", 
+                "7324_3_colin"
+            ], 
+            "source": 9, 
+            "support": 0.5, 
+            "target": 11
+        }, 
+        {
+            "attributes": [
+                "BULK"
+            ], 
+            "directed": false, 
+            "length": 0.00277953, 
+            "removed": false, 
+            "sequences": [
+                "329", 
+                "10997_3"
+            ], 
+            "source": 16, 
+            "support": 0.5, 
+            "target": 15
+        }
+    ], 
+    "HIV Stages": {
+        "A-1": 0, 
+        "A-2": 0, 
+        "A-3": 0, 
+        "Chronic": 22, 
+        "E-1": 0, 
+        "E-2": 0, 
+        "E-3": 0
+    }, 
+    "Multiple sequences": {
+        "Followup, days": null, 
+        "Subjects with": 0
+    }, 
+    "Network Summary": {
+        "Clusters": 9, 
+        "Edges": 14, 
+        "Nodes": 22, 
+        "Sequences used to make links": 22
+    }, 
+    "Nodes": [
+        {
+            "attributes": [
+                "problematic"
+            ], 
+            "baseline": null, 
+            "cluster": 1, 
+            "edi": null, 
+            "id": "NL4-3"
+        }, 
+        {
+            "attributes": [
+                "problematic"
+            ], 
+            "baseline": null, 
+            "cluster": 1, 
+            "edi": null, 
+            "id": "B07-G2"
+        }, 
+        {
+            "attributes": [
+                "problematic", "test"
+            ], 
+            "baseline": null, 
+            "cluster": 1, 
+            "edi": null, 
+            "id": "HXB2_env"
+        }, 
+        {
+            "attributes": [], 
+            "baseline": null, 
+            "cluster": 2, 
+            "edi": null, 
+            "id": "12815"
+        }, 
+        {
+            "attributes": [], 
+            "baseline": null, 
+            "cluster": 2, 
+            "edi": null, 
+            "id": "12815_2"
+        }, 
+        {
+            "attributes": [], 
+            "baseline": null, 
+            "cluster": 3, 
+            "edi": null, 
+            "id": "5702_2"
+        }, 
+        {
+            "attributes": [], 
+            "baseline": null, 
+            "cluster": 3, 
+            "edi": null, 
+            "id": "5702"
+        }, 
+        {
+            "attributes": [], 
+            "baseline": null, 
+            "cluster": 4, 
+            "edi": null, 
+            "id": "12191"
+        }, 
+        {
+            "attributes": [], 
+            "baseline": null, 
+            "cluster": 4, 
+            "edi": null, 
+            "id": "12191_2"
+        }, 
+        {
+            "attributes": [], 
+            "baseline": null, 
+            "cluster": 5, 
+            "edi": null, 
+            "id": "7324"
+        }, 
+        {
+            "attributes": [], 
+            "baseline": null, 
+            "cluster": 5, 
+            "edi": null, 
+            "id": "7324_2"
+        }, 
+        {
+            "attributes": [], 
+            "baseline": null, 
+            "cluster": 5, 
+            "edi": null, 
+            "id": "7324_3_colin"
+        }, 
+        {
+            "attributes": [], 
+            "baseline": null, 
+            "cluster": 6, 
+            "edi": null, 
+            "id": "12758"
+        }, 
+        {
+            "attributes": [], 
+            "baseline": null, 
+            "cluster": 6, 
+            "edi": null, 
+            "id": "12758_2"
+        }, 
+        {
+            "attributes": [], 
+            "baseline": null, 
+            "cluster": 7, 
+            "edi": null, 
+            "id": "10997"
+        }, 
+        {
+            "attributes": [], 
+            "baseline": null, 
+            "cluster": 7, 
+            "edi": null, 
+            "id": "329"
+        }, 
+        {
+            "attributes": [], 
+            "baseline": null, 
+            "cluster": 7, 
+            "edi": null, 
+            "id": "10997_3"
+        }, 
+        {
+            "attributes": [], 
+            "baseline": null, 
+            "cluster": 8, 
+            "edi": null, 
+            "id": "14064_3"
+        }, 
+        {
+            "attributes": [], 
+            "baseline": null, 
+            "cluster": 8, 
+            "edi": null, 
+            "id": "14064_2"
+        }, 
+        {
+            "attributes": [], 
+            "baseline": null, 
+            "cluster": 8, 
+            "edi": null, 
+            "id": "14064"
+        }, 
+        {
+            "attributes": [], 
+            "baseline": null, 
+            "cluster": 9, 
+            "edi": null, 
+            "id": "14359_tp2"
+        }, 
+        {
+            "attributes": [], 
+            "baseline": null, 
+            "cluster": 9, 
+            "edi": null, 
+            "id": "14359"
+        }
+    ], 
+    "Settings": {
+        "contaminants": "report", 
+        "edge-filtering": "remove", 
+        "threshold": 0.015
+    }
+}
