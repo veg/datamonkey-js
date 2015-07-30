@@ -25,7 +25,6 @@ function datamonkey_editable(self, value_list, edit_group) {
     $(self).hide();
     
     if (edit_group) {
-        console.log (edit_group, self);
         edit_group.filter (function (d) {return d[1];}).forEach (function (d) {datamonkey_cancel (d[0]);});
         edit_group.forEach (function (d) {d[1] = d[0] === self;});
     }

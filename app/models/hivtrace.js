@@ -31,6 +31,7 @@ var setup = require('../../config/setup'),
     attributes = require('../../config/attributes.json');
 
 var mongoose = require('mongoose'),
+    moment = require('moment'),
     check = require('validator').check,
     globals = require('../../config/globals.js'),
     seqio = require('../../lib/biohelpers/sequenceio.js'),
@@ -153,10 +154,8 @@ var HivTrace = new Schema({
     tn93_results: String,
     lanl_tn93_results: String,
     error_message: String,
-    combine_same_id_diff_dates: {
-        type: Boolean,
-        default: false
-    },
+    combine_same_id_diff_dates: Array,
+    // if not empty, then combine the ID (index 0) with the date (index 1)
     created: {
         type: Date,
         default: Date.now

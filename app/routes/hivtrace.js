@@ -389,7 +389,10 @@ exports.saveAttributes = function(req, res) {
     HivTrace.findOne({
         _id: id
     }, function(err, hivtrace) {
-        hivtrace.attribute_map = postdata;
+        hivtrace.attributes.forEach (function (d,i) {
+            d.annotation = postdata['annotation'][i];
+        }); 
+        hivtrace.combine_same_id_diff_dates = postdata['combine'];
         hivtrace.save(function(err, hivtrace) {
             if (err) {
                 res.json(200, err);

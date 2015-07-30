@@ -18,7 +18,8 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
                                                 
 */
 
-  var self = this;
+  var self = new Object;
+  
     self.nodes = [];
     self.edges = [];
     self.clusters = [];         
@@ -1439,7 +1440,7 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
     }
   }
   initial_json_load();       
-  return this;
+  return self;
 }
 
 
