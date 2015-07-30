@@ -67,8 +67,6 @@ exports.uploadFile = function(req, res) {
         hivtrace.status_stack = hivtrace.valid_statuses;
     }
 
-    //console.log (hivtrace.status_stack);
-
     hivtrace.distance_threshold = Number(postdata.distance_threshold);
     hivtrace.min_overlap = Number(postdata.min_overlap);
     hivtrace.ambiguity_handling = postdata.ambiguity_handling;
@@ -337,7 +335,7 @@ exports.mapAttributes = function(req, res) {
     function returnFormat(hivtrace, err) {
         var return_me = {
             'map': hivtrace.attributes.toObject(),
-            'delimiter' : hivtrace.delimiter,
+            'delimiter': hivtrace.delimiter,
             'hivtrace_id': hivtrace._id,
             'error': err
         };
@@ -375,9 +373,8 @@ exports.mapAttributes = function(req, res) {
             // Validate that the file uploaded was a FASTA file
             HivTrace.createAttributeMap(hivtrace, function(err, hivtrace_map) {
                 hivtrace.attributes = hivtrace_map.annotated_map;
-                hivtrace.delimiter  = hivtrace_map.delimiter;
+                hivtrace.delimiter = hivtrace_map.delimiter;
                 hivtrace.save();
-                console.log (hivtrace);
                 returnFormat(hivtrace, err);
             });
         }
@@ -395,7 +392,6 @@ exports.saveAttributes = function(req, res) {
         hivtrace.attribute_map = postdata;
         hivtrace.save(function(err, hivtrace) {
             if (err) {
-                // FASTA validation failed, report an error and the form back to the user
                 res.json(200, err);
             } else {
                 res.json(200, {

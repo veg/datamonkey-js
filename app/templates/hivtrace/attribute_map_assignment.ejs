@@ -1,6 +1,5 @@
 <%- include ../includes/header.ejs %>
 
-
     <div class="container">
         <h4> Attribute Mapping </h4>
         <span hidden id="hivtrace_id"><%= hivtrace_id %></span>
@@ -38,7 +37,9 @@
                             <th><abbr title="Click to edit">Description</abbr></th>
                             <th>Kind</th>
                             <th>Type</th>
-                            <th>ID/date</th>
+                            <% if (map.some (function (d) {return d.calculated == 'date'}) && map.some (function (d) {return d.calculated == 'id'})) { %>
+                                <th>Date/ID</th>
+                             <% } %>
                             <th></th>
                         </thead>
                         <tbody>
@@ -75,22 +76,30 @@
                                             </button>
                                          <% } %>
                                     </td>
+                                    <% if (map.some (function (d) {return d.calculated == 'date'}) && map.some (function (d) {return d.calculated == 'id'})) { %>
                                     <td>
                                         <% if (map[i].category == "temporal" || map[i].category == "individual") {%>
-                                            <input type = 'checkbox' data-field = "<%= i %>"/>
+                                            <input type = 'checkbox' data-field = "<%=i%>" data-category = "<%=map[i].category%>"/>
                                         <% } %>
                                     </td>
+                                    <% } %>
 
                                 </tr>
 
                                 <% } %>
                         </tbody>
                     </table>
+                    
+                        
                     <div class="row">
-                        <label>
-                            <input type="checkbox" id="group_dates_by_id" disabled> Group multiple sequences with the same ID
-                        </label>
-                        <button id="attr_submit" type="submit" class="btn btn-primary pull-right">Continue</button>
+                          <button id="attr_continue" type="submit" class="btn btn-primary pull-right">Continue</button>
+                       <% if (map.some (function (d) {return d.calculated == 'date'}) && map.some (function (d) {return d.calculated == 'id'})) { %>
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-success disabled">
+                                <input type="checkbox" autocomplete="off" id = "attr_group_id_date">Group multiple sequences with the same ID</input>
+                            </label>
+                        </div>
+                        <% } %>
                     </div>
                     <% } %>
         </div>

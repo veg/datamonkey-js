@@ -96,6 +96,7 @@ var HivTrace = new Schema({
     reference: String,
     headers: Array,
     delimiter: String,
+    data_id : Array,
     attributes: [
         SequenceAttribute
     ],
@@ -152,6 +153,10 @@ var HivTrace = new Schema({
     tn93_results: String,
     lanl_tn93_results: String,
     error_message: String,
+    combine_same_id_diff_dates: {
+        type: Boolean,
+        default: false
+    },
     created: {
         type: Date,
         default: Date.now
@@ -385,8 +390,7 @@ HivTrace.statics.createAttributeMap = function(instance, cb) {
 
     });
 
-    console.log(mapped_attributes, all_maps[0]);
-
+ 
     mapped_attributes.forEach(function(ca, index) {
 
         var value_range = {},
@@ -427,10 +431,10 @@ HivTrace.statics.createAttributeMap = function(instance, cb) {
 
 
         ca.unique_values = keys.length;
-        ca.value_examples = _.first(keys, 5);
+        ca.value_examples = _.first(keys, 10);
         var mm = _.keys(mismatched);
         if (mm.length) {
-            ca.failed_examples = _.first(mm, 5);
+            ca.failed_examples = _.first(mm, 10);
         }
         ca.failed_count = mm.length;
     });

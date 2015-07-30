@@ -2,8 +2,8 @@ function datamonkey_cancel(self) {
     $(self).show().next().remove();
 }
 
-function datamonkey_change(elem, self) {
-    $(self).text ($(elem).closest('form').find('input').val())
+function datamonkey_change(value, self) {
+    $(self).text (value)
         .show()
         .next().remove();
 }
@@ -21,8 +21,14 @@ function datamonkey_check_valid_value (value, value_list, previous) {
     return false;
 }
 
-function datamonkey_editable(self, value_list) {
+function datamonkey_editable(self, value_list, edit_group) {
     $(self).hide();
+    
+    if (edit_group) {
+        console.log (edit_group, self);
+        edit_group.filter (function (d) {return d[1];}).forEach (function (d) {datamonkey_cancel (d[0]);});
+        edit_group.forEach (function (d) {d[1] = d[0] === self;});
+    }
 
     var div            = d3.select ($(self).parent()[0]).append ("div").classed ("input-group", true);
         text_field     = div.append ("input").style ("margin-right","1em"),
@@ -33,72 +39,18 @@ function datamonkey_editable(self, value_list) {
     button_ok.append ("i").classed ("glyphicon glyphicon-ok", true);
     button_cancel.append ("i").classed ("glyphicon glyphicon-remove", true);
 
-    console.log (value_list);
-
 
     $(text_field[0]).val(current_value).on ("input propertychange", function (event) {
         button_ok.property ("disabled", !datamonkey_check_valid_value ($(this).val(), value_list,current_value));
     });
 
-    /*
-    var form_element = $(self).parent().append(
+    button_ok.on ("click", function (event, datum) {
+        datamonkey_change ($(text_field[0]).val(), self);
+    });
 
-    $(self).parent().append(
-        $('<form />', {
-            class: 'form-inline',
-            role: 'form'
-        }).append(
-            $('<span>').attr ('class', 'editable-container editable-inline')
-            .append(
-                $('<div />', {
-                    class: 'editableform-loading'
-                }).append(
-                    $('<form />', {
-                        class: 'form-inline editableform'
-                    }).append(
-                        $('<div />', {
-                            class: 'editable-input'
-                        }).append(
-                            $('<input />', {
-                                class: 'form-control input-sm',
-                                val: $(self).text()
-                            }).
-                            append(
-                                $('<span />', {
-                                    class: 'editable-clear-x'
-                                })
-                            )
-                        ),
-                        $('<div />', {
-                            class: 'editable-buttons'
-                        }).append(
-                            $('<button />', {
-                                class: 'btn btn-primary btn-sm editable-submit',
-                            }).append(
-                                $('<i />', {
-                                    class: 'glyphicon glyphicon-ok'
-                                })
-                            ).click(function(e) {
-                                datamonkey_change(this, self);
-                            }),
-                            $('<button />', {
-                                class: 'btn btn-primary btn-sm editable-submit',
-                            }).append(
-                                $('<i />', {
-                                    class: 'glyphicon glyphicon-remove'
-                                })
-                            ).click(function(e) {
-                                datamonkey_cancel(self);
-                            })
-                        ),
-                        $('<div />', {
-                            class: 'editable-error-block help-block'
-                        })
-                    )
-                )
-            )
-        )
-    )*/
+    button_cancel.on ("click", function (event, datum) {
+        datamonkey_cancel (self);
+    });
 }
 
 datamonkey.editable = datamonkey_editable;
