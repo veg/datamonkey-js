@@ -16,12 +16,12 @@
     "url": "git://github.com/veg/datamonkey-js.git"
   },
   "dependencies": {
-    "hyphy"                         : "git+https://github.com/stevenweaver/hyphy.git",
+    "hyphy"                         : "git+https://github.com/veg/hyphy.git#v2.2.5",
     "express"                       : "3.x",
     "express-validator"             : "0.3.x",
     "jade"                          : "0.x.x",
     "mongodb"                       : "1.x",
-    "mongoose"                      : "3.x.x",
+    "mongoose"                      : "4.x.x",
     "mongoose-schema-extend"        : "0.1.3",
     "mocha"                         : "2.0.x",
     "nodemailer"                    : "1.3.0",
@@ -43,6 +43,7 @@
     "morgan"                        : "x.x.x",
     "jquery-file-upload-middleware" : "0.1.x",
     "tar-fs"                        : "1.4.2",
-    "q"                             : "1.4.x"
+    "q"                             : "1.4.x",
+    "d3"			    : "3.x"
   }
 }

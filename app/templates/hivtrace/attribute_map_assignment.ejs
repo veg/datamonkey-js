@@ -1,72 +1,124 @@
 <%- include ../includes/header.ejs %>
-<div class="container">
-  <h3> Attribute Mapping </h3>
-  <span hidden id="hivtrace_id"><%= hivtrace_id %></span>
-  <div class="map col-sm-9">
-    <% if (error && error.code == 0) { %>
-      <div class="alert alert-danger">
-        <%= error.msg %>
-      </div>
-      <table class=table>
-        <thead>
-          <th>Incorrectly formatted headers</th>
-        </thead>
-        </tbody>
-        <% for(var i = 0; i < error.failed_headers.length; i++) { %>
-          <tr>
-            <td>
-              <%= error.failed_headers[i] %>
-            </td>
-          </tr>
-        <% } %>
-        </tbody>
-      </table>
-      <button id="attr_skip" type="submit" class="btn btn-primary pull-right">Skip</button>
-    <% } else { %>
-    <table class="table">
-      <thead>
-        <th>Attribute Name</th>
-        <th>Example Field</th>
-      </thead>
-      <tbody>
-        <% for(var i = 0; i < Object.keys(example_parse).length; i++) { %>
-          <tr>
-            <td>
-              <a data-pk=<%= i %> data-type="text" href="#" class="editable editable-click attr_field"><%= Object.keys(example_parse)[i] %></a>
-            </td>
-            <td>
-              <%= example_parse[Object.keys(example_parse)[i]] %>
-            </td>
-          </tr>
-        <% } %>
-      </tbody>
-    </table>
-    <button id="attr_submit" type="submit" class="btn btn-primary pull-right">Save</button>
-    <% } %>
-  </div>
 
-  <div class="col-sm-3 pull-right">
+    <div class="container">
+        <h4> Attribute Mapping </h4>
+        <span hidden id="hivtrace_id"><%= hivtrace_id %></span>
+        <div class="map col-sm-12">
+            <% if (error && error.code == 0) { %>
+                <div class="alert alert-danger">
+                    <%= error.msg %>
+                </div>
+                <!--
+            <table class=table>
+                <thead>
+                    <th>Incorrectly formatted headers</th>
+                </thead>
+                </tbody>
+                <% for(var i = 0; i < error.failed_headers.length; i++) { %>
+                    <tr>
+                        <td>
+                            <%= error.failed_headers[i] %>
+                        </td>
+                    </tr>
+                    <% } %>
+                        </tbody>
+            </table>
+            -->
+                <button id="attr_skip" type="submit" class="btn btn-primary pull-right">Skip</button>
+                <% } else { %>
 
-    <div class="alert alert-info">
-      Inferred Delimiter :
-      <span id="delimiter" class="large label label-default delimiter-label"><%= map.delimiter %></span>
+                    <div class="alert alert-info">
+                        Inferred Delimiter :
+                        <span id="delimiter" class="label label-default delimiter-label"><%= delimiter %></span>
+                    </div>
+
+                    <table class="table">
+                        <thead>
+                            <th><abbr title="Click to edit">Description</abbr></th>
+                            <th>Kind</th>
+                            <th>Type</th>
+                            <% if (map.some (function (d) {return d.calculated == 'date'}) && map.some (function (d) {return d.calculated == 'id'})) { %>
+                                <th>Date/ID</th>
+                             <% } %>
+                            <th></th>
+                        </thead>
+                        <tbody>
+                            <% for(var i = 0; i < map.length; i++) { %>
+                                <tr>
+                                    <td>
+                                        <a data-pk=<%=i %> data-type="text" href="#" class="editable editable-click attr_field"><%= map[i].annotation %></a>
+
+                            
+
+                                    </td>
+
+                                    <td>
+                                        <span class="badge pull-left" style = "width:70px">
+                                            <%= (map[i].calculated_proportion*100).toPrecision(3) %>%
+                                        </span>
+                                        &nbsp;
+                                        <span class="label label-success">
+                                                <%= map[i].calculated %>&nbsp;
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <button class="btn btn-xs btn-success" data-toggle="tooltip" data-html = "true" data-placement="top" title=
+                                             "<%= "<em>Example values</em><br>" + (map[i].value_examples).join ('<br>') %>" style = "text-align: left">
+                                            <em><%= (map[i].category)%></em> with <%= map[i].unique_values %> values
+                                        </button>
+
+                                         <% if (map[i].failed_examples.length) { %>
+                                            <button class="btn btn-xs btn-danger" data-toggle="tooltip" data-html = "true" data-placement="top" title=
+                                                 "<%= "<em>Examples</em><br>" + (map[i].failed_examples).join ('<br>') %>" style = "text-align: left">
+                                                <%= map[i].failed_count %> Mismatched values
+                                            </button>
+                                         <% } %>
+                                    </td>
+                                    <% if (map.some (function (d) {return d.calculated == 'date'}) && map.some (function (d) {return d.calculated == 'id'})) { %>
+                                    <td>
+                                        <% if (map[i].category == "temporal" || map[i].category == "individual") {%>
+                                            <input type = 'checkbox' data-field = "<%=i%>" data-category = "<%=map[i].category%>"/>
+                                        <% } %>
+                                    </td>
+                                    <% } %>
+
+                                </tr>
+
+                                <% } %>
+                        </tbody>
+                    </table>
+                    
+                        
+                    <div class="row">
+                          <button id="attr_continue" type="submit" class="btn btn-primary pull-right">Continue</button>
+                       <% if (map.some (function (d) {return d.calculated == 'date'}) && map.some (function (d) {return d.calculated == 'id'})) { %>
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-success disabled">
+                                <input type="checkbox" autocomplete="off" id = "attr_group_id_date">Group multiple sequences with the same ID</input>
+                            </label>
+                        </div>
+                        <% } %>
+                    </div>
+                    <% } %>
+        </div>
+
+        <!--
+    <div class="col-sm-5 pull-right">
+
+        <div class="alert alert-info">
+            Inferred Delimiter :
+            <span id="delimiter" class="large label label-default delimiter-label"><%= map.delimiter %></span>
+        </div>
+
+    </div>
+    -->
     </div>
 
-    <div class="dash-sidebar" data-spy="scroll">
-      <div class='box-header'>
-        <h3 class="box-title">Found Headers</h3>
-      </div>
-      <div class='box-content'>
-        <ul class="list-unstyled">
-        <% for(var i = 0; i < headers.length; i++) { %>
-          <li><%= headers[i] %></li>
-        <% } %>
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
-<%- include ../includes/footer.ejs %>
-<script src="/assets/lib/datamonkey/attribute-editor.js"></script>
-<script src="/assets/js/hivtrace/attribute_map_assignment.js"></script>
+    <script src="/assets/lib/datamonkey/attribute-editor.js"></script>
+    <script src="/assets/js/hivtrace/attribute_map_assignment.js"></script>
+
+
+    <%- include ../includes/footer.ejs %>
+
 

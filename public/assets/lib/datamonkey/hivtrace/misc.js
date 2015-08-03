@@ -74,6 +74,8 @@ function hivtrace_compute_node_mean_paths(nodes, edges) {
 
 }
 
+
+
 function hivtrace_compute_node_degrees(nodes, edges) {
   for (var n in nodes) {
     nodes[n].degree = 0;
@@ -85,32 +87,50 @@ function hivtrace_compute_node_degrees(nodes, edges) {
   }
 }
 
-function hivtrace_convert_to_csv(obj) {
-  //Translate nodes to rows, and then use d3.format
-  //computeNodeDegrees(obj.Nodes, obj.Edges)
-  //computeMeanPathLengths(obj.Nodes, obj.Edges)
-  //var node_array = obj.Nodes.map(function(d) {return [d.id, d.cluster, d.degree, d.mean_path_length]});
-  var node_array = obj.Nodes.map(function(d) {return [d.id, d.cluster, d.degree]});
-  node_array.unshift(['ID', 'Cluster', 'Degree'])
-  node_csv = d3.csv.format(node_array); 
-  return node_csv;
+
+
+function hiv_trace_export_table_to_text (parent_id, table_id, sep) {
+  var the_button = d3.select (parent_id).append ("a")
+                                        .attr ("target", "_blank")
+                                        .on ("click", function (data, element) {   
+                                            var table_tag = d3.select (this).attr ("data-table");
+                                            var table_text = datamonkey.helpers.table_to_text (table_tag);
+                                            datamonkey.helpers.export_handler (table_text, table_tag.substring (1) + ".tsv", "text/tab-separated-values");
+                                        })
+                                        .attr ("data-table", table_id);
+                                        
+  the_button.append ("i").classed ("fa fa-download fa-2x", true);
+  return the_button;
+                                        
+                                        
 }
 
-function hivtrace_export_csv_button(graph, tag) {
+function hivtrace_render_settings (settings, explanations) {
+    d3.json (explanations, function (error, expl) {
+        //console.log (settings);
+    });
+}
 
-  var data = hivtrace_convert_to_csv(graph);
-  if (data != null) {
-    var pom = document.createElement('a');
-    pom.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(data));
-    pom.setAttribute('download', 'export.csv');
-    pom.className = 'btn btn-default btn-sm';
-    pom.innerHTML = '<span class="glyphicon glyphicon-floppy-save"></span> Download CSV';
-    $(tag).append(pom);
-  }
-
+function hivtrace_format_value (value, formatter) {
+    if (typeof value === 'undefined') {
+        return "Not computed";
+    }
+    if (value === datamonkey.hivtrace.undefined) {
+        return "Undefined";
+    }
+    if (value === datamonkey.hivtrace.too_large) {
+        return "Size limit";
+    }    
+    
+    return formatter ? formatter (value) : value;
 }
 
 datamonkey.hivtrace.compute_node_degrees = hivtrace_compute_node_degrees;
 datamonkey.hivtrace.compute_mean_path = hivtrace_compute_mean_path;
 datamonkey.hivtrace.compute_node_mean_paths = hivtrace_compute_node_mean_paths;
-datamonkey.hivtrace.export_csv_button = hivtrace_export_csv_button;
+datamonkey.hivtrace.analysis_settings = hivtrace_render_settings;
+datamonkey.hivtrace.export_table_to_text = hiv_trace_export_table_to_text;
+
+datamonkey.hivtrace.undefined = new Object();
+datamonkey.hivtrace.too_large = new Object();
+datamonkey.hivtrace.format_value = hivtrace_format_value;

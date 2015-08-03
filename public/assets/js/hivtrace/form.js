@@ -68,10 +68,10 @@ $(document).ready(function(){
 
     xhr.upload.onprogress = function(e) {
       if (e.lengthComputable) {
-        var percentage = (e.loaded / e.total) * 100;
+        var percentage = (e.loaded / e.total) * 33.3;
         $('#file-progress').css("display", "block");
         $('#seq-file').css("display", "none");
-        $('.progress .progress-bar').css('width', percentage + '%');
+        $('#upload-progress').css('width', percentage + '%').text ("Uploading file");
       }
     };
     
