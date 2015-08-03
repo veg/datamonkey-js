@@ -427,6 +427,9 @@
         }
     ], 
     "Settings": {
+        "contaminant-ids": [
+          "HXB2_prrt"
+        ],
         "contaminants": "report", 
         "edge-filtering": "remove", 
         "threshold": 0.015
