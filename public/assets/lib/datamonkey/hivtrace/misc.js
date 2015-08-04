@@ -1,3 +1,5 @@
+_ = require('underscore');
+
 function hivtrace_cluster_adjacency_list(obj) {
 
   var nodes = obj.Nodes,
@@ -107,7 +109,6 @@ function hivtrace_compute_shortest_paths_with_reconstruction(obj, subset, use_ac
   var edges =  obj.Edges;
   var node_ids = [];
 
-  //nodes.forEach( function(n) { return node_ids.push(n.id); } );
   var adjacency_list = datamonkey.hivtrace.cluster_adjacency_list(obj);
 
   if(!subset) {
@@ -195,13 +196,73 @@ function hivtrace_compute_shortest_paths_with_reconstruction(obj, subset, use_ac
 
 }
 
+function hivtrace_filter_to_node_in_cluster(node, obj){
+
+  var nodes = obj.Nodes,
+      edges = obj.Edges,
+      cluster_id = null;
+
+  // Retrieve nodes that are part of the cluster
+  var node_obj = nodes.filter(function(n) { return node==n.id; });
+
+  if(node_obj) {
+    cluster_id = node_obj[0].cluster;
+  } else {
+    console.log('could not find node');
+    return null;
+  }
+
+  // Filter out all edges and nodes that belong to the cluster
+  var nodes_in_cluster = nodes.filter(function(n) {return cluster_id==n.cluster;});
+  var node_ids         = nodes_in_cluster.map(function(n) { return n.id });
+  var edges_in_cluster = edges.filter(function(e) {return node_ids.indexOf(e.sequences[0]) != -1 });
+  
+  var filtered_obj = {};
+  filtered_obj["Nodes"] = nodes_in_cluster;
+  filtered_obj["Edges"] = edges_in_cluster;
+  return filtered_obj;
+
+}
+
+function hivtrace_compute_betweenness_centrality_all_nodes_in_cluster(cluster, obj, cb) {
+
+  var nodes = obj.Nodes,
+      edges = obj.Edges;
+
+
+  var nodes_in_cluster = nodes.filter(function(n) {return cluster==n.cluster;});
+  var node_ids         = nodes_in_cluster.map(function(n) { return n.id });
+  var edges_in_cluster = edges.filter(function(e) {return node_ids.indexOf(e.sequences[0]) != -1 });
+  
+  var filtered_obj = {};
+  filtered_obj["Nodes"] = nodes_in_cluster;
+  filtered_obj["Edges"] = edges_in_cluster;
+
+  // get length of cluster
+  if(nodes_in_cluster.length > 70) {
+    cb('cluster too large', null);
+    return;
+  }
+
+  // get paths
+  var paths = hivtrace_compute_shortest_paths_with_reconstruction(filtered_obj);
+  var node_ids = nodes_in_cluster.map(function(n) { return n.id });
+
+  var betweenness = {}
+  nodes_in_cluster.forEach(function(n) { betweenness[n.id] = hivtrace_compute_betweenness_centrality(n.id, filtered_obj, paths); });
+
+  cb(null, betweenness);
+  return;
+
+}
+
 // Returns dictionary of nodes' betweenness centrality
 // Utilizes the Floyd-Warshall Algorithm with reconstruction
-function hivtrace_compute_betweenness_centrality(node, obj, paths, newsubset) {
-
+function hivtrace_compute_betweenness_centrality(node, obj, paths) {
 
   if (!paths) {
-    paths = hivtrace_compute_shortest_paths_with_reconstruction(obj);
+    var filtered_obj = hivtrace_filter_to_node_in_cluster(node, obj)
+    paths = hivtrace_compute_shortest_paths_with_reconstruction(filtered_obj);
   }
 
   // find index of id
@@ -210,7 +271,6 @@ function hivtrace_compute_betweenness_centrality(node, obj, paths, newsubset) {
   if (index == -1) {
     return null;
   }
-
 
   var length = paths['distances'].length;
 
@@ -251,32 +311,76 @@ function hivtrace_compute_node_degrees(obj) {
 
 }
 
+function hivtrace_get_node_by_id(id, obj) {
+  return obj.Nodes.filter(function(n) { return id==n.id})[0] || undefined;
+}
+
+function hivtrace_compute_cluster_betweenness(obj, callback) {
+
+  var nodes = obj.Nodes;
+
+  function onlyUnique(value, index, self) { 
+    return self.indexOf(value) === index;
+  }
+
+  // Get all unique clusters
+  var clusters = obj.Nodes.map(function(n) { return n.cluster });
+  var unique_clusters = clusters.filter(onlyUnique);
+
+  var cb_count = 0;
+
+  function cb(err, results) {
+
+    cb_count++;
+
+    for(node in results) {
+      hivtrace_get_node_by_id(node,obj)['betweenness'] = results[node];
+    }
+
+    if(cb_count >= unique_clusters.length) {
+      callback('done');
+    }
+
+  }
+
+  // Compute betweenness in parallel
+  unique_clusters.forEach(function(cluster_id) {
+    datamonkey.hivtrace.betweenness_centrality_all_nodes_in_cluster(cluster_id, obj, cb);
+  });
+
+  // once all settled callback
+
+}
+
 
 function hivtrace_is_contaminant(node) {
   return node.attributes.indexOf('problematic') != -1;
 }
 
-function hivtrace_convert_to_csv(obj) {
+function hivtrace_convert_to_csv(obj, callback) {
   //Translate nodes to rows, and then use d3.format
-  //computeMeanPathLengths(obj.Nodes, obj.Edges)
   hivtrace_compute_node_degrees(obj);
-  var node_array = obj.Nodes.map(function(d) {return [d.id, d.cluster, d.degree, hivtrace_is_contaminant(d), d.attributes.join(';')]});
-  node_array.unshift(['seqid', 'cluster', 'degree', 'is_contaminant', 'attributes'])
-  node_csv = d3.csv.format(node_array); 
-  return node_csv;
+
+  hivtrace_compute_cluster_betweenness(obj, function(err) {
+    var node_array = obj.Nodes.map(function(d) {return [d.id, d.cluster, d.degree, d.betweenness, hivtrace_is_contaminant(d), d.attributes.join(';')]});
+    node_array.unshift(['seqid', 'cluster', 'degree', 'betweenness', 'is_contaminant', 'attributes'])
+    node_csv = d3.csv.format(node_array); 
+    callback(null, node_csv);
+  });
 }
 
 function hivtrace_export_csv_button(graph, tag) {
 
-  var data = hivtrace_convert_to_csv(graph);
-  if (data != null) {
-    var pom = document.createElement('a');
-    pom.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(data));
-    pom.setAttribute('download', 'export.csv');
-    pom.className = 'btn btn-default btn-sm';
-    pom.innerHTML = '<span class="glyphicon glyphicon-floppy-save"></span> Export Results';
-    $(tag).append(pom);
-  }
+  var data = hivtrace_convert_to_csv(graph, function(err, data) {
+    if (data != null) {
+      var pom = document.createElement('a');
+      pom.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(data));
+      pom.setAttribute('download', 'export.csv');
+      pom.className = 'btn btn-default btn-sm';
+      pom.innerHTML = '<span class="glyphicon glyphicon-floppy-save"></span> Export Results';
+      $(tag).append(pom);
+    }
+  });
 
 }
 
@@ -289,8 +393,8 @@ if(typeof datamonkey.hivtrace == 'undefined') {
 }
 
 datamonkey.hivtrace.compute_node_degrees = hivtrace_compute_node_degrees;
-//datamonkey.hivtrace.compute_node_mean_paths = hivtrace_compute_node_mean_paths;
 datamonkey.hivtrace.export_csv_button = hivtrace_export_csv_button;
 datamonkey.hivtrace.convert_to_csv = hivtrace_convert_to_csv;
 datamonkey.hivtrace.betweenness_centrality = hivtrace_compute_betweenness_centrality;
+datamonkey.hivtrace.betweenness_centrality_all_nodes_in_cluster = hivtrace_compute_betweenness_centrality_all_nodes_in_cluster;
 datamonkey.hivtrace.cluster_adjacency_list = hivtrace_cluster_adjacency_list;

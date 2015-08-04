@@ -30,75 +30,53 @@
 var fs     = require('fs'),
     path   = require('path'),
     should = require('should'),
-    _      = require('underscore'),
-    jsdom  = require("jsdom");
+    _      = require('underscore');
 
-var hiv_utils = fs.readFileSync(path.join(__dirname, '/../../public/assets/lib/datamonkey/hivtrace/misc.js'));
-var d3_js = fs.readFileSync(path.join(__dirname, '../../public/assets/lib/d3/d3.js'));
-var underscore = fs.readFileSync(path.join(__dirname, '../../public/assets/lib/underscore/underscore.js'));
+require(path.join(__dirname, '/../../public/assets/lib/datamonkey/hivtrace/misc.js'))
+require(path.join(__dirname, '../../public/assets/lib/d3/d3.js'));
+require(path.join(__dirname, '../../public/assets/lib/underscore/underscore.js'));
 
 describe('convert object to csv', function() {
 
   it('elements should not be empty', function(done) {
 
-    jsdom.env({
+      trace_results = JSON.parse(fs.readFileSync(path.join(__dirname, './test.trace.json')));
+      datamonkey.hivtrace.convert_to_csv(trace_results, function(err, results) {
 
-      url: "http://datamonkey.org",
-      src: [d3_js, underscore, hiv_utils],
-      done: function (err, window) {
+        parsed_obj = d3.csv.parse(results);
 
-          datamonkey = window.datamonkey;
-          d3 = window.d3;
-          trace_results = JSON.parse(fs.readFileSync(path.join(__dirname, './test.trace.json')));
-          results = datamonkey.hivtrace.convert_to_csv(trace_results);
-          parsed_obj = d3.csv.parse(results);
+        // ensure each key exists and has a value
+        function hasNonEmptyElements(element, index, array) {
+          return (Boolean(element.seqid) && 
+                  Boolean(element.cluster) && 
+                  Boolean(element.betweenness) && 
+                  Boolean(element.degree) && 
+                  Boolean(element.is_contaminant));
+        }
 
-          // ensure each key exists and has a value
-          function hasNonEmptyElements(element, index, array) {
-            return (Boolean(element.seqid) && 
-                    Boolean(element.cluster) && 
-                    Boolean(element.degree) && 
-                    Boolean(element.is_contaminant));
-          }
-
-          parsed_obj.every(hasNonEmptyElements).should.be.true;
-          done();
-
-      }
-     });
-
-
-
+        parsed_obj.every(hasNonEmptyElements).should.be.true;
+        done();
+      
+      });
 
   });
 
   it('elements should mark contaminants correctly', function(done) {
 
-    jsdom.env({
+    trace_results = JSON.parse(fs.readFileSync(path.join(__dirname, './test.trace.json')));
+    datamonkey.hivtrace.convert_to_csv(trace_results, function(err, results) {
+      parsed_obj = d3.csv.parse(results);
 
-      url: "http://datamonkey.org",
-      src: [d3_js, underscore, hiv_utils],
-      done: function (err, window) {
+      // ensure that NL4-3 and HXB2_env are tagged as contaminants
 
-        datamonkey = window.datamonkey;
-        d3 = window.d3;
-
-        trace_results = JSON.parse(fs.readFileSync(path.join(__dirname, './test.trace.json')));
-        results = datamonkey.hivtrace.convert_to_csv(trace_results);
-        parsed_obj = d3.csv.parse(results);
-
-        // ensure that NL4-3 and HXB2_env are tagged as contaminants
-
-        // Should mark which contaminant
-        var contaminants = parsed_obj.filter(function(elem){return elem.is_contaminant == 'true'});
-        var contaminant_ids = contaminants.map(function(elem) {return elem['seqid']});
-        contaminant_ids.indexOf('NL4-3').should.not.be.equal(-1);
-        contaminant_ids.indexOf('HXB2_env').should.not.be.equal(-1);
-        done();
-
-      }
-     });
-
+      // Should mark which contaminant
+      var contaminants = parsed_obj.filter(function(elem){return elem.is_contaminant == 'true'});
+      var contaminant_ids = contaminants.map(function(elem) {return elem['seqid']});
+      contaminant_ids.indexOf('NL4-3').should.not.be.equal(-1);
+      contaminant_ids.indexOf('HXB2_env').should.not.be.equal(-1);
+      done();
+    });
+    
   });
 
 });
@@ -106,79 +84,80 @@ describe('convert object to csv', function() {
 describe('betweenness centrality', function() {
 
 
-  var trace_results = JSON.parse(fs.readFileSync(path.join(__dirname, './krackhardt_kite.json')));
+  var krackhardt_kite = JSON.parse(fs.readFileSync(path.join(__dirname, './krackhardt_kite.json')));
+  var large_results = JSON.parse(fs.readFileSync(path.join(__dirname, './large.trace.json')));
+  var delta = .001;
 
   it('should correctly compute', function(done) {
 
-    jsdom.env({
-      url: "http://datamonkey.org",
-      src: [d3_js, underscore, hiv_utils],
-      done: function (err, window) {
+    
+    var heather  = datamonkey.hivtrace.betweenness_centrality('Heather', krackhardt_kite);
+        fernando = datamonkey.hivtrace.betweenness_centrality('Fernando', krackhardt_kite),
+        garth    = datamonkey.hivtrace.betweenness_centrality('Garth', krackhardt_kite),
+        ike      = datamonkey.hivtrace.betweenness_centrality('Ike', krackhardt_kite),
+        diane    = datamonkey.hivtrace.betweenness_centrality('Diane', krackhardt_kite),
+        andre    = datamonkey.hivtrace.betweenness_centrality('Andre', krackhardt_kite),
+        beverly  = datamonkey.hivtrace.betweenness_centrality('Beverly', krackhardt_kite);
 
-          var datamonkey = window.datamonkey;
-          var delta = .001;
-          
-          var heather  = datamonkey.hivtrace.betweenness_centrality('Heather', trace_results),
-              fernando = datamonkey.hivtrace.betweenness_centrality('Fernando', trace_results),
-              garth    = datamonkey.hivtrace.betweenness_centrality('Garth', trace_results),
-              ike      = datamonkey.hivtrace.betweenness_centrality('Ike', trace_results),
-              diane    = datamonkey.hivtrace.betweenness_centrality('Diane', trace_results),
-              andre    = datamonkey.hivtrace.betweenness_centrality('Andre', trace_results),
-              beverly  = datamonkey.hivtrace.betweenness_centrality('Beverly', trace_results);
+    heather.should.be.approximately(.389, delta);
+    fernando.should.be.approximately(.231, delta);
+    garth.should.be.approximately(.231, delta);
+    ike.should.be.approximately(.222, delta);
+    diane.should.be.approximately(.102, delta);
+    andre.should.be.approximately(.023, delta);
+    beverly.should.be.approximately(.023, delta);
 
-          heather.should.be.approximately(.389, delta);
-          fernando.should.be.approximately(.231, delta);
-          garth.should.be.approximately(.231, delta);
-          ike.should.be.approximately(.222, delta);
-          diane.should.be.approximately(.102, delta);
-          andre.should.be.approximately(.023, delta);
-          beverly.should.be.approximately(.023, delta);
-
-          done();
-
-      }
-
-    });
-
+    done();
+    
   });
 
   it('should finish in due time', function(done) {
 
+    this.timeout(3000);
+
+    // 114 node cluster
+    var cn_2006 = datamonkey.hivtrace.betweenness_centrality('01AE_CN_FJ531421_2006', large_results);
+    cn_2006.should.be.approximately(.009, delta)
     done();
+
+  });
+
+  it('should only compute betweenness for all nodes in cluster', function(done) {
+
+    this.timeout(10000);
+
+    var cb = function(err, result) {
+      done();
+    }
+
+    //var cluster_id = '105';
+    var cluster_id = '273';
+    datamonkey.hivtrace.betweenness_centrality_all_nodes_in_cluster(cluster_id, large_results, cb);
 
   });
 
   it('check adjacency list', function(done) {
 
-    jsdom.env({
-      url: "http://datamonkey.org",
-      src: [d3_js, underscore, hiv_utils],
-      done: function (err, window) {
+    var answers = { 
+     "Andre"    : [ "Beverly","Carol","Diane","Fernando" ],
+     "Beverly"  : [ "Andre", "Diane", "Ed","Garth" ],
+     "Carol"    : [ "Andre", "Diane", "Fernando" ],
+     "Diane"    : [ "Andre", "Beverly", "Carol", "Ed", "Fernando", "Garth" ],
+     "Ed"       : [ "Beverly", "Diane", "Garth" ],
+     "Fernando" : [ "Andre", "Carol", "Diane", "Garth", "Heather" ],
+     "Garth"    : [ "Beverly", "Diane", "Ed", "Fernando", "Heather"],
+     "Heather"  : [ "Fernando", "Garth", "Ike"],
+     "Ike"      : [ "Heather", "Jane" ],
+     "Jane"     : [ "Ike" ] 
+    };
 
-          var datamonkey = window.datamonkey;
+    var adj_list = datamonkey.hivtrace.cluster_adjacency_list(krackhardt_kite);
 
-          var answers = { 
-           "Andre"    : [ "Beverly","Carol","Diane","Fernando" ],
-           "Beverly"  : [ "Andre", "Diane", "Ed","Garth" ],
-           "Carol"    : [ "Andre", "Diane", "Fernando" ],
-           "Diane"    : [ "Andre", "Beverly", "Carol", "Ed", "Fernando", "Garth" ],
-           "Ed"       : [ "Beverly", "Diane", "Garth" ],
-           "Fernando" : [ "Andre", "Carol", "Diane", "Garth", "Heather" ],
-           "Garth"    : [ "Beverly", "Diane", "Ed", "Fernando", "Heather"],
-           "Heather"  : [ "Fernando", "Garth", "Ike"],
-           "Ike"      : [ "Heather", "Jane" ],
-           "Jane"     : [ "Ike" ] 
-          };
+    for (id in adj_list) {
+      ids = adj_list[id].map(function(n) { return n.id } );
+      _.difference(ids, answers[id]).length.should.be.equal(0);
+    }
 
-          var adj_list = datamonkey.hivtrace.cluster_adjacency_list(trace_results);
-
-          for (id in adj_list) {
-            ids = adj_list[id].map(function(n) { return n.id } );
-            _.difference(ids, answers[id]).length.should.be.equal(0);
-          }
-
-          done();
-      }
-    });
+    done();
   });
 });
