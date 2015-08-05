@@ -94,6 +94,7 @@ module.exports = function(app) {
   app.get('/hivtrace/:id/results', hivtrace.results);
   app.get('/hivtrace/:id/trace_results', hivtrace.trace_results);
   app.get('/hivtrace/:id/lanl_trace_results', hivtrace.lanl_trace_results);
+  app.get('/hivtrace/:id/settings', hivtrace.settings);
   app.get('/hivtrace/:id/attributes', hivtrace.attributeMap);
   app.get('/hivtrace/:id/aligned.fasta', hivtrace.aligned_fasta);
 

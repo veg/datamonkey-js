@@ -369,8 +369,6 @@ function hivtrace_convert_to_csv(obj, callback) {
   });
 }
 
-function hivtrace_export_csv_button(graph, tag) {
-
   var data = hivtrace_convert_to_csv(graph, function(err, data) {
     if (data != null) {
       var pom = document.createElement('a');
@@ -383,6 +381,43 @@ function hivtrace_export_csv_button(graph, tag) {
   });
 
 }
+
+function hiv_trace_export_table_to_text (parent_id, table_id, sep) {
+  var the_button = d3.select (parent_id).append ("a")
+                                        .attr ("target", "_blank")
+                                        .on ("click", function (data, element) {   
+                                            var table_tag = d3.select (this).attr ("data-table");
+                                            var table_text = datamonkey.helpers.table_to_text (table_tag);
+                                            datamonkey.helpers.export_handler (table_text, table_tag.substring (1) + ".tsv", "text/tab-separated-values");
+                                        })
+                                        .attr ("data-table", table_id);
+                                        
+  the_button.append ("i").classed ("fa fa-download fa-2x", true);
+  return the_button;
+                                        
+                                        
+}
+
+function hivtrace_render_settings (settings, explanations) {
+    d3.json (explanations, function (error, expl) {
+        //console.log (settings);
+    });
+}
+
+function hivtrace_format_value (value, formatter) {
+    if (typeof value === 'undefined') {
+        return "Not computed";
+    }
+    if (value === datamonkey.hivtrace.undefined) {
+        return "Undefined";
+    }
+    if (value === datamonkey.hivtrace.too_large) {
+        return "Size limit";
+    }    
+    
+    return formatter ? formatter (value) : value;
+}
+
 
 if(typeof datamonkey == 'undefined') {
   datamonkey = function () {};
@@ -398,3 +433,8 @@ datamonkey.hivtrace.convert_to_csv = hivtrace_convert_to_csv;
 datamonkey.hivtrace.betweenness_centrality = hivtrace_compute_betweenness_centrality;
 datamonkey.hivtrace.betweenness_centrality_all_nodes_in_cluster = hivtrace_compute_betweenness_centrality_all_nodes_in_cluster;
 datamonkey.hivtrace.cluster_adjacency_list = hivtrace_cluster_adjacency_list;
+datamonkey.hivtrace.analysis_settings = hivtrace_render_settings;
+datamonkey.hivtrace.export_table_to_text = hiv_trace_export_table_to_text;
+datamonkey.hivtrace.undefined = new Object();
+datamonkey.hivtrace.too_large = new Object();
+datamonkey.hivtrace.format_value = hivtrace_format_value;

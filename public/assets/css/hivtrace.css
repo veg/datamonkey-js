@@ -4,6 +4,21 @@ circle.node, rect.node, path.node {
   stroke-width: .5px;
 }
 
+.hiv-trace-problematic {
+    stroke: #F00 !important;
+    stroke-width: 2px !important;
+}
+
+.hiv-trace-selected {
+    stroke-width: 0px !important;
+}
+
+
+
+.hiv-trace-muted {
+    opacity: 0.25;
+}
+
 g.node-group {
   cursor: pointer;
   stroke: #000;
@@ -37,7 +52,7 @@ path.cluster {
   stroke-width: 1.5px;
 }
 
-.line {
+.unsupported, .line {
   fill: none;
   stroke: red;
   stroke-width: 1.5px;

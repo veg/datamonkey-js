@@ -29,13 +29,13 @@
 
 var logger = require(ROOT_PATH + '/lib/logger');
 
-var error     = require( ROOT_PATH + '/lib/error.js'),
-    helpers   = require( ROOT_PATH + '/lib/helpers.js'),
-    globals   = require( ROOT_PATH + '/config/globals.js'),
-    mailer    = require( ROOT_PATH + '/lib/mailer.js'),
-    fs        = require('fs'),
-    hpcsocket = require( ROOT_PATH + '/lib/hpcsocket.js'),
-    setup     = require( ROOT_PATH + '/config/setup');
+var error = require(ROOT_PATH + '/lib/error.js'),
+    helpers = require(ROOT_PATH + '/lib/helpers.js'),
+    globals = require(ROOT_PATH + '/config/globals.js'),
+    mailer = require(ROOT_PATH + '/lib/mailer.js'),
+    fs = require('fs'),
+    hpcsocket = require(ROOT_PATH + '/lib/hpcsocket.js'),
+    setup = require(ROOT_PATH + '/config/setup');
 
 var mongoose = require('mongoose'),
     HivTrace = mongoose.model('HivTrace'),
@@ -43,145 +43,177 @@ var mongoose = require('mongoose'),
 
 
 /**
-* Form submission page
-* app.post('/hivtrace/uploadfile', hivtrace.clusterForm);
-*/
-exports.uploadFile = function (req, res) {
+ * Form submission page
+ * app.post('/hivtrace/uploadfile', hivtrace.clusterForm);
+ */
+exports.uploadFile = function(req, res) {
 
-  var postdata = req.body;
-  var id = req.params.id;
-  
-
-  // Validate that the file uploaded was a FASTA file
-  var hivtrace = new HivTrace;
-    
-  hivtrace.on ('error', function (m,e) {});
-
-  if(postdata.public_db_compare == 'true') {
-    hivtrace.lanl_compare = true;
-    hivtrace.status_stack = hivtrace.valid_lanl_statuses;
-  } else {
-    hivtrace.lanl_compare = false;
-    hivtrace.status_stack = hivtrace.valid_statuses;
-  }
-  
-  hivtrace.distance_threshold = Number(postdata.distance_threshold);
-  hivtrace.min_overlap = Number(postdata.min_overlap);
-  hivtrace.ambiguity_handling = postdata.ambiguity_handling;
-  hivtrace.strip_drams = postdata.strip_drams;
-  hivtrace.reference = postdata.reference;
-  hivtrace.filter_edges = postdata.filter_edges;
-  hivtrace.reference_strip = postdata.reference_strip;
-
-  if(hivtrace.ambiguity_handling == "RESOLVE") {
-    if(postdata.fraction === undefined) {
-      hivtrace.fraction = 1;
-    } else {
-      hivtrace.fraction = postdata.fraction;
-    }
-  }
-
-  if(postdata.receive_mail == 'on') {
-    hivtrace.mail = postdata.mail;
-  }
+    var postdata = req.body;
+    var id = req.params.id;
 
 
-  var file_path = req.files.files.path;
+    // Validate that the file uploaded was a FASTA file
+    var hivtrace = new HivTrace;
 
-  var save_document = function(hivtrace) {
+    hivtrace.on('error', function(m, e) {
 
-    hivtrace.save(function (err, ht) {
-     if(err) {
-        logger.log(err);
-        res.json(500, error.errorResponse (err.message));
-        return;
-      }
-
-      function move_cb(err, result) {
-        if(err) {
-          logger.log(err);
-          res.json(500, error.errorResponse (err.message));
-        } else {
-          res.json(200,  ht);
-        }
-      }
-
-      helpers.moveSafely(file_path, ht.filepath, move_cb);
     });
 
-  };
-
-  // Check if file is FASTA before moving forward
-  Msa.validateFasta(file_path, function(err, result) {
-
-    if(!result) {
-        logger.log(err);
-        res.json(500, {'error' : err.msg,
-                       'validators': HivTrace.validators()});
-        return;
+    if (postdata.public_db_compare == 'true') {
+        hivtrace.lanl_compare = true;
+        hivtrace.status_stack = hivtrace.valid_lanl_statuses;
+    } else {
+        hivtrace.lanl_compare = false;
+        hivtrace.status_stack = hivtrace.valid_statuses;
     }
 
-    if(hivtrace.reference == 'Custom') {
+    hivtrace.distance_threshold = Number(postdata.distance_threshold);
+    hivtrace.min_overlap = Number(postdata.min_overlap);
+    hivtrace.ambiguity_handling = postdata.ambiguity_handling;
+    hivtrace.strip_drams = postdata.strip_drams;
+    hivtrace.reference = postdata.reference;
+    hivtrace.filter_edges = postdata.filter_edges;
+    hivtrace.reference_strip = postdata.reference_strip;
 
-      var ref_file_name = req.files.ref_file.name;
-      var ref_file_path = req.files.ref_file.path;
-
-      Msa.validateFasta(file_path, function(err, result) {
-
-        if(!result) {
-          logger.log(err);
-          res.json(500, {'error'     : ref_file_name + ':' + err.msg,
-                         'validators': HivTrace.validators()});
-          return;
-
+    if (hivtrace.ambiguity_handling == "RESOLVE") {
+        if (postdata.fraction == undefined) {
+            hivtrace.fraction = 1;
         } else {
-          // Open reference file and read it into database
-          fs.readFile(ref_file_path, function (err, data) {
-            hivtrace.custom_reference = data.toString();
-            save_document(hivtrace);
-          });
+            hivtrace.fraction = postdata.fraction;
+        }
+    }
+
+    if (postdata.receive_mail == 'on') {
+        hivtrace.mail = postdata.mail;
+    }
+
+    var file_path = req.files.files.path;
+
+    var save_document = function(hivtrace) {
+
+        hivtrace.save(function(err, ht) {
+            if (err) {
+                logger.log(err);
+                res.json(500, error.errorResponse(err.message));
+                return;
+            }
+
+            function move_cb(err, result) {
+                if (err) {
+                    logger.log(err);
+                    res.json(500, error.errorResponse(err.message));
+                } else {
+                    res.json(200, ht);
+                }
+            }
+
+            // Check if file is FASTA before moving forward
+            helpers.moveSafely(file_path, ht.filepath, move_cb);
+
+        });
+
+    }
+
+    Msa.validateFasta(file_path, function(err, result) {
+
+      // 'result' stores the array of sequences headers
+      // [
+      //   {
+      //     'name' : sequence name
+      //    }
+      // ]
+
+        if (!result || result.length == 0) {
+            logger.log(err);
+            res.json(500, {
+                'error': err.msg,
+                'validators': HivTrace.validators()
+            });
+            return;
         }
 
-      });
-    } else {
-      save_document(hivtrace);
-    }
-  });
-};
+        // copy header information
+
+        hivtrace.headers = result.map(function(s) {
+            return s.name;
+        });
+
+        if (hivtrace.reference == 'Custom') {
+
+            var ref_file_name = req.files.ref_file.name;
+            var ref_file_path = req.files.ref_file.path;
+
+            Msa.validateFasta(file_path, function(err, custom_reference) {
+
+                if (!custom_reference) {
+                    logger.log(err);
+                    res.json(500, {
+                        'error': ref_file_name + ':' + err.msg,
+                        'validators': HivTrace.validators()
+                    });
+                    return;
+
+                } else {
+                    // Open reference file and read it into database
+                    fs.readFile(ref_file_path, function(err, data) {
+                        hivtrace.custom_reference = data.toString();
+                        save_document(hivtrace);
+                    });
+                }
+
+            });
+        } else {
+            save_document(hivtrace);
+        }
+    }, {
+        'no-equal-length': 1,
+        'headers-only': 1
+    });
+}
 
 /**
  * Form submission page
  * app.get('/hivtrace', hivtrace.clusterForm);
  */
-exports.clusterForm = function (req, res) {
-  res.render('hivtrace/form.ejs', {'validators': HivTrace.validators()});
-};
+exports.clusterForm = function(req, res) {
+    res.render('hivtrace/form.ejs', {
+        'validators': HivTrace.validators()
+    });
+}
 
 /**
  * Handles a job request by the user
  * app.post('/hivtrace', hivtrace.invokeClusterAnalysis);
  */
-exports.invokeClusterAnalysis = function (req, res) {
-  var id = req.params.id;
-  HivTrace.findOne({_id: id}, function (err, hivtrace) {
-    if(err) {
-        // Redisplay form with error
-        res.format({
-          html: function(){
-            res.render('hivtrace/form.ejs', {'error': err.error, 
-                       'validators': HivTrace.validators()});
-          },
+exports.invokeClusterAnalysis = function(req, res) {
+    var id = req.params.id;
+    HivTrace.findOne({
+        _id: id
+    }, function(err, hivtrace) {
+        if (err) {
+            // Redisplay form with error
+            res.format({
+                html: function() {
+                    res.render('hivtrace/form.ejs', {
+                        'error': err.error,
+                        'validators': HivTrace.validators()
+                    });
+                },
 
-          json: function(){
-            res.json(200, {'result': data});
+                json: function() {
+                    res.json(200, {
+                        'result': data
+                    });
 
-          }
-        });
-    } else {
+                }
+            });
 
-    }
-  });
-};
+        } else {
+          // TODO
+
+        }
+    });
+}
 
 
 /**
@@ -295,93 +327,101 @@ exports.lanl_trace_results = function (req, res) {
 };
 
 
-
+exports.settings = function(req, res) {
+    // HIV Cluster id
+    var id = req.params.id;
+    HivTrace.findOne({
+        _id: id
+    }, function(err, hivtrace) {
+        if (err || !hivtrace) {
+            res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
+        } else {
+            res.format({
+                json: function() {
+                    res.json(200, hivtrace);
+                }
+            });
+        }
+    });
+}
 
 /**
  * An AJAX request that verifies the upload is correct
  * app.post('/msa/:id/map-attributes', msa.mapAttributes);
  */
-exports.mapAttributes = function (req, res) {
+exports.mapAttributes = function(req, res) {
 
-  var id = req.params.id;
+    function returnFormat(hivtrace, err) {
+        var return_me = {
+            'map': hivtrace.attributes.toObject(),
+            'delimiter': hivtrace.delimiter,
+            'hivtrace_id': hivtrace._id,
+            'error': err
+        };
 
-  HivTrace.findOne({_id: id}, function (err, hivtrace) {
-    if(err) {
-      res.format({
-        html: function() {
-          res.render('hivtrace/attribute_map_assignment.ejs', { 'error' : err});
-        },
-        json: function() {
-          res.json(200, err);
-        }
-      });
-    } else if(hivtrace.attribute_map) {
-
-      var hivtrace_map = hivtrace.attribute_map;
-      var headers =  hivtrace.headers;
-      var parsed_attributes = HivTrace.parseHeaderFromMap(headers[0], hivtrace_map);
-      res.format({
-        html: function() {
-          res.render('hivtrace/attribute_map_assignment.ejs', { 'map'           : hivtrace_map, 
-                                                                         'headers'       : headers, 
-                                                                         'example_parse' : parsed_attributes, 
-                                                                         'hivtrace_id'   : hivtrace._id,
-                                                                         'error'         : err
-                                                                       });
-        },
-        json: function(){
-          res.json(200, { 'map'           : hivtrace_map, 
-                          'headers'       : headers, 
-                          'example_parse' : parsed_attributes, 
-                          'hivtrace_id'   : hivtrace._id, 
-                          'error'         : err
-                          });
-        }
-      });
-    } else {
-
-      // Validate that the file uploaded was a FASTA file
-      HivTrace.createAttributeMap(hivtrace.filepath, function(err, hivtrace_map) {
-        parsed_attributes = HivTrace.parseHeaderFromMap(hivtrace_map.headers[0], hivtrace_map);
         res.format({
-          html: function() {
-            res.render('hivtrace/attribute_map_assignment.ejs', { 'map'  : hivtrace_map,
-                                                                  'example_parse' : parsed_attributes,
-                                                                  'headers'       : hivtrace_map.headers,
-                                                                  'hivtrace_id'   : hivtrace._id,
-                                                                  'error'         : err
-                                                                });
-          },
-          json: function(){
-            res.json(200, { 'map'           : hivtrace_map, 
-                            'example_parse' : parsed_attributes, 
-                            'headers' : hivtrace_map.headers, 
-                            'hivtrace_id'   : hivtrace._id, 
-                            'error'         : err
-                            });
-          }
+            html: function() {
+                res.render('hivtrace/attribute_map_assignment.ejs', return_me);
+            },
+            json: function() {
+                res.json(200, return_me);
+            }
         });
-      });
     }
-  });
-};
 
-exports.saveAttributes = function (req, res) {
+    var id = req.params.id;
 
-  var id = req.params.id;
-  var postdata = req.body;
+    HivTrace.findOne({
+        _id: id
+    }, function(err, hivtrace) {
+        if (err) {
+            res.format({
+                html: function() {
+                    res.render('hivtrace/attribute_map_assignment.ejs', {
+                        'error': err
+                    });
+                },
+                json: function() {
+                    res.json(200, err);
+                }
+            });
+        } else if (hivtrace.attributes.length) {
+            returnFormat(hivtrace, err);
+        } else {
 
-  HivTrace.findOne({_id: id}, function (err, hivtrace) {
-    hivtrace.attribute_map = postdata;
-    hivtrace.save(function (err, hivtrace) {
-      if(err) {
-        // FASTA validation failed
-        res.json(200, err);
-      } else {
-        res.json(200,  {success: true});
-      }
+            // Validate that the file uploaded was a FASTA file
+            HivTrace.createAttributeMap(hivtrace, function(err, hivtrace_map) {
+                hivtrace.attributes = hivtrace_map.annotated_map;
+                hivtrace.delimiter = hivtrace_map.delimiter;
+                hivtrace.save();
+                returnFormat(hivtrace, err);
+            });
+        }
     });
-  });
+}
+
+exports.saveAttributes = function(req, res) {
+
+    var id = req.params.id;
+    var postdata = req.body;
+
+    HivTrace.findOne({
+        _id: id
+    }, function(err, hivtrace) {
+        hivtrace.attributes.forEach (function (d,i) {
+            d.annotation = postdata['annotation'][i];
+        }); 
+        hivtrace.combine_same_id_diff_dates = postdata['combine'];
+        hivtrace.save(function(err, hivtrace) {
+            if (err) {
+                res.json(200, err);
+            } else {
+                res.json(200, {
+                    success: true
+                });
+            }
+        });
+    });
 
 };
 
@@ -437,3 +477,4 @@ exports.aligned_fasta = function (req, res) {
   });
 
 }
+
