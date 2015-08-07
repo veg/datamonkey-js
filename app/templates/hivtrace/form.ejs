@@ -29,9 +29,15 @@
             Sequence file</label>
             <div id="seq-file-div" class="col-lg-9">
                 <input id="seq-file" type="file" name="files">
-                <div id="file-progress" class="progress active hidden">
-                  <div id = "upload-progress" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="<%= hivtrace.percentage_complete %>" aria-valuemin="1" aria-valuemax="100" style="width: <%= hivtrace.percentage_complete %>">
-                    <span class="sr-only"><%= hivtrace.percentage_complete %> Complete</span>
+                <div id="file-progress" data-socket = <%= socket_addr %> class="progress active hidden">
+                  <div id = "upload-progress" class="progress-bar progress-bar-success" role="progressbar" aria-valuemin="1" aria-valuemax="100" style="width: 0%">
+                    <span class="sr-only">Progress bar</span>
+                  </div>
+                  <div id = "fasta-progress" class="progress-bar progress-bar-warning" role="progressbar" aria-valuemin="1" aria-valuemax="100" style="width: 0%">
+                    <span class="sr-only">FASTA bar</span>
+                  </div>
+                  <div id = "attribute-progress" class="progress-bar progress-bar active" role="progressbar" aria-valuemin="1" aria-valuemax="100" style="width: 0%">
+                    <span class="sr-only">Attribute bar</span>
                   </div>
                 </div>
             </div>
@@ -352,4 +358,5 @@
 
 <%- include ../includes/modal.ejs %>
 <%- include ../includes/footer.ejs %>
+<script src="//cdn.socket.io/socket.io-1.0.6.js"></script>
 <script src="/assets/js/hivtrace/form.js"></script>

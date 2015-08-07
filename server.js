@@ -40,6 +40,7 @@ var express          = require('express'),
     fs               = require('fs'),
     path             = require("path"),
     mongoose         = require('mongoose'),
+    redis            = require('redis'),
     io               = require('socket.io').listen(setup.socket_port);
 
 
@@ -118,9 +119,36 @@ var jobproxy = require('./lib/hpcsocket.js');
 
 io.sockets.on('connection', function (socket) {
   socket.emit('connected');
-  socket.on('acknowledged', function (data) {
+  socket.on ('acknowledged', function (data) {
     //Create client socket
     var clientSocket = new jobproxy.ClientSocket(socket, data.id);
   });
+  
+  socket.on ('fasta_parsing_progress_start', function (data) {
+    var fasta_listener = redis.createClient ();
+    fasta_listener.subscribe ("fasta_parsing_progress_" + data.id);
+    fasta_listener.on ("message", function (channel, message) {
+        //console.log ("fasta_parsing_update", message);
+        socket.emit ("fasta_parsing_update", message);
+        if (message == "done") {
+            fasta_listener.end();
+        }
+        //socket.emit ("fasta_parsing_update",   JSON.parse (message));    
+    });
+  });
+
+  socket.on ('attribute_parsing_progress_start', function (data) {
+    var attr_listener = redis.createClient ();
+    attr_listener.subscribe ("attribute_parsing_progress_" + data.id);
+    //console.log ('attribute_parsing_progress_start', data.id);
+    attr_listener.on ("message", function (channel, message) {
+        //console.log ("attribute_parsing_progress", message);
+        socket.emit ("attribute_parsing_progress", message);
+        if (message == "done") {
+            attr_listener.end();
+        }
+    });
+  });
+
 });
 

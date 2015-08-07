@@ -8,11 +8,13 @@
     },
 
     "dates": [
-        "%Y%m%d",
-        "%m%d%Y",
-        "%m-%d-%Y",
-        "%d-%m-%Y",
-        "%m-%y"
+        "YYYYMMDD",
+        "MMDDYYYY",
+        "MM-DD-YYYY",
+        "DD-MM-YYYY",
+        "YYYY-MM-DD",
+        "MM-YY",
+        "YYYY"
     ],
 
     "delimiters": ["_", "|", ".", ",", ";", "\t", ":"],
