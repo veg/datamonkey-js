@@ -97,7 +97,8 @@ module.exports = function(app) {
   // HIV TRACE ROUTES
   hivtrace = require( ROOT_PATH + '/app/routes/hivtrace');
   app.get('/hivtrace', hivtrace.clusterForm);
-  app.post('/hivtrace/uploadfile', hivtrace.uploadFile);
+  app.post('/hivtrace/:id/uploadfile', hivtrace.uploadFile);
+  app.get ('/hivtrace/request-job-id', hivtrace.requestID); 
   app.get('/hivtrace/:id/map-attributes', hivtrace.mapAttributes);
   app.post('/hivtrace/:id/save-attributes', hivtrace.saveAttributes);
   app.post('/hivtrace/invoke/:id', hivtrace.invokeClusterAnalysis);

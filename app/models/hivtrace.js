@@ -32,16 +32,15 @@ var setup = require('../../config/setup'),
 
 var mongoose = require('mongoose'),
     moment = require('moment'),
+    redis = require('redis'),
     check = require('validator').check,
     globals = require('../../config/globals.js'),
     seqio = require('../../lib/biohelpers/sequenceio.js'),
     sanitize = require('validator').sanitize,
     fs = require('fs'),
     readline = require('readline'),
-    spawn = require('child_process').spawn,
-    d3 = require('d3'),
+    threads = require('webworker-threads'),
     _ = require('underscore');
-
 
 
 var error_codes = {
@@ -96,8 +95,9 @@ var AttributeModel = mongoose.model('AttributeModel', SequenceAttribute);
 var HivTrace = new Schema({
     reference: String,
     headers: Array,
+    partitioned_headers: Array,
     delimiter: String,
-    data_id : Array,
+    data_id: Array,
     attributes: [
         SequenceAttribute
     ],
@@ -190,298 +190,11 @@ HivTrace.statics.lanl_validators = function() {
  * Create an attribute map based off the header files of
  * a FASTA file
  */
-HivTrace.statics.createAttributeMap = function(instance, cb) {
-    // SDHC|AEH020|222-4kr|20090619
-    // Z|JP|K03455|2036|6
-
-    var subtype_dictionary = new Object,
-        date_parser = attributes.dates.map(function(format) {
-            return d3.time.format(format);
-        });
-
-    _.each(attributes.subtype.value, function(s) {
-        subtype_dictionary[s] = true;
-    });
-
-    function isSubtype(supposed_subtype) {
-        return supposed_subtype in subtype_dictionary ? attributes.types.SUBTYPE : null;
-    }
-
-    function isDate(supposed_date) {
-        // check for sampling year/date
-        if (_.some(date_parser, function(d) {
-                return d.parse(supposed_date);
-            })) {
-            return attributes.types.DATE;
-        }
-        return null;
-
-    }
-
-    function isCountry(supposed_country) {
-        return supposed_country in attributes.country.value ? attributes.types.COUNTRY : null;
-    }
-
-    var attr_validators = [isSubtype, isCountry, isDate, function(x) {
-        return attributes.types.UNKNOWN;
-    }];
-
-    var testForAttributes = function(id) {
-        /** split each sequence tag by all possible delimiters
-            and return putative attribute maps for each one.
-            For example
-
-            testForAttributes("050106508|06252003|pol|plasma|pool|1|ViroLogic|03_120785|NULL")
-
-            returns
-
-            {
-                _: [
-                    ['id', '050106508|06252003|pol|plasma|pool|1|ViroLogic|03'],
-                    ['unknown', '120785|NULL']
-                ],
-                '|': [
-                    ['id', '050106508'],
-                    ['date', '06252003'],
-                    ['unknown', 'pol'],
-                    ['unknown', 'plasma'],
-                    ['unknown', 'pool'],
-                    ['unknown', '1'],
-                    ['unknown', 'ViroLogic'],
-                    ['unknown', '03_120785'],
-                    ['unknown', 'NULL']
-                ],
-                '.': [
-                    ['id',
-                        '050106508|06252003|pol|plasma|pool|1|ViroLogic|03_120785|NULL'
-                    ]
-                ],
-                ',': [
-                    ['id',
-                        '050106508|06252003|pol|plasma|pool|1|ViroLogic|03_120785|NULL'
-                    ]
-                ],
-                ';': [
-                    ['id',
-                        '050106508|06252003|pol|plasma|pool|1|ViroLogic|03_120785|NULL'
-                    ]
-                ],
-                '\t': [
-                    ['id',
-                        '050106508|06252003|pol|plasma|pool|1|ViroLogic|03_120785|NULL'
-                    ]
-                ],
-                ':': [
-                    ['id',
-                        '050106508|06252003|pol|plasma|pool|1|ViroLogic|03_120785|NULL'
-                    ]
-                ]
-            }
-
-
-        */
-
-        var attr_map = {};
-        attributes.delimiters.forEach(function(cur_dl) {
-            attr_map[cur_dl] = [];
-            id.split(cur_dl).forEach(function(value, index) {
-                attr_validators.some(function(validator) {
-                    var test = validator(value);
-                    if (test) {
-                        attr_map[cur_dl][index] = [test, value];
-                        return true;
-                    } else {
-                        var uc = value.toUpperCase();
-                        if (validator (uc)) {
-                            attr_map[cur_dl][index] = [test, uc];
-                            return true;
-                        }
-                    }
-                    return false;
-                });
-            });
-
-            // We guess that the first unknown attribute is the ID
-            var unknowns = attr_map[cur_dl].map(function(v, i) {
-                return v[0] == attributes.types.UNKNOWN ? i : -1;
-            }).filter(function(v) {
-                return v >= 0;
-            });
-            if (unknowns.length > 0) {
-                attr_map[cur_dl][unknowns[0]][0] = attributes.types.ID;
-            }
-        });
-
-        return attr_map;
-
-    }
-
-
-
-    var all_maps = instance.headers.map(function(header) {
-        return testForAttributes(header);
-    });
-
-
-    var binned_by_delimiter = attributes.delimiters.map(function(delimiter) {
-        var fields = [];
-        _.each(_.pluck(all_maps, delimiter), function(field_list) {
-
-            for (var i = fields.length; i < field_list.length; i++) {
-                var new_entry = new Object;
-                new_entry[field_list[i][0]] = 0;
-                fields.push(new_entry);
-            }
-
-            _.each(field_list, function(a_field, i) {
-                fields[i][a_field[0]] = (a_field[0] in fields[i]) ? fields[i][a_field[0]] + 1 : 1;
-            });
-        });
-        return [delimiter, fields];
-    });
-
-    var ranked_delimiters = _.sortBy(binned_by_delimiter, function(delimiter) {
-        return _.reduce(delimiter[1].map(function(mapping) {
-                return _.reduce(mapping, function(memo, count, kind) {
-                    var value = (kind != attributes.types.UNKNOWN && kind != attributes.types.ID && count * 2 >= all_maps.length) ? count / all_maps.length : 0;
-                    return value > memo ? value : memo;
-                }, 0.)
-            }),
-            function(memo, d) {
-                return memo - d * d;
-            }, 0)
-    });
-
-
-    var best_delimiter = ranked_delimiters[0][0],
-        best_attr_map = ranked_delimiters[0][1];
-
-    all_maps = _.pluck(all_maps, best_delimiter);
-
-    var err = '',
-        mapped_attributes = [],
-        used_ids = {};
-
-    best_attr_map.forEach(function(mapping) {
-        var label = attributes.types.UNKNOWN,
-            label_prop = _.reduce(mapping, function(memo, count, kind) {
-                var value = count / all_maps.length;
-                if (value > memo) {
-                    label = kind;
-                    return value;
-                }
-                return memo;
-            }, 0.);
-
-        var current_attribute = new AttributeModel;
-
-        current_attribute.calculated = label;
-        current_attribute.calculated_proportion = label_prop;
-        if (label in used_ids) {
-            current_attribute.annotation = label + "-" + (++used_ids[label]);
-        } else {
-            current_attribute.annotation = label;
-            used_ids[label] = 1;
-        }
-
-
-        mapped_attributes.push(current_attribute);
-
-    });
-
- 
-    mapped_attributes.forEach(function(ca, index) {
-
-        var value_range = {},
-            mismatched = {};
-
-        all_maps.forEach(function(mapping) {
-            if (index < mapping.length) {
-                attr = mapping[index];
-                if (attr[0] == ca.calculated) {
-                    if (attr[1] in value_range) {
-                        value_range[attr[1]] += 1;
-                    } else {
-                        value_range[attr[1]] = 1;
-                    }
-                } else {
-                    if (attr[1] in mismatched) {
-                        mismatched[attr[1]] += 1;
-                    } else {
-                        mismatched[attr[1]] = 1;
-                    }
-                }
-            }
-        });
-
-
-        var keys = _.keys(value_range);
-
-        if (ca.calculated != attributes.types.DATE) {
-            var count = keys.length;
-            if (count * 5 < all_maps.length) {
-                ca.category = "categorical";
-            } else {
-                ca.category = "individual";
-            }
-        } else {
-            ca.category = "temporal";
-        }
-
-
-        ca.unique_values = keys.length;
-        ca.value_examples = _.first(keys, 10);
-        var mm = _.keys(mismatched);
-        if (mm.length) {
-            ca.failed_examples = _.first(mm, 10);
-        }
-        ca.failed_count = mm.length;
-    });
 
 
 
 
 
-
-    /**
-        categorize the individual attributes
-        by estimating the range of values, and
-        guessing what they represent.
-    */
-
-
-
-
-    cb(err, {
-        /*_.map(all_maps, function (value, key) {
-            return [key, value[best_delimiter]];
-        }),*/
-        "annotated_map": mapped_attributes,
-        "delimiter": best_delimiter
-    });
-
-}
-
-HivTrace.statics.parseHeaderFromMap = function(header, attr_map) {
-    parsed = {};
-    var arr = header.split(attr_map.delimiter);
-    for (var i in arr) {
-        if (!parsed[attr_map.map[i]]) {
-            parsed[attr_map.map[i]] = arr[i];
-        } else {
-            var c = 1;
-            var new_key = attr_map.map[i] + c;
-
-            while (parsed[new_key]) {
-                new_key = attr_map.map[i] + ++c;
-            }
-
-            parsed[new_key] = arr[i];
-
-        }
-    }
-    return parsed;
-}
 
 
 HivTrace.virtual('valid_statuses').get(function() {

@@ -77,7 +77,7 @@
                                     </td>
                                     <% if (map.some (function (d) {return d.calculated == 'date'}) && map.some (function (d) {return d.calculated == 'id'})) { %>
                                     <td>
-                                        <% if (map[i].category == "temporal" || map[i].category == "individual") {%>
+                                        <% if (map[i].category == "temporal" && map[i].calculated_proportion == 1 || map[i].category == "individual") {%>
                                             <input type = 'checkbox' data-field = "<%=i%>" data-category = "<%=map[i].category%>"/>
                                         <% } %>
                                     </td>
