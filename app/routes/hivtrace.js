@@ -284,7 +284,7 @@ exports.results = function (req, res) {
 
 /**
  * Returns strictly JSON results for requested job id
- * app.get('/hivtrace/:id/results', hivtrace.results);
+ * app.get('/hivtrace/:id/trace_results', hivtrace.results);
  */
 exports.trace_results = function (req, res) {
 

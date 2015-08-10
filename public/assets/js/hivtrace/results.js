@@ -21,6 +21,7 @@ var initialize_cluster_network_graphs = function () {
       filter_edges_toggle   = '#network_ui_bar_toggle_filter_edges',
       graph_summary_tag     = '#graph_summary_table',
       cluster_table         = '#cluster_table',
+      parent_container      = '#trace-results',
       node_table            = '#node_table';
 
   //Initialize clusternetworkgraph with json url
@@ -29,7 +30,7 @@ var initialize_cluster_network_graphs = function () {
   d3.json(json_url, function(graph) {
 
     d3.json (window.location.href + "/attributes", function (error, attributes) {
-          var user_graph = new datamonkey.hivtrace.cluster_network_graph(graph, network_container, network_status_string, network_warning, button_bar_prefix, attributes, filter_edges_toggle, cluster_table, node_table);
+          var user_graph = new datamonkey.hivtrace.cluster_network_graph(graph, network_container, network_status_string, network_warning, button_bar_prefix, attributes, filter_edges_toggle, cluster_table, node_table, parent_container);
           datamonkey.hivtrace.histogram(graph, histogram_tag, histogram_label);
           datamonkey.hivtrace.graph_summary (graph, graph_summary_tag);
           d3.select ("#graph-tab").classed ("disabled", false);
@@ -51,9 +52,10 @@ var initialize_cluster_network_graphs = function () {
           });
       });
       
-    d3.json (window.location.href + "/settings", function (error, settings) {
-          datamonkey.hivtrace.analysis_settings (settings);
-      });
+    // TODO: Missing explanations parameter
+    //d3.json (window.location.href + "/settings", function (error, settings) {
+    //      datamonkey.hivtrace.analysis_settings (settings);
+    //  });
   });
 
   if($('#lanl-trace-results').length > 0) {

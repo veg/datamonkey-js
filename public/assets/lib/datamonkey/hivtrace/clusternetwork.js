@@ -3,23 +3,22 @@ var _defaultFloatFormat = d3.format(",.2r");
 
 
 
-var hivtrace_cluster_network_graph = function (json, network_container, network_status_string, network_warning_tag, button_bar_ui, attributes, filter_edges_toggle, clusters_table, nodes_table) {
-/*
-[REQ] json                        :          the JSON object containing network nodes, edges, and meta-information
-[REQ] network_container           :          the CSS selector of the DOM element where the SVG containing the network will be placed (e.g. '#element')
-[OPT] network_status_string       :          the CSS selector of the DOM element where the text describing the current state of the network is shown (e.g. '#element')
-[OPT] network_warning_tag         :          the CSS selector of the DOM element where the any warning messages would go (e.g. '#element')
-[OPT] button_bar_ui               :          the ID of the control bar which can contain the following elements (prefix = button_bar_ui value)
-                                                - [prefix]_cluster_operations_container : a drop-down for operations on clusters
-                                                - [prefix]_attributes :  a drop-down for operations on attributes
-                                                - [prefix]_filter : a text box used to search the graph
-[OPT] network_status_string       :          the CSS selector of the DOM element where the text describing the current state of the network is shown (e.g. '#element')
-[OPT] attributes                  :          A JSON object with mapped node attributes
-                                                
-*/
+var hivtrace_cluster_network_graph = function (json, network_container, network_status_string, network_warning_tag, button_bar_ui, attributes, filter_edges_toggle, clusters_table, nodes_table, parent_container) {
+
+  // [REQ] json                        :          the JSON object containing network nodes, edges, and meta-information
+  // [REQ] network_container           :          the CSS selector of the DOM element where the SVG containing the network will be placed (e.g. '#element')
+  // [OPT] network_status_string       :          the CSS selector of the DOM element where the text describing the current state of the network is shown (e.g. '#element')
+  // [OPT] network_warning_tag         :          the CSS selector of the DOM element where the any warning messages would go (e.g. '#element')
+  // [OPT] button_bar_ui               :          the ID of the control bar which can contain the following elements (prefix = button_bar_ui value)
+  //                                                - [prefix]_cluster_operations_container : a drop-down for operations on clusters
+  //                                                - [prefix]_attributes :  a drop-down for operations on attributes
+  //                                                - [prefix]_filter : a text box used to search the graph
+  // [OPT] network_status_string       :          the CSS selector of the DOM element where the text describing the current state of the network is shown (e.g. '#element')
+  // [OPT] attributes                  :          A JSON object with mapped node attributes
 
   var self = new Object;
-  
+
+    self.ww = d3.select(parent_container).property("clientWidth");
     self.nodes = [];
     self.edges = [];
     self.clusters = [];         
@@ -28,15 +27,17 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
     self.filter_edges = true,
     self.hide_hxb2 = false,
     self.charge_correction = 1,
-    self.width  = 875,
-    self.height = 800,
+    self.margin = {top: 20, right: 10, bottom: 30, left: 10},
+    self.width  = self.ww - self.margin.left - self.margin.right,
+    self.height = 500 - self.margin.top - self.margin.bottom,
     self.cluster_table = d3.select (clusters_table),
     self.node_table = d3.select (nodes_table),
-    self.needs_an_update = false;
+    self.needs_an_update = false,
+    self.json = json;
 
   var cluster_mapping = {},
       l_scale = 5000,   // link scale
-      graph_data = json,     // the raw JSON network object
+      graph_data = self.json,     // the raw JSON network object
       max_points_to_render = 500,
       warning_string     = "",
       singletons         = 0,
@@ -44,8 +45,6 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
       currently_displayed_objects;
 
   /*------------ D3 globals and SVG elements ---------------*/
-
-
 
   var network_layout = d3.layout.force()
     .on("tick", tick)
@@ -58,7 +57,12 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
   d3.select(network_container).selectAll (".my_progress").remove();
 
   var network_svg = d3.select(network_container).append("svg:svg")
-      .style ("border", "solid black 1px");
+      .style ("border", "solid black 1px")
+      .attr("width", self.width + self.margin.left + self.margin.right)
+      .attr("height", self.height + self.margin.top + self.margin.bottom);
+
+      //.append("g")
+      // .attr("transform", "translate(" + self.margin.left + "," + self.margin.top + ")");
 
   network_svg.append("defs").append("marker")
       .attr("id", "arrowhead")
@@ -280,17 +284,20 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
  }
  
  self.compute_adjacency_list = _.once(function () {    
+
     self.nodes.forEach (function (n) {
-        n.neighbors = d3.set ();
+        n.neighbors = d3.set();
     });
     
     self.edges.forEach (function (e) {
-        self.nodes[e.source].neighbors.add (e.target);
-        self.nodes[e.target].neighbors.add (e.source);
+        self.nodes[e.source].neighbors.add(e.target);
+        self.nodes[e.target].neighbors.add(e.source);
     });
+
  });
  
  self.compute_local_clustering_coefficients = _.once (function () {
+
     self.compute_adjacency_list();
     
     self.nodes.forEach (function (n) {
@@ -319,8 +326,41 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
             
         }, n);
     });
+
  });
- 
+
+  self.get_node_by_id = function(id) {
+    return self.nodes.filter(function(n) {
+        return n.id == id;
+    })[0];
+
+
+  }
+
+ self.compute_local_clustering_coefficients_worker = _.once (function () {
+
+    var worker = new Worker('/assets/lib/datamonkey/hivtrace/workers/lcc.js');
+
+    worker.onmessage = function(event) {
+
+      var nodes = event.data.Nodes;
+
+      nodes.forEach(function(n) { 
+        node_to_update = self.get_node_by_id(n.id);
+        node_to_update.lcc = n.lcc ? n.lcc : datamonkey.hivtrace.undefined;
+      });
+
+    };
+
+    var worker_obj = {}
+    worker_obj["Nodes"] = self.nodes;
+    worker_obj["Edges"] = self.edges;
+    worker.postMessage(worker_obj);
+
+ });
+
+
+  
   estimate_cubic_compute_cost = _.memoize(function (c) {
     self.compute_adjacency_list();  
     return _.reduce (_.first(_.pluck (c.children, "degree").sort (d3.descending),3),function (memo, value) {return memo*value;},1); 
@@ -364,14 +404,19 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
             }, c);    
         });
  });
+
+ self.mark_nodes_as_processing = function (property) {
+    self.nodes.forEach (function (n) { n[property] = datamonkey.hivtrace.processing }); 
+  }
  
  self.compute_graph_stats = function () {
+
     d3.select (this).classed ("disabled", true).select("i").classed ({"fa-calculator": false, "fa-cog": true, "fa-spin": true});
-    
-    self.compute_local_clustering_coefficients  ();
-    self.compute_global_clustering_coefficients ();
-    
+    self.mark_nodes_as_processing('lcc');
+    self.compute_local_clustering_coefficients_worker();
+    self.compute_global_clustering_coefficients();
     d3.select (this).remove();
+
  };
 
 
@@ -590,13 +635,13 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
   
      var this_sel  = d3.select (item);
 
-     current_value = typeof (data.value) === "function" ? data.value () : data.value;
+     current_value = typeof (data.value) === "function" ? data.value() : data.value;
+
      if ("callback" in data) {
         data.callback (item, current_value);
      } else {  
-         repr          = "format" in data ?  data.format (current_value) : current_value;
-
-         if ("html" in data) this_sel.html (repr); else this_sel.text (repr);
+         var repr = "format" in data ?  data.format (current_value) : current_value;
+         if ("html" in data) this_sel.html (repr); else this_sel.text(repr);
          if ("sort" in data) {
             var clicker = this_sel.append ("a").property ("href", "#").on ("click", function (d) {sort_table_by_column (this, d);}).attr ("data-sorted", "unsorted").attr ("data-column-id", index).attr ("data-sort-on", data.sort);
             clicker.append ("i").classed ("fa fa-sort", true).style ("margin-left", "0.2em");
@@ -605,9 +650,11 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
      if ("help" in data) {
         this_sel.attr ("title", data.help);
      }
+
   }
   
   function add_a_sortable_table (container, headers, content) {
+
         var thead = container.selectAll ("thead");
         if (thead.empty()) {
             thead = container.append ("thead");                    
@@ -687,6 +734,7 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
   };
   
   function draw_node_table () {
+
     if (self.node_table) { 
         add_a_sortable_table (self.node_table,
                                 // headers
@@ -698,6 +746,7 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
                                ]], 
                                  // rows 
                                self.nodes.map (function (n, i) {
+                                console.log(datamonkey.hivtrace.format_value(n.lcc,_defaultFloatFormat));
                                 return [{"value": n.id, help: "Node ID"}, 
                                         {       "value": function () {return [!self.clusters [n.cluster-1].collapsed, n.cluster]}, 
                                                 "callback": _node_table_draw_buttons,
@@ -706,7 +755,7 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
                                         {"value" : n.degree, help: "Node degree"},
                                         {"value" : n.cluster, help: "Which cluster does the node belong to"}, 
                                         {"value": function () {return datamonkey.hivtrace.format_value(n.lcc,_defaultFloatFormat);},
-                                         "volatile" : true, help: "Local clustering coefficient"}];
+                                         "volatile" : true, "html": true, help: "Local clustering coefficient"}];
         
                                 }));
     }
@@ -1225,7 +1274,6 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
                 .append("g")
                 .attr("transform", "translate(" + width / 2 + "," + (height-text_offset) / 2 + ")");
             
-            //console.log (chord.groups());
     
             svg.append("g").selectAll("path")
                 .data(chord.groups)

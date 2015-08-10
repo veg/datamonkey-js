@@ -2,11 +2,7 @@
 
   Datamonkey - An API for comparative analysis of sequence alignments using state-of-the-art statistical models.
 
-<<<<<<< HEAD
-  Copyright (C) 2015
-=======
   Copyright (C) 2014-2015
->>>>>>> master
   Sergei L Kosakovsky Pond (spond@ucsd.edu)
   Steven Weaver (sweaver@ucsd.edu)
 
@@ -36,6 +32,7 @@ var setup = require('../../config/setup'),
 
 var mongoose  = require('mongoose'),
     moment    = require('moment'),
+    d3        = require('d3'),
     check     = require('validator').check,
     globals   = require( '../../config/globals.js'),
     sanitize  = require('validator').sanitize,
@@ -158,6 +155,7 @@ var HivTrace = new Schema({
     torque_id: String,
     custom_reference: String,
     mail: String,
+    type : String,
     tn93_summary: String,
     tn93_results: String,
     lanl_tn93_results: String,
@@ -165,7 +163,7 @@ var HivTrace = new Schema({
     combine_same_id_diff_dates: Array,
     stdout : String,
     stderr : String,
-    results : Object
+    results : Object,
 
     // if not empty, then combine the ID (index 0) with the date (index 1)
     created: {
@@ -520,6 +518,10 @@ HivTrace.virtual('filename').get(function() {
  */
 HivTrace.virtual('filepath').get(function() {
     return __dirname + "/../../uploads/hivtrace/" + this._id;
+});
+
+HivTrace.virtual('analysistype').get(function() {
+  return 'hivtrace';
 });
 
 /**

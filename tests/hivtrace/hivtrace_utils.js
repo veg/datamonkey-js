@@ -32,9 +32,9 @@ var fs     = require('fs'),
     should = require('should'),
     _      = require('underscore');
 
-require(path.join(__dirname, '/../../public/assets/lib/datamonkey/hivtrace/misc.js'))
 require(path.join(__dirname, '../../public/assets/lib/d3/d3.js'));
 require(path.join(__dirname, '../../public/assets/lib/underscore/underscore.js'));
+require(path.join(__dirname, '/../../public/assets/lib/datamonkey/hivtrace/misc.js'));
 
 describe('convert object to csv', function() {
 
@@ -159,5 +159,49 @@ describe('betweenness centrality', function() {
     }
 
     done();
+
   });
+
 });
+
+
+describe('local clustering coefficient', function() {
+
+  var krackhardt_kite = JSON.parse(fs.readFileSync(path.join(__dirname, './krackhardt_kite.json')));
+
+  it('should spawn a worker and complete', function(done) {
+
+    this.timeout(5000);
+
+    // pass to web-worker
+    var Worker = require('webworker-threads').Worker;
+
+    var worker = new Worker(function(){
+        importScripts('./public/assets/lib/d3/d3.js', './public/assets/lib/underscore/underscore.js', './public/assets/lib/datamonkey/hivtrace/misc.js');
+        this.onmessage = function(event) {
+            try {
+              datamonkey.hivtrace.compute_local_clustering(event.data);
+              postMessage(event.data);
+              self.close();
+            } catch(e) {
+                var stack = e.stack.replace(/^[^\(]+?[\n$]/gm, '')
+                  .replace(/^\s+at\s+/gm, '')
+                  .replace(/^Object.<anonymous>\s*\(/gm, '{anonymous}()@')
+                  .split('\n');
+            };
+        };
+    });
+
+    worker.onmessage = function(event) {
+      console.log("Worker said : " + JSON.stringify(event.data.Nodes[0]));
+      done();
+    };
+
+    worker.postMessage(krackhardt_kite);
+
+  });
+
+
+});
+
+

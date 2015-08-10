@@ -8,7 +8,7 @@
     "flea"               : "git@github.com:veg/flea.git#0.1.0",
     "jquery-file-upload" : "9.x.x",
     "jquery-zclip"       : "1.x.x",
-    "underscore"         : "1.8.x",
+    "underscore"         : "git@github.com:veg/underscore.git#1.8.4",
     "socket.io-client"   : "1.*"
   }
 }
