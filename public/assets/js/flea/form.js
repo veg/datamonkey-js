@@ -71,12 +71,26 @@ $(function () {
                 .prop('disabled', !!data.files.error);
         }
     }).on('fileuploadprogressall', function (e, data) {
+
         var progress = parseInt(data.loaded / data.total * 100, 10);
-        $('#progress .progress-bar').css(
+
+        d3.select("#flea-progress").classed({'hidden': false});
+        d3.select("#files").classed({'hidden': true});
+
+        $('#flea-progress .progress-bar').css(
             'width',
             progress + '%'
         );
+
+        if(progress>95) {
+          d3.select("#flea-progress").classed({'hidden': true});
+          d3.select("#files").classed({'hidden': false});
+        }
+
+
     }).on('fileuploaddone', function (e, data) {
+
+
         $.each(data.files, function (index, file) {
             if (file.url) {
                 var link = $('<a>')
@@ -90,7 +104,9 @@ $(function () {
                     .append('<br>')
                     .append(error);
             }
+
         });
+
     }).on('fileuploadfail', function (e, data) {
         $.each(data.files, function (index) {
             var error = $('<span class="text-danger"/>').text('File upload failed.');
@@ -160,7 +176,6 @@ $(function () {
         var mapped_fleas = JSON.stringify(flea_files.map(fleaFileMap));
 
         formData.append('flea_files', mapped_fleas);
-        console.log(mapped_fleas);
 
         var xhr = new XMLHttpRequest();
         xhr.open('post', self.attributes.getNamedItem("action").value, true);

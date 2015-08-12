@@ -8,6 +8,7 @@
 
   <div class="nav nav-list pull-right span4i"><a href="/help" target="_blank"><span class="glyphicon glyphicon-info-sign"></span></a></div>
 
+
   <div class="col-md-12">
     <span class="btn btn-success fileinput-button">
       <i class="glyphicon glyphicon-plus"></i>
@@ -18,7 +19,14 @@
   </div>
 
   <div class="col-md-12">
-    <div id="files" class="files">
+
+    <div id="flea-progress" class="progress hidden">
+      <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+        <span class="sr-only">45% Complete</span> Uploading files
+      </div>
+    </div>
+
+    <div id="files" class="files hidden">
       <script type="text/template" class="fastq-file">
         {% _.each(rc, function(file) { %}
 

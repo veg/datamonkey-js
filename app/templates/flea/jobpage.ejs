@@ -2,7 +2,28 @@
 
 <div class='container' id='job-report' data-jobid='<%= job._id %>' data-socket-address='<%= socket_addr %>'>
   <%- include header.ejs %>
+
   <% if (job.status != 'completed') { %>
+
+  <div <% if(job.last_status_msg) { %> class='flea-spinner hidden' <% } else { %> class='flea-spinner' <% }%>>
+
+    <div class="progress">
+
+      <div id="transfer-progress" class="progress-bar progress-bar-warning" style="width: 33%">
+        <span class="sr-only">35% Complete (success)</span> Transferring Data
+      </div>
+      <div id="prepare-progress" class="progress-bar progress-bar-warning progress-bar-striped hidden" style="width: 33%">
+        <span class="sr-only">20% Complete (warning)</span> Preparing Data for Analysis
+      </div>
+      <div id="queue-progress" class="progress-bar progress-bar-danger hidden" style="width: 34%">
+        <span class="sr-only">10% Complete (danger)</span> Queued for processing
+      </div>
+    </div>
+
+    <code class="transfer-progress">Each step may take up to five minutes</code>
+
+  </div>
+
   <div id='standard-output'  <% if(!job.last_status_msg) { %> class='hidden' <% } %> >
       <div class='panel-body'>
         <h6> Standard Output </h6>

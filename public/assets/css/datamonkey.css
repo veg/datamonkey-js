@@ -608,6 +608,16 @@ span.glyphicon {
   margin-bottom : 50px;
 }
 
+.flea-spinner {
+  text-align : center;
+}
+
+#flea-progress {
+
+  margin-top:25px;
+
+}
+
 .borderless tbody tr td, .borderless tbody tr th, .borderless thead tr th {
     border: none;
 }
