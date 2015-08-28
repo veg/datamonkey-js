@@ -112,18 +112,15 @@ exports.invoke = function(req, res) {
                 res.json(500, {'error' : err});
               } else {
 
-                res.json(200,  {'flea' : flea } );
-
                 // Send the MSA and analysis type
                 // Package msas to send
                 Flea.pack(flea_result);
+                res.json(200,  {'flea' : flea } );
 
-                var jobproxy = new hpcsocket.HPCSocket({'filepath'    : flea_result.filepath, 
-                                                        'msas'        : flea_result.msas,
-                                                        'analysis'    : flea_result,
-                                                        'status_stack': flea_result.status_stack,
-                                                        'type'        : 'flea'}, connect_callback);
 
+                Flea.submitJob(flea_result, connect_callback);
+
+                
               }
             }
 

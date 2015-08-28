@@ -27,7 +27,9 @@ var initialize_cluster_network_graphs = function () {
   //Initialize clusternetworkgraph with json url
   var json_url = $("#hiv-cluster-report").data('hivtraceid') + '/trace_results';
   
-  d3.json(json_url, function(graph) {
+  d3.json(json_url, function(data) {
+
+    var graph = data.trace_results;
 
     d3.json (window.location.href + "/attributes", function (error, attributes) {
           var user_graph = new datamonkey.hivtrace.cluster_network_graph(graph, network_container, network_status_string, network_warning, button_bar_prefix, attributes, filter_edges_toggle, cluster_table, node_table, parent_container);
@@ -50,7 +52,26 @@ var initialize_cluster_network_graphs = function () {
           $("#nodes-tab a[data-toggle='tab']").on ("shown.bs.tab", function (e) {
                 user_graph.update_volatile_elements (d3.select (node_table));
           });
+
+          if($('#lanl-trace-results').length > 0) {
+
+            // Only if the comparison was done
+            var lanl_network_container     = '#lanl-network_tag',
+                lanl_network_status_string = '#lanl-network_status_string',
+                lanl_network_warning       = '#lanl-main-warning',
+                lanl_histogram_tag         = '#lanl-histogram_tag',
+                lanl_histogram_label       = '#lanl-histogram_label',
+                lanl_csvexport_label       = '#lanl-csvexport',
+                lanl_button_bar_prefix     = 'lanl_network_ui_bar';
+
+            var lanl_graph = data.lanl_trace_results;
+            var lanl_graph_rendered = new datamonkey.hivtrace.cluster_network_graph(lanl_graph, lanl_network_container, lanl_network_status_string, lanl_network_warning, lanl_button_bar_prefix, attributes, filter_edges_toggle, null, null, parent_container);
+            //datamonkey.hivtrace.histogram(lanl_graph, lanl_histogram_tag, lanl_histogram_label);
+          }
+
       });
+
+
       
     // TODO: Missing explanations parameter
     //d3.json (window.location.href + "/settings", function (error, settings) {
@@ -58,22 +79,4 @@ var initialize_cluster_network_graphs = function () {
     //  });
   });
 
-  if($('#lanl-trace-results').length > 0) {
-
-    // Only if the comparison was done
-    var lanl_network_container     = '#lanl-network_tag',
-        lanl_network_status_string = '#lanl-network_status_string',
-        lanl_network_warning       = '#lanl-main-warning',
-        lanl_histogram_tag         = '#lanl-histogram_tag',
-        lanl_histogram_label       = '#lanl-histogram_label',
-        lanl_csvexport_label       = '#lanl-csvexport',
-        lanl_button_bar_prefix     = 'lanl_network_ui_bar';
-
-
-    var json_url = $("#hiv-cluster-report").data('hivtraceid') + '/lanl_trace_results';
-    d3.json(json_url, function(lanl_graph) {
-      var lanl_graph_rendered = new datamonkey.hivtrace.cluster_network_graph(lanl_graph, lanl_network_container, lanl_network_status_string, lanl_network_warning, lanl_button_bar_prefix);
-      datamonkey.hivtrace.histogram(lanl_graph, lanl_histogram_tag, lanl_histogram_label);
-    });
-  }
 }

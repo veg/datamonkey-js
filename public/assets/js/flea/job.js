@@ -1,4 +1,5 @@
 $(document).ready(function(){
+
   setupJob();
 
   $("#job-stdout-copy-button").on('click', function (e) {
@@ -26,7 +27,32 @@ function setupJob() {
 
   var changeStatus = function (data) {
 
+    // check phase
+    if(data.phase) {
+
+      if(data.phase == 'preparing_data') {
+        // if transferring
+        d3.select("#transfer-progress").classed({'hidden': false,'progress-bar-warning': false, 'progress-bar-success': true })
+        d3.select(".transfer-progress").classed({'hidden': true});
+        d3.select("#prepare-progress").classed({'hidden': false, 'progress-bar-warning': true  })
+      }
+
+      if(data.phase == 'queued') {
+        // if queued
+        d3.select("#transfer-progress").classed({'hidden': false, 'progress-bar-warning': false, 'progress-bar-success': true })
+        d3.select("#prepare-progress").classed({'hidden': false, 'progress-bar-warning': false, 'progress-bar-success': true  })
+        d3.select("#queue-progress").classed({'hidden': false, 'progress-bar-warning': true})
+      }
+
+      if(data.phase == 'running') {
+        d3.select(".progress").classed({'hidden': true})
+      }
+
+
+    }
+
     if(data.msg != undefined) {
+
       d3.select("#standard-output").classed({'hidden': false})
       $('#job-pre').html(data.msg)
       $("#job-pre").scrollTop($("#job-pre")[0].scrollHeight);
@@ -39,6 +65,7 @@ function setupJob() {
             return $("#job-pre").text();
           }
         });
+
       });
 
     }
@@ -65,6 +92,7 @@ function setupJob() {
 
   // Job Status Update
   socket.on('status update', function (data) {
+    console.log(data);
     if(data) {
       changeStatus(data);
     }

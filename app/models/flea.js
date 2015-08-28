@@ -31,6 +31,9 @@ var mongoose  = require('mongoose'),
     extend    = require('mongoose-schema-extend'),
     fs        = require('fs'),
     tar       = require('tar-fs'),
+    _         = require ('underscore'),
+    hpcsocket = require( __dirname + '/../../lib/hpcsocket.js'),
+    winston   = require('winston'),
     Msa       = require(__dirname + '/msa');
 
 var AnalysisSchema = require(__dirname + '/analysis');
@@ -48,12 +51,20 @@ var Flea = AnalysisSchema.extend({
   neutralization        : Object
 });
 
+Flea.virtual('analysistype').get(function() {
+  return 'flea';
+});
+
+
 /**
  * Filename of document's file upload
  */
 Flea.virtual('status_stack').get(function () {
-  return ['queueing', 
-          'running',
+
+  return ['transferring', 
+          'preparing_data',
+          'queued',
+          'running', 
           'completed'];
 });
 
@@ -82,6 +93,18 @@ Flea.virtual('url').get(function () {
 Flea.statics.pack = function(flea) {
   return tar.pack(flea.filedir).pipe(fs.createWriteStream(flea.filepath));
 }
+
+Flea.statics.submitJob = function (result, cb) {
+
+  winston.info('submitting ' + result.analysistype + ' : ' + result._id + ' to cluster');
+
+  var jobproxy = new hpcsocket.HPCSocket({'filepath'    : result.filepath, 
+                                          'msas'        : result.msas,
+                                          'analysis'    : result,
+                                          'status_stack': result.status_stack,
+                                          'type'        : result.analysistype}, 'spawn', cb);
+
+};
 
 
 module.exports = mongoose.model('Flea', Flea);

@@ -338,47 +338,40 @@ exports.results = function (req, res) {
 exports.trace_results = function (req, res) {
 
   var id = req.params.id;
-  HivTrace.findOne({_id: id}, 'results', function (err, hivtrace) {
+  HivTrace.findOne({_id: id}, function (err, hivtrace) {
+
     if (err || !hivtrace) {
       res.json(500, error.errorResponse('There is no HIV Trace job with id of ' + id));
     } else {
-      try {
-        var trace_results = JSON.parse(hivtrace.results.trace_results);
-        res.json(200, trace_results);
-      } catch(e) {
-        res.json(500, '');
-      }
+
+      var options = {
+        root: __dirname + '/../../uploads/hivtrace/',
+        dotfiles: 'deny',
+        headers: {
+            'x-timestamp': Date.now(),
+            'x-sent': true
+        }
+      };
+
+      res.sendfile(hivtrace.rel_trace_results, options, function (err) {
+        if (err) {
+          console.log(err);
+          res.status(err.status).end();
+        }
+        else {
+          console.log('sent:', hivtrace.trace_results);
+        }
+      })
+
     }
   });
 
 };
-
-/**
- * Returns strictly JSON results for requested job id
- * app.get('/hivtrace/:id/results', hivtrace.results);
- */
-exports.lanl_trace_results = function (req, res) {
-
-  var id = req.params.id;
-  HivTrace.findOne({_id: id}, 'results', function (err, hivtrace) {
-    if (err || !hivtrace) {
-      res.json(500, error.errorResponse('There is no HIV Trace job with id of ' + id));
-    } else {
-      try {
-        var lanl_trace_results = JSON.parse(hivtrace.results.lanl_trace_results);
-        res.json(200, hivtrace.results);
-      } catch(e) {
-        res.json(500, '');
-      }
-    }
-  });
-
-};
-
 
 exports.settings = function(req, res) {
-    // HIV Cluster id
+
     var id = req.params.id;
+
     HivTrace.findOne({
         _id: id
     }, function(err, hivtrace) {
@@ -547,10 +540,10 @@ exports.attributeMap = function (req, res) {
 
 
 /**
- * Returns strictly JSON results for requested job id
  * app.get('/hivtrace/:id/aligned.fasta', hivtrace.aligned_fasta);
  */
 exports.aligned_fasta = function (req, res) {
+
   var id = req.params.id;
   HivTrace.findOne({_id: id}, function (err, hivtrace) {
 
