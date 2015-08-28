@@ -58,7 +58,9 @@
           </div>
 
         </div>
+
       </div>
+
 
       <div class="row">
         <div class='col-lg-9'>
@@ -66,6 +68,7 @@
         </div>
         <div id='network_ui_bar_aux_svg_holder' class='row style = ' margin-left: 5px ''></div>
       </div>
+
     </div>
 
 
@@ -90,6 +93,7 @@
     </div>
 
   </div>
+
   <%if (hivtrace.lanl_compare == true) { %>
     <div id="lanl-trace-results" class="tab-pane">
       <div class="row" style="margin-top: 10px; margin-bottom: 10 px;">
@@ -100,7 +104,7 @@
       </div>
 
       <div class="row">
-        <div class='col-lg-9'>
+        <div class='col-lg-12'>
           <div class="row">
             <div class="input-group input-group-sm" id='lanl_network_ui_bar'>
               <span class="input-group-btn">
@@ -124,13 +128,6 @@
             </div>
           </div>
         </div>
-        <div class='col-lg-3'>
-          <div class='row' id='lanl-histogram_tag'>
-            <p id='lanl-histogram_label' class="text-left text-info small"></p>
-            <br>
-          </div>
-          <div id='lanl-csvexport' class='row'></div>
-        </div>
       </div>
       <div class="row">
         <div class='col-lg-9'>
@@ -138,7 +135,6 @@
         </div>
       </div>
     </div>
-</div>
 <% } %>
   <div id="trace-clusters" class="tab-pane">
     <div class='row'>
@@ -189,6 +185,8 @@
   </div>
 </div>
 
+<img id="chart-image" />
+<canvas id="chart-canvas"></canvas>
 
 <script src="/assets/lib/datamonkey/hivtrace/hivtrace.js"></script>
 <script src="/assets/lib/datamonkey/hivtrace/misc.js"></script>

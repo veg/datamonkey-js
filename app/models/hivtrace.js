@@ -29,6 +29,7 @@
 
 var setup = require('../../config/setup'),
     attributes = require('../../config/attributes.json');
+    path = require('path');
 
 var mongoose  = require('mongoose'),
     moment    = require('moment'),
@@ -40,7 +41,8 @@ var mongoose  = require('mongoose'),
     readline  = require('readline'),
     spawn     = require('child_process').spawn,
     _         = require ('underscore'),
-    hpcsocket = require( __dirname + '/../../lib/hpcsocket.js'),
+    hpcsocket = require(path.join(__dirname, '/../../lib/hpcsocket.js')),
+    mailer    = require(path.join(__dirname, '/../../lib/mailer.js')),
     winston   = require ('winston');
 
 var ident = {
@@ -173,28 +175,6 @@ var HivTrace = new Schema({
     }
 });
 
-/**
- * Validators to be passed to an html template as data attributes for
- * form validation
- */
-HivTrace.statics.validators = function () {
-  var validators = [];
-  validators.min_overlap = HivTrace.paths.min_overlap.options;
-  validators.distance_threshold = HivTrace.paths.distance_threshold.options;
-  validators.fraction = HivTrace.paths.fraction.options;
-  return validators;
-};
-
-/**
- * Validators to be passed to an html template as data attributes for
- * form validation
- */
-HivTrace.statics.lanl_validators = function () {
-  var validators = [];
-  validators.min_overlap = HivTrace.paths.lanl_min_overlap.options;
-  validators.distance_threshold = HivTrace.paths.lanl_distance_threshold.options;
-  return validators;
-};
 
 
 /**
@@ -250,6 +230,21 @@ HivTrace.virtual('aligned_fasta_fn').get(function () {
 });
 
 /**
+* file path for trace results
+*/
+HivTrace.virtual('trace_results').get(function() {
+    return __dirname + "/../../uploads/hivtrace/" + this._id + '.trace.json';
+});
+
+/**
+* file path for trace results
+*/
+HivTrace.virtual('rel_trace_results').get(function() {
+    return this._id + '.trace.json';
+});
+
+
+/**
 * relative file path for aligned document
 */
 HivTrace.virtual('rel_aligned_fasta_fn').get(function () {
@@ -295,6 +290,71 @@ HivTrace.virtual('timestamp').get(function() {
 HivTrace.virtual('url').get(function() {
     return 'http://' + setup.host + '/hivtrace/' + this._id;
 });
+
+// execute function on complete
+HivTrace.methods.onComplete = function (data, publisher, channel) {
+
+    var self = this;
+
+    var redis_packet = {
+      type : 'completed'
+    };
+
+    // Write to database
+    self.status  = 'completed';
+
+    if(data) {
+
+      // save results to file
+      //self.results = data.results;
+      fs.writeFile(self.trace_results, JSON.stringify(data.results), function (err) {
+
+        if (err) throw err;
+        winston.info('saved results file');
+
+        if(self.mail) {
+          mailer.sendJobComplete(self);
+        }
+
+        //Update the status for the analysis
+        self.save(function (err, result) {
+          if (err) throw err;
+          publisher.publish(channel,
+                            JSON.stringify(redis_packet));
+        });
+
+      });
+
+      winston.info('job complete; got results');
+    } else {
+      winston.error('job complete, but no data received');
+    }
+
+};
+
+/**
+ * Validators to be passed to an html template as data attributes for
+ * form validation
+ */
+HivTrace.statics.validators = function () {
+  var validators = [];
+  validators.min_overlap = HivTrace.paths.min_overlap.options;
+  validators.distance_threshold = HivTrace.paths.distance_threshold.options;
+  validators.fraction = HivTrace.paths.fraction.options;
+  return validators;
+};
+
+/**
+ * Validators to be passed to an html template as data attributes for
+ * form validation
+ */
+HivTrace.statics.lanl_validators = function () {
+  var validators = [];
+  validators.min_overlap = HivTrace.paths.lanl_min_overlap.options;
+  validators.distance_threshold = HivTrace.paths.lanl_distance_threshold.options;
+  return validators;
+};
+
 
 HivTrace.statics.submitJob = function (result, cb) {
 

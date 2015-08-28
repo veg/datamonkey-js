@@ -58,6 +58,7 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
 
   var network_svg = d3.select(network_container).append("svg:svg")
       .style ("border", "solid black 1px")
+      .attr("id", "network-svg")
       .attr("width", self.width + self.margin.left + self.margin.right)
       .attr("height", self.height + self.margin.top + self.margin.bottom);
 
@@ -491,6 +492,12 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
             button_group.append ("button").classed ("btn btn-default btn-sm", true).attr ("title", "Enlarge window").on ("click", function (d) {change_window_size (20, true);}).append ("i").classed ("fa fa-expand", true);
             button_group.append ("button").classed ("btn btn-default btn-sm", true).attr ("title", "Shrink window").on ("click", function (d) {change_window_size (-20, true);}).append ("i").classed ("fa fa-compress", true);
             button_group.append ("button").classed ("btn btn-default btn-sm", true).attr ("title", "Compute graph statistics").on ("click", function (d) {_.bind(self.compute_graph_stats,this)();}).append ("i").classed ("fa fa-calculator", true);
+            button_group.append ("button")
+              .classed("btn btn-default btn-sm", true)
+              .attr("title", "Save Image")
+              .attr("id", "hivtrace-export-image")
+              .on("click", function(d) { datamonkey.save_image("png", "#network-svg");})
+              .append ("i").classed ("fa fa-image", true);
          }
          
          $("#" + button_bar_ui + "_filter").on ("input propertychange", _.throttle (function (e) {  

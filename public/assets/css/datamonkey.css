@@ -33,7 +33,6 @@
   font-weight: 300;
   line-height: 1.4;
 
-
   /*color: #cdbfe3;*/
   padding: 30px 15px;
   position: relative;
@@ -49,7 +48,7 @@
 
 
 label {
- font-family: "Droid Serif", Georgia;; 
+ font-family: "Droid Serif", Georgia;
 }
 
 .datamonkey-sm-header {
@@ -465,7 +464,7 @@ span.glyphicon {
   display:none;
 }
 
-.loader{
+.loader {
   margin: 0 0 2em;
   height: 100px;
   width: 100%;
@@ -479,7 +478,7 @@ span.glyphicon {
 }
 
 .loader svg path,
-.loader svg rect{
+.loader svg rect {
   fill: #FF6700;
 }
 

@@ -79,7 +79,6 @@ datamonkey.save_image = function(type, container) {
   var convert_svg_to_png = function(image_string) {
 
     var image = document.getElementById("chart-image");
-    image.src = image_string;
 
     image.onload = function() {
       var canvas = document.getElementById("chart-canvas");
@@ -89,8 +88,8 @@ datamonkey.save_image = function(type, container) {
       context.fillStyle = "#FFFFFF";
       context.fillRect(0,0,image.width,image.height);
       context.drawImage(image, 0, 0);
-      var img = canvas.toDataURL("image/png");
 
+      var img = canvas.toDataURL("image/png");
       var pom = document.createElement('a');
       pom.setAttribute('download', 'image.png');
       pom.href = canvas.toDataURL("image/png");     
@@ -99,8 +98,9 @@ datamonkey.save_image = function(type, container) {
       pom.remove();
     }
 
-  }
+    image.src = image_string;
 
+  }
 
   var svg = $(container).find("svg")[0];
   if (!svg) {
@@ -139,7 +139,7 @@ datamonkey.save_image = function(type, container) {
   var image_string = 'data:image/svg+xml;base66,' + encodeURIComponent(to_download);
 
   if(type == "png") {
-    convert_svg_to_png(image_string)
+    convert_svg_to_png(image_string);
   } else {
     var pom = document.createElement('a');
     pom.setAttribute('download', 'image.svg');
@@ -155,8 +155,8 @@ datamonkey.jobQueue = function(container) {
 
   // Load template
   _.templateSettings = {
-    evaluate:    /\{\%(.+?)\%\}/g,
-    interpolate: /\{\{(.+?)\}\}/g,
+    evaluate    : /\{\%(.+?)\%\}/g,
+    interpolate : /\{\{(.+?)\}\}/g,
     variable    : "rc"
   };
 
@@ -225,7 +225,6 @@ datamonkey.validate_date = function () {
 }
 
 $( document ).ready( function () {
-  datamonkey.status_check();
   $(function () {$('[data-toggle="tooltip"]').tooltip()});
   $('#datamonkey-header').collapse ();
   
