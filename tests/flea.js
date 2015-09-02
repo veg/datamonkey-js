@@ -1,6 +1,37 @@
+/*
+
+  Datamonkey - An API for comparative analysis of sequence alignments using state-of-the-art statistical models.
+
+  Copyright (C) 2015
+  Sergei L Kosakovsky Pond (spond@ucsd.edu)
+  Steven Weaver (sweaver@ucsd.edu)
+
+  Permission is hereby granted, free of charge, to any person obtaining a
+  copy of this software and associated documentation files (the
+  "Software"), to deal in the Software without restriction, including
+  without limitation the rights to use, copy, modify, merge, publish,
+  distribute, sublicense, and/or sell copies of the Software, and to
+  permit persons to whom the Software is furnished to do so, subject to
+  the following conditions:
+
+  The above copyright notice and this permission notice shall be included
+  in all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+  OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+  CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+*/
+
 var fs = require('fs'),
     path = require('path'),
+    crypto = require('crypto'),
     Q = require('q'),
+    _ = require('underscore'),
     setup = require('../config/setup'),
     globals = require('../config/globals'),
     helpers     = require( __dirname + '/../lib/helpers.js');
@@ -16,27 +47,29 @@ var Flea    = mongoose.model('Flea'),
 
 describe('create and save job', function() {
 
-  before(function() {
+  var flea = new Flea;
+
+  before(function(done) {
+    this.timeout(9000);
+
     // runs before all tests in this block
-    mongoose.connect(setup.database + '_unit_test');
-  })
+    var random_id = crypto.randomBytes(4).toString('hex');
+    var random_database = setup.database + '_unit_test_' + random_id;
+    mongoose.connect(random_database);
 
 
-  it('should return a well formed flea with results', function(done) {
-
-    var flea = new Flea;
     var datatype  = 0;
     var gencodeid = globals.genetic_code[0];
     var msas = [];
 
-    var fn1 = __dirname + '/res/flea/PC64_V00_small.fastq';
-    var fn2 = __dirname + '/res/flea/PC64_V12_small.fastq';
-    var fn3 = __dirname + '/res/flea/PC64_V30_small.fastq';
+    var fn1 = path.join(__dirname, '/res/flea/PC64_V00_small.fastq'),
+        fn2 = path.join(__dirname, '/res/flea/PC64_V12_small.fastq'),
+        fn3 = path.join(__dirname, '/res/flea/PC64_V30_small.fastq');
 
-    var frenquencies_fn = __dirname + '/res/flea/frequencies.json';
-    var rates_fn = __dirname + '/res/flea/rates.json';
-    var sequences_fn = __dirname + '/res/flea/sequences.json';
-    var trees_fn = __dirname + '/res/flea/trees.json';
+    var frenquencies_fn = path.join(__dirname, '/res/flea/frequencies.json'),
+        rates_fn = path.join(__dirname, '/res/flea/rates.json'),
+        sequences_fn = path.join(__dirname, '/res/flea/sequences.json'),
+        trees_fn = path.join(__dirname, '/res/flea/trees.json');
 
     var new_date = new Date();
 
@@ -56,7 +89,6 @@ describe('create and save job', function() {
 
         if(msas.length == flea_files.length) {
 
-          var flea = new Flea;
           flea.msas = msas;
 
           // Save results files
@@ -74,89 +106,46 @@ describe('create and save job', function() {
               flea.sequences = results[2].value;
               flea.trees = results[3].value;
               flea.save(function (err, flea_result) {
-                  flea_result.msas.length.should.equal(3);
-                  console.log(flea._id);
-                  done();
+
+                  var done_after_three = _.after(msas.length, done);
+
+                  fs.mkdirSync(flea.filedir);
+
+                  msas.forEach(function (flea_file) {
+                    var current_location = path.join(__dirname, '/res/flea/', flea_file.original_filename);
+                    var final_dest =  path.join(flea.filedir, flea_file._id + '.fastq');
+                    helpers.copyFile(current_location, final_dest, done_after_three);
+                  });
+
               });
             });
 
         }
       });
     });
+
+
   });
 
-  // TODO: Add socket listeners
-  //it.only('should spawn on a job on the cluster', function(done) {
+  it('get the filesize of the tarball', function(done) {
+    this.timeout(5000);
 
-  //  this.timeout(10000);
+    // pack flea
+    var stream = Flea.pack(flea);
+    stream.on('close', function() {
+      flea.filesize(function(err, bytes) {
+        bytes.should.be.equal(5103616);
+        done();
+      });
+    });
+  });
 
-  //  var flea = new Flea;
-  //  var datatype  = 0;
-  //  var gencodeid = globals.genetic_code[0];
-  //  var msas = [];
-  //  var count = 0;
 
-  //  var fn1 = __dirname + '/res/flea/PC64_V00_small.fastq';
-  //  var fn2 = __dirname + '/res/flea/PC64_V12_small.fastq';
-  //  var fn3 = __dirname + '/res/flea/PC64_V30_small.fastq';
-
-  //  //var frenquencies_fn = __dirname + '/res/flea/frequencies.json';
-  //  //var rates_fn = __dirname + '/res/flea/rates.json';
-  //  //var sequences_fn = __dirname + '/res/flea/sequences.json';
-  //  //var trees_fn = __dirname + '/res/flea/trees.json';
-
-  //  var new_date = new Date();
-
-  //  var flea_files = [{'fn' : fn1, 'visit_code' : 'V01', 'visit_date': new_date}, 
-  //                    {'fn' : fn2, 'visit_code' : 'V01', 'visit_date': new_date}, 
-  //                    {'fn' : fn3, 'visit_code' : 'V01', 'visit_date': new_date} ];
-
-  //  // Parse each fastq
-  //  flea_files.forEach(function(flea_file) {
-
-  //    Msa.parseFile(flea_file.fn, datatype, gencodeid, function(err, msa) {
-
-  //      msa.visit_code = flea_file.visit_code;
-  //      msa.visit_date = flea_file.visit_date;
-  //      msa.original_filename = path.basename(flea_file.fn);
-  //      msas.push(msa);
-
-  //      if(msas.length == flea_files.length) {
-
-  //        var flea = new Flea;
-  //        flea.msas = msas;
-
-  //        flea.save(function (err, flea_result) {
-
-  //          var connect_callback = function(err, result) {
-  //            done();
-  //          }
-
-  //          var move_cb = function(err, result) {
-  //              count += 1;
-  //              Flea.pack(flea_result);
-  //              if(count == 3) {
-  //                Flea.submitJob(flea_result, connect_callback);
-  //              }
-  //            }
-
-  //            // copy msas 
-  //            msas.forEach(function (flea_file) {
-  //              var current_location =  flea_file.original_filename;
-  //              var final_dest =  flea_result.filedir + flea_file._id + '.fastq';
-  //              helpers.moveSafely(current_location, final_dest, move_cb);
-  //            });
-
-              
-  //        });
-
-  //      }
-  //    });
-  //  });
-  //});
+  it('should return a well formed flea with results', function(done) {
+    done();
+  });
 
   after(function(done){
-      //clear out db
       mongoose.connection.close();
       done();
   });

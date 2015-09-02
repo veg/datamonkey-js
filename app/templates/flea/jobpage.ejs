@@ -7,22 +7,22 @@
 
   <div <% if(job.last_status_msg) { %> class='flea-spinner hidden' <% } else { %> class='flea-spinner' <% }%>>
 
-    <div class="progress">
+    <div class="progress" data-size='<%= size %>'>
 
-      <div id="transfer-progress" class="progress-bar progress-bar-warning" style="width: 33%">
+      <div id="transfer-progress" class="progress-bar progress-bar-warning" style="width: 0%">
         <span class="sr-only">35% Complete (success)</span> Transferring Data
       </div>
-      <div id="prepare-progress" class="progress-bar progress-bar-warning progress-bar-striped hidden" style="width: 33%">
+      <div id="prepare-progress" class="progress-bar progress-bar-warning progress-bar-striped hidden" style="width: 0%">
         <span class="sr-only">20% Complete (warning)</span> Preparing Data for Analysis
       </div>
       <div id="queue-progress" class="progress-bar progress-bar-danger hidden" style="width: 34%">
-        <span class="sr-only">10% Complete (danger)</span> Queued for processing
+        <span class="sr-only">10% Complete (danger)</span> Processing
       </div>
     </div>
 
-    <code class="transfer-progress">Each step may take up to five minutes</code>
-
   </div>
+
+  <div class="job-in-progress alert alert-warning hidden" role="alert"><i class="fa fa-cog fa-spin"></i> Job In Progress</div>
 
   <div id='standard-output'  <% if(!job.last_status_msg) { %> class='hidden' <% } %> >
       <div class='panel-body'>

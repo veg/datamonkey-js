@@ -48,10 +48,9 @@ exports.form = function(req, res) {
 exports.invoke = function(req, res) {
 
   var postdata  = req.body;
-
   var msas = [];
   var flea_files = postdata.flea_files;
-  var flea_tmp_dir = __dirname + '/../../uploads/flea/tmp/';
+  var flea_tmp_dir = path.join(__dirname, '/../../uploads/flea/tmp/');
   var flea_files = JSON.parse(flea_files);
   var datatype  = 0;
   var gencodeid = 1;
@@ -70,11 +69,6 @@ exports.invoke = function(req, res) {
   if(postdata.receive_mail == 'true') {
     flea.mail = postdata.mail;
   }
-
-  var connect_callback = function (err, result) {
-    logger.log(result);
-  }
-
 
   // Loop through each file upload
   flea_files.forEach(function(flea_file) {
@@ -113,14 +107,18 @@ exports.invoke = function(req, res) {
               } else {
 
                 // Send the MSA and analysis type
-                // Package msas to send
-                Flea.pack(flea_result);
-                res.json(200,  {'flea' : flea } );
+                var connect_callback = function (err, result) {
+                  logger.log(result);
+                }
 
+                var stream = Flea.pack(flea);
+
+                stream.on('close', function() {
+                  res.json(200,  {'flea' : flea } );
+                });
 
                 Flea.submitJob(flea_result, connect_callback);
 
-                
               }
             }
 
@@ -173,10 +171,12 @@ exports.getPage = function(req, res) {
       res.json(500, error.errorResponse('Invalid ID : ' + fleaid ));
     } else {
       if(flea.status != "completed") {
-        // Should return results page
-        res.render('flea/jobpage.ejs', { job : flea, 
-                                                   socket_addr: 'http://' + setup.host + ':' + setup.socket_port 
-                                                 });
+        flea.filesize(function(err, bytes) {
+          res.render('flea/jobpage.ejs', { job : flea, 
+                                           socket_addr: 'http://' + setup.host + ':' + setup.socket_port,
+                                           size : bytes
+                                         });
+        });
       } else {
         var html_dir = './public/assets/lib/';
         res.sendfile(path.resolve(html_dir,'flea/dist/index.html'));

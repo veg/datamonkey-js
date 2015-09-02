@@ -30,9 +30,10 @@
 var mongoose  = require('mongoose'),
     extend    = require('mongoose-schema-extend'),
     fs        = require('fs'),
+    path      = require('path'),
     tar       = require('tar-fs'),
     _         = require ('underscore'),
-    hpcsocket = require( __dirname + '/../../lib/hpcsocket.js'),
+    hpcsocket = require( path.join(__dirname,'/../../lib/hpcsocket.js')),
     winston   = require('winston'),
     Msa       = require(__dirname + '/msa');
 
@@ -78,6 +79,22 @@ Flea.virtual('filepath').get(function () {
 /**
  * Complete file path for document's file upload
  */
+Flea.methods.filesize = function (cb) {
+
+  var bytes = 0;
+  fs.stat(path.join(__dirname, '/../../uploads/flea/', this._id + '.tar'), function(err, data) {
+    if(data) {
+      bytes = data.size;
+    }
+    cb(err, bytes);
+  });
+
+}
+
+
+/**
+ * Complete file path for document's file upload
+ */
 Flea.virtual('filedir').get(function () {
   return __dirname + '/../../uploads/flea/' + this._id + '/';
 });
@@ -97,6 +114,8 @@ Flea.statics.pack = function(flea) {
 Flea.statics.submitJob = function (result, cb) {
 
   winston.info('submitting ' + result.analysistype + ' : ' + result._id + ' to cluster');
+
+  this.pack(result);
 
   var jobproxy = new hpcsocket.HPCSocket({'filepath'    : result.filepath, 
                                           'msas'        : result.msas,

@@ -174,7 +174,6 @@ $(function () {
 
         // Create array from flea_files
         var mapped_fleas = JSON.stringify(flea_files.map(fleaFileMap));
-
         formData.append('flea_files', mapped_fleas);
 
         var xhr = new XMLHttpRequest();
@@ -190,6 +189,8 @@ $(function () {
             datamonkey.errorModal(result.error);
           }
         };
+
+        d3.select("#upload-button").html('<i class="fa fa-cog fa-spin fa-2x"></i>');
 
         xhr.send(formData);
 

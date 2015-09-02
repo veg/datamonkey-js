@@ -17,13 +17,28 @@ $(document).ready(function(){
 
 function setupJob() {
 
-  var jobid = $('#job-report').data('jobid')
-  var socket_address = $('#job-report').data('socket-address')
+  var jobid = $('#job-report').data('jobid');
+  var socket_address = $('#job-report').data('socket-address');
   var socket = io.connect(socket_address, {
         reconnect: false
       });
 
+  var rate = ($(".progress").data("size") / 20000000) * 1000;
   var was_error = false;
+
+  var tween = function(d, i, a) {
+    return d3.interpolateString("0%", "33%");
+  }
+
+  // return size to calculate transition time
+  var initializeProgress = function() {
+    d3.select("#transfer-progress")
+      .transition()
+      .duration(rate)
+      .styleTween("width", tween)
+  }
+
+  initializeProgress();
 
   var changeStatus = function (data) {
 
@@ -32,29 +47,38 @@ function setupJob() {
 
       if(data.phase == 'preparing_data') {
         // if transferring
-        d3.select("#transfer-progress").classed({'hidden': false,'progress-bar-warning': false, 'progress-bar-success': true })
-        d3.select(".transfer-progress").classed({'hidden': true});
-        d3.select("#prepare-progress").classed({'hidden': false, 'progress-bar-warning': true  })
+        d3.select("#transfer-progress")
+          .classed({'hidden': false,'progress-bar-warning': false, 'progress-bar-success': true });
+
+        d3.select(".transfer-progress")
+          .classed({'hidden': true});
+
+        d3.select("#prepare-progress")
+          .classed({'hidden': false, 'progress-bar-warning': true})
+          .transition()
+          .duration(rate)
+          .styleTween("width", tween);
+
       }
 
       if(data.phase == 'queued') {
         // if queued
-        d3.select("#transfer-progress").classed({'hidden': false, 'progress-bar-warning': false, 'progress-bar-success': true })
-        d3.select("#prepare-progress").classed({'hidden': false, 'progress-bar-warning': false, 'progress-bar-success': true  })
-        d3.select("#queue-progress").classed({'hidden': false, 'progress-bar-warning': true})
+        d3.select("#transfer-progress").classed({'hidden': false, 'progress-bar-warning': false, 'progress-bar-success': true});
+        d3.select("#prepare-progress").classed({'hidden': false, 'progress-bar-warning': false, 'progress-bar-success': true});
+        d3.select("#queue-progress").classed({'hidden': false, 'progress-bar-warning': true});
       }
 
       if(data.phase == 'running') {
-        d3.select(".progress").classed({'hidden': true})
+        d3.select(".progress").classed({'hidden': true});
+        d3.select(".job-in-progress").classed({'hidden': false});
       }
-
 
     }
 
     if(data.msg != undefined) {
 
-      d3.select("#standard-output").classed({'hidden': false})
-      $('#job-pre').html(data.msg)
+      d3.select("#standard-output").classed({'hidden': false});
+      $('#job-pre').html(data.msg);
       $("#job-pre").scrollTop($("#job-pre")[0].scrollHeight);
       $("#job-stdout-copy-button").on('click', function (e) {
         e.preventDefault();
@@ -92,7 +116,6 @@ function setupJob() {
 
   // Job Status Update
   socket.on('status update', function (data) {
-    console.log(data);
     if(data) {
       changeStatus(data);
     }
