@@ -45,7 +45,7 @@ Busted.virtual('analysistype').get(function() {
 });
 
 Busted.virtual('pmid').get(function() {
-  return 'NA';
+  return '25701167';
 });
 
 /**
