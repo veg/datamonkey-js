@@ -45,7 +45,6 @@ var express          = require('express'),
     io               = require('socket.io').listen(setup.socket_port);
 
 
-
 // Connect to database
 mongoose.connect(setup.database);
 
@@ -90,6 +89,7 @@ app.configure(function () {
   app.set('json spaces', 0);
 });
 
+app.enable('trust proxy');
 
 // Bootstrap models
 var models_path = __dirname + '/app/models';

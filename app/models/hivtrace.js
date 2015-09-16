@@ -142,6 +142,7 @@ var HivTrace = new Schema({
     status: {
         type: String
     },
+    prealigned: Boolean,
     lanl_compare: Boolean,
     filter_edges: {
         type: String,

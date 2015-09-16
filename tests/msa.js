@@ -106,6 +106,13 @@ describe('msa codon translation', function() {
 
   it('should be a clean standard translation', function(done) {
 
+    var options = {
+      'no-equal-length': 0,
+      'headers-only': 0,
+      'progress-callback': function (){}
+    }
+
+
     var msa = new Msa;
     msa.gencodeid = 0;
     fs.writeFileSync(msa.filepath, fs.readFileSync('./tests/res/Flu.fasta'));
@@ -117,8 +124,7 @@ describe('msa codon translation', function() {
         done();
       });
 
-
-    });
+    }, options);
 
   });
 
@@ -170,24 +176,63 @@ describe('validate fasta file', function() {
 
   it('should be valid', function(done) {
 
+    var options = {
+      'no-equal-length': 0,
+      'headers-only': 0,
+      'progress-callback': function (){}
+    }
+
     var fn = path.join(__dirname, '/res/Flu.fasta');
     Msa.validateFasta(fn, function(err, result) {
-      result.should.be.true;
+
+      result.forEach(function(d) {
+        d.should.have.property('seq');
+        d.should.have.property('name');
+      });
+
       done();
-    });
+
+    }, options);
 
   });
 
-  it('should be not valid', function(done) {
+  it('should not be valid', function(done) {
+
+    var options = {
+      'no-equal-length': 0,
+      'headers-only': 0,
+      'progress-callback': function (){}
+    }
 
     var fn = path.join(__dirname, '/res/HIV_gp120.nex');
 
     Msa.validateFasta(fn, function(err, result) {
+
+      err.should.have.property('msg');
       result.should.be.false;
       done();
-    });
+
+    }, options);
 
   });
+
+  it('parse fasta file should fail due to unequal lengths', function(done) {
+
+    var options = {
+      'no-equal-length': 0,
+      'headers-only': 0,
+      'progress-callback': function (){}
+    }
+
+    var cb = function(err, data) {
+      err.should.have.property('msg');
+      done();
+    }
+
+    Msa.validateFasta('./tests/res/Flu.unaligned.fasta', cb, options);
+
+  });
+
 
 
 });
