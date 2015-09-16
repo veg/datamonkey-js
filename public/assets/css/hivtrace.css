@@ -13,8 +13,6 @@ circle.node, rect.node, path.node {
     stroke-width: 0px !important;
 }
 
-
-
 .hiv-trace-muted {
     opacity: 0.25;
 }
@@ -86,5 +84,4 @@ path.cluster {
   margin-left: 5px;
   margin-bottom : 5px;
 }
-
 

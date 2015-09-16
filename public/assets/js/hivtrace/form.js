@@ -1,55 +1,62 @@
 $(document).ready(function() {
 
+
     $("input[name='public_db_compare']").tooltip()
+    var prealigned = false;
 
     $("form").submit(function(e) {
 
         e.preventDefault();
 
-
         //Trigger elements
+
         $("input").trigger('focusout');
 
         $(this).next('.help-block').remove();
 
+        // File upload
+        var file_element = d3.select('#seq-file'),
+            file_list = file_element.property('files');
 
-        var file_element = $('#seq-file'),
-            file_list = file_element.prop("files");
+        if (file_list.length == 0) {
+          file_element = d3.select('#aligned-seq-file');
+          file_list = file_element.property('files');
+          prealigned = true;
+        }
 
-
-        if (file_list.length == 0) { // no file selected
-            display_validation_fail_block(file_element, "No sequence file chosen");
-            return false;
+        if (file_list.length == 0) {
+          display_validation_fail_block(file_element, 'No sequence file chosen');
+          return false;
         } else {
-            field_passes_validation(file_element);
+          field_passes_validation(file_element);
         }
 
         if ($(this).find(".has-error").length > 0) {
-            $("#form-has-error").show();
-            return false;
+          $("#form-has-error").show();
+          return false;
         }
 
         var filename = file_list[0].name;
+        d3.select('#file-progress').classed("hidden", false);
+        d3.select('#fasta-button').style("display","none");
+        d3.select("#form-has-error").style("display", "none");
+        d3.select("#upload-file-info").style("display", "none");
 
-        $('#file-progress').removeClass("hidden");
-        $("#form-has-error").hide();
+        // end file upload
 
         var formData = new FormData();
-
-
         formData.append('files', file_list[0]);
-
         formData.append('reference', $("select[name='reference']").val());
 
         if ($("select[name='reference']").val() == 'Custom') {
-            if (document.getElementById('reference-file').files.length == 0) {
-                datamonkey.errorModal('You selected to upload your own reference, but did not supply one');
-                return;
-            } else {
-                var ref_file = document.getElementById('reference-file').files[0];
-                var ref_filename = document.getElementById('reference-file').files[0].name;
-                formData.append('ref_file', ref_file);
-            }
+          if (document.getElementById('reference-file').files.length == 0) {
+            datamonkey.errorModal('You selected to upload your own reference, but did not supply one');
+            return;
+          } else {
+            var ref_file = document.getElementById('reference-file').files[0];
+            var ref_filename = document.getElementById('reference-file').files[0].name;
+            formData.append('ref_file', ref_file);
+          }
         }
 
         formData.append('distance_threshold', $("input[name='distance_threshold']").val());
@@ -62,11 +69,12 @@ $(document).ready(function() {
         formData.append('receive_mail', $("input[name='receive_mail']").prop("checked"));
         formData.append('mail', $("input[name='mail']").val());
         formData.append('public_db_compare', $("input[name='public_db_compare']").prop("checked"));
+        formData.append('prealigned', prealigned);
 
         var get_id = new XMLHttpRequest();
         get_id.open('get', '/hivtrace/request-job-id', true);
         get_id.onerror = function(e) {
-            $('#file-progress').html(e);
+          $('#file-progress').html(e);
         };
         get_id.onload = function(res) {
             $('#file-progress').css("display", "block");                
@@ -293,6 +301,9 @@ $(document).ready(function() {
     $("#seq-file").change(function(e) {
         field_passes_validation(this);
     });
+    $("#aligned-seq-file").change(function(e) {
+        field_passes_validation(this);
+    });
     $("select[name='reference']").change(toggle_compare).trigger('change');
     $("select[name='ambiguity_handling']").change(toggle_fraction).trigger('change');
     $("select[name='strip_drams']").change(toggle_helper).trigger('change');
@@ -311,5 +322,17 @@ $(document).ready(function() {
     $(function() {
         $('[data-toggle="popover"]').popover()
     });
+
+
+    function uploaded_file_change() {
+      var input = $(this);
+      var label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+      d3.select("#fasta-button").style('display', 'none');
+      d3.select("#aligned-fasta-button").style('display', 'none');
+      d3.select("#upload-file-info").html(label);
+    }
+
+    d3.select('#seq-file').on('change', uploaded_file_change);
+    d3.select('#aligned-seq-file').on('change', uploaded_file_change);
 
 });

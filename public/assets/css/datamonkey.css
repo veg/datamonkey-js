@@ -653,3 +653,8 @@ span.glyphicon {
 .job-concel {
   font-size : 25px;
 }
+
+#aligned-fasta-button {
+  margin: 0px 10px;
+}
+

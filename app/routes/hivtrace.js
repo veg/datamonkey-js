@@ -77,15 +77,10 @@ exports.uploadFile = function(req, res) {
         _id: req.params.id
     }, function(err, hivtrace) {
         if (err || !hivtrace) {
-            res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
+            res.json(500, error.errorResponse('No HIV-TRACE id ' + id));
         } else {
+
             var postdata = req.body;
-
-            // Validate that the file uploaded was a FASTA file
-
-            hivtrace.on('error', function(m, e) {
-
-            });
 
             if (postdata.public_db_compare == 'true') {
                 hivtrace.lanl_compare = true;
@@ -93,6 +88,13 @@ exports.uploadFile = function(req, res) {
             } else {
                 hivtrace.lanl_compare = false;
                 hivtrace.status_stack = hivtrace.valid_statuses;
+            }
+
+            if (postdata.prealigned == 'true') {
+                hivtrace.prealigned = true;
+                hivtrace.status_stack = hivtrace.valid_statuses.slice(2);
+            } else {
+                hivtrace.prealigned = false;
             }
 
             hivtrace.distance_threshold = Number(postdata.distance_threshold);
@@ -141,7 +143,6 @@ exports.uploadFile = function(req, res) {
                         }
                     }
 
-                    // Check if file is FASTA before moving forward
                     helpers.moveSafely(file_path, ht.filepath, move_cb);
 
                 });
@@ -149,34 +150,31 @@ exports.uploadFile = function(req, res) {
 
             }
 
-
+            // Check if file is FASTA before moving forward
             Msa.validateFasta(file_path, function(err, result) {
-                /*
-                    'result' stores the array of sequences headers
 
-                    [
-                      {
-                         'name' : sequence name
-                       }
-                    ]
-                */
+                //'result' stores the array of sequences headers
+                //[
+                //  {
+                //     'name' : sequence name
+                //   }
+                //]
 
-                if (!result || result.length == 0 || err.length) {
-                    logger.log(err);
-                    res.json(500, {
-                        'error': err,
-                        'validators': HivTrace.validators()
-                    });
-                    return;
+                if (!result || result.length == 0 || err.msg) {
+
+                  logger.log(err.msg);
+                  res.json(500, {
+                      'error': err.msg,
+                      'validators': HivTrace.validators()
+                  });
+                  return;
+
                 }
 
                 // copy header information
-
                 hivtrace.headers = result.map(function(s) {
                     return s.name;
                 });
-
-
 
                 if (hivtrace.reference == 'Custom') {
 
@@ -206,8 +204,8 @@ exports.uploadFile = function(req, res) {
                     save_document(hivtrace);
                 }
             }, {
-                'no-equal-length': 1,
-                'headers-only': 1,
+                'no-equal-length': !hivtrace.prealigned,
+                'headers-only': !hivtrace.prealigned,
                 'progress-callback': _.throttle(function(percentage) {
                     publisher.publish(channel_id, percentage);
                 }, 100)
@@ -215,8 +213,6 @@ exports.uploadFile = function(req, res) {
 
         }
     });
-
-
 }
 
 /**

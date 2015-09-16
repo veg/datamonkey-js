@@ -5,7 +5,7 @@ module.exports = function(grunt) {
 
     mochaTest: {
       test: {
-          src: ['tests/flea.js'],
+          src: ['tests/msa.js'],
           options: {
                 run: true,
                 debug: true,
