@@ -173,7 +173,6 @@ exports.getPage = function(req, res) {
       if(flea.status != "completed") {
         flea.filesize(function(err, bytes) {
           res.render('flea/jobpage.ejs', { job : flea, 
-                                           socket_addr: 'http://' + setup.host + ':' + setup.socket_port,
                                            size : bytes
                                          });
         });

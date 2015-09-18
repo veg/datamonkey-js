@@ -38,7 +38,7 @@ function setupJob() {
   );
 
   var hivtraceid = $('#hiv-cluster-report').data('hivtraceid')
-  var socket_address = $('#hiv-cluster-report').data('socket-address')
+  var socket_address = document.location.origin;
   var socket = io.connect(socket_address, {
         reconnect: false
       });

@@ -123,9 +123,7 @@ exports.getPage = function(req, res) {
       res.json(500, error.errorResponse('Invalid ID : ' + absrelid ));
     } else {
       // Should return results page
-      res.render('absrel/jobpage.ejs', { job : absrel, 
-                                         socket_addr: 'http://' + setup.host + ':' + setup.socket_port 
-                                       });
+      res.render('absrel/jobpage.ejs', { job : absrel });
     }
   });
 

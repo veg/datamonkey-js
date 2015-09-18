@@ -179,9 +179,7 @@ exports.getPage = function(req, res) {
         relax.torque_id = 'N/A';
       }
       // Should return results page
-      res.render('relax/jobpage.ejs', { job : relax, 
-                                        socket_addr: 'http://' + setup.host + ':' + setup.socket_port 
-                                       });
+      res.render('relax/jobpage.ejs', { job : relax });
     }
   });
 };

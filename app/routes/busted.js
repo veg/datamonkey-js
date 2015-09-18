@@ -211,10 +211,7 @@ exports.getPage = function(req, res) {
 
       // Should return results page
       //res.json(200, busted);
-      res.render('busted/jobpage.ejs', {  
-                                         job         : busted, 
-                                         socket_addr : 'http://' + setup.host + ':' + setup.socket_port 
-                                       });
+      res.render('busted/jobpage.ejs', {  job : busted });
     }
   });
 };

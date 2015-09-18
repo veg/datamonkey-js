@@ -222,7 +222,7 @@ exports.uploadFile = function(req, res) {
 exports.clusterForm = function(req, res) {
     res.render('hivtrace/form.ejs', {
         'validators': HivTrace.validators(),
-        'socket_addr': 'http://' + setup.host + ':' + setup.socket_port
+        'socket_addr': 'http://' + setup.host
     });
 }
 
@@ -295,8 +295,8 @@ exports.jobPage = function (req, res) {
         html: function(){
           res.render('hivtrace/jobpage.ejs', {
                                               hivtrace : hivtrace, 
-                                              last_status_msg : hivtrace.last_status_msg,
-                                              socket_addr: 'http://' + setup.host + ':' + setup.socket_port });
+                                              last_status_msg : hivtrace.last_status_msg
+                                              });
         }
       });
     }

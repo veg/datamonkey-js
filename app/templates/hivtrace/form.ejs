@@ -30,7 +30,7 @@
                   <span class='label label-default' id="upload-file-info"></span>
                 </div>
 
-                <div id="file-progress" data-socket = <%= socket_addr %> class="progress active hidden">
+                <div id="file-progress" class="progress active hidden">
                   <div id = "upload-progress" class="progress-bar progress-bar-success" role="progressbar" aria-valuemin="1" aria-valuemax="100" style="width: 0%">
                     <span class="sr-only">Progress bar</span>
                   </div>
@@ -357,5 +357,5 @@
 
 <%- include ../includes/modal.ejs %>
 <%- include ../includes/footer.ejs %>
-<script src="//cdn.socket.io/socket.io-1.0.6.js"></script>
+<script src="/assets/lib/socket.io-client/socket.io.js"></script>
 <script src="/assets/js/hivtrace/form.js"></script>

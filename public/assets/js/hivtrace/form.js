@@ -82,7 +82,7 @@ $(document).ready(function() {
             var result = JSON.parse(this.responseText);
             if ("id" in result) {
 
-                var fasta_parsing_socket = io.connect($("#file-progress").data("socket"), {
+                var fasta_parsing_socket = io.connect(document.location.origin, {
                     reconnect: false
                 });
 

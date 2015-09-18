@@ -41,8 +41,7 @@ var express          = require('express'),
     fs               = require('fs'),
     path             = require("path"),
     mongoose         = require('mongoose'),
-    redis            = require('redis'),
-    io               = require('socket.io').listen(setup.socket_port);
+    redis            = require('redis');
 
 
 // Connect to database
@@ -77,6 +76,8 @@ upload.on('end', function (fileInfo, req, res) {
 
 // Main app configuration
 var app = express();
+var server = app.listen(setup.port);
+var io = require('socket.io').listen(server);
 
 app.configure(function () {
   app.use(express.compress());
@@ -111,11 +112,10 @@ app.use(function(err, req, res, next) {
 
 
 //Port to listen on
-app.listen(setup.port);
 
 var helpers = require('./lib/helpers');
 logger.info('Listening on port ' + setup.port + '...');
-module.exports = app;
+module.exports = server;
 
 // Set up socket.io server
 var jobproxy = require('./lib/hpcsocket.js');
