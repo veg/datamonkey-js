@@ -44,12 +44,6 @@ var Flea = AnalysisSchema.extend({
   last_status_msg       : String,
   mail                  : String,
   results               : Object,
-  rates                 : Object,
-  frequencies           : Object,
-  trajectory            : Object,
-  gene                  : Object,
-  trees                 : Object,
-  neutralization        : Object
 });
 
 Flea.virtual('analysistype').get(function() {
