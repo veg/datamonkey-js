@@ -111,8 +111,11 @@ module.exports = function(app) {
   app.get('/flea/data/:id/sequences', flea.getSequences);
   app.get('/flea/data/:id/rates_pheno', flea.getRatesPheno);
   app.get('/flea/data/:id/trees', flea.getTrees);
-  app.get('/flea/data/:id/neutralization', flea.getNeutralization);
-  app.get('/flea/data/:id/turnover', flea.getTurnover);
+  app.get('/flea/data/:id/divergence', flea.getDivergence);
   app.get('/flea/data/:id/copynumbers', flea.getCopyNumbers);
+  app.get('/flea/data/:id/dates', flea.getDates);
+  app.get('/flea/data/:id/runinfo', flea.getRunInfo);
+  app.get('/flea/data/:id/genes', flea.getGenes);
+  app.get('/flea/data/:id/coordinates', flea.getCoordinates);
 
 }

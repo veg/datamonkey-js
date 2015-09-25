@@ -279,3 +279,8 @@ exports.getRunInfo = function(req, res) {
 exports.getDates = function(req, res) {
   getResultsHelper(req, res, 'dates');
 }
+
+exports.getCoordinates = function(req, res) {
+  getResultsHelper(req, res, 'coordinates');
+}
+

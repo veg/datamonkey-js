@@ -5,7 +5,7 @@
   "dependencies": {
     "hyphy-vision"       : "git@github.com:veg/hyphy-vision.git",
     "phylotree"          : "git@github.com:veg/phylotree.js.git",
-    "flea"               : "git@github.com:veg/flea.git#0.1.0",
+    "flea"               : "git@github.com:veg/flea.git#v1.0.0-alpha",
     "jquery-file-upload" : "9.x.x",
     "jquery-zclip"       : "1.x.x",
     "underscore"         : "git@github.com:veg/underscore.git#1.8.4",
