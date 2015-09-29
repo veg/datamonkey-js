@@ -1,6 +1,6 @@
 {
-    "name": "datamonkey",
-    "version": "0.3.0",
+    "name": "datamonkey.js",
+    "version": "0.3.1",
     "description": "A free public server for comparative analysis of sequence alignments using state-of-the-art statistical models.",
     "private": true,
     "author": {
@@ -9,14 +9,13 @@
     },
     "scripts": {
         "preinstall": "git submodule init; git submodule update",
-        "postinstall": "./node_modules/less/bin/lessc ./contrib/dm-bootstrap/overrides.less > ./public/assets/css/bootstrap.css; mkdir -p ./uploads/msa ./uploads hivtrace;bower install"
+        "postinstall": "./node_modules/less/bin/lessc ./contrib/dm-bootstrap/overrides.less > ./public/assets/css/bootstrap.css;"
     },
     "repository": {
         "type": "git",
         "url": "git://github.com/veg/datamonkey-js.git"
     },
     "dependencies": {
-        "hyphy": "git+https://github.com/veg/hyphy.git#v2.2.5",
         "express": "3.x",
         "express-validator": "0.3.x",
         "jade": "0.x.x",

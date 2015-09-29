@@ -398,4 +398,4 @@ var genetic_code = {
 
 define("genetic_code", genetic_code)
 define('fasta_validator', __dirname + '/../node_modules/tn93/validate_fasta');
-define('hyphy', __dirname + '/../node_modules/hyphy/HYPHYMP');
+define('hyphy', __dirname + '/../.hyphy/HYPHYMP');

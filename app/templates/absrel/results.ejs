@@ -215,8 +215,10 @@
     var absrel_id = $("#job-report").data("jobid")
     d3.json (absrel_id + "/results", function (json) {
 
-      var container_id = '#tree_container';
-      datamonkey.absrel(json, container_id);
+      //var container_id = '#tree_container';
+      var bsrel_app = datamonkey.absrel();
+      bsrel_app(json);
+      //datamonkey.absrel(, container_id);
     });
 
     $("#export-phylo-svg").on('click', function(e) { 
