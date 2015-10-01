@@ -38,7 +38,20 @@
     </div>
  </div>
 
-  <div id="neighbor-tree" data-tree="<%= busted.msa[0].nj %>">
+  <% if (busted.msa[0].usertree) { %>
+  <div id="tree-select-btn-group" class="col-lg-4 phylo-nav">
+    <div class="btn-group" data-toggle="buttons">
+      <label title="Highlight Test Branches" id="usertree-highlighter" class="btn btn-default btn-sm active" data-name='usertree'>
+        <input type="radio" name="options" id="relax-ut-select" autocomplete="off" checked>User Defined Tree</input>
+      </label>
+      <label title="Highlight Reference Branches" id="nj-highlighter" class="btn btn-default btn-sm" data-name='nj'>
+        <input type="radio" name="options" id="relax-nj-select" autocomplete="off" checked>Neighbor Joining Tree</input>
+      </label>
+    </div>
+  </div>
+  <% } %>
+
+  <div id="neighbor-tree" data-tree="<%= busted.msa[0].nj %>" <% if (busted.msa[0].usertree) { %> data-usertree="<%= busted.msa[0].usertree %>"<% } %>>
     <div id="tree-body">
       <div id='tree_container' class='tree-widget'></div>
     </div>

@@ -53,69 +53,48 @@ exports.uploadFile = function(req, res) {
   var busted = new Busted();
   var postdata = req.body;
 
-  var msa = new Msa();
-
-  msa.datatype  = data.datatype;
-  msa.gencodeid = data.gencodeid;
+  var datatype  = data.datatype,
+  gencodeid = data.gencodeid;
 
   if(postdata.receive_mail == 'true') {
     busted.mail = postdata.mail;
   }
 
-  msa.dataReader(fn, function(err, result) {
+  Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
 
     if(err) {
       logger.error(err);
       res.json(500, {'error' : err});
       return;
     }
-
-    var fpi        = result.FILE_PARTITION_INFO;
-    var file_info  = result.FILE_INFO;
-    msa.partitions = file_info.partitions;
-    msa.gencodeid  = file_info.gencodeid;
-    msa.sites      = file_info.sites;
-    msa.sequences  = file_info.sequences;
-    msa.timestamp  = file_info.timestamp;
-    msa.goodtree   = file_info.goodtree;
-    msa.nj         = file_info.nj;
-    msa.rawsites   = file_info.rawsites;
-    var sequences  = result.SEQUENCES;
-    msa.sequence_info = [];
-
-    for (var i in sequences) {
-      var sequences_i = new Sequences(sequences[i]);
-      msa.sequence_info.push(sequences_i);
-    }
-
-    //Ensure that all information is there
-    var partition_info = new PartitionInfo(fpi);
-    msa.partition_info = partition_info;
 
     busted.msa = msa;
 
     busted.save(function (err, busted_result) {
-    if(err) {
-      logger.error("busted save failed");
-      logger.error(err);
-      res.json(500, {'error' : err});
-      return;
-    }
 
-    function move_cb(err, result) {
       if(err) {
+        logger.error("busted save failed");
         logger.error(err);
-        logger.error("busted rename failed");
         res.json(500, {'error' : err});
-      } else {
-        res.json(200,  busted);
+        return;
       }
-    }
-    helpers.moveSafely(req.files.files.path, busted_result.filepath, move_cb);
+
+      function move_cb(err, result) {
+        if(err) {
+          logger.error(err);
+          logger.error("busted rename failed");
+          res.json(500, {'error' : err});
+        } else {
+          res.json(200,  busted);
+        }
+      }
+
+      helpers.moveSafely(req.files.files.path, busted_result.filepath, move_cb);
+
+    });
+
   });
 
-
-  });
 };
 
 exports.selectForeground = function(req, res) {
@@ -231,6 +210,7 @@ exports.getInfo = function(req, res) {
       res.json(200, busted_info);
     }
   });
+
 };
 
 

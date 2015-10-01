@@ -1,8 +1,36 @@
 $( document ).ready( function () {
-  busted_create_neighbor_tree();
+
+  // If there is a user tree, allow the user to select which they want to use
+  var top_modal_container = "#neighbor-tree";
+  nj_nwk = $(top_modal_container).data("tree");
+  user_tree_nwk = $(top_modal_container).data("usertree");
+
+  if(user_tree_nwk) {
+    busted_create_neighbor_tree(user_tree_nwk);
+  } else {
+    busted_create_neighbor_tree(nj_nwk);
+  }
+
+  if("#tree-select-btn-group") {
+    $("#tree-select-btn-group").find('.btn').each(
+      function(i, obj){
+        $(obj).on('click', function(d) { 
+          d3.select('#tree_container').html('');
+          current_selection_name = $(this).data('name');
+          if(current_selection_name == 'nj') {
+            busted_create_neighbor_tree(nj_nwk);
+          } else {
+            busted_create_neighbor_tree(user_tree_nwk);
+          }
+        })
+    });
+  }
+
+
+
 });
 
-function busted_create_neighbor_tree() {
+function busted_create_neighbor_tree(nwk) {
 
   var default_tree_settings = function(tree) {
       tree.branch_length (null);
@@ -16,17 +44,15 @@ function busted_create_neighbor_tree() {
       height                        = 600,
       current_selection_name        = $("#selection_name_box").val(),
       current_selection_id          = 0,
-      max_selections                = 10;
+      max_selections                = 10,
       color_scheme                  = d3.scale.category10(),
       selection_menu_element_action = "phylotree_menu_element_action";
 
 
-  var valid_id = new RegExp ("^[\\w]+$");
-  var top_modal_container = "#neighbor-tree";
-  var tree_container = "#tree-body";
-  var container_id = '#tree_container';
-
-  nwk = $(top_modal_container).data("tree");
+  var valid_id = new RegExp ("^[\\w]+$"),
+      top_modal_container = '#neighbor-tree',
+      tree_container = '#tree-body',
+      container_id = '#tree_container';
       
   tree = d3.layout.phylotree(tree_container)
       .size([height, width])

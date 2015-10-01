@@ -29,8 +29,9 @@
 
 var mongoose = require('mongoose'),
     moment = require('moment'),
-    hpcsocket   = require( __dirname + '/../../lib/hpcsocket.js'),
-    globals  = require( ROOT_PATH + '/config/globals.js');
+    path = require('path'),
+    hpcsocket = require(path.join(__dirname, '/../../lib/hpcsocket.js')),
+    globals  = require(path.join(__dirname, '/../../config/globals.js'));
 
 exports.homePage = function (req, res) {
   res.render('index.ejs');
@@ -59,7 +60,6 @@ exports.copyright = function (req, res) {
 exports.data_privacy = function (req, res) {
     res.render ('data.ejs');
 }
-
 
 exports.jobQueue = function(req, res) {
 
