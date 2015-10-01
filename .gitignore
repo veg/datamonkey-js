@@ -13,6 +13,8 @@ logs
 results
 console
 node_modules
+coverage
+.hyphy
 
 npm-debug.log
 config/setup.js
