@@ -4,7 +4,8 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     bower = require('gulp-bower'),
     gulpFilter = require('gulp-filter');
-    bower_files = require('main-bower-files');
+    bower_files = require('main-bower-files'),
+    react = require('gulp-react');
 
 var config = {
      sassPath: './resources/sass',
@@ -38,6 +39,11 @@ gulp.task("libs", function(){
             "socket.io.js",
           ]
         },
+        "react": {
+          "main": [
+            "react-with-addons.js",
+          ]
+        },
         "flea": {
               "dependencies": null
             }
@@ -46,6 +52,13 @@ gulp.task("libs", function(){
     .pipe(concat('./vendor.js'))
     .pipe(gulp.dest('./public/assets/'));
 });
+
+gulp.task('react', function () {
+    return gulp.src('./public/assets/js/jobqueue.jsx')
+        .pipe(react())
+        .pipe(gulp.dest('./public/assets/js/'));
+});
+
 
 // Just running the two tasks
 gulp.task('default', ['libs', 'css']);
