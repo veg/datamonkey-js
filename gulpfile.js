@@ -8,7 +8,6 @@ var gulp = require('gulp'),
     react = require('gulp-react');
 
 var config = {
-     sassPath: './resources/sass',
      bowerDir: './public/assets/lib/' 
 }
 
@@ -59,7 +58,8 @@ gulp.task('react', function () {
         .pipe(gulp.dest('./public/assets/js/'));
 });
 
-
 // Just running the two tasks
-gulp.task('default', ['libs', 'css']);
+gulp.task('default', ['libs', 'react', 'css'], function() {
+  process.exit(0);
+});
 
