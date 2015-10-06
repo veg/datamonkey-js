@@ -32,8 +32,8 @@ var fs     = require('fs'),
     should = require('should'),
     _      = require('underscore');
 
-require(path.join(__dirname, '../../public/assets/lib/d3/d3.js'));
-require(path.join(__dirname, '../../public/assets/lib/underscore/underscore.js'));
+require(path.join(__dirname, '../../src/bower-components/d3/d3.js'));
+require(path.join(__dirname, '../../src/bower-components/underscore/underscore.js'));
 require(path.join(__dirname, '/../../public/assets/lib/datamonkey/hivtrace/misc.js'));
 
 describe('convert object to csv', function() {

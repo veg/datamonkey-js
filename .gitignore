@@ -21,6 +21,6 @@ config/setup.js
 bower_components
 uploads
 public/hyphy-absrel
-public/assets/lib/
+src/bower-components
 .hyphy
 coverage

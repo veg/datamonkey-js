@@ -56,7 +56,7 @@ module.exports = function(app) {
   app.get('/busted/:bustedid/cancel', busted.cancel);
   app.get('/busted/:bustedid/results', busted.getResults);
   app.get('/busted/:bustedid/log.txt', busted.getLog);
-  //busted.resubscribePendingJobs();
+  busted.resubscribePendingJobs();
 
   // RELAX ROUTES
   relax = require(path.join(__dirname, '../app/routes/relax'));

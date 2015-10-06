@@ -1,8 +1,10 @@
-<link href="/assets/css/busted/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
+<!--
+<link rel="stylesheet" href="/assets/css/busted/font-awesome-4.2.0/css/font-awesome.css">
 <link rel="stylesheet" href="/assets/lib/dcjs/dc.css">
+<link rel="stylesheet" href="/assets/lib/phylotree/phylotree.css">
+<link rel="stylesheet" href="/assets/lib/hyphy-vision/hyphy-vision.css">
+-->
 
-<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-<link href="/assets/lib/phylotree/phylotree.css" rel="stylesheet">
 
 <div class='container'>
 
@@ -74,15 +76,15 @@
                 </div>
             </div>
 
-            <button id="export-chart-svg" type="button" class="btn btn-default btn-sm pull-right btn-export">
+            <button id="export-chart-svg" type="button" class="btn btn-default btn-sm pull-right hyphy-busted-btn-export">
               <span class="glyphicon glyphicon-floppy-save"></span> Export Chart to SVG
             </button>
 
-            <button id="export-chart-png" type="button" class="btn btn-default btn-sm pull-right btn-export">
+            <button id="export-chart-png" type="button" class="btn btn-default btn-sm pull-right hyphy-busted-btn-export">
               <span class="glyphicon glyphicon-floppy-save"></span> Export Chart to PNG
             </button>
 
-            <div class='row site-table'>
+            <div class='row hyphy-busted-site-table'>
               <div id="chart-id" class="col-lg-12">
                 <strong>Model Evidence Ratios Per Site</strong>
                 <div class="clearfix"></div>
@@ -165,10 +167,6 @@
   </div>
 </div>
 
-<img id="chart-image" />
-<canvas id="chart-canvas"></canvas>
-
-<!--
-###############################################################################################################################
--->
+<img id="hyphy-chart-image" />
+<canvas id="hyphy-chart-canvas"></canvas>
 <script src="/assets/js/busted/results.js"></script>

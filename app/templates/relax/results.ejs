@@ -1,8 +1,8 @@
-<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" rel="stylesheet">
-
-<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
-<link href="/assets/lib/phylotree/phylotree.css" rel="stylesheet">
-<link href="/assets/lib/hyphy-vision/relax/datamonkey.relax.css" rel="stylesheet">
+<!--
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" rel="stylesheet">
+  <link href="/assets/lib/phylotree/phylotree.css" rel="stylesheet">
+  <link href="/assets/lib/hyphy-vision/hyphy-vision.css" rel="stylesheet">
+-->
 
 <div class='container-fluid'>
 
@@ -84,14 +84,14 @@
               </div>
           </div>
              <div class = "row">
-                  <div id="omega-plots" class="col-lg-12">
-                    <script type="text/template" class="omega-plots">
+                  <div id="hyphy-omega-plots" class="col-lg-12">
+                    <script type="text/template" class="hyphy-omega-plots">
                       {% _.each(rc, function(item, key) { %}
                         <div class="panel panel-default" id='{{ item.key }}'>
                           <div class="panel-heading">
                             <h3 class="panel-title">&omega; distributions under the <strong>{{ item.label }}</strong> model</h3>
                             <p>
-                              <small>Test branches are shown in <span class="datamonkey-blue">blue</span> and reference branches are shown in <span class=datamonkey-red>red</span></small>
+                              <small>Test branches are shown in <span class="hyphy-blue">blue</span> and reference branches are shown in <span class="hyphy-red">red</span></small>
                             </p>
                             <div class="btn-group">
                               <button id="export-{{ item.key }}-svg" type="button" class="btn btn-default btn-sm">
@@ -113,8 +113,6 @@
         </div>
 
         <div class = 'tab-pane' id = "datamonkey-relax-tree-tab">
-
-
             <div class = 'row'>
                 <div class = "col-md-12">
                     <div class="input-group input-group-sm">
@@ -203,11 +201,6 @@
   </div>
 </div>
 
-<img id="chart-image" />
-<canvas id="chart-canvas"></canvas>
-
-<!--
-###############################################################################################################################
--->
-
+<img id="hyphy-chart-image" />
+<canvas id="hyphy-chart-canvas"></canvas>
 <script src="/assets/js/relax/results.js"></script>

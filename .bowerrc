@@ -1,4 +1,4 @@
 {
-  "directory": "public/assets/lib/",
+  "directory": "src/bower-components/",
   "analytics": false
 }
