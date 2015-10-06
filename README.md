@@ -1,6 +1,6 @@
 Datamonkey API
 ========================
-
+[![Dependency Status](https://david-dm.org/veg/datamonkey-js.svg)](https://david-dm.org/veg/datamonkey-js)
 INSTALL
 ===========================
 ###System Dependencies
