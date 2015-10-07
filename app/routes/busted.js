@@ -48,7 +48,7 @@ exports.createForm = function(req, res) {
 exports.uploadFile = function(req, res) {
 
   var data = req.body;
-  var fn = req.files.files.path;
+  var fn = req.files.files.file;
 
   var busted = new Busted();
   var postdata = req.body;
@@ -89,7 +89,7 @@ exports.uploadFile = function(req, res) {
         }
       }
 
-      helpers.moveSafely(req.files.files.path, busted_result.filepath, move_cb);
+      helpers.moveSafely(req.files.files.file, busted_result.filepath, move_cb);
 
     });
 

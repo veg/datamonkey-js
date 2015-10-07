@@ -85,7 +85,7 @@ gulp.task("css", function(){
 
 gulp.task('fonts', function() {
     return gulp.src([path.join(config.bowerDir, '/font-awesome/fonts/fontawesome-webfont.*')])
-            .pipe(gulp.dest('./public/fonts/'));
+            .pipe(gulp.dest('./public/assets/fonts/'));
 });
 
 gulp.task('bs-fonts', function() {

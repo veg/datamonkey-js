@@ -55,7 +55,7 @@ exports.invoke = function(req, res) {
 
   };
 
-  var fn = req.files.files.path;
+  var fn = req.files.files.file;
   var postdata  = req.body;
   var datatype  = postdata.datatype;
   var gencodeid = postdata.gencodeid;
@@ -102,7 +102,7 @@ exports.invoke = function(req, res) {
         }
       }
 
-      helpers.moveSafely(req.files.files.path, absrel_result.filepath, move_cb);
+      helpers.moveSafely(req.files.files.file, absrel_result.filepath, move_cb);
 
     });
 

@@ -120,8 +120,7 @@ exports.uploadFile = function(req, res) {
             var publisher = redis.createClient(),
                 channel_id = "fasta_parsing_progress_" + hivtrace._id;
 
-            var file_path = req.files.files.path;
-
+            var file_path = req.files.files.file;
             var save_document = function(hivtrace) {
 
                 publisher.publish(channel_id, "done");
