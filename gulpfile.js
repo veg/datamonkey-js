@@ -8,6 +8,7 @@ var gulp = require('gulp'),
     path = require('path'),
     react = require('gulp-react'),
     less = require('gulp-less'),
+    watch = require('gulp-watch'),
     debug = require('gulp-debug');
 
 var config = {
@@ -84,13 +85,11 @@ gulp.task("css", function(){
 
 gulp.task('fonts', function() {
     return gulp.src([path.join(config.bowerDir, '/font-awesome/fonts/fontawesome-webfont.*')])
-            .pipe(debug())
             .pipe(gulp.dest('./public/fonts/'));
 });
 
 gulp.task('bs-fonts', function() {
     return gulp.src([path.join(config.bowerDir, '/bootstrap/fonts/*')])
-            .pipe(debug())
             .pipe(gulp.dest('./public/assets/fonts/'));
 });
 
@@ -108,8 +107,18 @@ gulp.task('bootstrap', function () {
         .pipe(gulp.dest('./public/assets/css/'));
 });
 
-// Just running the two tasks
-gulp.task('default', ['scripts', 'worker-scripts', 'react', 'css', 'fonts', 'bootstrap', 'bs-fonts'], function() {
+
+gulp.task('default', ['build'], function() {
   process.exit(0);
 });
+
+gulp.task('build', ['scripts', 'worker-scripts', 'react', 'css', 'fonts', 'bootstrap', 'bs-fonts']);
+
+
+gulp.task('watch', function () {
+    watch('src/**/*', function () {
+        gulp.start('build');
+    });
+});
+
 
