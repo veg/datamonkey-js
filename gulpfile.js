@@ -47,6 +47,13 @@ gulp.task("scripts", function() {
     .pipe(gulp.dest('./public/assets/js/'));
 });
 
+gulp.task("worker-scripts", function() {
+    gulp.src([ './src/bower-components/underscore/underscore.js', './src/bower-components/d3/d3.js'])
+    .pipe(concat('./worker-vendor.js'))
+    .pipe(gulp.dest('./public/assets/js/'));
+});
+
+
 gulp.task("css", function(){
     var filterJS = gulpFilter('**/*.css');
     gulp.src(bower_files( { paths: {
@@ -102,7 +109,7 @@ gulp.task('bootstrap', function () {
 });
 
 // Just running the two tasks
-gulp.task('default', ['scripts', 'react', 'css', 'fonts', 'bootstrap', 'bs-fonts'], function() {
+gulp.task('default', ['scripts', 'worker-scripts', 'react', 'css', 'fonts', 'bootstrap', 'bs-fonts'], function() {
   process.exit(0);
 });
 

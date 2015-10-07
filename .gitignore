@@ -20,7 +20,4 @@ npm-debug.log
 config/setup.js
 bower_components
 uploads
-public/hyphy-absrel
 src/bower-components
-.hyphy
-coverage
