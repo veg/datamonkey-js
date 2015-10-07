@@ -164,20 +164,19 @@ describe('betweenness centrality', function() {
 
 });
 
-
 describe('local clustering coefficient', function() {
 
   var krackhardt_kite = JSON.parse(fs.readFileSync(path.join(__dirname, './krackhardt_kite.json')));
 
   it('should spawn a worker and complete', function(done) {
 
-    this.timeout(5000);
+    this.timeout(10000);
 
     // pass to web-worker
     var Worker = require('webworker-threads').Worker;
 
     var worker = new Worker(function(){
-        importScripts('./public/assets/lib/d3/d3.js', './public/assets/lib/underscore/underscore.js', './public/assets/lib/datamonkey/hivtrace/misc.js');
+        importScripts('./public/assets/js/worker-vendor.js', './public/assets/lib/datamonkey/hivtrace/misc.js');
         this.onmessage = function(event) {
             try {
               datamonkey.hivtrace.compute_local_clustering(event.data);

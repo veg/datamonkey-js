@@ -156,6 +156,8 @@ describe('parse file', function() {
 
   it('should return a well formed msa', function(done) {
 
+    this.timeout(5000);
+
     var msa = new Msa;
     var datatype  = 0;
     var gencodeid = 0;
