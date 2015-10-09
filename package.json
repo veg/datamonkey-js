@@ -15,9 +15,9 @@
     "url": "git://github.com/veg/datamonkey-js.git"
   },
   "dependencies": {
-    "async": "1.x.x",
+    "async": "0.x.x",
     "d3": "3.x",
-    "ejs": "2.x.x",
+    "ejs": "1.x.x",
     "express": "4.x",
     "express-busboy": "^2.4.4",
     "express-validator": "2.x.x",

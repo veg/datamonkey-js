@@ -45,6 +45,7 @@ var mongoose = require('mongoose'),
     Msa = mongoose.model('Msa');
 
 
+var publisher = redis.createClient();
 
 /**
  * Request a new job ID
@@ -206,6 +207,7 @@ exports.uploadFile = function(req, res) {
                 'no-equal-length': !hivtrace.prealigned,
                 'headers-only': !hivtrace.prealigned,
                 'progress-callback': _.throttle(function(percentage) {
+                    console.log(percentage);
                     publisher.publish(channel_id, percentage);
                 }, 100)
             });
@@ -410,14 +412,16 @@ exports.mapAttributes = function(req, res) {
             'error': err
         };
 
-        res.format({
-            html: function() {
-                res.render('hivtrace/attribute_map_assignment.ejs', return_me);
-            },
-            json: function() {
-                res.json(200, return_me);
-            }
-        });
+        res.render('hivtrace/attribute_map_assignment.ejs', return_me);
+
+        //res.format({
+        //    html: function() {
+        //        res.render('hivtrace/attribute_map_assignment.ejs', return_me);
+        //    },
+        //    json: function() {
+        //        res.json(200, return_me);
+        //    }
+        //});
     }
 
     var id = req.params.id;
@@ -431,8 +435,7 @@ exports.mapAttributes = function(req, res) {
             returnFormat(hivtrace, err);
         } else {
         
-            var publisher = redis.createClient(),
-                channel_id = "attribute_parsing_progress_" + id;
+            var channel_id = "attribute_parsing_progress_" + id;
         
             var worker_process = spawn('node', [__dirname + "/../task-runners/hivtrace/attribute-mapper.js", id]),
                 err_msg = '';
@@ -483,7 +486,6 @@ exports.mapAttributes = function(req, res) {
                     hivtrace.partitioned_headers = hivtrace_map.parsed_headers;
                     hivtrace.save();
                 }
-                
                 returnFormat(hivtrace, err);
             });*/
 
