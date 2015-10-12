@@ -11,6 +11,7 @@ $( document ).ready( function () {
     relax_create_neighbor_tree(nj_nwk);
   }
 
+
   if("#tree-select-btn-group") {
     $("#tree-select-btn-group").find('.btn').each(
       function(i, obj){
@@ -26,7 +27,12 @@ $( document ).ready( function () {
     });
   }
 
+
 });
+
+
+  
+
 
 function relax_create_neighbor_tree(nwk) {
 
@@ -68,6 +74,7 @@ function relax_create_neighbor_tree(nwk) {
     tree.options ({'tag-branches' : false}, false);
     tree.options({'binary-selectable' : true});
     tree.options({'attribute-list' : ['reference', 'test']});
+    tree.options({'left-right-spacing': 'fit-to-size'});
     //tree.options({'selectable' : false});
     tree.selection_label(current_selection_name);
     tree.style_nodes(node_colorizer);
@@ -103,6 +110,7 @@ function relax_create_neighbor_tree(nwk) {
       svg_defs = svg.append("defs");
 
   default_tree_settings(tree);
+
   tree(nwk).svg(svg).layout();
 
   var reference_id    = '#reference-branch-highlighter';
@@ -119,6 +127,8 @@ function relax_create_neighbor_tree(nwk) {
         tree.selection_label(current_selection_name);
       })
   });
+
+  _.delay(tree.placenodes().update, 100);
 
 }
 

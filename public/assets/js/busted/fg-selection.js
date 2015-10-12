@@ -37,6 +37,7 @@ function busted_create_neighbor_tree(nwk) {
       tree.branch_name (null);
       tree.node_span ('equal');
       tree.options ({'draw-size-bubbles' : false}, false);
+      tree.options({'left-right-spacing': 'fit-to-size'});
   }
 
 
@@ -70,6 +71,7 @@ function busted_create_neighbor_tree(nwk) {
 
   default_tree_settings(tree);
   tree(nwk).svg(svg).layout();
+  _.delay(tree.placenodes().update, 100);
 
 }
 
