@@ -49,9 +49,6 @@ gulp.task("scripts", function() {
     .pipe(filterJS)
     .pipe(sourcemaps.init())
       .pipe(concat('./vendor.js'))
-      .pipe(gulp.dest('./public/assets/js/'))
-      .pipe(rename('vendor.min.js'))
-      .pipe(uglify())
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('./public/assets/js/'));
 });

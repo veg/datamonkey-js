@@ -21,3 +21,4 @@ config/setup.js
 bower_components
 uploads
 src/bower-components
+public/assets/fonts

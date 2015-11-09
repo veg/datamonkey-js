@@ -125,7 +125,6 @@ exports.uploadFile = function(req, res) {
             var save_document = function(hivtrace) {
 
                 publisher.publish(channel_id, "done");
-                publisher.end();
 
                 hivtrace.save(function(err, ht) {
                     if (err) {
@@ -207,7 +206,6 @@ exports.uploadFile = function(req, res) {
                 'no-equal-length': !hivtrace.prealigned,
                 'headers-only': !hivtrace.prealigned,
                 'progress-callback': _.throttle(function(percentage) {
-                    console.log(percentage);
                     publisher.publish(channel_id, percentage);
                 }, 100)
             });
@@ -444,7 +442,6 @@ exports.mapAttributes = function(req, res) {
             worker_process.on ('error', function (err) {
                 publisher.publish (channel_id, "done");
                 returnError (err);
-                publisher.end();
             });
             
             if (worker_process.stderr && worker_process.stdout) {
@@ -472,7 +469,6 @@ exports.mapAttributes = function(req, res) {
                     } else {
                         returnError(err_msg.length ? err_msg : "attribute-mapper.js error");
                     }
-                    publisher.end();
                });
             }
 
