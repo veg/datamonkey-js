@@ -3,6 +3,9 @@ var global_err = '';
 if (process.argv.length != 3) {
     global_err = "Expected a job ID command line argument in call to " + process.argv[1];
 } else {
+
+    require ('../../models/hivtrace.js');
+
     var setup = require('../../../config/setup'),
         attributes = require('../../../config/attributes'),
         mongoose = require ('mongoose'),
@@ -12,56 +15,49 @@ if (process.argv.length != 3) {
  
     mongoose.connect(setup.database);
 
-    require ('../../models/hivtrace.js');
     var HivTrace = mongoose.model('HivTrace');
     
-    HivTrace.findOne({
-            _id: id
-        }, function(err, hivtrace) {
-        
-        
-            if (err || ! hivtrace) {
-                global_err = err;
-                
-            } else if (hivtrace.attributes && hivtrace.attributes.length) {
-                
+    HivTrace.findOne({_id: id }, function(err, hivtrace) {
+
+        if (err || ! hivtrace) {
+            global_err = err;
+        } else if (hivtrace.attributes && hivtrace.attributes.length) {
+          process.exit(0)
+        } else {
+            publisher_push = _.throttle(function(perc) {
+                process.stdout.write (perc + "\n");
+            }, 200);
+            
+            var hivtrace_map = perform_the_mapping(hivtrace.headers, publisher_push);
+                            
+            if (hivtrace_map.error && hivtrace_map.error.length) {
+                global_err = hivtrace_map.error;
             } else {
-                publisher_push = _.throttle(function(perc) {
-                    process.stdout.write (perc + "\n");
-                }, 200);
-                
-                var hivtrace_map = perform_the_mapping (hivtrace.headers, publisher_push);
-                                
-                if (hivtrace_map.error && hivtrace_map.error.length) {
-                    global_err = hivtrace_map.error;
-                } else {
-                    hivtrace.attributes = hivtrace_map.result.annotated_map;
-                    hivtrace.delimiter = hivtrace_map.result.delimiter;
-                    hivtrace.partitioned_headers = hivtrace_map.result.parsed_headers;
-                    do_not_dc = true;
-                    hivtrace.save(function () {
-                        mongoose.disconnect();
-                    });
-                }
-                
+                hivtrace.attributes = hivtrace_map.result.annotated_map;
+                hivtrace.delimiter = hivtrace_map.result.delimiter;
+                hivtrace.partitioned_headers = hivtrace_map.result.parsed_headers;
+                do_not_dc = true;
+                hivtrace.save(function () {
+                    mongoose.disconnect();
+                });
             }
-            if (!do_not_dc) {
-                mongoose.disconnect();
-            }
-        });
-    
+            
+        }
 
-    if (global_err.length) {
-        process.stderr.write (global_err + "\n");
-        return 1;
-    }
+        if (!do_not_dc) {
+            mongoose.disconnect();
+        }
 
-    return 0; 
+        if (global_err.length) {
+            process.stderr.write (global_err + "\n");
+            process.exit(1);
+        }
+
+        process.exit(0); 
+
+    });
+
 }
-
-
-
-
 
 function perform_the_mapping (headers, publisher_push) {
 
@@ -70,7 +66,6 @@ function perform_the_mapping (headers, publisher_push) {
     }
 
     var standardized_format = "YYYYMMDD";
-
     var subtype_dictionary = new Object;
 
     _.each(attributes.subtype.value, function(s) {
@@ -232,7 +227,6 @@ function perform_the_mapping (headers, publisher_push) {
         return delimiter[2];
     });
 
-
     var best_delimiter = ranked_delimiters[0][0],
         best_attr_map = ranked_delimiters[0][1];
 
@@ -241,6 +235,7 @@ function perform_the_mapping (headers, publisher_push) {
     var err = '',
         mapped_attributes = [],
         used_ids = {};
+
 
 
     best_attr_map.forEach(function(mapping, index) {
@@ -330,9 +325,6 @@ function perform_the_mapping (headers, publisher_push) {
     if (id_tag[0] >= 0) {
         mapped_attributes[id_tag[0]].calculated = attributes.types.ID;
     }
-
-
-
 
     /**
         categorize the individual attributes
