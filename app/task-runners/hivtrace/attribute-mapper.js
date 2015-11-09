@@ -38,6 +38,7 @@ if (process.argv.length != 3) {
                 hivtrace.partitioned_headers = hivtrace_map.result.parsed_headers;
                 do_not_dc = true;
                 hivtrace.save(function () {
+                    process.exit(0); 
                     mongoose.disconnect();
                 });
             }
@@ -52,8 +53,6 @@ if (process.argv.length != 3) {
             process.stderr.write (global_err + "\n");
             process.exit(1);
         }
-
-        process.exit(0); 
 
     });
 
