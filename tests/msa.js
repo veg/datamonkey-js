@@ -45,6 +45,8 @@ describe('msa datareader validation', function() {
   var Msa  = mongoose.model('Msa');
 
   it('should parse msa and have all properties', function(done) {
+    this.timeout(3000);
+
     var hyphy =  spawn(globals.hyphy,
                       [path.join(__dirname, '/../lib/bfs/datareader.bf')]);
 
@@ -155,6 +157,8 @@ describe('hyphy friendly', function() {
 describe('parse file', function() {
 
   it('should return a well formed msa', function(done) {
+
+    this.timeout(5000);
 
     var msa = new Msa;
     var datatype  = 0;

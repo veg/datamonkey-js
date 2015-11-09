@@ -1,49 +1,57 @@
 {
-    "name": "datamonkey.js",
-    "version": "0.3.1",
-    "description": "A free public server for comparative analysis of sequence alignments using state-of-the-art statistical models.",
-    "private": true,
-    "author": {
-        "name": "Steven Weaver",
-        "email": "sweaver@ucsd.edu"
-    },
-    "scripts": {
-        "test": "mocha -R spec $(find tests -name '*.js')",
-        "preinstall": "git submodule init; git submodule update",
-        "postinstall": "./node_modules/less/bin/lessc ./contrib/dm-bootstrap/overrides.less > ./public/assets/css/bootstrap.css;"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/veg/datamonkey-js.git"
-    },
-    "dependencies": {
-        "express": "3.x",
-        "express-validator": "0.3.x",
-        "jade": "0.x.x",
-        "mongodb": "1.x",
-        "mongoose": "4.x.x",
-        "mongoose-schema-extend": "0.1.3",
-        "mocha": "2.0.x",
-        "nodemailer": "1.3.0",
-        "nodemailer-sendmail-transport": "1.0.0",
-        "grunt": "0.4.5",
-        "less": "2.1.1",
-        "supertest": "0.15.x",
-        "should": "4.3.x",
-        "validator": "1.2.x",
-        "ejs": "1.0.x",
-        "socket.io": "1.2.x",
-        "redis": "0.12.x",
-        "moment": "2.8.x",
-        "socket.io-client": "1.2.x",
-        "socket.io-stream": "0.6.x",
-        "winston": "0.8.x",
-        "async": "0.9.x",
-        "underscore": "1.7.x",
-        "morgan": "x.x.x",
-        "jquery-file-upload-middleware": "0.1.x",
-        "tar-fs": "1.4.2",
-        "q": "1.4.x",
-        "d3": "3.x"
-    }
+  "name": "datamonkey.js",
+  "version": "0.3.1",
+  "description": "A free public server for comparative analysis of sequence alignments using state-of-the-art statistical models.",
+  "private": true,
+  "author": {
+    "name": "Steven Weaver",
+    "email": "sweaver@ucsd.edu"
+  },
+  "scripts": {
+    "test": "mocha -R spec $(find tests -name '*.js')"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/veg/datamonkey-js.git"
+  },
+  "dependencies": {
+    "async": "0.x.x",
+    "d3": "3.x",
+    "ejs": "1.x.x",
+    "express": "4.x",
+    "express-busboy": "^2.4.4",
+    "express-validator": "2.x.x",
+    "jade": "1.x.x",
+    "jquery-file-upload-middleware": "0.1.x",
+    "moment": "2.8.x",
+    "mongodb": "2.0.x",
+    "mongoose": "4.x.x",
+    "mongoose-schema-extend": "0.1.x",
+    "morgan": "x.x.x",
+    "nodemailer": "1.x.x",
+    "nodemailer-sendmail-transport": "1.x.x",
+    "q": "1.4.x",
+    "redis": "2.x.x",
+    "socket.io": "1.2.x",
+    "socket.io-client": "1.2.x",
+    "socket.io-stream": "0.6.x",
+    "tar-fs": "1.8.x",
+    "underscore": "1.7.x",
+    "validator": "1.2.x",
+    "winston": "0.8.x"
+  },
+  "devDependencies": {
+    "gulp-bower": "0.0.10",
+    "gulp-filter": "^3.0.1",
+    "gulp-less": "^3.0.3",
+    "gulp-minify-css": "^1.2.1",
+    "gulp-mocha": "^2.1.3",
+    "gulp-react": "^3.0.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^1.4.1",
+    "gulp-usemin": "^0.3.14",
+    "gulp-watch": "^4.3.5",
+    "mocha": "2.x.x",
+    "should": "7.x.x"
+  }
 }

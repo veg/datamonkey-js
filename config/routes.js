@@ -34,7 +34,8 @@ module.exports = function(app) {
   home = require(path.join(__dirname, '../app/routes/home'));
   app.get('/', home.homePage);
   app.get('/help', home.help);
-  app.get('/jobqueue', home.jobQueue);
+  app.get('/jobqueue', home.jobQueuePage);
+  app.get('/jobqueue/json', home.jobQueue);
   app.get('/stats', home.stats);
   app.get('/clusterhealth', home.clusterhealth);
   app.get('/stats_test', home.stats_test);
@@ -55,7 +56,7 @@ module.exports = function(app) {
   app.get('/busted/:bustedid/cancel', busted.cancel);
   app.get('/busted/:bustedid/results', busted.getResults);
   app.get('/busted/:bustedid/log.txt', busted.getLog);
-  //busted.resubscribePendingJobs();
+  busted.resubscribePendingJobs();
 
   // RELAX ROUTES
   relax = require(path.join(__dirname, '../app/routes/relax'));
