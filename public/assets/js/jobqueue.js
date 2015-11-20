@@ -66,6 +66,7 @@ var JobTable = React.createClass({displayName: "JobTable",
   loadJobsFromServer: function() {
     var self = this;
     d3.json(this.props.url, function(data) {
+      data.sort();
       self.setState({jobs: data});
     });
   },
