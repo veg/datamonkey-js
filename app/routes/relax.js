@@ -48,7 +48,7 @@ exports.createForm = function(req, res) {
 
 exports.uploadFile = function(req, res) {
 
-  var fn = req.files.files.path;
+  var fn = req.files.files.file;
   var postdata  = req.body;
   var datatype  = postdata.datatype;
   var gencodeid = postdata.gencodeid;
@@ -88,7 +88,7 @@ exports.uploadFile = function(req, res) {
         }
       }
 
-      helpers.moveSafely(req.files.files.path, relax_result.filepath, move_cb);
+      helpers.moveSafely(req.files.files.file, relax_result.filepath, move_cb);
 
     });
   });
@@ -179,9 +179,7 @@ exports.getPage = function(req, res) {
         relax.torque_id = 'N/A';
       }
       // Should return results page
-      res.render('relax/jobpage.ejs', { job : relax, 
-                                        socket_addr: 'http://' + setup.host + ':' + setup.socket_port 
-                                       });
+      res.render('relax/jobpage.ejs', { job : relax });
     }
   });
 };

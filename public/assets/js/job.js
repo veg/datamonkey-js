@@ -30,7 +30,7 @@ function jobRuntime(start_time) {
 function setupJob() {
 
   var jobid = $('#job-report').data('jobid');
-  var socket_address = $('#job-report').data('socket-address');
+  var socket_address = document.location.origin;
 
   var socket = io.connect(socket_address, {
         reconnect: false

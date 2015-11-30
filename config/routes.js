@@ -34,7 +34,8 @@ module.exports = function(app) {
   home = require(path.join(__dirname, '../app/routes/home'));
   app.get('/', home.homePage);
   app.get('/help', home.help);
-  app.get('/jobqueue', home.jobQueue);
+  app.get('/jobqueue', home.jobQueuePage);
+  app.get('/jobqueue/json', home.jobQueue);
   app.get('/stats', home.stats);
   app.get('/clusterhealth', home.clusterhealth);
   app.get('/stats_test', home.stats_test);
@@ -55,7 +56,7 @@ module.exports = function(app) {
   app.get('/busted/:bustedid/cancel', busted.cancel);
   app.get('/busted/:bustedid/results', busted.getResults);
   app.get('/busted/:bustedid/log.txt', busted.getLog);
-  //busted.resubscribePendingJobs();
+  busted.resubscribePendingJobs();
 
   // FADE ROUTES
   fade = require(path.join(__dirname, '../app/routes/fade'));
@@ -124,8 +125,11 @@ module.exports = function(app) {
   app.get('/flea/data/:id/sequences', flea.getSequences);
   app.get('/flea/data/:id/rates_pheno', flea.getRatesPheno);
   app.get('/flea/data/:id/trees', flea.getTrees);
-  app.get('/flea/data/:id/neutralization', flea.getNeutralization);
-  app.get('/flea/data/:id/turnover', flea.getTurnover);
+  app.get('/flea/data/:id/divergence', flea.getDivergence);
   app.get('/flea/data/:id/copynumbers', flea.getCopyNumbers);
+  app.get('/flea/data/:id/dates', flea.getDates);
+  app.get('/flea/data/:id/runinfo', flea.getRunInfo);
+  app.get('/flea/data/:id/genes', flea.getGenes);
+  app.get('/flea/data/:id/coordinates', flea.getCoordinates);
 
 }

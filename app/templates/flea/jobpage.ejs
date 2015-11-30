@@ -1,6 +1,6 @@
 <%- include ../includes/header.ejs %>
 
-<div class='container' id='job-report' data-jobid='<%= job._id %>' data-socket-address='<%= socket_addr %>'>
+<div class='container' id='job-report' data-jobid='<%= job._id %>'>
   <%- include header.ejs %>
 
   <% if (job.status != 'completed') { %>
@@ -41,8 +41,6 @@
   </div>
 </div>
 
-<script src='/assets/lib/jquery-zclip/jquery.zclip.js'></script>
-<script src='/assets/lib/socket.io-client/socket.io.js'></script>
 <script src='/assets/js/flea/job.js'></script>
 
 <%- include ../includes/modal.ejs %>

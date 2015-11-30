@@ -42,8 +42,7 @@ var express          = require('express'),
     path             = require("path"),
     mongoose         = require('mongoose'),
     redis            = require('redis'),
-    io               = require('socket.io').listen(setup.socket_port);
-
+    bb               = require('express-busboy');
 
 
 // Connect to database
@@ -51,7 +50,9 @@ mongoose.connect(setup.database);
 
 //Ensure that upload paths exists
 mkdirErrorLogger = error.errorLogger(["EEXIST"]);
-fs.mkdir(__dirname + '/uploads', '0750', function(e) {
+
+fs.mkdir(path.join(__dirname, '/uploads'), '0750', function(e) {
+
   if(e) {
     if(e.code != "EEXIST") {
       throw e;
@@ -59,63 +60,72 @@ fs.mkdir(__dirname + '/uploads', '0750', function(e) {
   }
   // need to do this in the callback to ensure uploads
   // directory exists first
-  fs.mkdir(__dirname + '/uploads/hivtrace', '0750', mkdirErrorLogger);
-  fs.mkdir(__dirname + '/uploads/msa', '0750', mkdirErrorLogger);
+  fs.mkdir(path.join(__dirname, '/uploads/hivtrace'), '0750', mkdirErrorLogger);
+  fs.mkdir(path.join(__dirname, '/uploads/msa'), '0750', mkdirErrorLogger);
+
 });
 
 // ensure logging dir exists
-fs.mkdir(__dirname + '/logs', '0750', mkdirErrorLogger);
+fs.mkdir(path.join(__dirname, '/logs'), '0750', mkdirErrorLogger);
 
+// START FLEA
 // TODO: Move this out of main
+
 upload.configure({
   //TODO: customize filename
-  uploadDir: __dirname + '/uploads/flea/tmp',
+  uploadDir: path.join(__dirname, '/uploads/flea/tmp'),
   uploadUrl: '/fleaupload',
 });
 
 upload.on('end', function (fileInfo, req, res) { 
+
 });
+
+// END FLEA
 
 // Main app configuration
 var app = express();
+app.engine('.ejs', require('ejs').__express);
+app.set('views', path.join(__dirname, '/app/templates'));
 
-app.configure(function () {
-  app.use(express.compress());
-  app.use(require('morgan')({ 'stream': logger.stream }));
-  app.use(expressValidator);
-  app.use('/fleaupload', upload.fileHandler());
-  app.use(express.bodyParser());
-  app.use(express.limit('25mb'));
-  app.use(app.router);
-  app.set('json spaces', 0);
+
+var server = app.listen(setup.port);
+var io = require('socket.io').listen(server);
+
+//app.use(express.compress());
+app.use(require('morgan')('combined', { 'stream': logger.stream }));
+app.use(expressValidator());
+app.use('/fleaupload', upload.fileHandler());
+app.set('json spaces', 0);
+app.enable('trust proxy');
+
+bb.extend(app, {
+    upload: true,
+    path: '/tmp/express-busboy/'
 });
 
-
-// Bootstrap models
-var models_path = __dirname + '/app/models';
+var models_path = path.join(__dirname, '/app/models');
 fs.readdirSync(models_path).forEach(function (file) {
-  require(models_path+'/'+file);
+  require(path.join(models_path,'/',file));
 });
+
+
+
+app.use(express.static(path.join(__dirname, '/public')));
+app.use('/flea/', express.static(path.join(__dirname, '/public/assets/lib/flea/dist/')));
+app.use('/uploads', express.static(path.join(__dirname + '/uploads')));
 
 require('./config/routes')(app);
-app.set('views', __dirname + '/app/templates');
-app.engine('html', require('ejs').renderFile);
-app.use(express.static(__dirname + '/public'));
-app.use('/flea/', express.static(__dirname + '/public/assets/lib/flea/dist/'));
-app.use('/uploads', express.static(__dirname + '/uploads'));
-
 
 app.use(function(err, req, res, next) {
-    res.json(500, {'error' : err.message}); // this catches the error!!
+    res.json(500, {'error' : err.message});
 });
 
 
 //Port to listen on
-app.listen(setup.port);
-
-var helpers = require('./lib/helpers');
 logger.info('Listening on port ' + setup.port + '...');
-module.exports = app;
+
+module.exports = server;
 
 // Set up socket.io server
 var jobproxy = require('./lib/hpcsocket.js');
@@ -123,7 +133,6 @@ var jobproxy = require('./lib/hpcsocket.js');
 io.sockets.on('connection', function (socket) {
   socket.emit('connected');
   socket.on ('acknowledged', function (data) {
-    //Create client socket
     var clientSocket = new jobproxy.ClientSocket(socket, data.id);
   });
   
@@ -152,6 +161,4 @@ io.sockets.on('connection', function (socket) {
         }
     });
   });
-
 });
-

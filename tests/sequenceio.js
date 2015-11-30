@@ -1,7 +1,8 @@
 /*
+
   Datamonkey - An API for comparative analysis of sequence alignments using state-of-the-art statistical models.
 
-  Copyright (C) 2015
+  Copyright (C) 2014
   Sergei L Kosakovsky Pond (spond@ucsd.edu)
   Steven Weaver (sweaver@ucsd.edu)
 
@@ -23,38 +24,37 @@
   CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
   TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
   SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 */
 
-var winston = require('winston');
-winston.emitErrs = true;
+var fs = require('fs'),
+    mongoose = require('mongoose'),
+    should   = require('should'),
+    seqio = require('../lib/biohelpers/sequenceio.js');
 
-var logger = new winston.Logger({
-      transports: [
-        new winston.transports.File({
-          level: 'warn',
-          filename: './logs/all-logs.log',
-          handleExceptions: true,
-          json: true,
-          maxsize: 5242880, //5MB
-          maxFiles: 5,
-          colorize: false
-        }),
-        new winston.transports.Console({
-          level: 'debug',
-          handleExceptions: true,
-          prettyPrint: true,
-          json: false,
-          colorize: true,
-          timestamp: true
-        })
-      ],
-  exitOnError: false
+describe('seqio', function() {
+
+  it('parse fasta file with sequences', function(done) {
+
+    var options = {
+      'no-equal-length': 0,
+      'headers-only': 0,
+      'progress-callback': function (){}
+    }
+
+    var cb = function(err, data) {
+
+      data.forEach(function(d) {
+        d.should.have.property('seq');
+        d.should.have.property('name');
+      });
+
+      done();
+    }
+
+    seqio.parseFile('./tests/res/Flu.fasta', cb, options)
+
+  });
+
+
 });
-
-module.exports = logger;
-
-module.exports.stream = {
-  write: function(message, encoding){
-    logger.info(message);
-  }
-};

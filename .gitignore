@@ -13,10 +13,12 @@ logs
 results
 console
 node_modules
+coverage
+.hyphy
 
 npm-debug.log
 config/setup.js
 bower_components
 uploads
-public/hyphy-absrel
-public/assets/lib/
+src/bower-components
+public/assets/fonts

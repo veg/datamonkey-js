@@ -1,6 +1,8 @@
+<!--
 <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" rel="stylesheet">
 <link href="/assets/lib/phylotree/phylotree.css" rel="stylesheet">
-<link href="/assets/lib/hyphy-vision/absrel/absrel.css" rel="stylesheet">
+<link href="/assets/lib/hyphy-vision/hyphy-vision.css" rel="stylesheet">
+-->
 
 <div class = 'container-fluid'>
 
@@ -155,7 +157,7 @@
 
         <div class = 'tab-pane' id = "table_tab"> 
                 <div class = "row">
-                    <div class = "col-md-7">
+                    <div class = "col-md-12">
                         <table class = "table table-hover table-condensed" style = "margin-top:0.5em;">
                         <thead>
                             <tr>
@@ -170,26 +172,22 @@
                            <tbody id = 'table-branch-table'></tbody>
                         </table>                         
                     </div>  
-                <div class = "col-md-5">
+                <div class = "col-md-5 hidden">
                     <div class="panel panel-default">
                       <div class="panel-heading" id = 'primary_omega_tag'></div>
                       <div class="panel-body">
                         <svg id = "primary_omega_plot"/> 
                       </div>
-                    </div>                    
+                    </div>
                 </div>
-                </div>          
+                </div>
         </div>
     </div>
   </div>
 </div>
 
-<img id="chart-image" />
-<canvas id="chart-canvas"></canvas>
-
-
-<script src="/assets/lib/phylotree/phylotree.js"></script>
-<script src="/assets/lib/hyphy-vision/absrel/absrel.js"></script>
+<img id="hyphy-chart-image" />
+<canvas id="hyphy-chart-canvas"></canvas>
 
 <script>
 
@@ -215,8 +213,10 @@
     var absrel_id = $("#job-report").data("jobid")
     d3.json (absrel_id + "/results", function (json) {
 
-      var container_id = '#tree_container';
-      datamonkey.absrel(json, container_id);
+      //var container_id = '#tree_container';
+      var bsrel_app = datamonkey.absrel();
+      bsrel_app(json);
+      //datamonkey.absrel(, container_id);
     });
 
     $("#export-phylo-svg").on('click', function(e) { 

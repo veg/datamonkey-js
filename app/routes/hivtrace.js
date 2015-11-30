@@ -45,6 +45,7 @@ var mongoose = require('mongoose'),
     Msa = mongoose.model('Msa');
 
 
+var publisher = redis.createClient();
 
 /**
  * Request a new job ID
@@ -77,15 +78,10 @@ exports.uploadFile = function(req, res) {
         _id: req.params.id
     }, function(err, hivtrace) {
         if (err || !hivtrace) {
-            res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
+            res.json(500, error.errorResponse('No HIV-TRACE id ' + id));
         } else {
+
             var postdata = req.body;
-
-            // Validate that the file uploaded was a FASTA file
-
-            hivtrace.on('error', function(m, e) {
-
-            });
 
             if (postdata.public_db_compare == 'true') {
                 hivtrace.lanl_compare = true;
@@ -93,6 +89,13 @@ exports.uploadFile = function(req, res) {
             } else {
                 hivtrace.lanl_compare = false;
                 hivtrace.status_stack = hivtrace.valid_statuses;
+            }
+
+            if (postdata.prealigned == 'true') {
+                hivtrace.prealigned = true;
+                hivtrace.status_stack = hivtrace.valid_statuses.slice(2);
+            } else {
+                hivtrace.prealigned = false;
             }
 
             hivtrace.distance_threshold = Number(postdata.distance_threshold);
@@ -118,12 +121,10 @@ exports.uploadFile = function(req, res) {
             var publisher = redis.createClient(),
                 channel_id = "fasta_parsing_progress_" + hivtrace._id;
 
-            var file_path = req.files.files.path;
-
+            var file_path = req.files.files.file;
             var save_document = function(hivtrace) {
 
                 publisher.publish(channel_id, "done");
-                publisher.end();
 
                 hivtrace.save(function(err, ht) {
                     if (err) {
@@ -141,7 +142,6 @@ exports.uploadFile = function(req, res) {
                         }
                     }
 
-                    // Check if file is FASTA before moving forward
                     helpers.moveSafely(file_path, ht.filepath, move_cb);
 
                 });
@@ -149,34 +149,31 @@ exports.uploadFile = function(req, res) {
 
             }
 
-
+            // Check if file is FASTA before moving forward
             Msa.validateFasta(file_path, function(err, result) {
-                /*
-                    'result' stores the array of sequences headers
 
-                    [
-                      {
-                         'name' : sequence name
-                       }
-                    ]
-                */
+                //'result' stores the array of sequences headers
+                //[
+                //  {
+                //     'name' : sequence name
+                //   }
+                //]
 
-                if (!result || result.length == 0 || err.length) {
-                    logger.log(err);
-                    res.json(500, {
-                        'error': err,
-                        'validators': HivTrace.validators()
-                    });
-                    return;
+                if (!result || result.length == 0 || err.msg) {
+
+                  logger.log(err.msg);
+                  res.json(500, {
+                      'error': err.msg,
+                      'validators': HivTrace.validators()
+                  });
+                  return;
+
                 }
 
                 // copy header information
-
                 hivtrace.headers = result.map(function(s) {
                     return s.name;
                 });
-
-
 
                 if (hivtrace.reference == 'Custom') {
 
@@ -206,8 +203,8 @@ exports.uploadFile = function(req, res) {
                     save_document(hivtrace);
                 }
             }, {
-                'no-equal-length': 1,
-                'headers-only': 1,
+                'no-equal-length': !hivtrace.prealigned,
+                'headers-only': !hivtrace.prealigned,
                 'progress-callback': _.throttle(function(percentage) {
                     publisher.publish(channel_id, percentage);
                 }, 100)
@@ -215,8 +212,6 @@ exports.uploadFile = function(req, res) {
 
         }
     });
-
-
 }
 
 /**
@@ -226,7 +221,7 @@ exports.uploadFile = function(req, res) {
 exports.clusterForm = function(req, res) {
     res.render('hivtrace/form.ejs', {
         'validators': HivTrace.validators(),
-        'socket_addr': 'http://' + setup.host + ':' + setup.socket_port
+        'socket_addr': 'http://' + setup.host
     });
 }
 
@@ -299,8 +294,8 @@ exports.jobPage = function (req, res) {
         html: function(){
           res.render('hivtrace/jobpage.ejs', {
                                               hivtrace : hivtrace, 
-                                              last_status_msg : hivtrace.last_status_msg,
-                                              socket_addr: 'http://' + setup.host + ':' + setup.socket_port });
+                                              last_status_msg : hivtrace.last_status_msg
+                                              });
         }
       });
     }
@@ -415,14 +410,16 @@ exports.mapAttributes = function(req, res) {
             'error': err
         };
 
-        res.format({
-            html: function() {
-                res.render('hivtrace/attribute_map_assignment.ejs', return_me);
-            },
-            json: function() {
-                res.json(200, return_me);
-            }
-        });
+        res.render('hivtrace/attribute_map_assignment.ejs', return_me);
+
+        //res.format({
+        //    html: function() {
+        //        res.render('hivtrace/attribute_map_assignment.ejs', return_me);
+        //    },
+        //    json: function() {
+        //        res.json(200, return_me);
+        //    }
+        //});
     }
 
     var id = req.params.id;
@@ -436,8 +433,7 @@ exports.mapAttributes = function(req, res) {
             returnFormat(hivtrace, err);
         } else {
         
-            var publisher = redis.createClient(),
-                channel_id = "attribute_parsing_progress_" + id;
+            var channel_id = "attribute_parsing_progress_" + id;
         
             var worker_process = spawn('node', [__dirname + "/../task-runners/hivtrace/attribute-mapper.js", id]),
                 err_msg = '';
@@ -446,7 +442,6 @@ exports.mapAttributes = function(req, res) {
             worker_process.on ('error', function (err) {
                 publisher.publish (channel_id, "done");
                 returnError (err);
-                publisher.end();
             });
             
             if (worker_process.stderr && worker_process.stdout) {
@@ -474,7 +469,6 @@ exports.mapAttributes = function(req, res) {
                     } else {
                         returnError(err_msg.length ? err_msg : "attribute-mapper.js error");
                     }
-                    publisher.end();
                });
             }
 
@@ -488,7 +482,6 @@ exports.mapAttributes = function(req, res) {
                     hivtrace.partitioned_headers = hivtrace_map.parsed_headers;
                     hivtrace.save();
                 }
-                
                 returnFormat(hivtrace, err);
             });*/
 

@@ -1,10 +1,5 @@
 <%- include ../includes/header.ejs %>
 
-<!--<a class="INFO" href="help/data.php">Preparing your data</a>&nbsp;-->
-<!--Examples:-->
-<!--<a class="INFO" href="data/Flu.fasta">Influenza A H5N1 hemagluttinin</a>&nbsp;-->
-<!--<a class="INFO" href="data/pol.nex">HIV-1 pol (recombinant data)</a>-->
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <div id="container" class="container">
 
   <%- include header.ejs %>
@@ -28,8 +23,14 @@
             
             Sequence file</label>
             <div id="seq-file-div" class="col-lg-9">
-                <input id="seq-file" type="file" name="files">
-                <div id="file-progress" data-socket = <%= socket_addr %> class="progress active hidden">
+
+                <div id="upload-file-buttons">
+                  <label id="fasta-button" class="btn btn-primary pull-left"><input id="seq-file" type="file" name="files" style="display:none;">Select unaligned FASTA File</label>
+                  <label id="aligned-fasta-button" class="btn btn-primary pull-left"><input id="aligned-seq-file" type="file" name="aligned_files" style="display:none;">Select aligned FASTA File</label>
+                  <span class='label label-default' id="upload-file-info"></span>
+                </div>
+
+                <div id="file-progress" class="progress active hidden">
                   <div id = "upload-progress" class="progress-bar progress-bar-success" role="progressbar" aria-valuemin="1" aria-valuemax="100" style="width: 0%">
                     <span class="sr-only">Progress bar</span>
                   </div>
@@ -51,7 +52,6 @@
                 It is assumed that the input sequences are in fact homologous to the reference and do not have too much indel variation.">
             </i>           
             Reference
-            
             </label>
             <div class="col-lg-4">
                 <select name="reference" id = "trace-reference-selector">
@@ -73,8 +73,7 @@
                 </select>
             </div>
             <div class="col-lg-5">
-                <p class = "text-info text-right" id = 'trace-reference-selector-help'>
-                </p>
+                <p class = "text-info text-right" id = 'trace-reference-selector-help'></p>
             </div>
           </div>
 
@@ -358,5 +357,4 @@
 
 <%- include ../includes/modal.ejs %>
 <%- include ../includes/footer.ejs %>
-<script src="//cdn.socket.io/socket.io-1.0.6.js"></script>
 <script src="/assets/js/hivtrace/form.js"></script>

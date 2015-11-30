@@ -195,7 +195,7 @@ Msa.methods.AnalysisCount = function(cb) {
 
 };
 
-Msa.methods.aminoAcidTranslation = function(cb) {
+Msa.methods.aminoAcidTranslation = function(cb, options) {
 
     var self = this;
 
@@ -204,7 +204,7 @@ Msa.methods.aminoAcidTranslation = function(cb) {
         var translated_arr = seqio.translateSequenceArray(seq_array, self.gencodeid.toString());
         var translated_fasta = seqio.toFasta(translated_arr);
         cb(null, translated_fasta);
-    });
+    }, options);
 
 
 };
@@ -278,6 +278,7 @@ Msa.methods.dataReader = function(file, cb) {
  * @param fn {String} path to file to be validated
  */
 Msa.statics.validateFasta = function(fn, cb, options) {
+
     seqio.parseFile(fn, function(err, result) {
 
         if (err) {
@@ -293,10 +294,8 @@ Msa.statics.validateFasta = function(fn, cb, options) {
         }
 
         // Check that all sequences are the same length
+        if (options && !options['no-equal-length']) {
 
-        if (options && options['no-equal-length']) {
-
-        } else {
             var reference_length = result[0].seq.length
             var all_the_same = result.every(function(d) {
                 return d.seq.length == reference_length
@@ -306,6 +305,7 @@ Msa.statics.validateFasta = function(fn, cb, options) {
                 cb({
                     'msg': 'Sequence lengths do not all match'
                 }, result)
+                return;
             }
         }
 
@@ -379,8 +379,6 @@ Msa.statics.scrubUserTree = function(fn, cb) {
     });
 
 }
-
-
 
 exports = {
     MsaSchema: Msa,

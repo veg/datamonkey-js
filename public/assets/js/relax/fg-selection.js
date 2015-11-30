@@ -11,6 +11,7 @@ $( document ).ready( function () {
     relax_create_neighbor_tree(nj_nwk);
   }
 
+
   if("#tree-select-btn-group") {
     $("#tree-select-btn-group").find('.btn').each(
       function(i, obj){
@@ -26,7 +27,12 @@ $( document ).ready( function () {
     });
   }
 
+
 });
+
+
+  
+
 
 function relax_create_neighbor_tree(nwk) {
 
@@ -60,8 +66,6 @@ function relax_create_neighbor_tree(nwk) {
 
   }
 
-
-  
   var default_tree_settings = function(tree) {
     tree.branch_length (null);
     tree.branch_name (null);
@@ -70,25 +74,26 @@ function relax_create_neighbor_tree(nwk) {
     tree.options ({'tag-branches' : false}, false);
     tree.options({'binary-selectable' : true});
     tree.options({'attribute-list' : ['reference', 'test']});
+    tree.options({'left-right-spacing': 'fit-to-size'});
     //tree.options({'selectable' : false});
     tree.selection_label(current_selection_name);
     tree.style_nodes(node_colorizer);
-    tree.style_edges(edge_colorizer)
+    tree.style_edges(edge_colorizer);
   }
 
   var width                         = 800,
       height                        = 600,
       current_selection_name        = $("#selection_name_box").val(),
       current_selection_id          = 0,
-      max_selections                = 10;
+      max_selections                = 10,
       color_scheme                  = d3.scale.category10(),
       selection_menu_element_action = "phylotree_menu_element_action";
 
 
-  var valid_id = new RegExp ("^[\\w]+$");
-  var top_modal_container = "#neighbor-tree";
-  var tree_container = "#tree-body";
-  var container_id = '#tree_container';
+  var valid_id = new RegExp ("^[\\w]+$"),
+      top_modal_container = "#neighbor-tree",
+      tree_container = "#tree-body",
+      container_id = '#tree_container';
 
   tree = d3.layout.phylotree(tree_container)
       .size([height, width])
@@ -105,6 +110,7 @@ function relax_create_neighbor_tree(nwk) {
       svg_defs = svg.append("defs");
 
   default_tree_settings(tree);
+
   tree(nwk).svg(svg).layout();
 
   var reference_id    = '#reference-branch-highlighter';
@@ -121,6 +127,8 @@ function relax_create_neighbor_tree(nwk) {
         tree.selection_label(current_selection_name);
       })
   });
+
+  _.delay(tree.placenodes().update, 100);
 
 }
 

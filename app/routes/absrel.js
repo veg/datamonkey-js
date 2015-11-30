@@ -55,7 +55,7 @@ exports.invoke = function(req, res) {
 
   };
 
-  var fn = req.files.files.path;
+  var fn = req.files.files.file;
   var postdata  = req.body;
   var datatype  = postdata.datatype;
   var gencodeid = postdata.gencodeid;
@@ -102,7 +102,7 @@ exports.invoke = function(req, res) {
         }
       }
 
-      helpers.moveSafely(req.files.files.path, absrel_result.filepath, move_cb);
+      helpers.moveSafely(req.files.files.file, absrel_result.filepath, move_cb);
 
     });
 
@@ -123,9 +123,7 @@ exports.getPage = function(req, res) {
       res.json(500, error.errorResponse('Invalid ID : ' + absrelid ));
     } else {
       // Should return results page
-      res.render('absrel/jobpage.ejs', { job : absrel, 
-                                         socket_addr: 'http://' + setup.host + ':' + setup.socket_port 
-                                       });
+      res.render('absrel/jobpage.ejs', { job : absrel });
     }
   });
 

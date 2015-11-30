@@ -173,7 +173,6 @@ exports.getPage = function(req, res) {
       if(flea.status != "completed") {
         flea.filesize(function(err, bytes) {
           res.render('flea/jobpage.ejs', { job : flea, 
-                                           socket_addr: 'http://' + setup.host + ':' + setup.socket_port,
                                            size : bytes
                                          });
         });
@@ -200,7 +199,6 @@ exports.restart = function(req, res) {
     logger.log(result);
   }
 
-
   //Return all results
   Flea.findOne({_id : fleaid}, function(err, flea) {
     if (err || !flea ) {
@@ -218,208 +216,71 @@ exports.restart = function(req, res) {
       });
     }
   });
-
 }
 
-/**
- * Displays id page for analysis
- */
+
+getResultsHelper = function(req, res, key) {
+  var fleaid = req.params.id;
+  Flea.findOne({_id : fleaid}, function(err, flea) {
+    if (err || !flea ) {
+      logger.error(err);
+      res.json(500, error.errorResponse('Invalid id : ' + fleaid ));
+    } else {
+      if (key) {
+        res.json(200, JSON.parse(flea.results[key]));
+      } else {
+        res.json(200, JSON.parse(flea.results));
+      }
+    }
+  });
+};
+
+
 exports.getResults = function(req, res) {
-
-  var fleaid = req.params.id;
-
-  //Return all results
-  Flea.findOne({_id : fleaid}, function(err, flea) {
-    if (err || !flea ) {
-      logger.error(err);
-      res.json(500, error.errorResponse('invalid id : ' + fleaid ));
-    } else {
-      // Should return results page
-      res.json(200, flea.results);
-    }
-  });
-
+  getResultsHelper(req, res, '');
 }
 
-/**
- * Displays id page for analysis
- */
 exports.getRates = function(req, res) {
-
-  var fleaid = req.params.id;
-
-  //Return all results
-  Flea.findOne({_id : fleaid}, function(err, flea) {
-    if (err || !flea ) {
-      logger.error(err);
-      res.json(500, error.errorResponse('invalid id : ' + fleaid ));
-    } else {
-      // Should return results page
-      res.json(200, JSON.parse(flea.results.rates));
-    }
-  });
-
+  getResultsHelper(req, res, 'rates');
 }
 
-/**
- * Displays id page for analysis
- */
 exports.getFrequencies = function(req, res) {
-
-  var fleaid = req.params.id;
-
-  //Return all results
-  Flea.findOne({_id : fleaid}, function(err, flea) {
-    if (err || !flea ) {
-      logger.error(err);
-      res.json(500, error.errorResponse('invalid id : ' + fleaid ));
-    } else {
-      // Should return results page
-      res.json(200, JSON.parse(flea.results.frequencies));
-    }
-  });
-
+  getResultsHelper(req, res, 'frequencies');
 }
 
-/**
- * Displays id page for analysis
- */
 exports.getSequences = function(req, res) {
-
-  var fleaid = req.params.id;
-
-  //Return all results
-  Flea.findOne({_id : fleaid}, function(err, flea) {
-    if (err || !flea ) {
-      logger.error(err);
-      res.json(500, error.errorResponse('invalid id : ' + fleaid ));
-    } else {
-      // Should return results page
-      res.json(200,  JSON.parse(flea.results.sequences));
-    }
-  });
-
+  getResultsHelper(req, res, 'sequences');
 }
 
 exports.getRatesPheno = function(req, res) {
-
-  var fleaid = req.params.id;
-
-  //Return all results
-  Flea.findOne({_id : fleaid}, function(err, flea) {
-    if (err || !flea ) {
-      logger.error(err);
-      res.json(500, error.errorResponse('invalid id : ' + fleaid ));
-    } else {
-
-      // Convert tsv file to json
-      if(flea.results.rates_pheno) {
-        var rates_pheno = flea.results.rates_pheno.split('\n');
-        var headers = rates_pheno[0].split('\t');
-        rates_pheno.shift();
-        var content = rates_pheno.map(function(x) { return x.split('\t')});
-
-        function toObj(x) {
-          var cols = {};
-          x.forEach(function(x,i) { cols[headers[i]] = x });
-          return cols;
-        }
-
-        var rates_pheno_json = content.map(toObj);
-        res.send(200, rates_pheno_json);
-      } else {
-        res.send(500, {'error' : 'rates pheno not found'});
-      }
-    }
-
-  });
-
+  getResultsHelper(req, res, 'rates_pheno');
 }
 
-/**
- * Displays id page for analysis
- */
 exports.getGenes = function(req, res) {
-
-  var fleaid = req.params.id;
-
-  //Return all results
-  Flea.findOne({_id : fleaid}, function(err, flea) {
-    if (err || !flea ) {
-      logger.error(err);
-      res.json(500, error.errorResponse('invalid id : ' + fleaid ));
-    } else {
-      // Should return results page
-      res.json(200, flea.results);
-    }
-  });
-
+  getResultsHelper(req, res, '');
 }
 
 exports.getTrees = function(req, res) {
-
-  var fleaid = req.params.id;
-
-  //Return all results
-  Flea.findOne({_id : fleaid}, function(err, flea) {
-    if (err || !flea ) {
-      logger.error(err);
-      res.json(500, error.errorResponse('invalid id : ' + fleaid ));
-    } else {
-      // Should return results page
-      res.json(200, JSON.parse(flea.results.trees));
-    }
-  });
-
+  getResultsHelper(req, res, 'trees');
 }
 
-exports.getNeutralization = function(req, res) {
-
-  var fleaid = req.params.id;
-
-  //Return all results
-  Flea.findOne({_id : fleaid}, function(err, flea) {
-    if (err || !flea ) {
-      logger.error(err);
-      res.json(500, error.errorResponse('invalid id : ' + fleaid ));
-    } else {
-      // Should return results page
-      res.json(200, JSON.parse(flea.neutralization));
-    }
-  });
-
-}
-
-exports.getTurnover = function(req, res) {
-
-  var fleaid = req.params.id;
-
-  //Return all results
-  Flea.findOne({_id : fleaid}, function(err, flea) {
-    if (err || !flea ) {
-      logger.error(err);
-      res.json(500, error.errorResponse('invalid id : ' + fleaid ));
-    } else {
-      // Should return results page
-      res.json(200, JSON.parse(flea.results.turnover));
-    }
-  });
-
+exports.getDivergence = function(req, res) {
+  getResultsHelper(req, res, 'divergence');
 }
 
 exports.getCopyNumbers = function(req, res) {
-
-  var fleaid = req.params.id;
-
-  //Return all results
-  Flea.findOne({_id : fleaid}, function(err, flea) {
-    if (err || !flea ) {
-      logger.error(err);
-      res.json(500, error.errorResponse('invalid id : ' + fleaid ));
-    } else {
-      // Should return results page
-      res.json(200, JSON.parse(flea.results.copynumbers));
-    }
-  });
-
+  getResultsHelper(req, res, 'copynumbers');
 }
+
+exports.getRunInfo = function(req, res) {
+  getResultsHelper(req, res, 'run_info');
+}
+
+exports.getDates = function(req, res) {
+  getResultsHelper(req, res, 'dates');
+}
+
+exports.getCoordinates = function(req, res) {
+  getResultsHelper(req, res, 'coordinates');
+}
+
