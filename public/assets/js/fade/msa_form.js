@@ -12,15 +12,12 @@ $(function() {
     var filename = document.getElementById('seq-file').files[0].name;
 
     formData.append('files', file);
-    formData.append('datatype', $( "select[name='datatype']" ).val());
-    formData.append('gencodeid', $( "select[name='gencodeid']" ).val());
     formData.append('receive_mail',  $( "input[name='receive_mail']" ).prop("checked"));
     formData.append('mail', $( "input[name='mail']" ).val());
 
-
     var xhr = new XMLHttpRequest();
 
-    xhr.open('post', '/busted/uploadfile', true);
+    xhr.open('post', '/fade/uploadfile', true);
 
     xhr.upload.onprogress = function(e) {
       if (e.lengthComputable) {
@@ -40,7 +37,7 @@ $(function() {
       var result = JSON.parse(this.responseText);
       console.log(result);
       if('_id' in result) {
-        window.location.href =  '/busted/' + result._id + '/select-foreground';
+        window.location.href =  '/fade/' + result._id + '/select-foreground';
       } else if ('error' in result) {
         $('#modal-error-msg').text(result.error);
         $('#errorModal').modal()

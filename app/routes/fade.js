@@ -48,8 +48,9 @@ exports.createForm = function(req, res) {
 
 exports.uploadFile = function(req, res) {
 
+  var PROTEIN_GENCODE = -2;
   var data = req.body;
-  var fn = req.files.files.path;
+  var fn = req.files.files.file;
 
   var fade = new Fade();
   var postdata = req.body;
@@ -57,7 +58,7 @@ exports.uploadFile = function(req, res) {
   var msa = new Msa();
 
   msa.datatype  = data.datatype;
-  msa.gencodeid = data.gencodeid;
+  msa.gencodeid = PROTEIN_GENCODE;
 
   if(postdata.receive_mail == 'true') {
     fade.mail = postdata.mail;
@@ -112,10 +113,8 @@ exports.uploadFile = function(req, res) {
         res.json(200,  fade);
       }
     }
-    helpers.moveSafely(req.files.files.path, fade_result.filepath, move_cb);
+    helpers.moveSafely(fn, fade_result.filepath, move_cb);
   });
-
-
   });
 };
 
@@ -148,6 +147,13 @@ exports.invokeFade = function(req, res) {
   Fade.findOne({ '_id' : id }, function(err, fade) {
 
     fade.tagged_nwk_tree = postdata.nwk_tree;
+
+    if(postdata.fg_branches) {
+      fade.fg_branches = postdata.fg_branches;
+    } else {
+      fade.fg_branches = "ALL";
+    }
+
     fade.status          = fade.status_stack[0];
 
     fade.save(function (err, result) {
@@ -253,9 +259,12 @@ exports.getResults = function(req, res) {
       res.json(500, error.errorResponse('invalid id : ' + fadeid ));
     } else {
       // Should return results page
-      res.json(200, { results : fade.results });
+      res.json(200, { results : JSON.parse(fade.results),
+                      msa : fade.msa[0]
+                    });
     }
   });
+
 };
 
 exports.resubscribePendingJobs = function(req, res) {

@@ -210,6 +210,7 @@ Msa.methods.aminoAcidTranslation = function(cb, options) {
 };
 
 Msa.methods.dataReader = function(file, cb) {
+
     if (file.indexOf('fastq') != -1) {
 
         // TODO: Support FASTQ
@@ -233,10 +234,10 @@ Msa.methods.dataReader = function(file, cb) {
     }
 
     var hyphy_process = globals.hyphy + ' ' + __dirname + "/../../lib/bfs/datareader.bf";
+
     winston.info(globals.hyphy + ' ' + __dirname + '/../../lib/bfs/datareader.bf' + ' : ' + 'spawning process');
 
     var hyphy = spawn(globals.hyphy, [__dirname + "/../../lib/bfs/datareader.bf"]);
-
     var result = '';
 
     hyphy.stdout.on('data', function(data) {
@@ -261,12 +262,13 @@ Msa.methods.dataReader = function(file, cb) {
 
     });
 
-
     hyphy.stdin.write(file + "\n");
     winston.info(hyphy_process + ' : ' + 'file : ' + file)
-    hyphy.stdin.write(this.gencodeid.toString());
-    winston.info(hyphy_process + ' : ' + 'gencodeid : ' + this.gencodeid)
 
+    this.gencodeid = this.gencodeid || 0;
+    hyphy.stdin.write(this.gencodeid.toString());
+
+    winston.info(hyphy_process + ' : ' + 'gencodeid : ' + this.gencodeid)
     hyphy.stdin.end();
 
 };
@@ -329,6 +331,8 @@ Msa.statics.parseFile = function(fn, datatype, gencodeid, cb) {
             cb(err, null)
             return;
         }
+
+        console.log(result);
 
         var fpi = result.FILE_PARTITION_INFO;
         var file_info = result.FILE_INFO;

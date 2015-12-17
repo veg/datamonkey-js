@@ -1,9 +1,12 @@
 <%- include ../includes/header.ejs %>
 
-<link href="/assets/css/busted/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
+<!--
+<link href="/assets/css/fade/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
 <link href="/assets/lib/phylotree/phylotree.css" rel="stylesheet">
-<link href="/assets/css/busted/busted.css" rel="stylesheet">
 <link href="/assets/css/neighbor-join.css" rel="stylesheet">
+-->
+
+<link href="/assets/css/fade/fade.css" rel="stylesheet">
 
 <div class="container">
 
@@ -38,13 +41,26 @@
     </div>
  </div>
 
-  <div id="neighbor-tree" data-tree="<%= busted.msa[0].nj %>">
+  <% if (fade.msa[0].usertree) { %>
+  <div id="tree-select-btn-group" class="col-lg-4 phylo-nav">
+    <div class="btn-group" data-toggle="buttons">
+      <label title="Highlight Test Branches" id="usertree-highlighter" class="btn btn-default btn-sm active" data-name='usertree'>
+        <input type="radio" name="options" id="relax-ut-select" autocomplete="off" checked>User Defined Tree</input>
+      </label>
+      <label title="Highlight Reference Branches" id="nj-highlighter" class="btn btn-default btn-sm" data-name='nj'>
+        <input type="radio" name="options" id="relax-nj-select" autocomplete="off" checked>Neighbor Joining Tree</input>
+      </label>
+    </div>
+  </div>
+  <% } %>
+
+  <div id="neighbor-tree" data-tree="<%= fade.msa[0].nj %>" <% if (fade.msa[0].usertree) { %> data-usertree="<%= fade.msa[0].usertree %>"<% } %>>
     <div id="tree-body">
       <div id='tree_container' class='tree-widget'></div>
     </div>
   </div>
 
-  <form action="/busted/<%= busted._id %>/select-foreground" enctype="multipart/form-data" method="POST" name="modelForm">
+  <form action="/fade/<%= fade._id %>/select-foreground" enctype="multipart/form-data" method="POST" name="modelForm">
     <div>
       <button type="submit" class="btn pull-right"><span class="glyphicon glyphicon-play"></span></button>
     </div>
@@ -55,6 +71,4 @@
 <%- include ../includes/modal.ejs %>
 <%- include ../includes/footer.ejs %>
 
-<script src="/assets/lib/d3/d3.min.js"></script>
-<script src="/assets/lib/phylotree/phylotree.js"></script>
-<script src="/assets/js/busted/fg-selection.js"></script>
+<script src="/assets/js/fade/fg-selection.js"></script>

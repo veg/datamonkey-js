@@ -36,7 +36,7 @@ var mongoose = require('mongoose'),
 var AnalysisSchema = require(path.join(__dirname, '/analysis'));
 
 var Fade = AnalysisSchema.extend({
-  tagged_nwk_tree       : String,
+  fg_branches           : String,
   last_status_msg       : String,
   results               : Object
 });
