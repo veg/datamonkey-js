@@ -679,3 +679,19 @@ body {
 .modal-tree {
   width: 900px; 
 }
+
+.grid .tick {
+    stroke: lightgrey;
+    stroke-opacity: 0.7;
+    shape-rendering: crispEdges;
+}
+
+.grid path {
+          stroke-width: 0;
+}
+
+.dm-form-row {
+  margin-bottom: 20px;
+}
+
+
