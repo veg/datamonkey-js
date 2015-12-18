@@ -4,8 +4,6 @@
   <link href="/assets/lib/hyphy-vision/hyphy-vision.css" rel="stylesheet">
 -->
 
-<div class='container-fluid'>
-
     <div class="loader" title="0">
       <svg version="1.1" id="loader-1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
        width="40px" height="40px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve">
@@ -33,174 +31,41 @@
   <div class='tabbable content hidden'>
     <ul class="nav nav-tabs">
       <li class="active"><a href="#datamonkey-relax-summary-tab" data-toggle="tab">Summary</a></li>
-      <li class=""><a href="#datamonkey-relax-tree-tab" data-toggle="tab">Tree</a></li>
+      <li class=""><a href="#tree-tab" data-toggle="tab">Tree</a></li>
     </ul>
 
 
     <div class="tab-content">
 
-        <div class="tab-pane active" id = "datamonkey-relax-summary-tab">
-            <div class = "row" style = 'margin-top: 5px'>
-                <div class = "col-md-12">
-                    <ul class="list-group">
-                      <li class="list-group-item list-group-item-info">
-                        <h3 class="list-group-item-heading"><i class="fa fa-list" style = 'margin-right: 10px'>
-                        </i><span id = 'summary-method-name'>RELAX(ed selection test)</span> summary</h3>
-                            <p class = "list-group-item-text lead" style = "margin-top:0.5em; ">
-                                Test
-                                for selection <strong id = 'summary-direction'></strong> (<abbr title = "Relaxation coefficient">K</abbr> = <strong id = 'summary-K'></strong>)
-                                was <strong id = 'summary-evidence'> </strong> (p = <strong id = 'summary-pvalue'></strong>, <abbr title = "Likelihood ratio statistic">LR</abbr> = <strong id = 'summary-LRT'> </strong>)
-                            </p>
-                            <p><small>Please cite <a href = '#' id = 'summary-pmid'>PMID XXX</a> if you use this result in a publication, presentation, or other scientific work.</small></p>
-                       </li>
-                    </ul>
-                </div>
-            </div>
+         <div class="tab-pane active" id="datamonkey-relax-summary-tab">
+             <div id="hyphy-relax-summary" class="row" style='margin-top: 5px'></div>
+             <div id="hyphy-model-fits" class="row"></div>
+             <div id="hyphy-omega-plots" class="row"></div>
+         </div>
 
-             <div class = "row">
-                  <div class = "col-lg-12">
-                    <ul class="list-group">
-                      <li class="list-group-item">
-                        <h4 class="list-group-item-heading"><i class="fa fa-cubes" style = 'margin-right: 10px'></i>Model fits</h4>
-                        <table class = "table table-hover table-condensed list-group-item-text" style = "margin-top:0.5em;">
-                          <thead>
-                              <tr id = 'summary-model-header1'>
-                                <th>Model</th>
-                                <th><em> log </em>L</th>
-                                <th><abbr title = "Number of estimated model parameters"># par.</abbr></th>
-                                <th><abbr title = "Small Sample AIC">AIC<sub>c</sub></abbr></th>
-                                <th>Time to fit</th>
-                                <th><abbr title = "Total tree length, expected substitutions/site">L<sub>tree</sub></abbr></th>
-                                <th>Branch set</th>
-                                <th>&omega;<sub>1</sub></th>
-                                <th>&omega;<sub>2</sub></th>
-                                <th>&omega;<sub>3</sub></th>
-                              </tr>
-                            </thead>
-                          <tbody id='summary-model-table'></tbody>
-                         </table>
-                       </li>
-                     </ul>
-              </div>
-          </div>
-             <div class = "row">
-                  <div id="hyphy-omega-plots" class="col-lg-12">
-                    <script type="text/template" class="hyphy-omega-plots">
-                      {% _.each(rc, function(item, key) { %}
-                        <div class="panel panel-default" id='{{ item.key }}'>
-                          <div class="panel-heading">
-                            <h3 class="panel-title">&omega; distributions under the <strong>{{ item.label }}</strong> model</h3>
-                            <p>
-                              <small>Test branches are shown in <span class="hyphy-blue">blue</span> and reference branches are shown in <span class="hyphy-red">red</span></small>
-                            </p>
-                            <div class="btn-group">
-                              <button id="export-{{ item.key }}-svg" type="button" class="btn btn-default btn-sm">
-                                <span class="glyphicon glyphicon-floppy-save"></span> SVG
-                              </button>
-                              <button id="export-{{ item.key }}-png" type="button" class="btn btn-default btn-sm">
-                                <span class="glyphicon glyphicon-floppy-save"></span> PNG
-                              </button>
-                            </div>
-                          </div>
-                          <div class="panel-body">
-                            <svg id = {{ item.key }}-svg />
-                          </div>
-                        </div>
-                      {% }) %}
-                    </script>
-                </div>
-             </div>
-        </div>
-
-        <div class = 'tab-pane' id = "datamonkey-relax-tree-tab">
-            <div class = 'row'>
-                <div class = "col-md-12">
-                    <div class="input-group input-group-sm">
-                      <div class="input-group-btn">
-                        <button type="button" class="btn btn-default btn-sm" id = "expand_spacing" title = "Expand spacing">
-                            <i class="fa fa-expand" ></i>
-                        </button>
-                         <button type="button" class="btn btn-default btn-sm" id = "compress_spacing" title = "Compress spacing">
-                            <i class="fa fa-compress" ></i>
-                        </button>
-                         <button type="button" class="btn btn-default btn-sm" id = "sort_ascending" title = "Sort deepest clades to the bototm">
-                            <i class="fa fa-sort-amount-asc" ></i>
-                        </button>
-                         <button type="button" class="btn btn-default btn-sm" id = "sort_descending" title = "Sort deepsest clades to the top">
-                            <i class="fa fa-sort-amount-desc" ></i>
-                        </button>
-                         <button type="button" class="btn btn-default btn-sm" id = "sort_original" title = "Restore original order">
-                            <i class="fa fa-sort" ></i>
-                        </button>
-                      </div>
-
-                      <div class="input-group-btn">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Model 
-                        <span class="caret"></span></button>
-                        <ul class="dropdown-menu" id = "datamonkey-relax-tree-model-list">
-                          <!-- <li><a href="#" class="_seq_predef" data-range="131,156">V1</a></li> -->
-                        </ul>
-                      </div>
-
-                      <input type="text" class="form-control disabled" id="datamonkey-relax-tree-model" disabled >
-
-                      <div class="input-group-btn">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Highlight branch set 
-                        <span class="caret"></span></button>
-                        <ul class="dropdown-menu" id = "datamonkey-relax-tree-highlight-branches">
-                          <!-- <li><a href="#" class="_seq_predef" data-range="131,156">V1</a></li> -->
-                       </ul>
-                      </div>
-                      <input type="text" class="form-control disabled" id="datamonkey-relax-tree-highlight" disabled >
-                      <span class="input-group-addon">
-                        Use model branch lengths
-                        <input type="checkbox" id="datamonkey-relax-tree-branch-lengths" checked class = "datamonkey-relax-tree-trigger">
-                      </span>
-                      <span class="input-group-addon">
-                        Show fill legend
-                        <input type="checkbox" id="datamonkey-relax-tree-fill-legend" checked class = "datamonkey-relax-tree-trigger">
-                      </span>
-                      <span class="input-group-addon">
-                        Use color
-                        <input type="checkbox" id="datamonkey-relax-tree-fill-color" checked class = "datamonkey-relax-tree-trigger">
-                      </span>
-                    </div>
-                </div>
-            </div>
-
-            <div class='row export-save-row'>
-              <div class = "col-md-8">
-                <div class="input-group input-group-sm input-group-btn">
-                  <button id="export-phylo-svg" type="button" class="btn btn-default btn-sm">
-                    <span class="glyphicon glyphicon-floppy-save"></span> SVG
-                  </button>
-                  <button id="export-phylo-png" type="button" class="btn btn-default btn-sm">
-                    <span class="glyphicon glyphicon-floppy-save"></span> PNG
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div class = 'row'>
-                <div class = 'col-md-1'>
-                     <div class = 'row'>
-                        <div id = 'color_legend'>
-                        </div>
-                    </div>
-                </div>
-                <div class = 'col-md-11'>
-                     <div class = 'row'>
-                            <div id = 'tree_container' class = 'tree-widget'>
-                            </div>
-                     </div>
-                  </div>
-            </div>
-        </div>
+        <div class='tab-pane' id="tree-tab"></div>
 
     </div>
   </div>
-</div>
 
 <img id="hyphy-chart-image" />
 <canvas id="hyphy-chart-canvas"></canvas>
-<script src="/assets/js/relax/results.js"></script>
+
+<script>
+
+    $(document).ready(function() {
+
+        var id = $("#job-report").data("jobid")
+        d3.json(id + "/results", function(json) {
+            render_summary(json);
+            render_omega_plot(json);
+            render_model_fits(json);
+            render_tree(json);
+            $(".loader").addClass('hidden');
+            $(".content").removeClass('hidden');
+       });
+    });
+
+</script>
+
+
