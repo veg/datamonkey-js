@@ -26,7 +26,7 @@
                                 Evidence<sup>&dagger;</sup>
                                 of episodic diversifying selection was found on <strong id = 'summary-selected-branches'></strong> out of <span id = 'summary-tested-branches'></span> tested branches (<span id = 'summary-total-branches'></span> total branches).
                             </p>
-                            <p><small><sup>&dagger;</sup><abbr title = 'Likelihood Ratio Test'>LRT</abbr> p &le; 0.05, corrected for multiple testing.</small>                          
+                            <p><small><sup>&dagger;</sup><abbr title = 'Likelihood Ratio Test'>LRT</abbr> p &le; 0.05, corrected for multiple testing.</small>
                                 <br><small>Please cite <a href = '#' id = 'summary-pmid'>PMID XXX</a> if you use this result in a publication, presentation, or other scientific work.</small>
                              </p>
                        </li>
@@ -49,21 +49,19 @@
                                         <th>% of tree <br>length</th>
                                         <th># under <br>selection</th>
                                    </tr>
-                                </thead>       
-                                   <tbody id = 'summary-tree-table'>
-                                        
-                                   </tbody>
+                                </thead>
+                                   <tbody id = 'summary-tree-table'></tbody>
                                     <caption style = 'caption-side: bottom; text-align: left; margin-top:1em;'>
                                     <p class = "list-group-item-text text-muted">
-                                    Total tree length under the branch-site model is <strong id = 'summary-tree-length'></strong>    
-                                    expected substitutions per nucleotide site, and <strong id = 'summary-tree-length-mg94'></strong>    
+                                    Total tree length under the branch-site model is <strong id = 'summary-tree-length'></strong>
+                                    expected substitutions per nucleotide site, and <strong id = 'summary-tree-length-mg94'></strong>
                                     under the MG94 model.
-                                    </p>                
-                                </caption>                                  
-                                </table>                         
+                                    </p>
+                                </caption>
+                                </table>
                            </li>
                         </ul>
-                    </div>                
+                    </div>
                     <div class = "col-md-6">
                     <ul class="list-group">
                       <li class="list-group-item">
@@ -80,17 +78,17 @@
                                    </tr>
                                 </thead>
                                <tbody id = 'summary-model-table'>
-                                    
+
                                </tbody>
-                               
+
                                <caption style = 'caption-side: bottom; text-align: left; margin-top:1em;'>
                                     <p class = "list-group-item-text text-muted">
-                                        The complete analysis took <strong id = 'summary-total-runtime'></strong> to finish, 
-                                        of which <strong id = 'summary-complexity-runtime'></strong> was taken by the complexity analysis, 
+                                        The complete analysis took <strong id = 'summary-total-runtime'></strong> to finish,
+                                        of which <strong id = 'summary-complexity-runtime'></strong> was taken by the complexity analysis,
                                         and <strong id = 'summary-testing-runtime'></strong> by selection testing.
-                                    </p>                
-                                </caption>                   
-                            </table>                            
+                                    </p>
+                                </caption>
+                            </table>
                        </li>
                     </ul>
                 </div>
@@ -109,9 +107,9 @@
                                 <i class="fa fa-compress" ></i>
                             </button>
                           </div>
-  
+
                     </div>
-            </div>        
+            </div>
 
             <div class='row export-save-row'>
               <div class = "col-md-8">
@@ -150,12 +148,11 @@
                             <div id = 'tree_container' class = 'tree-widget'>
                             </div>
                      </div>
-                        
                   </div>
             </div>
         </div>
 
-        <div class = 'tab-pane' id = "table_tab"> 
+        <div class = 'tab-pane' id = "table_tab">
                 <div class = "row">
                     <div class = "col-md-12">
                         <table class = "table table-hover table-condensed" style = "margin-top:0.5em;">
@@ -168,15 +165,15 @@
                               <th>Uncorrected p-value</th>
                               <th>&omega; distribution over sites</th>
                            </tr>
-                        </thead>       
+                        </thead>
                            <tbody id = 'table-branch-table'></tbody>
-                        </table>                         
-                    </div>  
+                        </table>
+                    </div>
                 <div class = "col-md-5 hidden">
                     <div class="panel panel-default">
                       <div class="panel-heading" id = 'primary_omega_tag'></div>
                       <div class="panel-body">
-                        <svg id = "primary_omega_plot"/> 
+                        <svg id = "primary_omega_plot"/>
                       </div>
                     </div>
                 </div>
@@ -205,29 +202,28 @@
             render_bs_rel (analysis_data);
         };
       })(f);
+
       reader.readAsText(f);
     }
   });
 
-  $( document ).ready( function () {
+  $(document).ready( function () {
     var absrel_id = $("#job-report").data("jobid")
     d3.json (absrel_id + "/results", function (json) {
-
       //var container_id = '#tree_container';
       var bsrel_app = datamonkey.absrel();
       bsrel_app(json);
       //datamonkey.absrel(, container_id);
     });
 
-    $("#export-phylo-svg").on('click', function(e) { 
-      datamonkey.save_image("svg", "#tree_container"); 
+    $("#export-phylo-svg").on('click', function(e) {
+      datamonkey.save_image("svg", "#tree_container");
     });
 
-    $("#export-phylo-png").on('click', function(e) { 
-      datamonkey.save_image("png", "#tree_container"); 
+    $("#export-phylo-png").on('click', function(e) {
+      datamonkey.save_image("png", "#tree_container");
     });
 
   });
 
 </script>
-
