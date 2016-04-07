@@ -340,7 +340,7 @@ var hivtrace_cluster_network_graph = function (json, network_container, network_
 
  self.compute_local_clustering_coefficients_worker = _.once (function () {
 
-    var worker = new Worker('/assets/lib/datamonkey/hivtrace/workers/lcc.js');
+    var worker = new Worker('/assets/js/datamonkey/hivtrace/workers/lcc.js');
 
     worker.onmessage = function(event) {
 
