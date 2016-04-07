@@ -42,6 +42,16 @@ gulp.task("scripts", function() {
             "react-with-addons.js",
           ]
         },
+        "blueimp-load-image": {
+          "main": [
+            "js/load-image.js",
+          ]
+        },
+        "blueimp-canvas-to-blob": {
+          "main": [
+            "js/canvas-to-blob.js",
+          ]
+        },
         "flea": {
               "dependencies": null
             }
