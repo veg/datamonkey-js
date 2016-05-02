@@ -112,10 +112,10 @@ fs.readdirSync(models_path).forEach(function (file) {
 
 
 app.use(express.static(path.join(__dirname, '/public')));
-app.use('/flea/', express.static(path.join(__dirname, '/public/assets/lib/flea/dist/')));
 app.use('/uploads', express.static(path.join(__dirname + '/uploads')));
 
 require('./config/routes')(app);
+app.use('/flea/', express.static(path.join(__dirname, '/public/assets/lib/flea/dist/')));
 
 app.use(function(err, req, res, next) {
     res.json(500, {'error' : err.message});
