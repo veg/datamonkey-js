@@ -27,9 +27,6 @@
   <div id='standard-output'  <% if(!job.last_status_msg) { %> class='hidden' <% } %> >
       <div class='panel-body'>
         <h6> Standard Output </h6>
-        <button id="job-stdout-copy-button" class="btn btn-default btn-sm pull-right" type="button">
-          Copy Output
-        </button>
         <pre id='job-pre'>
           <%= job.last_status_msg %>
         </pre>

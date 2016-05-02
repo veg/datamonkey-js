@@ -1,11 +1,11 @@
 {
   "name": "datamonkey.js",
-  "version": "0.3.1",
+  "version": "0.4.1",
   "description": "A free public server for comparative analysis of sequence alignments using state-of-the-art statistical models.",
   "private": true,
   "author": {
     "name": "Steven Weaver",
-    "email": "sweaver@ucsd.edu"
+    "email": "steven@stevenweaver.org"
   },
   "scripts": {
     "test": "mocha -R spec $(find tests -name '*.js')"

@@ -66,7 +66,7 @@ var JobTable = React.createClass({displayName: "JobTable",
   loadJobsFromServer: function() {
     var self = this;
     d3.json(this.props.url, function(data) {
-      data.sort();
+      data = _.sortBy(data, 'creation_time');
       self.setState({jobs: data});
     });
   },
@@ -79,15 +79,6 @@ var JobTable = React.createClass({displayName: "JobTable",
   },
   render: function() {
 
-    var cx = React.addons.classSet;
-    var classes = cx({
-      'table': true,
-      'table-bordered': true,
-      'table-hover': true,
-      'tablesorter': true,
-      'table-striped': true
-    });
-
     var Jobs = this.state.jobs.map(function (job) {
       return (
         React.createElement(Job, {job: job})
@@ -95,7 +86,7 @@ var JobTable = React.createClass({displayName: "JobTable",
     });
 
     return (
-    React.createElement("table", {className: classes}, 
+    React.createElement("table", {className: "table table-bordered table-hover tablesorter table-striped"}, 
       React.createElement("thead", null, 
       React.createElement("tr", null, React.createElement("td", null, "Ticket Number"), React.createElement("td", null, "Status"), React.createElement("td", null, "Kind"), React.createElement("td", null, "Sequences"), React.createElement("td", null, "Sites"), React.createElement("td", null, "Running Time"), React.createElement("td", null, "Creation Time"), React.createElement("td", null, "Queue Time"))
       ), 

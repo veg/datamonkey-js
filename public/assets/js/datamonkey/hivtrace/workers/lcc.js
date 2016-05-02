@@ -1,4 +1,4 @@
-importScripts('/assets/js/worker-vendor.js', '/assets/lib/datamonkey/hivtrace/misc.js');
+importScripts('/assets/js/worker-vendor.js', '/assets/js/datamonkey/hivtrace/misc.js');
 
 onmessage = function(event) {
     try {
