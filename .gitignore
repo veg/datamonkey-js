@@ -15,6 +15,7 @@ console
 node_modules
 coverage
 .hyphy
+.public
 
 npm-debug.log
 config/setup.js
@@ -22,3 +23,6 @@ bower_components
 uploads
 src/bower-components
 public/assets/fonts
+public/fonts
+*vendor*
+
