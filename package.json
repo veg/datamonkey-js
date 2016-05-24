@@ -1,11 +1,11 @@
 {
   "name": "datamonkey.js",
-  "version": "0.3.1",
+  "version": "0.4.1",
   "description": "A free public server for comparative analysis of sequence alignments using state-of-the-art statistical models.",
   "private": true,
   "author": {
     "name": "Steven Weaver",
-    "email": "sweaver@ucsd.edu"
+    "email": "steven@stevenweaver.org"
   },
   "scripts": {
     "test": "mocha -R spec $(find tests -name '*.js')"
@@ -21,8 +21,12 @@
     "express": "4.x",
     "express-busboy": "^2.4.4",
     "express-validator": "2.x.x",
+    "gulp-concat": "^2.6.0",
+    "gulp-debug": "^2.1.2",
+    "gulp-sourcemaps": "^1.6.0",
     "jade": "1.x.x",
     "jquery-file-upload-middleware": "0.1.x",
+    "main-bower-files": "^2.9.0",
     "moment": "2.8.x",
     "mongodb": "2.0.x",
     "mongoose": "4.x.x",
@@ -52,6 +56,8 @@
     "gulp-usemin": "^0.3.14",
     "gulp-watch": "^4.3.5",
     "mocha": "2.x.x",
-    "should": "7.x.x"
+    "reactify": "^1.1.1",
+    "should": "7.x.x",
+    "webworker-threads": "^0.6.2"
   }
 }

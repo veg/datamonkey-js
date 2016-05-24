@@ -1,18 +1,17 @@
 {
   "name": "datamonkey.js",
-  "version": "0.2.0",
+  "version": "0.4.1",
   "main": "datamonkey.js",
   "dependencies": {
-    "hyphy-vision": "git@github.com:veg/hyphy-vision.git#0.1.3-alpha.2",
-    "phylotree": "git@github.com:stevenweaver/phylotree.js.git#834e0a034a8e547ebb33f67689ce579f62052459",
+    "hyphy-vision": "git@github.com:veg/hyphy-vision.git#0.2.0",
+    "phylotree": "git@github.com:veg/phylotree.js.git#v0.1.4",
     "flea": "git@github.com:veg/flea.git#v1.0.0-alpha",
     "jquery-ui": "1.11.x",
     "jquery-file-upload": "9.x.x",
-    "jquery-zclip": "1.x.x",
     "underscore": "git@github.com:veg/underscore.git#1.8.4",
     "socket.io-client": "1.*",
     "moment": "2.10.*",
-    "react": "0.13.*",
+    "react": "0.14.6",
     "font-awesome": "fontawesome#~4.4.0",
     "bootstrap": "~3.3.5"
   },

@@ -1,6 +1,6 @@
 <%- include ../includes/header.ejs %>
 
-<div class="container" id="job-report" data-jobid="<%= job._id %>">
+<div class="container-fluid" id="job-report" data-jobid="<%= job._id %>">
   <%- include header.ejs %>
   <% if (job.status != 'completed') { %>
     <%- include ../partials/jobs/jobpage.ejs %>

@@ -58,6 +58,19 @@ module.exports = function(app) {
   app.get('/busted/:bustedid/log.txt', busted.getLog);
   busted.resubscribePendingJobs();
 
+  // FADE ROUTES
+  fade = require(path.join(__dirname, '../app/routes/fade'));
+  app.get('/fade', fade.createForm);
+  app.post('/fade/uploadfile', fade.uploadFile);
+  app.get('/fade/:id/select-foreground', fade.selectForeground);
+  app.post('/fade/:id/select-foreground', fade.invokeFade);
+  app.get('/fade/:fadeid', fade.getPage);
+  app.get('/fade/:fadeid/info', fade.getInfo);
+  app.get('/fade/:fadeid/cancel', fade.cancel);
+  app.get('/fade/:fadeid/results', fade.getResults);
+  app.get('/fade/:fadeid/log.txt', fade.getLog);
+  //fade.resubscribePendingJobs();
+
   // RELAX ROUTES
   relax = require(path.join(__dirname, '../app/routes/relax'));
   app.get('/relax', relax.createForm);

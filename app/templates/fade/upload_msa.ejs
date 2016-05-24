@@ -1,0 +1,165 @@
+<%- include ../includes/header.ejs %>
+
+<div id="container" class="container">
+
+  <%- include header.ejs %>
+  <div class="nav nav-list pull-right span4i"><a href="/help" target="_blank"><span class="glyphicon glyphicon-info-sign"></span></a></div>
+
+  <div class="row col-lg-9">  
+
+    <form class="form-horizontal upload-form" name="uploadform" enctype="multipart/form-data" method="post">
+
+      <div class="row dm-form-row" id="seq-file-div">
+        <label id="geneticcode-content" class="col-lg-3">
+          <i title="" 
+                data-original-title="" 
+                data-html="true" 
+                data-placement="bottom" 
+                data-trigger="hover click" 
+                data-toggle="popover" 
+                data-container="body" 
+                class="fa fa-question-circle fa-fw helper_text" 
+                data-title="Sequences" 
+                data-content="A FASTA file with <b>protein</b> sequences to be analyzed.">
+          </i>
+          Sequence File
+        </label>
+
+        <label id="fasta-button" class="btn btn-primary pull-left">
+          <input id="seq-file" type="file" name="files" style="display:none;">
+          Choose FASTA File 
+        </label>
+        <span class='label label-default' id="upload-file-info"></span>
+
+        <div id="file-progress" class="progress progress-striped active hidden">
+          <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="1" aria-valuemax="100" style="width: <%= hivtrace.percentage_complete %>">
+            <span class="sr-only">0% Complete</span>
+          </div>
+        </div>  
+
+        <div class="col-lg-5">
+          <p class="text-info text-right" id="trace-reference-strip-help"></p>
+        </div>
+      </div>
+
+      <div class="row dm-form-row">
+        <label class="col-lg-3" id="rate-matrix-selection">
+          <i title="" 
+                data-original-title="" 
+                data-html="true" 
+                data-placement="bottom" 
+                data-trigger="hover click" 
+                data-toggle="popover" 
+                data-container="body" 
+                class="fa fa-question-circle fa-fw helper_text" 
+                data-title="Amino acid substitution model" 
+                data-content="A list of supported amindo acid substitution models supported by datamonkey, along with model frequencies and references, can be found <a href='http://www.datamonkey.org/cgi-bin/datamonkey/aamodels.pl'>here</a>">
+          </i>
+          Rate matrix
+        </label>
+
+        <select class="col-lg-4" id="AAMatrix" name="ratematrix">
+          <option value="Dayhoff">Dayhoff</option>
+          <option value="JTT">JTT (Jones,Taylor,Thornton)</option>
+          <option value="WAG">WAG (Whelan and Goldman)</option>
+          <option value="rtREV">rtREV (reverse transcriptase)</option>
+          <option value="HIVBetween">HIV (between hosts)</option>
+          <option value="HIVWithin">HIV (within host)</option>
+          <option value="IAV">IAV (Influenza A virus)</option>
+          <option value="mtMAM">mtMAM (mammalian mitochondrial)</option>
+          <option value="mtREV24">mtREV24 (vertebrate mitochondrial)</option>
+          <option value="cpREV">cpREV (chloroplast)</option>
+          <option value="VT">VT (Vingron and Muller)</option>
+          <option value="MtArt">MtArt (arthropoda mitochondrial)</option>
+          <option value="BLOSUM62">BLOSUM62</option>
+          <option value="LG">LG (Le and Gascuel)</option>
+        </select>
+      </div>
+
+      <div class="row dm-form-row">
+        <label class="col-lg-3" id="rate-matrix-selection">
+          <i title="" 
+                data-original-title="" 
+                data-html="true" 
+                data-placement="bottom" 
+                data-trigger="hover click" 
+                data-toggle="popover" 
+                data-container="body" 
+                class="fa fa-question-circle fa-fw helper_text" 
+                data-title="Frequency" 
+                data-content="<dl>
+                              <dt>Model-defined</dt><dd>Use fixed frequencies derived from the original dataset.</dd> 
+                              <dt>Empirical (+F)</dt><dd>Use frequencies estimated from your alignment.(+F option for 19 extra parameters)</dd>">
+          </i>
+          Frequencies
+        </label>
+        <select class="col-lg-4" id="AAFreqs" name="frequencies">
+          <option value="0">Model-defined</option>
+          <option value="1">Empirical (+F)</option>
+        </select>
+      </div>
+
+      <div class="row dm-form-row <%if (typeof errors != "undefined" && typeof errors.mail != "undefined") { %>has-error<% } %>">
+        <label id="datatype-content" class="col-lg-3">
+          <i title="" 
+                data-original-title="" 
+                data-html="true" 
+                data-placement="bottom" 
+                data-trigger="hover click" 
+                data-toggle="popover" 
+                data-container="body" 
+                class="fa fa-question-circle fa-fw helper_text" 
+                data-title="" 
+                data-content="Send an e-mail to this address when analysis has finished.">
+          </i>
+          Notify When Completed?
+        </label>
+        <div class="input-group mail-group">
+          <span class="input-group-addon">
+            <input name="receive_mail" type="checkbox" value="on" checked>
+          </span>
+          <input name="mail" type="text" class="form-control" placeholder="Email Address">
+        </div>
+      </div><!-- /form-group -->
+
+
+      <button type="submit" class="btn pull-right"><span class="glyphicon glyphicon-play"></span></button>
+
+    </form>
+  </div>
+
+</div>
+
+<div aria-labelledby="errorModalLabel" role="dialog" id="errorModal" class="modal ng-scope">
+  <div class="modal-dialog"><div class="modal-content">
+    <div class="modal-header dialog-header-error">
+      <button data-dismiss="modal" class="close" type="button">×</button>
+      <h4 class="modal-title text-danger"><span class="glyphicon glyphicon-warning-sign"></span> Error</h4>
+      </div>
+      <div id="modal-error-msg" class="modal-body text-danger">This is my error message</div>
+      <div class="modal-footer">
+        <button data-dismiss="modal" class="btn btn-primary" type="button">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include ../includes/footer.ejs %>
+<script src="/assets/js/fade/msa_form.js"></script>
+
+<script>
+
+  // set shared attributes on helper_text element
+  $(".helper_text").attr("data-container", "body")
+      .attr("data-toggle", "popover")
+      .attr("data-trigger", "hover click")
+      .attr("data-placement", "bottom")
+      .attr("data-html", "true");
+
+
+  // initialize helper toggles
+  $(function() {
+      $('[data-toggle="popover"]').popover()
+  });
+
+</script>

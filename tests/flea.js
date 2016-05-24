@@ -81,6 +81,7 @@ describe('create and save job', function() {
     flea_files.forEach(function(flea_file) {
 
       Msa.parseFile(flea_file.fn, datatype, gencodeid, function(err, msa) {
+        console.log(err);
 
         msa.visit_code = flea_file.visit_code;
         msa.visit_date = flea_file.visit_date;

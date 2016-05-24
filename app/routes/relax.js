@@ -57,7 +57,6 @@ exports.uploadFile = function(req, res) {
     relax.mail = postdata.mail;
   }
 
-
   Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
 
     var relax = new Relax();
@@ -234,6 +233,7 @@ exports.restart = function(req, res) {
     } else {
 
       var connect_callback = function(data) {
+
         if(data == 'connected') {
           logger.log('connected');
         }

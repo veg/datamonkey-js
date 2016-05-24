@@ -2,17 +2,6 @@ $(document).ready(function(){
 
   setupJob();
 
-  $("#job-stdout-copy-button").on('click', function (e) {
-    e.preventDefault();
-  }).each(function () {
-    $(this).zclip({
-      path: 'http://www.steamdev.com/zclip/js/ZeroClipboard.swf',
-      copy: function() {
-        return $("#job-pre").text();
-      }
-    });
-  });
-
 });
 
 function setupJob() {

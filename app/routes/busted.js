@@ -229,7 +229,7 @@ exports.getResults = function(req, res) {
       res.json(500, error.errorResponse('invalid id : ' + bustedid ));
     } else {
       // Should return results page
-      res.json(200, { results : busted.results });
+      res.json(200, JSON.parse(busted.results));
     }
   });
 };
