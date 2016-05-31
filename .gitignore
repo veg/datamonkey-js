@@ -15,6 +15,7 @@ console
 node_modules
 coverage
 .hyphy
+.tn93
 .public
 
 npm-debug.log

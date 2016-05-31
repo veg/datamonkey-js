@@ -58,6 +58,7 @@
     "mocha": "2.x.x",
     "reactify": "^1.1.1",
     "should": "7.x.x",
+    "watchify": "^3.6.0",
     "webworker-threads": "^0.6.2"
   }
 }
