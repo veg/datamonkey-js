@@ -24,6 +24,12 @@ You'll also have to set a data directory for MongoDB, as described [here](http:/
 
 This requires an SSH key for GitHub, as described [here](https://help.github.com/articles/generating-ssh-keys).
 
+###Install development tools
+    
+    npm install -g supervisor
+    npm install -g gulp
+    npm install -g bower
+    
 ###Install package
 
     cd ./datamonkey-js/
