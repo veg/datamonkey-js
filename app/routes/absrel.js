@@ -29,10 +29,11 @@ exports.invoke = function(req, res) {
 
   };
 
-  var fn = req.files.files.file;
-  var postdata  = req.body;
-  var datatype  = postdata.datatype;
-  var gencodeid = postdata.gencodeid;
+  var fn = req.files.files.file,
+      absrel = new aBSREL(),
+      postdata  = req.body,
+      datatype  = postdata.datatype,
+      gencodeid = postdata.gencodeid;
 
   if(postdata.receive_mail == 'true') {
     absrel.mail = postdata.mail;
@@ -40,15 +41,13 @@ exports.invoke = function(req, res) {
 
   Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
 
-    var absrel = new aBSREL();
-
-    absrel.msa = msa;
-    absrel.status = absrel.status_stack[0];
-
     if(err) {
       res.json(500, {'error' : err});
       return;
     }
+
+    absrel.msa = msa;
+    absrel.status = absrel.status_stack[0];
 
     absrel.save(function (err, absrel_result) {
 

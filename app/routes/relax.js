@@ -21,10 +21,11 @@ exports.createForm = function(req, res) {
 
 exports.uploadFile = function(req, res) {
 
-  var fn = req.files.files.file;
-  var postdata  = req.body;
-  var datatype  = postdata.datatype;
-  var gencodeid = postdata.gencodeid;
+  var fn = req.files.files.file,
+      relax = new Relax(),
+      postdata  = req.body,
+      datatype  = postdata.datatype,
+      gencodeid = postdata.gencodeid;
 
   if(postdata.receive_mail == 'true') {
     relax.mail = postdata.mail;
@@ -32,14 +33,13 @@ exports.uploadFile = function(req, res) {
 
   Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
 
-    var relax = new Relax();
-
-    relax.msa = msa;
 
     if(err) {
       res.json(500, {'error' : err});
       return;
     }
+
+    relax.msa = msa;
 
     relax.save(function (err, relax_result) {
 

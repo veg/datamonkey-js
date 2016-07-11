@@ -1,4 +1,5 @@
 
+const logger = require('./lib/logger');
 setup = require('./config/setup');
 var error = require('./lib/error');
 
