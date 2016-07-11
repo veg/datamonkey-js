@@ -40,10 +40,11 @@ aBSREL.virtual('status_stack').get(function () {
 });
 
 /**
- * Complete file path for document's file upload
+ * URL for a busted path
  */
-aBSREL.virtual('filepath').get(function () {
-  return __dirname + '/../../uploads/msa/' + this._id + '.fasta';
+aBSREL.virtual('url').get(function () {
+  return 'http://' + setup.host + '/absrel/' + this._id;
 });
+
 
 module.exports = mongoose.model('aBSREL', aBSREL);
