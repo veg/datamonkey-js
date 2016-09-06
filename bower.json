@@ -3,7 +3,7 @@
   "version": "0.4.1",
   "main": "datamonkey.js",
   "dependencies": {
-    "hyphy-vision": "git@github.com:veg/hyphy-vision.git#0.2.0",
+    "hyphy-vision": "git@github.com:veg/hyphy-vision.git#0.2.2",
     "phylotree": "git@github.com:veg/phylotree.js.git#v0.1.4",
     "flea": "git@github.com:veg/flea.git#v1.0.0-alpha",
     "jquery-ui": "1.11.x",
