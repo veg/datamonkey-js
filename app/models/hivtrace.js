@@ -299,7 +299,6 @@ HivTrace.methods.addAttributesToResults = function (cb) {
     var self = this;
 
     var attributes = self.patient_attributes;
-
     var attr_keys = _.keys(attributes[0]);
 
     // transform attributes to be a dictionary
@@ -309,12 +308,11 @@ HivTrace.methods.addAttributesToResults = function (cb) {
 
     // return key, instance, and label
     patient_schema = _.object(
-    
-    _.map(self.attributes, function(d) {return d.annotation}),
-    
-    _.map(self.attributes , function (val, key) { 
-      new_dict = {type : val.category}
-      return new_dict;
+      _.map(self.attributes, function(d) {return d.annotation}),
+      
+      _.map(self.attributes , function (val, key) { 
+        new_dict = {type : val.category, label: val.annotation}
+        return new_dict;
     }));
 
     // read from trace results
