@@ -1,4 +1,3 @@
-
 var setup = require('../../config/setup'),
     attributes = require('../../config/attributes.json');
     path = require('path');
@@ -79,8 +78,9 @@ var HivTrace = new Schema({
     delimiter: String,
     data_id: Array,
     attributes: [
-        SequenceAttribute
+      SequenceAttribute
     ],
+    patient_attributes: Object,
     distance_threshold: {
         type: Number,
         require: true,
@@ -128,6 +128,7 @@ var HivTrace = new Schema({
         type: String,
         enum: ['no', 'report', 'remove']
     },
+    patient_attributes: Object,
     torque_id: String,
     custom_reference: String,
     mail: String,
@@ -146,6 +147,7 @@ var HivTrace = new Schema({
         type: Date,
         default: Date.now
     }
+
 });
 
 
@@ -264,6 +266,86 @@ HivTrace.virtual('url').get(function() {
     return 'http://' + setup.host + '/hivtrace/' + this._id;
 });
 
+HivTrace.methods.saveAttributes = function(cb) {
+
+  var self = this;
+
+  // Once annotations are configured, save the mapped attributes so that we
+  // won't have to regenerate them every time the results page loads
+  
+  var delimiter = self.delimiter,
+      headers = self.headers,
+      attributes = self.attributes;
+
+  var annotations = _.map(attributes, function(d) {return d.annotation});
+
+  var patient_attributes =  _.map(headers, 
+    function(d) { 
+      var attrs = d.split(delimiter);
+      var key_val = _.object(annotations, attrs);
+      key_val["header"] = d;
+      return key_val;
+  });
+  
+  // save attributes for each patient
+  self.patient_attributes = patient_attributes;
+
+  cb(null, self);
+
+}
+
+HivTrace.methods.addAttributesToResults = function (cb) {
+
+    var self = this;
+
+    var attributes = self.patient_attributes;
+    var attr_keys = _.keys(attributes[0]);
+
+    // transform attributes to be a dictionary
+    var attrs_by_id = _.object(_.map(attributes, function(item) {
+      return [item.header, item]
+    }));
+
+    // return key, instance, and label
+    patient_schema = _.object(
+      _.map(self.attributes, function(d) {return d.annotation}),
+      
+      _.map(self.attributes , function (val, key) { 
+        new_dict = {type : val.category, label: val.annotation}
+        return new_dict;
+    }));
+
+    // read from trace results
+    fs.readFile(self.trace_results, function (err, results) {
+
+      if(err) {
+        cb(err, null);
+        return;
+      }
+
+      try {
+
+        json_results = JSON.parse(results);
+
+        json_results["trace_results"]["patient_attribute_schema"] = patient_schema;
+
+        // annotate each node with the attributes
+        var nodes = _.map(json_results["trace_results"].Nodes, function (node) { return node["patient_attributes"] = attrs_by_id[node["id"]] });
+
+        // annotate each singleton with the attributes
+        if(json_results["trace_results"].Singletons) {
+          var singletons = _.map(json_results["trace_results"].Singletons, function (node) { return node["patient_attributes"] = attrs_by_id[node["id"]] });
+        }
+
+        cb(err, json_results);
+      } catch(e) {
+        cb(e, null);
+      }
+
+    });
+
+};
+
 // execute function on complete
 HivTrace.methods.onComplete = function (data, publisher, channel) {
 
@@ -297,7 +379,6 @@ HivTrace.methods.onComplete = function (data, publisher, channel) {
         });
 
       });
-
       winston.info('job complete; got results');
     } else {
       winston.error('job complete, but no data received');

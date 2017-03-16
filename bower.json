@@ -4,6 +4,7 @@
   "main": "datamonkey.js",
   "dependencies": {
     "hyphy-vision": "git@github.com:veg/hyphy-vision.git#0.2.2",
+    "hivtrace-viz": "git@github.com:veg/hivtrace-viz.git#0.0.1",
     "phylotree": "git@github.com:veg/phylotree.js.git#v0.1.4",
     "flea": "git@github.com:veg/flea.git#v1.0.0-alpha",
     "jquery-ui": "1.11.x",

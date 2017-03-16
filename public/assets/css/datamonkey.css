@@ -43,7 +43,7 @@
 
 .datamonkey-header h1{
  font-family: "Droid Serif", Georgia;
- font-size: 12em;
+ font-size: 12vw;
 }
 
 
@@ -75,7 +75,7 @@ label {
 .datamonkey-sm-header h1{
  font-family: "Droid Serif", Georgia;; 
  /*margin-left: 15px;*/
- font-size: 3em;
+ font-size: 3vw;
  display : inline;
  padding-bottom:5px;
 }

@@ -1,4 +1,3 @@
-
 var logger = require(ROOT_PATH + '/lib/logger');
 
 var error = require(ROOT_PATH + '/lib/error.js'),
@@ -50,7 +49,7 @@ exports.uploadFile = function(req, res) {
         _id: req.params.id
     }, function(err, hivtrace) {
         if (err || !hivtrace) {
-            res.json(500, error.errorResponse('No HIV-TRACE id ' + id));
+            res.json(500, error.errorResponse('No HIV-TRACE ID ' + id));
         } else {
 
             var postdata = req.body;
@@ -307,30 +306,34 @@ exports.trace_results = function (req, res) {
   var id = req.params.id;
   HivTrace.findOne({_id: id}, function (err, hivtrace) {
 
-    if (err || !hivtrace) {
-      res.json(500, error.errorResponse('There is no HIV Trace job with id of ' + id));
-    } else {
+      hivtrace.addAttributesToResults(function(err, results) {
+        if (err || !hivtrace) {
+          res.json(500, error.errorResponse('There is no HIV-TRACE job with id of ' + id));
+        } else {
 
-      var options = {
-        root: __dirname + '/../../uploads/hivtrace/',
-        dotfiles: 'deny',
-        headers: {
-            'x-timestamp': Date.now(),
-            'x-sent': true
-        }
-      };
+          var options = {
+            root: path.join(__dirname, '/../../uploads/hivtrace/'),
+            dotfiles: 'deny',
+            headers: {
+                'x-timestamp': Date.now(),
+                'x-sent': true
+            }
+          };
 
-      res.sendfile(hivtrace.rel_trace_results, options, function (err) {
-        if (err) {
-          console.log(err);
-          res.status(err.status).end();
+          if(!err) {
+            res.json(200, results);
+          } else {
+            res.sendfile(hivtrace.rel_trace_results, options, function (err) {
+              if (err) {
+                res.status(err.status).end();
+              } else {
+                console.log('sent:', hivtrace.trace_results);
+              }
+            })
+          }
         }
-        else {
-          console.log('sent:', hivtrace.trace_results);
-        }
-      })
+    });
 
-    }
   });
 
 };
@@ -343,7 +346,7 @@ exports.settings = function(req, res) {
         _id: id
     }, function(err, hivtrace) {
         if (err || !hivtrace) {
-            res.json(500, error.errorResponse('There is no HIV Cluster job with id of ' + id));
+            res.json(500, error.errorResponse('There is no HIV-TRACE job with id of ' + id));
         } else {
             res.format({
                 json: function() {
@@ -360,7 +363,6 @@ exports.settings = function(req, res) {
  */
 exports.mapAttributes = function(req, res) {
     function returnError(err) {
-        console.log (err);
         
         res.format({
             html: function() {
@@ -384,14 +386,6 @@ exports.mapAttributes = function(req, res) {
 
         res.render('hivtrace/attribute_map_assignment.ejs', return_me);
 
-        //res.format({
-        //    html: function() {
-        //        res.render('hivtrace/attribute_map_assignment.ejs', return_me);
-        //    },
-        //    json: function() {
-        //        res.json(200, return_me);
-        //    }
-        //});
     }
 
     var id = req.params.id;
@@ -410,7 +404,6 @@ exports.mapAttributes = function(req, res) {
             var worker_process = spawn('node', [__dirname + "/../task-runners/hivtrace/attribute-mapper.js", id]),
                 err_msg = '';
 
-            
             worker_process.on ('error', function (err) {
                 publisher.publish (channel_id, "done");
                 returnError (err);
@@ -428,7 +421,6 @@ exports.mapAttributes = function(req, res) {
                 worker_process.on('close', function(code) {
                     publisher.publish (channel_id, "done");
                     if (code == 0) {
-                        //console.log ("success!");
                         HivTrace.findOne({
                             _id: id
                         }, function(err, hivtrace) {
@@ -443,21 +435,6 @@ exports.mapAttributes = function(req, res) {
                     }
                });
             }
-
-            // Validate that the file uploaded was a FASTA file
-            /*HivTrace.createAttributeMap(hivtrace.headers, hivtrace._id, function(err, hivtrace_map) {
-                if (err && err.length) {
-                
-                } else {            
-                    hivtrace.attributes = hivtrace_map.annotated_map;
-                    hivtrace.delimiter = hivtrace_map.delimiter;
-                    hivtrace.partitioned_headers = hivtrace_map.parsed_headers;
-                    hivtrace.save();
-                }
-                returnFormat(hivtrace, err);
-            });*/
-
-
         }
     });
 }
@@ -470,19 +447,25 @@ exports.saveAttributes = function(req, res) {
     HivTrace.findOne({
         _id: id
     }, function(err, hivtrace) {
+
         hivtrace.attributes.forEach(function(d, i) {
             d.annotation = postdata['annotation'][i];
         });
+
         hivtrace.combine_same_id_diff_dates = postdata['combine'];
-        hivtrace.save(function(err, hivtrace) {
+
+        hivtrace.saveAttributes(function(err, hivtrace) {
+          hivtrace.save(function(err, hivtrace) {
             if (err) {
-                res.json(200, err);
+              res.json(200, err);
             } else {
-                res.json(200, {
-                    success: true
-                });
+              res.json(200, {
+                  success: true
+              });
             }
+          });
         });
+
     });
 
 };
@@ -513,7 +496,7 @@ exports.aligned_fasta = function (req, res) {
   HivTrace.findOne({_id: id}, function (err, hivtrace) {
 
     if (err || !hivtrace) {
-      res.json(500, error.errorResponse('There is no HIV Trace job with id of ' + id));
+      res.json(500, error.errorResponse('There is no HIV-TRACE job with id of ' + id));
     } else {
 
       var options = {
