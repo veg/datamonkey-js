@@ -1,37 +1,5 @@
 <%- include includes/header.ejs %>
 
-<div class="col-md-2 pull-right">
-  <nav id="sidebar" class="col-xs-3 bs-docs-sidebar">
-    <ul class="nav nav-stacked fixed">
-      <li>
-        <a href="#analyses">Analyses</a>
-        <ul class="nav nav-stacked">
-          <li>
-            <a href="/absrel">aBSREL</a>
-          </li>
-          <li>
-            <a href="/relax">RELAX</a>
-          </li>
-          <li>
-            <a href="/busted">BUSTED</a>
-          </li>
-          <li>
-            <a href="/hivtrace">HIV Trace</a>
-          </li>
-        </ul>
-      </li>
-      <li>
-        <a href="#tools">Tools</a>
-        <ul class="nav nav-stacked">
-          <li>
-            <a href="/treeviewer">Newick Tree Viewer</a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </nav>
-</div>
-
 <div class="container">
     <div class="datamonkey-sm-header">
       <h1>Datamonkey Suite</h1>
@@ -45,6 +13,21 @@
     <div class="datamonkey-sm-header">
       <h1>Analyses</h1>
     </div>
+
+    <div class="row">
+      <div class="panel panel-default panel-datamonkey">
+        <a href="meme">
+          <div class="panel-heading">
+            <h3 class="panel-title">MEME</h3>
+            <span class="pull-right glyphicon glyphicon-chevron-right hide"></span>
+          </div>
+        </a>
+        <div class="panel-body">
+          <p><b>M</b>ixed <b>E</b>ffects <b>M</b>odel of <b>E</b>volution</p>
+        </div>
+      </div>
+    </div>
+
 
     <div class="row">
       <div class="panel panel-default panel-datamonkey">
