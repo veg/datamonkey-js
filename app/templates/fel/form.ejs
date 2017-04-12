@@ -1,12 +1,12 @@
 <%- include ../includes/header.ejs %>
 
 <!--
-<link href="/assets/css/busted/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
+<link href="/assets/css/fel/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
 <link href="/assets/lib/phylotree/phylotree.css" rel="stylesheet">
 <link href="/assets/css/neighbor-join.css" rel="stylesheet">
 -->
 
-<link href="/assets/css/busted/busted.css" rel="stylesheet">
+<link href="/assets/css/fel/fel.css" rel="stylesheet">
 
 <div class="container">
 
@@ -41,7 +41,7 @@
     </div>
  </div>
 
-  <% if (busted.msa[0].usertree) { %>
+  <% if (fel.msa[0].usertree) { %>
   <div id="tree-select-btn-group" class="col-lg-4 phylo-nav">
     <div class="btn-group" data-toggle="buttons">
       <label title="Highlight Test Branches" id="usertree-highlighter" class="btn btn-default btn-sm active" data-name='usertree'>
@@ -54,13 +54,13 @@
   </div>
   <% } %>
 
-  <div id="neighbor-tree" data-tree="<%= busted.msa[0].nj %>" <% if (busted.msa[0].usertree) { %> data-usertree="<%= busted.msa[0].usertree %>"<% } %>>
+  <div id="neighbor-tree" data-tree="<%= fel.msa[0].nj %>" <% if (fel.msa[0].usertree) { %> data-usertree="<%= fel.msa[0].usertree %>"<% } %>>
     <div id="tree-body">
       <div id='tree_container' class='tree-widget'></div>
     </div>
   </div>
 
-  <form action="/busted/<%= busted._id %>/select-foreground" enctype="multipart/form-data" method="POST" name="modelForm">
+  <form action="/fel/<%= fel._id %>/select-foreground" enctype="multipart/form-data" method="POST" name="modelForm">
     <div>
       <button type="submit" class="btn pull-right"><span class="glyphicon glyphicon-play"></span></button>
     </div>
