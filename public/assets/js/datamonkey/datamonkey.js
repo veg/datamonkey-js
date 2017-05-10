@@ -12,7 +12,7 @@ if (typeof exports !== 'undefined') {
 }
 
 datamonkey.errorModal = function (msg) {
-  $('#modal-error-msg').text(msg);
+  $('#modal-error-msg').html(msg);
   $('#errorModal').modal();
 }
 
