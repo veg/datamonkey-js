@@ -1,4 +1,3 @@
-
 var mongoose  = require('mongoose'),
     extend    = require('mongoose-schema-extend'),
     Msa       = require(__dirname + '/msa');
