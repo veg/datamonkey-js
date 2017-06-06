@@ -94,7 +94,6 @@ var UsageInformation = React.createClass({displayName: "UsageInformation",
       self.setState({
         data: data
       });
-      debugger;
     });
   },
   componentDidMount: function(){
