@@ -75,15 +75,15 @@ AnalysisSchema.statics.subscribePendingJobs = function () {
 };
 
 AnalysisSchema.statics.usageStatistics = function (cb) {
-
+  var self = this;
   // Aggregation is done client-side
-  this.find({}, 'cpu_time created upload_id pvalue modelstring')
-        .limit(1000)
-        .populate('upload_id', 'sequences sites')        
+  self.find({status:"completed"},{"created":1}).sort({created:-1}).limit(1)
+    .exec( function(err1, items1){
+      self.find({status: "completed", created:{$gt: moment(items1[0].created).subtract(1,"years")}}, {'_id':0, 'created':1})
         .exec( function(err, items) {
-              cb(err, items);
-             });
-
+          cb(err, items);
+         });
+    })
 };
 
 /**
