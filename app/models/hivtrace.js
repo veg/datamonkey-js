@@ -421,4 +421,16 @@ HivTrace.statics.submitJob = function (result, cb) {
 
 };
 
+HivTrace.statics.usageStatistics = function (cb) {
+  var self = this;
+  // Aggregation is done client-side
+  self.find({status:"completed"},{"created":1}).sort({created:-1}).limit(1)
+    .exec( function(err1, items1){
+      self.find({status: "completed", created:{$gt: moment(items1[0].created).subtract(1,"years")}}, {'_id':0, 'created':1})
+        .exec( function(err, items) {
+          cb(err, items);
+         });
+    })
+};
+
 module.exports = mongoose.model('HivTrace', HivTrace);

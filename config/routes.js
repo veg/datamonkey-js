@@ -22,6 +22,7 @@ module.exports = function(app) {
   busted = require(path.join(__dirname, '../app/routes/busted'));
   app.get('/busted', busted.createForm);
   app.post('/busted/uploadfile', busted.uploadFile);
+  app.get('/busted/usage', busted.getUsage);
   app.get('/busted/:id/select-foreground', busted.selectForeground);
   app.post('/busted/:id/select-foreground', busted.invokeBusted);
   app.get('/busted/:bustedid', busted.getPage);
@@ -48,6 +49,7 @@ module.exports = function(app) {
   relax = require(path.join(__dirname, '../app/routes/relax'));
   app.get('/relax', relax.createForm);
   app.post('/relax/uploadfile', relax.uploadFile);
+  app.get('/relax/usage', relax.getUsage);
   app.get('/relax/:id/select-foreground', relax.selectForeground);
   app.post('/relax/:id/select-foreground', relax.invokeRelax);
   app.get('/relax/:id', relax.getPage);
@@ -63,6 +65,7 @@ module.exports = function(app) {
   absrel = require(path.join(__dirname, '../app/routes/absrel'));
   app.get('/absrel', absrel.form);
   app.post('/absrel', absrel.invoke);
+  app.get('/absrel/usage', absrel.getUsage);
   app.get('/absrel/:id', absrel.getPage);
   app.get('/absrel/:id/info', absrel.getInfo);
   app.get('/absrel/:id/results', absrel.getResults);
@@ -73,6 +76,7 @@ module.exports = function(app) {
   // HIV TRACE ROUTES
   hivtrace = require(path.join(__dirname, '../app/routes/hivtrace'));
   app.get('/hivtrace', hivtrace.clusterForm);
+  app.get('/hivtrace/usage', hivtrace.getUsage);
   app.post('/hivtrace/:id/uploadfile', hivtrace.uploadFile);
   app.get ('/hivtrace/request-job-id', hivtrace.requestID); 
   app.get('/hivtrace/:id/map-attributes', hivtrace.mapAttributes);

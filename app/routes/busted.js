@@ -260,3 +260,8 @@ exports.cancel = function(req, res) {
 
 };
 
+exports.getUsage = function(req, res){
+  Busted.usageStatistics(function(err, busted){
+    res.json(200, busted);
+  });
+};
