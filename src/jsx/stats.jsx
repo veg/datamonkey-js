@@ -76,7 +76,7 @@ var UsageChart = React.createClass({
     this.initialize();
   },
   render: function(){
-    return (<div id="usage-chart">
+    return (<div id="usage-chart" style={{"margin-bottom":"50px"}}>
       <h4>Weekly completed jobs</h4>
     </div>);
   }
@@ -156,6 +156,72 @@ var Histogram = React.createClass({
   }
 });
 
+var SitesAndSequencesScatterPlot = React.createClass({
+  initialize: function(){
+    var margin = {top:50, bottom:50, right:50, left:50},
+        width = 500 - margin.right - margin.left,
+        height = 500 - margin.top - margin.bottom,
+        x = d3.scale.linear()
+          .domain(d3.extent(this.props.data.map(function(d) { return d.msa[0].sequences;})))
+          .range([0, width]),
+        y = d3.scale.linear()
+          .domain(d3.extent(this.props.data.map(function(d) { return d.msa[0].sites;})))
+          .range([height, 0])
+        svg = d3.select("#sites-sequences").append("svg")
+          .attr("width", width + margin.right + margin.left)
+          .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")"),
+    xAxis = d3.svg.axis()
+      .scale(x)
+      .orient("bottom"),
+    yAxis = d3.svg.axis()
+      .scale(y)
+      .orient("left");
+
+    svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0, " + height +")")
+      .call(xAxis)
+      .append("text")
+        .attr("x", width/2)
+        .attr("y", 30)
+        .style("text-anchor", "middle")
+        .text("Number of sequences in job");
+
+    svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+      .append("text")
+        .attr("y", -10)
+        .style("text-anchor", "middle")
+        .text("Number of sites in job");
+
+    svg.selectAll(".dot")
+      .data(this.props.data)
+      .enter()
+      .append("circle")
+        .attr("class", "dot")
+        .attr("r", 3.5)
+        .attr("cx", function(d) { return x(+d.msa[0].sequences);})
+        .attr("cy", function(d) { return y(+d.msa[0].sites);})
+        .attr("fill", "steelblue")
+        .attr("stroke", "blue")
+        .attr("opacity", .5);
+  },
+  componentDidUpdate: function(){
+    d3.select("#sites-sequences").html("<h4>Sites and sequences</h4>");
+    this.initialize();
+  },
+  componentDidMount: function(){
+    this.initialize();
+  },
+  render: function(){
+    return (<div id="sites-sequences">
+      <h4>Sites and sequences</h4>
+    </div>);
+  }
+});
 
 var UsageInformation = React.createClass({
   fetchData: function(method){
@@ -189,20 +255,21 @@ var UsageInformation = React.createClass({
       content = [
         <div className="col-md-12">
           <p>Last job submitted on {last_date_string}.</p>
+        </div>,
+        <div className="col-md-12">
+          <UsageChart data={this.state.data} />
         </div>
       ];
       if(this.state.data[0].msa){
         content.push(<div className="col-md-6">
-          <Histogram kind_of_data="Sites" data={this.state.data.map(function(d){ return d.msa[0].sites; })} />
+          <SitesAndSequencesScatterPlot data={this.state.data} />
         </div>);
         content.push(<div className="col-md-6">
+          <Histogram kind_of_data="Sites" data={this.state.data.map(function(d){ return d.msa[0].sites; })} />
           <Histogram kind_of_data="Sequences" data={this.state.data.map(function(d){ return d.msa[0].sequences; })} />
         </div>);
       }
-      content.push(<div className="col-md-12">
-          <UsageChart data={this.state.data} />
-        </div>
-      )
+
     }else{
       content = (<div className="col-md-12">
         <p>Loading...</p>
