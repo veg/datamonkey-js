@@ -52,15 +52,15 @@ AnalysisSchema.statics.pendingJobs = function (cb) {
                          });
 };
 
-AnalysisSchema.statics.submitJob = function (result, cb) {
+AnalysisSchema.statics.submitJob = function (job, cb) {
 
-  winston.info('submitting ' + result.analysistype + ' : ' + result._id + ' to cluster');
+  winston.info('submitting ' + job.analysistype + ' : ' + job._id + ' to cluster');
 
-  var jobproxy = new hpcsocket.HPCSocket({'filepath'    : result.filepath, 
-                                          'msa'         : result.msa,
-                                          'analysis'    : result,
-                                          'status_stack': result.status_stack,
-                                          'type'        : result.analysistype}, 'spawn', cb);
+  var jobproxy = new hpcsocket.HPCSocket({'filepath'    : job.filepath, 
+                                          'msa'         : job.msa,
+                                          'analysis'    : job,
+                                          'status_stack': job.status_stack,
+                                          'type'        : job.analysistype}, 'spawn', cb);
 
 };
 
@@ -92,6 +92,12 @@ AnalysisSchema.statics.usageStatistics = function (cb) {
 AnalysisSchema.virtual('timestamp').get(function () {
   return moment(this.created).unix();
 });
+
+AnalysisSchema.virtual('generic_error_msg').get(function () {
+  var error_msg = 'We\'re sorry, there was an error processing your job. Please try again, or visit <a href="http://github.com/veg/hyphy/issues/">our GitHub issues</a> and create an issue if the issue persists.';
+  return error_msg;
+});
+
 
 AnalysisSchema.methods.resubscribe = function () {
 

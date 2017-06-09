@@ -160,7 +160,8 @@ function setupJob() {
 
   // Error
   socket.on('script error', function (data) {
-    datamonkey.errorModal(data.msg);
+    $('#modal-error-msg').html(msg);
+    $('#errorModal').modal();
   });
 
 
