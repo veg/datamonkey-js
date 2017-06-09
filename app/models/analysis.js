@@ -79,10 +79,21 @@ AnalysisSchema.statics.usageStatistics = function (cb) {
   // Aggregation is done client-side
   self.find({status:"completed"},{"created":1}).sort({created:-1}).limit(1)
     .exec( function(err1, items1){
-      self.find({status: "completed", created:{$gt: moment(items1[0].created).subtract(1,"years")}}, {'_id':0, 'created':1})
+      self.find({
+        status: "completed",
+        created:{
+          $gt: moment(items1[0].created).subtract(1,"years")
+        }
+      },
+      {
+        '_id':0,
+        'created':1,
+        'msa.sites': 1,
+        'msa.sequences': 1
+      })
         .exec( function(err, items) {
           cb(err, items);
-         });
+        });
     })
 };
 

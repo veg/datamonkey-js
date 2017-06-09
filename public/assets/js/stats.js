@@ -61,14 +61,13 @@ var UsageChart = React.createClass({displayName: "UsageChart",
       .attr("class", "y axis")
       .call(yAxis)
       .append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 6)
+        .attr("y", -10)
         .attr("dy", ".71em")
         .style("text-anchor", "end")
         .text("Jobs")
   },
   componentWillUpdate: function(){
-    d3.select("#usage-chart").html("");
+    d3.select("#usage-chart").html("<h4>Weekly completed jobs</h4>");
   },
   componentDidMount: function(){
     this.initialize();
@@ -77,7 +76,150 @@ var UsageChart = React.createClass({displayName: "UsageChart",
     this.initialize();
   },
   render: function(){
-    return React.createElement("div", {id: "usage-chart"});
+    return (React.createElement("div", {id: "usage-chart", style: {"margin-bottom":"50px"}}, 
+      React.createElement("h4", null, "Weekly completed jobs")
+    ));
+  }
+});
+
+var Histogram = React.createClass({displayName: "Histogram",
+  initialize: function(){
+    var margin = {top:20, right:40, bottom:40, left:40},
+        width = 500 - margin.left - margin.right,
+        height = 200 - margin.top - margin.bottom,
+        x = d3.scale.linear()
+          .domain(d3.extent(this.props.data))
+          .range([0, width]),
+        binned_data = d3.layout.histogram()
+          .bins(25)
+          (this.props.data),
+        y = d3.scale.linear()
+          .domain([0, d3.max(binned_data, function(d){
+            return d.y;
+          })])
+          .range([height, 0])
+        xAxis = d3.svg.axis()
+          .scale(x)
+          .orient("bottom")
+        yAxis = d3.svg.axis()
+          .scale(y)
+          .orient("left")
+          .ticks(10);
+
+    var svg = d3.select("#"+this.props.kind_of_data).append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var bar = svg.selectAll(".bar")
+      .data(binned_data)
+      .enter().append("g")
+        .attr("class", "bar")
+        .attr("transform", function(d) { return "translate(" + x(d.x) + "," + y(d.y) + ")"; });
+    bar.append("rect")
+      .attr("x", 1)
+      .attr("width", x(binned_data[0].dx) - 1)
+      .attr("height", function(d) { return height - y(d.y); })
+      .attr("fill", "steelblue");
+
+    svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis)
+      .append("text")
+        .attr("x", width/2)
+        .attr("y", 30)
+        .style("text-anchor", "middle")
+        .text("Number of " + this.props.kind_of_data.toLowerCase() + " in job" );
+
+    svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+      .append("text")
+        .attr("y", -10)
+        .attr("dy", ".71em")
+        .style("text-anchor", "end")
+        .text("Jobs")
+  },
+  componentDidUpdate: function(){
+    d3.select("#"+this.props.kind_of_data).html("<h4>" + this.props.kind_of_data + "</h4>");
+    this.initialize();
+  },
+  componentDidMount: function(){
+    this.initialize();
+  },
+  render: function(){
+    return (React.createElement("div", {id: this.props.kind_of_data}, 
+      React.createElement("h4", null, this.props.kind_of_data)
+    ));
+  }
+});
+
+var SitesAndSequencesScatterPlot = React.createClass({displayName: "SitesAndSequencesScatterPlot",
+  initialize: function(){
+    var margin = {top:50, bottom:50, right:50, left:50},
+        width = 500 - margin.right - margin.left,
+        height = 500 - margin.top - margin.bottom,
+        x = d3.scale.linear()
+          .domain(d3.extent(this.props.data.map(function(d) { return d.msa[0].sequences;})))
+          .range([0, width]),
+        y = d3.scale.linear()
+          .domain(d3.extent(this.props.data.map(function(d) { return d.msa[0].sites;})))
+          .range([height, 0])
+        svg = d3.select("#sites-sequences").append("svg")
+          .attr("width", width + margin.right + margin.left)
+          .attr("height", height + margin.top + margin.bottom)
+          .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")"),
+    xAxis = d3.svg.axis()
+      .scale(x)
+      .orient("bottom"),
+    yAxis = d3.svg.axis()
+      .scale(y)
+      .orient("left");
+
+    svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0, " + height +")")
+      .call(xAxis)
+      .append("text")
+        .attr("x", width/2)
+        .attr("y", 30)
+        .style("text-anchor", "middle")
+        .text("Number of sequences in job");
+
+    svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+      .append("text")
+        .attr("y", -10)
+        .style("text-anchor", "middle")
+        .text("Number of sites in job");
+
+    svg.selectAll(".dot")
+      .data(this.props.data)
+      .enter()
+      .append("circle")
+        .attr("class", "dot")
+        .attr("r", 3.5)
+        .attr("cx", function(d) { return x(+d.msa[0].sequences);})
+        .attr("cy", function(d) { return y(+d.msa[0].sites);})
+        .attr("fill", "steelblue")
+        .attr("stroke", "blue")
+        .attr("opacity", .5);
+  },
+  componentDidUpdate: function(){
+    d3.select("#sites-sequences").html("<h4>Sites and sequences</h4>");
+    this.initialize();
+  },
+  componentDidMount: function(){
+    this.initialize();
+  },
+  render: function(){
+    return (React.createElement("div", {id: "sites-sequences"}, 
+      React.createElement("h4", null, "Sites and sequences")
+    ));
   }
 });
 
@@ -97,34 +239,46 @@ var UsageInformation = React.createClass({displayName: "UsageInformation",
     });
   },
   componentDidMount: function(){
-    var self = this;
-    self.fetchData(self.props.active);
+    this.fetchData(this.props.active);
   },
   componentWillReceiveProps: function(nextProps){
-    var self = this;
-    self.fetchData(nextProps.active);
+    this.fetchData(nextProps.active);
   },
   getInitialState: function(){
     return {data: null};
   },
   render: function(){
-    var self = this,
-        content;
-    if (self.state.data){
-      var last_date_object = self.state.data[self.state.data.length-1].created,
-          last_date_string = (last_date_object.getMonth()+1)+"/"+last_date_object.getDate()+"/"+last_date_object.getFullYear();
+    var content;
+    if (this.state.data){
+      var last_date_object = moment(this.state.data[this.state.data.length-1].created),
+          last_date_string = last_date_object.format('MMMM Do, YYYY');
       content = [
-        React.createElement("p", null, "Last job submitted on ", last_date_string, "."),
-        React.createElement(UsageChart, {data: self.state.data})
+        React.createElement("div", {className: "col-md-12"}, 
+          React.createElement("p", null, "Last job submitted on ", last_date_string, ".")
+        ),
+        React.createElement("div", {className: "col-md-12"}, 
+          React.createElement(UsageChart, {data: this.state.data})
+        )
       ];
+      if(this.state.data[0].msa){
+        content.push(React.createElement("div", {className: "col-md-6"}, 
+          React.createElement(SitesAndSequencesScatterPlot, {data: this.state.data})
+        ));
+        content.push(React.createElement("div", {className: "col-md-6"}, 
+          React.createElement(Histogram, {kind_of_data: "Sites", data: this.state.data.map(function(d){ return d.msa[0].sites; })}), 
+          React.createElement(Histogram, {kind_of_data: "Sequences", data: this.state.data.map(function(d){ return d.msa[0].sequences; })})
+        ));
+      }
+
     }else{
-      content = React.createElement("p", null, "Loading..."); 
+      content = (React.createElement("div", {className: "col-md-12"}, 
+        React.createElement("p", null, "Loading...")
+      ));
     }
     return (React.createElement("div", {className: "row"}, 
-      React.createElement("div", {className: "col-md-12"}, 
-        content
-      )
+      content
     ));
+
   }
 });
 
