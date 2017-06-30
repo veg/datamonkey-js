@@ -109,7 +109,7 @@ gulp.task('bs-fonts', function() {
 });
 
 gulp.task('react', function () {
-    return gulp.src('./src/jsx/jobqueue.jsx')
+    return gulp.src(['./src/jsx/jobqueue.jsx', './src/jsx/stats.jsx'])
         .pipe(react())
         .pipe(gulp.dest('./public/assets/js/'));
 });
