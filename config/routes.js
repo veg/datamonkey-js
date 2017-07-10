@@ -83,6 +83,16 @@ module.exports = function(app) {
   app.get('/meme/:id/log.txt', meme.getLog);
   meme.resubscribePendingJobs();
 
+  // PRIME ROUTES
+  prime = require(path.join(__dirname, '../app/routes/prime'));
+  app.get('/prime', prime.form);
+  app.post('/prime', prime.invoke);
+  app.get('/prime/:id', prime.getPage);
+  app.get('/prime/:id/info', prime.getInfo);
+  app.get('/prime/:id/results', prime.getResults);
+  app.get('/prime/:id/cancel', prime.cancel);
+  app.get('/prime/:id/log.txt', prime.getLog);
+  prime.resubscribePendingJobs();
 
   // HIV TRACE ROUTES
   hivtrace = require(path.join(__dirname, '../app/routes/hivtrace'));
