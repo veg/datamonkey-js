@@ -27,3 +27,5 @@ public/assets/fonts
 public/fonts
 *vendor*
 
+yarn.lock
+package-lock.json

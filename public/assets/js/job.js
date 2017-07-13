@@ -1,6 +1,5 @@
 $(document).ready(function() {
   setupJob();
-
 });
 
 var job_start_time    = 0,
