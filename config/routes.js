@@ -13,7 +13,6 @@ module.exports = function(app) {
   app.get('/clusterhealth', home.clusterhealth);
   app.get('/stats_test', home.stats_test);
   app.get('/analyses', home.analyses);
-  app.get('/treeviewer', home.treeviewer);
   app.get('/development', home.development);
   app.get('/copyright_notice', home.copyright);
   app.get('/uploads', home.data_privacy);
@@ -72,6 +71,18 @@ module.exports = function(app) {
   app.get('/absrel/:id/cancel', absrel.cancel);
   app.get('/absrel/:id/log.txt', absrel.getLog);
   absrel.resubscribePendingJobs();
+
+  // MEME ROUTES
+  meme = require(path.join(__dirname, '../app/routes/meme'));
+  app.get('/meme', meme.form);
+  app.post('/meme', meme.invoke);
+  app.get('/meme/:id', meme.getPage);
+  app.get('/meme/:id/info', meme.getInfo);
+  app.get('/meme/:id/results', meme.getResults);
+  app.get('/meme/:id/cancel', meme.cancel);
+  app.get('/meme/:id/log.txt', meme.getLog);
+  meme.resubscribePendingJobs();
+
 
   // HIV TRACE ROUTES
   hivtrace = require(path.join(__dirname, '../app/routes/hivtrace'));

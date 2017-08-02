@@ -21,10 +21,6 @@ exports.analyses = function (req, res) {
   res.render('analyses.ejs');
 };
 
-exports.treeviewer = function (req, res) {
-  res.render('tools/treeviewer.ejs');
-};
-
 exports.copyright = function (req, res) {
   res.render ('copyright.ejs');
 }
@@ -57,7 +53,6 @@ exports.jobQueue = function(req, res) {
 exports.jobQueuePage = function(req, res) {
   res.render('jobqueue.ejs');
 };
-
 
 exports.clusterhealth= function (req, res) {
 
