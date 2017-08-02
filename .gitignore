@@ -29,3 +29,10 @@ public/fonts
 
 yarn.lock
 package-lock.json
+
+public/assets/js/*.woff*
+public/assets/js/*.eot
+public/assets/js/*.svg
+public/assets/js/*.ttf
+public/assets/js/datamonkey.css*
+public/assets/js/datamonkey.js*
