@@ -32,6 +32,7 @@ module.exports = function(app) {
   busted = require(path.join(__dirname, '../app/routes/busted'));
   app.get('/busted', busted.createForm);
   app.post('/busted/uploadfile', busted.uploadFile);
+  app.get('/busted/usage', busted.getUsage);
   app.get('/busted/:id/select-foreground', busted.selectForeground);
   app.post('/busted/:id/select-foreground', busted.invokeBusted);
   app.get('/busted/:bustedid', busted.getPage);

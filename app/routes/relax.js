@@ -311,3 +311,8 @@ exports.resubscribePendingJobs = function(req, res) {
   Relax.subscribePendingJobs();
 };
 
+exports.getUsage = function(req, res){
+  Relax.usageStatistics(function(err, relax){
+    res.json(200, relax);
+  });
+};
