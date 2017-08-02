@@ -39,6 +39,21 @@ exports.uploadFile = function(req, res) {
       return;
     }
 
+    // Check if msa exceeds limitations
+    if(msa.sites > relax.max_sites) {
+      var error = 'Site limit exceeded! Sites must be less than ' + relax.max_sites;
+      logger.error(error);
+      res.json(500, {'error' : error });
+      return;
+    }
+
+    if(msa.sequences > relax.max_sequences) {
+      var error = 'Sequence limit exceeded! Sequences must be less than ' + relax.max_sequences;
+      logger.error(error);
+      res.json(500, {'error' : error});
+      return;
+    }
+
     relax.msa = msa;
 
     relax.save(function (err, relax_result) {

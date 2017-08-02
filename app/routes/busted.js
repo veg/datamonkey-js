@@ -42,6 +42,21 @@ exports.uploadFile = function(req, res) {
       return;
     }
 
+    if(msa.sites > busted.max_sites) {
+      var error = 'Site limit exceeded! Sites must be less than ' + busted.max_sites;
+      logger.error(error);
+      res.json(500, {'error' : error });
+      return;
+    }
+
+    if(msa.sequences > busted.max_sequences) {
+      var error = 'Sequence limit exceeded! Sequences must be less than ' + busted.max_sequences;
+      logger.error(error);
+      res.json(500, {'error' : error});
+      return;
+    }
+
+
     busted.msa = msa;
 
     busted.save(function (err, busted_result) {
@@ -52,6 +67,7 @@ exports.uploadFile = function(req, res) {
         res.json(500, {'error' : err});
         return;
       }
+
 
       function move_cb(err, result) {
         if(err) {
