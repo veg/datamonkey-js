@@ -87,7 +87,6 @@ exports.selectForeground = function(req, res) {
  * app.post('/msa/:msaid/relax', Relax.invokeRelax);
  */
 exports.invokeRelax = function(req, res) {
-
   var postdata = req.body;
   var id = req.params.id;
 
