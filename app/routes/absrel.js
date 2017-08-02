@@ -188,3 +188,8 @@ exports.resubscribePendingJobs = function(req, res) {
   aBSREL.subscribePendingJobs();
 };
 
+exports.getUsage = function(req, res){
+  aBSREL.usageStatistics(function(err, absrel){
+    res.json(200, absrel);
+  });
+};

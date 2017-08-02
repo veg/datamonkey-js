@@ -87,7 +87,6 @@ exports.selectForeground = function(req, res) {
  * app.post('/msa/:msaid/relax', Relax.invokeRelax);
  */
 exports.invokeRelax = function(req, res) {
-
   var postdata = req.body;
   var id = req.params.id;
 
@@ -312,3 +311,8 @@ exports.resubscribePendingJobs = function(req, res) {
   Relax.subscribePendingJobs();
 };
 
+exports.getUsage = function(req, res){
+  Relax.usageStatistics(function(err, relax){
+    res.json(200, relax);
+  });
+};

@@ -523,3 +523,8 @@ exports.aligned_fasta = function (req, res) {
 
 }
 
+exports.getUsage = function(req, res){
+  HivTrace.usageStatistics(function(err, hivtrace){
+    res.json(200, hivtrace);
+  });
+};
