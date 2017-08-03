@@ -1,10 +1,11 @@
 <%- include ../includes/header.ejs %>
 
-<link href="/assets/css/meme.css" rel="stylesheet">
-
 <div id="container" class="container">
   <%- include header.ejs %>
-  <%- include ../partials/msa/form.ejs %>
+  <div id="upload-form"></div>
   <%- include ../includes/modal.ejs %>
 </div>
 <%- include ../includes/footer.ejs %>
+<script>
+  gard_form();
+</script>
