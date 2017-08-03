@@ -34,6 +34,14 @@ AnalysisSchema.virtual('since_created').get(function () {
     return time.fromNow();
 });
 
+AnalysisSchema.virtual('max_sites').get(function () {
+  return 12000;
+});
+
+AnalysisSchema.virtual('max_sequences').get(function () {
+  return 500;
+});
+
 /**
  * Filename of document's file upload
  */
