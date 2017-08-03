@@ -1,0 +1,20 @@
+
+<div id='content' class='container-fluid'>
+<ul class="nav nav-tabs">
+  <li class="active"><a href="#summary-tab" data-toggle="tab">Summary</a></li>
+  <li class=""><a href="#tree-tab" data-toggle="tab">Tree</a></li>
+  <li class=""><a href="#table_tab" data-toggle="tab">Table</a></li>
+</ul>
+<div id='meme-content'></div>
+</div>
+
+<img id="hyphy-chart-image" />
+<canvas id="hyphy-chart-canvas"></canvas>
+
+<script>
+
+  $(document).ready( function () {
+    render_meme($("#job-report").data('jobid') + '/results', "meme-content")
+  });
+
+</script>

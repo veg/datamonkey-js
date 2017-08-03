@@ -88,6 +88,38 @@ module.exports = function(app) {
   app.get('/flea/data/:id/genes', flea.getGenes);
   app.get('/flea/data/:id/coordinates', flea.getCoordinates);
 
+  // FUBAR ROUTES
+  fubar = require(path.join(__dirname, '../app/routes/fubar'));
+  app.get('/fubar', fubar.createForm);
+  app.post('/fubar/uploadfile', fubar.uploadFile);
+  app.get('/fubar/:id/select-foreground', fubar.selectForeground);
+  app.post('/fubar/:id/select-foreground', fubar.invokefubar);
+  app.get('/fubar/:id', fubar.getPage);
+  app.get('/fubar/:id/info', fubar.getInfo);
+  app.get('/fubar/:id/cancel', fubar.cancel);
+  app.get('/fubar/:id/restart', fubar.restart);
+  app.get('/fubar/:id/results', fubar.getResults);
+  app.get('/fubar/:id/recheck', fubar.getRecheck);
+  app.get('/fubar/:id/log.txt', fubar.getLog);
+  fubar.resubscribePendingJobs();
+
+
+  // GARD ROUTES
+  gard = require(path.join(__dirname, '../app/routes/gard'));
+  app.get('/gard', gard.createForm);
+  app.post('/gard/uploadfile', gard.uploadFile);
+  app.get('/gard/:id/select-foreground', gard.selectForeground);
+  app.post('/gard/:id/select-foreground', gard.invokegard);
+  app.get('/gard/:id', gard.getPage);
+  app.get('/gard/:id/info', gard.getInfo);
+  app.get('/gard/:id/cancel', gard.cancel);
+  app.get('/gard/:id/restart', gard.restart);
+  app.get('/gard/:id/results', gard.getResults);
+  app.get('/gard/:id/recheck', gard.getRecheck);
+  app.get('/gard/:id/log.txt', gard.getLog);
+  gard.resubscribePendingJobs();
+
+
   // HIV-TRACE ROUTES
   hivtrace = require(path.join(__dirname, '../app/routes/hivtrace'));
   app.get('/hivtrace', hivtrace.clusterForm);
@@ -128,5 +160,21 @@ module.exports = function(app) {
   app.get('/relax/:id/recheck', relax.getRecheck);
   app.get('/relax/:id/log.txt', relax.getLog);
   relax.resubscribePendingJobs();
+
+  // SLAC ROUTES
+  slac = require(path.join(__dirname, '../app/routes/slac'));
+  app.get('/slac', slac.createForm);
+  app.post('/slac/uploadfile', slac.uploadFile);
+  app.get('/slac/:id/select-foreground', slac.selectForeground);
+  app.post('/slac/:id/select-foreground', slac.invokeslac);
+  app.get('/slac/:id', slac.getPage);
+  app.get('/slac/:id/info', slac.getInfo);
+  app.get('/slac/:id/cancel', slac.cancel);
+  app.get('/slac/:id/restart', slac.restart);
+  app.get('/slac/:id/results', slac.getResults);
+  app.get('/slac/:id/recheck', slac.getRecheck);
+  app.get('/slac/:id/log.txt', slac.getLog);
+  slac.resubscribePendingJobs();
+
 
 }
