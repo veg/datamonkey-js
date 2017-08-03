@@ -72,8 +72,6 @@ AnalysisSchema.statics.submitJob = function (job, cb) {
 
 };
 
-
-
 AnalysisSchema.statics.subscribePendingJobs = function () {
   this.pendingJobs(function(err, items) {
     _.each(items, function(item) { 
@@ -116,7 +114,6 @@ AnalysisSchema.virtual('generic_error_msg').get(function () {
   var error_msg = 'We\'re sorry, there was an error processing your job. Please try again, or visit <a href="http://github.com/veg/hyphy/issues/">our GitHub issues</a> and create an issue if the issue persists.';
   return error_msg;
 });
-
 
 AnalysisSchema.methods.resubscribe = function () {
 

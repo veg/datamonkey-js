@@ -303,8 +303,6 @@ Msa.statics.parseFile = function(fn, datatype, gencodeid, cb) {
             return;
         }
 
-        console.log(result);
-
         var fpi = result.FILE_PARTITION_INFO;
         var file_info = result.FILE_INFO;
         msa.partitions = file_info.partitions;
