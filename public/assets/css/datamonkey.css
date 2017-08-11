@@ -23,7 +23,6 @@
   stroke: #000;
   background-color: #fff;
   background-repeat: no-repeat;
-  background-position: bottom right;
   padding : 20px;
   font-size: 16px;
   font-weight: 300;
@@ -419,10 +418,6 @@ span.glyphicon {
   margin-bottom : 20px;
 }
 
-#help-container .page-header {
-  padding-top:75px;
-}
-
 .help-content .jumbotron {
   margin-top: 50px;
 }
@@ -510,7 +505,7 @@ span.glyphicon {
 }
 
 /* all links */
-.panel-datamonkey a {
+.panel-datamonkey > a {
   color: #444;
   font-weight: 400;
 }
@@ -681,4 +676,9 @@ body {
   margin-bottom: 20px;
 }
 
-
+.fix {
+  bottom: 0px;
+  position: fixed;
+  width : 100px;
+  right:0px;
+}
