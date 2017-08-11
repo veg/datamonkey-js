@@ -1,198 +1,20 @@
 <%- include includes/header.ejs %>
 
 
-<div class="datamonkey-header">
-  <div class="container">
+<div class="container">
+  <div class="datamonkey-header">
     <h1>Datamonkey</h1>
     <p>
-      Welcome to the free public
-      <a href="http://datamonkey.org/images/cluster.jpg">server</a>
-      for comparative analysis of sequence alignments using state-of-the-art statistical models. 
+      Welcome to the free public server for comparative analysis of sequence alignments using state-of-the-art statistical models. 
       <br/>
-      This service is brought to you by the <a href="http://cfar.ucsd.edu/core-facilities/bit">viral evolution group</a> at the School Of Medicine of the University of California, San Diego.
+      This service is brought to you by <a href="//igem.temple.edu">Institute for Genomics and Evolutionary Medicine</a> at Temple University, Philadelphia.
     </p>
     <p class="lead">
-      <a href="/analyses" class="btn-lg btn-primary btn-outline-inverse">Methods and Tools</a>
+      <a href="/overview" class="btn-lg btn-primary btn-outline-inverse">Overview</a>
+      <a href="/analyses" class="btn-lg btn-primary btn-outline-inverse">Get Started</a>
     </p>
   </div>
 </div>
 
-<div class="bs-docs-featurette">
-  <div class="container">
-   <h2>Find individual sites under diversifying/purifying selection</h2>
-   <p>
-     Use our <b>recommended</b> method, 
-     <a href="http://www.hyphy.org/w/index.php/MEME" class="INFO">MEME</a>, to look for evidence of both diversifying, and importantly, episodic, selection at individual sites. 
-   </p>
-   <p>
-     Four different codon-based maximum likelihood methods, 
-     <a href="help/SLAC.php" class="INFO">SLAC</a>,
-     <a href="help/FEL.php" class="INFO" >FEL</a>, 
-     <a href="help/REL.php" class="INFO" >REL</a>, and
-     <a href="http://www.hyphy.org/w/index.php/FUBAR" class="INFO" >FUBAR</a>,
-     can be used estimate the dN/dS (also known as Ka/Ks or ω) ratio at every codon in the alignment. An exhaustive discussion of each approach can be found in the 
-     <a href="http://mbe.oxfordjournals.org/cgi/content/abstract/22/5/1208" >methodology paper</a>.
-   </p>
-   <p>
-     The codon-based maximum likelihood <a href="/help/IFEL.php" class="INFO" >IFEL</a> method
-     can investigate whether sequences sampled from a population (e.g. viral sequences from different hosts) have been subject to selective pressure at the 
-     population level (i.e. along internal branches). A discussion of the method and its application can be found 
-     <a href="http://compbiol.plosjournals.org/perlserv/?request=get-document&amp;doi=10.1371/journal.pcbi.0020062&amp;ct=1" >here</a>     
-   </p>
-   <p>
-     All six methods can also take <a href="http://mbe.oxfordjournals.org/cgi/content/full/msi031?ijkey=58b5TG2Kv933M&amp;keytype=ref" >recombination into account</a>. 
-     This is done by screening the sequences for recombination breakpoints, identifying non-recombinant regions and allowing each to have its own phylogenetic tree.    
-   </p>
-  </div>
-</div>
-<!--/row-->
-
-
-<div class="bs-docs-featurette">
-  <div class="container">
-    <h2>Detect Relaxed Selection in a Phylogenetic Framework</h2>
-    <p>
-      Use the <a href='http://datamonkey.org/relax' class='INFO' >RELAX</a>
-      method for detecting relaxed selection in a codon-based phylogenetic framework.
-      Given two subsets of branches in a phylogeny, RELAX can determine whether
-      selective strength was relaxed or intensified in one of these subsets relative
-      to the other.
-    </p>
-  </div>
-</div>
-
-<div class="bs-docs-featurette">
-  <div class="container">
-    <h2>Find individual sites under other types of selection</h2>
-    <p>
-     Protein sequences can be screened for evidence of directional using the 
-     <a href="help/deps.php" class="INFO" >DEPS</a> method, described
-     <a href="http://mbe.oxfordjournals.org/cgi/content/short/25/9/1809" >here</a>, useful when one wants to detect  convergent evolution or selective sweeps.   
-    </p>
-    <p>
-      For coding sequences, the <a href="help/TOGGLE.php" class="INFO">TOGGLE</a> model, developed by 
-     <a href='http://www.plospathogens.org/article/info%3Adoi%2F10.1371%2Fjournal.ppat.1000242' onmouseover="Tip('PLoS Pathog 4(12): e1000242. doi:10.1371/journal.ppat.1000242')" class='REFERENCE'>Wayne Delport and colleagues</a>, can detect selection-driven changes that result in amino-acid toggling. A canonical example of this can be found in immune-driven evolution of HIV-1 (escape and reversion).
-    </p>
-  </div>
-</div>
-<!--/row-->
-
-<div class="bs-docs-featurette">
-  <div class="container">
-    <h2>Identify conserved and altered biochemical properties</h2>
-    <p>
-       Use the <a >PRIME</a> method
-       to look for site-specific aminoacid properties (e.g. charge, polarity) which are being preserved or modified by the evolutionary process. 
-       For example, when a site is positively selected, evolution may be working to change side-chain volume, while maintaining polarity.
-    </p>
-  </div>
-</div>
-<!--/row-->
-
-<div class="bs-docs-featurette">
-  <div class="container">
-    <h2>Find individual lineages under diversifying selection</h2>
-    <p>
-      Using the <a
-      href="http://mbe.oxfordjournals.org/content/early/2011/06/11/molbev.msr125.abstract"
-      onmouseover="Tip('Molecular Biology and Evolution (first published online June
-      13, 2011 doi:10.1093/molbev/msr125)')" class="REFERENCE">modeling
-      framework</a>, which allows the efficient estimations with models which permit
-      dN/dS variation along both sites and lineages, Datamonkey implements a test for
-      finding lineages subject to episodic diversifying selection (EDS).:<a
-      href="/help/bsr.php" class="INFO" onmouseover="Tip('Branch-site
-      REL">Branch-site REL</a> method, identifies those branches where a proportion
-      of sites evolves under EDS.  If you are primarily interested in finding which
-      <b>lineages</b> (but don't care about which sites) have experienced EDS, use
-      this method.   </p><p> <span style=" font-variant:small-caps; color:
-      red;">Deprecated in favor of Branch-site REL.</span> The codon-based genetic
-      algorithm <a href="/help/GABranch.php" class="INFO"
-      >GABranch</a>
-      method can automatically partition all branches of the phylogeny describing
-      non-recombinant data into groups according to dN/dS. Robust multi-model
-      inference is used to collate results from all models examined during the run to
-      provide confidence intervals on dN/dS for each branch and guard against model
-      misspecification and overfitting (<a
-      href="http://mbe.oxfordjournals.org/cgi/content/full/msi031?ijkey=58b5TG2Kv933M&amp;keytype=ref"
-      onmouseover="Tip('Molecular Biology and Evolution 2005 22(3):478-485;
-      doi:10.1093/molbev/msi031')" class="REFERENCE">method details</a>).   
-    </p>
-  </div>
-</div>
-<!--/row-->
-
-<div class="bs-docs-featurette">
-  <div class="container">
-    <h2>Tests for alignment-wide evidence of selection</h2>
-     <p>
-       The <a href="help/PARRIS.php" class="INFO" >PARRIS</a> 
-       method, developed by  <a href="http://bioinformatics.oxfordjournals.org/cgi/content/short/22/20/2493" >Konrad Scheffler and colleagues</a>, 
-       extends traditional codon-based likelihood ratio tests to detect 
-       if a proportion of sites in the alignment evolve with dN/dS&gt;1. The method takes recombination and synonymous rate variation into account.
-      </p>
-      <p>
-        The <a href="help/esd.php" class="INFO" >ESD</a> method, described in  <a href="http://mbe.oxfordjournals.org/cgi/content/abstract/27/3/520" onmouseover="Tip('Mol Biol Evol 2010 27(3):520-536')" class="REFERENCE">a 2010 paper</a>, fits a versatile 
-        general discrete bivariate model of site-by-site selective force variation to partition all sites into selective classes, and obtains an approximate posterior distribution of this partitioning. 
-        The resulting "noisy" distribution of selective regimes is the evolutionary fingerprint of a gene. The EVF (evolutionary fingerprinting) module implements this procedure, and can also infer which individual sites appear to be
-        positively selected while accounting for parameter estimation error (analogous to the BEB methodology of the PAML package).
-     </p>   
-  </div>
-</div>
-<!--/row-->
-
-<div class="bs-docs-featurette">
-  <div class="container">
-    <h2>Detect epistasis/co-evolution</h2>
-     <p>
-       A Bayesian graphical model is deduced from reconstructed substitutions at each branch/site combination to infer conditional evolutionary 
-       dependencies of sites in the alignments, i.e. whether a site is more or less likely to experience a non-synonymous substitution at a branch 
-       when certain other sites do (or do not) experience non-synonymous substitutions at the same branch.
-       The <a class="INFO" href="help/spidermonkey.php">SPIDERMONKEY</a> method was introduced in the evolutionary context in our  
-       <a >paper</a>
-       on the evolution of the phenotypically important and highly variable V3 loop of the envelope glycoprotein in HIV-1.
-    </p>
-  </div>
-</div>
-<!--/row-->
-
-
-<div class="bs-docs-featurette">
-  <div class="container">
-    <h2>Screen for recombination</h2>
-    <p>
-      Recombination leaves an imprint on sequence alignments: different segments of the alignment may be 
-      described by different phylogenetic trees, called phylogenetic discordance. Datamonkey.org implements two methods: <a href="/help/Recomb.php#SBP" class="INFO" >SBP</a>, suitable for answering the question "Is there evidence of 
-      recombination in the alignment?", and <a href="/help/Recomb.php#GARD" class="INFO" >GARD</a>, that attempts to find all the recombination 
-      breakpoints. Both method are described in this <a href="http://mbe.oxfordjournals.org/cgi/content/full/23/10/1891" class="REFERENCE" >paper</a>. The output of GARD is accepted by most other analyses, and because recombination 
-      can mislead phylogenetic analysis that do not account for it, we strongly urge that recombination testing be done on any alignment that is going to be 
-      analyzed for positive selection.</p><p>You can also <a href="/dataupload_scueal.php">submit</a> a collection of HIV-1 sequences for recombination screening by a specialized recombination detection algorithm <a href="/help/scueal.php" class="INFO" >SCUEAL</a> described in this <a href="http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1000581" class="REFERENCE" onmouseover="Tip('PLoS Comput Biol. 2009 Nov;5(11):e1000581;')">paper</a>. 
-    </p>
-  </div>
-</div>
-<!--/row-->
-
-
-<div class="bs-docs-featurette">
-  <div class="container">
-    <h2>Perform Model Selection</h2>
-    <p>
-      For each type of data, nucleotide, amino-acid and codon, Datamonkey implements separate model selection procedures. An exhaustive search is performed for all possible (Markov, time-reversible) models of nucleotide 
-      evolution. For protein data, a collection of published empirical models are fitted to the alignment and the best one is selected using AIC<sub>c</sub>. Finally, for coding data, a sophisticated genetic-algorithm
-      procedure described in our recent <a class="REFERENCE" >paper</a>  is used to examine thousands of potential models and report the best one and various metrics based on the set of credible models - this feature is implemented in the <a onmouseover="Tip('(C)odon (M)odel (S)election')" class="INFO" href="/help/cms.php">CMS</a> module. 
-    </p>
-  </div>
-</div>
-<!--/row-->
-
-<div class="bs-docs-featurette">
-  <div class="container">
-    <h2>Reconstruct ancestral sequences</h2>
-    <p>
-      The <a >ASR</a> module implements three different approaches to reconstructing ancestral sequences: joint, marginal and sampled - see 
-      <a class="REFERENCE" >this paper</a> for 
-      a description and original methodology attribution, from simple or partitioned alignments. 
-    </p>
-  </div>
-</div>
 
 <%- include includes/footer.ejs %>

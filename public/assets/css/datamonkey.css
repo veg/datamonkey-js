@@ -1,17 +1,14 @@
 .bs-docs-featurette {
   background-color: #fff;
-  /*border-bottom: 1px solid #e5e5e5;*/
   color: #555;
   font-size: 16px;
   line-height: 1.5;
   padding-bottom: 40px;
   padding-top: 40px;
-  /*text-align: center;*/
 }
 
 .bs-docs-featurette h2 {
   margin-bottom:20px;
-  /*text-align: center;*/
 }
 
 .bs-docs-featurette-title {
@@ -24,58 +21,47 @@
 .datamonkey-header {
   fill: none;
   stroke: #000;
-  background-color: #E7E6F2;
-  /*background-image: url('../img/dm_whole.png');*/
+  background-color: #fff;
   background-repeat: no-repeat;
   background-position: bottom right;
   padding : 20px;
   font-size: 16px;
   font-weight: 300;
   line-height: 1.4;
-
-  /*color: #cdbfe3;*/
   padding: 30px 15px;
   position: relative;
   text-align: center;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-
 }
 
 .datamonkey-header h1{
- font-family: "Droid Serif", Georgia;
- font-size: 12vw;
+  font-family: "Droid Serif", Georgia;
+  font-size: 12em;
 }
 
-
 label {
- font-family: "Droid Serif", Georgia;
+  font-family: "Droid Serif", Georgia;
 }
 
 .datamonkey-sm-header {
-
   fill: none;
   stroke: #000;
-  background-color: #white;
-  /*background-image: url('../img/dm_whole.png');*/
+  background-color: white;
   background-repeat: no-repeat;
   background-position: bottom right;
   font-size: 16px;
   font-weight: 300;
   line-height: 1.4;
   margin-bottom: 5px;
-
-  /*color: #cdbfe3;*/
   padding: 30px 0px;
   position: relative;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-
 }
 
 
 .datamonkey-sm-header h1{
  font-family: "Droid Serif", Georgia;; 
- /*margin-left: 15px;*/
- font-size: 3vw;
+ font-size: 3em;
  display : inline;
  padding-bottom:5px;
 }
@@ -104,10 +90,11 @@ body {
 }
 
 #tiny-monkey-logo {
-  width: 65px;
+  width: 50px;
   float: left;
   position: relative;
-  bottom: -15px;
+  bottom: -7px;
+  left: 15px;
 }
 
 li.media {
