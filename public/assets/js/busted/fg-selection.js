@@ -26,8 +26,6 @@ $( document ).ready( function () {
     });
   }
 
-
-
 });
 
 function busted_create_neighbor_tree(nwk) {
@@ -113,13 +111,15 @@ $("form").submit(function(e) {
       var xhr = new XMLHttpRequest();
       xhr.open('post', self.attributes.getNamedItem("action").value, true);
       xhr.onload = function(res) {
+
         // Replace field with green text, name of file
         var result = JSON.parse(this.responseText);
-        if('_id' in result.busted) {
+        if(_.has(result.busted, '_id')) {
           window.location.href =  '/busted/' + result.busted._id;
         } else if ('error' in result) {
           datamonkey.errorModal(result.error);
         }
+
       };
       xhr.send(formData);
     }

@@ -6,6 +6,7 @@ window._ = _;
 
 require("font-awesome/css/font-awesome.css");
 require('./less/bootstrap.less');
+require("phylotree.css");
 
 var datamonkey = require('./js/datamonkey.js');
 datamonkey.helpers = require('./js/datamonkey_helpers.js');

@@ -1,3 +1,6 @@
+var React = require("react"),
+  ReactDOM = require("react-dom");
+
 var UsageChart = React.createClass({
   initialize: function(){
     var margin = {top:20, right:40, bottom:20, left:40},
@@ -310,7 +313,12 @@ var UsageDashboard = React.createClass({
   }
 });
 
-React.render(
-  <UsageDashboard/>,
-  document.getElementById('main')
-);
+function render_usage() {
+  React.render(
+    <UsageDashboard/>,
+    document.getElementById('main')
+  );
+}
+
+module.exports = render_usage;
+
