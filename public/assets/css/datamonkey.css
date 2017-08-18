@@ -103,6 +103,10 @@ li.media {
   margin: 0px 0px 15px 0px;
 }
 
+.upload-div > label {
+  padding-right: 15px;
+}
+
 .boxed-group {
   background: none repeat scroll 0 0 #EFEFEF;
   border-radius: 3px 3px 3px 3px;
@@ -685,3 +689,4 @@ body {
 .dm-continue-btn {
   padding-left: 20px;
 }
+

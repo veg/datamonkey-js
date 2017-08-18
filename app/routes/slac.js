@@ -35,6 +35,9 @@ exports.invoke = function(req, res) {
       datatype  = postdata.datatype,
       gencodeid = postdata.gencodeid;
 
+  slac.dnds_value = postdata.dnds_value;
+  slac.handle_ambiguities = postdata.handle_ambiguities;
+
   if(postdata.receive_mail == 'true') {
     slac.mail = postdata.mail;
   }

@@ -1,4 +1,3 @@
-
 var querystring = require('querystring'),
     error       = require( __dirname + ' /../../lib/error.js'),
     globals     = require( __dirname + '/../../config/globals.js'),
@@ -15,8 +14,10 @@ var mongoose = require('mongoose'),
     GARD = mongoose.model('GARD');
 
 exports.form = function(req, res) {
+
   var post_to = '/gard';
   res.render('gard/form.ejs', {'post_to' : post_to} );
+
 };
 
 exports.invoke = function(req, res) {
@@ -33,7 +34,12 @@ exports.invoke = function(req, res) {
       gard = new GARD(),
       postdata  = req.body,
       datatype  = postdata.datatype,
-      gencodeid = postdata.gencodeid;
+      gencodeid = postdata.gencodeid,
+      site_to_site_variation = postdata.site_to_site_variation,
+      rate_classes = postdata.rate_classes;
+
+  gard.site_to_site_variation = site_to_site_variation;
+  gard.rate_classes = rate_classes;
 
   if(postdata.receive_mail == 'true') {
     gard.mail = postdata.mail;

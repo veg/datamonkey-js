@@ -5,9 +5,11 @@ var mongoose  = require('mongoose'),
 var AnalysisSchema = require(__dirname + '/analysis');
 
 var GARD = AnalysisSchema.extend({
-  analysis_type         : Number,
-  last_status_msg       : String,
-  results               : Object
+  analysis_type          : Number,
+  last_status_msg        : String,
+  results                : Object,
+  site_to_site_variation : String,
+  rate_classes           : Number
 });
 
 GARD.virtual('pmid').get(function() {

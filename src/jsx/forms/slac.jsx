@@ -6,7 +6,7 @@ var SLACForm = React.createClass({
     //datamonkey.helpers.validate_email(elem);
   },
 
-  submit: function() {
+  submit: function(e) {
 
     e.preventDefault();
 
@@ -21,6 +21,9 @@ var SLACForm = React.createClass({
     formData.append('gencodeid', $( "select[name='gencodeid']" ).val());
     formData.append('receive_mail',  $( "input[name='receive_mail']" ).prop("checked"));
     formData.append('mail', $( "input[name='mail']" ).val());
+
+    formData.append('dnds_value', $( "input[name='dnds_value']" ).val());
+    formData.append('handle_ambiguities', $( "select[name='handle_ambiguities']" ).val());
 
     var action_url = $('#msa-form').attr('action'); 
 
@@ -159,16 +162,16 @@ var SLACForm = React.createClass({
       </div>
 
       <div className="row upload-div">
-        <div className="col-md-6">
+        <div>
           <label id="datatype-content">Global dN/dS value</label> 
-          <input className="form-control" type="number" defaultValue="2" step="1" min="2" max="6" />
+          <input name="dnds_value" className="form-control" type="number" defaultValue="2" step="1" min="2" max="6" />
         </div>
       </div>
 
 
       <div className="upload-div">
         <label id="datatype-content">Handling Ambiguities</label> 
-        <select name="datatype">
+        <select name="handle_ambiguities">
           <option value="averaged">
             Averaged
           </option>
@@ -188,7 +191,7 @@ var SLACForm = React.createClass({
           <input name="mail" type="text" className="form-control" placeholder="Email Address"></input>
         </div>
       </div>
-      <button type="submit" className="btn pull-right"><span className="glyphicon glyphicon-play"></span></button>
+      <button type="submit" className="btn pull-right" onClick={this.submit}><span className="dm-continue-btn glyphicon glyphicon-play"></span></button>
     </form>
     )
   }
@@ -197,7 +200,7 @@ var SLACForm = React.createClass({
 
 function render_slac_form() {
   React.render(
-    <SLACForm post_to={"place_holder"}/>, document.getElementById("upload-form")
+    <SLACForm post_to={"slac"}/>, document.getElementById("upload-form")
   );
 }
 
