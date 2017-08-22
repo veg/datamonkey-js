@@ -171,10 +171,10 @@ var GARDForm = React.createClass({
             <option value="none">
               None
             </option>
-            <option value="general-discrete">
+            <option value="general_discrete">
               General Discrete
             </option>
-            <option value="beta-gamma">
+            <option value="beta_gamma">
               Beta-Gamma
             </option>
           </select> 

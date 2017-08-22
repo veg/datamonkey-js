@@ -42,6 +42,17 @@ AnalysisSchema.virtual('max_sequences').get(function () {
   return 500;
 });
 
+AnalysisSchema.virtual('input_data').get(function () {
+
+  return {
+    "filename": this.id,
+    "sequences": this.msa[0].sequences, 
+    "sites": this.msa[0].sites
+  } 
+
+});
+
+
 /**
  * Filename of document's file upload
  */

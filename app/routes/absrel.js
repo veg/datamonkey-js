@@ -120,15 +120,21 @@ exports.getPage = function(req, res) {
 exports.getResults = function(req, res) {
 
   var absrelid = req.params.id;
+
   aBSREL.findOne({_id : absrelid}, function(err, absrel) {
     if (err || !absrel ) {
       logger.error(err);
       res.json(500, error.errorResponse('invalid id : ' + absrelid ));
     } else {
+
       // Should return results page
       // Append PMID to results
       var absrel_results =  JSON.parse(absrel.results);
       absrel_results['PMID'] = absrel.pmid;
+      
+      // append file information
+      absrel_results['input_data'] = absrel.input_data;
+
       res.json(200, absrel_results);
     }
   });

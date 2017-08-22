@@ -184,11 +184,14 @@ exports.getResults = function(req, res) {
       logger.error(err);
       res.json(500, error.errorResponse('invalid id : ' + relaxid ));
     } else {
+
       // Should return results page
       // Append PMID to results
       var relax_results =  JSON.parse(relax.results);
       relax_results['PMID'] = relax.pmid;
+      relax_results['input_data'] = relax.input_data;
       res.json(200, relax_results);
+
     }
   });
 };

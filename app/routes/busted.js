@@ -206,7 +206,7 @@ exports.getInfo = function(req, res) {
 
 /**
  * Displays id page for analysis
- * app.get('/msa/:msaid/busted/:bustedid/results', busted.getBustedResults);
+ * app.get('/busted/:bustedid/results', busted.getBustedResults);
  */
 exports.getResults = function(req, res) {
 
@@ -218,8 +218,13 @@ exports.getResults = function(req, res) {
       logger.error(err);
       res.json(500, error.errorResponse('invalid id : ' + bustedid ));
     } else {
+
       // Should return results page
-      res.json(200, JSON.parse(busted.results));
+      // append file information
+      var busted_results = JSON.parse(busted.results);
+      busted_results['input_data'] = busted.input_data;
+      res.json(200, busted_results);
+
     }
   });
 };
