@@ -46,9 +46,23 @@ exports.invoke = function(req, res) {
       return;
     }
 
+    // Check if msa exceeds limitations
+    if(msa.sites > absrel.max_sites) {
+      var error = 'Site limit exceeded! Sites must be less than ' + absrel.max_sites;
+      logger.error(error);
+      res.json(500, {'error' : error });
+      return;
+    }
+
+    if(msa.sequences > absrel.max_sequences) {
+      var error = 'Sequence limit exceeded! Sequences must be less than ' + absrel.max_sequences;
+      logger.error(error);
+      res.json(500, {'error' : error});
+      return;
+    }
+
     absrel.msa = msa;
     absrel.status = absrel.status_stack[0];
-
     absrel.save(function (err, absrel_result) {
 
       if(err) {
@@ -73,6 +87,7 @@ exports.invoke = function(req, res) {
           aBSREL.submitJob(absrel_result, connect_callback);
 
         }
+
       }
 
       helpers.moveSafely(req.files.files.file, absrel_result.filepath, move_cb);
@@ -105,15 +120,21 @@ exports.getPage = function(req, res) {
 exports.getResults = function(req, res) {
 
   var absrelid = req.params.id;
+
   aBSREL.findOne({_id : absrelid}, function(err, absrel) {
     if (err || !absrel ) {
       logger.error(err);
       res.json(500, error.errorResponse('invalid id : ' + absrelid ));
     } else {
+
       // Should return results page
       // Append PMID to results
       var absrel_results =  JSON.parse(absrel.results);
       absrel_results['PMID'] = absrel.pmid;
+      
+      // append file information
+      absrel_results['input_data'] = absrel.input_data;
+
       res.json(200, absrel_results);
     }
   });

@@ -88,6 +88,29 @@ module.exports = function(app) {
   app.get('/flea/data/:id/genes', flea.getGenes);
   app.get('/flea/data/:id/coordinates', flea.getCoordinates);
 
+  // FUBAR ROUTES
+  fubar = require(path.join(__dirname, '../app/routes/fubar'));
+  app.get('/fubar', fubar.form);
+  app.post('/fubar', fubar.invoke);
+  app.get('/fubar/:id', fubar.getPage);
+  app.get('/fubar/:id/info', fubar.getInfo);
+  app.get('/fubar/:id/results', fubar.getResults);
+  app.get('/fubar/:id/cancel', fubar.cancel);
+  app.get('/fubar/:id/log.txt', fubar.getLog);
+  fubar.resubscribePendingJobs();
+
+  // GARD ROUTES
+  gard = require(path.join(__dirname, '../app/routes/gard'));
+  app.get('/gard', gard.form);
+  app.post('/gard', gard.invoke);
+  app.get('/gard/:id', gard.getPage);
+  app.get('/gard/:id/info', gard.getInfo);
+  app.get('/gard/:id/results', gard.getResults);
+  app.get('/gard/:id/cancel', gard.cancel);
+  app.get('/gard/:id/log.txt', gard.getLog);
+  gard.resubscribePendingJobs();
+
+
   // HIV-TRACE ROUTES
   hivtrace = require(path.join(__dirname, '../app/routes/hivtrace'));
   app.get('/hivtrace', hivtrace.clusterForm);
@@ -128,5 +151,17 @@ module.exports = function(app) {
   app.get('/relax/:id/recheck', relax.getRecheck);
   app.get('/relax/:id/log.txt', relax.getLog);
   relax.resubscribePendingJobs();
+
+  // SLAC ROUTES
+  slac = require(path.join(__dirname, '../app/routes/slac'));
+  app.get('/slac', slac.form);
+  app.post('/slac', slac.invoke);
+  app.get('/slac/:id', slac.getPage);
+  app.get('/slac/:id/info', slac.getInfo);
+  app.get('/slac/:id/results', slac.getResults);
+  app.get('/slac/:id/cancel', slac.cancel);
+  app.get('/slac/:id/log.txt', slac.getLog);
+  slac.resubscribePendingJobs();
+
 
 }

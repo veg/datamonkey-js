@@ -1,4 +1,3 @@
-
 var mongoose = require('mongoose'),
     moment = require('moment'),
     check = require('validator').check,
@@ -303,8 +302,6 @@ Msa.statics.parseFile = function(fn, datatype, gencodeid, cb) {
             cb(err, null)
             return;
         }
-
-        console.log(result);
 
         var fpi = result.FILE_PARTITION_INFO;
         var file_info = result.FILE_INFO;

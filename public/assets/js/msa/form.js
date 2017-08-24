@@ -40,7 +40,13 @@ $(function() {
       // Replace field with green text, name of file
       var result = JSON.parse(this.responseText);
 
-      if ('error' in result.analysis) {
+      if(_.has(result, 'error')) {
+        $('#modal-error-msg').text(result.error);
+        $('#errorModal').modal()
+        $('#file-progress').css("display", "none");
+        $('#seq-file').css("display", "block");
+        $('.progress .progress-bar').css('width', '0%');
+      } else if ('error' in result.analysis) {
         $('#modal-error-msg').text(result.error);
         $('#errorModal').modal()
         $('#file-progress').css("display", "none");

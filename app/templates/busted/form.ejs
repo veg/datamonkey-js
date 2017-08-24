@@ -6,8 +6,6 @@
 <link href="/assets/css/neighbor-join.css" rel="stylesheet">
 -->
 
-<link href="/assets/css/busted/busted.css" rel="stylesheet">
-
 <div class="container">
 
    <%- include header.ejs %>
@@ -62,7 +60,8 @@
 
   <form action="/busted/<%= busted._id %>/select-foreground" enctype="multipart/form-data" method="POST" name="modelForm">
     <div>
-      <button type="submit" class="btn pull-right"><span class="glyphicon glyphicon-play"></span></button>
+      <button type="submit" class="btn pull-right"><span class="glyphicon
+      glyphicon-play dm-continue-btn"></span></button>
     </div>
   </form>
 
@@ -71,4 +70,4 @@
 <%- include ../includes/modal.ejs %>
 <%- include ../includes/footer.ejs %>
 
-<script src="/assets/js/fel/fg-selection.js"></script>
+<script src="/assets/js/busted/fg-selection.js"></script>

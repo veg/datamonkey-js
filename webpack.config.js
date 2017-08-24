@@ -66,6 +66,15 @@ config = {
         ]
       },
       {
+        test: require.resolve("underscore"),
+        use: [
+          {
+            loader: "expose-loader",
+            query: "_"
+          }
+        ]
+      },
+      {
         test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
         loader: "url-loader",
         options: { limit: 10000, mimetype: "application/font-woff" }
