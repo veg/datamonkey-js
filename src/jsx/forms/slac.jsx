@@ -1,4 +1,5 @@
-var React = require("react");
+var React = require("react"),
+    ReactDOM = require("react-dom");
 
 var SLACForm = React.createClass({
 
@@ -199,7 +200,7 @@ var SLACForm = React.createClass({
 });
 
 function render_slac_form() {
-  React.render(
+  ReactDOM.render(
     <SLACForm post_to={"slac"}/>, document.getElementById("upload-form")
   );
 }

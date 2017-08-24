@@ -1,9 +1,10 @@
-var React = require("react");
+var React = require("react"),
+    ReactDOM = require("react-dom");
+
 
 var GARDForm = React.createClass({
 
   onMailChange : function() {
-    //datamonkey.helpers.validate_email(elem);
   },
 
   submit: function(e) {
@@ -208,7 +209,7 @@ var GARDForm = React.createClass({
 });
 
 function render_gard_form() {
-  React.render(
+  ReactDOM.render(
     <GARDForm post_to={"gard"} />, document.getElementById("upload-form")
   );
 }

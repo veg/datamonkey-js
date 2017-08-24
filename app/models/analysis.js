@@ -45,7 +45,7 @@ AnalysisSchema.virtual('max_sequences').get(function () {
 AnalysisSchema.virtual('input_data').get(function () {
 
   return {
-    "filename": this.id,
+    "filename": this.msa[0].id,
     "sequences": this.msa[0].sequences, 
     "sites": this.msa[0].sites
   } 
