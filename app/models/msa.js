@@ -305,6 +305,7 @@ Msa.statics.parseFile = function(fn, datatype, gencodeid, cb) {
 
         var fpi = result.FILE_PARTITION_INFO;
         var file_info = result.FILE_INFO;
+
         msa.partitions = file_info.partitions;
         msa.gencodeid = file_info.gencodeid;
         msa.sites = file_info.sites;
@@ -314,6 +315,7 @@ Msa.statics.parseFile = function(fn, datatype, gencodeid, cb) {
         msa.nj = file_info.nj;
         msa.usertree = fpi.usertree;
         msa.rawsites = file_info.rawsites;
+
         var sequences = result.SEQUENCES;
         msa.sequence_info = [];
 

@@ -1,4 +1,3 @@
-
 var path = require('path');
 
 module.exports = function(app) {
@@ -41,7 +40,6 @@ module.exports = function(app) {
   app.get('/busted/:bustedid/results', busted.getResults);
   app.get('/busted/:bustedid/log.txt', busted.getLog);
   busted.resubscribePendingJobs();
-
 
   // FADE ROUTES
   fade = require(path.join(__dirname, '../app/routes/fade'));
@@ -136,6 +134,17 @@ module.exports = function(app) {
   app.get('/meme/:id/cancel', meme.cancel);
   app.get('/meme/:id/log.txt', meme.getLog);
   meme.resubscribePendingJobs();
+
+  // PRIME ROUTES
+  //prime = require(path.join(__dirname, '../app/routes/prime'));
+  //app.get('/prime', prime.form);
+  //app.post('/prime', prime.invoke);
+  //app.get('/prime/:id', prime.getPage);
+  //app.get('/prime/:id/info', prime.getInfo);
+  //app.get('/prime/:id/results', prime.getResults);
+  //app.get('/prime/:id/cancel', prime.cancel);
+  //app.get('/prime/:id/log.txt', prime.getLog);
+  //prime.resubscribePendingJobs();
 
   // RELAX ROUTES
   relax = require(path.join(__dirname, '../app/routes/relax'));
