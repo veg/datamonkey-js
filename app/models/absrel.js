@@ -6,6 +6,7 @@ var mongoose  = require('mongoose'),
 var AnalysisSchema = require(__dirname + '/analysis');
 
 var aBSREL = AnalysisSchema.extend({
+  tagged_nwk_tree       : String,
   analysis_type         : Number,
   last_status_msg       : String,
   results               : Object
@@ -24,7 +25,7 @@ aBSREL.virtual('analysistype').get(function() {
 });
 
 aBSREL.virtual('upload_redirect_path').get(function() {
-  return '/absrel/' + this._id;
+  return path.join('/absrel/', String(this._id), '/select-foreground');
 });
 
 /**

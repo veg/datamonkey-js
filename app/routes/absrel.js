@@ -16,10 +16,10 @@ var mongoose = require('mongoose'),
 
 exports.form = function(req, res) {
   var post_to = '/absrel';
-  res.render('absrel/form.ejs', {'post_to' : post_to} );
+  res.render('absrel/msa_form.ejs', {'post_to' : post_to} );
 };
 
-exports.invoke = function(req, res) {
+exports.uploadFile = function(req, res) {
 
   var connect_callback = function(data) {
 
@@ -63,6 +63,7 @@ exports.invoke = function(req, res) {
 
     absrel.msa = msa;
     absrel.status = absrel.status_stack[0];
+
     absrel.save(function (err, absrel_result) {
 
       if(err) {
@@ -83,17 +84,79 @@ exports.invoke = function(req, res) {
           res.json(200,  { "analysis" : absrel, 
                            "upload_redirect_path": absrel.upload_redirect_path});
 
-          // Send the MSA and analysis type
-          aBSREL.submitJob(absrel_result, connect_callback);
-
         }
-
       }
 
       helpers.moveSafely(req.files.files.file, absrel_result.filepath, move_cb);
 
     });
 
+  });
+};
+
+exports.selectForeground = function(req, res) {
+
+  var id = req.params.id;
+
+  aBSREL.findOne({_id: id}, function (err, absrel) {
+
+    res.format({
+      html: function() {
+        res.render('absrel/form.ejs', {'absrel' : absrel});
+      },
+      json: function(){
+        res.json(200, absrel);
+      }
+
+    });
+
+  });
+
+}
+
+
+exports.invoke = function(req, res) {
+
+  var postdata = req.body;
+  var id = req.params.id;
+
+  // Find the correct multiple sequence alignment to act upon
+  aBSREL.findOne({ '_id' : id }, function(err, absrel) {
+
+    // User Parameters
+    absrel.tagged_nwk_tree = postdata.nwk_tree;
+    absrel.analysis_type   = postdata.analysis_type;
+    absrel.status          = absrel.status_stack[0];
+
+    absrel.save(function (err, result) {
+
+      if(err) {
+        // Redisplay form with errors
+        res.format({
+          html: function() {
+            res.render('absrel/form.ejs', {'errors': err.errors,
+                                          'absrel' : absrel});
+          },
+          json: function() {
+            // Save absrel analysis
+            res.json(200, {'msg': 'Job with absrel id ' + id + ' not found'});
+          }
+        });
+
+      // Successful upload, spawn job
+      } else {
+
+        var connect_callback = function(data) {
+          if(data == 'connected') {
+            logger.log('connected');
+          }
+        };
+
+        res.json(200,  {'absrel' : result});
+        aBSREL.submitJob(result, connect_callback);
+
+      }
+    });
   });
 
 };

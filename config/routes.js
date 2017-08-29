@@ -19,7 +19,9 @@ module.exports = function(app) {
   // aBSREL ROUTES
   absrel = require(path.join(__dirname, '../app/routes/absrel'));
   app.get('/absrel', absrel.form);
-  app.post('/absrel', absrel.invoke);
+  app.post('/absrel', absrel.uploadFile);
+  app.get('/absrel/:id/select-foreground', absrel.selectForeground);
+  app.post('/absrel/:id/select-foreground', absrel.invoke);
   app.get('/absrel/:id', absrel.getPage);
   app.get('/absrel/:id/info', absrel.getInfo);
   app.get('/absrel/:id/results', absrel.getResults);
