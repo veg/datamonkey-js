@@ -91,6 +91,11 @@ config = {
         options: { limit: 10000, mimetype: "image/svg+xml" }
       },
       {
+        test: /\.jpg(\?v=\d+\.\d+\.\d+)?$/,
+        loaders: "url-loader",
+        options: { limit: 10000, mimetype: "image/jpg" }
+      },
+      {
         test: /\.(js|jsx)?$/,
         exclude: /node_modules/,
         loader: "eslint-loader",

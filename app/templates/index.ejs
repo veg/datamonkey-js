@@ -1,30 +1,47 @@
 <%- include includes/header.ejs %>
 
+<style>
+body {
+  background-image:url("/assets/img/repeat-bg_360.jpg") !important;
+}
 
-<div class="container">
+footer {
+  color: white;
+}
+
+.get-started {
+  fill:#00a99d;
+  opacity:0.5;
+}
+
+@keyframes hovering {
+    0%   {opacity: 0.6;}
+    25%  {opacity: 0.7;}
+    50%  {opacity: 0.8;}
+    100% {opacity: 1.0;}
+}
+
+.get-started:hover {
+  fill:#00a99d;
+  opacity:1.0;
+  cursor:pointer;
+  animation-name:hovering;
+  animation-duration:.25s;
+}
+
+
+</style>
+
+<div class="container main-page">
 
   <div class="datamonkey-splash">
     <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 966 544">
       <defs><style>.cls-1{fill:#00a99d;}.cls-2{fill:#fff;}.cls-3{opacity:0.5;}.cls-4{fill:#5b7573;}.cls-5{opacity:0.3;}.cls-6{fill:#f2f2f2;}.cls-7{fill:#d3efe9;}.cls-8{fill:#74e8d2;}</style></defs><title>datamonkey-homepage</title><polygon
       class="cls-1" points="270.6 541.88 0 270.94 270.6 0 541.2 270.94 270.6
-      541.88"/><path class="cls-1"
-      d="M693.37,146.94,817.32,271,693.37,395.14,569.43,271l123.95-124.1m0-7.08L562.35,271l131,131.18L824.39,271l-131-131.18Z"/><path
-      class="cls-2"
-      d="M500.8,407.95c2.77,0,4.77.53,4.77,6,0,5.18-1.89,5.85-4.77,5.85S496,419.32,496,414C496,408.48,498.11,407.95,500.8,407.95Zm0,9.49c1.66,0,2.14-.6,2.14-3.46,0-3.24-.5-3.64-2.14-3.64s-2.15.29-2.15,3.64C498.65,416.85,499,417.44,500.8,417.44Z"/><path
-      class="cls-2"
-      d="M513.53,408l2.31,8.4,2.47-8.4h2.77l-3.71,11.74h-3.11L510.75,408Z"/><path
-      class="cls-2"
-      d="M526.3,410.6A2.39,2.39,0,0,1,529,408s3.79.06,5.19.26v2.19h-4.47c-.83,0-.83.46-.83.9v1.33l4.54.17v2.17l-4.54.15v1.33c0,.85.53.83,1,.83h4.31v2.18c-1.24.17-5,.27-5,.27-1,0-2.9-.18-2.9-2.48Z"/><path
-      class="cls-2"
-      d="M540.14,408h5.18c1.94,0,3.37.85,3.37,3.71s-1.08,3.23-1.81,3.49l2.13,4.54h-3l-1.75-4.31-1.52-.22v4.54h-2.63Zm4.88,5.18c.8,0,1-.31,1-1.47s-.32-1.42-1-1.42h-2.24v2.89Z"/><path
-      class="cls-2"
-      d="M556.75,408l2.31,8.4,2.47-8.4h2.77l-3.71,11.74h-3.11L554,408Z"/><path
-      class="cls-2" d="M570.22,408h2.63v11.74h-2.63Z"/><path class="cls-2"
-      d="M579.07,410.6a2.39,2.39,0,0,1,2.74-2.57s3.79.06,5.19.26v2.19h-4.47c-.83,0-.83.46-.83.9v1.33l4.54.17v2.17l-4.54.15v1.33c0,.85.53.83,1,.83H587v2.18c-1.24.17-5,.27-5,.27-1,0-2.9-.18-2.9-2.48Z"/><path
-      class="cls-2"
-      d="M595.41,408l2.31,8.36,1.82-8.36h2.79l-.72,2.77,1.76,5.62L605.2,408H608l-3.07,11.74H601.8l-1.35-4.37-1.19,4.37h-3.11L592.63,408Z"/><path
-      class="cls-1"
-      d="M551.77,288.71l123.95,124.1L551.77,536.92,427.83,412.82l123.95-124.1m0-7.08-131,131.18L551.77,544l131-131.18-131-131.18Z"/><g
+      541.88"/><path class="get-started"
+      d="M693.37,146.94,817.32,271,693.37,395.14,569.43,271l123.95-124.1"/><path
+      class="cls-4 cls-5"
+      d="M551.77,288.71l123.95,124.1L551.77,536.92,427.83,412.82l123.95-124.1"/><g
       class="cls-3"><polygon class="cls-4" points="551.77 262.4 420.75 131.22 551.77
       0.04 682.79 131.22 551.77 262.4"/></g><g class="cls-5"><polygon class="cls-4"
       points="834.98 544 703.96 412.82 834.98 281.63 966 412.82 834.98 544"/></g><path
@@ -260,8 +277,8 @@
       class="cls-2" x="132.04" y="270.44" width="277.11" height="1"/>
     </svg>
     <p class="lead">
-      <a href="/overview" class="btn-lg btn-primary btn-outline-inverse">Overview</a>
-      <a href="/analyses" class="btn-lg btn-primary btn-outline-inverse">Get Started</a>
+      <!--<a href="/overview" class="btn-lg btn-primary btn-outline-inverse">Overview</a>
+      <a href="/analyses" class="btn-lg btn-primary btn-outline-inverse">Get Started</a>-->
     </p>
   </div>
 
@@ -278,6 +295,17 @@
 </div>
 
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<script>
+
+$( document ).ready( function () {
+
+  d3.select(".get-started").on("click", function(d) {
+    window.location = "/analyses";
+  });
+
+});
+
+</script>
 
 <%- include includes/footer.ejs %>
 
