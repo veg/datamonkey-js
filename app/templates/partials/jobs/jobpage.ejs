@@ -29,7 +29,7 @@
   </section>
 
 <% if (job.status == 'aborted') { %>
-  <div class="alert alert-danger">There was an error! Please try again. <code><%= job.error_message %></code></div>
+  <div class="alert alert-danger"><%- job.generic_error_msg %></div>
 <% } %>
 
 <div id="standard-output"  <% if(!job.last_status_msg) { %> class="hidden" <% } %> >
@@ -46,4 +46,5 @@
 
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.js"></script>
 <script src="/assets/js/job.js"></script>

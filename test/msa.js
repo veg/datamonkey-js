@@ -89,11 +89,11 @@ describe('msa codon translation', function() {
 
     var msa = new Msa;
     msa.gencodeid = 0;
-    fs.writeFileSync(msa.filepath, fs.readFileSync('./tests/res/Flu.fasta'));
+    fs.writeFileSync(msa.filepath, fs.readFileSync('./test/res/Flu.fasta'));
 
     msa.aminoAcidTranslation(function(err, result) {
 
-      fs.readFile('./tests/res/Flu.aa', function (err, data) {
+      fs.readFile('./test/res/Flu.aa', function (err, data) {
         result.should.equal(data.toString());
         done();
       });
@@ -110,7 +110,7 @@ describe('hyphy friendly', function() {
 
     var msa = new Msa;
     msa.gencodeid = 0;
-    fs.writeFileSync(msa.filepath, fs.readFileSync('./tests/res/Flu.fasta'));
+    fs.writeFileSync(msa.filepath, fs.readFileSync('./test/res/Flu.fasta'));
 
     // save attribute map
 
@@ -205,7 +205,7 @@ describe('validate fasta file', function() {
       done();
     }
 
-    Msa.validateFasta('./tests/res/Flu.unaligned.fasta', cb, options);
+    Msa.validateFasta('./test/res/Flu.unaligned.fasta', cb, options);
 
   });
 

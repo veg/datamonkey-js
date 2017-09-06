@@ -1,4 +1,3 @@
-
 var path = require('path');
 
 module.exports = function(app) {
@@ -20,7 +19,9 @@ module.exports = function(app) {
   // aBSREL ROUTES
   absrel = require(path.join(__dirname, '../app/routes/absrel'));
   app.get('/absrel', absrel.form);
-  app.post('/absrel', absrel.invoke);
+  app.post('/absrel', absrel.uploadFile);
+  app.get('/absrel/:id/select-foreground', absrel.selectForeground);
+  app.post('/absrel/:id/select-foreground', absrel.invoke);
   app.get('/absrel/:id', absrel.getPage);
   app.get('/absrel/:id/info', absrel.getInfo);
   app.get('/absrel/:id/results', absrel.getResults);
@@ -41,7 +42,6 @@ module.exports = function(app) {
   app.get('/busted/:bustedid/results', busted.getResults);
   app.get('/busted/:bustedid/log.txt', busted.getLog);
   busted.resubscribePendingJobs();
-
 
   // FADE ROUTES
   fade = require(path.join(__dirname, '../app/routes/fade'));
@@ -88,6 +88,29 @@ module.exports = function(app) {
   app.get('/flea/data/:id/genes', flea.getGenes);
   app.get('/flea/data/:id/coordinates', flea.getCoordinates);
 
+  // FUBAR ROUTES
+  fubar = require(path.join(__dirname, '../app/routes/fubar'));
+  app.get('/fubar', fubar.form);
+  app.post('/fubar', fubar.invoke);
+  app.get('/fubar/:id', fubar.getPage);
+  app.get('/fubar/:id/info', fubar.getInfo);
+  app.get('/fubar/:id/results', fubar.getResults);
+  app.get('/fubar/:id/cancel', fubar.cancel);
+  app.get('/fubar/:id/log.txt', fubar.getLog);
+  fubar.resubscribePendingJobs();
+
+  // GARD ROUTES
+  gard = require(path.join(__dirname, '../app/routes/gard'));
+  app.get('/gard', gard.form);
+  app.post('/gard', gard.invoke);
+  app.get('/gard/:id', gard.getPage);
+  app.get('/gard/:id/info', gard.getInfo);
+  app.get('/gard/:id/results', gard.getResults);
+  app.get('/gard/:id/cancel', gard.cancel);
+  app.get('/gard/:id/log.txt', gard.getLog);
+  gard.resubscribePendingJobs();
+
+
   // HIV-TRACE ROUTES
   hivtrace = require(path.join(__dirname, '../app/routes/hivtrace'));
   app.get('/hivtrace', hivtrace.clusterForm);
@@ -114,6 +137,17 @@ module.exports = function(app) {
   app.get('/meme/:id/log.txt', meme.getLog);
   meme.resubscribePendingJobs();
 
+  // PRIME ROUTES
+  //prime = require(path.join(__dirname, '../app/routes/prime'));
+  //app.get('/prime', prime.form);
+  //app.post('/prime', prime.invoke);
+  //app.get('/prime/:id', prime.getPage);
+  //app.get('/prime/:id/info', prime.getInfo);
+  //app.get('/prime/:id/results', prime.getResults);
+  //app.get('/prime/:id/cancel', prime.cancel);
+  //app.get('/prime/:id/log.txt', prime.getLog);
+  //prime.resubscribePendingJobs();
+
   // RELAX ROUTES
   relax = require(path.join(__dirname, '../app/routes/relax'));
   app.get('/relax', relax.createForm);
@@ -128,5 +162,17 @@ module.exports = function(app) {
   app.get('/relax/:id/recheck', relax.getRecheck);
   app.get('/relax/:id/log.txt', relax.getLog);
   relax.resubscribePendingJobs();
+
+  // SLAC ROUTES
+  slac = require(path.join(__dirname, '../app/routes/slac'));
+  app.get('/slac', slac.form);
+  app.post('/slac', slac.invoke);
+  app.get('/slac/:id', slac.getPage);
+  app.get('/slac/:id/info', slac.getInfo);
+  app.get('/slac/:id/results', slac.getResults);
+  app.get('/slac/:id/cancel', slac.cancel);
+  app.get('/slac/:id/log.txt', slac.getLog);
+  slac.resubscribePendingJobs();
+
 
 }

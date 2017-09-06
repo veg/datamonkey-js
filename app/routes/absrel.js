@@ -16,10 +16,10 @@ var mongoose = require('mongoose'),
 
 exports.form = function(req, res) {
   var post_to = '/absrel';
-  res.render('absrel/form.ejs', {'post_to' : post_to} );
+  res.render('absrel/msa_form.ejs', {'post_to' : post_to} );
 };
 
-exports.invoke = function(req, res) {
+exports.uploadFile = function(req, res) {
 
   var connect_callback = function(data) {
 
@@ -46,6 +46,21 @@ exports.invoke = function(req, res) {
       return;
     }
 
+    // Check if msa exceeds limitations
+    if(msa.sites > absrel.max_sites) {
+      var error = 'Site limit exceeded! Sites must be less than ' + absrel.max_sites;
+      logger.error(error);
+      res.json(500, {'error' : error });
+      return;
+    }
+
+    if(msa.sequences > absrel.max_sequences) {
+      var error = 'Sequence limit exceeded! Sequences must be less than ' + absrel.max_sequences;
+      logger.error(error);
+      res.json(500, {'error' : error});
+      return;
+    }
+
     absrel.msa = msa;
     absrel.status = absrel.status_stack[0];
 
@@ -69,9 +84,6 @@ exports.invoke = function(req, res) {
           res.json(200,  { "analysis" : absrel, 
                            "upload_redirect_path": absrel.upload_redirect_path});
 
-          // Send the MSA and analysis type
-          aBSREL.submitJob(absrel_result, connect_callback);
-
         }
       }
 
@@ -79,6 +91,72 @@ exports.invoke = function(req, res) {
 
     });
 
+  });
+};
+
+exports.selectForeground = function(req, res) {
+
+  var id = req.params.id;
+
+  aBSREL.findOne({_id: id}, function (err, absrel) {
+
+    res.format({
+      html: function() {
+        res.render('absrel/form.ejs', {'absrel' : absrel});
+      },
+      json: function(){
+        res.json(200, absrel);
+      }
+
+    });
+
+  });
+
+}
+
+
+exports.invoke = function(req, res) {
+
+  var postdata = req.body;
+  var id = req.params.id;
+
+  // Find the correct multiple sequence alignment to act upon
+  aBSREL.findOne({ '_id' : id }, function(err, absrel) {
+
+    // User Parameters
+    absrel.tagged_nwk_tree = postdata.nwk_tree;
+    absrel.analysis_type   = postdata.analysis_type;
+    absrel.status          = absrel.status_stack[0];
+
+    absrel.save(function (err, result) {
+
+      if(err) {
+        // Redisplay form with errors
+        res.format({
+          html: function() {
+            res.render('absrel/form.ejs', {'errors': err.errors,
+                                          'absrel' : absrel});
+          },
+          json: function() {
+            // Save absrel analysis
+            res.json(200, {'msg': 'Job with absrel id ' + id + ' not found'});
+          }
+        });
+
+      // Successful upload, spawn job
+      } else {
+
+        var connect_callback = function(data) {
+          if(data == 'connected') {
+            logger.log('connected');
+          }
+        };
+
+        res.json(200,  {'absrel' : result});
+        aBSREL.submitJob(result, connect_callback);
+
+      }
+    });
   });
 
 };
@@ -105,15 +183,21 @@ exports.getPage = function(req, res) {
 exports.getResults = function(req, res) {
 
   var absrelid = req.params.id;
+
   aBSREL.findOne({_id : absrelid}, function(err, absrel) {
     if (err || !absrel ) {
       logger.error(err);
       res.json(500, error.errorResponse('invalid id : ' + absrelid ));
     } else {
+
       // Should return results page
       // Append PMID to results
       var absrel_results =  JSON.parse(absrel.results);
       absrel_results['PMID'] = absrel.pmid;
+      
+      // append file information
+      absrel_results['input_data'] = absrel.input_data;
+
       res.json(200, absrel_results);
     }
   });

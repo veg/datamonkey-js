@@ -1,26 +1,10 @@
-<!--
-  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.css" rel="stylesheet">
-  <link href="/assets/lib/phylotree/phylotree.css" rel="stylesheet">
-  <link href="/assets/lib/hyphy-vision/hyphy-vision.css" rel="stylesheet">
--->
-
-<div id='content' class='container-fluid'>
-<ul class="nav nav-tabs">
-  <li class="active"><a href="#datamonkey-relax-summary-tab" data-toggle="tab">Summary</a></li>
-  <li class=""><a href="#tree-tab" data-toggle="tab">Tree</a></li>
-</ul>
-<div id='relax-content'></div>
-</div>
+<div id='content'></div>
 
 <img id="hyphy-chart-image" />
 <canvas id="hyphy-chart-canvas"></canvas>
 
 <script>
-
-    $(document).ready(function() {
-      render_relax($("#job-report").data('jobid') + '/results', "relax-content")
-    });
-
+  $(document).ready( function () {
+    hyphyVision.relax($("#job-report").data('jobid') + '/results', "content")
+  });
 </script>
-
-

@@ -1,17 +1,14 @@
 .bs-docs-featurette {
   background-color: #fff;
-  /*border-bottom: 1px solid #e5e5e5;*/
   color: #555;
   font-size: 16px;
   line-height: 1.5;
   padding-bottom: 40px;
   padding-top: 40px;
-  /*text-align: center;*/
 }
 
 .bs-docs-featurette h2 {
   margin-bottom:20px;
-  /*text-align: center;*/
 }
 
 .bs-docs-featurette-title {
@@ -24,58 +21,45 @@
 .datamonkey-header {
   fill: none;
   stroke: #000;
-  background-color: #E7E6F2;
-  /*background-image: url('../img/dm_whole.png');*/
+  background-color: #fff;
   background-repeat: no-repeat;
-  background-position: bottom right;
   padding : 20px;
   font-size: 16px;
   font-weight: 300;
   line-height: 1.4;
-
-  /*color: #cdbfe3;*/
   padding: 30px 15px;
   position: relative;
   text-align: center;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-
 }
 
-.datamonkey-header h1{
- font-family: "Droid Serif", Georgia;
- font-size: 12vw;
+.datamonkey-header h1 {
+  font-family: "Droid Serif", Georgia;
+  font-size: 12em;
 }
-
 
 label {
- font-family: "Droid Serif", Georgia;
+  font-family: "Droid Serif", Georgia;
 }
 
 .datamonkey-sm-header {
-
   fill: none;
   stroke: #000;
-  background-color: #white;
-  /*background-image: url('../img/dm_whole.png');*/
+  background-color: white;
   background-repeat: no-repeat;
   background-position: bottom right;
   font-size: 16px;
   font-weight: 300;
   line-height: 1.4;
   margin-bottom: 5px;
-
-  /*color: #cdbfe3;*/
   padding: 30px 0px;
   position: relative;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
-
 }
 
-
-.datamonkey-sm-header h1{
+.datamonkey-sm-header h1 {
  font-family: "Droid Serif", Georgia;; 
- /*margin-left: 15px;*/
- font-size: 3vw;
+ font-size: 3em;
  display : inline;
  padding-bottom:5px;
 }
@@ -84,7 +68,6 @@ label {
  margin-left: 15px;
  display:inline;
 }
-
 
 .lead {
   font-size: 16px;
@@ -104,10 +87,11 @@ body {
 }
 
 #tiny-monkey-logo {
-  width: 65px;
+  width: 50px;
   float: left;
   position: relative;
-  bottom: -15px;
+  bottom: -7px;
+  left: 15px;
 }
 
 li.media {
@@ -116,6 +100,10 @@ li.media {
 
 .upload-div {
   margin: 0px 0px 15px 0px;
+}
+
+.upload-div > label {
+  padding-right: 15px;
 }
 
 .boxed-group {
@@ -374,55 +362,6 @@ span.glyphicon {
   margin-bottom: 20px;
 }
 
-/* all links */
-.bs-docs-sidebar .nav>li>a {
-  color: #999;
-  border-left: 2px solid transparent;
-  padding: 4px 20px;
-  font-size: 13px;
-  font-weight: 400;
-}
-
-/* nested links */
-.bs-docs-sidebar .nav .nav>li>a {
-  padding-top: 1px;
-  padding-bottom: 1px;
-  padding-left: 30px;
-  font-size: 12px;
-}
-
-/* active & hover links */
-.bs-docs-sidebar .nav>.active>a, 
-.bs-docs-sidebar .nav>li>a:hover, 
-.bs-docs-sidebar .nav>li>a:focus {
-  color: #563d7c;         
-  text-decoration: none;      
-  background-color: transparent;  
-  border-left-color: #563d7c; 
-}
-/* all active links */
-.bs-docs-sidebar .nav>.active>a, 
-.bs-docs-sidebar .nav>.active:hover>a,
-.bs-docs-sidebar .nav>.active:focus>a {
-  font-weight: 700;
-}
-/* nested active links */
-.bs-docs-sidebar .nav .nav>.active>a, 
-.bs-docs-sidebar .nav .nav>.active:hover>a,
-.bs-docs-sidebar .nav .nav>.active:focus>a {
-  font-weight: 500;
-}
-
-/* hide inactive nested list */
-.bs-docs-sidebar .nav ul.nav {
-  /*display: none;       */
-}
-
-/* show active nested list */
-.bs-docs-sidebar .nav>.active>ul.nav {
-  display: block;       
-}
-
 .bs-docs-section {
   margin-bottom:60px;
 }
@@ -430,10 +369,6 @@ span.glyphicon {
 .bs-docs-example {
   margin-top : 20px;
   margin-bottom : 20px;
-}
-
-#help-container .page-header {
-  padding-top:75px;
 }
 
 .help-content .jumbotron {
@@ -523,7 +458,7 @@ span.glyphicon {
 }
 
 /* all links */
-.panel-datamonkey a {
+.panel-datamonkey > a {
   color: #444;
   font-weight: 400;
 }
@@ -694,4 +629,22 @@ body {
   margin-bottom: 20px;
 }
 
+.fix {
+  bottom: 0px;
+  position: fixed;
+  width : 100px;
+  right:0px;
+}
+
+.dm-continue-btn {
+  padding-left: 20px;
+}
+
+.datamonkey-splash {
+  margin-top:50px;
+}
+
+#results::before {
+  height:0px !important;
+}
 

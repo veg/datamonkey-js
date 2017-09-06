@@ -28,8 +28,6 @@ inferred sites changes depending on the nucleotide model (it rarely does,
 unless the model is very wrong).
 </p>
 
-<h3 id="rooting" class="page-header">Rooting</h3>
-
 <h3 id="ambiguities" class="page-header">Handling Ambiguities</h3>
 
 <div class="bs-callout bs-callout-info">
@@ -83,27 +81,6 @@ f(ACG)/(f(ACA)+f(ACG)).
 
 <h3 id="significance-levels" class="page-header">Choosing significance levels</h3>
 
-
 <div class="bs-callout bs-callout-info">
   <p>For more details see <a href='http://mbe.oxfordjournals.org/cgi/content/short/22/5/1208'>MBE paper</a></p>
 </div>
-
-<h3>aBSREL</h3>
-<p>
-  A (somewhat) arbitrary cut-off value for the Bayes factor for the event of
-  positive selection at a given site.  When a Bayes factor sufficiently greater
-  than 1 (default is 50; values between 10-100 provide <b>strong</b> evidence for
-  the hypothesis, while values over 100 are <b>decisive</b>) suggests that the
-  data supports positive (or negative) selection at that site. This value does
-  correspond to statistical significance, but the exact mapping between Bayes
-  factors and p-values is data set dependent.  The reciprocal of a Bayes Factor
-  is loosely analogous to a p-value.  REL methods are most sensitive, but are
-  also most prone to false positives.
-</p> 
-
-<h3 id="amino-acid-properties" class="page-header">Amino Acid Property Set</h3>
-
-<h3 id="rate-variation" class="page-header">Rate Variation</h3>
-
-
-

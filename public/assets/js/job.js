@@ -1,6 +1,5 @@
 $(document).ready(function() {
   setupJob();
-
 });
 
 var job_start_time    = 0,
@@ -18,10 +17,10 @@ function jobSubmittedAt(creation_time) {
 
 function jobRuntime(start_time) {
 
-  var zero = d3.format("02d");
-  hours = moment().diff(start_time, 'hours');
-  mins  = moment().diff(start_time, 'minutes') % 60;
-  secs  = moment().diff(start_time, 'seconds') % 60;
+  var zero = d3.format("02d"),
+      hours = moment().diff(start_time, 'hours'),
+      mins  = moment().diff(start_time, 'minutes') % 60,
+      secs  = moment().diff(start_time, 'seconds') % 60;
 
   d3.select("#job-run-time").text(zero(hours) + ':' + zero(mins) + ':' + zero(secs) );
 
@@ -30,10 +29,11 @@ function jobRuntime(start_time) {
 function setupJob() {
 
   var jobid = $('#job-report').data('jobid');
+
   var socket_address = document.location.origin;
 
   var socket = io.connect(socket_address, {
-        reconnect: false
+        reconnect : false
       });
 
   var was_error = false;
@@ -47,6 +47,7 @@ function setupJob() {
       setInterval(jobSubmittedAt, 1000, job_creation_time);
 
     } else {
+
       job_start_time    = moment(data.start_time);
       job_creation_time = moment(data.creation_time);
 
@@ -60,9 +61,8 @@ function setupJob() {
       if(job_creation_time) {
         setInterval(jobSubmittedAt, 1000, job_creation_time);
       }
+
     }
-
-
 
   });
 
@@ -108,10 +108,12 @@ function setupJob() {
   }
 
   socket.on('connect_error', function () {
+
     if(!was_error) {
       was_error = true;
       datamonkey.errorModal('Could not contact server for job status updates');
     }
+
   });
 
   socket.on('connect_timeout', function () {
@@ -158,9 +160,9 @@ function setupJob() {
 
   });
 
-  // Error
   socket.on('script error', function (data) {
-    datamonkey.errorModal(data.msg);
+    $('#modal-error-msg').html(msg);
+    $('#errorModal').modal();
   });
 
 
