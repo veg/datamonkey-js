@@ -324,7 +324,7 @@ var UsageDashboard = React.createClass({
 });
 
 function render_usage() {
-  React.render(
+  ReactDOM.render(
     <UsageDashboard/>,
     document.getElementById('main')
   );
