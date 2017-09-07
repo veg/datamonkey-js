@@ -8,6 +8,6 @@ install:
 	@cd ./.hyphy/ && cmake . && make HYPHYMP && cd ../
 	@rm -rf .tn93 && wget http://github.com/veg/tn93/archive/v1.0.2.tar.gz  && tar xvzf v1.0.2.tar.gz && mv tn93-1.0.2 .tn93;	
 	@cd ./.tn93/ && cmake . && make && cd ../
-	@yarn
+	@yarn install
 	@webpack
 	@mkdir -p ./uploads/msa ./uploads/hivtrace;
