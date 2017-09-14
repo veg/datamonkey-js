@@ -1,198 +1,311 @@
 <%- include includes/header.ejs %>
 
+<style>
+body {
+  background-image:url("/assets/img/repeat-bg_360.jpg") !important;
+}
 
-<div class="datamonkey-header">
-  <div class="container">
-    <h1>Datamonkey</h1>
-    <p>
-      Welcome to the free public
-      <a href="http://datamonkey.org/images/cluster.jpg">server</a>
-      for comparative analysis of sequence alignments using state-of-the-art statistical models. 
-      <br/>
-      This service is brought to you by the <a href="http://cfar.ucsd.edu/core-facilities/bit">viral evolution group</a> at the School Of Medicine of the University of California, San Diego.
-    </p>
+footer {
+  color: white;
+}
+
+.get-started {
+  fill:#00a99d;
+  opacity:0.5;
+}
+
+@keyframes hovering {
+    0%   {opacity: 0.6;}
+    25%  {opacity: 0.7;}
+    50%  {opacity: 0.8;}
+    100% {opacity: 1.0;}
+}
+
+.get-started:hover {
+  fill:#00a99d;
+  opacity:1.0;
+  cursor:pointer;
+  animation-name:hovering;
+  animation-duration:.25s;
+}
+
+
+</style>
+
+<div class="container main-page">
+
+  <div class="datamonkey-splash">
+    <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 966 544">
+      <defs><style>.cls-1{fill:#00a99d;}.cls-2{fill:#fff;}.cls-3{opacity:0.5;}.cls-4{fill:#5b7573;}.cls-5{opacity:0.3;}.cls-6{fill:#f2f2f2;}.cls-7{fill:#d3efe9;}.cls-8{fill:#74e8d2;}</style></defs><title>datamonkey-homepage</title><polygon
+      class="cls-1" points="270.6 541.88 0 270.94 270.6 0 541.2 270.94 270.6
+      541.88"/><path class="get-started"
+      d="M693.37,146.94,817.32,271,693.37,395.14,569.43,271l123.95-124.1"/><path
+      class="cls-4 cls-5"
+      d="M551.77,288.71l123.95,124.1L551.77,536.92,427.83,412.82l123.95-124.1"/><g
+      class="cls-3"><polygon class="cls-4" points="551.77 262.4 420.75 131.22 551.77
+      0.04 682.79 131.22 551.77 262.4"/></g><g class="cls-5"><polygon class="cls-4"
+      points="834.98 544 703.96 412.82 834.98 281.63 966 412.82 834.98 544"/></g><path
+      class="cls-6"
+      d="M270.6,19.22,522,270.94,270.6,522.66,19.19,270.94,270.6,19.22m0-4.25-255.65,256,255.65,256,255.65-256L270.6,15Z"/><path
+      class="cls-2"
+      d="M123.62,257.74H112.07v-26h11.4c11.49,0,13.51,7.18,13.51,13S135,257.74,123.62,257.74Zm-.48-20.48h-5.38l.54.58v13.85l-.54.58h5.54c6.37,0,7.33-3,7.33-7.5S129.64,237.26,123.14,237.26Z"/><path
+      class="cls-2"
+      d="M172.51,257.74h-6.82l-2.79-5.61.38-.58H150.71l.38.58-2.72,5.61h-6.88l12.9-26h5.28ZM160.6,246.68l-.64-.58-2-4-1-2.63-1,2.63-2,4-.67.58Z"/><path
+      class="cls-2"
+      d="M199.56,237.26h-9.28l.32.58v19.9h-6.24v-19.9l.32-.58h-9.28v-5.48h24.17Z"/><path
+      class="cls-2"
+      d="M233.47,257.74h-6.82l-2.79-5.61.38-.58H211.66l.38.58-2.72,5.61h-6.88l12.9-26h5.28Zm-11.91-11.06-.64-.58-2-4-1-2.63-1,2.63-2,4-.67.58Z"/><path
+      class="cls-2"
+      d="M269.32,257.77h-6.24V244H263l-1.25,2.72L255,258.09h-.1l-6.72-11.38L247,244h-.06v13.78h-6.24v-26h5.12L254,245.59l1,2.28H255l.93-2.28,8.2-13.81h5.19Z"/><path
+      class="cls-2"
+      d="M292.18,258.06c-9,0-13.73-5.45-13.73-13.17s4.74-13.43,13.73-13.43,13.77,5.77,13.77,13.43S301,258.06,292.18,258.06Zm0-21.09c-5.25,0-7.43,3.24-7.43,7.92s2.18,7.66,7.43,7.66,7.39-3.08,7.39-7.66S297.46,237,292.21,237Z"/><path
+      class="cls-2"
+      d="M339.56,257.74h-5.15L323.59,245l-2.21-3.27h-.06v16.06h-6.24v-26h5.15l11,12.89,2,3h.06v-15.9h6.24Z"/><path
+      class="cls-2"
+      d="M356.05,257.74h-6.24v-26h6.24Zm12.23,0-11.94-13.11,11.46-12.82h8.61L364.28,244.7c1.76,1.41,12.52,13,12.52,13Z"/><path
+      class="cls-2"
+      d="M405.77,257.74H383.52v-26h22.25v5.48H389.19l.58.58v3.59l-.58.58h15v5.51h-15l.58.58v3.59l-.58.58h16.58Z"/><path
+      class="cls-2"
+      d="M442,231.78,430,247.1v10.64h-6.27V247.1l-12-15.32h7.81l5.86,7.72,1.47,2.44h.06l1.47-2.44,5.89-7.72Z"/><path
+      class="cls-7"
+      d="M217.64,208.94l-3.16,10.55h-2.61l-1.31-4.54-.22-1.2h0l-.25,1.2-1.3,4.54h-2.55L203,208.94h2.68l1.56,5.52.26,1.17h0l.23-1.17,1.59-5.52h1.91l1.59,5.52.26,1.15h0l.22-1.15,1.59-5.52Z"/><path
+      class="cls-7"
+      d="M230.77,219.49h-9V208.94h9v2.23H224l.23.23v1.46l-.23.23h6.11v2.24H224l.23.23V217l-.23.23h6.74Z"/><path
+      class="cls-7" d="M243.88,219.49h-8.43V208.94H238V217l-.22.23h6.11Z"/><path
+      class="cls-7"
+      d="M257.8,217.6a6.1,6.1,0,0,1-4.6,2c-3.78,0-5.8-2.21-5.8-5.36s2.08-5.44,5.81-5.44a5.57,5.57,0,0,1,4.58,2l-1.69,1.68a3.36,3.36,0,0,0-2.87-1.44,2.91,2.91,0,0,0-3.25,3.2c0,1.82.9,3.13,3.24,3.13a3.61,3.61,0,0,0,2.94-1.41Z"/><path
+      class="cls-7"
+      d="M267.09,219.62c-3.65,0-5.58-2.21-5.58-5.35s1.93-5.46,5.58-5.46,5.59,2.34,5.59,5.46S270.69,219.62,267.09,219.62Zm0-8.57c-2.13,0-3,1.31-3,3.22s.88,3.11,3,3.11,3-1.25,3-3.11S269.23,211,267.1,211Z"/><path
+      class="cls-7"
+      d="M288.81,219.5h-2.54v-5.6h0l-.51,1.11L283,219.63h0L280.24,215l-.51-1.11h0v5.6h-2.54V208.94h2.08l3.32,5.61.4.92h0l.38-.92,3.33-5.61h2.11Z"/><path
+      class="cls-7"
+      d="M302.79,219.49h-9V208.94h9v2.23h-6.74l.23.23v1.46l-.23.23h6.11v2.24h-6.11l.23.23V217l-.23.23h6.74Z"/><path
+      class="cls-7"
+      d="M323,211.16h-3.77l.13.23v8.09h-2.54V211.4l.13-.23h-3.77v-2.23H323Z"/><path
+      class="cls-7"
+      d="M332.17,219.62c-3.65,0-5.58-2.21-5.58-5.35s1.93-5.46,5.58-5.46,5.59,2.34,5.59,5.46S335.77,219.62,332.17,219.62Zm0-8.57c-2.13,0-3,1.31-3,3.22s.88,3.11,3,3.11,3-1.25,3-3.11S334.31,211,332.18,211Z"/><path
+      class="cls-7"
+      d="M165.37,286.52h1.31l3.4,9.9h-1.41l-.81-2.61h-3.75l-.84,2.61h-1.45Zm2.11,6.11L166,288.31l-1.51,4.32Z"/><path
+      class="cls-7"
+      d="M179.08,288.36a1.64,1.64,0,0,1,1.82-1.85s4.05.18,4.29.22v1H181c-.7,0-.7.39-.7.76v2.39l4.31.14v1l-4.31.13v4.27h-1.24Z"/><path
+      class="cls-7"
+      d="M188.68,286.52h4.25c1.35,0,2.39.73,2.39,3,0,2.54-1.25,2.77-1.68,2.86l2,4H194.3l-2-4-2.42-.19v4.15h-1.24Zm4.19,4.69c.63,0,1.19-.05,1.19-1.69s-.59-1.81-1.19-1.81h-2.95v3.5Z"/><path
+      class="cls-7"
+      d="M199.11,288.36a1.63,1.63,0,0,1,1.82-1.84s4.05.18,4.29.22v1h-4.17c-.7,0-.7.39-.7.76v2.39l4.31.14v1l-4.31.13v2.39c0,.72.45.7.84.7h4v1c-.21,0-4.16.23-4.16.23-.89.05-2-.17-2-1.78Z"/><path
+      class="cls-7"
+      d="M208.93,288.36a1.63,1.63,0,0,1,1.82-1.84s4.05.18,4.29.22v1h-4.17c-.7,0-.7.39-.7.76v2.39l4.31.14v1l-4.31.13v2.39c0,.72.45.7.84.7h4v1c-.21,0-4.16.23-4.16.23-.89.05-2-.17-2-1.78Z"/><path
+      class="cls-7"
+      d="M224.07,286.52h4.12c1.11,0,2.47.43,2.47,2.92,0,2.88-1.43,3.07-2.47,3.05-.54,0-2.81-.23-2.87-.27v4.2h-1.24Zm4.08,4.79c.67,0,1.25-.23,1.25-1.86s-.78-1.73-1.25-1.73h-2.83v3.59Z"/><path
+      class="cls-7"
+      d="M234.37,286.52h1.24v5.57c0,3.15.92,3.19,2.46,3.19,1.32,0,2.38-.15,2.38-3.19v-5.57h1.26v5.57c0,4.37-2,4.4-3.63,4.4-1.84,0-3.7.11-3.7-4.4Z"/><path
+      class="cls-7"
+      d="M245.62,286.52h3.88a2.42,2.42,0,0,1,2.63,2.59c0,1-.31,1.91-1.27,2.17.66.14,1.36.88,1.36,2.34s-.62,2.8-2.7,2.8h-3.89Zm3.85,4.14c.92,0,1.42-.51,1.42-1.51a1.29,1.29,0,0,0-1.42-1.45h-2.6v3Zm0,4.58c.63,0,1.48-.2,1.48-1.66,0-.93-.43-1.76-1.48-1.76h-2.62v3.42Z"/><path
+      class="cls-7"
+      d="M255.86,286.52h1.24v8c0,.72.45.7.84.7h3.93v1.2h-4.11c-.94,0-1.9-.24-1.9-1.77Z"/><path
+      class="cls-7" d="M265.48,286.52h1.24v9.9h-1.24Z"/><path class="cls-7"
+      d="M273.63,286.41a18.52,18.52,0,0,1,3.34.37v1s-2-.15-3.22-.15c-1.61,0-2.19.65-2.19,3.86,0,2.22.46,3.83,2.2,3.83,1.42,0,3.21-.1,3.21-.1v1a18.37,18.37,0,0,1-3.34.32c-2.5,0-3.31-2.09-3.31-5.06C270.32,288.27,270.95,286.41,273.63,286.41Z"/><path
+      class="cls-7"
+      d="M285.93,288.88c0-2,1.16-2.44,2.68-2.45a27.35,27.35,0,0,1,3.5.34v1c-.86-.06-3.22-.13-3.36-.13-.91,0-1.57,0-1.57,1.28v.78c0,1.11.49,1.22,1.29,1.22h1.82c1.84,0,2.17,1.3,2.17,2.41v.85c0,2-1.39,2.34-2.73,2.34a22.63,22.63,0,0,1-3.5-.36v-1c.54.05,2.14.15,3.4.15.56,0,1.59,0,1.59-1.12v-.81c0-.72-.21-1.22-1-1.22h-1.79c-2.22,0-2.45-1.35-2.45-2.41Z"/><path
+      class="cls-7"
+      d="M296.17,288.36a1.63,1.63,0,0,1,1.82-1.84s4.05.18,4.29.22v1h-4.17c-.7,0-.7.39-.7.76v2.39l4.31.14v1l-4.31.13v2.39c0,.72.45.7.84.7h4v1c-.21,0-4.16.23-4.16.23-.89.05-2-.17-2-1.78Z"/><path
+      class="cls-7"
+      d="M305.76,286.52H310c1.35,0,2.39.73,2.39,3,0,2.54-1.25,2.77-1.68,2.86l2,4h-1.37l-2-4-2.42-.19v4.15h-1.24Zm4.19,4.69c.63,0,1.19-.05,1.19-1.69s-.59-1.81-1.19-1.81H307v3.5Z"/><path
+      class="cls-7"
+      d="M316.7,286.52l2.7,8.06,2.84-8.06h1.34l-3.53,9.9h-1.32l-3.37-9.9Z"/><path
+      class="cls-7"
+      d="M326.51,288.36a1.63,1.63,0,0,1,1.82-1.84s4.05.18,4.29.22v1h-4.17c-.7,0-.7.39-.7.76v2.39l4.31.14v1l-4.31.13v2.39c0,.72.45.7.84.7h4v1c-.21,0-4.16.23-4.16.23-.89.05-2-.17-2-1.78Z"/><path
+      class="cls-7"
+      d="M336.11,286.52h4.25c1.35,0,2.39.73,2.39,3,0,2.54-1.25,2.77-1.68,2.86l2,4h-1.37l-2-4-2.42-.19v4.15h-1.24Zm4.19,4.69c.63,0,1.19-.05,1.19-1.69s-.59-1.81-1.19-1.81h-2.95v3.5Z"/><path
+      class="cls-7"
+      d="M352.08,288.36a1.64,1.64,0,0,1,1.82-1.85s4.05.18,4.29.22v1H354c-.7,0-.7.39-.7.76v2.39l4.31.14v1l-4.31.13v4.27h-1.24Z"/><path
+      class="cls-7"
+      d="M365.33,286.45c2.34,0,3.85.45,3.85,5.09,0,4.37-1.42,4.94-3.85,4.94s-3.88-.43-3.88-4.94S363.06,286.45,365.33,286.45Zm0,8.82c2,0,2.61-.56,2.61-3.73,0-3.78-.86-3.88-2.61-3.88s-2.63.08-2.63,3.88C362.69,294.8,363.31,295.27,365.33,295.27Z"/><path
+      class="cls-7"
+      d="M372.67,286.52h4.25c1.35,0,2.39.73,2.39,3,0,2.54-1.25,2.77-1.68,2.86l2,4h-1.37l-2-4-2.42-.19v4.15h-1.24Zm4.19,4.69c.63,0,1.19-.05,1.19-1.69s-.59-1.81-1.19-1.81h-2.95v3.5Z"/><path
+      class="cls-7"
+      d="M165.75,310a18.52,18.52,0,0,1,3.34.37v1s-2-.15-3.22-.15c-1.61,0-2.19.65-2.19,3.86,0,2.22.46,3.83,2.2,3.83,1.42,0,3.21-.1,3.21-.1v1a18.37,18.37,0,0,1-3.34.32c-2.5,0-3.31-2.09-3.31-5.06C162.43,311.91,163.06,310,165.75,310Z"/><path
+      class="cls-7"
+      d="M176,310.09c2.34,0,3.85.45,3.85,5.09,0,4.37-1.42,4.94-3.85,4.94s-3.88-.43-3.88-4.94S173.7,310.09,176,310.09Zm0,8.82c2,0,2.61-.56,2.61-3.73,0-3.78-.86-3.88-2.61-3.88s-2.63.08-2.63,3.88C173.34,318.44,174,318.91,176,318.91Z"/><path
+      class="cls-7"
+      d="M183.81,310.16h1.72l2.37,7.84,2.3-7.84h1.71l.8,9.9h-1.24l-.62-7.69-2.28,7.69h-1.32l-2.36-7.69-.55,7.69H183.1Z"/><path
+      class="cls-7"
+      d="M196.32,310.16h4.12c1.11,0,2.47.43,2.47,2.92,0,2.88-1.43,3.07-2.47,3.05-.54,0-2.81-.23-2.87-.27v4.2h-1.24Zm4.08,4.79c.67,0,1.25-.23,1.25-1.86s-.78-1.73-1.25-1.73h-2.83v3.59Z"/><path
+      class="cls-7"
+      d="M208.53,310.16h1.31l3.4,9.9h-1.41l-.81-2.61h-3.75l-.84,2.61H205Zm2.11,6.11-1.46-4.32-1.51,4.32Z"/><path
+      class="cls-7"
+      d="M216.47,310.16h4.25c1.35,0,2.39.73,2.39,3,0,2.54-1.25,2.77-1.68,2.86l2,4h-1.37l-2-4-2.42-.19v4.15h-1.24Zm4.19,4.69c.63,0,1.19-.05,1.19-1.69s-.59-1.81-1.19-1.81h-2.95v3.5Z"/><path
+      class="cls-7"
+      d="M230,310.16h1.31l3.4,9.9h-1.41l-.81-2.61h-3.75l-.84,2.61h-1.45Zm2.11,6.11-1.46-4.32-1.51,4.32Z"/><path
+      class="cls-7" d="M236.47,310.16h7v1.2h-2.91v8.7H239.3v-8.7h-2.83Z"/><path
+      class="cls-7" d="M246.95,310.16h1.24v9.9h-1.24Z"/><path class="cls-7"
+      d="M253,310.16l2.7,8.06,2.84-8.06h1.34l-3.53,9.9H255l-3.37-9.9Z"/><path
+      class="cls-7"
+      d="M262.82,312a1.63,1.63,0,0,1,1.82-1.84s4.05.18,4.29.22v1h-4.17c-.7,0-.7.39-.7.76v2.39l4.31.14v1l-4.31.13v2.39c0,.72.45.7.84.7h4v1c-.21,0-4.16.23-4.16.23-.89.05-2-.17-2-1.78Z"/><path
+      class="cls-7"
+      d="M281.3,310.16h1.31l3.4,9.9H284.6l-.81-2.61H280l-.84,2.61h-1.45Zm2.11,6.11-1.46-4.32-1.51,4.32Z"/><path
+      class="cls-7"
+      d="M289.48,310.16h1.27l4.9,7.59v-7.59h1.24v9.9h-1.24l-4.92-7.57v7.57h-1.26Z"/><path
+      class="cls-7"
+      d="M303.92,310.16h1.31l3.4,9.9h-1.41l-.81-2.61h-3.75l-.84,2.61h-1.45Zm2.11,6.11-1.46-4.32-1.51,4.32Z"/><path
+      class="cls-7"
+      d="M312.1,310.16h1.24v8c0,.72.45.7.84.7h3.93v1.2H314c-.94,0-1.9-.24-1.9-1.77Z"/><path
+      class="cls-7"
+      d="M321.42,310.16l2.38,5.07,2.63-5.07h1.36l-3.37,6.51v3.4h-1.24v-3.4l-3.11-6.51Z"/><path
+      class="cls-7"
+      d="M330.81,312.52c0-2,1.16-2.44,2.68-2.45a27.35,27.35,0,0,1,3.5.34v1c-.86-.06-3.22-.13-3.36-.13-.91,0-1.57,0-1.57,1.28v.78c0,1.11.49,1.22,1.29,1.22h1.82c1.84,0,2.17,1.3,2.17,2.41v.85c0,2-1.39,2.34-2.73,2.34a22.63,22.63,0,0,1-3.5-.36v-1c.54.05,2.14.15,3.4.15.56,0,1.59,0,1.59-1.12V317c0-.72-.21-1.22-1-1.22h-1.79c-2.22,0-2.45-1.35-2.45-2.41Z"/><path
+      class="cls-7" d="M341.06,310.16h1.24v9.9h-1.24Z"/><path class="cls-7"
+      d="M346,312.52c0-2,1.16-2.44,2.68-2.45a27.35,27.35,0,0,1,3.5.34v1c-.86-.06-3.22-.13-3.36-.13-.91,0-1.57,0-1.57,1.28v.78c0,1.11.49,1.22,1.29,1.22h1.82c1.84,0,2.17,1.3,2.17,2.41v.85c0,2-1.39,2.34-2.73,2.34a22.63,22.63,0,0,1-3.5-.36v-1c.54.05,2.14.15,3.4.15.56,0,1.59,0,1.59-1.12V317c0-.72-.21-1.22-1-1.22h-1.79c-2.22,0-2.45-1.35-2.45-2.41Z"/><path
+      class="cls-7"
+      d="M365.5,310.09c2.34,0,3.85.45,3.85,5.09,0,4.37-1.42,4.94-3.85,4.94s-3.88-.43-3.88-4.94S363.23,310.09,365.5,310.09Zm0,8.82c2,0,2.61-.56,2.61-3.73,0-3.78-.86-3.88-2.61-3.88s-2.63.08-2.63,3.88C362.87,318.44,363.49,318.91,365.5,318.91Z"/><path
+      class="cls-7"
+      d="M372.8,312a1.64,1.64,0,0,1,1.82-1.85s4.05.18,4.29.22v1h-4.17c-.7,0-.7.39-.7.76v2.39l4.31.14v1l-4.31.13v4.27H372.8Z"/><path
+      class="cls-7"
+      d="M150.41,336.16c0-2,1.16-2.44,2.68-2.45a27.35,27.35,0,0,1,3.5.34v1c-.86-.06-3.22-.13-3.36-.13-.91,0-1.57,0-1.57,1.28V337c0,1.11.49,1.22,1.29,1.22h1.82c1.84,0,2.17,1.3,2.17,2.41v.85c0,2-1.39,2.34-2.73,2.34a22.63,22.63,0,0,1-3.5-.36v-1c.54.05,2.14.15,3.4.15.56,0,1.59,0,1.59-1.12v-.81c0-.72-.21-1.22-1-1.22h-1.79c-2.22,0-2.45-1.35-2.45-2.41Z"/><path
+      class="cls-7"
+      d="M160.65,335.64a1.63,1.63,0,0,1,1.82-1.84s4.05.18,4.29.22v1h-4.17c-.7,0-.7.39-.7.76v2.39l4.31.14v1l-4.31.13v2.39c0,.72.45.7.84.7h4v1c-.21,0-4.16.23-4.16.23-.89.05-2-.17-2-1.78Z"/><path
+      class="cls-7"
+      d="M174.14,333.73c2.34,0,3.88.45,3.88,5.09,0,4.37-1.44,4.93-3.88,4.94s-3.85-.43-3.85-4.94S171.82,333.73,174.14,333.73Zm0,8.82c2,0,2.63-.56,2.63-3.73,0-3.78-.89-3.88-2.63-3.88s-2.61.08-2.61,3.88C171.53,342.08,172.13,342.55,174.14,342.55Zm.35,1.6a2.08,2.08,0,0,0,2.25.3v1.2c-1.08.35-2.87,0-3.05-1.51Z"/><path
+      class="cls-7"
+      d="M181.74,333.8H183v5.57c0,3.15.92,3.19,2.46,3.19,1.32,0,2.38-.15,2.38-3.19V333.8h1.26v5.57c0,4.37-2,4.4-3.63,4.4-1.84,0-3.7.11-3.7-4.4Z"/><path
+      class="cls-7"
+      d="M193,335.64a1.63,1.63,0,0,1,1.82-1.84s4.05.18,4.29.22v1h-4.17c-.7,0-.7.39-.7.76v2.39l4.31.14v1l-4.31.13v2.39c0,.72.45.7.84.7h4v1c-.21,0-4.16.23-4.16.23-.89.05-2-.17-2-1.78Z"/><path
+      class="cls-7"
+      d="M202.81,333.8h1.27l4.9,7.59V333.8h1.24v9.9H209l-4.92-7.57v7.57h-1.26Z"/><path
+      class="cls-7"
+      d="M217.14,333.69a18.52,18.52,0,0,1,3.34.37v1s-2-.15-3.22-.15c-1.61,0-2.19.65-2.19,3.86,0,2.22.46,3.83,2.2,3.83,1.42,0,3.21-.1,3.21-.1v1a18.37,18.37,0,0,1-3.34.32c-2.5,0-3.31-2.09-3.31-5.06C213.83,335.55,214.45,333.69,217.14,333.69Z"/><path
+      class="cls-7"
+      d="M224.07,335.64a1.63,1.63,0,0,1,1.82-1.84s4.05.18,4.29.22v1H226c-.7,0-.7.39-.7.76v2.39l4.31.14v1l-4.31.13v2.39c0,.72.45.7.84.7h4v1c-.21,0-4.16.23-4.16.23-.89.05-2-.17-2-1.78Z"/><path
+      class="cls-7"
+      d="M242.55,333.8h1.31l3.4,9.9h-1.41l-.81-2.61h-3.75l-.84,2.61H239Zm2.11,6.11-1.46-4.32-1.51,4.32Z"/><path
+      class="cls-7"
+      d="M250.73,333.8H252v8c0,.72.45.7.84.7h3.93v1.2h-4.11c-.94,0-1.9-.24-1.9-1.77Z"/><path
+      class="cls-7" d="M260.34,333.8h1.24v9.9h-1.24Z"/><path class="cls-7"
+      d="M268.37,333.69a20.5,20.5,0,0,1,3.53.39v1c-.08,0-2-.18-3.41-.18-1.7,0-2.06,1.2-2.06,3.85,0,2.89.48,3.82,2.07,3.85a6.8,6.8,0,0,0,2.35-.62v-2.45h-2v-.82a7.51,7.51,0,0,1,2.35-.34c.28,0,.59,0,.92,0v5.32h-.92l-.3-.66a4.48,4.48,0,0,1-2.48.73c-2.8,0-3.22-2.22-3.22-5.07S265.68,333.69,268.37,333.69Z"/><path
+      class="cls-7"
+      d="M276,333.8h1.27l4.9,7.59V333.8h1.24v9.9h-1.24l-4.92-7.57v7.57H276Z"/><path
+      class="cls-7"
+      d="M287.68,333.8h1.72l2.37,7.84,2.3-7.84h1.71l.8,9.9h-1.24l-.62-7.69-2.28,7.69h-1.32L288.76,336l-.55,7.69H287Z"/><path
+      class="cls-7"
+      d="M300.15,335.64A1.63,1.63,0,0,1,302,333.8s4.05.18,4.29.22v1H302.1c-.7,0-.7.39-.7.76v2.39l4.31.14v1l-4.31.13v2.39c0,.72.45.7.84.7h4v1c-.21,0-4.16.23-4.16.23-.89.05-2-.17-2-1.78Z"/><path
+      class="cls-7"
+      d="M310,333.8h1.27l4.9,7.59V333.8h1.24v9.9h-1.24l-4.92-7.57v7.57H310Z"/><path
+      class="cls-7" d="M320.86,333.8h7V335h-2.91v8.7h-1.24V335h-2.83Z"/><path
+      class="cls-7"
+      d="M330.74,336.16c0-2,1.16-2.44,2.67-2.45a27.35,27.35,0,0,1,3.5.34v1c-.86-.06-3.22-.13-3.36-.13-.91,0-1.57,0-1.57,1.28V337c0,1.11.49,1.22,1.29,1.22h1.82c1.84,0,2.17,1.3,2.17,2.41v.85c0,2-1.39,2.34-2.73,2.34a22.63,22.63,0,0,1-3.5-.36v-1c.54.05,2.14.15,3.4.15.56,0,1.59,0,1.59-1.12v-.81c0-.72-.21-1.22-1-1.22h-1.79c-2.22,0-2.44-1.35-2.44-2.41Z"/><path
+      class="cls-7"
+      d="M346.53,333.8h1.24v5.57c0,3.15.92,3.19,2.46,3.19,1.32,0,2.38-.15,2.38-3.19V333.8h1.26v5.57c0,4.37-2,4.4-3.63,4.4-1.84,0-3.7.11-3.7-4.4Z"/><path
+      class="cls-7"
+      d="M357.59,336.16c0-2,1.16-2.44,2.67-2.45a27.35,27.35,0,0,1,3.5.34v1c-.86-.06-3.22-.13-3.36-.13-.91,0-1.57,0-1.57,1.28V337c0,1.11.49,1.22,1.29,1.22h1.82c1.84,0,2.17,1.3,2.17,2.41v.85c0,2-1.39,2.34-2.73,2.34a22.63,22.63,0,0,1-3.5-.36v-1c.54.05,2.14.15,3.4.15.56,0,1.59,0,1.59-1.12v-.81c0-.72-.21-1.22-1-1.22H360c-2.22,0-2.44-1.35-2.44-2.41Z"/><path
+      class="cls-7" d="M367.84,333.8h1.24v9.9h-1.24Z"/><path class="cls-7"
+      d="M373,333.8h1.27l4.9,7.59V333.8h1.24v9.9h-1.24l-4.92-7.57v7.57H373Z"/><path
+      class="cls-7"
+      d="M387.19,333.69a20.5,20.5,0,0,1,3.53.39v1c-.08,0-2-.18-3.41-.18-1.7,0-2.06,1.2-2.06,3.85,0,2.89.48,3.82,2.07,3.85a6.8,6.8,0,0,0,2.35-.62v-2.45h-2v-.82a7.51,7.51,0,0,1,2.35-.34c.28,0,.59,0,.92,0v5.32H390l-.3-.66a4.48,4.48,0,0,1-2.48.73c-2.8,0-3.22-2.22-3.22-5.07S384.51,333.69,387.19,333.69Z"/><path
+      class="cls-7"
+      d="M196.7,359.8c0-2,1.16-2.44,2.67-2.45a27.35,27.35,0,0,1,3.5.34v1c-.86-.06-3.22-.13-3.36-.13-.91,0-1.57,0-1.57,1.28v.78c0,1.11.49,1.22,1.29,1.22h1.82c1.84,0,2.17,1.3,2.17,2.41v.85c0,2-1.39,2.34-2.73,2.34a22.63,22.63,0,0,1-3.5-.36v-1c.54.05,2.14.15,3.4.15.56,0,1.59,0,1.59-1.12v-.81c0-.72-.21-1.22-1-1.22h-1.79c-2.22,0-2.44-1.35-2.44-2.41Z"/><path
+      class="cls-7" d="M206.23,357.44h7v1.2H210.3v8.7h-1.24v-8.7h-2.83Z"/><path
+      class="cls-7"
+      d="M218.26,357.44h1.31l3.4,9.9h-1.41l-.81-2.61H217l-.84,2.61H214.7Zm2.11,6.11-1.46-4.32-1.51,4.32Z"/><path
+      class="cls-7" d="M224.7,357.44h7v1.2h-2.91v8.7h-1.24v-8.7H224.7Z"/><path
+      class="cls-7"
+      d="M234.9,359.28a1.63,1.63,0,0,1,1.82-1.84s4.05.18,4.29.22v1h-4.17c-.7,0-.7.39-.7.76v2.39l4.31.14v1l-4.31.13v2.39c0,.72.45.7.84.7h4v1c-.21,0-4.16.23-4.16.23-.89.05-2-.17-2-1.78Z"/><path
+      class="cls-7" d="M244,361.89h4.24v1.16H244Z"/><path class="cls-7"
+      d="M255.35,357.37c2.34,0,3.85.45,3.85,5.09,0,4.37-1.42,4.94-3.85,4.94s-3.88-.43-3.88-4.94S253.08,357.37,255.35,357.37Zm0,8.82c2,0,2.61-.56,2.61-3.73,0-3.78-.86-3.88-2.61-3.88s-2.63.08-2.63,3.88C252.72,365.72,253.34,366.19,255.35,366.19Z"/><path
+      class="cls-7"
+      d="M262.65,359.28a1.64,1.64,0,0,1,1.82-1.85s4.05.18,4.29.22v1H264.6c-.7,0-.7.39-.7.76v2.39l4.31.14v1l-4.31.13v4.27h-1.24Z"/><path
+      class="cls-7" d="M271.74,361.89H276v1.16h-4.24Z"/><path class="cls-7"
+      d="M279,357.44h7v1.2H283v8.7H281.8v-8.7H279Z"/><path class="cls-7"
+      d="M289.44,357.44h1.24v4.51h4.36v-4.51h1.24v9.9h-1.24v-4.19h-4.36v4.19h-1.24Z"/><path
+      class="cls-7"
+      d="M300.2,359.28a1.63,1.63,0,0,1,1.82-1.84s4.05.18,4.29.22v1h-4.17c-.7,0-.7.39-.7.76v2.39l4.31.14v1l-4.31.13v2.39c0,.72.45.7.84.7h4v1c-.21,0-4.16.23-4.16.23-.89.05-2-.17-2-1.78Z"/><path
+      class="cls-7" d="M309.29,361.89h4.24v1.16h-4.24Z"/><path class="cls-7"
+      d="M320.08,357.44h1.31l3.4,9.9h-1.41l-.81-2.61h-3.75l-.84,2.61h-1.45Zm2.11,6.11-1.46-4.32-1.51,4.32Z"/><path
+      class="cls-7"
+      d="M328,357.44h4.25c1.35,0,2.39.73,2.39,3,0,2.54-1.25,2.77-1.68,2.86l2,4h-1.37l-2-4-2.42-.19v4.15H328Zm4.19,4.69c.63,0,1.19-.05,1.19-1.69s-.59-1.81-1.19-1.81h-2.95v3.5Z"/><path
+      class="cls-7" d="M338,357.44h7v1.2h-2.91v8.7h-1.24v-8.7H338Z"/><path
+      class="cls-7"
+      d="M185,385.45c0-2,1.16-2.44,2.67-2.45a27.35,27.35,0,0,1,3.5.34v1c-.86-.06-3.22-.13-3.36-.13-.91,0-1.57,0-1.57,1.28v.78c0,1.11.49,1.22,1.29,1.22h1.82c1.84,0,2.17,1.3,2.17,2.41v.85c0,2-1.39,2.34-2.73,2.34a22.63,22.63,0,0,1-3.5-.36v-1c.54.05,2.14.15,3.4.15.56,0,1.59,0,1.59-1.12V390c0-.72-.21-1.22-1-1.22h-1.79c-2.22,0-2.44-1.35-2.44-2.41Z"/><path
+      class="cls-7" d="M194.52,383.08h7v1.2H198.6V393h-1.24v-8.7h-2.83Z"/><path
+      class="cls-7"
+      d="M206.55,383.08h1.31l3.4,9.9h-1.41l-.81-2.61h-3.75l-.84,2.61H203Zm2.11,6.11-1.46-4.32-1.51,4.32Z"/><path
+      class="cls-7" d="M213,383.08h7v1.2h-2.91V393h-1.24v-8.7H213Z"/><path
+      class="cls-7" d="M223.47,383.08h1.24V393h-1.24Z"/><path class="cls-7"
+      d="M228.44,385.45c0-2,1.16-2.44,2.68-2.45a27.35,27.35,0,0,1,3.5.34v1c-.86-.06-3.22-.13-3.36-.13-.91,0-1.57,0-1.57,1.28v.78c0,1.11.49,1.22,1.29,1.22h1.82c1.84,0,2.17,1.3,2.17,2.41v.85c0,2-1.39,2.34-2.73,2.34a22.63,22.63,0,0,1-3.5-.36v-1c.54.05,2.14.15,3.4.15.56,0,1.59,0,1.59-1.12V390c0-.72-.21-1.22-1-1.22h-1.79c-2.22,0-2.45-1.35-2.45-2.41Z"/><path
+      class="cls-7" d="M238,383.08h7v1.2H242V393H240.8v-8.7H238Z"/><path class="cls-7"
+      d="M248.45,383.08h1.24V393h-1.24Z"/><path class="cls-7"
+      d="M256.6,383a18.52,18.52,0,0,1,3.34.37v1s-2-.15-3.22-.15c-1.61,0-2.19.65-2.19,3.86,0,2.22.46,3.83,2.2,3.83,1.42,0,3.21-.1,3.21-.1v1a18.37,18.37,0,0,1-3.34.32c-2.5,0-3.31-2.09-3.31-5.06C253.29,384.84,253.92,383,256.6,383Z"/><path
+      class="cls-7"
+      d="M266.66,383.08H268l3.4,9.9H270l-.81-2.61h-3.75l-.84,2.61H263.1Zm2.11,6.11-1.46-4.32-1.51,4.32Z"/><path
+      class="cls-7"
+      d="M274.84,383.08h1.24v8c0,.72.45.7.84.7h3.93V393h-4.11c-.94,0-1.9-.24-1.9-1.77Z"/><path
+      class="cls-7"
+      d="M290.38,383.08h1.72l2.37,7.84,2.3-7.84h1.71l.8,9.9H298l-.62-7.69L295.14,393h-1.32l-2.36-7.69-.55,7.69h-1.24Z"/><path
+      class="cls-7"
+      d="M306.55,383c2.34,0,3.85.45,3.85,5.09,0,4.37-1.42,4.94-3.85,4.94s-3.88-.43-3.88-4.94S304.28,383,306.55,383Zm0,8.82c2,0,2.61-.56,2.61-3.73,0-3.78-.86-3.88-2.61-3.88s-2.63.08-2.63,3.88C303.92,391.36,304.54,391.83,306.55,391.83Z"/><path
+      class="cls-7"
+      d="M314.13,383.08h3.82c3,0,3.49,2.85,3.49,5,0,2.43-.94,4.91-3.49,4.91h-3.82Zm3.78,8.68c1.63,0,2.29-1.65,2.29-3.71,0-2.83-.86-3.79-2.29-3.79h-2.53v7.5Z"/><path
+      class="cls-7"
+      d="M324.89,384.92a1.63,1.63,0,0,1,1.82-1.84s4.05.18,4.29.22v1h-4.17c-.7,0-.7.39-.7.76v2.39l4.31.14v1l-4.31.13v2.39c0,.72.45.7.84.7h4v1c-.21,0-4.16.23-4.16.23-.89.05-2-.17-2-1.78Z"/><path
+      class="cls-7"
+      d="M334.72,383.08H336v8c0,.72.45.7.84.7h3.93V393h-4.11c-.94,0-1.9-.24-1.9-1.77Z"/><path
+      class="cls-7"
+      d="M344.15,385.45c0-2,1.16-2.44,2.68-2.45a27.35,27.35,0,0,1,3.5.34v1c-.86-.06-3.22-.13-3.36-.13-.91,0-1.57,0-1.57,1.28v.78c0,1.11.49,1.22,1.29,1.22h1.82c1.84,0,2.17,1.3,2.17,2.41v.85c0,2-1.39,2.34-2.73,2.34a22.63,22.63,0,0,1-3.5-.36v-1c.54.05,2.14.15,3.4.15.56,0,1.59,0,1.59-1.12V390c0-.72-.21-1.22-1-1.22H346.6c-2.22,0-2.45-1.35-2.45-2.41Z"/><path
+      class="cls-7"
+      d="M354.46,391.78a.3.3,0,0,1,.32-.34h.84a.29.29,0,0,1,.34.34v.89c0,.24-.15.31-.34.31h-.84a.3.3,0,0,1-.32-.31Z"/><path
+      class="cls-2"
+      d="M624.19,264.73a14.28,14.28,0,0,1,4.67.55v2a31.93,31.93,0,0,0-3.95-.31c-1.65,0-2,.93-2,3.7s.24,3.54,1.79,3.55a2.18,2.18,0,0,0,1.63-.74v-1.7h-1.26v-1.64a6.87,6.87,0,0,1,2.8-.4c.34,0,.7,0,1.09,0v6.79h-1.87l-.72-.79a2.72,2.72,0,0,1-2.27.87c-3.32.16-3.81-2.69-3.81-6C620.34,267.18,621,264.73,624.19,264.73Z"/><path
+      class="cls-2"
+      d="M635.18,267.42a2.39,2.39,0,0,1,2.74-2.57s3.79.06,5.19.26v2.19h-4.47c-.83,0-.83.46-.83.9v1.33l4.54.17v2.17l-4.54.15v1.33c0,.85.53.83,1,.83h4.31v2.18c-1.24.17-5,.27-5,.27-1,0-2.9-.18-2.9-2.48Z"/><path
+      class="cls-2" d="M648.68,264.86h8.86v2.39h-3.16v9.35h-2.63v-9.35h-3.07Z"/><path
+      class="cls-2"
+      d="M672.16,267.86c0-2.33,1.38-3.06,3.17-3.09a15.14,15.14,0,0,1,4.72.49v2.06c-1-.1-3.09-.16-3.88-.16s-1.38,0-1.38.95v.4c0,.74.24,1,1.13,1h1.7c2.36,0,2.87,1.95,2.87,3.24v.67c0,2.81-1.66,3.35-3.25,3.35a13.36,13.36,0,0,1-4.71-.51v-2.06c.64.06,2.62.18,4.11.18.68,0,1.22-.14,1.22-.85V273c0-.58-.18-.92-1-.92h-1.64a2.87,2.87,0,0,1-3.09-3.24Z"/><path
+      class="cls-2" d="M685.69,264.86h8.86v2.39h-3.16v9.35h-2.63v-9.35h-3.07Z"/><path
+      class="cls-2"
+      d="M702.12,264.86h3l3.7,11.74h-2.74l-.77-2.36h-3.53l-.77,2.36H698.3Zm2.66,7.1-1.11-3.72L702.45,272Z"/><path
+      class="cls-2"
+      d="M714.59,264.86h5.18c1.94,0,3.37.85,3.37,3.71s-1.08,3.23-1.81,3.49l2.13,4.54h-3l-1.74-4.31-1.52-.22v4.54h-2.63Zm4.88,5.18c.8,0,1-.31,1-1.47s-.32-1.42-1-1.42h-2.24V270Z"/><path
+      class="cls-2" d="M728.84,264.86h8.86v2.39h-3.16v9.35h-2.63v-9.35h-3.07Z"/><path
+      class="cls-2"
+      d="M743.29,267.42a2.39,2.39,0,0,1,2.74-2.57s3.79.06,5.19.26v2.19h-4.47c-.83,0-.83.46-.83.9v1.33l4.54.17v2.17l-4.54.15v1.33c0,.85.53.83,1,.83h4.31v2.18c-1.24.17-5,.27-5,.27-1,0-2.9-.18-2.9-2.48Z"/><path
+      class="cls-2"
+      d="M757.23,264.86h5.21c3.29,0,4,2.83,4,5.92,0,3.74-1.25,5.82-4,5.82h-5.21Zm5,9.46c1.21,0,1.65-1.24,1.65-3.55,0-3-.62-3.63-1.65-3.63h-2.34v7.19Z"/><path
+      class="cls-8"
+      d="M263.2,129.11a4.33,4.33,0,0,1,2.13.34,1.94,1.94,0,0,0,2.08.44c0-2.18,0-3.19-1.84-3.19S262.57,129.35,263.2,129.11Z"/><path
+      class="cls-8"
+      d="M287.6,125.53c-.14,0-.34,0-.48,0a3.78,3.78,0,0,0-.68.1,2.68,2.68,0,0,1,.43,2.56,2.55,2.55,0,0,1-3.27,1.52l-.06,0a2.67,2.67,0,0,1-1.5-1.4,7.35,7.35,0,0,0-1.55,4.5,7.14,7.14,0,0,0,7,7.26h0a7.1,7.1,0,0,0,5.8-3.1,7.51,7.51,0,0,0,1.26-4.11,7.13,7.13,0,0,0-6.9-7.35Z"/><path
+      class="cls-8"
+      d="M311.52,129.16a18.74,18.74,0,0,0-2.32.19.9.9,0,0,1-.1-.34c-.1-.29-.14-.58-.24-.87-.14-.58-.39-1.16-.58-1.74s-.43-1.11-.68-1.69a16.91,16.91,0,0,0-.72-1.64c-.29-.53-.53-1.06-.82-1.6s-.58-1-.87-1.55a15.89,15.89,0,0,0-1-1.5l-1-1.45c-.39-.48-.72-1-1.11-1.4s-.77-.92-1.16-1.35a15.42,15.42,0,0,0-1.26-1.26,15.42,15.42,0,0,1-1.26-1.26c-.43-.44-.92-.77-1.35-1.16s-1-.73-1.4-1.11a16.27,16.27,0,0,0-1.5-1c-.53-.34-1-.68-1.5-1s-1-.63-1.55-.92l-1.59-.87a18,18,0,0,0-1.69-.77c-.58-.24-1.16-.48-1.74-.68s-1.16-.44-1.79-.63-1.21-.39-1.79-.53l-1.84-.48-1.84-.44c-.58-.15-1.26-.19-1.88-.34s-1.26-.15-1.93-.24a13.65,13.65,0,0,0-2-.15c-.63,0-1.26,0-1.93,0h-.29c-21.07.1-38.27,15.09-39.43,35.17,0,.48,0,1,0,1.45v.68a10.94,10.94,0,0,0,0,1.26c0,.39,0,.73,0,1.06h-3.53a7.13,7.13,0,0,0-.48-1.06,4.74,4.74,0,0,0-.82-1.11,6,6,0,0,0-1.06-.87,11.56,11.56,0,0,0-1.35-.63,5.09,5.09,0,0,0-1.5-.19h-.19a5.47,5.47,0,0,0-2.9,1,7.34,7.34,0,0,0-1.5,1.5,5.1,5.1,0,0,0-1,2.9v.19a7.49,7.49,0,0,0,.19,1.5,4.36,4.36,0,0,0,.63,1.35,3.81,3.81,0,0,0,.87,1.06,3.69,3.69,0,0,0,1.11.82,7.13,7.13,0,0,0,1.4.58,4.31,4.31,0,0,0,1.35.15c.14,0,.24,0,.39,0h.1a5.43,5.43,0,0,0,4.69-3.48h4s.14,1,.19,1.11c.1.39.14.73.24,1.11.14.73.39,1.5.58,2.23a44.79,44.79,0,0,0,1.55,4.26,44.34,44.34,0,0,0,2.08,4,36,36,0,0,0,2.56,3.68,37.46,37.46,0,0,0,3.19,3.58c.82.82,1.74,1.6,2.61,2.32.53.44,1.06.82,1.59,1.21s1.11.77,1.69,1.16,1.21.73,1.79,1.06,1.21.68,1.84,1,1.26.63,1.93.92,1.35.58,2,.82,1.4.48,2.13.73,1.21.39,1.79.53l.43.15c.72.19,1.5.44,2.27.63a18.61,18.61,0,0,0,2.37.44,2.85,2.85,0,0,0,.68.1,5,5,0,0,0,.68,1.45,5.89,5.89,0,0,0,1.4,1.5,4,4,0,0,0,.58.39s0,0,.1,0a5.24,5.24,0,0,0,2.61.68,5.63,5.63,0,0,0,1.84-.34,4.07,4.07,0,0,0,.68-.29.17.17,0,0,0,.1,0l.24-.15a5.37,5.37,0,0,0,2.46-3.14.18.18,0,0,1,0-.15s0-.1,0-.15a4.48,4.48,0,0,0,.19-1.4,5.51,5.51,0,0,0-1.79-4.11,5.71,5.71,0,0,0-1.88-1.11,0,0,0,0,1,0,0h0v-9.58h-2.9a23,23,0,0,1-2.56-.29c-.77-.15-1.55-.34-2.32-.53a11.62,11.62,0,0,1-2.08-.73,18,18,0,0,1-1.93-1,13.75,13.75,0,0,1-1.79-1.11c-.58-.39-1.11-.82-1.59-1.21a19.51,19.51,0,0,1-1.45-1.4,13,13,0,0,1-1.3-1.55q-.58-.8-1.16-1.74a13.88,13.88,0,0,1-1-1.89,17.74,17.74,0,0,1-.72-2.08c-.1-.34-.14-.68-.24-1h19.71V141H251.17v-.44a14.17,14.17,0,0,1,.43-3.24,15.11,15.11,0,0,1,.92-2.85,18.9,18.9,0,0,1,9.81-9.82,22.05,22.05,0,0,1,3-1.06,26.06,26.06,0,0,1,3.48-.63c.53,0,1.11-.1,1.64-.1h2s.14-.68.19-1c0,0,0-.1,0-.15A4.55,4.55,0,0,1,273,121a7.31,7.31,0,0,1,.43-.87c0-.15.14-.19.14-.34a.7.7,0,0,0,.1-.15s0,0,0-.1,0,0,0-.1a10.8,10.8,0,0,1,5.27-4,15.14,15.14,0,0,1,3.82-1,15.48,15.48,0,0,1,3-.15,5,5,0,0,1,.82,0c.63,0,1.26.1,1.84.19a20.32,20.32,0,0,1,2.32.58,18.3,18.3,0,0,1,2,.87,15.86,15.86,0,0,1,1.79,1.06,14.06,14.06,0,0,1,1.59,1.26c.48.44,1,.92,1.45,1.4a20.07,20.07,0,0,1,1.3,1.55,17.62,17.62,0,0,1,1.16,1.69c.39.63.72,1.26,1,1.79a18.17,18.17,0,0,1,.92,2c.29.73.53,1.45.72,2.08s.29,1.06.39,1.6.19,1.11.34,1.69a12.32,12.32,0,1,0,7.92-3Zm-88.81,15.72a2.27,2.27,0,1,1,2.27-2.27h0a2.27,2.27,0,0,1-2.26,2.27Zm48,27a2.3,2.3,0,0,1,2.27,2.27,2.27,2.27,0,1,1-2.27-2.27Zm8.6-62.51a18.07,18.07,0,0,0-3.24,1.26,15.82,15.82,0,0,0-6.14,6.19c-.68,1.26-1,2.13-1.11,2.32v0l-1.4.15c-.82.15-1.59.24-2.37.44a16.54,16.54,0,0,0-2.75.82,20.55,20.55,0,0,0-3.62,1.69,23,23,0,0,0-8.46,8.52,19.09,19.09,0,0,0-1.55,3.53A17.92,17.92,0,0,0,248,137c-.14.73-.24,1.5-.34,2.27,0,.58-.1,1.16-.1,1.74v.34a23.77,23.77,0,0,0,.19,2.66c.14.82.29,1.6.48,2.37a22.07,22.07,0,0,0,.68,2.13,18.17,18.17,0,0,0,.92,2c.34.63.68,1.21,1,1.79a13.55,13.55,0,0,0,1.21,1.69c.43.53.87,1,1.3,1.5a19.85,19.85,0,0,0,1.45,1.4,19.48,19.48,0,0,0,1.55,1.26q.8.58,1.74,1.16c.63.39,1.21.68,1.84,1a17.64,17.64,0,0,0,2,.87,15.55,15.55,0,0,0,2.13.68,16.3,16.3,0,0,0,2.32.53c.82.15,1.64.24,2.46.34v6.19h0A6,6,0,0,0,267,170a34.69,34.69,0,0,1-19.23-8c-.39-.29-.68-.63-1.06-1A30.47,30.47,0,0,1,245,118q.81-.87,1.68-1.68a34.64,34.64,0,0,1,21.31-9c.24,0,.53,0,.77,0s.68,0,1,0,.63,0,1,0a6.15,6.15,0,0,1,1,0c.63,0,1.26,0,1.84.1l1.79.15c.58,0,1.16.15,1.69.24s1.11.19,1.64.34,1.06.24,1.55.39c.68.15,1.26.34,1.88.53A11.35,11.35,0,0,0,279.34,109.37ZM311.52,148a6.34,6.34,0,1,1,6.33-6.34,6.33,6.33,0,0,1-6.33,6.34Z"/><rect
+      class="cls-2" x="132.04" y="270.44" width="277.11" height="1"/>
+    </svg>
     <p class="lead">
-      <a href="/analyses" class="btn-lg btn-primary btn-outline-inverse">Methods and Tools</a>
+      <!--<a href="/overview" class="btn-lg btn-primary btn-outline-inverse">Overview</a>
+      <a href="/analyses" class="btn-lg btn-primary btn-outline-inverse">Get Started</a>-->
     </p>
   </div>
-</div>
 
-<div class="bs-docs-featurette">
-  <div class="container">
-   <h2>Find individual sites under diversifying/purifying selection</h2>
-   <p>
-     Use our <b>recommended</b> method, 
-     <a href="http://www.hyphy.org/w/index.php/MEME" class="INFO">MEME</a>, to look for evidence of both diversifying, and importantly, episodic, selection at individual sites. 
-   </p>
-   <p>
-     Four different codon-based maximum likelihood methods, 
-     <a href="help/SLAC.php" class="INFO">SLAC</a>,
-     <a href="help/FEL.php" class="INFO" >FEL</a>, 
-     <a href="help/REL.php" class="INFO" >REL</a>, and
-     <a href="http://www.hyphy.org/w/index.php/FUBAR" class="INFO" >FUBAR</a>,
-     can be used estimate the dN/dS (also known as Ka/Ks or ω) ratio at every codon in the alignment. An exhaustive discussion of each approach can be found in the 
-     <a href="http://mbe.oxfordjournals.org/cgi/content/abstract/22/5/1208" >methodology paper</a>.
-   </p>
-   <p>
-     The codon-based maximum likelihood <a href="/help/IFEL.php" class="INFO" >IFEL</a> method
-     can investigate whether sequences sampled from a population (e.g. viral sequences from different hosts) have been subject to selective pressure at the 
-     population level (i.e. along internal branches). A discussion of the method and its application can be found 
-     <a href="http://compbiol.plosjournals.org/perlserv/?request=get-document&amp;doi=10.1371/journal.pcbi.0020062&amp;ct=1" >here</a>     
-   </p>
-   <p>
-     All six methods can also take <a href="http://mbe.oxfordjournals.org/cgi/content/full/msi031?ijkey=58b5TG2Kv933M&amp;keytype=ref" >recombination into account</a>. 
-     This is done by screening the sequences for recombination breakpoints, identifying non-recombinant regions and allowing each to have its own phylogenetic tree.    
-   </p>
+  <div class="row">
+    <div class="col-md-offset-8">
+      <a class="twitter-timeline" href="https://twitter.com/hyphy_software" data-height="500">HyPhy News</a> 
+    </div>
   </div>
-</div>
-<!--/row-->
 
-
-<div class="bs-docs-featurette">
-  <div class="container">
-    <h2>Detect Relaxed Selection in a Phylogenetic Framework</h2>
-    <p>
-      Use the <a href='http://datamonkey.org/relax' class='INFO' >RELAX</a>
-      method for detecting relaxed selection in a codon-based phylogenetic framework.
-      Given two subsets of branches in a phylogeny, RELAX can determine whether
-      selective strength was relaxed or intensified in one of these subsets relative
-      to the other.
-    </p>
-  </div>
 </div>
 
-<div class="bs-docs-featurette">
-  <div class="container">
-    <h2>Find individual sites under other types of selection</h2>
-    <p>
-     Protein sequences can be screened for evidence of directional using the 
-     <a href="help/deps.php" class="INFO" >DEPS</a> method, described
-     <a href="http://mbe.oxfordjournals.org/cgi/content/short/25/9/1809" >here</a>, useful when one wants to detect  convergent evolution or selective sweeps.   
-    </p>
-    <p>
-      For coding sequences, the <a href="help/TOGGLE.php" class="INFO">TOGGLE</a> model, developed by 
-     <a href='http://www.plospathogens.org/article/info%3Adoi%2F10.1371%2Fjournal.ppat.1000242' onmouseover="Tip('PLoS Pathog 4(12): e1000242. doi:10.1371/journal.ppat.1000242')" class='REFERENCE'>Wayne Delport and colleagues</a>, can detect selection-driven changes that result in amino-acid toggling. A canonical example of this can be found in immune-driven evolution of HIV-1 (escape and reversion).
-    </p>
-  </div>
+
+<div class="image">
 </div>
-<!--/row-->
 
-<div class="bs-docs-featurette">
-  <div class="container">
-    <h2>Identify conserved and altered biochemical properties</h2>
-    <p>
-       Use the <a >PRIME</a> method
-       to look for site-specific aminoacid properties (e.g. charge, polarity) which are being preserved or modified by the evolutionary process. 
-       For example, when a site is positively selected, evolution may be working to change side-chain volume, while maintaining polarity.
-    </p>
-  </div>
-</div>
-<!--/row-->
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+<script>
 
-<div class="bs-docs-featurette">
-  <div class="container">
-    <h2>Find individual lineages under diversifying selection</h2>
-    <p>
-      Using the <a
-      href="http://mbe.oxfordjournals.org/content/early/2011/06/11/molbev.msr125.abstract"
-      onmouseover="Tip('Molecular Biology and Evolution (first published online June
-      13, 2011 doi:10.1093/molbev/msr125)')" class="REFERENCE">modeling
-      framework</a>, which allows the efficient estimations with models which permit
-      dN/dS variation along both sites and lineages, Datamonkey implements a test for
-      finding lineages subject to episodic diversifying selection (EDS).:<a
-      href="/help/bsr.php" class="INFO" onmouseover="Tip('Branch-site
-      REL">Branch-site REL</a> method, identifies those branches where a proportion
-      of sites evolves under EDS.  If you are primarily interested in finding which
-      <b>lineages</b> (but don't care about which sites) have experienced EDS, use
-      this method.   </p><p> <span style=" font-variant:small-caps; color:
-      red;">Deprecated in favor of Branch-site REL.</span> The codon-based genetic
-      algorithm <a href="/help/GABranch.php" class="INFO"
-      >GABranch</a>
-      method can automatically partition all branches of the phylogeny describing
-      non-recombinant data into groups according to dN/dS. Robust multi-model
-      inference is used to collate results from all models examined during the run to
-      provide confidence intervals on dN/dS for each branch and guard against model
-      misspecification and overfitting (<a
-      href="http://mbe.oxfordjournals.org/cgi/content/full/msi031?ijkey=58b5TG2Kv933M&amp;keytype=ref"
-      onmouseover="Tip('Molecular Biology and Evolution 2005 22(3):478-485;
-      doi:10.1093/molbev/msi031')" class="REFERENCE">method details</a>).   
-    </p>
-  </div>
-</div>
-<!--/row-->
+$( document ).ready( function () {
 
-<div class="bs-docs-featurette">
-  <div class="container">
-    <h2>Tests for alignment-wide evidence of selection</h2>
-     <p>
-       The <a href="help/PARRIS.php" class="INFO" >PARRIS</a> 
-       method, developed by  <a href="http://bioinformatics.oxfordjournals.org/cgi/content/short/22/20/2493" >Konrad Scheffler and colleagues</a>, 
-       extends traditional codon-based likelihood ratio tests to detect 
-       if a proportion of sites in the alignment evolve with dN/dS&gt;1. The method takes recombination and synonymous rate variation into account.
-      </p>
-      <p>
-        The <a href="help/esd.php" class="INFO" >ESD</a> method, described in  <a href="http://mbe.oxfordjournals.org/cgi/content/abstract/27/3/520" onmouseover="Tip('Mol Biol Evol 2010 27(3):520-536')" class="REFERENCE">a 2010 paper</a>, fits a versatile 
-        general discrete bivariate model of site-by-site selective force variation to partition all sites into selective classes, and obtains an approximate posterior distribution of this partitioning. 
-        The resulting "noisy" distribution of selective regimes is the evolutionary fingerprint of a gene. The EVF (evolutionary fingerprinting) module implements this procedure, and can also infer which individual sites appear to be
-        positively selected while accounting for parameter estimation error (analogous to the BEB methodology of the PAML package).
-     </p>   
-  </div>
-</div>
-<!--/row-->
+  d3.select(".get-started").on("click", function(d) {
+    window.location = "/analyses";
+  });
 
-<div class="bs-docs-featurette">
-  <div class="container">
-    <h2>Detect epistasis/co-evolution</h2>
-     <p>
-       A Bayesian graphical model is deduced from reconstructed substitutions at each branch/site combination to infer conditional evolutionary 
-       dependencies of sites in the alignments, i.e. whether a site is more or less likely to experience a non-synonymous substitution at a branch 
-       when certain other sites do (or do not) experience non-synonymous substitutions at the same branch.
-       The <a class="INFO" href="help/spidermonkey.php">SPIDERMONKEY</a> method was introduced in the evolutionary context in our  
-       <a >paper</a>
-       on the evolution of the phenotypically important and highly variable V3 loop of the envelope glycoprotein in HIV-1.
-    </p>
-  </div>
-</div>
-<!--/row-->
+});
 
-
-<div class="bs-docs-featurette">
-  <div class="container">
-    <h2>Screen for recombination</h2>
-    <p>
-      Recombination leaves an imprint on sequence alignments: different segments of the alignment may be 
-      described by different phylogenetic trees, called phylogenetic discordance. Datamonkey.org implements two methods: <a href="/help/Recomb.php#SBP" class="INFO" >SBP</a>, suitable for answering the question "Is there evidence of 
-      recombination in the alignment?", and <a href="/help/Recomb.php#GARD" class="INFO" >GARD</a>, that attempts to find all the recombination 
-      breakpoints. Both method are described in this <a href="http://mbe.oxfordjournals.org/cgi/content/full/23/10/1891" class="REFERENCE" >paper</a>. The output of GARD is accepted by most other analyses, and because recombination 
-      can mislead phylogenetic analysis that do not account for it, we strongly urge that recombination testing be done on any alignment that is going to be 
-      analyzed for positive selection.</p><p>You can also <a href="/dataupload_scueal.php">submit</a> a collection of HIV-1 sequences for recombination screening by a specialized recombination detection algorithm <a href="/help/scueal.php" class="INFO" >SCUEAL</a> described in this <a href="http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1000581" class="REFERENCE" onmouseover="Tip('PLoS Comput Biol. 2009 Nov;5(11):e1000581;')">paper</a>. 
-    </p>
-  </div>
-</div>
-<!--/row-->
-
-
-<div class="bs-docs-featurette">
-  <div class="container">
-    <h2>Perform Model Selection</h2>
-    <p>
-      For each type of data, nucleotide, amino-acid and codon, Datamonkey implements separate model selection procedures. An exhaustive search is performed for all possible (Markov, time-reversible) models of nucleotide 
-      evolution. For protein data, a collection of published empirical models are fitted to the alignment and the best one is selected using AIC<sub>c</sub>. Finally, for coding data, a sophisticated genetic-algorithm
-      procedure described in our recent <a class="REFERENCE" >paper</a>  is used to examine thousands of potential models and report the best one and various metrics based on the set of credible models - this feature is implemented in the <a onmouseover="Tip('(C)odon (M)odel (S)election')" class="INFO" href="/help/cms.php">CMS</a> module. 
-    </p>
-  </div>
-</div>
-<!--/row-->
-
-<div class="bs-docs-featurette">
-  <div class="container">
-    <h2>Reconstruct ancestral sequences</h2>
-    <p>
-      The <a >ASR</a> module implements three different approaches to reconstructing ancestral sequences: joint, marginal and sampled - see 
-      <a class="REFERENCE" >this paper</a> for 
-      a description and original methodology attribution, from simple or partitioned alignments. 
-    </p>
-  </div>
-</div>
+</script>
 
 <%- include includes/footer.ejs %>
+

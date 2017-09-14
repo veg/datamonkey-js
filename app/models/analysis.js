@@ -34,6 +34,25 @@ AnalysisSchema.virtual('since_created').get(function () {
     return time.fromNow();
 });
 
+AnalysisSchema.virtual('max_sites').get(function () {
+  return 12000;
+});
+
+AnalysisSchema.virtual('max_sequences').get(function () {
+  return 500;
+});
+
+AnalysisSchema.virtual('input_data').get(function () {
+
+  return {
+    "filename": this.msa[0].id,
+    "sequences": this.msa[0].sequences, 
+    "sites": this.msa[0].sites
+  } 
+
+});
+
+
 /**
  * Filename of document's file upload
  */
@@ -52,19 +71,17 @@ AnalysisSchema.statics.pendingJobs = function (cb) {
                          });
 };
 
-AnalysisSchema.statics.submitJob = function (result, cb) {
+AnalysisSchema.statics.submitJob = function (job, cb) {
 
-  winston.info('submitting ' + result.analysistype + ' : ' + result._id + ' to cluster');
+  winston.info('submitting ' + job.analysistype + ' : ' + job._id + ' to cluster');
 
-  var jobproxy = new hpcsocket.HPCSocket({'filepath'    : result.filepath, 
-                                          'msa'         : result.msa,
-                                          'analysis'    : result,
-                                          'status_stack': result.status_stack,
-                                          'type'        : result.analysistype}, 'spawn', cb);
+  var jobproxy = new hpcsocket.HPCSocket({'filepath'    : job.filepath, 
+                                          'msa'         : job.msa,
+                                          'analysis'    : job,
+                                          'status_stack': job.status_stack,
+                                          'type'        : job.analysistype}, 'spawn', cb);
 
 };
-
-
 
 AnalysisSchema.statics.subscribePendingJobs = function () {
   this.pendingJobs(function(err, items) {
@@ -75,15 +92,26 @@ AnalysisSchema.statics.subscribePendingJobs = function () {
 };
 
 AnalysisSchema.statics.usageStatistics = function (cb) {
-
+  var self = this;
   // Aggregation is done client-side
-  this.find({}, 'cpu_time created upload_id pvalue modelstring')
-        .limit(1000)
-        .populate('upload_id', 'sequences sites')        
+  self.find({status:"completed"},{"created":1}).sort({created:-1}).limit(1)
+    .exec( function(err1, items1){
+      self.find({
+        status: "completed",
+        created:{
+          $gt: moment(items1[0].created).subtract(1,"years")
+        }
+      },
+      {
+        '_id':0,
+        'created':1,
+        'msa.sites': 1,
+        'msa.sequences': 1
+      })
         .exec( function(err, items) {
-              cb(err, items);
-             });
-
+          cb(err, items);
+        });
+    })
 };
 
 /**
@@ -91,6 +119,11 @@ AnalysisSchema.statics.usageStatistics = function (cb) {
  */
 AnalysisSchema.virtual('timestamp').get(function () {
   return moment(this.created).unix();
+});
+
+AnalysisSchema.virtual('generic_error_msg').get(function () {
+  var error_msg = 'We\'re sorry, there was an error processing your job. Please try again, or visit <a href="http://github.com/veg/hyphy/issues/">our GitHub issues</a> and create an issue if the issue persists.';
+  return error_msg;
 });
 
 AnalysisSchema.methods.resubscribe = function () {

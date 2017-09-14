@@ -46,7 +46,23 @@ exports.invoke = function(req, res) {
       return;
     }
 
+    // Check if msa exceeds limitations
+    if(msa.sites > meme.max_sites) {
+      var error = 'Site limit exceeded! Sites must be less than ' + meme.max_sites;
+      logger.error(error);
+      res.json(500, {'error' : error });
+      return;
+    }
+
+    if(msa.sequences > meme.max_sequences) {
+      var error = 'Sequence limit exceeded! Sequences must be less than ' + meme.max_sequences;
+      logger.error(error);
+      res.json(500, {'error' : error});
+      return;
+    }
+
     meme.msa = msa;
+
     meme.status = meme.status_stack[0];
 
     meme.save(function (err, meme_result) {

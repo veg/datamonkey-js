@@ -42,6 +42,21 @@ exports.uploadFile = function(req, res) {
       return;
     }
 
+    if(msa.sites > busted.max_sites) {
+      var error = 'Site limit exceeded! Sites must be less than ' + busted.max_sites;
+      logger.error(error);
+      res.json(500, {'error' : error });
+      return;
+    }
+
+    if(msa.sequences > busted.max_sequences) {
+      var error = 'Sequence limit exceeded! Sequences must be less than ' + busted.max_sequences;
+      logger.error(error);
+      res.json(500, {'error' : error});
+      return;
+    }
+
+
     busted.msa = msa;
 
     busted.save(function (err, busted_result) {
@@ -52,6 +67,7 @@ exports.uploadFile = function(req, res) {
         res.json(500, {'error' : err});
         return;
       }
+
 
       function move_cb(err, result) {
         if(err) {
@@ -190,7 +206,7 @@ exports.getInfo = function(req, res) {
 
 /**
  * Displays id page for analysis
- * app.get('/msa/:msaid/busted/:bustedid/results', busted.getBustedResults);
+ * app.get('/busted/:bustedid/results', busted.getBustedResults);
  */
 exports.getResults = function(req, res) {
 
@@ -202,8 +218,13 @@ exports.getResults = function(req, res) {
       logger.error(err);
       res.json(500, error.errorResponse('invalid id : ' + bustedid ));
     } else {
+
       // Should return results page
-      res.json(200, JSON.parse(busted.results));
+      // append file information
+      var busted_results = JSON.parse(busted.results);
+      busted_results['input_data'] = busted.input_data;
+      res.json(200, busted_results);
+
     }
   });
 };
@@ -260,3 +281,8 @@ exports.cancel = function(req, res) {
 
 };
 
+exports.getUsage = function(req, res){
+  Busted.usageStatistics(function(err, busted){
+    res.json(200, busted);
+  });
+};

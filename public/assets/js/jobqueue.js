@@ -95,6 +95,7 @@ var JobTable = React.createClass({displayName: "JobTable",
       )
     )
     );
+
   }
 });
 

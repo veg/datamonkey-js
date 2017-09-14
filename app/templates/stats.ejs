@@ -2,81 +2,9 @@
 <link href="/assets/css/stats.css" rel="stylesheet">
 <div class="container">
   <h1 class="page-header">Datamonkey Usage Statistics</h1>
-
-  <div class="row">
-    <div class="col-sm-1 pull-left">
-      <div class="dropdown nav nav-list">
-        <div class="btn-group btn-group-vertical stat-buttons" data-toggle="buttons-checkbox">
-            <% for(var t in types) { %>
-            <!--<button type="button" class="btn btn-primary"><%=t.toUpperCase()%></button>-->
-            <% } %>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-sm-11">
-      <div id="charts">
-        <div id="job-chart" class="chart">
-          <div class="title">Job Count</div>
-            <div class="job">
-              <span id="job-mean">Mean: </span>
-              <div id="job-median">Median: </div>
-              <div id="job-range">Range: </div>
-            </div>
-        </div>
-        <div id="sequence-chart" class="chart">
-          <div class="title">Sequence Count</div>
-          <div class="job">
-            <div id="sequence-mean"></div>
-            <div id="sequence-median"></div>
-            <div id="sequence-range"></div>
-          </div>
-        </div>
-        <div id="site-chart" class="chart">
-          <div class="title">Sites Count</div>
-          <div class="job">
-            <div id="site-mean"></div>
-            <div id="site-median"></div>
-            <div id="site-range"></div>
-          </div>
-        </div>
-        <div id="cpu-time-chart" class="chart">
-          <div class="title">CPU Time</div>
-          <div class="job">
-            <div id="cpu-time-mean"></div>
-            <div id="cpu-time-median"></div>
-            <div id="cpu-time-range"></div>
-          </div>
-        </div>
-        <div id="pvalue-chart" class="chart">
-          <div class="donut-chart">
-          </div>
-        </div>
-      </div>
-      <aside id="totals"><span id="active">-</span> of <span id="total">-</span> jobs selected.</aside>
-
-      <table class="table top-ten-pvalues">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>p-value</th>
-            <th>Times Used</th>
-            <th>% Used</th>
-          </tr>
-        </thead>
-      </table>
-      <table class="table top-ten-modelstrings">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Model</th>
-            <th>Times Used</th>
-            <th>% Used</th>
-          </tr>
-        </thead>
-      </table>
-    </div>
-  </div>
+  <div id="main"></div>
 </div>
+<script>
+  datamonkey_stats();
+</script>
 <%- include includes/footer.ejs %>
-<script src="/assets/js/stats.js"></script>

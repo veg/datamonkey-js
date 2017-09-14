@@ -24,7 +24,7 @@ describe('seqio', function() {
       done();
     }
 
-    seqio.parseFile('./tests/res/Flu.fasta', cb, options)
+    seqio.parseFile('./test/res/Flu.fasta', cb, options)
 
   });
 

@@ -1,3 +1,6 @@
+var React = require("react"),
+  ReactDOM = require("react-dom");
+
 var SetIntervalMixin = {
   componentWillMount: function() {
     this.intervals = [];
@@ -86,21 +89,33 @@ var JobTable = React.createClass({
     });
 
     return (
-    <table className="table table-bordered table-hover tablesorter table-striped">
-      <thead>
-      <tr><td>Ticket Number</td><td>Status</td><td>Kind</td><td>Sequences</td><td>Sites</td><td>Running Time</td><td>Creation Time</td><td>Queue Time</td></tr>
-      </thead>
-      <tbody>
-        {Jobs}
-      </tbody>
-    </table>
+      <table className="table table-bordered table-hover tablesorter table-striped">
+        <thead>
+          <tr>
+            <td>Ticket Number</td>
+            <td>Status</td>
+            <td>Kind</td>
+            <td>Sequences</td>
+            <td>Sites</td>
+            <td>Running Time</td>
+            <td>Creation Time</td>
+            <td>Queue Time</td>
+          </tr>
+        </thead>
+        <tbody>
+          {Jobs}
+        </tbody>
+      </table>
     );
   }
 });
 
-React.render(
-  <JobTable url='/jobqueue/json' pollInterval={2000} />,
-  document.getElementById('table')
-);
+function render_jobqueue() {
+  ReactDOM.render(
+    <JobTable url='/jobqueue/json' pollInterval={2000} />,
+    document.getElementById('table')
+  );
+}
 
+module.exports = render_jobqueue;
 
