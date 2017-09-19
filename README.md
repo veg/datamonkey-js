@@ -1,9 +1,9 @@
-Datamonkey API
+datamonkey-js
 ========================
-[![Dependency Status](https://david-dm.org/veg/datamonkey-js.svg)](https://david-dm.org/veg/datamonkey-js)
+
 INSTALL
 ===========================
-###System Dependencies
+## System Dependencies
 * node
 * mongodb-server
 * redis
@@ -18,28 +18,28 @@ You'll also have to set a data directory for MongoDB, as described [here](http:/
 
     mkdir -p ~/data/db
 
-###Check out datamonkey-js
+## Check out datamonkey-js
 
     git clone git@github.com:veg/datamonkey-js.git
 
 This requires an SSH key for GitHub, as described [here](https://help.github.com/articles/generating-ssh-keys).
 
-###Install development tools
+## Install development tools
     
     npm install -g supervisor
     
-###Install package
+## Install package
 
     cd ./datamonkey-js/
     make install
 
-###Configure
+## Configure
 
     cp ./config/setup.js.tpl ./config/setup.js
 
 The settings within ```./config/setup.js``` will have to be changed to reflect the local environment.
 
-###Run
+## Run
 
 Start Redis
 
@@ -49,7 +49,7 @@ Start MongoDB (e.g. using the data directory in HOME)
 
     mongod --dbpath ~/data/db
 
-Start Datamonkey.js
+Start datamonkey.js
 
     node server.js
 
