@@ -15,6 +15,7 @@ module.exports = function(app) {
   app.get('/development', home.development);
   app.get('/copyright_notice', home.copyright);
   app.get('/uploads', home.data_privacy);
+  app.get('/analysistree', home.analysis_tree);
 
   // aBSREL ROUTES
   absrel = require(path.join(__dirname, '../app/routes/absrel'));
