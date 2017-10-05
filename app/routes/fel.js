@@ -265,3 +265,8 @@ exports.resubscribePendingJobs = function(req, res) {
   FEL.subscribePendingJobs();
 };
 
+exports.getUsage = function(req, res){
+  FEL.usageStatistics(function(err, fel){
+    res.json(200, fel);
+  });
+};

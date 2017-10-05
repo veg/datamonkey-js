@@ -61,6 +61,7 @@ module.exports = function(app) {
   fel = require(path.join(__dirname, '../app/routes/fel'));
   app.get('/fel', fel.form);
   app.post('/fel', fel.uploadFile);
+  app.get('/fel/usage', fel.getUsage);
   app.get('/fel/:id/select-foreground', fel.selectForeground);
   app.post('/fel/:id/select-foreground', fel.invoke);
   app.get('/fel/:id', fel.getPage);
@@ -132,6 +133,7 @@ module.exports = function(app) {
   meme = require(path.join(__dirname, '../app/routes/meme'));
   app.get('/meme', meme.form);
   app.post('/meme', meme.invoke);
+  app.get('/meme/usage', meme.getUsage);
   app.get('/meme/:id', meme.getPage);
   app.get('/meme/:id/info', meme.getInfo);
   app.get('/meme/:id/results', meme.getResults);

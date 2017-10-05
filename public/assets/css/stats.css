@@ -116,6 +116,7 @@ aside {
 .glyphicon-refresh-animate {
     -animation: spin 2s infinite linear;
     -webkit-animation: spin2 2s infinite linear;
+    font-size: 1.2em!important;
 }
 
 @-webkit-keyframes spin2 {
@@ -126,4 +127,8 @@ aside {
 @keyframes spin {
     from { transform: scale(1) rotate(0deg);}
     to { transform: scale(1) rotate(360deg);}
+}
+
+a {
+  color: #00a99d;
 }
