@@ -240,17 +240,19 @@ var SitesAndSequencesScatterPlot = React.createClass({
 var UsageInformation = React.createClass({
   fetchData: function(method){
     var self = this;
-    d3.json("/" + method + "/usage", function(data){
-      data.forEach(function(d){
-        d.created = new Date(d.created);
+    self.setState({data: null}, function() {
+      d3.json("/" + method + "/usage", function(data){
+        data.forEach(function(d){
+          d.created = new Date(d.created);
+        });
+        data.sort(function(a, b){
+          return a.created - b.created;
+        });
+        self.setState({
+          data: data
+        });
       });
-      data.sort(function(a, b){
-        return a.created - b.created;
-      });
-      self.setState({
-        data: data
-      });
-    });
+    })
   },
   componentDidMount: function(){
     this.fetchData(this.props.active);
@@ -286,7 +288,7 @@ var UsageInformation = React.createClass({
 
     }else{
       content = (<div className="col-md-12">
-        <p>Loading...</p>
+        <p><span className="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>Loading...</p>
       </div>);
     }
     return (<div className="row">
