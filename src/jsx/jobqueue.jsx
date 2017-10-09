@@ -1,5 +1,6 @@
 var React = require("react"),
-  ReactDOM = require("react-dom");
+  ReactDOM = require("react-dom"),
+  moment = require("moment");
 
 var SetIntervalMixin = {
   componentWillMount: function() {
@@ -111,7 +112,7 @@ var JobTable = React.createClass({
 });
 
 function render_jobqueue() {
-  React.render(
+  ReactDOM.render(
     <JobTable url='/jobqueue/json' pollInterval={2000} />,
     document.getElementById('table')
   );

@@ -1,5 +1,6 @@
 var React = require("react"),
-  ReactDOM = require("react-dom");
+  ReactDOM = require("react-dom"),
+  moment = require("moment");
 
 var UsageChart = React.createClass({
   initialize: function(){
@@ -324,7 +325,7 @@ var UsageDashboard = React.createClass({
 });
 
 function render_usage() {
-  React.render(
+  ReactDOM.render(
     <UsageDashboard/>,
     document.getElementById('main')
   );

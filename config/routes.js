@@ -20,6 +20,7 @@ module.exports = function(app) {
   absrel = require(path.join(__dirname, '../app/routes/absrel'));
   app.get('/absrel', absrel.form);
   app.post('/absrel', absrel.uploadFile);
+  app.get('/absrel/usage', absrel.getUsage);
   app.get('/absrel/:id/select-foreground', absrel.selectForeground);
   app.post('/absrel/:id/select-foreground', absrel.invoke);
   app.get('/absrel/:id', absrel.getPage);
@@ -114,6 +115,7 @@ module.exports = function(app) {
   // HIV-TRACE ROUTES
   hivtrace = require(path.join(__dirname, '../app/routes/hivtrace'));
   app.get('/hivtrace', hivtrace.clusterForm);
+  app.get('/hivtrace/usage', hivtrace.getUsage);
   app.post('/hivtrace/:id/uploadfile', hivtrace.uploadFile);
   app.get ('/hivtrace/request-job-id', hivtrace.requestID); 
   app.get('/hivtrace/:id/map-attributes', hivtrace.mapAttributes);
@@ -151,6 +153,7 @@ module.exports = function(app) {
   // RELAX ROUTES
   relax = require(path.join(__dirname, '../app/routes/relax'));
   app.get('/relax', relax.createForm);
+  app.get('/relax/usage', relax.getUsage);
   app.post('/relax/uploadfile', relax.uploadFile);
   app.get('/relax/:id/select-foreground', relax.selectForeground);
   app.post('/relax/:id/select-foreground', relax.invokeRelax);
