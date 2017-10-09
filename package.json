@@ -51,6 +51,7 @@
     "socket.io-client": "1.4.x",
     "socket.io-stream": "0.6.x",
     "tar-fs": "1.8.x",
+    "tether": "^1.4.0",
     "underscore": "^1.8.3",
     "validator": "1.2.x",
     "winston": "^0.8.3",

@@ -9,6 +9,7 @@ config = {
   entry: {
     datamonkey: ["./src/entry.js"],
     vendor: [
+      "tether",
       "bootstrap",
       "jquery",
       "jquery-ui-bundle",
