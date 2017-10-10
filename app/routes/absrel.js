@@ -277,3 +277,21 @@ exports.getUsage = function(req, res){
     res.json(200, absrel);
   });
 };
+
+exports.getMSAFile = function(req, res) {
+
+  var id = req.params.id,
+      name = req.params.name;
+
+  var options = {};
+
+  aBSREL.findOne({_id : id}, function(err, absrel) {
+
+    res.sendFile(absrel.filepath, options, function(err) {
+      if (err) {
+        res.status(err.status).end();
+      }
+      });
+    });
+
+}

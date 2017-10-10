@@ -265,3 +265,21 @@ exports.resubscribePendingJobs = function(req, res) {
   FEL.subscribePendingJobs();
 };
 
+exports.getMSAFile = function(req, res) {
+
+  var id = req.params.id,
+      name = req.params.name;
+
+  var options = {};
+
+  FEL.findOne({_id : id}, function(err, fel) {
+
+    res.sendFile(fel.filepath, options, function(err) {
+      if (err) {
+        res.status(err.status).end();
+      }
+      });
+    });
+
+}
+

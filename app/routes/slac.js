@@ -207,3 +207,20 @@ exports.resubscribePendingJobs = function(req, res) {
   SLAC.subscribePendingJobs();
 };
 
+exports.getMSAFile = function(req, res) {
+
+  var id = req.params.id,
+      name = req.params.name;
+
+  var options = {};
+
+  SLAC.findOne({_id : id}, function(err, slac) {
+
+    res.sendFile(slac.filepath, options, function(err) {
+      if (err) {
+        res.status(err.status).end();
+      }
+      });
+    });
+
+}

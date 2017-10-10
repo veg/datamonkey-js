@@ -210,3 +210,20 @@ exports.resubscribePendingJobs = function(req, res) {
   GARD.subscribePendingJobs();
 };
 
+exports.getMSAFile = function(req, res) {
+
+  var id = req.params.id,
+      name = req.params.name;
+
+  var options = {};
+
+  GARD.findOne({_id : id}, function(err, gard) {
+
+    res.sendFile(gard.filepath, options, function(err) {
+      if (err) {
+        res.status(err.status).end();
+      }
+      });
+    });
+
+}

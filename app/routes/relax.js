@@ -334,3 +334,22 @@ exports.getUsage = function(req, res){
     res.json(200, relax);
   });
 };
+
+exports.getMSAFile = function(req, res) {
+
+  var id = req.params.id,
+      name = req.params.name;
+
+  var options = {};
+
+  Relax.findOne({_id : id}, function(err, relax) {
+
+    res.sendFile(relax.filepath, options, function(err) {
+      if (err) {
+        res.status(err.status).end();
+      }
+      });
+    });
+
+
+}

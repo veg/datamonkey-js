@@ -204,3 +204,20 @@ exports.resubscribePendingJobs = function(req, res) {
   MEME.subscribePendingJobs();
 };
 
+exports.getMSAFile = function(req, res) {
+
+  var id = req.params.id,
+      name = req.params.name;
+
+  var options = {};
+
+  MEME.findOne({_id : id}, function(err, meme) {
+
+    res.sendFile(meme.filepath, options, function(err) {
+      if (err) {
+        res.status(err.status).end();
+      }
+      });
+    });
+
+}

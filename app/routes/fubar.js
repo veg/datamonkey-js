@@ -163,7 +163,7 @@ exports.getLog = function(req, res) {
 
   //Return all results
   FUBAR.findOne({_id : id}, function(err, fubar) {
-    if (err || !busted ) {
+    if (err || !fubar) {
       winston.info(err);
       res.json(500, error.errorResponse('invalid id : ' + id));
     } else {
@@ -176,7 +176,7 @@ exports.getLog = function(req, res) {
 
 /**
  * cancels existing job
- * app.get('/busted/:id/cancel', fubar.cancel);
+ * app.get('/fubar/:id/cancel', fubar.cancel);
  */
 exports.cancel = function(req, res) {
 
@@ -184,7 +184,7 @@ exports.cancel = function(req, res) {
 
   //Return all results
   FUBAR.findOne({_id : id}, function(err, fubar) {
-    if (err || !busted ) {
+    if (err || !fubar) {
       winston.info(err);
       res.json(500, error.errorResponse('invalid id : ' + id));
     } else {
@@ -204,3 +204,20 @@ exports.resubscribePendingJobs = function(req, res) {
   FUBAR.subscribePendingJobs();
 };
 
+exports.getMSAFile = function(req, res) {
+
+  var id = req.params.id,
+      name = req.params.name;
+
+  var options = {};
+
+  FUBAR.findOne({_id : id}, function(err, fubar) {
+
+    res.sendFile(fubar.filepath, options, function(err) {
+      if (err) {
+        res.status(err.status).end();
+      }
+      });
+    });
+
+}

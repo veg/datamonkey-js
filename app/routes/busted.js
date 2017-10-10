@@ -286,3 +286,21 @@ exports.getUsage = function(req, res){
     res.json(200, busted);
   });
 };
+
+exports.getMSAFile = function(req, res) {
+
+  var id = req.params.id,
+      name = req.params.name;
+
+  var options = {};
+
+  Busted.findOne({_id : id}, function(err, busted) {
+
+    res.sendFile(busted.filepath, options, function(err) {
+      if (err) {
+        res.status(err.status).end();
+      }
+      });
+    });
+
+}

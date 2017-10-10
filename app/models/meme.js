@@ -1,5 +1,6 @@
 var mongoose  = require('mongoose'),
     extend    = require('mongoose-schema-extend'),
+    path      = require('path'),
     Msa       = require(__dirname + '/msa');
 
 var AnalysisSchema = require(__dirname + '/analysis');
@@ -26,7 +27,7 @@ MEME.virtual('upload_redirect_path').get(function() {
  * Complete file path for document's file upload
  */
 MEME.virtual('filepath').get(function () {
-  return __dirname + '/../../uploads/msa/' + this._id + '.fasta';
+  return path.resolve(__dirname + '/../../uploads/msa/' + this._id + '.fasta');
 });
 
 /**

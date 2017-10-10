@@ -188,3 +188,21 @@ exports.resubscribePendingJobs = function(req, res) {
   PRIME.subscribePendingJobs();
 };
 
+exports.getMSAFile = function(req, res) {
+
+  var id = req.params.id,
+      name = req.params.name;
+
+  var options = {};
+
+  PRIME.findOne({_id : id}, function(err, prime) {
+
+    res.sendFile(prime.filepath, options, function(err) {
+        if (err) {
+          res.status(err.status).end();
+        }
+      });
+    });
+
+
+}
