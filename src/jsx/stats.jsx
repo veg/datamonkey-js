@@ -1,3 +1,7 @@
+var React = require("react"),
+  ReactDOM = require("react-dom"),
+  moment = require("moment");
+
 var UsageChart = React.createClass({
   initialize: function(){
     var margin = {top:20, right:40, bottom:20, left:40},
@@ -83,7 +87,8 @@ var UsageChart = React.createClass({
 });
 
 var Histogram = React.createClass({
-  initialize: function(){
+
+  initialize: function() {
     var margin = {top:20, right:40, bottom:40, left:40},
         width = 500 - margin.left - margin.right,
         height = 200 - margin.top - margin.bottom,
@@ -142,23 +147,28 @@ var Histogram = React.createClass({
         .style("text-anchor", "end")
         .text("Jobs")
   },
+
   componentDidUpdate: function(){
     d3.select("#"+this.props.kind_of_data).html("<h4>" + this.props.kind_of_data + "</h4>");
     this.initialize();
   },
+
   componentDidMount: function(){
     this.initialize();
   },
+
   render: function(){
     return (<div id={this.props.kind_of_data}>
       <h4>{this.props.kind_of_data}</h4>
     </div>);
   }
+
 });
 
 var SitesAndSequencesScatterPlot = React.createClass({
-  initialize: function(){
-    var margin = {top:50, bottom:50, right:50, left:50},
+
+  initialize: function() {
+    var margin = { top:50, bottom:50, right:50, left:50 },
         width = 500 - margin.right - margin.left,
         height = 500 - margin.top - margin.bottom,
         x = d3.scale.linear()
@@ -209,18 +219,22 @@ var SitesAndSequencesScatterPlot = React.createClass({
         .attr("stroke", "blue")
         .attr("opacity", .5);
   },
+
   componentDidUpdate: function(){
     d3.select("#sites-sequences").html("<h4>Sites and sequences</h4>");
     this.initialize();
   },
+
   componentDidMount: function(){
     this.initialize();
   },
+
   render: function(){
     return (<div id="sites-sequences">
       <h4>Sites and sequences</h4>
     </div>);
   }
+
 });
 
 var UsageInformation = React.createClass({
@@ -310,7 +324,12 @@ var UsageDashboard = React.createClass({
   }
 });
 
-React.render(
-  <UsageDashboard/>,
-  document.getElementById('main')
-);
+function render_usage() {
+  ReactDOM.render(
+    <UsageDashboard/>,
+    document.getElementById('main')
+  );
+}
+
+module.exports = render_usage;
+

@@ -17,10 +17,10 @@ function jobSubmittedAt(creation_time) {
 
 function jobRuntime(start_time) {
 
-  var zero = d3.format("02d");
-  hours = moment().diff(start_time, 'hours');
-  mins  = moment().diff(start_time, 'minutes') % 60;
-  secs  = moment().diff(start_time, 'seconds') % 60;
+  var zero = d3.format("02d"),
+      hours = moment().diff(start_time, 'hours'),
+      mins  = moment().diff(start_time, 'minutes') % 60,
+      secs  = moment().diff(start_time, 'seconds') % 60;
 
   d3.select("#job-run-time").text(zero(hours) + ':' + zero(mins) + ':' + zero(secs) );
 

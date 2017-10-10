@@ -1,3 +1,5 @@
+var datamonkey = require('./datamonkey');
+
 function datamonkey_get_styles(doc) {
   var styles = "",
       styleSheets = doc.styleSheets;
@@ -212,3 +214,5 @@ datamonkey.helpers.describe_vector = datamonkey_describe_vector;
 datamonkey.helpers.table_to_text = datamonkey_table_to_text;
 datamonkey.helpers.export_handler = datamonkey_export_handler;
 datamonkey.helpers.capitalize = datamonkey_capitalize;
+
+exports = datamonkey.helpers;

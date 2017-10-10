@@ -9,6 +9,7 @@ config = {
   entry: {
     datamonkey: ["./src/entry.js"],
     vendor: [
+      "tether",
       "bootstrap",
       "jquery",
       "jquery-ui-bundle",
@@ -66,6 +67,15 @@ config = {
         ]
       },
       {
+        test: require.resolve("underscore"),
+        use: [
+          {
+            loader: "expose-loader",
+            query: "_"
+          }
+        ]
+      },
+      {
         test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
         loader: "url-loader",
         options: { limit: 10000, mimetype: "application/font-woff" }
@@ -80,6 +90,11 @@ config = {
         test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
         loaders: "url-loader",
         options: { limit: 10000, mimetype: "image/svg+xml" }
+      },
+      {
+        test: /\.jpg(\?v=\d+\.\d+\.\d+)?$/,
+        loaders: "url-loader",
+        options: { limit: 10000, mimetype: "image/jpg" }
       },
       {
         test: /\.(js|jsx)?$/,

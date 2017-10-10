@@ -1,5 +1,8 @@
-# INSTALLATION
+datamonkey-js
+========================
 
+INSTALL
+===========================
 ## System Dependencies
 * node
 * mongodb-server
@@ -24,13 +27,11 @@ This requires an SSH key for GitHub, as described [here](https://help.github.com
 ## Install development tools
     
     npm install -g supervisor
-    npm install -g gulp
-    npm install -g bower
     
 ## Install package
 
     cd ./datamonkey-js/
-    npm install
+    make install
 
 ## Configure
 
@@ -48,7 +49,7 @@ Start MongoDB (e.g. using the data directory in HOME)
 
     mongod --dbpath ~/data/db
 
-Start Datamonkey.js
+Start datamonkey.js
 
     node server.js
 

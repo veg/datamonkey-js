@@ -1,13 +1,5 @@
 <%- include ../includes/header.ejs %>
 
-<!--
-<link href="/assets/css/busted/font-awesome-4.2.0/css/font-awesome.css" rel="stylesheet">
-<link href="/assets/lib/phylotree/phylotree.css" rel="stylesheet">
-<link href="/assets/lib/hyphy-vision/relax/datamonkey.relax.css" rel="stylesheet">
-<link href="/assets/css/neighbor-join.css" rel="stylesheet">
--->
-
-
 <div class="container">
   <%- include header.ejs %>
 
@@ -36,10 +28,6 @@
               <i class="fa fa-sort-amount-desc"></i>
             </button>
 
-            <button title="Restore original order" id="sort_original" class="btn btn-default btn-sm" type="button">
-              <i class="fa fa-sort"></i>
-            </button>
-
             <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" type="button">Selection <span class="caret"></span></button>
                 <ul class="dropdown-menu">
                   <li><a id="select_all" href="#">Select all</a></li>
@@ -50,9 +38,7 @@
           </div>
         </div>
 
-
       <div id="relax-highlighter-btn-group" class="col-lg-4 phylo-nav">
-        <label>Selecting </label>
         <div class="btn-group" data-toggle="buttons">
           <label title="Highlight Test Branches" id="test-branch-highlighter" class="btn btn-default btn-sm active" data-name='test'>
             <input type="radio" name="options" id="relax-tbh" autocomplete="off" checked>Test Branches</input>
@@ -100,7 +86,7 @@
 
   <form action="/relax/<%= relax._id %>/select-foreground" enctype="multipart/form-data" method="POST" name="modelForm">
     <div>
-      <button type="submit" class="btn pull-right"><span class="glyphicon glyphicon-play"></span></button>
+      <button type="submit" class="btn pull-right"><span class="glyphicon glyphicon-play dm-continue-btn"></span></button>
     </div>
   </form>
 
