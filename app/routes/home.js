@@ -62,5 +62,3 @@ exports.stats = function(req, res) {
 exports.stats_test = function(req, res) {
   res.render("stats_test.ejs", { types: globals.types });
 };
-
-
