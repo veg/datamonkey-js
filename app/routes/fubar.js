@@ -32,7 +32,7 @@ exports.invoke = function(req, res) {
   var fn = req.files.files.file,
       fubar = new FUBAR(),
       postdata  = req.body,
-      datatype  = postdata.datatype,
+      datatype  = 0,
       gencodeid = postdata.gencodeid;
 
   if(postdata.receive_mail == 'true') {

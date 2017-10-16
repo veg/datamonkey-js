@@ -32,7 +32,7 @@ exports.invoke = function(req, res) {
   var fn = req.files.files.file,
       slac = new SLAC(),
       postdata  = req.body,
-      datatype  = postdata.datatype,
+      datatype  = 0,
       gencodeid = postdata.gencodeid;
 
   slac.dnds_value = postdata.dnds_value;

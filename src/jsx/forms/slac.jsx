@@ -92,21 +92,6 @@ var SLACForm = React.createClass({
       </div>
 
       <div className="upload-div">
-        <label id="datatype-content">Data Type<a href="/help#data-types" target="_blank"><sup>?</sup></a></label> 
-        <select name="datatype">
-          <option value="0">
-            Codon
-          </option>
-          <option value="1">
-            Nucleotide (DNA/RNA)
-          </option>
-          <option value="2">
-            Protein
-          </option>
-        </select> 
-      </div>
-
-      <div className="upload-div">
         <label id="geneticcode-content">Genetic Code<a href="/help#genetic-code" target="_blank"><sup>?</sup></a></label>
         <select name="gencodeid">
 
@@ -161,27 +146,6 @@ var SLACForm = React.createClass({
 
         </select> 
       </div>
-
-      <div className="row upload-div">
-        <div>
-          <label id="datatype-content">Global dN/dS value</label> 
-          <input name="dnds_value" className="form-control" type="number" defaultValue="2" step="1" min="2" max="6" />
-        </div>
-      </div>
-
-
-      <div className="upload-div">
-        <label id="datatype-content">Handling Ambiguities</label> 
-        <select name="handle_ambiguities">
-          <option value="averaged">
-            Averaged
-          </option>
-          <option value="resolved">
-            Resolved
-          </option>
-        </select> 
-      </div>
-
 
       <div className="form-group">
         <label id="datatype-content" className="col-lg-3 control-label">Notify When Completed?</label>

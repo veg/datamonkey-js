@@ -31,7 +31,7 @@ exports.uploadFile = function(req, res) {
   var fn = req.files.files.file,
       fel = new FEL(),
       postdata  = req.body,
-      datatype  = postdata.datatype,
+      datatype  = 0,
       gencodeid = postdata.gencodeid;
 
   if(postdata.receive_mail == 'true') {
