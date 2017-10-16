@@ -12,6 +12,7 @@ module.exports = function(app) {
   app.get('/clusterhealth', home.clusterhealth);
   app.get('/stats_test', home.stats_test);
   app.get('/analyses', home.analyses);
+  app.get('/citations', home.citations);
   app.get('/development', home.development);
   app.get('/copyright_notice', home.copyright);
   app.get('/uploads', home.data_privacy);

@@ -28,6 +28,11 @@ exports.data_privacy = function(req, res) {
   res.render("data.ejs");
 };
 
+exports.citations = function(req, res) {
+  res.render("citations.ejs");
+};
+
+
 exports.jobQueue = function(req, res) {
   function connect_callback(result) {
     var jobs = result;
