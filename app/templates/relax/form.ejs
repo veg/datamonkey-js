@@ -72,18 +72,6 @@
 
   </div>
   
-  <div class="select-element">
-    <label id="analysis-content">Analysis Type<a href="/help#relax-analysis-types" target="_blank"><sup>?</sup></a></label> 
-    <select name="analysis-type">
-      <option selected="" value="1">
-        All
-      </option>
-      <option value="2">
-        Minimal
-      </option>
-    </select> 
-  </div>
-
   <form action="/relax/<%= relax._id %>/select-foreground" enctype="multipart/form-data" method="POST" name="modelForm">
     <div>
       <button type="submit" class="btn pull-right"><span class="glyphicon glyphicon-play dm-continue-btn"></span></button>

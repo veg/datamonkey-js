@@ -30,7 +30,7 @@ exports.uploadFile = function(req, res) {
   if(postdata.receive_mail == 'true') {
     relax.mail = postdata.mail;
   }
-
+  relax.analysis_type = postdata.analysis_type;
   Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
 
 
@@ -110,11 +110,9 @@ exports.invokeRelax = function(req, res) {
 
     // User Parameters
     relax.tagged_nwk_tree = postdata.nwk_tree;
-    relax.analysis_type   = postdata.analysis_type;
     relax.status          = relax.status_stack[0];
 
     relax.save(function (err, result) {
-
       if(err) {
         // Redisplay form with errors
         res.format({
