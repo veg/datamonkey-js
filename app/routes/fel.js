@@ -32,7 +32,8 @@ exports.uploadFile = function(req, res) {
       fel = new FEL(),
       postdata  = req.body,
       datatype  = 0,
-      gencodeid = postdata.gencodeid;
+      gencodeid = postdata.gencodeid,
+      ds_variation = postdata.ds_variation;
 
   if(postdata.receive_mail == 'true') {
     fel.mail = postdata.mail;
@@ -62,6 +63,7 @@ exports.uploadFile = function(req, res) {
 
     fel.msa = msa;
     fel.status = fel.status_stack[0];
+    fel.ds_variation = ds_variation;
 
     fel.save(function (err, fel_result) {
 
