@@ -75,6 +75,18 @@
           </select> 
         </div>
 
+        <div class="select-element">
+          <label id="analysis-content">Analysis Type<a href="/help#relax-analysis-types" target="_blank"><sup>?</sup></a></label> 
+          <select id="analysis-type">
+            <option selected="" value="1">
+              All
+            </option>
+            <option value="2">
+              Minimal
+            </option>
+          </select> 
+        </div>
+
         <div class="form-group <%if (typeof errors != "undefined" && typeof errors.mail != "undefined") { %>has-error<% } %>">
           <label id="datatype-content" class="col-lg-3 control-label">Notify When Completed?</label>
           <div class="col-lg-9 input-group mail-group">
