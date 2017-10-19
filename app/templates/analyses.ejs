@@ -17,62 +17,22 @@
   </div>
 
    <div class="col-md-10">  
-
-    <div class="row">
-      <div class="panel panel-default panel-datamonkey">
-        <a href="absrel">
-          <div class="panel-heading">
-            <h3 class="panel-title">aBSREL</h3>
-            <span class="pull-right glyphicon glyphicon-chevron-right hide"></span>
-          </div>
-        </a>
-        <div class="panel-body">
-          <p>aBSREL (<strong>a</strong>daptive
-          <strong>B</strong>ranch-<strong>S</strong>ite <strong>R</strong>andom
-          <strong>E</strong>ffects <strong>L</strong>ikelihood) is an improved
-          version of the commonly-used "branch-site" models, which are used to
-          test if positive selection has occurred on a proportion of branches.</p>
-
-          <p>For more information, please see the <a
-          href="http://hyphy.org/methods/selection-methods/#absrel">summary on hyphy.org</a> or see 
-          <a href="https://doi.org/10.1093/molbev/msv022">Smith, MD et al.
-          "Less is more: an adaptive branch-site random effects model for
-          efficient detection of episodic diversifying selection." Mol. Biol.
-          Evol. 32, 1342–1353 (2015).</a>
-          </p>
-
-        </div>
-      </div>
+    
+    <!-- Alert -->
+    <div class="bs-callout bs-callout-info">
+      <p>
+        If you need help deciding which model may be the right choice for
+        testing your hypothesis, you may find our <a
+        href="//hyphy.org/getting-started/#characterizing-selective-pressures">guidelines
+        page</a> useful.
+      </p>
     </div>
 
-    <div class="row">
-      <div class="panel panel-default panel-datamonkey">
-        <a href="busted">
-          <div class="panel-heading">
-            <h3 class="panel-title">BUSTED</h3>
-            <span class="pull-right glyphicon glyphicon-chevron-right hide"></span>
-          </div>
-        </a>
-        <div class="panel-body">
-
-          <p>BUSTED (<strong>B</strong>ranch-site
-          <strong>U</strong>nrestricted <strong>S</strong>tatistical
-          <strong>T</strong>est for <strong>E</strong>pisodic
-          <strong>D</strong>iversification) provides a gene-wide (<em>not
-          site-specific</em>) test for positive selection by asking whether a gene
-          has experienced positive selection at at least one site on at least one
-          branch.</p>
-
-          <p>For more information, please see the <a
-          href="http://hyphy.org/methods/selection-methods/#busted">summary on hyphy.org</a> or see 
-          <a href="https://doi.org/10.1093/molbev/msv035">Murrell, B et al.
-          "Gene-wide identification of episodic selection." Mol. Biol. Evol. 32, 1365–1371
-          (2015).</a>
-          </p>
-
-        </div>
-      </div>
+    <div class="page-header">
+      <h2>Selection Pressure Models</h2>
     </div>
+
+    <h3>Individual Site Models</h3>
 
     <div class="row">
       <div class="panel panel-default panel-datamonkey">
@@ -130,124 +90,7 @@
 
         </div>
       </div>
-    </div>
-
-    <div class="row">
-      <div class="panel panel-default panel-datamonkey">
-        <a href="gard">
-          <div class="panel-heading">
-            <h3 class="panel-title">GARD</h3>
-            <span class="pull-right glyphicon glyphicon-chevron-right hide"></span>
-          </div>
-        </a>
-        <div class="panel-body">
-        GARD (<strong>G</strong>enetic <strong>A</strong>lgorithm for <strong>R</strong>ecombination <strong>D</strong>etection) is a method to
-        screen a multiple sequence analysis for the presence of recombination
-        and is extremely useful as a pre-processing step for selection
-        inference. Because recombinant sequences cannot be adequately described
-        with a single phylogenetic history, selection inference on recombinant
-        data often leads to a significant increase in false positives. GARD
-        alleviates this concern by comprehensively screening an alignment for
-        recombination breakpoints and inferring a unique phylogenetic history
-        for each detected recombination block. <p>For more information, please see
-          <a href="https://doi.org/10.1093/molbev/msl051">Kosakovsky Pond,
-          SL et al. "Automated Phylogenetic Detection of Recombination Using a
-          Genetic Algorithm." Mol. Biol. Evol. 23, 1891–1901 (2006).</a></p>
-        </div>
-      </div>
-    </div>
-    -->
-
-    <div class="row">
-      <a href="hivtrace">
-      <div class="panel panel-default panel-datamonkey">
-        <div class="panel-heading">
-          <h3 class="panel-title">HIV-TRACE</h3>
-          <span class="pull-right glyphicon glyphicon-chevron-right hide"></span>
-        </div>
-        </a>
-        <div class="panel-body">
-          HIV-TRACE infers transmission networks given a sequence alignment.
-
-          <p>For more information, please see the <a
-          href="https://github.com/veg/hivtrace">github
-          repository</a></p>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="panel panel-default panel-datamonkey">
-        <a href="meme">
-          <div class="panel-heading">
-            <h3 class="panel-title">MEME</h3>
-            <span class="pull-right glyphicon glyphicon-chevron-right hide"></span>
-          </div>
-        </a>
-        <div class="panel-body">
-        <p>MEME (<strong>M</strong>ixed <strong>E</strong>ffects <strong>M</strong>odel of <strong>E</strong>volution) employs a mixed-effects maximum
-        likelihood approach to test the hypothesis that individual sites have
-        been subject to episodic positive or diversifying selection. In other
-        words, MEME aims to detect sites evolving under positive selection under
-        a proportion of branches.</p>
-
-        <p>For more information, please see the <a
-        href="http://hyphy.org/methods/selection-methods/#meme">summary on hyphy.org</a> or see <a
-        href="http://dx.doi.org/10.1371/journal.pgen.1002764">Murrell, B
-        et al. "Detecting individual sites subject to episodic diversifying
-        selection." PLoS Genetics 8, e1002764 (2012).</a></p>
-        </div>
-      </div>
-    </div>
-
-    <!--
-    <div class="row">
-      <div class="panel panel-default panel-datamonkey">
-        <a href="prime">
-          <div class="panel-heading">
-            <h3 class="panel-title">PRIME</h3>
-            <span class="pull-right glyphicon glyphicon-chevron-right hide"></span>
-          </div>
-        </a>
-        <div class="panel-body">
-          <p>PRIME (<strong>PR</strong>operty <strong>I</strong>nformed <strong>M</strong>odels of <strong>E</strong>volution) takes into account
-          variability in amino acid exchange rates based on physico-chemical
-          properties.</p>
-
-          <p>For more information, please see the <a href="http://hyphy.org/w/index.php/PRIME">wiki page</a> on hyphy.org</p>
-
-        </div>
-      </div>
-    </div>
-    -->
-
-    <div class="row">
-      <div class="panel panel-default panel-datamonkey">
-        <a href="relax">
-          <div class="panel-heading">
-            <h3 class="panel-title">RELAX</h3>
-            <span class="pull-right glyphicon glyphicon-chevron-right hide"></span>
-          </div>
-        </a>
-        <div class="panel-body">
-
-          <p>RELAX is a hypothesis testing framework that asks whether the
-          strength of natural selection has been relaxed or intensified along a
-          specified set of test branches. RELAX is therefore <em>not</em> a
-          suitable method for explicitly testing for positive selection. Instead,
-          RELAX is most useful for identifying trends and/or shifts in the
-          stringency of natural selection on a given gene.</p>
-
-          <p>For more information, please see the <a
-          href="http://hyphy.org/methods/selection-methods/#relax">summary on
-          hyphy.org</a> or see <a
-          href="https://doi.org/10.1093/molbev/msu400">Wertheim, JO et al.
-          "RELAX: detecting relaxed selection in a phylogenetic framework." Mol.
-          Biol. Evol. 32, 820–832 (2015).</a></p>
-
-        </div>
-      </div>
-    </div>
+    </div> -->
 
     <div class="row">
       <div class="panel panel-default panel-datamonkey">
@@ -278,6 +121,191 @@
         </div>
       </div>
     </div>
+
+    <div class="row">
+      <div class="panel panel-default panel-datamonkey">
+        <a href="meme">
+          <div class="panel-heading">
+            <h3 class="panel-title">MEME</h3>
+            <span class="pull-right glyphicon glyphicon-chevron-right hide"></span>
+          </div>
+        </a>
+        <div class="panel-body">
+        <p>MEME (<strong>M</strong>ixed <strong>E</strong>ffects <strong>M</strong>odel of <strong>E</strong>volution) employs a mixed-effects maximum
+        likelihood approach to test the hypothesis that individual sites have
+        been subject to episodic positive or diversifying selection. In other
+        words, MEME aims to detect sites evolving under positive selection under
+        a proportion of branches.</p>
+
+        <p>For more information, please see the <a
+        href="http://hyphy.org/methods/selection-methods/#meme">summary on hyphy.org</a> or see <a
+        href="http://dx.doi.org/10.1371/journal.pgen.1002764">Murrell, B
+        et al. "Detecting individual sites subject to episodic diversifying
+        selection." PLoS Genetics 8, e1002764 (2012).</a></p>
+        </div>
+      </div>
+    </div>
+
+    <h3>Individual Branch Models</h3>
+
+    <div class="row">
+      <div class="panel panel-default panel-datamonkey">
+        <a href="absrel">
+          <div class="panel-heading">
+            <h3 class="panel-title">aBSREL</h3>
+            <span class="pull-right glyphicon glyphicon-chevron-right hide"></span>
+          </div>
+        </a>
+        <div class="panel-body">
+          <p>aBSREL (<strong>a</strong>daptive
+          <strong>B</strong>ranch-<strong>S</strong>ite <strong>R</strong>andom
+          <strong>E</strong>ffects <strong>L</strong>ikelihood) is an improved
+          version of the commonly-used "branch-site" models, which are used to
+          test if positive selection has occurred on a proportion of branches.</p>
+
+          <p>For more information, please see the <a
+          href="http://hyphy.org/methods/selection-methods/#absrel">summary on hyphy.org</a> or see 
+          <a href="https://doi.org/10.1093/molbev/msv022">Smith, MD et al.
+          "Less is more: an adaptive branch-site random effects model for
+          efficient detection of episodic diversifying selection." Mol. Biol.
+          Evol. 32, 1342–1353 (2015).</a>
+          </p>
+
+        </div>
+      </div>
+    </div>
+
+    <h3>Gene-Wide Models</h3>
+
+    <div class="row">
+      <div class="panel panel-default panel-datamonkey">
+        <a href="busted">
+          <div class="panel-heading">
+            <h3 class="panel-title">BUSTED</h3>
+            <span class="pull-right glyphicon glyphicon-chevron-right hide"></span>
+          </div>
+        </a>
+        <div class="panel-body">
+
+          <p>BUSTED (<strong>B</strong>ranch-site
+          <strong>U</strong>nrestricted <strong>S</strong>tatistical
+          <strong>T</strong>est for <strong>E</strong>pisodic
+          <strong>D</strong>iversification) provides a gene-wide (<em>not
+          site-specific</em>) test for positive selection by asking whether a gene
+          has experienced positive selection at at least one site on at least one
+          branch.</p>
+
+          <p>For more information, please see the <a
+          href="http://hyphy.org/methods/selection-methods/#busted">summary on hyphy.org</a> or see 
+          <a href="https://doi.org/10.1093/molbev/msv035">Murrell, B et al.
+          "Gene-wide identification of episodic selection." Mol. Biol. Evol. 32, 1365–1371
+          (2015).</a>
+          </p>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="panel panel-default panel-datamonkey">
+        <a href="relax">
+          <div class="panel-heading">
+            <h3 class="panel-title">RELAX</h3>
+            <span class="pull-right glyphicon glyphicon-chevron-right hide"></span>
+          </div>
+        </a>
+        <div class="panel-body">
+
+          <p>RELAX is a hypothesis testing framework that asks whether the
+          strength of natural selection has been relaxed or intensified along a
+          specified set of test branches. RELAX is therefore <em>not</em> a
+          suitable method for explicitly testing for positive selection. Instead,
+          RELAX is most useful for identifying trends and/or shifts in the
+          stringency of natural selection on a given gene.</p>
+
+          <p>For more information, please see the <a
+          href="http://hyphy.org/methods/selection-methods/#relax">summary on
+          hyphy.org</a> or see <a
+          href="https://doi.org/10.1093/molbev/msu400">Wertheim, JO et al.
+          "RELAX: detecting relaxed selection in a phylogenetic framework." Mol.
+          Biol. Evol. 32, 820–832 (2015).</a></p>
+
+        </div>
+      </div>
+    </div>
+
+
+    <!--<div class="row">
+      <div class="panel panel-default panel-datamonkey">
+        <a href="gard">
+          <div class="panel-heading">
+            <h3 class="panel-title">GARD</h3>
+            <span class="pull-right glyphicon glyphicon-chevron-right hide"></span>
+          </div>
+        </a>
+        <div class="panel-body">
+        GARD (<strong>G</strong>enetic <strong>A</strong>lgorithm for <strong>R</strong>ecombination <strong>D</strong>etection) is a method to
+        screen a multiple sequence analysis for the presence of recombination
+        and is extremely useful as a pre-processing step for selection
+        inference. Because recombinant sequences cannot be adequately described
+        with a single phylogenetic history, selection inference on recombinant
+        data often leads to a significant increase in false positives. GARD
+        alleviates this concern by comprehensively screening an alignment for
+        recombination breakpoints and inferring a unique phylogenetic history
+        for each detected recombination block. <p>For more information, please see
+          <a href="https://doi.org/10.1093/molbev/msl051">Kosakovsky Pond,
+          SL et al. "Automated Phylogenetic Detection of Recombination Using a
+          Genetic Algorithm." Mol. Biol. Evol. 23, 1891–1901 (2006).</a></p>
+        </div>
+      </div>
+    </div>
+    -->
+
+    <div class="page-header">
+      <h2>Additional Models</h2>
+    </div>
+
+    <div class="row">
+      <a href="hivtrace">
+      <div class="panel panel-default panel-datamonkey">
+        <div class="panel-heading">
+          <h3 class="panel-title">HIV-TRACE</h3>
+          <span class="pull-right glyphicon glyphicon-chevron-right hide"></span>
+        </div>
+        </a>
+        <div class="panel-body">
+
+          HIV-TRACE infers transmission networks given a sequence alignment.
+          <p>For more information, please see the <a
+          href="https://github.com/veg/hivtrace">github
+          repository</a></p>
+
+        </div>
+      </div>
+    </div>
+
+
+    <!--
+    <div class="row">
+      <div class="panel panel-default panel-datamonkey">
+        <a href="prime">
+          <div class="panel-heading">
+            <h3 class="panel-title">PRIME</h3>
+            <span class="pull-right glyphicon glyphicon-chevron-right hide"></span>
+          </div>
+        </a>
+        <div class="panel-body">
+          <p>PRIME (<strong>PR</strong>operty <strong>I</strong>nformed <strong>M</strong>odels of <strong>E</strong>volution) takes into account
+          variability in amino acid exchange rates based on physico-chemical
+          properties.</p>
+
+          <p>For more information, please see the <a href="http://hyphy.org/w/index.php/PRIME">wiki page</a> on hyphy.org</p>
+
+        </div>
+      </div>
+    </div>
+    -->
+
   </div>
 </div>
 
