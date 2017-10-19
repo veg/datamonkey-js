@@ -7,13 +7,20 @@ class FUBARForm extends React.Component {
     this.state = {
       showAdvanced: false
     };
+    this.toggleShow = this.toggleShow.bind(this);
   }
   onMailChange() {
     //datamonkey.helpers.validate_email(elem);
   }
-
+  toggleShow() {
+    var self = this;
+    var showAdvanced = !self.state.showAdvanced;
+    self.setState({
+      showAdvanced: showAdvanced
+    });
+  }
   submit(e) {
-
+    console.log("submit");
     e.preventDefault();
 
     $('#file-progress').removeClass("hidden");
@@ -82,6 +89,7 @@ class FUBARForm extends React.Component {
   }
 
   render() {
+    var self = this;
     return(<form id="msa-form" className="form-horizontal upload-form" name="uploadform" enctype="multipart/form-data" method="post" action= {this.props.post_to} >
 
       <div id="seq-file-div" className="upload-div">
@@ -159,13 +167,56 @@ class FUBARForm extends React.Component {
         </div>
       </div>
   
-      <button className="btn" style={{display: "block"}}>
+      <button
+        className="btn"
+        type="button"
+        onClick={self.toggleShow}
+        style={{display: "block", verticalAlign: "middle"}}
+      >
         Advanced options
-        <span
+        {" "}<span
+          style={{verticalAlign: "middle"}}
           className={"glyphicon glyphicon-menu-"+(this.state.showAdvanced ? "down" : "right")}
           aria-hidden="true"
         />
       </button>
+
+      <div style={{display: self.state.showAdvanced ? "block" : "none"}}>
+        <div className="row">
+          <div className="col-md-6">  
+            <div>
+              <label id="datatype-content">Number of grid points</label> 
+              <input name="rate_classes" className="form-control" type="number" defaultValue="20" step="1" min="5" max="50" />
+            </div>
+
+            <div>
+              <label id="datatype-content">Number of MCMC chains</label> 
+              <input name="rate_classes" className="form-control" type="number" defaultValue="2" step="1" min="2" max="20" />
+            </div>
+
+            <div>
+              <label id="datatype-content">Length of each chain</label> 
+              <input name="rate_classes" className="form-control" type="number" defaultValue="2000000" step="500000" min="500000" max="50000000" />
+            </div>
+          </div>
+          <div className="col-md-6">  
+            <div>
+              <label id="datatype-content">Use this many samples as burn-in</label> 
+              <input name="rate_classes" className="form-control" type="number" defaultValue="2" step="1" min="2" max="20" />
+            </div>
+
+            <div>
+              <label id="datatype-content">How many samples should be drawn from each chain?</label> 
+              <input name="rate_classes" className="form-control" type="number" defaultValue="2" step="1" min="2" max="20" />
+            </div>
+
+            <div>
+              <label id="datatype-content">Concentration parameter of the Dirichlet prior</label> 
+              <input name="rate_classes" className="form-control" type="number" defaultValue="2" step="1" min="2" max="20" />
+            </div>
+          </div>
+        </div>
+      </div>
 
       <button type="submit" className="btn pull-right" onClick={this.submit}><span className="dm-continue-btn glyphicon glyphicon-play"></span></button>
     </form>
