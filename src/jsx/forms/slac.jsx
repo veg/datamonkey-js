@@ -26,7 +26,7 @@ var SLACForm = React.createClass({
     formData.append('dnds_value', $( "input[name='dnds_value']" ).val());
     formData.append('handle_ambiguities', $( "select[name='handle_ambiguities']" ).val());
 
-    var action_url = $('#msa-form').attr('action'); 
+    var action_url = '';
 
     var xhr = new XMLHttpRequest();
 
