@@ -34,12 +34,12 @@ class FUBARForm extends React.Component {
     formData.append('gencodeid', $( "select[name='gencodeid']" ).val());
     formData.append('receive_mail',  $( "input[name='receive_mail']" ).prop("checked"));
     formData.append('mail', $( "input[name='mail']" ).val());
-    formData.append('number_of_grid_points', $( 'number_of_grid_points' ).val());
-    formData.append('number_of_mcmc_chains', $( 'number_of_mcmc_chains' ).val());
-    formData.append('length_of_each_chain', $( 'length_of_each_chain' ).val());
-    formData.append('number_of_burn_in_samples', $( 'number_of_burn_in_samples' ).val());
-    formData.append('number_of_samples', $( 'number_of_samples' ).val());
-    formData.append('concentration_of_dirichlet_prior', $( 'concentration_of_dirichlet_prior' ).val());
+    formData.append('number_of_grid_points', $( '#number_of_grid_points' ).val());
+    formData.append('number_of_mcmc_chains', $( '#number_of_mcmc_chains' ).val());
+    formData.append('length_of_each_chain', $( '#length_of_each_chain' ).val());
+    formData.append('number_of_burn_in_samples', $( '#number_of_burn_in_samples' ).val());
+    formData.append('number_of_samples', $( '#number_of_samples' ).val());
+    formData.append('concentration_of_dirichlet_prior', $( '#concentration_of_dirichlet_prior' ).val());
 
     var action_url = $('#msa-form').attr('action'); 
 
@@ -192,33 +192,33 @@ class FUBARForm extends React.Component {
           <div className="col-md-6">  
             <div>
               <label>Number of grid points</label> 
-              <input name="number_of_grid_points" className="form-control" type="number" defaultValue="20" step="1" min="5" max="50" />
+              <input id="number_of_grid_points" className="form-control" type="number" defaultValue="20" step="1" min="5" max="50" />
             </div>
 
             <div>
               <label>Number of MCMC chains</label> 
-              <input name="number_of_mcmc_chains" className="form-control" type="number" defaultValue="5" step="1" min="2" max="20" />
+              <input id="number_of_mcmc_chains" className="form-control" type="number" defaultValue="5" step="1" min="2" max="20" />
             </div>
 
             <div>
               <label>Length of each chain</label> 
-              <input name="length_of_each_chain" className="form-control" type="number" defaultValue="2000000" step="500000" min="500000" max="50000000" />
+              <input id="length_of_each_chain" className="form-control" type="number" defaultValue="2000000" step="500000" min="500000" max="50000000" />
             </div>
           </div>
           <div className="col-md-6">  
             <div>
               <label>Use this many samples as burn-in</label> 
-              <input name="number_of_burn_in_samples" className="form-control" type="number" defaultValue="1000000" step="500000" min="100000" max="1900000" />
+              <input id="number_of_burn_in_samples" className="form-control" type="number" defaultValue="1000000" step="500000" min="100000" max="1900000" />
             </div>
 
             <div>
               <label>How many samples should be drawn from each chain?</label> 
-              <input name="number_of_samples" className="form-control" type="number" defaultValue="100" step="1" min="50" max="1000000" />
+              <input id="number_of_samples" className="form-control" type="number" defaultValue="100" step="1" min="50" max="1000000" />
             </div>
 
             <div>
               <label>Concentration parameter of the Dirichlet prior</label> 
-              <input name="concentration_of_dirichlet_prior" className="form-control" type="number" defaultValue=".5" step="1" min="0.001" max="1" />
+              <input id="concentration_of_dirichlet_prior" className="form-control" type="number" defaultValue=".5" step="1" min="0.001" max="1" />
             </div>
           </div>
         </div>

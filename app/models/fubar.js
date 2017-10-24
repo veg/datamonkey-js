@@ -5,9 +5,15 @@ var mongoose  = require('mongoose'),
 var AnalysisSchema = require(__dirname + '/analysis');
 
 var FUBAR = AnalysisSchema.extend({
-  analysis_type         : Number,
-  last_status_msg       : String,
-  results               : Object
+  analysis_type                    : Number,
+  last_status_msg                  : String,
+  results                          : Object,
+  number_of_grid_points            : Number,
+  number_of_mcmc_chains            : Number,
+  length_of_each_chain             : Number,
+  number_of_burn_in_samples        : Number,
+  number_of_samples                : Number,
+  concentration_of_dirichlet_prior : Number
 });
 
 FUBAR.virtual('pmid').get(function() {
