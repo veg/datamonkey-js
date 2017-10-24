@@ -1,13 +1,30 @@
 var React = require("react"),
     ReactDOM = require("react-dom");
 
+
+function ErrorMessage(props){
+  if(!props.message) return <div></div>;
+  return (<div className="alert alert-danger" role="alert">
+    <span className="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+    <span className="sr-only">Error:</span>
+    {props.message}
+  </div>);
+}
+
 class FUBARForm extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      showAdvanced: false
+      showAdvanced: false,
+      length_of_each_chain: 2000000,
+      number_of_burn_in_samples: 1000000,
+      number_of_samples: 100,
+      message: null
     };
     this.toggleShow = this.toggleShow.bind(this);
+    this.onLengthChange = this.onLengthChange.bind(this);
+    this.onBurninChange = this.onBurninChange.bind(this);
+    this.onSampleChange = this.onSampleChange.bind(this);
   }
   onMailChange() {
     //datamonkey.helpers.validate_email(elem);
@@ -18,6 +35,47 @@ class FUBARForm extends React.Component {
     self.setState({
       showAdvanced: showAdvanced
     });
+  }
+  onLengthChange(event) {
+    var value = event.target.value;
+    if(value < 500000){
+      this.setState({message: "Please enter a length that is at least 500000."});
+    } else if (value > 50000000) {
+      this.setState({message: "Please enter a length that is no more than 50000000."});
+    } else {
+      this.setState({
+        length_of_each_chain: value,
+        message: null
+      });
+    }
+  }
+  onBurninChange(event) {
+    var value = event.target.value,
+      length = this.state.length_of_each_chain;
+    if(value < Math.ceil(.05*length)){
+      this.setState({message: "Please enter a burn in that is at least 5% of the chain length."});
+    } else if (value > Math.ceil(.95*length)) {
+      this.setState({message: "Please enter a burn in that is no more than 95% of the chain length."});
+    } else {
+      this.setState({
+        number_of_burn_in_samples: value,
+        message: null
+      });
+    }
+  }
+  onSampleChange(event) {
+    var value = event.target.value,
+      sample = this.state.number_of_samples;
+    if(value < 50){
+      this.setState({message: "Please enter an amount of samples to be drawn that is more than 50."});
+    } else if (value > this.state.length_of_each_chain-this.state.number_of_burn_in_samples) {
+      this.setState({message: "Please enter an amount of samples that is no more than the chain length minus the amount of burn in."});
+    } else {
+      this.setState({
+        number_of_samples: value,
+        message: null
+      });
+    }
   }
   submit(e) {
     console.log("submit");
@@ -202,18 +260,39 @@ class FUBARForm extends React.Component {
 
             <div>
               <label>Length of each chain</label> 
-              <input id="length_of_each_chain" className="form-control" type="number" defaultValue="2000000" step="500000" min="500000" max="50000000" />
+              <input
+                id="length_of_each_chain"
+                className="form-control"
+                type="number"
+                step="500000"
+                value={this.state.length_of_each_chain}
+                onChange={this.onLengthChange}
+              />
             </div>
           </div>
           <div className="col-md-6">  
             <div>
               <label>Use this many samples as burn-in</label> 
-              <input id="number_of_burn_in_samples" className="form-control" type="number" defaultValue="1000000" step="500000" min="100000" max="1900000" />
+              <input
+                id="number_of_burn_in_samples"
+                className="form-control"
+                type="number"
+                step="500000"
+                value={this.state.number_of_burn_in_samples}
+                onChange={this.onBurninChange}
+              />
             </div>
 
             <div>
               <label>How many samples should be drawn from each chain?</label> 
-              <input id="number_of_samples" className="form-control" type="number" defaultValue="100" step="1" min="50" max="1000000" />
+              <input
+                id="number_of_samples"
+                className="form-control"
+                type="number"
+                step="10"
+                value={this.state.number_of_samples}
+                onChange={this.onSampleChange}
+              />
             </div>
 
             <div>
@@ -223,6 +302,8 @@ class FUBARForm extends React.Component {
           </div>
         </div>
       </div>
+
+      <ErrorMessage message={this.state.message} />
 
       <button type="submit" className="btn pull-right" onClick={this.submit}><span className="dm-continue-btn glyphicon glyphicon-play"></span></button>
     </form>
