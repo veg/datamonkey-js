@@ -94,6 +94,7 @@ module.exports = function(app) {
   fubar = require(path.join(__dirname, '../app/routes/fubar'));
   app.get('/fubar', fubar.form);
   app.post('/fubar', fubar.invoke);
+  app.get('/fubar/usage', fubar.getUsage);
   app.get('/fubar/:id', fubar.getPage);
   app.get('/fubar/:id/info', fubar.getInfo);
   app.get('/fubar/:id/results', fubar.getResults);
@@ -172,6 +173,7 @@ module.exports = function(app) {
   slac = require(path.join(__dirname, '../app/routes/slac'));
   app.get('/slac', slac.form);
   app.post('/slac', slac.invoke);
+  app.get('/slac/usage', slac.getUsage);
   app.get('/slac/:id', slac.getPage);
   app.get('/slac/:id/info', slac.getInfo);
   app.get('/slac/:id/results', slac.getResults);

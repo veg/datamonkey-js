@@ -207,3 +207,8 @@ exports.resubscribePendingJobs = function(req, res) {
   SLAC.subscribePendingJobs();
 };
 
+exports.getUsage = function(req, res){
+  SLAC.usageStatistics(function(err, fel){
+    res.json(200, fel);
+  });
+};

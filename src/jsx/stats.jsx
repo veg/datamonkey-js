@@ -314,7 +314,7 @@ var UsageDashboard = React.createClass({
   },
   render: function(){
     var self = this,
-        methods = ["absrel", "busted", "relax", "fel", "meme", "hivtrace"],
+        methods = ["absrel", "busted", "relax", "fel", "meme", "fubar", "slac", "hivtrace"],
         tabs = methods.map(function(method){
           return (<li role="presentation" className={method == self.state.active ? "active" : ""}> 
             <a href="#" onClick={self.tabClick(method)}>{method}</a>
