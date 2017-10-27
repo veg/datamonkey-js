@@ -21,15 +21,15 @@ exports.createForm = function(req, res) {
 
 exports.uploadFile = function(req, res) {
   var fn = req.files.files.file,
-    relax = new Relax(),
-    postdata = req.body,
-    datatype = postdata.datatype,
-    gencodeid = postdata.gencodeid;
+      relax = new Relax(),
+      postdata  = req.body,
+      datatype  = 0,
+      gencodeid = postdata.gencodeid;
 
   if (postdata.receive_mail == "true") {
     relax.mail = postdata.mail;
   }
-
+  relax.analysis_type = postdata.analysis_type;
   Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
     if (err) {
       res.json(500, { error: err });
@@ -99,18 +99,19 @@ exports.selectForeground = function(req, res) {
  * app.post('/msa/:msaid/relax', Relax.invokeRelax);
  */
 exports.invokeRelax = function(req, res) {
+
   var postdata = req.body;
   var id = req.params.id;
 
   // Find the correct multiple sequence alignment to act upon
   Relax.findOne({ _id: id }, function(err, relax) {
+
     // User Parameters
     relax.tagged_nwk_tree = postdata.nwk_tree;
-    relax.analysis_type = postdata.analysis_type;
-    relax.status = relax.status_stack[0];
+    relax.status          = relax.status_stack[0];
 
-    relax.save(function(err, result) {
-      if (err) {
+    relax.save(function (err, result) {
+      if(err) {
         // Redisplay form with errors
         res.format({
           html: function() {

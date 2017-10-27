@@ -9,7 +9,8 @@ var FEL = AnalysisSchema.extend({
   tagged_nwk_tree: String,
   analysis_type: Number,
   last_status_msg: String,
-  results: Object
+  results: Object,
+  ds_variation          : Number
 });
 
 FEL.virtual("pmid").get(function() {

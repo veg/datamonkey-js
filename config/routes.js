@@ -16,6 +16,7 @@ module.exports = function(app) {
   app.get('/development', home.development);
   app.get('/copyright_notice', home.copyright);
   app.get('/uploads', home.data_privacy);
+  app.get('/analysistree', home.analysis_tree);
 
   // aBSREL ROUTES
   absrel = require(path.join(__dirname, '../app/routes/absrel'));
@@ -64,6 +65,7 @@ module.exports = function(app) {
   fel = require(path.join(__dirname, '../app/routes/fel'));
   app.get('/fel', fel.form);
   app.post('/fel', fel.uploadFile);
+  app.get('/fel/usage', fel.getUsage);
   app.get('/fel/:id/select-foreground', fel.selectForeground);
   app.post('/fel/:id/select-foreground', fel.invoke);
   app.get('/fel/:id/original_file/:name', fel.getMSAFile);
@@ -97,6 +99,7 @@ module.exports = function(app) {
   fubar = require(path.join(__dirname, '../app/routes/fubar'));
   app.get('/fubar', fubar.form);
   app.post('/fubar', fubar.invoke);
+  app.get('/fubar/usage', fubar.getUsage);
   app.get('/fubar/:id', fubar.getPage);
   app.get('/fubar/:id/original_file/:name', fubar.getMSAFile);
   app.get('/fubar/:id/info', fubar.getInfo);
@@ -138,6 +141,7 @@ module.exports = function(app) {
   meme = require(path.join(__dirname, '../app/routes/meme'));
   app.get('/meme', meme.form);
   app.post('/meme', meme.invoke);
+  app.get('/meme/usage', meme.getUsage);
   app.get('/meme/:id', meme.getPage);
   app.get('/meme/:id/original_file/:name', meme.getMSAFile);
   app.get('/meme/:id/info', meme.getInfo);
@@ -178,6 +182,7 @@ module.exports = function(app) {
   slac = require(path.join(__dirname, '../app/routes/slac'));
   app.get('/slac', slac.form);
   app.post('/slac', slac.invoke);
+  app.get('/slac/usage', slac.getUsage);
   app.get('/slac/:id', slac.getPage);
   app.get('/slac/:id/original_file/:name', slac.getMSAFile);
   app.get('/slac/:id/info', slac.getInfo);

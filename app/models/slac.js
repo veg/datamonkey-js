@@ -5,11 +5,9 @@ var mongoose = require("mongoose"),
 var AnalysisSchema = require(__dirname + "/analysis");
 
 var SLAC = AnalysisSchema.extend({
-  analysis_type: Number,
-  last_status_msg: String,
-  results: Object,
-  dnds_value: Number,
-  handle_ambiguities: String
+  analysis_type         : Number,
+  last_status_msg       : String,
+  results               : Object
 });
 
 SLAC.virtual("pmid").get(function() {

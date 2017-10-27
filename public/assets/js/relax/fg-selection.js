@@ -281,13 +281,13 @@ $("#select_all").on("click", function(e) {
 
 $("#select_all_internal").on("click", function(e) {
   tree.modify_selection(function(d) {
-    return !d3_phylotree_is_leafnode(d.target);
+    return !d3.layout.phylotree.is_leafnode(d.target);
   });
 });
 
 $("#select_all_leaves").on("click", function(e) {
   tree.modify_selection(function(d) {
-    return d3_phylotree_is_leafnode(d.target);
+    return d3.layout.phylotree.is_leafnode(d.target);
   });
 });
 

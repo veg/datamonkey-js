@@ -24,6 +24,11 @@ exports.copyright = function(req, res) {
   res.render("copyright.ejs");
 };
 
+// Decision tree that guides user to select right analysis for their hypothesis
+exports.analysis_tree = function (req, res) {
+  res.render ('analysistree.ejs');
+}
+
 exports.data_privacy = function(req, res) {
   res.render("data.ejs");
 };
@@ -31,7 +36,6 @@ exports.data_privacy = function(req, res) {
 exports.citations = function(req, res) {
   res.render("citations.ejs");
 };
-
 
 exports.jobQueue = function(req, res) {
   function connect_callback(result) {

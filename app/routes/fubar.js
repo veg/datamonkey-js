@@ -26,10 +26,10 @@ exports.invoke = function(req, res) {
   };
 
   var fn = req.files.files.file,
-    fubar = new FUBAR(),
-    postdata = req.body,
-    datatype = postdata.datatype,
-    gencodeid = postdata.gencodeid;
+      fubar = new FUBAR(),
+      postdata  = req.body,
+      datatype  = 0,
+      gencodeid = postdata.gencodeid;
 
   if (postdata.receive_mail == "true") {
     fubar.mail = postdata.mail;
@@ -62,9 +62,16 @@ exports.invoke = function(req, res) {
     fubar.msa = msa;
 
     fubar.status = fubar.status_stack[0];
+    fubar.number_of_grid_points = postdata.number_of_grid_points;
+    fubar.number_of_mcmc_chains = postdata.number_of_mcmc_chains;
+    fubar.length_of_each_chain = postdata.length_of_each_chain;
+    fubar.number_of_burn_in_samples = postdata.number_of_burn_in_samples;
+    fubar.number_of_samples = postdata.number_of_samples;
+    fubar.concentration_of_dirichlet_prior = postdata.concentration_of_dirichlet_prior;
 
-    fubar.save(function(err, fubar_result) {
-      if (err) {
+    fubar.save(function (err, fubar_result) {
+
+      if(err) {
         logger.error("fubar save failed");
         logger.error(err);
         res.json(500, { error: err });
@@ -205,5 +212,11 @@ exports.getMSAFile = function(req, res) {
         res.status(err.status).end();
       }
     });
+  });
+};
+
+exports.getUsage = function(req, res){
+  FUBAR.usageStatistics(function(err, fel){
+    res.json(200, fel);
   });
 };

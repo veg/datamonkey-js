@@ -44,6 +44,7 @@ var Sequences = new Schema({
 var Msa = new Schema({
   datatype: {
     type: Number,
+    default:0,
     require: true
   },
   partition_info: [PartitionInfo],

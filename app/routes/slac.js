@@ -26,13 +26,10 @@ exports.invoke = function(req, res) {
   };
 
   var fn = req.files.files.file,
-    slac = new SLAC(),
-    postdata = req.body,
-    datatype = postdata.datatype,
-    gencodeid = postdata.gencodeid;
-
-  slac.dnds_value = postdata.dnds_value;
-  slac.handle_ambiguities = postdata.handle_ambiguities;
+      slac = new SLAC(),
+      postdata  = req.body,
+      datatype  = 0,
+      gencodeid = postdata.gencodeid;
 
   if (postdata.receive_mail == "true") {
     slac.mail = postdata.mail;
@@ -208,5 +205,11 @@ exports.getMSAFile = function(req, res) {
         res.status(err.status).end();
       }
     });
+  });
+};
+
+exports.getUsage = function(req, res){
+  SLAC.usageStatistics(function(err, fel){
+    res.json(200, fel);
   });
 };
