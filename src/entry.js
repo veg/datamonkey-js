@@ -18,11 +18,13 @@ datamonkey.helpers = require('./js/datamonkey_helpers.js');
 
 var gard_form = require('jsx/forms/gard.jsx');
 var slac_form = require('jsx/forms/slac.jsx');
+var fubar_form = require('jsx/forms/fubar.jsx');
 var stats = require('jsx/stats.jsx');
 var jobqueue = require('jsx/jobqueue.jsx');
 
 window.gard_form = gard_form;
 window.slac_form = slac_form;
+window.fubar_form = fubar_form;
 window.datamonkey = datamonkey;
 window.hyphyVision = hyphyVision;
 window.datamonkey_stats = stats;

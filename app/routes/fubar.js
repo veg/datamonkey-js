@@ -65,6 +65,13 @@ exports.invoke = function(req, res) {
 
     fubar.status = fubar.status_stack[0];
 
+    fubar.number_of_grid_points = postdata.number_of_grid_points;
+    fubar.number_of_mcmc_chains = postdata.number_of_mcmc_chains;
+    fubar.length_of_each_chain = postdata.length_of_each_chain;
+    fubar.number_of_burn_in_samples = postdata.number_of_burn_in_samples;
+    fubar.number_of_samples = postdata.number_of_samples;
+    fubar.concentration_of_dirichlet_prior = postdata.concentration_of_dirichlet_prior;
+
     fubar.save(function (err, fubar_result) {
 
       if(err) {
