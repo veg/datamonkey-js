@@ -62,6 +62,7 @@ module.exports = function(app) {
   fel = require(path.join(__dirname, '../app/routes/fel'));
   app.get('/fel', fel.form);
   app.post('/fel', fel.uploadFile);
+  app.get('/fel/usage', fel.getUsage);
   app.get('/fel/:id/select-foreground', fel.selectForeground);
   app.post('/fel/:id/select-foreground', fel.invoke);
   app.get('/fel/:id', fel.getPage);
@@ -94,6 +95,7 @@ module.exports = function(app) {
   fubar = require(path.join(__dirname, '../app/routes/fubar'));
   app.get('/fubar', fubar.form);
   app.post('/fubar', fubar.invoke);
+  app.get('/fubar/usage', fubar.getUsage);
   app.get('/fubar/:id', fubar.getPage);
   app.get('/fubar/:id/info', fubar.getInfo);
   app.get('/fubar/:id/results', fubar.getResults);
@@ -133,6 +135,7 @@ module.exports = function(app) {
   meme = require(path.join(__dirname, '../app/routes/meme'));
   app.get('/meme', meme.form);
   app.post('/meme', meme.invoke);
+  app.get('/meme/usage', meme.getUsage);
   app.get('/meme/:id', meme.getPage);
   app.get('/meme/:id/info', meme.getInfo);
   app.get('/meme/:id/results', meme.getResults);
@@ -171,6 +174,7 @@ module.exports = function(app) {
   slac = require(path.join(__dirname, '../app/routes/slac'));
   app.get('/slac', slac.form);
   app.post('/slac', slac.invoke);
+  app.get('/slac/usage', slac.getUsage);
   app.get('/slac/:id', slac.getPage);
   app.get('/slac/:id/info', slac.getInfo);
   app.get('/slac/:id/results', slac.getResults);

@@ -211,3 +211,8 @@ exports.resubscribePendingJobs = function(req, res) {
   FUBAR.subscribePendingJobs();
 };
 
+exports.getUsage = function(req, res){
+  FUBAR.usageStatistics(function(err, fel){
+    res.json(200, fel);
+  });
+};

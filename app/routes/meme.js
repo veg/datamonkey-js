@@ -204,3 +204,8 @@ exports.resubscribePendingJobs = function(req, res) {
   MEME.subscribePendingJobs();
 };
 
+exports.getUsage = function(req, res){
+  MEME.usageStatistics(function(err, meme){
+    res.json(200, meme);
+  });
+};
