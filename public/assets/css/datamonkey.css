@@ -466,7 +466,7 @@ span.glyphicon {
 /* active & hover links */
 .panel-datamonkey a:hover, 
 .panel-datamonkey a:focus {
-  color: #563d7c;         
+  color: #00A99D;         
   text-decoration: none;      
   background-color: transparent;  
   border-left-color: #563d7c; 
@@ -648,3 +648,6 @@ body {
   height:0px !important;
 }
 
+a.hyphy-anchor {
+  color: #00A99D;
+}
