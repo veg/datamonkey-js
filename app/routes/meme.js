@@ -26,10 +26,10 @@ exports.invoke = function(req, res) {
   };
 
   var fn = req.files.files.file,
-      meme = new MEME(),
-      postdata  = req.body,
-      datatype  = 0,
-      gencodeid = postdata.gencodeid;
+    meme = new MEME(),
+    postdata = req.body,
+    datatype = 0,
+    gencodeid = postdata.gencodeid;
 
   if (postdata.receive_mail == "true") {
     meme.mail = postdata.mail;
@@ -208,8 +208,8 @@ exports.getMSAFile = function(req, res) {
   });
 };
 
-exports.getUsage = function(req, res){
-  MEME.usageStatistics(function(err, meme){
+exports.getUsage = function(req, res) {
+  MEME.usageStatistics(function(err, meme) {
     res.json(200, meme);
   });
 };

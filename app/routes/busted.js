@@ -25,8 +25,7 @@ exports.uploadFile = function(req, res) {
   var busted = new Busted();
   var postdata = req.body;
 
-  var datatype  = 0,
-  gencodeid = data.gencodeid;
+  var datatype = 0, gencodeid = data.gencodeid;
 
   if (postdata.receive_mail == "true") {
     busted.mail = postdata.mail;

@@ -10,7 +10,7 @@ var FEL = AnalysisSchema.extend({
   analysis_type: Number,
   last_status_msg: String,
   results: Object,
-  ds_variation          : Number
+  ds_variation: Number
 });
 
 FEL.virtual("pmid").get(function() {
