@@ -216,7 +216,7 @@ datamonkey.validate_date = function () {
 }
 
 $( document ).ready( function () {
-  //$(function () {$('[data-toggle="tooltip"]').tooltip()});
+
   $('#datamonkey-header').collapse ();
   
   var initial_padding = $("body").css("padding-top");
