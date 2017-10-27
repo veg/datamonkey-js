@@ -26,11 +26,11 @@ exports.uploadFile = function(req, res) {
   };
 
   var fn = req.files.files.file,
-      fel = new FEL(),
-      postdata  = req.body,
-      datatype  = 0,
-      gencodeid = postdata.gencodeid,
-      ds_variation = postdata.ds_variation;
+    fel = new FEL(),
+    postdata = req.body,
+    datatype = 0,
+    gencodeid = postdata.gencodeid,
+    ds_variation = postdata.ds_variation;
 
   if (postdata.receive_mail == "true") {
     fel.mail = postdata.mail;
@@ -264,10 +264,8 @@ exports.getMSAFile = function(req, res) {
   });
 };
 
-exports.getUsage = function(req, res){
-  FEL.usageStatistics(function(err, fel){
+exports.getUsage = function(req, res) {
+  FEL.usageStatistics(function(err, fel) {
     res.json(200, fel);
   });
 };
-
-

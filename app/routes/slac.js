@@ -26,10 +26,10 @@ exports.invoke = function(req, res) {
   };
 
   var fn = req.files.files.file,
-      slac = new SLAC(),
-      postdata  = req.body,
-      datatype  = 0,
-      gencodeid = postdata.gencodeid;
+    slac = new SLAC(),
+    postdata = req.body,
+    datatype = 0,
+    gencodeid = postdata.gencodeid;
 
   if (postdata.receive_mail == "true") {
     slac.mail = postdata.mail;
@@ -208,8 +208,8 @@ exports.getMSAFile = function(req, res) {
   });
 };
 
-exports.getUsage = function(req, res){
-  SLAC.usageStatistics(function(err, fel){
+exports.getUsage = function(req, res) {
+  SLAC.usageStatistics(function(err, fel) {
     res.json(200, fel);
   });
 };
