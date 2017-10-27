@@ -1,6 +1,6 @@
 {
   "name": "datamonkey.js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A free public server for comparative analysis of sequence alignments using state-of-the-art statistical models.",
   "private": true,
   "author": {
@@ -15,7 +15,7 @@
     "url": "git://github.com/veg/datamonkey-js.git"
   },
   "dependencies": {
-    "async": "^0.0.0",
+    "async": "^0.1.0",
     "bootstrap": "^3.3.5",
     "d3": "^3.0.0",
     "ejs": "^1.0.0",
@@ -50,6 +50,7 @@
     "socket.io-client": "1.4.x",
     "socket.io-stream": "0.6.x",
     "tar-fs": "1.8.x",
+    "tether": "^1.4.0",
     "underscore": "^1.8.3",
     "validator": "1.2.x",
     "winston": "^0.8.3",

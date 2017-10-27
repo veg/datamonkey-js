@@ -7,13 +7,15 @@ var UsageChart = React.createClass({
     var margin = {top:20, right:40, bottom:20, left:40},
         width = 1100 - margin.left - margin.right,
         height = 300 - margin.top - margin.bottom,
-        first_date = this.props.data[0].created,
-        last_date = this.props.data[this.props.data.length-1].created,
+        first_date = moment().subtract(1, 'years').toDate(),
+        last_date = moment().toDate(),
         x = d3.time.scale()
           .domain([first_date, last_date])
           .range([0, width]),
         binned_data = d3.layout.histogram()
-          .bins(52)
+          .bins(d3.range(53).map(i=>{
+            return x(moment(first_date).add(7*i, 'days').toDate());
+          }))
           (this.props.data.map(function(d) {
             return x(d.created)
           })),
@@ -47,7 +49,7 @@ var UsageChart = React.createClass({
       .attr("x", 1)
       .attr("width", binned_data[0].dx - 1)
       .attr("height", function(d) { return height - y(d.y); })
-      .attr("fill", "steelblue");
+      .attr("fill", "#4BA69C");
 
     bar.append("text")
       .attr("x", function(d) {return d.dx/2;})
@@ -93,7 +95,10 @@ var Histogram = React.createClass({
         width = 500 - margin.left - margin.right,
         height = 200 - margin.top - margin.bottom,
         x = d3.scale.linear()
-          .domain(d3.extent(this.props.data))
+          .domain([
+            d3.min(this.props.data.concat(0)),
+            d3.max(this.props.data)
+          ])
           .range([0, width]),
         binned_data = d3.layout.histogram()
           .bins(25)
@@ -126,8 +131,7 @@ var Histogram = React.createClass({
       .attr("x", 1)
       .attr("width", x(binned_data[0].dx) - 1)
       .attr("height", function(d) { return height - y(d.y); })
-      .attr("fill", "steelblue");
-
+      .attr("fill", "#4BA69C");
     svg.append("g")
       .attr("class", "x axis")
       .attr("transform", "translate(0," + height + ")")
@@ -172,10 +176,10 @@ var SitesAndSequencesScatterPlot = React.createClass({
         width = 500 - margin.right - margin.left,
         height = 500 - margin.top - margin.bottom,
         x = d3.scale.linear()
-          .domain(d3.extent(this.props.data.map(function(d) { return d.msa[0].sequences;})))
+          .domain(d3.extent(this.props.data.map(function(d) { return d.msa[0].sequences;}).concat(0)))
           .range([0, width]),
         y = d3.scale.linear()
-          .domain(d3.extent(this.props.data.map(function(d) { return d.msa[0].sites;})))
+          .domain(d3.extent(this.props.data.map(function(d) { return d.msa[0].sites;}).concat(0)))
           .range([height, 0])
         svg = d3.select("#sites-sequences").append("svg")
           .attr("width", width + margin.right + margin.left)
@@ -215,8 +219,8 @@ var SitesAndSequencesScatterPlot = React.createClass({
         .attr("r", 3.5)
         .attr("cx", function(d) { return x(+d.msa[0].sequences);})
         .attr("cy", function(d) { return y(+d.msa[0].sites);})
-        .attr("fill", "steelblue")
-        .attr("stroke", "blue")
+        .attr("fill", "#4BA69C")
+        .attr("stroke", "black")
         .attr("opacity", .5);
   },
 
@@ -240,17 +244,19 @@ var SitesAndSequencesScatterPlot = React.createClass({
 var UsageInformation = React.createClass({
   fetchData: function(method){
     var self = this;
-    d3.json("/" + method + "/usage", function(data){
-      data.forEach(function(d){
-        d.created = new Date(d.created);
+    self.setState({data: null}, function() {
+      d3.json("/" + method + "/usage", function(data){
+        data.forEach(function(d){
+          d.created = new Date(d.created);
+        });
+        data.sort(function(a, b){
+          return a.created - b.created;
+        });
+        self.setState({
+          data: data
+        });
       });
-      data.sort(function(a, b){
-        return a.created - b.created;
-      });
-      self.setState({
-        data: data
-      });
-    });
+    })
   },
   componentDidMount: function(){
     this.fetchData(this.props.active);
@@ -286,7 +292,7 @@ var UsageInformation = React.createClass({
 
     }else{
       content = (<div className="col-md-12">
-        <p>Loading...</p>
+        <h3><span className="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span>Loading...</h3>
       </div>);
     }
     return (<div className="row">
@@ -308,7 +314,7 @@ var UsageDashboard = React.createClass({
   },
   render: function(){
     var self = this,
-        methods = ["absrel", "busted", "relax", "hivtrace"],
+        methods = ["absrel", "busted", "relax", "fel", "meme", "fubar", "slac", "hivtrace"],
         tabs = methods.map(function(method){
           return (<li role="presentation" className={method == self.state.active ? "active" : ""}> 
             <a href="#" onClick={self.tabClick(method)}>{method}</a>
