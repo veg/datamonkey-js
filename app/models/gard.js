@@ -32,6 +32,14 @@ GARD.virtual("filepath").get(function() {
 });
 
 /**
+ * Result NEXUS file 
+ */
+GARD.virtual("result_nexus_fn").get(function() {
+  return __dirname + "/../../uploads/msa/" + this._id + ".gard.result.nex";
+});
+
+
+/**
  * Filename of document's file upload
  */
 GARD.virtual("status_stack").get(function() {
