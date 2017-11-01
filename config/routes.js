@@ -112,6 +112,7 @@ module.exports = function(app) {
   gard = require(path.join(__dirname, '../app/routes/gard'));
   app.get('/gard', gard.form);
   app.post('/gard', gard.invoke);
+  app.get('/gard/usage', gard.getUsage);
   app.get('/gard/:id', gard.getPage);
   app.get('/gard/:id/original_file/:name', gard.getMSAFile);
   app.get('/gard/:id/info', gard.getInfo);

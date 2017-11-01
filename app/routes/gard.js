@@ -212,3 +212,9 @@ exports.getMSAFile = function(req, res) {
     });
   });
 };
+
+exports.getUsage = function(req, res) {
+  GARD.usageStatistics(function(err, fel) {
+    res.json(200, fel);
+  });
+};
