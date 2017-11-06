@@ -223,9 +223,6 @@ exports.getUsage = function(req, res) {
 exports.getScreenedData = function(req, res) {
   var id = req.params.id,
     file_path = path.join(__dirname, '..', '..', 'uploads', 'msa', id+'.gard.result.nex');
-    res.sendFile(file_path, {}, function(err) {
-      if (err) {
-        res.status(err.status).end();
-      }
-    });
+    res.download(file_path, 'screened_data.nex');
 };
+
