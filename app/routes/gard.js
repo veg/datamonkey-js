@@ -5,6 +5,7 @@ var querystring = require("querystring"),
   helpers = require(__dirname + "/../../lib/helpers.js"),
   hpcsocket = require(__dirname + "/../../lib/hpcsocket.js"),
   fs = require("fs"),
+  path = require("path"),
   logger = require("../../lib/logger");
 
 var mongoose = require("mongoose"),
@@ -212,3 +213,16 @@ exports.getMSAFile = function(req, res) {
     });
   });
 };
+
+exports.getUsage = function(req, res) {
+  GARD.usageStatistics(function(err, fel) {
+    res.json(200, fel);
+  });
+};
+
+exports.getScreenedData = function(req, res) {
+  var id = req.params.id,
+    file_path = path.join(__dirname, '..', '..', 'uploads', 'msa', id+'.gard.result.nex');
+    res.download(file_path, 'screened_data.nex');
+};
+
