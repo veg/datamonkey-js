@@ -1,6 +1,7 @@
 var mongoose = require("mongoose"),
   extend = require("mongoose-schema-extend"),
   winston = require("winston"),
+  path = require("path"),
   Msa = require(__dirname + "/msa");
 
 var AnalysisSchema = require(__dirname + "/analysis");
@@ -30,7 +31,7 @@ Busted.virtual("status_stack").get(function() {
  * Complete file path for document's file upload
  */
 Busted.virtual("filepath").get(function() {
-  return __dirname + "/../../uploads/msa/" + this._id + ".fasta";
+  return path.resolve(__dirname + "/../../uploads/msa/" + this._id + ".fasta");
 });
 
 /**
