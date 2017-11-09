@@ -227,5 +227,19 @@ describe('nexus tree remover', function() {
       done();
     });
   });
+
+  it('should not alter a fasta file', function(done) {
+    var input_file_path = 'test/res/Flu.fasta',
+      output_file_path = 'test/res/Flu-pruned.fasta',
+      fasta = Msa.removeTreeFromNexus(input_file_path, output_file_path);
+    fasta.then(result => {
+      var input = fs.readFileSync(input_file_path).toString(),
+        output = fs.readFileSync(output_file_path).toString();
+      should.equal(input, output);
+      fs.unlinkSync(output_file_path);
+      done();
+    });
+  });
+
 });
 
