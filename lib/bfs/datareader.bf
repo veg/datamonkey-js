@@ -616,15 +616,19 @@ if (_pCount == 1)
 }
 else
 {
+
+  fpi_record = {};
+
   for (_k2 = 0; _k2 < _pCount; _k2 = _k2+1)
   {
-    fpi_record["partition"] = _k2+1;
-    fpi_record["startcodon"] = filterCodonBounds[_k2][0]; 
-    fpi_record["endcodon"] = filterCodonBounds[_k2][1]; 
-    fpi_record["span"] = filterCodonBounds[_k2][1]-filterCodonBounds[_k2][0]+1;
+    fpi_record[_k2] = {};
+    (fpi_record[_k2])["partition"] = _k2+1;
+    (fpi_record[_k2])["startcodon"] = filterCodonBounds[_k2][0]; 
+    (fpi_record[_k2])["endcodon"] = filterCodonBounds[_k2][1]; 
+    (fpi_record[_k2])["span"] = filterCodonBounds[_k2][1]-filterCodonBounds[_k2][0]+1;
     if (goodTree)
     {
-      fpi_record ["usertree"] = myTrees[_k2];
+      (fpi_record[_k2])["usertree"] = myTrees[_k2];
     }
   }
 }

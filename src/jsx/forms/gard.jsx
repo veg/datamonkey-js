@@ -15,7 +15,6 @@ var GARDForm = React.createClass({
 
     var formData = new FormData();
     var file = document.getElementById('seq-file').files[0];
-    var filename = document.getElementById('seq-file').files[0].name;
 
     formData.append('files', file);
     formData.append('datatype', $("select[name='datatype']").val());

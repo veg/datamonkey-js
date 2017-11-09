@@ -76,6 +76,7 @@ exports.uploadFile = function(req, res) {
       }
 
       helpers.moveSafely(req.files.files.file, busted_result.filepath, move_cb);
+
     });
   });
 };

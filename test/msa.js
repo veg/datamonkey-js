@@ -73,8 +73,22 @@ describe('msa datareader validation', function() {
     });
 
   });
+
+
 });
 
+describe.only('msa parseFile', () => {
+
+  it('should save multiple partitions', done => {
+
+    Msa.parseFile(path.join(__dirname, '/res/multiple_partitions.nex'), 0, 0, (err, msa) => {
+      msa.partition_info.should.be.length(4);
+      done();
+    });
+
+  });
+
+});
 
 describe('msa codon translation', function() {
 
