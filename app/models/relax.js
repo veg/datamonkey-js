@@ -8,6 +8,7 @@ var AnalysisSchema = require(__dirname + "/analysis");
 var Relax = AnalysisSchema.extend({
   tagged_nwk_tree: String,
   analysis_type: Number,
+  original_extension: String,
   last_status_msg: String,
   results: Object
 });
@@ -32,6 +33,13 @@ Relax.virtual("status_stack").get(function() {
  */
 Relax.virtual("filepath").get(function() {
   return path.resolve(__dirname + "/../../uploads/msa/" + this._id + ".fasta");
+});
+
+/**
+ * Original file path for document's file upload
+ */
+Relax.virtual("original_fn").get(function() {
+  return path.resolve(__dirname + "/../../uploads/msa/" + this._id + "-original." + this.original_extension);
 });
 
 /**

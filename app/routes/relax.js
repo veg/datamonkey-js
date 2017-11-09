@@ -7,6 +7,7 @@ var querystring = require("querystring"),
   helpers = require(__dirname + "/../../lib/helpers.js"),
   hpcsocket = require(__dirname + "/../../lib/hpcsocket.js"),
   fs = require("fs"),
+  path = require("path"),
   logger = require("../../lib/logger");
 
 var mongoose = require("mongoose"),
@@ -30,6 +31,7 @@ exports.uploadFile = function(req, res) {
     relax.mail = postdata.mail;
   }
   relax.analysis_type = postdata.analysis_type;
+  relax.original_extension = path.basename(fn).split('.')[1];
   Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
     if (err) {
       res.json(500, { error: err });
@@ -70,11 +72,23 @@ exports.uploadFile = function(req, res) {
           logger.error("relax rename failed");
           res.json(500, { error: err });
         } else {
-          res.json(200, relax);
+          var move = Msa.removeTreeFromNexus(relax_result.filepath, relax_result.filepath);
+          move.then(val=>{
+            res.json(200, relax);
+          }, reason => {
+            res.json(500, {error: "issue removing tree from file"});
+          });
         }
       }
 
-      helpers.moveSafely(req.files.files.file, relax_result.filepath, move_cb);
+      fs.copyFile(fn, relax_result.original_fn, (err)=>{
+        if (err) {
+          logger.error(err);
+          logger.error("relax rename failed");
+          res.json(500, { error: err });
+        }
+        helpers.moveSafely(req.files.files.file, relax_result.filepath, move_cb);
+      });
     });
   });
 };
@@ -325,7 +339,7 @@ exports.getMSAFile = function(req, res) {
   var options = {};
 
   Relax.findOne({ _id: id }, function(err, relax) {
-    res.sendFile(relax.filepath, options, function(err) {
+    res.sendFile(relax.original_fn, options, function(err) {
       if (err) {
         res.status(err.status).end();
       }
