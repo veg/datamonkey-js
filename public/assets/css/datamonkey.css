@@ -651,3 +651,19 @@ body {
 a.hyphy-anchor {
   color: #00A99D;
 }
+
+.classic-notification {
+  display: block;
+  background-color:orange;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  text-align:center;
+}
+
+.classic-link {
+  color: white;
+}
+
+
+
