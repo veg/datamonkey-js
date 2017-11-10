@@ -307,6 +307,7 @@ Msa.statics.parseFile = function(fn, datatype, gencodeid, cb) {
   msa.gencodeid = gencodeid;
 
   msa.dataReader(fn, function(err, result) {
+
     if (err) {
       logger.error(err);
       cb(err, null);
@@ -323,7 +324,7 @@ Msa.statics.parseFile = function(fn, datatype, gencodeid, cb) {
     msa.timestamp = file_info.timestamp;
     msa.goodtree = file_info.goodtree;
     msa.nj = file_info.nj;
-    msa.usertree = fpi.usertree;
+    msa.usertree = fpi[0].usertree;
     msa.rawsites = file_info.rawsites;
 
     var sequences = result.SEQUENCES;
@@ -337,13 +338,15 @@ Msa.statics.parseFile = function(fn, datatype, gencodeid, cb) {
     }
 
     // Convert file partition information to array
-    fpi = _.values(fpi)
+    fpi = _.values(fpi);
 
     var PartitionInfo = mongoose.model("PartitionInfo", PartitionInfo);
     var partition_info = _.map(fpi, (partition_info) => { return new PartitionInfo(partition_info) });
     msa.partition_info = partition_info;
     cb(null, msa);
+
   });
+
 };
 
 Msa.statics.scrubUserTree = function(fn, cb) {

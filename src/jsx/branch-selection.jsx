@@ -214,6 +214,53 @@ class BranchSelection extends React.Component {
 
   }
 
+  treeSelectBtnGroup () {
+
+    if(this.props.trees.partition_info.length > 1) {
+
+      // iterate over all partitions
+      return(<div id="tree-select-btn-group" className="col-lg-6 phylo-nav">
+        <div className="btn-group" data-toggle="buttons">
+
+          <div className="btn-group">
+            <button type="button" className="btn btn-default btn-sm">User Defined Trees</button>
+            <button type="button" className="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span className="caret pull-left"></span>
+              <span className="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul className="dropdown-menu">
+              <li><a href="#" onClick={this.toggleSelectedTree.bind(this)} >Partition 1</a></li>
+            </ul>
+          </div>
+
+          <button type="button" title="Neighbor Joining Tree" id="dm-nj-highlighter" className="btn btn-default btn-sm" data-name='nj' onClick={this.toggleSelectedTree.bind(this)}>
+            Neighbor Joining Tree
+          </button>
+        </div>
+      </div>);
+
+    } else if(this.props.trees.user_supplied) {
+
+      return(<div id="tree-select-btn-group" className="col-lg-4 phylo-nav">
+
+        <div className="btn-group" data-toggle="buttons">
+          <label title="User Defined Tree" id="dm-usertree-highlighter" className="btn btn-default btn-sm active" data-name='usertree' onClick={this.toggleSelectedTree.bind(this)}>
+            <input type="radio" name="options" id="dm-ut-select" autoComplete="off" ></input>
+            User Defined Tree
+          </label>
+          <label title="Neighbor Joining Tree" id="dm-nj-highlighter" className="btn btn-default btn-sm" data-name='nj' onClick={this.toggleSelectedTree.bind(this)}>
+            <input type="radio" name="options" id="dm-nj-select" autoComplete="off" ></input>
+            Neighbor Joining Tree
+          </label>
+        </div>
+      </div>);
+
+    } else {
+      return;
+    }
+
+  }
+
   componentDidMount () {
 
     this.createNeighborTree(this.state.neighbor_tree);
@@ -231,7 +278,7 @@ class BranchSelection extends React.Component {
 
   render() {
 
-    return(<div><div className="col-lg-8 phylo-nav">
+    return(<div><div className="col-lg-6 phylo-nav">
       <div className="btn-group">
         <button title="Expand spacing" id="expand_spacing" className="btn btn-default btn-sm" type="button">
             <i className="fa fa-expand"></i>
@@ -258,18 +305,7 @@ class BranchSelection extends React.Component {
       </div>
    </div>
 
-    <div id="tree-select-btn-group" className="col-lg-4 phylo-nav">
-      <div className="btn-group" data-toggle="buttons">
-        <label title="Highlight Test Branches" id="dm-usertree-highlighter" className="btn btn-default btn-sm active" data-name='usertree' onClick={this.toggleSelectedTree.bind(this)}>
-          <input type="radio" name="options" id="dm-ut-select" autoComplete="off" ></input>
-          User Defined Tree
-        </label>
-        <label title="Highlight Reference Branches" id="dm-nj-highlighter" className="btn btn-default btn-sm" data-name='nj' onClick={this.toggleSelectedTree.bind(this)}>
-          <input type="radio" name="options" id="dm-nj-select" autoComplete="off" ></input>
-          Neighbor Joining Tree
-        </label>
-      </div>
-    </div>
+   {this.treeSelectBtnGroup.bind(this)()}
 
     <div id="neighbor-tree" data-tree="" data-usertree="">
       <div id="tree-body">

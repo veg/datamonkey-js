@@ -79,7 +79,7 @@ describe('msa datareader validation', function() {
 
 describe.only('msa parseFile', () => {
 
-  it('should save multiple partitions', done => {
+  it.only('should save multiple partitions', done => {
 
     Msa.parseFile(path.join(__dirname, '/res/multiple_partitions.nex'), 0, 0, (err, msa) => {
       msa.partition_info.should.be.length(4);
@@ -87,6 +87,16 @@ describe.only('msa parseFile', () => {
     });
 
   });
+
+  it('should save one partition', done => {
+
+    Msa.parseFile(path.join(__dirname, '/res/HIV_gp120.nex'), 0, 0, (err, msa) => {
+      msa.partition_info.should.be.length(1);
+      done();
+    });
+
+  });
+
 
 });
 
