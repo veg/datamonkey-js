@@ -1,5 +1,6 @@
 var mongoose = require("mongoose"),
   extend = require("mongoose-schema-extend"),
+  path = require("path"),
   Msa = require(__dirname + "/msa");
 
 var AnalysisSchema = require(__dirname + "/analysis");
@@ -7,6 +8,7 @@ var AnalysisSchema = require(__dirname + "/analysis");
 var Relax = AnalysisSchema.extend({
   tagged_nwk_tree: String,
   analysis_type: Number,
+  original_extension: String,
   last_status_msg: String,
   results: Object
 });
@@ -30,7 +32,14 @@ Relax.virtual("status_stack").get(function() {
  * Complete file path for document's file upload
  */
 Relax.virtual("filepath").get(function() {
-  return __dirname + "/../../uploads/msa/" + this._id + ".fasta";
+  return path.resolve(__dirname + "/../../uploads/msa/" + this._id + ".fasta");
+});
+
+/**
+ * Original file path for document's file upload
+ */
+Relax.virtual("original_fn").get(function() {
+  return path.resolve(__dirname + "/../../uploads/msa/" + this._id + "-original." + this.original_extension);
 });
 
 /**
