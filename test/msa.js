@@ -212,3 +212,34 @@ describe('validate fasta file', function() {
 
 
 });
+
+describe('nexus tree remover', function() {
+  it('should remove tree from Nexus file containing one', function(done) {
+    var first = Msa.removeTreeFromNexus('test/res/HIV_gp120.nex', 'test/res/HIV_gp120-pruned.nex'),
+      second = Msa.removeTreeFromNexus('test/res/CD2.nex', 'test/res/CD2-pruned.nex'),
+      third = Msa.removeTreeFromNexus('test/res/pol.nex', 'test/res/pol-pruned.nex');
+    Promise.all([first, second, third]).then(values => {
+      ['HIV_gp120-pruned.nex', 'CD2-pruned.nex', 'pol-pruned.nex'].forEach(filename => {
+        var filepath = 'test/res/' + filename;
+        (fs.readFileSync(filepath).toString().indexOf('BEGIN TREES;') == -1).should.be.true();
+        fs.unlinkSync(filepath);
+      });
+      done();
+    });
+  });
+
+  it('should not alter a fasta file', function(done) {
+    var input_file_path = 'test/res/Flu.fasta',
+      output_file_path = 'test/res/Flu-pruned.fasta',
+      fasta = Msa.removeTreeFromNexus(input_file_path, output_file_path);
+    fasta.then(result => {
+      var input = fs.readFileSync(input_file_path).toString(),
+        output = fs.readFileSync(output_file_path).toString();
+      should.equal(input, output);
+      fs.unlinkSync(output_file_path);
+      done();
+    });
+  });
+
+});
+
