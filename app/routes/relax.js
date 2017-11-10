@@ -81,13 +81,20 @@ exports.uploadFile = function(req, res) {
         }
       }
 
-      fs.copyFile(fn, relax_result.original_fn, (err)=>{
+      fs.readFile(fn, (err, data) => {
         if (err) {
           logger.error(err);
-          logger.error("relax rename failed");
+          logger.error("read file failed");
           res.json(500, { error: err });
         }
-        helpers.moveSafely(req.files.files.file, relax_result.filepath, move_cb);
+        fs.writeFile(relax_result.original_fn,  data, err => {
+          if (err) {
+            logger.error(err);
+            logger.error("write file failed");
+            res.json(500, { error: err });
+          }
+          helpers.moveSafely(req.files.files.file, relax_result.filepath, move_cb);
+        });
       });
     });
   });
