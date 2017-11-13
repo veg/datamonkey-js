@@ -5,6 +5,7 @@ var querystring = require("querystring"),
   helpers = require(__dirname + "/../../lib/helpers.js"),
   hpcsocket = require(__dirname + "/../../lib/hpcsocket.js"),
   fs = require("fs"),
+  path = require("path"),
   logger = require("../../lib/logger");
 
 var mongoose = require("mongoose"),
@@ -32,6 +33,7 @@ exports.uploadFile = function(req, res) {
     gencodeid = postdata.gencodeid,
     ds_variation = postdata.ds_variation;
 
+  fel.original_extension = path.basename(fn).split('.')[1];
   if (postdata.receive_mail == "true") {
     fel.mail = postdata.mail;
   }
@@ -78,16 +80,35 @@ exports.uploadFile = function(req, res) {
           logger.error("fel rename failed");
           res.json(500, { error: err });
         } else {
-          var to_send = fel;
-          to_send.upload_redirect_path = fel.upload_redirect_path;
-          res.json(200, {
-            analysis: fel,
-            upload_redirect_path: fel.upload_redirect_path
+
+          var move = Msa.removeTreeFromNexus(fel_result.filepath, fel_result.filepath);
+          move.then(val=>{
+            res.json(200, {
+              analysis: fel,
+              upload_redirect_path: fel.upload_redirect_path
+            });
+          }, reason => {
+            res.json(500, {error: "issue removing tree from file"});
           });
+
         }
       }
 
-      helpers.moveSafely(req.files.files.file, fel_result.filepath, move_cb);
+      fs.readFile(fn, (err, data) => {
+        if (err) {
+          logger.error(err);
+          logger.error("read file failed");
+          res.json(500, { error: err });
+        }
+        fs.writeFile(fel_result.original_fn,  data, err => {
+          if (err) {
+            logger.error(err);
+            logger.error("write file failed");
+            res.json(500, { error: err });
+          }
+        helpers.moveSafely(req.files.files.file, fel_result.filepath, move_cb);
+        });
+      });
     });
   });
 };

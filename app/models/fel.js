@@ -8,6 +8,7 @@ var AnalysisSchema = require(__dirname + "/analysis");
 var FEL = AnalysisSchema.extend({
   tagged_nwk_tree: String,
   analysis_type: Number,
+  original_extension: String,
   last_status_msg: String,
   results: Object,
   ds_variation: Number
@@ -30,6 +31,13 @@ FEL.virtual("upload_redirect_path").get(function() {
  */
 FEL.virtual("filepath").get(function() {
   return path.join(__dirname, "/../../uploads/msa/", this._id + ".fasta");
+});
+
+/**
+ * Original file path for document's file upload
+ */
+FEL.virtual("original_fn").get(function() {
+  return path.resolve(__dirname + "/../../uploads/msa/" + this._id + "-original." + this.original_extension);
 });
 
 /**
