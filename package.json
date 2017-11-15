@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "async": "^0.1.0",
+    "blueimp-file-upload": "^9.19.1",
     "bootstrap": "^3.3.5",
     "d3": "^3.0.0",
     "ejs": "^1.0.0",
@@ -33,6 +34,7 @@
     "jquery-file-upload": "^4.0.5",
     "jquery-file-upload-middleware": "^0.1.8",
     "jquery-ui": "^1.11.0",
+    "jquery.ui.widget": "^1.10.3",
     "main-bower-files": "^2.9.0",
     "moment": "^2.8.0",
     "mongodb": "^2.0.0",
@@ -86,6 +88,7 @@
     "less-loader": "^4.0.4",
     "lodash.clonedeep": "^4.5.0",
     "mocha": "^2.0.0",
+    "node-inspect": "^1.11.2",
     "reactify": "^1.1.1",
     "should": "^7.0.0",
     "url-loader": "^0.5.7",

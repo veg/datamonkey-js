@@ -9,6 +9,7 @@ window._ = _;
 require("font-awesome/css/font-awesome.css");
 require('./less/bootstrap.less');
 require("phylotree.css");
+require('blueimp-file-upload');
 
 var hyphyVision = require("hyphy-vision");
 require("hyphy-vision/dist/hyphyvision.css");

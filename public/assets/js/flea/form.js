@@ -10,7 +10,7 @@ $(function () {
       variable    : "rc"
     };
 
-    $('#fileupload').fileupload({ dataType: 'json' })
+    $('#flea-fileupload').fileupload({ dataType: 'json' });
 
     // Change this to the location of your server-side upload handler:
     var uploadButton = $('<button/>')
@@ -32,7 +32,7 @@ $(function () {
                 });
             });
 
-    $('#fileupload').fileupload({
+    $('#flea-fileupload').fileupload({
         dataType: 'json',
         autoUpload: true,
         acceptFileTypes: /(\.|\/)(fastq)$/i,

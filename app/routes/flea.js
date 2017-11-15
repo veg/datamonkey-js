@@ -150,7 +150,6 @@ exports.getPage = function(req, res) {
 
 /**
  * Displays id page for analysis
- * app.get('/flea/:id', flea.getFlea);
  */
 exports.restart = function(req, res) {
   // Find the analysis
@@ -167,20 +166,19 @@ exports.restart = function(req, res) {
       logger.error(err);
       res.json(500, error.errorResponse("Invalid ID : " + fleaid));
     } else {
+
       flea.status = "running";
       flea.save(function(err, flea_result) {
+
         res.redirect("/flea/" + fleaid);
-        var jobproxy = new hpcsocket.HPCSocket(
-          {
-            filepath: flea_result.filepath,
-            msas: flea_result.msas,
-            analysis: flea_result,
-            status_stack: flea_result.status_stack,
-            type: "flea"
-          },
-          connect_callback
-        );
-      });
+
+        var connect_callback = function(err, result) {
+          logger.log(result);
+        };
+
+        Flea.submitJob(flea_result, connect_callback);
+
+       });
     }
   });
 };
