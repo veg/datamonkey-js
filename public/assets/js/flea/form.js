@@ -18,8 +18,10 @@ $(function () {
             .prop('disabled', true)
             .text('Processing...')
             .on('click', function () {
+
                 var $this = $(this),
                     data = $this.data();
+
                 $this
                     .off('click')
                     .text('Abort')
@@ -27,9 +29,11 @@ $(function () {
                         $this.remove();
                         data.abort();
                     });
+
                 data.submit().always(function () {
                     $this.remove();
                 });
+
             });
 
     $('#flea-fileupload').fileupload({

@@ -162,12 +162,16 @@ exports.restart = function(req, res) {
 
   //Return all results
   Flea.findOne({ _id: fleaid }, function(err, flea) {
+
     if (err || !flea) {
+
       logger.error(err);
-      res.json(500, error.errorResponse("Invalid ID : " + fleaid));
+      res.json(500, error.errorResponse("invalid id : " + fleaid));
+
     } else {
 
       flea.status = "running";
+
       flea.save(function(err, flea_result) {
 
         res.redirect("/flea/" + fleaid);
@@ -183,66 +187,11 @@ exports.restart = function(req, res) {
   });
 };
 
-getResultsHelper = function(req, res, key) {
-  var fleaid = req.params.id;
-  Flea.findOne({ _id: fleaid }, function(err, flea) {
-    if (err || !flea) {
-      logger.error(err);
-      res.json(500, error.errorResponse("Invalid id : " + fleaid));
-    } else {
-      if (key) {
-        res.json(200, JSON.parse(flea.results[key]));
-      } else {
-        res.json(200, JSON.parse(flea.results));
-      }
-    }
-  });
+exports.getSessionJSON = function(req, res) {
+
 };
 
-exports.getResults = function(req, res) {
-  getResultsHelper(req, res, "");
+exports.getSessionZip = function(req, res) {
+
 };
 
-exports.getRates = function(req, res) {
-  getResultsHelper(req, res, "rates");
-};
-
-exports.getFrequencies = function(req, res) {
-  getResultsHelper(req, res, "frequencies");
-};
-
-exports.getSequences = function(req, res) {
-  getResultsHelper(req, res, "sequences");
-};
-
-exports.getRatesPheno = function(req, res) {
-  getResultsHelper(req, res, "rates_pheno");
-};
-
-exports.getGenes = function(req, res) {
-  getResultsHelper(req, res, "");
-};
-
-exports.getTrees = function(req, res) {
-  getResultsHelper(req, res, "trees");
-};
-
-exports.getDivergence = function(req, res) {
-  getResultsHelper(req, res, "divergence");
-};
-
-exports.getCopyNumbers = function(req, res) {
-  getResultsHelper(req, res, "copynumbers");
-};
-
-exports.getRunInfo = function(req, res) {
-  getResultsHelper(req, res, "run_info");
-};
-
-exports.getDates = function(req, res) {
-  getResultsHelper(req, res, "dates");
-};
-
-exports.getCoordinates = function(req, res) {
-  getResultsHelper(req, res, "coordinates");
-};

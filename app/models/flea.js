@@ -59,6 +59,18 @@ Flea.virtual("filedir").get(function() {
 });
 
 /**
+ */
+Flea.virtual("session_json_fn").get(function() {
+  return __dirname + "/../../uploads/flea/" + this._id + "/session.json";
+});
+
+/**
+ */
+Flea.virtual("session_zip_fn").get(function() {
+  return __dirname + "/../../uploads/flea/" + this._id + "/session.zip";
+});
+
+/**
  * URL for a envmonkey path
  */
 Flea.virtual("url").get(function() {
