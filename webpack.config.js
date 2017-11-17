@@ -10,10 +10,10 @@ config = {
     datamonkey: ["./src/entry.js"],
     vendor: [
       "tether",
-      "bootstrap",
       "jquery",
       "jquery-ui-bundle",
       "jquery-file-upload",
+      "bootstrap",
       "moment",
       "phylotree",
       "react",
