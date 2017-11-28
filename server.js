@@ -1,6 +1,5 @@
-
 const logger = require('./lib/logger');
-setup = require('./config/setup');
+var setup = require('./config/setup');
 var error = require('./lib/error');
 
 ROOT_PATH = __dirname;
@@ -62,7 +61,6 @@ var app = express();
 app.engine('.ejs', require('ejs').__express);
 app.set('views', path.join(__dirname, '/app/templates'));
 
-
 var server = app.listen(setup.port);
 var io = require('socket.io').listen(server);
 
@@ -79,11 +77,10 @@ bb.extend(app, {
 });
 
 var models_path = path.join(__dirname, '/app/models');
+
 fs.readdirSync(models_path).forEach(function (file) {
   require(path.join(models_path,'/',file));
 });
-
-
 
 app.use(express.static(path.join(__dirname, '/public')));
 app.use('/uploads', express.static(path.join(__dirname + '/uploads')));
@@ -95,7 +92,6 @@ app.use(function(err, req, res, next) {
     res.json(500, {'error' : err.message});
 });
 
-
 //Port to listen on
 logger.info('Listening on port ' + setup.port + '...');
 
@@ -105,6 +101,7 @@ module.exports = server;
 var jobproxy = require('./lib/hpcsocket.js');
 
 io.sockets.on('connection', function (socket) {
+
   socket.emit('connected');
   socket.on ('acknowledged', function (data) {
     var clientSocket = new jobproxy.ClientSocket(socket, data.id);
@@ -114,21 +111,17 @@ io.sockets.on('connection', function (socket) {
     var fasta_listener = redis.createClient ();
     fasta_listener.subscribe ("fasta_parsing_progress_" + data.id);
     fasta_listener.on ("message", function (channel, message) {
-        //console.log ("fasta_parsing_update", message);
         socket.emit ("fasta_parsing_update", message);
         if (message == "done") {
             fasta_listener.end();
         }
-        //socket.emit ("fasta_parsing_update",   JSON.parse (message));    
     });
   });
 
   socket.on ('attribute_parsing_progress_start', function (data) {
     var attr_listener = redis.createClient ();
     attr_listener.subscribe ("attribute_parsing_progress_" + data.id);
-    //console.log ('attribute_parsing_progress_start', data.id);
     attr_listener.on ("message", function (channel, message) {
-        //console.log ("attribute_parsing_progress", message);
         socket.emit ("attribute_parsing_progress", message);
         if (message == "done") {
             attr_listener.end();
