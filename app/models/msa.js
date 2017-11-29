@@ -7,7 +7,10 @@ var mongoose = require("mongoose"),
   fs = require("fs"),
   winston = require("winston"),
   seqio = require("../../lib/biohelpers/sequenceio.js"),
+  setup = require('../../config/setup'),
   logger = require("../../lib/logger");
+
+winston.level = setup.log_level || 'info';
 
 var error_codes = {
   INCORRECT_SPLIT: 0,

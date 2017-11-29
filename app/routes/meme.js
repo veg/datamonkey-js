@@ -66,14 +66,12 @@ exports.invoke = function(req, res) {
     meme.save(function(err, meme_result) {
       if (err) {
         logger.error("meme save failed");
-        logger.error(err);
         res.json(500, { error: err });
         return;
       }
 
       function move_cb(err, result) {
         if (err) {
-          logger.error(err);
           logger.error("meme rename failed");
           res.json(500, { error: err });
         } else {
@@ -101,7 +99,6 @@ exports.getPage = function(req, res) {
   //Return all results
   MEME.findOne({ _id: memeid }, function(err, meme) {
     if (err || !meme) {
-      logger.error(err);
       res.json(500, error.errorResponse("Invalid ID : " + memeid));
     } else {
       // Should return results page
@@ -114,7 +111,6 @@ exports.getResults = function(req, res) {
   var memeid = req.params.id;
   MEME.findOne({ _id: memeid }, function(err, meme) {
     if (err || !meme) {
-      logger.error(err);
       res.json(500, error.errorResponse("invalid id : " + memeid));
     } else {
       // Should return results page
@@ -136,7 +132,6 @@ exports.getInfo = function(req, res) {
     { creation_time: 1, start_time: 1, status: 1 },
     function(err, meme_info) {
       if (err || !meme_info) {
-        logger.error(err);
         res.json(500, error.errorResponse("Invalid ID : " + id));
       } else {
         // Should return results page

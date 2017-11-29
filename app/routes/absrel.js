@@ -45,7 +45,6 @@ exports.uploadFile = function(req, res) {
     if (msa.sites > absrel.max_sites) {
       var error =
         "Site limit exceeded! Sites must be less than " + absrel.max_sites;
-      logger.error(error);
       res.json(500, { error: error });
       return;
     }
@@ -65,14 +64,12 @@ exports.uploadFile = function(req, res) {
     absrel.save(function(err, absrel_result) {
       if (err) {
         logger.error("absrel save failed");
-        logger.error(err);
         res.json(500, { error: err });
         return;
       }
 
       function move_cb(err, result) {
         if (err) {
-          logger.error(err);
           logger.error("absrel rename failed");
           res.json(500, { error: err });
         } else {
@@ -154,7 +151,6 @@ exports.getPage = function(req, res) {
   //Return all results
   aBSREL.findOne({ _id: absrelid }, function(err, absrel) {
     if (err || !absrel) {
-      logger.error(err);
       res.json(500, error.errorResponse("Invalid ID : " + absrelid));
     } else {
       // Should return results page
@@ -168,7 +164,6 @@ exports.getResults = function(req, res) {
 
   aBSREL.findOne({ _id: absrelid }, function(err, absrel) {
     if (err || !absrel) {
-      logger.error(err);
       res.json(500, error.errorResponse("invalid id : " + absrelid));
     } else {
       // Should return results page
@@ -194,7 +189,6 @@ exports.getInfo = function(req, res) {
     { creation_time: 1, start_time: 1, status: 1 },
     function(err, absrel_info) {
       if (err || !absrel_info) {
-        logger.error(err);
         res.json(500, error.errorResponse("Invalid ID : " + id));
       } else {
         // Should return results page

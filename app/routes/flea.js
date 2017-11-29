@@ -62,14 +62,12 @@ exports.invoke = function(req, res) {
         flea.save(function(err, flea_result) {
           if (err) {
             logger.error("flea save failed");
-            logger.error(err);
             res.json(500, { error: err });
             return;
           }
 
           function respond_with_json(err, result) {
             if (err) {
-              logger.error(err);
               logger.error("flea rename failed");
               res.json(500, { error: err });
             } else {
@@ -130,7 +128,6 @@ exports.getPage = function(req, res) {
   //Return all results
   Flea.findOne({ _id: fleaid }, function(err, flea) {
     if (err || !flea) {
-      logger.error(err);
       res.json(500, error.errorResponse("Invalid ID : " + fleaid));
     } else {
       if (flea.status != "completed") {
@@ -164,7 +161,6 @@ exports.restart = function(req, res) {
   //Return all results
   Flea.findOne({ _id: fleaid }, function(err, flea) {
     if (err || !flea) {
-      logger.error(err);
       res.json(500, error.errorResponse("Invalid ID : " + fleaid));
     } else {
       flea.status = "running";
@@ -189,7 +185,6 @@ getResultsHelper = function(req, res, key) {
   var fleaid = req.params.id;
   Flea.findOne({ _id: fleaid }, function(err, flea) {
     if (err || !flea) {
-      logger.error(err);
       res.json(500, error.errorResponse("Invalid id : " + fleaid));
     } else {
       if (key) {

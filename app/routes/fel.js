@@ -69,14 +69,12 @@ exports.uploadFile = function(req, res) {
     fel.save(function(err, fel_result) {
       if (err) {
         logger.error("fel save failed");
-        logger.error(err);
         res.json(500, { error: err });
         return;
       }
 
       function move_cb(err, result) {
         if (err) {
-          logger.error(err);
           logger.error("fel rename failed");
           res.json(500, { error: err });
         } else {
@@ -96,13 +94,11 @@ exports.uploadFile = function(req, res) {
 
       fs.readFile(fn, (err, data) => {
         if (err) {
-          logger.error(err);
           logger.error("read file failed");
           res.json(500, { error: err });
         }
         fs.writeFile(fel_result.original_fn,  data, err => {
           if (err) {
-            logger.error(err);
             logger.error("write file failed");
             res.json(500, { error: err });
           }
@@ -177,7 +173,6 @@ exports.getPage = function(req, res) {
   //Return all results
   FEL.findOne({ _id: felid }, function(err, fel) {
     if (err || !fel) {
-      logger.error(err);
       res.json(500, error.errorResponse("invalid id : " + felid));
     } else {
       // Should return results page
@@ -191,7 +186,6 @@ exports.getResults = function(req, res) {
 
   FEL.findOne({ _id: felid }, function(err, fel) {
     if (err || !fel) {
-      logger.error(err);
       res.json(500, error.errorResponse("invalid id : " + felid));
     } else {
       // Should return results page
@@ -213,7 +207,6 @@ exports.getInfo = function(req, res) {
     { creation_time: 1, start_time: 1, status: 1 },
     function(err, fel_info) {
       if (err || !fel_info) {
-        logger.error(err);
         res.json(500, error.errorResponse("Invalid ID : " + id));
       } else {
         // Should return results page

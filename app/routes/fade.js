@@ -70,14 +70,12 @@ exports.uploadFile = function(req, res) {
     fade.save(function(err, fade_result) {
       if (err) {
         logger.error("fade save failed");
-        logger.error(err);
         res.json(500, { error: err });
         return;
       }
 
       function move_cb(err, result) {
         if (err) {
-          logger.error(err);
           logger.error("fade rename failed");
           res.json(500, { error: err });
         } else {
@@ -168,7 +166,6 @@ exports.getPage = function(req, res) {
   //Return all results
   Fade.findOne({ _id: fadeid }, function(err, fade) {
     if (err || !fade) {
-      logger.error(err);
       res.json(500, error.errorResponse("Invalid ID : " + fadeid));
     } else {
       if (!fade.last_status_msg) {
@@ -199,7 +196,6 @@ exports.getInfo = function(req, res) {
     { creation_time: 1, start_time: 1, status: 1 },
     function(err, fade_info) {
       if (err || !fade_info) {
-        logger.error(err);
         res.json(500, error.errorResponse("Invalid ID : " + fadeid));
       } else {
         // Should return results page
@@ -219,7 +215,6 @@ exports.getResults = function(req, res) {
   //Return all results
   Fade.findOne({ _id: fadeid }, function(err, fade) {
     if (err || !fade) {
-      logger.error(err);
       res.json(500, error.errorResponse("invalid id : " + fadeid));
     } else {
       // Should return results page
