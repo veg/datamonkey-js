@@ -33,7 +33,6 @@ exports.uploadFile = function(req, res) {
 
   Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
     if (err) {
-      logger.error(err);
       res.json(500, { error: err });
       return;
     }
@@ -60,14 +59,12 @@ exports.uploadFile = function(req, res) {
     busted.save(function(err, busted_result) {
       if (err) {
         logger.error("busted save failed");
-        logger.error(err);
         res.json(500, { error: err });
         return;
       }
 
       function move_cb(err, result) {
         if (err) {
-          logger.error(err);
           logger.error("busted rename failed");
           res.json(500, { error: err });
         } else {
@@ -152,7 +149,6 @@ exports.getPage = function(req, res) {
   //Return all results
   Busted.findOne({ _id: bustedid }, function(err, busted) {
     if (err || !busted) {
-      logger.error(err);
       res.json(500, error.errorResponse("Invalid ID : " + bustedid));
     } else {
       if (!busted.last_status_msg) {
@@ -180,7 +176,6 @@ exports.getInfo = function(req, res) {
     { creation_time: 1, start_time: 1, status: 1 },
     function(err, busted_info) {
       if (err || !busted_info) {
-        logger.error(err);
         res.json(500, error.errorResponse("Invalid ID : " + bustedid));
       } else {
         // Should return results page
@@ -200,7 +195,6 @@ exports.getResults = function(req, res) {
   //Return all results
   Busted.findOne({ _id: bustedid }, function(err, busted) {
     if (err || !busted) {
-      logger.error(err);
       res.json(500, error.errorResponse("invalid id : " + bustedid));
     } else {
       // Should return results page
