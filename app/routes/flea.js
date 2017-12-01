@@ -19,13 +19,14 @@ exports.form = function(req, res) {
 };
 
 exports.invoke = function(req, res) {
-  var postdata = req.body;
-  var msas = [];
-  var flea_files = postdata.flea_files;
-  var flea_tmp_dir = path.join(__dirname, "/../../uploads/flea/tmp/");
-  var flea_files = JSON.parse(flea_files);
-  var datatype = 0;
-  var gencodeid = 1;
+
+  var postdata = req.body,
+      msas = [],
+      flea_files = postdata.flea_files,
+      flea_tmp_dir = path.join(__dirname, "/../../uploads/flea/tmp/"),
+      flea_files = JSON.parse(flea_files),
+      datatype = 0,
+      gencodeid = 1;
 
   var populateFilename = function(obj) {
     return {
@@ -56,20 +57,20 @@ exports.invoke = function(req, res) {
       }
 
       if (msas.length == flea_files.length) {
+
         var flea = new Flea();
         flea.msas = msas;
 
         flea.save(function(err, flea_result) {
+
           if (err) {
             logger.error("flea save failed");
-            logger.error(err);
             res.json(500, { error: err });
             return;
           }
 
           function respond_with_json(err, result) {
             if (err) {
-              logger.error(err);
               logger.error("flea rename failed");
               res.json(500, { error: err });
             } else {
@@ -85,6 +86,7 @@ exports.invoke = function(req, res) {
               });
 
               Flea.submitJob(flea_result, connect_callback);
+
             }
           }
 
@@ -116,6 +118,7 @@ exports.invoke = function(req, res) {
       }
     });
   });
+
 };
 
 /**
@@ -130,7 +133,6 @@ exports.getPage = function(req, res) {
   //Return all results
   Flea.findOne({ _id: fleaid }, function(err, flea) {
     if (err || !flea) {
-      logger.error(err);
       res.json(500, error.errorResponse("Invalid ID : " + fleaid));
     } else {
       if (flea.status != "completed") {
@@ -164,16 +166,12 @@ exports.restart = function(req, res) {
   Flea.findOne({ _id: fleaid }, function(err, flea) {
 
     if (err || !flea) {
-
-      logger.error(err);
       res.json(500, error.errorResponse("invalid id : " + fleaid));
-
     } else {
 
       flea.status = "running";
 
       flea.save(function(err, flea_result) {
-
         res.redirect("/flea/" + fleaid);
 
         var connect_callback = function(err, result) {
@@ -182,16 +180,11 @@ exports.restart = function(req, res) {
 
         Flea.submitJob(flea_result, connect_callback);
 
-       });
+      });
     }
   });
 };
 
-exports.getSessionJSON = function(req, res) {
+exports.getSessionJSON = function(req, res) {};
 
-};
-
-exports.getSessionZip = function(req, res) {
-
-};
-
+exports.getSessionZip = function(req, res) {};

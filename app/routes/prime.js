@@ -47,14 +47,12 @@ exports.invoke = function(req, res) {
     prime.save(function(err, prime_result) {
       if (err) {
         logger.error("prime save failed");
-        logger.error(err);
         res.json(500, { error: err });
         return;
       }
 
       function move_cb(err, result) {
         if (err) {
-          logger.error(err);
           logger.error("prime rename failed");
           res.json(500, { error: err });
         } else {
@@ -82,7 +80,6 @@ exports.getPage = function(req, res) {
   //Return all results
   PRIME.findOne({ _id: primeid }, function(err, prime) {
     if (err || !prime) {
-      logger.error(err);
       res.json(500, error.errorResponse("Invalid ID : " + primeid));
     } else {
       // Should return results page
@@ -95,7 +92,6 @@ exports.getResults = function(req, res) {
   var primeid = req.params.id;
   PRIME.findOne({ _id: primeid }, function(err, prime) {
     if (err || !prime) {
-      logger.error(err);
       res.json(500, error.errorResponse("invalid id : " + primeid));
     } else {
       // Should return results page
@@ -117,7 +113,6 @@ exports.getInfo = function(req, res) {
     { creation_time: 1, start_time: 1, status: 1 },
     function(err, prime_info) {
       if (err || !prime_info) {
-        logger.error(err);
         res.json(500, error.errorResponse("Invalid ID : " + id));
       } else {
         // Should return results page

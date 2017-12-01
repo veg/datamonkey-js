@@ -102,13 +102,14 @@ exports.invoke = function(req, res) {
 };
 
 exports.getPage = function(req, res) {
+
   // Find the analysis
   var fubarid = req.params.id;
 
   //Return all results
   FUBAR.findOne({ _id: fubarid }, function(err, fubar) {
+
     if (err || !fubar) {
-      logger.error(err);
       res.json(500, error.errorResponse("Invalid ID : " + fubarid));
     } else {
       // Should return results page
@@ -121,7 +122,7 @@ exports.getResults = function(req, res) {
   var fubarid = req.params.id;
   FUBAR.findOne({ _id: fubarid }, function(err, fubar) {
     if (err || !fubar) {
-      logger.error(err);
+      logger.error("invalid id : " + fubarid);
       res.json(500, error.errorResponse("invalid id : " + fubarid));
     } else {
       // Should return results page
