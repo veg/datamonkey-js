@@ -168,6 +168,7 @@ exports.restart = function(req, res) {
 
     if (err || !flea) {
       res.json(500, error.errorResponse("invalid id : " + fleaid));
+      return;
     } else {
 
       flea.status = "running";
