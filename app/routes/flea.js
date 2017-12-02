@@ -6,6 +6,7 @@ var querystring = require("querystring"),
   hpcsocket = require(__dirname + "/../../lib/hpcsocket.js"),
   fs = require("fs"),
   path = require("path"),
+  winston = require("winston"),
   logger = require("../../lib/logger");
 
 var mongoose = require("mongoose"),
@@ -183,8 +184,88 @@ exports.restart = function(req, res) {
       });
     }
   });
+
 };
 
-exports.getSessionJSON = function(req, res) {};
+exports.getSessionJSON = function(req, res) {
 
-exports.getSessionZip = function(req, res) {};
+  var fleaid = req.params.id;
+
+  //Return all results
+  Flea.findOne({ _id: fleaid }, function(err, flea) {
+
+    if (err || !flea) {
+      res.json(500, error.errorResponse("invalid id : " + fleaid));
+      return;
+    } else {
+
+      fs.readFile(flea.session_json_fn, (err, data) => {
+
+        if (err) {
+          res.json(500, error.errorResponse("couldn't read session json file: " + fleaid));
+          return;
+        }
+
+        try {
+
+          var session_data = JSON.parse(String(data));
+          session_data['session_id'] = fleaid;
+
+          fs.readFile(flea.predefined_regions, (err, predefined_region) => {
+
+            if(err) {
+              res.json(500, error.errorResponse("couldn't read predefined_regions file: " + fleaid));
+              return;
+            }
+
+            fs.readFile(flea.pdb_structure, (err, pdb_structure) => {
+
+              if(err) {
+                res.json(500, error.errorResponse("couldn't read pdb file: " + fleaid));
+                return;
+              }
+              
+              try {
+                var regions_json = JSON.parse(predefined_region);
+                var pdb_lines = String(pdb_structure);
+                session_data['predefined_regions'] = regions_json['regions']              
+                session_data['pdb'] = pdb_lines.split('\n');
+                res.json(200, session_data);
+                return;
+              } catch(e) {
+                res.json(500, error.errorResponse("couldn't pdb or region read file: " + fleaid));
+                return;
+              }
+            
+            });
+          });
+          
+        } catch(e) {
+          res.json(500, error.errorResponse("couldn't read file: " + fleaid));
+          return;
+        } 
+
+
+      });
+
+    }
+  });
+
+};
+
+exports.getSessionZip = function(req, res) {
+
+  var fleaid = req.params.id;
+  //Return all results
+  Flea.findOne({ _id: fleaid }, function(err, flea) {
+
+    if (err || !flea) {
+      res.json(500, error.errorResponse("invalid id : " + fleaid));
+    } else {
+      res.sendfile(path.resolve(flea.session_zip_fn));
+    }
+  });
+
+
+
+};
