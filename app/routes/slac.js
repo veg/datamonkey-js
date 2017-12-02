@@ -66,14 +66,12 @@ exports.invoke = function(req, res) {
     slac.save(function(err, slac_result) {
       if (err) {
         logger.error("slac save failed");
-        logger.error(err);
         res.json(500, { error: err });
         return;
       }
 
       function move_cb(err, result) {
         if (err) {
-          logger.error(err);
           logger.error("slac rename failed");
           res.json(500, { error: err });
         } else {
@@ -101,7 +99,6 @@ exports.getPage = function(req, res) {
   //Return all results
   SLAC.findOne({ _id: slacid }, function(err, slac) {
     if (err || !slac) {
-      logger.error(err);
       res.json(500, error.errorResponse("Invalid ID : " + slacid));
     } else {
       // Should return results page
@@ -114,7 +111,6 @@ exports.getResults = function(req, res) {
   var slacid = req.params.id;
   SLAC.findOne({ _id: slacid }, function(err, slac) {
     if (err || !slac) {
-      logger.error(err);
       res.json(500, error.errorResponse("invalid id : " + slacid));
     } else {
       // Should return results page
@@ -136,7 +132,6 @@ exports.getInfo = function(req, res) {
     { creation_time: 1, start_time: 1, status: 1 },
     function(err, slac_info) {
       if (err || !slac_info) {
-        logger.error(err);
         res.json(500, error.errorResponse("Invalid ID : " + id));
       } else {
         // Should return results page

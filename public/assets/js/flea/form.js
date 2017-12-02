@@ -10,7 +10,7 @@ $(function () {
       variable    : "rc"
     };
 
-    $('#fileupload').fileupload({ dataType: 'json' })
+    $('#flea-fileupload').fileupload({ dataType: 'json' });
 
     // Change this to the location of your server-side upload handler:
     var uploadButton = $('<button/>')
@@ -18,8 +18,10 @@ $(function () {
             .prop('disabled', true)
             .text('Processing...')
             .on('click', function () {
+
                 var $this = $(this),
                     data = $this.data();
+
                 $this
                     .off('click')
                     .text('Abort')
@@ -27,12 +29,14 @@ $(function () {
                         $this.remove();
                         data.abort();
                     });
+
                 data.submit().always(function () {
                     $this.remove();
                 });
+
             });
 
-    $('#fileupload').fileupload({
+    $('#flea-fileupload').fileupload({
         dataType: 'json',
         autoUpload: true,
         acceptFileTypes: /(\.|\/)(fastq)$/i,

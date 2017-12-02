@@ -6,8 +6,12 @@ var mongoose = require("mongoose"),
   sanitize = require("validator").sanitize,
   fs = require("fs"),
   winston = require("winston"),
+  _ = require("lodash"),
   seqio = require("../../lib/biohelpers/sequenceio.js"),
+  setup = require('../../config/setup'),
   logger = require("../../lib/logger");
+
+winston.level = setup.log_level || 'info';
 
 var error_codes = {
   INCORRECT_SPLIT: 0,
@@ -197,7 +201,9 @@ Msa.methods.aminoAcidTranslation = function(cb, options) {
 };
 
 Msa.methods.dataReader = function(file, cb) {
+
   if (file.indexOf("fastq") != -1) {
+
     // TODO: Support FASTQ
     var result = {};
     result.FILE_INFO = {};
@@ -216,6 +222,7 @@ Msa.methods.dataReader = function(file, cb) {
     cb("", result);
 
     return;
+
   }
 
   var hyphy_process =
@@ -240,6 +247,7 @@ Msa.methods.dataReader = function(file, cb) {
   });
 
   hyphy.stdout.on("close", function(code) {
+
     try {
       results = JSON.parse(result);
     } catch (e) {
@@ -323,6 +331,7 @@ Msa.statics.parseFile = function(fn, datatype, gencodeid, cb) {
   msa.gencodeid = gencodeid;
 
   msa.dataReader(fn, function(err, result) {
+
     if (err) {
       logger.error(err);
       cb(err, null);
@@ -339,24 +348,29 @@ Msa.statics.parseFile = function(fn, datatype, gencodeid, cb) {
     msa.timestamp = file_info.timestamp;
     msa.goodtree = file_info.goodtree;
     msa.nj = file_info.nj;
-    msa.usertree = fpi.usertree;
+    msa.usertree = fpi[0].usertree;
     msa.rawsites = file_info.rawsites;
 
     var sequences = result.SEQUENCES;
     msa.sequence_info = [];
 
     var Sequences = mongoose.model("Sequences", Sequences);
+
     for (i in sequences) {
       var sequences_i = new Sequences(sequences[i]);
       msa.sequence_info.push(sequences_i);
     }
 
-    //Ensure that all information is there
+    // Convert file partition information to array
+    fpi = _.values(fpi);
+
     var PartitionInfo = mongoose.model("PartitionInfo", PartitionInfo);
-    var partition_info = new PartitionInfo(fpi);
+    var partition_info = _.map(fpi, (partition_info) => { return new PartitionInfo(partition_info) });
     msa.partition_info = partition_info;
     cb(null, msa);
+
   });
+
 };
 
 Msa.statics.scrubUserTree = function(fn, cb) {

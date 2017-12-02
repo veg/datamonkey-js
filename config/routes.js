@@ -82,18 +82,9 @@ module.exports = function(app) {
   app.post('/flea', flea.invoke);
   app.get('/flea/:id', flea.getPage);
   app.get('/flea/:id/restart', flea.restart);
-  app.get('/flea/data/:id/results', flea.getResults);
-  app.get('/flea/data/:id/rates', flea.getRates);
-  app.get('/flea/data/:id/frequencies', flea.getFrequencies);
-  app.get('/flea/data/:id/sequences', flea.getSequences);
-  app.get('/flea/data/:id/rates_pheno', flea.getRatesPheno);
-  app.get('/flea/data/:id/trees', flea.getTrees);
-  app.get('/flea/data/:id/divergence', flea.getDivergence);
-  app.get('/flea/data/:id/copynumbers', flea.getCopyNumbers);
-  app.get('/flea/data/:id/dates', flea.getDates);
-  app.get('/flea/data/:id/runinfo', flea.getRunInfo);
-  app.get('/flea/data/:id/genes', flea.getGenes);
-  app.get('/flea/data/:id/coordinates', flea.getCoordinates);
+  app.get('/flea/view/:id', flea.getPage);
+  app.get('/flea/api/sessions/:id', flea.getSessionJSON);
+  app.get('/flea/api/zips/:id.zip', flea.getSessionZip);
 
   // FUBAR ROUTES
   fubar = require(path.join(__dirname, '../app/routes/fubar'));

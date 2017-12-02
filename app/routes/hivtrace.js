@@ -27,7 +27,6 @@ exports.requestID = function(req, res) {
 
   hivtrace.save(function(err, ht) {
     if (err) {
-      logger.log(err);
       res.json(500, error.errorResponse(err.message));
       return;
     }
@@ -97,14 +96,12 @@ exports.uploadFile = function(req, res) {
 
           hivtrace.save(function(err, ht) {
             if (err) {
-              logger.log(err);
               res.json(500, error.errorResponse(err.message));
               return;
             }
 
             function move_cb(err, result) {
               if (err) {
-                logger.log(err);
                 res.json(500, error.errorResponse(err.message));
               } else {
                 res.json(200, ht);
@@ -127,7 +124,6 @@ exports.uploadFile = function(req, res) {
             //]
 
             if (!result || result.length == 0 || err.msg) {
-              logger.log(err.msg);
               res.json(500, {
                 error: err.msg,
                 validators: HivTrace.validators()
@@ -146,7 +142,6 @@ exports.uploadFile = function(req, res) {
 
               Msa.validateFasta(file_path, function(err, custom_reference) {
                 if (!custom_reference) {
-                  logger.log(err);
                   res.json(500, {
                     error: ref_file_name + ":" + err.msg,
                     validators: HivTrace.validators()

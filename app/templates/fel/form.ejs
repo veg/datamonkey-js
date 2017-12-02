@@ -2,65 +2,35 @@
 
 <div class="container">
 
-   <%- include header.ejs %>
-
+  <%- include header.ejs %>
   <h2 class="page-header">Analysis Options</h2>
-
-  <div class="col-lg-8 phylo-nav">
-    <div class="btn-group">
-      <button title="Expand spacing" id="expand_spacing" class="btn btn-default btn-sm" type="button">
-          <i class="fa fa-expand"></i>
-      </button>
-       <button title="Compress spacing" id="compress_spacing" class="btn btn-default btn-sm" type="button">
-          <i class="fa fa-compress"></i>
-      </button>
-       <button title="Sort deepest clades to the bototm" id="sort_ascending" class="btn btn-default btn-sm" type="button">
-          <i class="fa fa-sort-amount-asc"></i>
-      </button>
-       <button title="Sort deepsest clades to the top" id="sort_descending" class="btn btn-default btn-sm" type="button">
-          <i class="fa fa-sort-amount-desc"></i>
-      </button>
-       <button title="Restore original order" id="sort_original" class="btn btn-default btn-sm" type="button">
-          <i class="fa fa-sort"></i>
-      </button>
-      <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" type="button">Selection <span class="caret"></span></button>
-          <ul class="dropdown-menu">
-            <li><a id="select_all" href="#">Select all</a></li>
-            <li><a id="select_all_internal" href="#">Select only internal nodes</a></li>
-            <li><a id="select_all_leaves" href="#">Select only leaf nodes</a></li>
-            <li><a id="select_none" href="#">Clear selection</a></li>
-         </ul>
-    </div>
- </div>
-
-  <% if (fel.msa[0].usertree) { %>
-  <div id="tree-select-btn-group" class="col-lg-4 phylo-nav">
-    <div class="btn-group" data-toggle="buttons">
-      <label title="Highlight Test Branches" id="usertree-highlighter" class="btn btn-default btn-sm active" data-name='usertree'>
-        <input type="radio" name="options" id="relax-ut-select" autocomplete="off" checked>User Defined Tree</input>
-      </label>
-      <label title="Highlight Reference Branches" id="nj-highlighter" class="btn btn-default btn-sm" data-name='nj'>
-        <input type="radio" name="options" id="relax-nj-select" autocomplete="off" checked>Neighbor Joining Tree</input>
-      </label>
-    </div>
-  </div>
-  <% } %>
-
-  <div id="neighbor-tree" data-tree="<%= fel.msa[0].nj %>" <% if (fel.msa[0].usertree) { %> data-usertree="<%= fel.msa[0].usertree %>"<% } %>>
-    <div id="tree-body">
-      <div id='tree_container' class='tree-widget'></div>
-    </div>
-  </div>
-
-  <form action="/fel/<%= fel._id %>/select-foreground" enctype="multipart/form-data" method="POST" name="modelForm">
-    <div>
-      <button type="submit" class="btn pull-right"><span class="glyphicon glyphicon-play dm-continue-btn"></span></button>
-    </div>
-  </form>
+  <div id="dm-branch-form" data-id="<%= fel._id %>"></div>
 
 </div>
 
 <%- include ../includes/modal.ejs %>
 <%- include ../includes/footer.ejs %>
 
-<script src="/assets/js/fel/fg-selection.js"></script>
+<script>
+
+  $(document).ready(function() {
+
+    var id = $("#dm-branch-form").data("id");
+
+    d3.json( "/fel/" + id, function(err, results) {
+
+      // check number of partitions and supply to branch_selection component
+      var msa = results.msa[0];
+      var trees = {};
+
+      trees.user_supplied = msa.usertree;
+      trees.neighbor_joining = msa.nj;
+      trees.partition_info = msa.partition_info;
+      branch_selection(trees, 'fel', 'dm-branch-form');
+
+    });
+
+  });
+
+</script>
+
