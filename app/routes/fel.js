@@ -167,18 +167,32 @@ exports.invoke = function(req, res) {
 };
 
 exports.getPage = function(req, res) {
+
   // Find the analysis
   var felid = req.params.id;
 
   //Return all results
   FEL.findOne({ _id: felid }, function(err, fel) {
+
     if (err || !fel) {
       res.json(500, error.errorResponse("invalid id : " + felid));
     } else {
-      // Should return results page
-      res.render("fel/jobpage.ejs", { job: fel });
+      res.format({
+
+        json: function() {
+          res.json(fel);
+        },
+
+        html : function() { 
+          res.render("fel/jobpage.ejs", { job: fel });
+        }
+
+      });
+
     }
+
   });
+
 };
 
 exports.getResults = function(req, res) {
@@ -225,7 +239,7 @@ exports.getLog = function(req, res) {
 
   //Return all results
   FEL.findOne({ _id: id }, function(err, fel) {
-    if (err || !busted) {
+    if (err || !fel) {
       winston.info(err);
       res.json(500, error.errorResponse("invalid id : " + id));
     } else {
@@ -238,14 +252,14 @@ exports.getLog = function(req, res) {
 
 /**
  * cancels existing job
- * app.get('/busted/:id/cancel', fel.cancel);
+ * app.get('/fel/:id/cancel', fel.cancel);
  */
 exports.cancel = function(req, res) {
   var id = req.params.id;
 
   //Return all results
   FEL.findOne({ _id: id }, function(err, fel) {
-    if (err || !busted) {
+    if (err || !fel) {
       winston.info(err);
       res.json(500, error.errorResponse("invalid id : " + id));
     } else {

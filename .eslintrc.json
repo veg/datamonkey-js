@@ -1,4 +1,9 @@
 {
+  "settings" : {
+    "react": {
+      "version":"16.0"
+    }
+  },
   "parserOptions": {
     "sourceType": "module",
     "ecmaFeatures": {

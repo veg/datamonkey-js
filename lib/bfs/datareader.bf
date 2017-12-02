@@ -602,31 +602,37 @@ for (k = 0; k < Columns (seqNames); k = k+1)
 }
 
 fpi_record = {};
+
 if (_pCount == 1)
 {
-  fpi_record["partition"] = 1;
-  fpi_record["startcodon"] = 0; 
-  fpi_record["endcodon"] = filteredData.sites-1; 
-  fpi_record["span"] = filteredData.sites;
+  fpi_record[0] = {};
+  (fpi_record[0])["partition"] = 1;
+  (fpi_record[0])["startcodon"] = 0; 
+  (fpi_record[0])["endcodon"] = filteredData.sites-1; 
+  (fpi_record[0])["span"] = filteredData.sites;
 
   if (goodTree)
   {
-    fpi_record["usertree"] = DATAFILE_TREE;
+    (fpi_record[0])["usertree"] = DATAFILE_TREE;
   }
 }
 else
 {
+  fpi_record = {};
+
   for (_k2 = 0; _k2 < _pCount; _k2 = _k2+1)
   {
-    fpi_record["partition"] = _k2+1;
-    fpi_record["startcodon"] = filterCodonBounds[_k2][0]; 
-    fpi_record["endcodon"] = filterCodonBounds[_k2][1]; 
-    fpi_record["span"] = filterCodonBounds[_k2][1]-filterCodonBounds[_k2][0]+1;
+    fpi_record[_k2] = {};
+    (fpi_record[_k2])["partition"] = _k2+1;
+    (fpi_record[_k2])["startcodon"] = filterCodonBounds[_k2][0]; 
+    (fpi_record[_k2])["endcodon"] = filterCodonBounds[_k2][1]; 
+    (fpi_record[_k2])["span"] = filterCodonBounds[_k2][1]-filterCodonBounds[_k2][0]+1;
     if (goodTree)
     {
-      fpi_record ["usertree"] = myTrees[_k2];
+      (fpi_record[_k2])["usertree"] = myTrees[_k2];
     }
   }
+
 }
 
 to_json(file_info_record, sequence_records, fpi_record);
