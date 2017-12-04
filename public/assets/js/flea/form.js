@@ -184,14 +184,21 @@ $(function () {
         xhr.open('post', self.attributes.getNamedItem("action").value, true);
 
         xhr.onload = function(res) {
+
           // Replace field with green text, name of file
           var result = JSON.parse(this.responseText);
+
+          if(result == undefined) {
+            console.log(this.responseText);
+            return;
+          }
 
           if('_id' in result.flea) {
             window.location.href =  '/flea/' + result.flea._id;
           } else if ('error' in result) {
             datamonkey.errorModal(result.error);
           }
+
         };
 
         d3.select("#upload-button").html('<i class="fa fa-cog fa-spin fa-2x"></i>');

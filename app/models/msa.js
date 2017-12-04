@@ -207,7 +207,7 @@ Msa.methods.dataReader = function(file, cb) {
     // TODO: Support FASTQ
     var result = {};
     result.FILE_INFO = {};
-    result.FILE_PARTITION_INFO = {};
+    result.FILE_PARTITION_INFO = [];
     result.SEQUENCES = [];
 
     result.FILE_INFO.partitions = -1;
@@ -217,7 +217,7 @@ Msa.methods.dataReader = function(file, cb) {
     result.FILE_INFO.timestamp = -1;
     result.FILE_INFO.goodtree = 0;
     result.FILE_INFO.nj = "";
-    result.FILE_PARTITION_INFO.usertree = "";
+    result.FILE_PARTITION_INFO.push({usertree: ""});
     result.FILE_INFO.rawsites = -1;
     cb("", result);
 
