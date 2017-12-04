@@ -115,7 +115,8 @@ function setupJob() {
 
     $.get(jobid, function(results) {
       //Do an AJAX request to get results
-      location.reload();
+      var id = $('#job-report').data('jobid');
+      window.location.href =  '/flea/view/' + id;
     });
 
     socket.disconnect();
