@@ -1,0 +1,20 @@
+{"regions": [{"name": "SP", "start": 1, "stop": 34},
+             {"name": "C1", "start": 35, "stop": 126},
+             {"name": "V1", "start": 127, "stop": 157},
+             {"name": "V2", "start": 160, "stop": 195},
+             {"name": "C2", "start": 196, "stop": 296},
+             {"name": "V3", "start": 297, "stop": 330},
+             {"name": "C3", "start": 331, "stop": 385},
+             {"name": "V4", "start": 386, "stop": 417},
+             {"name": "C4", "start": 418, "stop": 459},
+             {"name": "V5", "start": 460, "stop": 470},
+             {"name": "C5", "start": 471, "stop": 511},
+             {"name": "FP", "start": 512, "stop": 530},
+             {"name": "HR1", "start": 532, "stop": 590},
+             {"name": "DSL", "start": 591, "stop": 623},
+             {"name": "HR2", "start": 627, "stop": 661},
+             {"name": "MPER", "start": 662, "stop": 680},
+             {"name": "TM", "start": 682, "stop": 707},
+             {"name": "CT", "start": 708, "stop": 856}
+            ]
+}

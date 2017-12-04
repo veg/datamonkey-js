@@ -6,6 +6,7 @@ var querystring = require("querystring"),
   hpcsocket = require(__dirname + "/../../lib/hpcsocket.js"),
   fs = require("fs"),
   path = require("path"),
+  winston = require("winston"),
   logger = require("../../lib/logger");
 
 var mongoose = require("mongoose"),
@@ -19,13 +20,14 @@ exports.form = function(req, res) {
 };
 
 exports.invoke = function(req, res) {
-  var postdata = req.body;
-  var msas = [];
-  var flea_files = postdata.flea_files;
-  var flea_tmp_dir = path.join(__dirname, "/../../uploads/flea/tmp/");
-  var flea_files = JSON.parse(flea_files);
-  var datatype = 0;
-  var gencodeid = 1;
+
+  var postdata = req.body,
+      msas = [],
+      flea_files = postdata.flea_files,
+      flea_tmp_dir = path.join(__dirname, "/../../uploads/flea/tmp/"),
+      flea_files = JSON.parse(flea_files),
+      datatype = 0,
+      gencodeid = 1;
 
   var populateFilename = function(obj) {
     return {
@@ -56,10 +58,12 @@ exports.invoke = function(req, res) {
       }
 
       if (msas.length == flea_files.length) {
+
         var flea = new Flea();
         flea.msas = msas;
 
         flea.save(function(err, flea_result) {
+
           if (err) {
             logger.error("flea save failed");
             res.json(500, { error: err });
@@ -83,6 +87,7 @@ exports.invoke = function(req, res) {
               });
 
               Flea.submitJob(flea_result, connect_callback);
+
             }
           }
 
@@ -114,6 +119,7 @@ exports.invoke = function(req, res) {
       }
     });
   });
+
 };
 
 /**
@@ -147,7 +153,6 @@ exports.getPage = function(req, res) {
 
 /**
  * Displays id page for analysis
- * app.get('/flea/:id', flea.getFlea);
  */
 exports.restart = function(req, res) {
   // Find the analysis
@@ -160,86 +165,108 @@ exports.restart = function(req, res) {
 
   //Return all results
   Flea.findOne({ _id: fleaid }, function(err, flea) {
+
     if (err || !flea) {
-      res.json(500, error.errorResponse("Invalid ID : " + fleaid));
+      res.json(500, error.errorResponse("invalid id : " + fleaid));
+      return;
     } else {
+
       flea.status = "running";
+
       flea.save(function(err, flea_result) {
         res.redirect("/flea/" + fleaid);
-        var jobproxy = new hpcsocket.HPCSocket(
-          {
-            filepath: flea_result.filepath,
-            msas: flea_result.msas,
-            analysis: flea_result,
-            status_stack: flea_result.status_stack,
-            type: "flea"
-          },
-          connect_callback
-        );
+
+        var connect_callback = function(err, result) {
+          logger.log(result);
+        };
+
+        Flea.submitJob(flea_result, connect_callback);
+
       });
     }
   });
+
 };
 
-getResultsHelper = function(req, res, key) {
+exports.getSessionJSON = function(req, res) {
+
   var fleaid = req.params.id;
+
+  //Return all results
   Flea.findOne({ _id: fleaid }, function(err, flea) {
+
     if (err || !flea) {
-      res.json(500, error.errorResponse("Invalid id : " + fleaid));
+      res.json(500, error.errorResponse("invalid id : " + fleaid));
+      return;
     } else {
-      if (key) {
-        res.json(200, JSON.parse(flea.results[key]));
-      } else {
-        res.json(200, JSON.parse(flea.results));
-      }
+
+      fs.readFile(flea.session_json_fn, (err, data) => {
+
+        if (err) {
+          res.json(500, error.errorResponse("couldn't read session json file: " + fleaid));
+          return;
+        }
+
+        try {
+
+          var session_data = JSON.parse(String(data));
+          session_data['session_id'] = fleaid;
+
+          fs.readFile(flea.predefined_regions, (err, predefined_region) => {
+
+            if(err) {
+              res.json(500, error.errorResponse("couldn't read predefined_regions file: " + fleaid));
+              return;
+            }
+
+            fs.readFile(flea.pdb_structure, (err, pdb_structure) => {
+
+              if(err) {
+                res.json(500, error.errorResponse("couldn't read pdb file: " + fleaid));
+                return;
+              }
+              
+              try {
+                var regions_json = JSON.parse(predefined_region);
+                var pdb_lines = String(pdb_structure);
+                session_data['predefined_regions'] = regions_json['regions']              
+                session_data['pdb'] = pdb_lines.split('\n');
+                res.json(200, session_data);
+                return;
+              } catch(e) {
+                res.json(500, error.errorResponse("couldn't pdb or region read file: " + fleaid));
+                return;
+              }
+            
+            });
+          });
+          
+        } catch(e) {
+          res.json(500, error.errorResponse("couldn't read file: " + fleaid));
+          return;
+        } 
+
+
+      });
+
     }
   });
+
 };
 
-exports.getResults = function(req, res) {
-  getResultsHelper(req, res, "");
-};
+exports.getSessionZip = function(req, res) {
 
-exports.getRates = function(req, res) {
-  getResultsHelper(req, res, "rates");
-};
+  var fleaid = req.params.id;
+  //Return all results
+  Flea.findOne({ _id: fleaid }, function(err, flea) {
 
-exports.getFrequencies = function(req, res) {
-  getResultsHelper(req, res, "frequencies");
-};
+    if (err || !flea) {
+      res.json(500, error.errorResponse("invalid id : " + fleaid));
+    } else {
+      res.sendfile(path.resolve(flea.session_zip_fn));
+    }
+  });
 
-exports.getSequences = function(req, res) {
-  getResultsHelper(req, res, "sequences");
-};
 
-exports.getRatesPheno = function(req, res) {
-  getResultsHelper(req, res, "rates_pheno");
-};
 
-exports.getGenes = function(req, res) {
-  getResultsHelper(req, res, "");
-};
-
-exports.getTrees = function(req, res) {
-  getResultsHelper(req, res, "trees");
-};
-
-exports.getDivergence = function(req, res) {
-  getResultsHelper(req, res, "divergence");
-};
-
-exports.getCopyNumbers = function(req, res) {
-  getResultsHelper(req, res, "copynumbers");
-};
-
-exports.getRunInfo = function(req, res) {
-  getResultsHelper(req, res, "run_info");
-};
-
-exports.getDates = function(req, res) {
-  getResultsHelper(req, res, "dates");
-};
-
-exports.getCoordinates = function(req, res) {
-  getResultsHelper(req, res, "coordinates");
 };

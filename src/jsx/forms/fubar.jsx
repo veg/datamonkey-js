@@ -64,8 +64,7 @@ class FUBARForm extends React.Component {
     }
   }
   onSampleChange(event) {
-    var value = event.target.value,
-      sample = this.state.number_of_samples;
+    var value = event.target.value;
     if(value < 50){
       this.setState({message: "Please enter an amount of samples to be drawn that is more than 50."});
     } else if (value > this.state.length_of_each_chain-this.state.number_of_burn_in_samples) {
@@ -78,14 +77,12 @@ class FUBARForm extends React.Component {
     }
   }
   submit(e) {
-    console.log("submit");
     e.preventDefault();
 
     $('#file-progress').removeClass("hidden");
 
     var formData = new FormData();
     var file = document.getElementById('seq-file').files[0];
-    var filename = document.getElementById('seq-file').files[0].name;
 
     formData.append('files', file);
     formData.append('datatype', $( "select[name='datatype']" ).val());
@@ -98,8 +95,6 @@ class FUBARForm extends React.Component {
     formData.append('number_of_burn_in_samples', $( '#number_of_burn_in_samples' ).val());
     formData.append('number_of_samples', $( '#number_of_samples' ).val());
     formData.append('concentration_of_dirichlet_prior', $( '#concentration_of_dirichlet_prior' ).val());
-
-    var action_url = $('#msa-form').attr('action'); 
 
     var xhr = new XMLHttpRequest();
 

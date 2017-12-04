@@ -10,7 +10,7 @@ $(function () {
       variable    : "rc"
     };
 
-    $('#fileupload').fileupload({ dataType: 'json' })
+    $('#flea-fileupload').fileupload({ dataType: 'json' });
 
     // Change this to the location of your server-side upload handler:
     var uploadButton = $('<button/>')
@@ -18,8 +18,10 @@ $(function () {
             .prop('disabled', true)
             .text('Processing...')
             .on('click', function () {
+
                 var $this = $(this),
                     data = $this.data();
+
                 $this
                     .off('click')
                     .text('Abort')
@@ -27,12 +29,14 @@ $(function () {
                         $this.remove();
                         data.abort();
                     });
+
                 data.submit().always(function () {
                     $this.remove();
                 });
+
             });
 
-    $('#fileupload').fileupload({
+    $('#flea-fileupload').fileupload({
         dataType: 'json',
         autoUpload: true,
         acceptFileTypes: /(\.|\/)(fastq)$/i,
@@ -180,14 +184,21 @@ $(function () {
         xhr.open('post', self.attributes.getNamedItem("action").value, true);
 
         xhr.onload = function(res) {
+
           // Replace field with green text, name of file
           var result = JSON.parse(this.responseText);
+
+          if(result == undefined) {
+            console.log(this.responseText);
+            return;
+          }
 
           if('_id' in result.flea) {
             window.location.href =  '/flea/' + result.flea._id;
           } else if ('error' in result) {
             datamonkey.errorModal(result.error);
           }
+
         };
 
         d3.select("#upload-button").html('<i class="fa fa-cog fa-spin fa-2x"></i>');

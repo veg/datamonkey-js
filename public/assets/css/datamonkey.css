@@ -665,5 +665,7 @@ a.hyphy-anchor {
   color: white;
 }
 
-
+#flea-fileupload {
+  display:none;
+}
 
