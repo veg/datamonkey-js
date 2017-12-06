@@ -20,6 +20,7 @@ exports.form = function(req, res) {
 };
 
 exports.uploadFile = function(req, res) {
+
   var connect_callback = function(data) {
     if (data == "connected") {
       logger.log("connected");
@@ -196,6 +197,7 @@ exports.getPage = function(req, res) {
 };
 
 exports.getResults = function(req, res) {
+
   var felid = req.params.id;
 
   FEL.findOne({ _id: felid }, function(err, fel) {
@@ -209,6 +211,7 @@ exports.getResults = function(req, res) {
       res.json(200, fel_results);
     }
   });
+
 };
 
 // app.get('/fel/:id/info', fel.getInfo);

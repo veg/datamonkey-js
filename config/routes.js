@@ -82,6 +82,7 @@ module.exports = function(app) {
   app.post('/flea', flea.invoke);
   app.get('/flea/:id', flea.getPage);
   app.get('/flea/:id/restart', flea.restart);
+  app.get('/flea/view/:id*', flea.getPage);
   app.get('/flea/view/:id', flea.getPage);
   app.get('/flea/api/sessions/:id', flea.getSessionJSON);
   app.get('/flea/api/zips/:id.zip', flea.getSessionZip);

@@ -65,11 +65,13 @@ AnalysisSchema.statics.pendingJobs = function(cb) {
 };
 
 AnalysisSchema.statics.submitJob = function(job, cb) {
+
   winston.info(
     "submitting " + job.analysistype + " : " + job._id + " to cluster"
   );
 
   var jobproxy = new hpcsocket.HPCSocket(
+
     {
       filepath: job.filepath,
       msa: job.msa,
@@ -80,6 +82,7 @@ AnalysisSchema.statics.submitJob = function(job, cb) {
     "spawn",
     cb
   );
+
 };
 
 AnalysisSchema.statics.subscribePendingJobs = function() {
