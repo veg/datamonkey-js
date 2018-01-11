@@ -1,6 +1,7 @@
 var path = require("path"),
   webpack = require("webpack"),
-  cloneDeep = require("lodash.clonedeep");
+  cloneDeep = require("lodash.clonedeep"),
+  CopyWebpackPlugin = require('copy-webpack-plugin');
 
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
@@ -127,6 +128,28 @@ config = {
       datamonkey: "datamonkey",
       _: "underscore"
     }),
+		new CopyWebpackPlugin([
+				// {output}/file.txt
+				{ from: 'node_modules/hivtrace-viz/dist/hivtrace.js' }
+		], {
+				// By default, we only copy modified files during
+				// a watch or webpack-dev-server build. Setting this
+				// to `true` copies all files.
+				copyUnmodified: true
+		}),
+		new CopyWebpackPlugin([
+				// {output}/file.txt
+				{ 
+          from : 'node_modules/hivtrace-viz/dist/vendor.js', 
+          to : 'hivtrace-vendor.js'
+        
+        }
+		], {
+				// By default, we only copy modified files during
+				// a watch or webpack-dev-server build. Setting this
+				// to `true` copies all files.
+				copyUnmodified: true
+		}),
     new webpack.IgnorePlugin(/jsdom$/),
     new ExtractTextPlugin("[name].css")
   ],
