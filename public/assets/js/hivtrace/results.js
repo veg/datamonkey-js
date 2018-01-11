@@ -33,7 +33,7 @@ var initialize_cluster_network_graphs = function () {
 
     d3.json (window.location.href + "/attributes", function (error, attributes) {
 
-          var user_graph = new hivtrace.clusterNetwork(graph, network_container, network_status_string, network_warning, button_bar_prefix, attributes, filter_edges_toggle, cluster_table, node_table, parent_container);
+          var user_graph = new hivtrace.clusterNetwork(graph, network_container, network_status_string, network_warning, button_bar_prefix, attributes, filter_edges_toggle, cluster_table, node_table, parent_container, {"no_cdc" : true});
           hivtrace.histogramDistances(graph, histogram_tag, histogram_label);
           hivtrace.graphSummary(graph, graph_summary_tag);
 
