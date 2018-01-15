@@ -56,7 +56,7 @@ AnalysisSchema.virtual("valid_statuses").get(function() {
 
 AnalysisSchema.statics.pendingJobs = function(cb) {
   this.find({
-    $or: [{ status: "queue" }, { status: "running" }]
+    $or: [{ status: "running" }]
   })
     .populate("upload_id")
     .exec(function(err, items) {
@@ -87,8 +87,10 @@ AnalysisSchema.statics.submitJob = function(job, cb) {
 
 AnalysisSchema.statics.subscribePendingJobs = function() {
   this.pendingJobs(function(err, items) {
+    console.log(items.length);
     _.each(items, function(item) {
-      item.resubscribe();
+      //console.log(items.length);
+      //item.resubscribe();
     });
   });
 };
