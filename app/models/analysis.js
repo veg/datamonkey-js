@@ -87,10 +87,8 @@ AnalysisSchema.statics.submitJob = function(job, cb) {
 
 AnalysisSchema.statics.subscribePendingJobs = function() {
   this.pendingJobs(function(err, items) {
-    console.log(items.length);
     _.each(items, function(item) {
-      //console.log(items.length);
-      //item.resubscribe();
+      item.resubscribe();
     });
   });
 };
