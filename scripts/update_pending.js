@@ -1,6 +1,26 @@
-pending_busteds = db.busteds.find({status:"running"}, {created: 1, torque_id : 1, status: 1}).sort({created:-1}).toArray();
-pending_relaxes = db.relaxes.find({status:"running"}, {created: 1, torque_id : 1, status: 1}).sort({created:-1}).toArray();
-pending_absrels = db.absrels.find({status:"running"}, {created: 1, torque_id : 1, status: 1}).sort({created:-1}).toArray();
+pending_absrels = db.absrels.find({status:"running"}, {created: 1, torque_id : 1, status: 1}).toArray();
+pending_busteds = db.busteds.find({status:"running"}, {created: 1, torque_id : 1, status: 1}).toArray();
+pending_relaxes = db.relaxes.find({status:"running"}, {created: 1, torque_id : 1, status: 1}).toArray();
+pending_fels = db.fels.find({status:"running"}, {created: 1, torque_id : 1, status: 1}).toArray();
+pending_fubars = db.fubars.find({status:"running"}, {created: 1, torque_id : 1, status: 1}).toArray();
+pending_gards = db.gards.find({status:"running"}, {created: 1, torque_id : 1, status: 1}).toArray();
+pending_memes = db.memes.find({status:"running"}, {created: 1, torque_id : 1, status: 1}).toArray();
+pending_slacs = db.slacs.find({status:"running"}, {created: 1, torque_id : 1, status: 1}).toArray();
+
+fel_ids = _.map(pending_fels, function(x) {return x._id});
+_.each(fel_ids, function(x) {db.fels.update({_id:x}, {$set : {status : "aborted"}})} );
+
+fubar_ids = _.map(pending_fubars, function(x) {return x._id});
+_.each(fubar_ids, function(x) {db.fubars.update({_id:x}, {$set : {status : "aborted"}})} );
+
+gard_ids = _.map(pending_gards, function(x) {return x._id});
+_.each(gard_ids, function(x) {db.gards.update({_id:x}, {$set : {status : "aborted"}})} );
+
+meme_ids = _.map(pending_memes, function(x) {return x._id});
+_.each(meme_ids, function(x) {db.memes.update({_id:x}, {$set : {status : "aborted"}})} );
+
+slac_ids = _.map(pending_slacs, function(x) {return x._id});
+_.each(slac_ids, function(x) {db.slacs.update({_id:x}, {$set : {status : "aborted"}})} );
 
 busted_ids = _.map(pending_busteds, function(x) {return x._id});
 _.each(busted_ids, function(x) {db.busteds.update({_id:x}, {$set : {status : "aborted"}})} );
