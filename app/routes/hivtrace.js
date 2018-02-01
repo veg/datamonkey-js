@@ -228,7 +228,9 @@ exports.jobPage = function(req, res) {
     if (err || !hivtrace) {
       res.json(500, error.errorResponse("hivtrace : " + id + " : missing id"));
     } else {
-      if (hivtrace.status === undefined) {
+
+      if (!hivtrace.job_started) {
+
         var callback = function(err) {
           if (err) {
             logger.error(err);
@@ -237,7 +239,12 @@ exports.jobPage = function(req, res) {
           }
         };
 
-        HivTrace.submitJob(hivtrace, callback);
+        hivtrace.job_started=true;
+
+        hivtrace.save((err, hivtrace) => {
+          HivTrace.submitJob(hivtrace, callback);
+        });
+
       }
 
       res.format({

@@ -107,6 +107,7 @@ var HivTrace = new Schema({
     validate: [notEmptyValidator, "Ambiguity Handling field is empty"]
   },
   sequence_length: Number,
+  job_started : { type: Boolean, default:false },
   status_stack: Array,
   status: {
     type: String
