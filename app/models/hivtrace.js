@@ -275,6 +275,7 @@ HivTrace.virtual("url").get(function() {
 });
 
 HivTrace.methods.saveAttributes = function(cb) {
+
   var self = this;
 
   // Once annotations are configured, save the mapped attributes so that we
@@ -289,16 +290,19 @@ HivTrace.methods.saveAttributes = function(cb) {
   });
 
   var patient_attributes = _.map(headers, function(d) {
+
     var attrs = d.split(delimiter);
     var key_val = _.object(annotations, attrs);
     key_val["header"] = d;
     return key_val;
+
   });
 
   // save attributes for each patient
   self.patient_attributes = patient_attributes;
 
   cb(null, self);
+
 };
 
 HivTrace.methods.addAttributesToResults = function(cb) {
@@ -306,6 +310,12 @@ HivTrace.methods.addAttributesToResults = function(cb) {
 
   var attributes = self.patient_attributes;
   var attr_keys = _.keys(attributes[0]);
+
+  var category_map = {
+    "categorical" : "String", 
+    "individual" : "String", 
+    "temporal" : "Date"
+  };
 
   // transform attributes to be a dictionary
   var attrs_by_id = _.object(
@@ -320,7 +330,7 @@ HivTrace.methods.addAttributesToResults = function(cb) {
       return d.annotation;
     }),
     _.map(self.attributes, function(val, key) {
-      new_dict = { type: val.category, label: val.annotation };
+      new_dict = { type: category_map[val.category], label: val.annotation };
       return new_dict;
     })
   );
