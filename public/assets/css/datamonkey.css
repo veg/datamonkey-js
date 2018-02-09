@@ -669,3 +669,6 @@ a.hyphy-anchor {
   display:none;
 }
 
+#cluster_table td:first-child {
+  min-width:200px;
+}

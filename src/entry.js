@@ -24,6 +24,7 @@ var branch_selection = require('jsx/branch-selection.jsx');
 var stats = require('jsx/stats.jsx');
 var analysis_tree = require('jsx/analysis_tree.jsx');
 var jobqueue = require('jsx/jobqueue.jsx');
+var render_attribute_modal = require('jsx/attribute_table.jsx');
 
 window.gard_form = gard_form;
 window.slac_form = slac_form;
@@ -34,3 +35,4 @@ window.hyphyVision = hyphyVision;
 window.datamonkey_stats = stats;
 window.datamonkey_analysis_tree = analysis_tree;
 window.datamonkey_jobqueue = jobqueue;
+window.render_attribute_modal = render_attribute_modal;
