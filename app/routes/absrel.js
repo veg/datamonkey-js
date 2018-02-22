@@ -73,16 +73,33 @@ exports.uploadFile = function(req, res) {
           logger.error("absrel rename failed");
           res.json(500, { error: err });
         } else {
-          var to_send = absrel;
-          to_send.upload_redirect_path = absrel.upload_redirect_path;
-          res.json(200, {
-            analysis: absrel,
-            upload_redirect_path: absrel.upload_redirect_path
+          var move = Msa.removeTreeFromNexus(absrel_result.filepath, absrel_result.filepath);
+          move.then(val=>{
+            res.json(200, {
+              analysis: absrel,
+              upload_redirect_path: absrel.upload_redirect_path
+            });
+          }, reason => {
+            res.json(500, {error: "issue removing tree from file"});
           });
         }
       }
 
-      helpers.moveSafely(req.files.files.file, absrel_result.filepath, move_cb);
+      fs.readFile(fn, (err, data) => {
+        if (err) {
+          logger.error("read file failed");
+          res.json(500, { error: err });
+        }
+        fs.writeFile(absrel_result.original_fn,  data, err => {
+          if (err) {
+            logger.error("write file failed");
+            res.json(500, { error: err });
+          }
+          helpers.moveSafely(req.files.files.file, absrel_result.filepath, move_cb);
+        });
+      });
+
+
     });
   });
 };
