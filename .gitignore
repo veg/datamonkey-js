@@ -35,3 +35,5 @@ public/assets/js/*.svg
 public/assets/js/*.ttf
 public/assets/js/datamonkey.css*
 public/assets/js/datamonkey.js*
+*vendor*
+*.aa
