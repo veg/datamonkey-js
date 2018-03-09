@@ -25,7 +25,6 @@
     "express-busboy": "^2.4.4",
     "express-validator": "^2.21.0",
     "font-awesome": "^4.4.0",
-    "hivtrace-viz": "^0.0.1",
     "hyphy-vision": "1.1.5",
     "jade": "^1.0.0",
     "jquery-file-upload": "^4.0.5",

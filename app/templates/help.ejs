@@ -1,52 +1,54 @@
 <%- include includes/header.ejs %>
-
-
 <div id="help-container" class="container">
-
-  <div class="datamonkey-sm-header">
-    <h1>Help</h1>
-    <p>Documentation for Datamonkey's Analyses</p>
-  </div>
-
-  <div class="help-content tab-content col-sm-8">
-
-    <h1 id="example-files" class="page-header">Example Files</h1>
-    <div>
-    <p>
-      <a href="/assets/Flu.fasta" class="btn btn-primary">Influenza A H5N1 hemagluttinin</a>
-      <a href="/assets/pol.nex" class="btn btn-primary">HIV-1 pol (recombinant data)</a>
-    </p>
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+      
+      <h1>Help</h1>
+      <p>Documentation for Datamonkey's Analyses</p>
+      <br />
+      
+      <div class="help-content tab-content col-md-9">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 id="example-files" class="panel-title">Example Files</h3>
+          </div>
+        </div>
+        <div>
+          <a href="/assets/Flu.fasta" role="button" class="btn btn-primary">Influenza A H5N1 hemagluttinin</a>
+          <a href="/assets/pol.nex" role="button" class="btn btn-primary">HIV-1 pol (recombinant data)</a>
+        </div>
+        <br />
+          <%- include includes/help/datafiles.ejs %>
+          <%- include includes/help/analyzing_data.ejs %>
+      </div>
+    
+      <!--Nav Bar -->
+      <nav id="sidebar" class="col-md-2 bs-docs-sidebar pull-right">
+        <ul class="nav nav-stacked fixed">
+          <li>
+            <a href="#data-files"><strong>Data Files</strong></a>
+            <ul class="nav nav-stacked">
+                <li><a href="#genetic-codes">Genetic Codes</a></li>
+                <li><a href="#data-formats">Data Formats</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="#analyzing-data"><strong>Analyzing Data</strong></a>
+            <ul class="nav nav-stacked">
+              <li><a href="#ambiguities">Ambiguities</a></li>
+              <li><a href="#significance-levels">Significance Levels</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      
     </div>
-
-    <%- include includes/help/datafiles.ejs %>
-    <%- include includes/help/analyzing_data.ejs %>
   </div>
-
-
-  <!--Nav Bar -->
-  <nav id="sidebar" class="col-xs-3 bs-docs-sidebar pull-right">
-    <ul class="nav nav-stacked fixed">
-      <li>
-        <a href="#data-files">Data Files</a>
-        <ul class="nav nav-stacked">
-            <li><a href="#genetic-codes">Genetic Codes</a></li>
-            <li><a href="#data-formats">Data Formats</a></li>
-        </ul>
-      </li>
-      <li>
-        <a href="#analyzing-data">Analyzing Data</a>
-        <ul class="nav nav-stacked">
-          <li><a href="#nucleotide-selection">Selecting a nucleotide model</a></li>
-          <li><a href="#ambiguities">Ambiguities</a></li>
-          <li><a href="#significance-levels">Significance Levels</a></li>
-        </ul>
-      </li>
-    </ul>
-  </nav>
 </div>
 
 
 <span class="clear"></span>
 <script src="/assets/js/help.js"></script>
+
 <%- include includes/footer.ejs %>
 
