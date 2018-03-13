@@ -33,4 +33,5 @@ before_script:
   - cp config/setup.js.tpl config/setup.js
 
 script:
+  - make install
   - yarn test
