@@ -93,14 +93,14 @@ var JobTable = React.createClass({
       <table className="table table-bordered table-hover tablesorter table-striped">
         <thead>
           <tr>
-            <td>Ticket Number</td>
-            <td>Status</td>
-            <td>Kind</td>
-            <td>Sequences</td>
-            <td>Sites</td>
-            <td>Running Time</td>
-            <td>Creation Time</td>
-            <td>Queue Time</td>
+            <th>Ticket Number</th>
+            <th>Status</th>
+            <th>Kind</th>
+            <th>Sequences</th>
+            <th>Sites</th>
+            <th>Running Time</th>
+            <th>Creation Time</th>
+            <th>Queue Time</th>
           </tr>
         </thead>
         <tbody>

@@ -1,7 +1,14 @@
 <script type="text/template" class="job-queue">
   <table id="job-queue" class="table table-bordered table-striped table-hover tablesorter" >
     <thead>
-    <tr><td>Ticket Number</td><td>Status</td><td>Kind</td><td>Running Time</td><td>Creation Time</td><td>Queue Time</td></tr>
+      <tr>
+        <th>Ticket Number</th>
+        <th>Status</th>
+        <th>Kind</th>
+        <th>Running Time</th>
+        <th>Creation Time</th>
+        <th>Queue Time</th>
+      </tr>
     </thead>
     <tbody>
     {% for(var l in rc) { %}
