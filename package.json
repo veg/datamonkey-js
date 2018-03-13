@@ -8,7 +8,7 @@
     "email": "steven@stevenweaver.org"
   },
   "scripts": {
-    "test": "mocha 2> /dev/null",
+    "test": "mocha",
     "lint": "./node_modules/.bin/eslint"
   },
   "repository": {
