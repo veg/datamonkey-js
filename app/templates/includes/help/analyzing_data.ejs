@@ -1,10 +1,14 @@
-<h1 id="analyzing-data" class="page-header">Analyzing Data</h1>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 id="analyzing-data" class="panel-title">Analyzing Data</h3>
+  </div>
+</div>
 
-<h3 id="nucleotide-selection" class="page-header">Selecting a nucleotide model</h3>
+<h3 id="nucleotide-selection">Selecting a nucleotide model</h3>
 
 <div class="bs-callout bs-callout-info">
   <p>
-    Complete model selection procedure details can be found in this <a  href='http://mbe.oxfordjournals.org/cgi/content/short/22/5/1208'> MBE paper</a>
+    Complete model selection procedure details can be found in this <a href='http://mbe.oxfordjournals.org/cgi/content/short/22/5/1208'>MBE paper</a>
   </p>
 </div>
 
@@ -21,14 +25,18 @@ no more than a few minutes to complete.
 <p>
 To allow the most general model of nucleotide substituion, select the General
 Reversible Model (REV), since it does not add much to the overall processing
-time.  However, if your data set is small, it may not be possible to accurately
+time. However, if your data set is small, it may not be possible to accurately
 estimate nucleotide substitution bias rates, and HKY85 might not be a bad
-choice.  You can also try several different models and see if the location of
-inferred sites changes depending on the nucleotide model (it rarely does,
-unless the model is very wrong).
+choice. You can also try several different models and see if the location of
+inferred sites changes depending on the nucleotide model (it rarely does, unless
+the model is very wrong).
 </p>
-
-<h3 id="ambiguities" class="page-header">Handling Ambiguities</h3>
+<br />
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 id="ambiguities" class="panel-title">Handling Ambiguities</h3>
+  </div>
+</div>
 
 <div class="bs-callout bs-callout-info">
   <p>For more details see <a href='http://mbe.oxfordjournals.org/cgi/content/short/22/5/1208'>MBE paper</a></p>
@@ -47,8 +55,8 @@ unless the model is very wrong).
 
 <div class="bs-callout bs-callout-info">
   <h4>Resolved</h4>
-  <p> The most likely resolution <i> for the given site </i> is used in the
-  computation of EN, ES, NN and NS. Ties are broken randomly.  </p>
+  <p>The most likely resolution <i> for the given site </i> is used in the
+  computation of EN, ES, NN and NS. Ties are broken randomly.</p>
 </div>
 
 <div class="bs-callout bs-callout-info">
@@ -78,8 +86,12 @@ denotes the frequency of codon xyz in the entire data file, then the
 contribution of ACA will be f(ACA)/(f(ACA)+f(ACG)) and of 'ACG' :
 f(ACG)/(f(ACA)+f(ACG)).  
 </p>
-
-<h3 id="significance-levels" class="page-header">Choosing significance levels</h3>
+<br />
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 id="significance-levels" class="panel-title">Choosing significance levels</h3>
+  </div>
+</div>
 
 <div class="bs-callout bs-callout-info">
   <p>For more details see <a href='http://mbe.oxfordjournals.org/cgi/content/short/22/5/1208'>MBE paper</a></p>

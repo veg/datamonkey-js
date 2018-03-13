@@ -14,7 +14,6 @@ var express          = require('express'),
     fs               = require('fs'),
     path             = require("path"),
     mongoose         = require('mongoose'),
-    redis            = require('redis'),
     bb               = require('express-busboy');
 
 
@@ -107,25 +106,4 @@ io.sockets.on('connection', function (socket) {
     var clientSocket = new jobproxy.ClientSocket(socket, data.id);
   });
   
-  socket.on ('fasta_parsing_progress_start', function (data) {
-    var fasta_listener = redis.createClient ();
-    fasta_listener.subscribe ("fasta_parsing_progress_" + data.id);
-    fasta_listener.on ("message", function (channel, message) {
-        socket.emit ("fasta_parsing_update", message);
-        if (message == "done") {
-            fasta_listener.end();
-        }
-    });
-  });
-
-  socket.on ('attribute_parsing_progress_start', function (data) {
-    var attr_listener = redis.createClient ();
-    attr_listener.subscribe ("attribute_parsing_progress_" + data.id);
-    attr_listener.on ("message", function (channel, message) {
-        socket.emit ("attribute_parsing_progress", message);
-        if (message == "done") {
-            attr_listener.end();
-        }
-    });
-  });
 });
