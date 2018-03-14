@@ -329,10 +329,10 @@ span.glyphicon {
 
 
 .bs-callout-warning  {
-  border-left-color: #E27114;
+  border-left-color: #f0ad4e;
 }
 .bs-callout-warning h4 {
-  color: #E27114;
+  color: #f0ad4e;
 }
 
 .bs-callout-info {
