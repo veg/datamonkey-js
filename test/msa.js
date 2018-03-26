@@ -270,7 +270,7 @@ describe('nexus tree remover', function() {
 
 });
 
-describe.only('delivering fasta', function(){
+describe('delivering fasta', function(){
   it('should convert nexus to equivalent fasta', function(done) {
     var input_file_path = path.join(__dirname, '..', 'test', 'res', 'CD2.nex'),
       output_file_path = path.join(__dirname, '..', 'test', 'res', 'CD2.fasta'),
