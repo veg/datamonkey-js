@@ -274,3 +274,20 @@ exports.getMSAFile = function(req, res) {
     });
   });
 };
+
+exports.fasta = function(req, res) {
+  var id = req.params.id;
+
+  Busted.findOne({ _id: id }, function(err, busted) {
+    if(err || !busted) {
+      winston.info(err);
+      res.json(500, error.errorReponse("invalid id : " + id));
+    }
+    Msa.deliverFasta(busted.filepath).then(value => {
+      res.json(200, {fasta: value});
+    }).catch(err => {
+      winston.info(err);
+      res.json(500, {error: "Unable to deliver fasta."});
+    });
+  });
+};
