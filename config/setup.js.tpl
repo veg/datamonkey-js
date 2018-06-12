@@ -21,3 +21,4 @@ define('cluster_ip', cluster_ip_urls_array);
 define('fasta_validator', '/home/sweaver/TN93/validate_fasta');
 define('hyphy', __dirname + '/node_modules/hyphy/HYPHYMP');
 define('cluster_ip_urls_array', cluster_ip_urls_array);
+define('default_url', cluster_ip_urls_array[0]);
