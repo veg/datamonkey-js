@@ -1,5 +1,6 @@
 var path = require('path');
 
+
 module.exports = function(app) {
 
   // HOME PAGE
@@ -10,6 +11,7 @@ module.exports = function(app) {
   app.get('/jobqueue/json', home.jobQueue);
   app.get('/stats', home.stats);
   app.get('/clusterhealth', home.clusterhealth);
+  app.get('/clusterhealth/:id', home.clusterhealth);
   app.get('/stats_test', home.stats_test);
   app.get('/analyses', home.analyses);
   app.get('/citations', home.citations);
@@ -32,7 +34,7 @@ module.exports = function(app) {
   app.get('/absrel/:id/cancel', absrel.cancel);
   app.get('/absrel/:id/log.txt', absrel.getLog);
   absrel.resubscribePendingJobs();
-  
+
   // BUSTED ROUTES
   busted = require(path.join(__dirname, '../app/routes/busted'));
   app.get('/busted', busted.createForm);
@@ -120,7 +122,7 @@ module.exports = function(app) {
   app.get('/hivtrace', hivtrace.clusterForm);
   app.get('/hivtrace/usage', hivtrace.getUsage);
   app.post('/hivtrace/:id/uploadfile', hivtrace.uploadFile);
-  app.get ('/hivtrace/request-job-id', hivtrace.requestID); 
+  app.get ('/hivtrace/request-job-id', hivtrace.requestID);
   app.get('/hivtrace/:id/map-attributes', hivtrace.mapAttributes);
   app.post('/hivtrace/:id/save-attributes', hivtrace.saveAttributes);
   app.post('/hivtrace/invoke/:id', hivtrace.invokeClusterAnalysis);
