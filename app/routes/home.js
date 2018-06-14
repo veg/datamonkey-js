@@ -3,6 +3,11 @@ var mongoose = require("mongoose"),
   path = require("path"),
   hpcsocket = require(path.join(__dirname, "/../../lib/hpcsocket.js")),
   globals = require(path.join(__dirname, "/../../config/globals.js"));
+  redis = require('redis'),
+  client = redis.createClient({host : 'localhost', port : 6379});
+
+var queueGet = require('../../lib/queue.js');
+
 
 exports.homePage = function(req, res) {
   res.render("index.ejs");
@@ -37,20 +42,20 @@ exports.citations = function(req, res) {
   res.render("citations.ejs");
 };
 
-exports.jobQueue = function(req, res) {
-  function connect_callback(result) {
-    var jobs = result;
 
+exports.jobQueue = function(req, res) {
+  //This will set the queue cache when ran.
+  queueGet(function(job_queue){
+    var jobs = job_queue;
     res.format({
       json: function() {
         res.json(200, jobs);
       }
     });
-  }
 
-  // retrieve job queue from cluster
-  var jobproxy = new hpcsocket.JobQueue(connect_callback);
+  });
 };
+
 
 exports.jobQueuePage = function(req, res) {
   res.render("jobqueue.ejs");

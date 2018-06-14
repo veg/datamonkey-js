@@ -1,6 +1,7 @@
 const logger = require('./lib/logger');
 var setup = require('./config/setup');
 var error = require('./lib/error');
+var queueSet = require('./lib/queue.js');
 
 ROOT_PATH = __dirname;
 HOST      = setup.host;
@@ -50,7 +51,7 @@ upload.configure({
   uploadUrl: '/fleaupload',
 });
 
-upload.on('end', function (fileInfo, req, res) { 
+upload.on('end', function (fileInfo, req, res) {
 
 });
 
@@ -106,7 +107,7 @@ io.sockets.on('connection', function (socket) {
   socket.on ('acknowledged', function (data) {
     var clientSocket = new jobproxy.ClientSocket(socket, data.id);
   });
-  
+
   socket.on ('fasta_parsing_progress_start', function (data) {
     var fasta_listener = redis.createClient ();
     fasta_listener.subscribe ("fasta_parsing_progress_" + data.id);
@@ -129,3 +130,5 @@ io.sockets.on('connection', function (socket) {
     });
   });
 });
+
+setInterval(queueSet, 5000, function(job_queue) {});
