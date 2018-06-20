@@ -532,12 +532,7 @@ exports.aligned_fasta = function(req, res) {
 };
 
 exports.getUsage = function(req, res) {
-  publisher.get("hivtrace_job_stats", function(err, data) {
-    try {
-      res.json(200, JSON.parse(data));
-    } catch(err){
-        winston.info(err);
-      };
-
+  HivTrace.usageStatistics(function(err, hivtrace) {
+    res.json(200, hivtrace);
   });
 };
