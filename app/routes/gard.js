@@ -14,6 +14,9 @@ var mongoose = require("mongoose"),
   PartitionInfo = mongoose.model("PartitionInfo"),
   GARD = mongoose.model("GARD");
 
+var redis = require('redis'),
+  client = redis.createClient({host : 'localhost', port : 6379});
+
 exports.form = function(req, res) {
   var post_to = "/gard";
   res.render("gard/form.ejs", { post_to: post_to });
@@ -148,7 +151,7 @@ exports.getInfo = function(req, res) {
 };
 
 /**
- * Returns log txt file 
+ * Returns log txt file
  * app.get('/gard/:id/results', gard.getLog);
  */
 exports.getLog = function(req, res) {
@@ -209,15 +212,19 @@ exports.getMSAFile = function(req, res) {
   });
 };
 
-exports.getUsage = function(req, res) {
-  GARD.usageStatistics(function(err, fel) {
-    res.json(200, fel);
-  });
-};
-
 exports.getScreenedData = function(req, res) {
   var id = req.params.id,
     file_path = path.join(__dirname, '..', '..', 'uploads', 'msa', id+'.gard.result.nex');
     res.download(file_path, 'screened_data.nex');
 };
 
+exports.getUsage = function(req, res) {
+  client.get(GARD.cachePath(), function(err, data) {
+    try {
+      res.json(200, JSON.parse(data));
+    } catch(err){
+        winston.info(err);
+      };
+
+  });
+};

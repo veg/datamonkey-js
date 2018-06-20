@@ -7,7 +7,7 @@ function define(name, value) {
 }
 
 define('host','datamonkey-dev');
-define('port', 4000);
+define('port', 4002);
 define('database', 'mongodb://localhost/datamonkey-dev');
 define('log_level', 'warn');
 define('cluster_ip','http://silverback.temple.edu:7000');

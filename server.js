@@ -13,7 +13,6 @@ var express          = require('express'),
     helpers          = require('./lib/helpers'),
     fs               = require('fs'),
     path             = require("path"),
-    mongoose         = require('mongoose'),
     redis            = require('redis'),
     bb               = require('express-busboy');
 
@@ -50,7 +49,7 @@ upload.configure({
   uploadUrl: '/fleaupload',
 });
 
-upload.on('end', function (fileInfo, req, res) { 
+upload.on('end', function (fileInfo, req, res) {
 
 });
 
@@ -82,6 +81,8 @@ fs.readdirSync(models_path).forEach(function (file) {
   require(path.join(models_path,'/',file));
 });
 
+var usageStatisticsLooper = require('./lib/usageStatistics.js');
+
 app.use(express.static(path.join(__dirname, '/public')));
 app.use('/uploads', express.static(path.join(__dirname + '/uploads')));
 
@@ -106,7 +107,7 @@ io.sockets.on('connection', function (socket) {
   socket.on ('acknowledged', function (data) {
     var clientSocket = new jobproxy.ClientSocket(socket, data.id);
   });
-  
+
   socket.on ('fasta_parsing_progress_start', function (data) {
     var fasta_listener = redis.createClient ();
     fasta_listener.subscribe ("fasta_parsing_progress_" + data.id);

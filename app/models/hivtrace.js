@@ -312,8 +312,8 @@ HivTrace.methods.addAttributesToResults = function(cb) {
   var attr_keys = _.keys(attributes[0]);
 
   var category_map = {
-    "categorical" : "String", 
-    "individual" : "String", 
+    "categorical" : "String",
+    "individual" : "String",
     "temporal" : "Date"
   };
 

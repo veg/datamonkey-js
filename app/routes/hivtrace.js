@@ -9,7 +9,8 @@ var error = require(ROOT_PATH + "/lib/error.js"),
   hpcsocket = require(ROOT_PATH + "/lib/hpcsocket.js"),
   setup = require(ROOT_PATH + "/config/setup"),
   _ = require("underscore"),
-  spawn = require("child_process").spawn;
+  spawn = require("child_process").spawn,
+  winston = require('winston');
 
 var mongoose = require("mongoose"),
   HivTrace = mongoose.model("HivTrace"),
@@ -531,7 +532,12 @@ exports.aligned_fasta = function(req, res) {
 };
 
 exports.getUsage = function(req, res) {
-  HivTrace.usageStatistics(function(err, hivtrace) {
-    res.json(200, hivtrace);
+  publisher.get("hivtrace_job_stats", function(err, data) {
+    try {
+      res.json(200, JSON.parse(data));
+    } catch(err){
+        winston.info(err);
+      };
+
   });
 };

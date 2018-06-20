@@ -7,7 +7,11 @@ var mongoose = require("mongoose"),
   Msa = require(__dirname + "/msa"),
   extend = require("mongoose-schema-extend");
 
+var redis = require('redis'),
+  client = redis.createClient({host : 'localhost', port : 6379});
+
 var Schema = mongoose.Schema, ObjectId = Schema.ObjectId;
+
 
 var AnalysisSchema = new Schema({
   msa: [Msa.MsaSchema],
@@ -94,13 +98,18 @@ AnalysisSchema.statics.subscribePendingJobs = function() {
 };
 
 AnalysisSchema.statics.usageStatistics = function(cb) {
-  var self = this;
   // Aggregation is done client-side
+  var self = this;
+
   self
     .find({ status: "completed" }, { created: 1 })
     .sort({ created: -1 })
     .limit(1)
     .exec(function(err1, items1) {
+      if (err1 || items1.length == 0){
+        cb(err1, null);
+        return;
+      };
       self
         .find(
           {
@@ -117,11 +126,12 @@ AnalysisSchema.statics.usageStatistics = function(cb) {
           }
         )
         .exec(function(err, items) {
+          client.set(self.collection.name + "_job_stats", JSON.stringify(items), (err, reply) => {});
           cb(err, items);
-        });
-    });
-};
 
+          });
+      });
+  };
 /**
  * unix timestamp
  */
@@ -161,5 +171,10 @@ AnalysisSchema.methods.cancel = function(callback) {
     callback
   );
 };
+
+AnalysisSchema.statics.cachePath = function() {
+   return this.collection.name + "_job_stats";
+  };
+
 
 module.exports = AnalysisSchema;
