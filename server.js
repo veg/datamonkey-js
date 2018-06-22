@@ -2,6 +2,7 @@ const logger = require('./lib/logger');
 var setup = require('./config/setup');
 var error = require('./lib/error');
 
+
 ROOT_PATH = __dirname;
 HOST      = setup.host;
 

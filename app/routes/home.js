@@ -4,6 +4,9 @@ var mongoose = require("mongoose"),
   hpcsocket = require(path.join(__dirname, "/../../lib/hpcsocket.js")),
   globals = require(path.join(__dirname, "/../../config/globals.js"));
 
+var setup = require('./../../config/setup.js');
+var cluster_ip_urls_array = setup.cluster_ip_urls_array;
+
 exports.homePage = function(req, res) {
   res.render("index.ejs");
 };
@@ -59,9 +62,11 @@ exports.jobQueuePage = function(req, res) {
 exports.clusterhealth = function(req, res) {
   function connect_callback(result) {
     res.json(200, result);
-  }
+  };
 
-  var jobproxy = new hpcsocket.ClusterStatus(connect_callback);
+  //console.log(cluster_ip_urls_array[req.params.id])
+  new hpcsocket.ClusterStatus(cluster_ip_urls_array[req.params.id], connect_callback);
+
 };
 
 exports.stats = function(req, res) {
