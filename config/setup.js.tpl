@@ -20,8 +20,5 @@ define('log_level', 'warn');
 define('cluster_ip', cluster_ip_urls_array);
 define('fasta_validator', '/home/sweaver/TN93/validate_fasta');
 define('hyphy', __dirname + '/node_modules/hyphy/HYPHYMP');
-<<<<<<< HEAD
 define('cluster_ip_urls_array', cluster_ip_urls_array);
 define('default_url', cluster_ip_urls_array[0]);
-=======
->>>>>>> 7d7d4a9cb558ed5c0de3b4b611556093998c2f2d
