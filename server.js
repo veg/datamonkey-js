@@ -1,6 +1,7 @@
 const logger = require('./lib/logger');
 var setup = require('./config/setup');
 var error = require('./lib/error');
+var queueSet = require('./lib/queue.js');
 
 
 ROOT_PATH = __dirname;
@@ -135,3 +136,5 @@ io.sockets.on('connection', function (socket) {
     });
   });
 });
+
+setInterval(queueSet, 5000, function(job_queue) {});
