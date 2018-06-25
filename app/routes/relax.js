@@ -343,6 +343,23 @@ exports.getMSAFile = function(req, res) {
   });
 };
 
+exports.fasta = function(req, res) {
+  var id = req.params.id;
+
+  Relax.findOne({ _id: id }, function(err, relax) {
+    if(err || !relax) {
+      winston.info(err);
+      res.json(500, error.errorReponse("invalid id : " + id));
+    }
+    Msa.deliverFasta(relax.filepath).then(value => {
+      res.json(200, {fasta: value});
+    }).catch(err => {
+      winston.info(err);
+      res.json(500, {error: "Unable to deliver fasta."});
+    });
+  });
+};
+
 exports.getUsage = function(req, res) {
   client.get(Relax.cachePath(), function(err, data) {
     try {
@@ -350,6 +367,5 @@ exports.getUsage = function(req, res) {
     } catch(err){
         winston.info(err);
       };
-
-  });
-};
+    });
+  };

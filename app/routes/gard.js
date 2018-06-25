@@ -212,6 +212,23 @@ exports.getMSAFile = function(req, res) {
   });
 };
 
+exports.fasta = function(req, res) {
+  var id = req.params.id;
+
+  GARD.findOne({ _id: id }, function(err, gard) {
+    if(err || !gard) {
+      winston.info(err);
+      res.json(500, error.errorReponse("invalid id : " + id));
+    }
+    Msa.deliverFasta(gard.filepath).then(value => {
+      res.json(200, {fasta: value});
+    }).catch(err => {
+      winston.info(err);
+      res.json(500, {error: "Unable to deliver fasta."});
+    });
+  });
+};
+
 exports.getScreenedData = function(req, res) {
   var id = req.params.id,
     file_path = path.join(__dirname, '..', '..', 'uploads', 'msa', id+'.gard.result.nex');

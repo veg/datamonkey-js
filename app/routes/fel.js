@@ -300,6 +300,23 @@ exports.getMSAFile = function(req, res) {
   });
 };
 
+exports.fasta = function(req, res) {
+  var id = req.params.id;
+
+  FEL.findOne({ _id: id }, function(err, fel) {
+    if(err || !fel) {
+      winston.info(err);
+      res.json(500, error.errorReponse("invalid id : " + id));
+    }
+    Msa.deliverFasta(fel.filepath).then(value => {
+      res.json(200, {fasta: value});
+    }).catch(err => {
+      winston.info(err);
+      res.json(500, {error: "Unable to deliver fasta."});
+    });
+  });
+};
+
 exports.getUsage = function(req, res) {
   client.get(FEL.cachePath(), function(err, data) {
     try {

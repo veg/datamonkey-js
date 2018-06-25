@@ -25,6 +25,7 @@ module.exports = function(app) {
   app.get('/absrel', absrel.form);
   app.post('/absrel', absrel.uploadFile);
   app.get('/absrel/:id/original_file/:name', absrel.getMSAFile);
+  app.get('/absrel/:id/fasta', absrel.fasta);
   app.get('/absrel/usage', absrel.getUsage);
   app.get('/absrel/:id/select-foreground', absrel.selectForeground);
   app.post('/absrel/:id/select-foreground', absrel.invoke);
@@ -40,6 +41,7 @@ module.exports = function(app) {
   app.get('/busted', busted.createForm);
   app.post('/busted/uploadfile', busted.uploadFile);
   app.get('/busted/:id/original_file/:name', busted.getMSAFile);
+  app.get('/busted/:id/fasta', busted.fasta);
   app.get('/busted/usage', busted.getUsage);
   app.get('/busted/:id/select-foreground', busted.selectForeground);
   app.post('/busted/:id/select-foreground', busted.invokeBusted);
@@ -71,6 +73,7 @@ module.exports = function(app) {
   app.get('/fel/:id/select-foreground', fel.selectForeground);
   app.post('/fel/:id/select-foreground', fel.invoke);
   app.get('/fel/:id/original_file/:name', fel.getMSAFile);
+  app.get('/fel/:id/fasta', fel.fasta);
   app.get('/fel/:id', fel.getPage);
   app.get('/fel/:id/info', fel.getInfo);
   app.get('/fel/:id/results', fel.getResults);
@@ -96,6 +99,7 @@ module.exports = function(app) {
   app.get('/fubar/usage', fubar.getUsage);
   app.get('/fubar/:id', fubar.getPage);
   app.get('/fubar/:id/original_file/:name', fubar.getMSAFile);
+  app.get('/fubar/:id/fasta', fubar.fasta);
   app.get('/fubar/:id/info', fubar.getInfo);
   app.get('/fubar/:id/results', fubar.getResults);
   app.get('/fubar/:id/cancel', fubar.cancel);
@@ -110,6 +114,7 @@ module.exports = function(app) {
   app.get('/gard/:id/screened_data', gard.getScreenedData);
   app.get('/gard/:id', gard.getPage);
   app.get('/gard/:id/original_file/:name', gard.getMSAFile);
+  app.get('/gard/:id/fasta', gard.fasta);
   app.get('/gard/:id/info', gard.getInfo);
   app.get('/gard/:id/results', gard.getResults);
   app.get('/gard/:id/cancel', gard.cancel);
@@ -140,6 +145,7 @@ module.exports = function(app) {
   app.get('/meme/usage', meme.getUsage);
   app.get('/meme/:id', meme.getPage);
   app.get('/meme/:id/original_file/:name', meme.getMSAFile);
+  app.get('/meme/:id/fasta', meme.fasta);
   app.get('/meme/:id/info', meme.getInfo);
   app.get('/meme/:id/results', meme.getResults);
   app.get('/meme/:id/cancel', meme.cancel);
@@ -166,6 +172,7 @@ module.exports = function(app) {
   app.post('/relax/:id/select-foreground', relax.invokeRelax);
   app.get('/relax/:id', relax.getPage);
   app.get('/relax/:id/original_file/:name', relax.getMSAFile);
+  app.get('/relax/:id/fasta', relax.fasta);
   app.get('/relax/:id/info', relax.getInfo);
   app.get('/relax/:id/cancel', relax.cancel);
   app.get('/relax/:id/restart', relax.restart);
@@ -181,6 +188,7 @@ module.exports = function(app) {
   app.get('/slac/usage', slac.getUsage);
   app.get('/slac/:id', slac.getPage);
   app.get('/slac/:id/original_file/:name', slac.getMSAFile);
+  app.get('/slac/:id/fasta', slac.fasta);
   app.get('/slac/:id/info', slac.getInfo);
   app.get('/slac/:id/results', slac.getResults);
   app.get('/slac/:id/cancel', slac.cancel);

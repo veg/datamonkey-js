@@ -1,8 +1,43 @@
 var React = require("react"),
   ReactDOM = require("react-dom");
 
-
 var selected_style = {backgroundColor: "#00A99D", color:"white"};
+
+var h2Style = {
+  fontFamily: "montserrat",
+  fontSize: "18px",
+  fontWeight: "700",
+  color: "#009BA1",
+  marginTop: "0px",
+  marginBottom: "10px",
+  textAlign: "center",
+};
+  
+var borderStyle = {
+  padding: "5px",
+  border: "2px #AEDBDA solid",
+  marginBottom: "40px",
+};
+
+var analysisBorder = {
+  padding: "30px 10% 30px 10%",
+  border: "2px #AEDBDA solid",
+  marginBottom: "40px",
+};
+
+var analysisName = {
+  fontFamily: "montserrat",
+  fontStyle: "italic",
+  fontWeight: "700",
+  color: "009BA1",
+  textAlign: "center",
+};
+
+var analysisText = {
+  fontFamily: "montserrat",
+  fontWeight: "500",
+  color: "#484D56",
+};
 
 // Decision Tree
 class DecisionBranch extends React.Component {
@@ -13,11 +48,11 @@ class DecisionBranch extends React.Component {
   render(){
     var self = this;
     var question = (<div className="row">
-      <div className="col-md-12">
-        <hr />
-        <p>{this.props.text}</p>
+      <div className="col-md-10 col-md-offset-1">
 
-        <div className="btn-group btn-group-justified" role="group" aria-label="...">
+        <h2 style={h2Style}>{this.props.text}</h2>
+
+        <div className="analysis-tree btn-group btn-group-justified" role="group" aria-label="..." style={borderStyle}>
           {this.props.choices.map(choice=>{
             return (<a
               role="button"
@@ -52,18 +87,22 @@ function Root(props){
     {displayName: "Selection", name: "selection", child: <SelectionBranch />},
     {displayName: "Recombination", name: "recombination", child: <GARD />}
   ];
-  return (<div className="container">
-    <div className="row"> 
-      <div className="datamonkey-sm-header">
-        <h1>Datamonkey</h1>
-        <p>A Collection of State of the Art Statistical Models and Bioinformatics Tools</p>
-      </div>
-    </div>
+  return (
+  
+<div>
+  <div className="analysis-tree jumbotron">
+    <h1>Datamonkey</h1>
+    <hr />
+    {/*<p>GETTING STARTED</p>*/}
+    <div>A Collection of State of the Art Statistical Models and Bioinformatics Tools</div>
+  </div>
+  <div className="container">
     <DecisionBranch
       text='What evolutionary process would you like to detect?'
       choices={choices}
-    />
-  </div>);
+    /> 
+  </div>
+</div>);
 }
 
 function SelectionBranch(props){
@@ -130,21 +169,18 @@ class Method extends React.Component {
   }
   render(){
     return (<div className="row">
-      <div className="col-md-12">
-        <hr />
-        <strong>Datamonkey recommends that you use...</strong>
-        <div className="panel panel-default panel-datamonkey">
+      <div className="col-md-10 col-md-offset-1">
+        <div className="panel panel-default panel-datamonkey" style={analysisBorder}>
+        <h2 style={h2Style}>Datamonkey recommends that you use...</h2>
           <a href={this.props.href} onMouseEnter={()=>this.setState({hover:true})} onMouseLeave={()=>this.setState({hover: false})}>
             <div className="panel-heading">
-              <h3 className="panel-title">{this.props.title}</h3>
-              <span className={"pull-right glyphicon glyphicon-chevron-right" + (this.state.hover? "" : " hide")}></span>
+              <center><h3 style={analysisName}>{this.props.title}</h3></center>
             </div>
           </a>
-          <div className="panel-body">
+          <div className="panel-body" style={analysisText}>
             {this.props.children}
           </div>
         </div>
-        <strong>Click the method name to get started!</strong>
       </div>
     </div>);
   }
@@ -152,8 +188,10 @@ class Method extends React.Component {
 
 function ABSREL(props){
   return (<Method title="aBSREL" href="absrel">
-    <p>aBSREL (<strong>a</strong>daptive <strong>B</strong>ranch-<strong>S</strong>ite <strong>R</strong>andom <strong>E</strong>ffects <strong>L</strong>ikelihood)
-    is an improved version of the commonly-used "branch-site" models, which are used to
+    <p>aBSREL (<strong>a</strong>daptive
+    <strong>B</strong>ranch-<strong>S</strong>ite <strong>R</strong>andom
+    <strong>E</strong>ffects <strong>L</strong>ikelihood) is an improved version
+    of the commonly-used "branch-site" models, which are used to
     test if positive selection has occurred on a proportion of branches.</p>
 
     <p>For more information, please see the <a className="hyphy-anchor" 
@@ -185,8 +223,8 @@ function BUSTED(props){
 
 function RELAX(props){
   return (<Method title="RELAX" href="relax">
-    <p>RELAX is a hypothesis testing framework that asks whether the
-    strength of natural selection has been relaxed or intensified along a
+    <p>RELAX is a hypothesis testing framework that asks whether the strength of
+    natural selection has been relaxed or intensified along a
     specified set of test branches. RELAX is therefore <em>not</em> a
     suitable method for explicitly testing for positive selection. Instead,
     RELAX is most useful for identifying trends and/or shifts in the
@@ -203,11 +241,12 @@ function RELAX(props){
 
 function MEME(props){
   return (<Method title="MEME" href="meme">
-    <p>MEME (<strong>M</strong>ixed <strong>E</strong>ffects <strong>M</strong>odel of <strong>E</strong>volution) employs a mixed-effects maximum
-    likelihood approach to test the hypothesis that individual sites have
-    been subject to episodic positive or diversifying selection. In other
-    words, MEME aims to detect sites evolving under positive selection under
-    a proportion of branches.</p>
+    <p>MEME (<strong>M</strong>ixed <strong>E</strong>ffects
+    <strong>M</strong>odel of <strong>E</strong>volution) employs a
+    mixed-effects maximum likelihood approach to test the hypothesis that
+    individual sites have been subject to episodic positive or diversifying
+    selection. In other words, MEME aims to detect sites evolving under positive
+    selection under a proportion of branches.</p>
 
     <p>For more information, please see the <a className="hyphy-anchor"
     href="http://hyphy.org/methods/selection-methods/#meme">summary on hyphy.org</a> or see <a className="hyphy-anchor"
@@ -219,31 +258,41 @@ function MEME(props){
 
 function FEL(props){
   return (<Method title="FEL" href="fel">
-    FEL (<strong>F</strong>ixed <strong>E</strong>ffects <strong>L</strong>ikelihood) uses a maximum-likelihood (ML) approach
-    to infer nonsynoymous (dN) and synonymous (dS) substitution rates on a
-    per-site basis for a given coding alignment and corresponding
-    phylogeny. This method assumes that the selection pressure for each
-    site is constant along the entire phylogeny.
-
-    <p>For more information, please see the <a className="hyphy-anchor"
-    href="http://hyphy.org/methods/selection-methods/#fel">summary on hyphy.org</a> or see 
-    {" "}<a className="hyphy-anchor" href="https://doi.org/10.1093/molbev/msi105">Kosakovsky Pond, SL and
-    Frost, SDW. "Not So Different After All: A Comparison of Methods for Detecting
-    Amino Acid Sites Under Selection." Mol. Biol. Evol. 22, 1208--1222
-    (2005).</a>
+    <p>
+      FEL (<strong>F</strong>ixed <strong>E</strong>ffects
+      <strong>L</strong>ikelihood) uses a maximum-likelihood (ML) approach to
+      infer nonsynoymous (dN) and synonymous (dS) substitution rates on a per-site
+      basis for a given coding alignment and corresponding phylogeny. This method
+      assumes that the selection pressure for each site is constant along the
+      entire phylogeny.
+    </p>
+    <p>
+      For more information, please see the <a className="hyphy-anchor"
+      href="http://hyphy.org/methods/selection-methods/#fel">summary on
+      hyphy.org</a> or see {" "}<a className="hyphy-anchor"
+      href="https://doi.org/10.1093/molbev/msi105">Kosakovsky Pond, SL and Frost,
+      SDW. "Not So Different After All: A Comparison of Methods for Detecting
+      Amino Acid Sites Under Selection." Mol. Biol. Evol. 22, 1208--1222
+      (2005).</a>
     </p>
   </Method>);
 }
 
 function FUBAR(props){
   return (<Method title="FUBAR" href="fubar">
-    <p>FUBAR (<strong>Fast</strong>, <strong>U</strong>nconstrained <strong>Bayesian</strong> <strong>A</strong>pp<strong>R</strong>oximation)
-    uses a Bayesian approach to infer nonsynoymous (dN) and synonymous (dS) substitution rates on a per-site basis for a given coding alignment
-    and corresponding phylogeny. This method assumes that the selection pressure for each site is constant along the entire phylogeny.</p>
+    <p>FUBAR (<strong>Fast</strong>, <strong>U</strong>nconstrained
+    <strong>Bayesian</strong> <strong>A</strong>pp<strong>R</strong>oximation)
+    uses a Bayesian approach to infer nonsynoymous (dN) and synonymous (dS)
+    substitution rates on a per-site basis for a given coding alignment and
+    corresponding phylogeny. This method assumes that the selection pressure for
+    each site is constant along the entire phylogeny.</p>
 
     <p>For more information, please see the <a className="hyphy-anchor"
-    href="http://hyphy.org/methods/selection-methods/#fubar">summary on hyphy.org</a> or see 
-    {" "}<a className="hyphy-anchor" href="https://academic.oup.com/mbe/article-lookup/doi/10.1093/molbev/mst030"> Murrell, B et al. "FUBAR: A Fast, Unconstrained Bayesian AppRoximation for inferring selection." Mol. Biol. Evol. 30, 1196–1205 (2013).</a>
+    href="http://hyphy.org/methods/selection-methods/#fubar">summary on
+    hyphy.org</a> or see {" "}<a className="hyphy-anchor"
+    href="https://academic.oup.com/mbe/article-lookup/doi/10.1093/molbev/mst030">
+    Murrell, B et al. "FUBAR: A Fast, Unconstrained Bayesian AppRoximation for
+    inferring selection." Mol. Biol. Evol. 30, 1196–1205 (2013).</a>
     </p>
   </Method>);
 }

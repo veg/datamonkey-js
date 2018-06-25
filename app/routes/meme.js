@@ -206,6 +206,23 @@ exports.getMSAFile = function(req, res) {
   });
 };
 
+exports.fasta = function(req, res) {
+  var id = req.params.id;
+
+  MEME.findOne({ _id: id }, function(err, meme) {
+    if(err || !meme) {
+      winston.info(err);
+      res.json(500, error.errorReponse("invalid id : " + id));
+    }
+    Msa.deliverFasta(meme.filepath).then(value => {
+      res.json(200, {fasta: value});
+    }).catch(err => {
+      winston.info(err);
+      res.json(500, {error: "Unable to deliver fasta."});
+    });
+  });
+};
+
 exports.getUsage = function(req, res) {
   client.get(MEME.cachePath(), function(err, data) {
     try {

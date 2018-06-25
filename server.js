@@ -14,7 +14,11 @@ var express          = require('express'),
     helpers          = require('./lib/helpers'),
     fs               = require('fs'),
     path             = require("path"),
+<<<<<<< HEAD
     redis            = require('redis'),
+=======
+    mongoose         = require('mongoose'),
+>>>>>>> a196bf617942990d38814e0bc9daed1e402b76fb
     bb               = require('express-busboy');
 
 

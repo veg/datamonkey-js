@@ -1,0 +1,37 @@
+language: node_js
+
+services: 
+  - mongodb
+  - redis-server
+
+node_js:
+  - "8"
+
+sudo: false
+
+notifications:
+    email:
+        recipients:
+            - spond@temple.edu
+            - steven@stevenweaver.org
+            - sshank@temple.edu
+        on_success: always
+        on_failure: always
+
+branches:
+  only:
+  - master
+  - develop
+
+cache:
+  yarn: true
+  directories:
+    - ".eslintcache"
+    - "node_modules"
+
+before_script:
+  - cp config/setup.js.tpl config/setup.js
+
+script:
+  - make install
+  - yarn test
