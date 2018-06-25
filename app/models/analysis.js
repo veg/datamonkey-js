@@ -126,7 +126,7 @@ AnalysisSchema.statics.usageStatistics = function(cb) {
           }
         )
         .exec(function(err, items) {
-          client.set(self.collection.name + "_job_stats", JSON.stringify(items), (err, reply) => {});
+          client.set(this.cachePath(), JSON.stringify(items), (err, reply) => {});
           cb(err, items);
 
           });
