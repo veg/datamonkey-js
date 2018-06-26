@@ -4,7 +4,8 @@ var fs = require('fs'),
     path = require('path'),
     spawn = require('child_process').spawn,
     setup = require('../config/setup'),
-    globals = require('../config/globals');
+    globals = require('../config/globals'),
+    assert = require('assert');
 
 // Bootstrap models
 require('../app/models/msa');
@@ -23,6 +24,7 @@ describe('msa datareader validation', function() {
                       [path.join(__dirname, '/../lib/bfs/datareader.bf')]);
 
     hyphy.stdout.on('data', function (data) {
+
       var results = JSON.parse(data);
 
       //Ensure that all information is there
@@ -39,11 +41,12 @@ describe('msa datareader validation', function() {
       results.should.have.property('SEQUENCES');
 
       results.should.have.property('FILE_PARTITION_INFO');
-      results.FILE_PARTITION_INFO.should.have.property('partition');
-      results.FILE_PARTITION_INFO.should.have.property('startcodon');
-      results.FILE_PARTITION_INFO.should.have.property('endcodon');
-      results.FILE_PARTITION_INFO.should.have.property('span');
-      results.FILE_PARTITION_INFO.should.have.property('usertree');
+      partition_info = results.FILE_PARTITION_INFO["0"];
+      partition_info.should.have.property('partition');
+      partition_info.should.have.property('startcodon');
+      partition_info.should.have.property('endcodon');
+      partition_info.should.have.property('span');
+      partition_info.should.have.property('usertree');
 
     });
 
@@ -77,9 +80,9 @@ describe('msa datareader validation', function() {
 
 });
 
-describe.only('msa parseFile', () => {
+describe('msa parseFile', () => {
 
-  it.only('should save multiple partitions', done => {
+  it('should save multiple partitions', done => {
 
     Msa.parseFile(path.join(__dirname, '/res/multiple_partitions.nex'), 0, 0, (err, msa) => {
       msa.partition_info.should.be.length(4);
@@ -267,3 +270,29 @@ describe('nexus tree remover', function() {
 
 });
 
+describe('delivering fasta', function(){
+  it('should convert nexus to equivalent fasta', function(done) {
+    var input_file_path = path.join(__dirname, '..', 'test', 'res', 'CD2.nex'),
+      output_file_path = path.join(__dirname, '..', 'test', 'res', 'CD2.fasta'),
+      converted_data = Msa.deliverFasta(input_file_path),
+      output_data = fs.readFileSync(output_file_path).toString();
+      converted_data.then(function(value) {
+        assert.equal(value, output_data);
+        done();
+      }).catch(err => {
+        throw err;
+        done();
+      });
+  });
+
+  it('should deliver fasta without alteration', function(done) {
+    var input_file_path = path.join(__dirname, '..', 'test', 'res', 'CD2.fasta'),
+      output_file_path = path.join(__dirname, '..', 'test', 'res', 'CD2.fasta'),
+      converted_data = Msa.deliverFasta(input_file_path),
+      output_data = fs.readFileSync(output_file_path).toString();
+      converted_data.then(function(value) {
+        assert.equal(value, output_data);
+        done();
+      });
+  });
+});

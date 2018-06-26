@@ -14,6 +14,9 @@ var mongoose = require("mongoose"),
   PartitionInfo = mongoose.model("PartitionInfo"),
   FEL = mongoose.model("FEL");
 
+var redis = require('redis'),
+  client = redis.createClient({host : 'localhost', port : 6379});
+
 exports.form = function(req, res) {
   var post_to = "/fel";
   res.render("fel/msa_form.ejs", { post_to: post_to });
@@ -186,7 +189,7 @@ exports.getPage = function(req, res) {
           res.json(fel);
         },
 
-        html : function() { 
+        html : function() {
           res.render("fel/jobpage.ejs", { job: fel });
         }
 
@@ -236,7 +239,7 @@ exports.getInfo = function(req, res) {
 };
 
 /**
- * Returns log txt file 
+ * Returns log txt file
  * app.get('/fel/:id/results', fel.getLog);
  */
 exports.getLog = function(req, res) {
@@ -297,8 +300,30 @@ exports.getMSAFile = function(req, res) {
   });
 };
 
+exports.fasta = function(req, res) {
+  var id = req.params.id;
+
+  FEL.findOne({ _id: id }, function(err, fel) {
+    if(err || !fel) {
+      winston.info(err);
+      res.json(500, error.errorReponse("invalid id : " + id));
+    }
+    Msa.deliverFasta(fel.filepath).then(value => {
+      res.json(200, {fasta: value});
+    }).catch(err => {
+      winston.info(err);
+      res.json(500, {error: "Unable to deliver fasta."});
+    });
+  });
+};
+
 exports.getUsage = function(req, res) {
-  FEL.usageStatistics(function(err, fel) {
-    res.json(200, fel);
+  client.get(FEL.cachePath(), function(err, data) {
+    try {
+      res.json(200, JSON.parse(data));
+    } catch(err){
+        winston.info(err);
+      };
+
   });
 };

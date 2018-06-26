@@ -13,6 +13,9 @@ var mongoose = require("mongoose"),
   PartitionInfo = mongoose.model("PartitionInfo"),
   MEME = mongoose.model("MEME");
 
+var redis = require('redis'),
+  client = redis.createClient({host : 'localhost', port : 6379});
+
 exports.form = function(req, res) {
   var post_to = "/meme";
   res.render("meme/form.ejs", { post_to: post_to });
@@ -142,7 +145,7 @@ exports.getInfo = function(req, res) {
 };
 
 /**
- * Returns log txt file 
+ * Returns log txt file
  * app.get('/meme/:id/results', meme.getLog);
  */
 exports.getLog = function(req, res) {
@@ -203,8 +206,30 @@ exports.getMSAFile = function(req, res) {
   });
 };
 
+exports.fasta = function(req, res) {
+  var id = req.params.id;
+
+  MEME.findOne({ _id: id }, function(err, meme) {
+    if(err || !meme) {
+      winston.info(err);
+      res.json(500, error.errorReponse("invalid id : " + id));
+    }
+    Msa.deliverFasta(meme.filepath).then(value => {
+      res.json(200, {fasta: value});
+    }).catch(err => {
+      winston.info(err);
+      res.json(500, {error: "Unable to deliver fasta."});
+    });
+  });
+};
+
 exports.getUsage = function(req, res) {
-  MEME.usageStatistics(function(err, meme) {
-    res.json(200, meme);
+  client.get(MEME.cachePath(), function(err, data) {
+    try {
+      res.json(200, JSON.parse(data));
+    } catch(err){
+        winston.info(err);
+      };
+
   });
 };

@@ -13,6 +13,9 @@ var mongoose = require("mongoose"),
   PartitionInfo = mongoose.model("PartitionInfo"),
   SLAC = mongoose.model("SLAC");
 
+var redis = require('redis'),
+  client = redis.createClient({host : 'localhost', port : 6379});
+
 exports.form = function(req, res) {
   var post_to = "/slac";
   res.render("slac/form.ejs", { post_to: post_to });
@@ -142,7 +145,7 @@ exports.getInfo = function(req, res) {
 };
 
 /**
- * Returns log txt file 
+ * Returns log txt file
  * app.get('/slac/:id/results', slac.getLog);
  */
 exports.getLog = function(req, res) {
@@ -203,8 +206,30 @@ exports.getMSAFile = function(req, res) {
   });
 };
 
+exports.fasta = function(req, res) {
+  var id = req.params.id;
+
+  SLAC.findOne({ _id: id }, function(err, slac) {
+    if(err || !slac) {
+      winston.info(err);
+      res.json(500, error.errorReponse("invalid id : " + id));
+    }
+    Msa.deliverFasta(slac.filepath).then(value => {
+      res.json(200, {fasta: value});
+    }).catch(err => {
+      winston.info(err);
+      res.json(500, {error: "Unable to deliver fasta."});
+    });
+  });
+};
+
 exports.getUsage = function(req, res) {
-  SLAC.usageStatistics(function(err, fel) {
-    res.json(200, fel);
+  client.get(SLAC.cachePath(), function(err, data) {
+    try {
+      res.json(200, JSON.parse(data));
+    } catch(err){
+        winston.info(err);
+      };
+
   });
 };
