@@ -14,6 +14,9 @@ var mongoose = require("mongoose"),
   PartitionInfo = mongoose.model("PartitionInfo"),
   Busted = mongoose.model("Busted");
 
+var redis = require('redis'),
+  client = redis.createClient({host : 'localhost', port : 6379});
+
 exports.createForm = function(req, res) {
   res.render("busted/upload_msa.ejs");
 };
@@ -212,7 +215,7 @@ exports.resubscribePendingJobs = function(req, res) {
 };
 
 /**
- * Returns log txt file 
+ * Returns log txt file
  * app.get('/busted/:bustedid/results', busted.getBustedResults);
  */
 exports.getLog = function(req, res) {
@@ -255,12 +258,6 @@ exports.cancel = function(req, res) {
   });
 };
 
-exports.getUsage = function(req, res) {
-  Busted.usageStatistics(function(err, busted) {
-    res.json(200, busted);
-  });
-};
-
 exports.getMSAFile = function(req, res) {
   var id = req.params.id, name = req.params.name;
 
@@ -291,3 +288,13 @@ exports.fasta = function(req, res) {
     });
   });
 };
+
+exports.getUsage = function(req, res) {
+  client.get(Busted.cachePath(), function(err, data) {
+    try {
+      res.json(200, JSON.parse(data));
+    } catch(err){
+        winston.info(err);
+      };
+    });
+  };

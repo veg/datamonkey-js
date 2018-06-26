@@ -13,6 +13,9 @@ var mongoose = require("mongoose"),
   PartitionInfo = mongoose.model("PartitionInfo"),
   aBSREL = mongoose.model("aBSREL");
 
+var redis = require('redis'),
+  client = redis.createClient({host : 'localhost', port : 6379});
+
 exports.form = function(req, res) {
   var post_to = "/absrel";
   res.render("absrel/msa_form.ejs", { post_to: post_to });
@@ -216,7 +219,7 @@ exports.getInfo = function(req, res) {
 };
 
 /**
- * Returns log txt file 
+ * Returns log txt file
  * app.get('/absrel/:id/results', absrel.getLog);
  */
 exports.getLog = function(req, res) {
@@ -263,12 +266,6 @@ exports.resubscribePendingJobs = function(req, res) {
   aBSREL.subscribePendingJobs();
 };
 
-exports.getUsage = function(req, res) {
-  aBSREL.usageStatistics(function(err, absrel) {
-    res.json(200, absrel);
-  });
-};
-
 exports.getMSAFile = function(req, res) {
   var id = req.params.id, name = req.params.name;
 
@@ -298,4 +295,14 @@ exports.fasta = function(req, res) {
       res.json(500, {error: "Unable to deliver fasta."});
     });
   });
+};
+
+exports.getUsage = function(req, res) {
+  client.get(aBSREL.cachePath(), function(err, data) {
+    try {
+      res.json(200, JSON.parse(data));
+    } catch(err){
+        winston.info(err);
+      };
+    });
 };

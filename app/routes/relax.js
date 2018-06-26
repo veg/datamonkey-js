@@ -16,6 +16,9 @@ var mongoose = require("mongoose"),
   PartitionInfo = mongoose.model("PartitionInfo"),
   Relax = mongoose.model("Relax");
 
+var redis = require('redis'),
+  client = redis.createClient({host : 'localhost', port : 6379});
+
 exports.createForm = function(req, res) {
   res.render("relax/upload_msa.ejs");
 };
@@ -279,7 +282,7 @@ exports.getInfo = function(req, res) {
 };
 
 /**
- * Returns log txt file 
+ * Returns log txt file
  * app.get('/relax/:id/log.txt', relax.getLog);
  */
 exports.getLog = function(req, res) {
@@ -326,12 +329,6 @@ exports.resubscribePendingJobs = function(req, res) {
   Relax.subscribePendingJobs();
 };
 
-exports.getUsage = function(req, res) {
-  Relax.usageStatistics(function(err, relax) {
-    res.json(200, relax);
-  });
-};
-
 exports.getMSAFile = function(req, res) {
   var id = req.params.id, name = req.params.name;
 
@@ -362,3 +359,13 @@ exports.fasta = function(req, res) {
     });
   });
 };
+
+exports.getUsage = function(req, res) {
+  client.get(Relax.cachePath(), function(err, data) {
+    try {
+      res.json(200, JSON.parse(data));
+    } catch(err){
+        winston.info(err);
+      };
+    });
+  };

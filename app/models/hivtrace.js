@@ -312,8 +312,8 @@ HivTrace.methods.addAttributesToResults = function(cb) {
   var attr_keys = _.keys(attributes[0]);
 
   var category_map = {
-    "categorical" : "String", 
-    "individual" : "String", 
+    "categorical" : "String",
+    "individual" : "String",
     "temporal" : "Date"
   };
 
@@ -456,6 +456,10 @@ HivTrace.statics.usageStatistics = function(cb) {
     .sort({ created: -1 })
     .limit(1)
     .exec(function(err1, items1) {
+      if (err1 || items1.length == 0){
+        cb(err1, null);
+        return;
+      };
       self
         .find(
           {

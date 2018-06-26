@@ -9,7 +9,8 @@ var error = require(ROOT_PATH + "/lib/error.js"),
   hpcsocket = require(ROOT_PATH + "/lib/hpcsocket.js"),
   setup = require(ROOT_PATH + "/config/setup"),
   _ = require("underscore"),
-  spawn = require("child_process").spawn;
+  spawn = require("child_process").spawn,
+  winston = require('winston');
 
 var mongoose = require("mongoose"),
   HivTrace = mongoose.model("HivTrace"),
