@@ -1,6 +1,8 @@
 const logger = require('./lib/logger');
 var setup = require('./config/setup');
 var error = require('./lib/error');
+var queueSet = require('./lib/queue.js');
+
 
 ROOT_PATH = __dirname;
 HOST      = setup.host;
@@ -13,6 +15,7 @@ var express          = require('express'),
     helpers          = require('./lib/helpers'),
     fs               = require('fs'),
     path             = require("path"),
+    redis            = require('redis'),
     mongoose         = require('mongoose'),
     bb               = require('express-busboy');
 
@@ -49,7 +52,7 @@ upload.configure({
   uploadUrl: '/fleaupload',
 });
 
-upload.on('end', function (fileInfo, req, res) { 
+upload.on('end', function (fileInfo, req, res) {
 
 });
 
@@ -81,6 +84,8 @@ fs.readdirSync(models_path).forEach(function (file) {
   require(path.join(models_path,'/',file));
 });
 
+var usageStatisticsLooper = require('./lib/usageStatistics.js');
+
 app.use(express.static(path.join(__dirname, '/public')));
 app.use('/uploads', express.static(path.join(__dirname + '/uploads')));
 
@@ -105,5 +110,28 @@ io.sockets.on('connection', function (socket) {
   socket.on ('acknowledged', function (data) {
     var clientSocket = new jobproxy.ClientSocket(socket, data.id);
   });
-  
+
+  socket.on ('fasta_parsing_progress_start', function (data) {
+    var fasta_listener = redis.createClient ();
+    fasta_listener.subscribe ("fasta_parsing_progress_" + data.id);
+    fasta_listener.on ("message", function (channel, message) {
+        socket.emit ("fasta_parsing_update", message);
+        if (message == "done") {
+            fasta_listener.end();
+        }
+    });
+  });
+
+  socket.on ('attribute_parsing_progress_start', function (data) {
+    var attr_listener = redis.createClient ();
+    attr_listener.subscribe ("attribute_parsing_progress_" + data.id);
+    attr_listener.on ("message", function (channel, message) {
+        socket.emit ("attribute_parsing_progress", message);
+        if (message == "done") {
+            attr_listener.end();
+        }
+    });
+  });
 });
+
+setInterval(queueSet, 5000, function(job_queue) {});

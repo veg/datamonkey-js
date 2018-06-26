@@ -4,7 +4,8 @@ var fs = require('fs'),
     path = require('path'),
     spawn = require('child_process').spawn,
     setup = require('../config/setup'),
-    globals = require('../config/globals');
+    globals = require('../config/globals'),
+    assert = require('assert');
 
 // Bootstrap models
 require('../app/models/msa');
@@ -269,3 +270,29 @@ describe('nexus tree remover', function() {
 
 });
 
+describe('delivering fasta', function(){
+  it('should convert nexus to equivalent fasta', function(done) {
+    var input_file_path = path.join(__dirname, '..', 'test', 'res', 'CD2.nex'),
+      output_file_path = path.join(__dirname, '..', 'test', 'res', 'CD2.fasta'),
+      converted_data = Msa.deliverFasta(input_file_path),
+      output_data = fs.readFileSync(output_file_path).toString();
+      converted_data.then(function(value) {
+        assert.equal(value, output_data);
+        done();
+      }).catch(err => {
+        throw err;
+        done();
+      });
+  });
+
+  it('should deliver fasta without alteration', function(done) {
+    var input_file_path = path.join(__dirname, '..', 'test', 'res', 'CD2.fasta'),
+      output_file_path = path.join(__dirname, '..', 'test', 'res', 'CD2.fasta'),
+      converted_data = Msa.deliverFasta(input_file_path),
+      output_data = fs.readFileSync(output_file_path).toString();
+      converted_data.then(function(value) {
+        assert.equal(value, output_data);
+        done();
+      });
+  });
+});
