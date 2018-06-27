@@ -11,11 +11,15 @@ const cluster_ip_urls_array = [
     'http://silverback.temple.edu:7015',
     'http://silverback.temple.edu:7016'
   ];
+
+var database_path = "mongodb://localhost/";
+var database_name = "datamonkey-dev";
   
 
 define('host','datamonkey-dev');
 define('port', 4002);
-define('database', 'mongodb://localhost/datamonkey-dev');
+define('database', database_path + database_name);
+define('database_name', database_name);
 define('log_level', 'warn');
 define('cluster_ip', cluster_ip_urls_array);
 define('flea_ip_address', 'http://silverback.temple.edu:7004');

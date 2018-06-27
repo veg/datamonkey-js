@@ -1,5 +1,6 @@
 var mongoose = require("mongoose"),
   globals = require("../../config/globals.js"),
+  setup = require('./../../config/setup'),
   moment = require("moment"),
   _ = require("underscore"),
   winston = require("winston"),
@@ -126,7 +127,7 @@ AnalysisSchema.statics.usageStatistics = function(cb) {
           }
         )
         .exec(function(err, items) {
-          client.set(self.collection.name + "_job_stats", JSON.stringify(items), (err, reply) => {});
+          client.set(setup.database_name + "_" + self.collection.name + "_job_stats", JSON.stringify(items), (err, reply) => {});
           cb(err, items);
 
           });
@@ -173,7 +174,7 @@ AnalysisSchema.methods.cancel = function(callback) {
 };
 
 AnalysisSchema.statics.cachePath = function() {
-   return this.collection.name + "_job_stats";
+   return setup.database_name + "_" + this.collection.name + "_job_stats";
   };
 
 
