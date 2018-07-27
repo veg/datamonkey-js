@@ -76,6 +76,7 @@ exports.invoke = function(req, res) {
               res.json(500, { error: err });
             } else {
               // Send the MSA and analysis type
+              //
               var connect_callback = function(err, result) {
                 logger.log(result);
               };
@@ -100,7 +101,7 @@ exports.invoke = function(req, res) {
             if (err) {
               was_error = true;
             } else {
-              if (count == flea_files.length) {
+              if (count == flea_files.length || flea_files.length == 1) {
                 if (err) {
                   respond_with_json("failure", "");
                 } else {
