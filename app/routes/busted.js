@@ -35,6 +35,7 @@ exports.uploadFile = function(req, res) {
   }
 
   Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
+
     if (err) {
       res.json(500, { error: err });
       return;
@@ -60,6 +61,7 @@ exports.uploadFile = function(req, res) {
     busted.msa = msa;
 
     busted.save(function(err, busted_result) {
+
       if (err) {
         logger.error("busted save failed");
         res.json(500, { error: err });
@@ -71,11 +73,32 @@ exports.uploadFile = function(req, res) {
           logger.error("busted rename failed");
           res.json(500, { error: err });
         } else {
-          res.json(200, busted);
+
+          var move = Msa.removeTreeFromNexus(busted_result.filepath, busted_result.filepath);
+          move.then(val=>{
+            res.json(200, busted_result);
+          }, reason => {
+            res.json(500, {error: "issue removing tree from file"});
+          });
+
         }
       }
 
-      helpers.moveSafely(req.files.files.file, busted_result.filepath, move_cb);
+      fs.readFile(fn, (err, data) => {
+        if (err) {
+          logger.error("read file failed");
+          res.json(500, { error: err });
+        }
+
+        fs.writeFile(busted_result.original_fn,  data, err => {
+          if (err) {
+            logger.error("write file failed");
+            res.json(500, { error: err });
+          }
+          helpers.moveSafely(req.files.files.file, busted_result.filepath, move_cb);
+        });
+      });
+
 
     });
   });
