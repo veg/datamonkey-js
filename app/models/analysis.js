@@ -36,6 +36,14 @@ AnalysisSchema.virtual("since_created").get(function() {
   return time.fromNow();
 });
 
+/**
+ * Original file path for document's file upload
+ */
+AnalysisSchema.virtual("original_fn").get(function() {
+  return path.resolve(__dirname + "/../../uploads/msa/" + this._id + "-original." + this.original_extension);
+});
+
+
 AnalysisSchema.virtual("max_sites").get(function() {
   return 12000;
 });
