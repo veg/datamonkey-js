@@ -123,7 +123,7 @@ exports.getInfo = function(req, res) {
 };
 
 /**
- * Returns log txt file 
+ * Returns log txt file
  * app.get('/prime/:id/results', prime.getLog);
  */
 exports.getLog = function(req, res) {
@@ -171,7 +171,8 @@ exports.resubscribePendingJobs = function(req, res) {
 };
 
 exports.getMSAFile = function(req, res) {
-  var id = req.params.id, name = req.params.name;
+  var id = req.params.id,
+    name = req.params.name;
 
   var options = {};
 
