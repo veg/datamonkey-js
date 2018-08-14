@@ -9,7 +9,9 @@
   },
   "scripts": {
     "test": "mocha",
-    "lint": "./node_modules/.bin/eslint"
+    "lint": "./node_modules/.bin/eslint",
+    "format": "prettier 'src/**/*.{js,jsx}' 'app/**/*.{js,jsx}' 'lib/**/*.{js,jsx}' 'config/**/*.{js,jsx}' 'test/**/*.{js,jsx}' --write",
+    "precommit": "pretty-quick --staged"
   },
   "repository": {
     "type": "git",
@@ -45,6 +47,7 @@
     "nvm": "0.0.4",
     "phylotree": "0.1.4",
     "popper.js": "1.14.4",
+    "pretty-quick": "^1.6.0",
     "q": "^1.4.0",
     "react": "^15.0.0",
     "react-dom": "^15.6.1",
@@ -88,12 +91,14 @@
     "gulp-uglify": "^1.4.1",
     "gulp-usemin": "^0.3.14",
     "gulp-watch": "^4.3.5",
+    "husky": "^0.14.3",
     "less": "^2.7.2",
     "less-loader": "^4.0.4",
     "lodash.clonedeep": "^4.5.0",
     "mocha": "^2.0.0",
     "node-inspect": "^1.11.2",
     "node-sass": "^4.9.3",
+    "prettier": "^1.14.2",
     "reactify": "^1.1.1",
     "sass-loader": "6.0.7",
     "scss-loader": "^0.0.1",
