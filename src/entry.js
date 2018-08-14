@@ -7,7 +7,7 @@ var _ = require('underscore');
 window._ = _;
 
 require("font-awesome/css/font-awesome.css");
-require('./less/bootstrap.less');
+require('./scss/application.scss');
 require("phylotree.css");
 require('blueimp-file-upload');
 
