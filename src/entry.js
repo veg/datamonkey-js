@@ -25,6 +25,8 @@ var stats = require("jsx/stats.jsx");
 var analysis_tree = require("jsx/analysis_tree.jsx");
 var jobqueue = require("jsx/jobqueue.jsx");
 var render_attribute_modal = require("jsx/attribute_table.jsx");
+var render_citations = require("jsx/citations.jsx");
+var render_help = require("jsx/help.jsx");
 
 window.gard_form = gard_form;
 window.slac_form = slac_form;
@@ -36,3 +38,5 @@ window.datamonkey_stats = stats;
 window.datamonkey_analysis_tree = analysis_tree;
 window.datamonkey_jobqueue = jobqueue;
 window.render_attribute_modal = render_attribute_modal;
+window.render_citations = render_citations;
+window.render_help = render_help;
