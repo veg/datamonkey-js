@@ -49,7 +49,7 @@ class DecisionBranch extends React.Component {
     var self = this;
     var question = (
       <div className="row">
-        <div className="col-md-10 col-md-offset-1">
+        <div className="col">
           <h2 style={h2Style}>{this.props.text}</h2>
 
           <div
@@ -93,17 +93,38 @@ class DecisionBranch extends React.Component {
   }
 }
 
-function Root(props) {
+function DecisionTreeRoot(props) {
   var choices = [
-    { displayName: "Selection", name: "selection", child: <SelectionBranch /> },
-    { displayName: "Recombination", name: "recombination", child: <GARD /> }
+    {
+      displayName: "Selection",
+      name: "selection",
+      child: (
+        <SelectionBranch
+          datamonkey={props.datamonkey}
+          changeAppState={props.changeAppState}
+        />
+      )
+    },
+    {
+      displayName: "Recombination",
+      name: "recombination",
+      child: (
+        <GARD
+          datamonkey={props.datamonkey}
+          changeAppState={props.changeAppState}
+        />
+      )
+    }
   ];
   return (
-    <div>
+    <div style={{ marginTop: "-20px" }}>
       <div className="analysis-tree jumbotron">
-        <h1>Datamonkey</h1>
+        {props.datamonkey ? (
+          <h1>Datamonkey</h1>
+        ) : (
+          <h1 style={{ fontWeight: "150px" }}>HyPhy Desktop</h1>
+        )}
         <hr />
-        {/*<p>GETTING STARTED</p>*/}
         <div>
           A Collection of State of the Art Statistical Models and Bioinformatics
           Tools
@@ -113,6 +134,8 @@ function Root(props) {
         <DecisionBranch
           text="What evolutionary process would you like to detect?"
           choices={choices}
+          datamonkey={props.datamonkey}
+          changeAppState={props.changeAppState}
         />
       </div>
     </div>
@@ -121,70 +144,175 @@ function Root(props) {
 
 function SelectionBranch(props) {
   var choices = [
-    { displayName: "Branches", name: "branches", child: <BranchesBranch /> },
-    { displayName: "Sites", name: "sites", child: <SitesBranch /> },
-    { displayName: "Gene", name: "gene", child: <BUSTED /> }
+    {
+      displayName: "Branches",
+      name: "branches",
+      child: (
+        <BranchesBranch
+          datamonkey={props.datamonkey}
+          changeAppState={props.changeAppState}
+        />
+      )
+    },
+    {
+      displayName: "Sites",
+      name: "sites",
+      child: (
+        <SitesBranch
+          datamonkey={props.datamonkey}
+          changeAppState={props.changeAppState}
+        />
+      )
+    },
+    {
+      displayName: "Gene",
+      name: "gene",
+      child: (
+        <BUSTED
+          datamonkey={props.datamonkey}
+          changeAppState={props.changeAppState}
+        />
+      )
+    }
   ];
   return (
     <DecisionBranch
       text="Would you like to detect selection across branches, individual sites, or an entire gene?"
       choices={choices}
+      datamonkey={props.datamonkey}
+      changeAppState={props.changeAppState}
     />
   );
 }
 
 function BranchesBranch(props) {
   var choices = [
-    { displayName: "Episodic", name: "branches", child: <ABSREL /> },
-    { displayName: "Relaxed", name: "sites", child: <RELAX /> }
+    {
+      displayName: "Episodic",
+      name: "branches",
+      child: (
+        <ABSREL
+          datamonkey={props.datamonkey}
+          changeAppState={props.changeAppState}
+        />
+      )
+    },
+    {
+      displayName: "Relaxed",
+      name: "sites",
+      child: (
+        <RELAX
+          datamonkey={props.datamonkey}
+          changeAppState={props.changeAppState}
+        />
+      )
+    }
   ];
   return (
     <DecisionBranch
       text="Do you want to detect episodic or relaxed selection?"
       choices={choices}
+      datamonkey={props.datamonkey}
+      changeAppState={props.changeAppState}
     />
   );
 }
 
 function SitesBranch(props) {
   var choices = [
-    { displayName: "Episodic", name: "episodic", child: <MEME /> },
+    {
+      displayName: "Episodic",
+      name: "episodic",
+      child: (
+        <MEME
+          datamonkey={props.datamonkey}
+          changeAppState={props.changeAppState}
+        />
+      )
+    },
     {
       displayName: "Pervasive",
       name: "Pervasive",
-      child: <PervasiveSitesBranch />
+      child: (
+        <PervasiveSitesBranch
+          datamonkey={props.datamonkey}
+          changeAppState={props.changeAppState}
+        />
+      )
     }
   ];
   return (
     <DecisionBranch
       text="Do you want to detect episodic or pervasive selection?"
       choices={choices}
+      datamonkey={props.datamonkey}
+      changeAppState={props.changeAppState}
     />
   );
 }
 
 function PervasiveSitesBranch(props) {
   var choices = [
-    { displayName: "Small", name: "small", child: <FEL /> },
-    { displayName: "Large", name: "large", child: <LargeBranch /> }
+    {
+      displayName: "Small",
+      name: "small",
+      child: (
+        <FEL
+          datamonkey={props.datamonkey}
+          changeAppState={props.changeAppState}
+        />
+      )
+    },
+    {
+      displayName: "Large",
+      name: "large",
+      child: (
+        <LargeBranch
+          datamonkey={props.datamonkey}
+          changeAppState={props.changeAppState}
+        />
+      )
+    }
   ];
   return (
     <DecisionBranch
       text="Is your dataset small (less than this many sequences/sizes) or large?"
       choices={choices}
+      datamonkey={props.datamonkey}
+      changeAppState={props.changeAppState}
     />
   );
 }
 
 function LargeBranch(props) {
   var choices = [
-    { displayName: "Bayesian", name: "bayesian", child: <FUBAR /> },
-    { displayName: "Counting", name: "counting", child: <SLAC /> }
+    {
+      displayName: "Bayesian",
+      name: "bayesian",
+      child: (
+        <FUBAR
+          datamonkey={props.datamonkey}
+          changeAppState={props.changeAppState}
+        />
+      )
+    },
+    {
+      displayName: "Counting",
+      name: "counting",
+      child: (
+        <SLAC
+          datamonkey={props.datamonkey}
+          changeAppState={props.changeAppState}
+        />
+      )
+    }
   ];
   return (
     <DecisionBranch
       text="Do you want to use a Bayesian (recommended) or counting based approach?"
       choices={choices}
+      datamonkey={props.datamonkey}
+      changeAppState={props.changeAppState}
     />
   );
 }
@@ -195,17 +323,31 @@ class Method extends React.Component {
     super(props);
     this.state = { hover: false };
   }
+
+  goToMethod(method) {
+    this.props.changeAppState("method", method);
+    this.props.changeAppState("page", "jobSubmittal");
+  }
+
   render() {
     return (
       <div className="row">
-        <div className="col-md-10 col-md-offset-1">
+        <div className="col">
           <div
             className="panel panel-default panel-datamonkey"
             style={analysisBorder}
           >
-            <h2 style={h2Style}>Datamonkey recommends that you use...</h2>
+            <h2 style={h2Style}>
+              {this.props.datamonkey ? "datamonkey " : "HyPhy "}
+              recommends that you use...
+            </h2>
             <a
-              href={this.props.href}
+              href={this.props.datamonkey ? this.props.href : null}
+              onClick={
+                this.props.datamonkey
+                  ? null
+                  : () => this.goToMethod(this.props.href)
+              }
               onMouseEnter={() => this.setState({ hover: true })}
               onMouseLeave={() => this.setState({ hover: false })}
             >
@@ -227,7 +369,12 @@ class Method extends React.Component {
 
 function ABSREL(props) {
   return (
-    <Method title="aBSREL" href="absrel">
+    <Method
+      title="aBSREL"
+      href="absrel"
+      datamonkey={props.datamonkey}
+      changeAppState={props.changeAppState}
+    >
       <p>
         aBSREL (<strong>a</strong>
         daptive
@@ -267,7 +414,12 @@ function ABSREL(props) {
 
 function BUSTED(props) {
   return (
-    <Method title="BUSTED" href="busted">
+    <Method
+      title="BUSTED"
+      href="busted"
+      datamonkey={props.datamonkey}
+      changeAppState={props.changeAppState}
+    >
       <p>
         BUSTED (<strong>B</strong>
         ranch-site <strong>U</strong>
@@ -303,7 +455,12 @@ function BUSTED(props) {
 
 function RELAX(props) {
   return (
-    <Method title="RELAX" href="relax">
+    <Method
+      title="RELAX"
+      href="relax"
+      datamonkey={props.datamonkey}
+      changeAppState={props.changeAppState}
+    >
       <p>
         RELAX is a hypothesis testing framework that asks whether the strength
         of natural selection has been relaxed or intensified along a specified
@@ -336,7 +493,12 @@ function RELAX(props) {
 
 function MEME(props) {
   return (
-    <Method title="MEME" href="meme">
+    <Method
+      title="MEME"
+      href="meme"
+      datamonkey={props.datamonkey}
+      changeAppState={props.changeAppState}
+    >
       <p>
         MEME (<strong>M</strong>
         ixed <strong>E</strong>
@@ -372,7 +534,12 @@ function MEME(props) {
 
 function FEL(props) {
   return (
-    <Method title="FEL" href="fel">
+    <Method
+      title="FEL"
+      href="fel"
+      datamonkey={props.datamonkey}
+      changeAppState={props.changeAppState}
+    >
       <p>
         FEL (<strong>F</strong>
         ixed <strong>E</strong>
@@ -408,7 +575,16 @@ function FEL(props) {
 
 function FUBAR(props) {
   return (
-    <Method title="FUBAR" href="fubar">
+    <Method
+      title="FUBAR"
+      href="fubar"
+      datamonkey={props.datamonkey}
+      changeAppState={() =>
+        alert(
+          "FUBAR is still in the process of being ported over to the desktop application... Stay tuned"
+        )
+      }
+    >
       <p>
         FUBAR (<strong>Fast</strong>, <strong>U</strong>
         nconstrained
@@ -445,7 +621,25 @@ function FUBAR(props) {
 
 function GARD(props) {
   return (
-    <Method title="GARD" href="gard">
+    <Method
+      title="GARD"
+      href="gard"
+      datamonkey={props.datamonkey}
+      changeAppState={() =>
+        alert(
+          "GARD is not implemented in the desktop version of HyPhy. Please use the command line version of HyPhy or datamonkey.org"
+        )
+      }
+    >
+      {props.datamonkey ? null : (
+        <h4>
+          <strong>NOTE: </strong>
+          GARD requires the message passing interface (MPI) version of HyPhy
+          which is not included in the desktop HyPhy application. GARD is
+          available at datamonkey.org or the command line implementation of
+          HyPhy
+        </h4>
+      )}
       <p>
         GARD (<strong>Genetic</strong> <strong>Algorithm</strong> for{" "}
         <strong>Recombination</strong> <strong>Detection</strong>) is a method
@@ -483,7 +677,12 @@ function GARD(props) {
 
 function SLAC(props) {
   return (
-    <Method title="SLAC" href="slac">
+    <Method
+      title="SLAC"
+      href="slac"
+      datamonkey={props.datamonkey}
+      changeAppState={props.changeAppState}
+    >
       <p>
         SLAC (<strong>S</strong>
         ingle-
@@ -519,8 +718,12 @@ function SLAC(props) {
   );
 }
 
-function render_decision_tree() {
-  ReactDOM.render(<Root />, document.getElementById("main"));
+function render_decision_tree(element, datamonkey) {
+  ReactDOM.render(
+    <DecisionTreeRoot datamonkey={datamonkey} />,
+    document.getElementById(element)
+  );
 }
 
+module.exports.DecisionTreeRoot = DecisionTreeRoot;
 module.exports = render_decision_tree;
