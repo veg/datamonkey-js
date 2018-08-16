@@ -6,7 +6,7 @@
 
   <h2 class="page-header">Analysis Options</h2>
 
-  <div class="branch-selection-container"></div>
+  <div class="container" id="branch-selection-container"></div>
 
  </div>
 
@@ -14,5 +14,8 @@
 <%- include ../includes/footer.ejs %>
 
 <script>
-  render_branch_selection("branch-selection-container");
+  datamonkey_branch_selection("branch-selection-container", 800, 600, false)
+  //render_branch_selection("branch-selection-container", "((me,you), them)" ,null , console.log, 800, 600, false)
 </script>
+
+<!--"((me,you), them)"-->

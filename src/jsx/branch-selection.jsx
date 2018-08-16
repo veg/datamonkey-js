@@ -295,7 +295,7 @@ function render_branch_selection(
   element,
   userSuppliedNwkTree,
   neighborJoiningNwkTree,
-  returnAnnotatedTreeCallBack,
+  returnAnnotatedTreeCallback,
   height,
   width,
   testAndReference
