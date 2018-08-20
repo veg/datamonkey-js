@@ -5,9 +5,8 @@
 
 <script>
 
-  var fasta
   d3.json(window.location.href+"/fasta", (err, data) => {
-    fasta = data.fasta
+    var fasta = data.fasta
 
     $(document).ready( function () {
       hyphyVision.gard($("#job-report").data('jobid') + '/results', "content", fasta, true, true)
