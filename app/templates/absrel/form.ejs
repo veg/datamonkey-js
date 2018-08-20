@@ -21,6 +21,10 @@
 
   // Create callback for posting annotated tree.
   datamonkey_post_annotated_tree = function (annotated_tree) {
+
+    var formData = new FormData();
+    formData.append('nwk_tree', annotated_tree);
+
     var xhr = new XMLHttpRequest();
     var id = "<%= absrel._id %>"
     xhr.open('post','/absrel/' + id + '/select-foreground', true);
