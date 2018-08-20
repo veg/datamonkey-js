@@ -4,7 +4,15 @@
 <canvas id="hyphy-chart-canvas"></canvas>
 
 <script>
-  $(document).ready( function () {
-    hyphyVision.fel($("#job-report").data('jobid') + '/results', "content")
+
+  var fasta
+  d3.json(window.location.href+"/fasta", (err, data) => {
+    fasta = data.fasta
+
+    $(document).ready( function () {
+      hyphyVision.fel($("#job-report").data('jobid') + '/results', "content", fasta, true, true)
+    });
+
   });
+
 </script>

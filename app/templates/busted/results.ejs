@@ -5,8 +5,14 @@
 
 <script>
 
-  $(document).ready( function () {
-    hyphyVision.busted($("#job-report").data('jobid') + '/results', "content")
+  var fasta
+  d3.json(window.location.href+"/fasta", (err, data) => {
+    fasta = data.fasta
+
+    $(document).ready( function () {
+      hyphyVision.busted($("#job-report").data('jobid') + '/results', "content", fasta, true, true)
+    });
+
   });
 
 </script>

@@ -8,11 +8,11 @@
   var fasta
   d3.json(window.location.href+"/fasta", (err, data) => {
     fasta = data.fasta
-  });
-  console.log(fasta)
 
-  $(document).ready( function () {
-    hyphyVision.absrel($("#job-report").data('jobid') + '/results', "content", fasta, true, true)
+    $(document).ready( function () {
+      hyphyVision.absrel($("#job-report").data('jobid') + '/results', "content", fasta, true, true)
+    });
+
   });
 
 </script>
