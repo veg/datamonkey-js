@@ -5,13 +5,22 @@
 
 <script>
 
+  var fasta_read = false;
+
   d3.json(window.location.href+"/fasta", (err, data) => {
     var fasta = data.fasta
+    fasta_ready = true;
 
     $(document).ready( function () {
       hyphyVision.meme($("#job-report").data('jobid') + '/results', "content", fasta, true, true)
     });
 
   });
+
+  if (fasta_ready == false) {
+    $(document).ready( function () {
+      hyphyVision.meme($("#job-report").data('jobid') + '/results', "content", fasta, true, true)
+    });
+  }
 
 </script>
