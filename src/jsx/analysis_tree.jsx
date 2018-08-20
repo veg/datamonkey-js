@@ -93,7 +93,6 @@ class DecisionBranch extends React.Component {
   }
 }
 
-// TODO: evaluate if the props (datamonkey and changeAppState) exist before passing them down.
 function DecisionTreeRoot(props) {
   var choices = [
     {
@@ -574,7 +573,6 @@ function FEL(props) {
   );
 }
 
-// TODO: add the link to fubar back in once the fubar.sh script is fixed.
 function FUBAR(props) {
   return (
     <Method
