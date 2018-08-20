@@ -38,3 +38,4 @@ public/assets/js/datamonkey.css*
 public/assets/js/datamonkey.js*
 *vendor*
 *.aa
+dump.rdb

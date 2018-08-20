@@ -1,5 +1,6 @@
 var mongoose = require("mongoose"),
   globals = require("../../config/globals.js"),
+  setup = require("./../../config/setup"),
   moment = require("moment"),
   _ = require("underscore"),
   winston = require("winston"),
@@ -7,11 +8,11 @@ var mongoose = require("mongoose"),
   Msa = require(__dirname + "/msa"),
   extend = require("mongoose-schema-extend");
 
-var redis = require('redis'),
+var redis = require("redis"),
   client = redis.createClient();
 
-var Schema = mongoose.Schema, ObjectId = Schema.ObjectId;
-
+var Schema = mongoose.Schema,
+  ObjectId = Schema.ObjectId;
 
 var AnalysisSchema = new Schema({
   msa: [Msa.MsaSchema],
@@ -39,9 +40,14 @@ AnalysisSchema.virtual("since_created").get(function() {
  * Original file path for document's file upload
  */
 AnalysisSchema.virtual("original_fn").get(function() {
-  return path.resolve(__dirname + "/../../uploads/msa/" + this._id + "-original." + this.original_extension);
+  return path.resolve(
+    __dirname +
+      "/../../uploads/msa/" +
+      this._id +
+      "-original." +
+      this.original_extension
+  );
 });
-
 
 AnalysisSchema.virtual("max_sites").get(function() {
   return 12000;
@@ -77,13 +83,11 @@ AnalysisSchema.statics.pendingJobs = function(cb) {
 };
 
 AnalysisSchema.statics.submitJob = function(job, cb) {
-
   winston.info(
     "submitting " + job.analysistype + " : " + job._id + " to cluster"
   );
 
   var jobproxy = new hpcsocket.HPCSocket(
-
     {
       filepath: job.filepath,
       msa: job.msa,
@@ -94,7 +98,6 @@ AnalysisSchema.statics.submitJob = function(job, cb) {
     "spawn",
     cb
   );
-
 };
 
 AnalysisSchema.statics.subscribePendingJobs = function() {
@@ -114,10 +117,10 @@ AnalysisSchema.statics.usageStatistics = function(cb) {
     .sort({ created: -1 })
     .limit(1)
     .exec(function(err1, items1) {
-      if (err1 || items1.length == 0){
+      if (err1 || items1.length == 0) {
         cb(err1, null);
         return;
-      };
+      }
       self
         .find(
           {
@@ -134,12 +137,15 @@ AnalysisSchema.statics.usageStatistics = function(cb) {
           }
         )
         .exec(function(err, items) {
-          client.set(self.collection.name + "_job_stats", JSON.stringify(items), (err, reply) => {});
+          client.set(
+            setup.database_name + "_" + self.collection.name + "_job_stats",
+            JSON.stringify(items),
+            (err, reply) => {}
+          );
           cb(err, items);
-
-          });
-      });
-  };
+        });
+    });
+};
 /**
  * unix timestamp
  */
@@ -181,8 +187,7 @@ AnalysisSchema.methods.cancel = function(callback) {
 };
 
 AnalysisSchema.statics.cachePath = function() {
-   return this.collection.name + "_job_stats";
-  };
-
+  return setup.database_name + "_" + this.collection.name + "_job_stats";
+};
 
 module.exports = AnalysisSchema;

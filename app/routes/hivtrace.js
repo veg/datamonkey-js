@@ -10,7 +10,7 @@ var error = require(ROOT_PATH + "/lib/error.js"),
   setup = require(ROOT_PATH + "/config/setup"),
   _ = require("underscore"),
   spawn = require("child_process").spawn,
-  winston = require('winston');
+  winston = require("winston");
 
 var mongoose = require("mongoose"),
   HivTrace = mongoose.model("HivTrace"),
@@ -229,9 +229,7 @@ exports.jobPage = function(req, res) {
     if (err || !hivtrace) {
       res.json(500, error.errorResponse("hivtrace : " + id + " : missing id"));
     } else {
-
       if (!hivtrace.job_started) {
-
         var callback = function(err) {
           if (err) {
             logger.error(err);
@@ -240,12 +238,11 @@ exports.jobPage = function(req, res) {
           }
         };
 
-        hivtrace.job_started=true;
+        hivtrace.job_started = true;
 
         hivtrace.save((err, hivtrace) => {
           HivTrace.submitJob(hivtrace, callback);
         });
-
       }
 
       res.format({
@@ -399,9 +396,9 @@ exports.mapAttributes = function(req, res) {
         var channel_id = "attribute_parsing_progress_" + id;
 
         var worker_process = spawn("node", [
-          __dirname + "/../task-runners/hivtrace/attribute-mapper.js",
-          id
-        ]),
+            __dirname + "/../task-runners/hivtrace/attribute-mapper.js",
+            id
+          ]),
           err_msg = "";
 
         worker_process.on("error", function(err) {
@@ -450,7 +447,6 @@ exports.mapAttributes = function(req, res) {
 };
 
 exports.saveAttributes = function(req, res) {
-
   var id = req.params.id;
   var postdata = req.body;
 

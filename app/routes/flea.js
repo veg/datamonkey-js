@@ -20,14 +20,13 @@ exports.form = function(req, res) {
 };
 
 exports.invoke = function(req, res) {
-
   var postdata = req.body,
-      msas = [],
-      flea_files = postdata.flea_files,
-      flea_tmp_dir = path.join(__dirname, "/../../uploads/flea/tmp/"),
-      flea_files = JSON.parse(flea_files),
-      datatype = 0,
-      gencodeid = 1;
+    msas = [],
+    flea_files = postdata.flea_files,
+    flea_tmp_dir = path.join(__dirname, "/../../uploads/flea/tmp/"),
+    flea_files = JSON.parse(flea_files),
+    datatype = 0,
+    gencodeid = 1;
 
   var populateFilename = function(obj) {
     return {
@@ -58,12 +57,10 @@ exports.invoke = function(req, res) {
       }
 
       if (msas.length == flea_files.length) {
-
         var flea = new Flea();
         flea.msas = msas;
 
         flea.save(function(err, flea_result) {
-
           if (err) {
             logger.error("flea save failed");
             res.json(500, { error: err });
@@ -88,7 +85,6 @@ exports.invoke = function(req, res) {
               });
 
               Flea.submitJob(flea_result, connect_callback);
-
             }
           }
 
@@ -120,7 +116,6 @@ exports.invoke = function(req, res) {
       }
     });
   });
-
 };
 
 /**
@@ -166,12 +161,10 @@ exports.restart = function(req, res) {
 
   //Return all results
   Flea.findOne({ _id: fleaid }, function(err, flea) {
-
     if (err || !flea) {
       res.json(500, error.errorResponse("invalid id : " + fleaid));
       return;
     } else {
-
       flea.status = "running";
 
       flea.save(function(err, flea_result) {
@@ -182,92 +175,88 @@ exports.restart = function(req, res) {
         };
 
         Flea.submitJob(flea_result, connect_callback);
-
       });
     }
   });
-
 };
 
 exports.getSessionJSON = function(req, res) {
-
   var fleaid = req.params.id;
 
   //Return all results
   Flea.findOne({ _id: fleaid }, function(err, flea) {
-
     if (err || !flea) {
       res.json(500, error.errorResponse("invalid id : " + fleaid));
       return;
     } else {
-
       fs.readFile(flea.session_json_fn, (err, data) => {
-
         if (err) {
-          res.json(500, error.errorResponse("couldn't read session json file: " + fleaid));
+          res.json(
+            500,
+            error.errorResponse("couldn't read session json file: " + fleaid)
+          );
           return;
         }
 
         try {
-
           var session_data = JSON.parse(String(data));
-          session_data['session_id'] = fleaid;
+          session_data["session_id"] = fleaid;
 
           fs.readFile(flea.predefined_regions, (err, predefined_region) => {
-
-            if(err) {
-              res.json(500, error.errorResponse("couldn't read predefined_regions file: " + fleaid));
+            if (err) {
+              res.json(
+                500,
+                error.errorResponse(
+                  "couldn't read predefined_regions file: " + fleaid
+                )
+              );
               return;
             }
 
             fs.readFile(flea.pdb_structure, (err, pdb_structure) => {
-
-              if(err) {
-                res.json(500, error.errorResponse("couldn't read pdb file: " + fleaid));
+              if (err) {
+                res.json(
+                  500,
+                  error.errorResponse("couldn't read pdb file: " + fleaid)
+                );
                 return;
               }
-              
+
               try {
                 var regions_json = JSON.parse(predefined_region);
                 var pdb_lines = String(pdb_structure);
-                session_data['predefined_regions'] = regions_json['regions']              
-                session_data['pdb'] = pdb_lines.split('\n');
+                session_data["predefined_regions"] = regions_json["regions"];
+                session_data["pdb"] = pdb_lines.split("\n");
                 res.json(200, session_data);
                 return;
-              } catch(e) {
-                res.json(500, error.errorResponse("couldn't pdb or region read file: " + fleaid));
+              } catch (e) {
+                res.json(
+                  500,
+                  error.errorResponse(
+                    "couldn't pdb or region read file: " + fleaid
+                  )
+                );
                 return;
               }
-            
             });
           });
-          
-        } catch(e) {
+        } catch (e) {
           res.json(500, error.errorResponse("couldn't read file: " + fleaid));
           return;
-        } 
-
-
+        }
       });
-
     }
   });
-
 };
 
 exports.getSessionZip = function(req, res) {
-
   var fleaid = req.params.id;
   //Return all results
   Flea.findOne({ _id: fleaid }, function(err, flea) {
-
     if (err || !flea) {
       res.json(500, error.errorResponse("invalid id : " + fleaid));
     } else {
       res.sendfile(path.resolve(flea.session_zip_fn));
     }
   });
-
-
-
 };

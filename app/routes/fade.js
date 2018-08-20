@@ -231,7 +231,7 @@ exports.resubscribePendingJobs = function(req, res) {
 };
 
 /**
- * Returns log txt file 
+ * Returns log txt file
  * app.get('/fade/:fadeid/results', fade.getFadeResults);
  */
 exports.getLog = function(req, res) {

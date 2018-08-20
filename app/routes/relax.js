@@ -16,8 +16,8 @@ var mongoose = require("mongoose"),
   PartitionInfo = mongoose.model("PartitionInfo"),
   Relax = mongoose.model("Relax");
 
-var redis = require('redis'),
-  client = redis.createClient({host : 'localhost', port : 6379});
+var redis = require("redis"),
+  client = redis.createClient({ host: "localhost", port: 6379 });
 
 exports.createForm = function(req, res) {
   res.render("relax/upload_msa.ejs");
@@ -34,7 +34,7 @@ exports.uploadFile = function(req, res) {
     relax.mail = postdata.mail;
   }
   relax.analysis_type = postdata.analysis_type;
-  relax.original_extension = path.basename(fn).split('.')[1];
+  relax.original_extension = path.basename(fn).split(".")[1];
   Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
     if (err) {
       res.json(500, { error: err });
@@ -73,12 +73,18 @@ exports.uploadFile = function(req, res) {
           logger.error("relax rename failed");
           res.json(500, { error: err });
         } else {
-          var move = Msa.removeTreeFromNexus(relax_result.filepath, relax_result.filepath);
-          move.then(val=>{
-            res.json(200, relax);
-          }, reason => {
-            res.json(500, {error: "issue removing tree from file"});
-          });
+          var move = Msa.removeTreeFromNexus(
+            relax_result.filepath,
+            relax_result.filepath
+          );
+          move.then(
+            val => {
+              res.json(200, relax);
+            },
+            reason => {
+              res.json(500, { error: "issue removing tree from file" });
+            }
+          );
         }
       }
 
@@ -87,12 +93,16 @@ exports.uploadFile = function(req, res) {
           logger.error("read file failed");
           res.json(500, { error: err });
         }
-        fs.writeFile(relax_result.original_fn,  data, err => {
+        fs.writeFile(relax_result.original_fn, data, err => {
           if (err) {
             logger.error("write file failed");
             res.json(500, { error: err });
           }
-          helpers.moveSafely(req.files.files.file, relax_result.filepath, move_cb);
+          helpers.moveSafely(
+            req.files.files.file,
+            relax_result.filepath,
+            move_cb
+          );
         });
       });
     });
@@ -330,7 +340,8 @@ exports.resubscribePendingJobs = function(req, res) {
 };
 
 exports.getMSAFile = function(req, res) {
-  var id = req.params.id, name = req.params.name;
+  var id = req.params.id,
+    name = req.params.name;
 
   var options = {};
 
@@ -347,16 +358,18 @@ exports.fasta = function(req, res) {
   var id = req.params.id;
 
   Relax.findOne({ _id: id }, function(err, relax) {
-    if(err || !relax) {
+    if (err || !relax) {
       winston.info(err);
       res.json(500, error.errorReponse("invalid id : " + id));
     }
-    Msa.deliverFasta(relax.filepath).then(value => {
-      res.json(200, {fasta: value});
-    }).catch(err => {
-      winston.info(err);
-      res.json(500, {error: "Unable to deliver fasta."});
-    });
+    Msa.deliverFasta(relax.filepath)
+      .then(value => {
+        res.json(200, { fasta: value });
+      })
+      .catch(err => {
+        winston.info(err);
+        res.json(500, { error: "Unable to deliver fasta." });
+      });
   });
 };
 
@@ -364,8 +377,8 @@ exports.getUsage = function(req, res) {
   client.get(Relax.cachePath(), function(err, data) {
     try {
       res.json(200, JSON.parse(data));
-    } catch(err){
-        winston.info(err);
-      };
-    });
-  };
+    } catch (err) {
+      winston.info(err);
+    }
+  });
+};

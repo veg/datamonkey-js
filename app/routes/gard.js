@@ -14,8 +14,8 @@ var mongoose = require("mongoose"),
   PartitionInfo = mongoose.model("PartitionInfo"),
   GARD = mongoose.model("GARD");
 
-var redis = require('redis'),
-  client = redis.createClient({host : 'localhost', port : 6379});
+var redis = require("redis"),
+  client = redis.createClient({ host: "localhost", port: 6379 });
 
 exports.form = function(req, res) {
   var post_to = "/gard";
@@ -199,7 +199,8 @@ exports.resubscribePendingJobs = function(req, res) {
 };
 
 exports.getMSAFile = function(req, res) {
-  var id = req.params.id, name = req.params.name;
+  var id = req.params.id,
+    name = req.params.name;
 
   var options = {};
 
@@ -216,32 +217,40 @@ exports.fasta = function(req, res) {
   var id = req.params.id;
 
   GARD.findOne({ _id: id }, function(err, gard) {
-    if(err || !gard) {
+    if (err || !gard) {
       winston.info(err);
       res.json(500, error.errorReponse("invalid id : " + id));
     }
-    Msa.deliverFasta(gard.filepath).then(value => {
-      res.json(200, {fasta: value});
-    }).catch(err => {
-      winston.info(err);
-      res.json(500, {error: "Unable to deliver fasta."});
-    });
+    Msa.deliverFasta(gard.filepath)
+      .then(value => {
+        res.json(200, { fasta: value });
+      })
+      .catch(err => {
+        winston.info(err);
+        res.json(500, { error: "Unable to deliver fasta." });
+      });
   });
 };
 
 exports.getScreenedData = function(req, res) {
   var id = req.params.id,
-    file_path = path.join(__dirname, '..', '..', 'uploads', 'msa', id+'.gard.result.nex');
-    res.download(file_path, 'screened_data.nex');
+    file_path = path.join(
+      __dirname,
+      "..",
+      "..",
+      "uploads",
+      "msa",
+      id + ".gard.result.nex"
+    );
+  res.download(file_path, "screened_data.nex");
 };
 
 exports.getUsage = function(req, res) {
   client.get(GARD.cachePath(), function(err, data) {
     try {
       res.json(200, JSON.parse(data));
-    } catch(err){
-        winston.info(err);
-      };
-
+    } catch (err) {
+      winston.info(err);
+    }
   });
 };
