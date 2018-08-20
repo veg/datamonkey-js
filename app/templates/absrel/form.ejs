@@ -13,9 +13,27 @@
 <%- include ../includes/modal.ejs %>
 <%- include ../includes/footer.ejs %>
 
+<//Scirpt source the branch selection react component>
 <script>
-  datamonkey_branch_selection("branch-selection-container", 800, 600, false)
-  //render_branch_selection("branch-selection-container", "((me,you), them)" ,null , console.log, 800, 600, false)
-</script>
+  // Get trees.
+  var user_tree = "<%= absrel.msa[0].usertree %>"
+  var nj_tree = "<%= absrel.msa[0].nj %>"
 
-<!--"((me,you), them)"-->
+  // Create callback for posting annotated tree.
+  datamonkey_post_annotated_tree = function (annotated_tree) {
+    var xhr = new XMLHttpRequest();
+    var id = "<%= absrel._id %>"
+    xhr.open('post','/absrel/' + id + '/select-foreground', true);
+    xhr.onload = function(res) {
+      // Replace field with green text, name of file
+      var result = JSON.parse(this.responseText);
+      if('_id' in result.absrel) {
+        window.location.href =  '/absrel/' + result.absrel._id;
+      } else if ('error' in result) {
+        datamonkey.errorModal(result.error);
+      }
+    };
+    xhr.send(formData);
+  }
+  render_branch_selection("branch-selection-container", user_tree , nj_tree , datamonkey_post_annotated_tree, 800, 600, false)
+</script>
