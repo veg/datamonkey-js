@@ -199,7 +199,7 @@ var GARDForm = React.createClass({
           </div>
         </div>
         <button type="submit" className="btn pull-right" onClick={this.submit}>
-          <span className="dm-continue-btn glyphicon glyphicon-play" />
+          <span className="dm-continue-btn fas fa-play" />
         </button>
       </form>
     );
