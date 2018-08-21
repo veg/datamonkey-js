@@ -66,6 +66,11 @@ exports.invoke = function(req, res) {
     bgm.msa = msa;
 
     bgm.status = bgm.status_stack[0];
+    bgm.length_of_each_chain = postdata.length_of_each_chain;
+    bgm.number_of_burn_in_samples = postdata.number_of_burn_in_samples;
+    bgm.number_of_samples = postdata.number_of_samples;
+    bgm.maximum_parents_per_node = postdata.maximum_parents_per_node;
+    bgm.minimum_subs_per_site = postdata.minimum_subs_per_site;
 
     bgm.save(function(err, bgm_result) {
       if (err) {

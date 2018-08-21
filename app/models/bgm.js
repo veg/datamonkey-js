@@ -7,7 +7,13 @@ var AnalysisSchema = require(__dirname + "/analysis");
 
 var BGM = AnalysisSchema.extend({
   analysis_type: Number,
+  datatype: Number,
   last_status_msg: String,
+  length_of_each_chain: Number,
+  number_of_burn_in_samples: Number,
+  number_of_samples: Number,
+  maximum_parents_per_node: Number,
+  minimum_subs_per_site: Number,
   results: Object
 });
 
