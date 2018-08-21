@@ -1,86 +1,42 @@
 <%- include ../includes/header.ejs %>
 
 <div class="container">
+
   <%- include header.ejs %>
 
-   <div class='phylotree-container'>
+  <h5 class='phylotree-header'>Select Test and Reference Branches</h5> 
 
-     <h5 class='phylotree-header'>Select Test and Reference Branches<a href="/help#relax-foreground-selection" target="_blank"><sup>?</sup></a></h5> 
-
-     <div id="phylo-nav">
-
-        <div class="col-lg-4 phylo-nav">
-          <div class="btn-group">
-
-            <button title="Expand spacing" id="expand_spacing" class="btn btn-default btn-sm" type="button">
-              <i class="fa fa-expand"></i>
-            </button>
-
-            <button title="Compress spacing" id="compress_spacing" class="btn btn-default btn-sm" type="button">
-              <i class="fa fa-compress"></i>
-            </button>
-
-            <button title="Sort deepest clades to the bototm" id="sort_ascending" class="btn btn-default btn-sm" type="button">
-              <i class="fa fa-sort-amount-asc"></i>
-            </button>
-
-            <button title="Sort deepsest clades to the top" id="sort_descending" class="btn btn-default btn-sm" type="button">
-              <i class="fa fa-sort-amount-desc"></i>
-            </button>
-
-            <button data-toggle="dropdown" class="btn btn-default btn-sm dropdown-toggle" type="button">Selection <span class="caret"></span></button>
-                <ul class="dropdown-menu">
-                  <li><a id="select_all" href="#">Select all</a></li>
-                  <li><a id="select_all_internal" href="#">Select only internal nodes</a></li>
-                  <li><a id="select_all_leaves" href="#">Select only leaf nodes</a></li>
-                  <li><a id="select_none" href="#">Clear selection</a></li>
-               </ul>
-          </div>
-        </div>
-
-      <div id="relax-highlighter-btn-group" class="col-lg-4 phylo-nav">
-        <div class="btn-group" data-toggle="buttons">
-          <label title="Highlight Test Branches" id="test-branch-highlighter" class="btn btn-default btn-sm active" data-name='test'>
-            <input type="radio" name="options" id="relax-tbh" autocomplete="off" checked>Test Branches</input>
-          </label>
-          <label title="Highlight Reference Branches" id="reference-branch-highlighter" class="btn btn-default btn-sm" data-name='reference'>
-            <input type="radio" name="options" id="relax-rbh" autocomplete="off" checked>Reference Branches</input>
-          </label>
-        </div>
-      </div>
-
-      <% if (relax.msa[0].usertree) { %>
-      <div id="tree-select-btn-group" class="col-lg-4 phylo-nav">
-        <div class="btn-group" data-toggle="buttons">
-          <label title="Highlight Test Branches" id="usertree-highlighter" class="btn btn-default btn-sm active" data-name='usertree'>
-            <input type="radio" name="options" id="relax-ut-select" autocomplete="off" checked>User Defined Tree</input>
-          </label>
-          <label title="Highlight Reference Branches" id="nj-highlighter" class="btn btn-default btn-sm" data-name='nj'>
-            <input type="radio" name="options" id="relax-nj-select" autocomplete="off" checked>Neighbor Joining Tree</input>
-          </label>
-        </div>
-      </div>
-      <% } %>
-
-    </div>
-
-    <div id="neighbor-tree" data-tree="<%= relax.msa[0].nj %>" <% if (relax.msa[0].usertree) { %> data-usertree="<%= relax.msa[0].usertree %>"<% } %>>
-      <div id="tree-body">
-        <div id='tree_container' class='tree-widget'></div>
-      </div>
-    </div>
-
-  </div>
-  
-  <form action="/relax/<%= relax._id %>/select-foreground" enctype="multipart/form-data" method="POST" name="modelForm">
-    <div>
-      <button type="submit" class="btn pull-right"><span class="glyphicon glyphicon-play dm-continue-btn"></span></button>
-    </div>
-  </form>
+  <div class="container" id="branch-selection-container"></div>
 
 </div>
 
 <%- include ../includes/modal.ejs %>
 <%- include ../includes/footer.ejs %>
 
-<script src="/assets/js/relax/fg-selection.js"></script>
+<script>
+  // Get trees.
+  var user_tree = "<%= relax.msa[0].usertree %>"
+  var nj_tree = "<%= relax.msa[0].nj %>"
+
+  // Create callback for posting annotated tree.
+  datamonkey_post_annotated_tree = function (annotated_tree) {
+
+    var formData = new FormData();
+    formData.append('nwk_tree', annotated_tree);
+
+    var xhr = new XMLHttpRequest();
+    var id = "<%= relax._id %>"
+    xhr.open('post','/relax/' + id + '/select-foreground', true);
+    xhr.onload = function(res) {
+      // Replace field with green text, name of file
+      var result = JSON.parse(this.responseText);
+      if('_id' in result.relax) {
+        window.location.href =  '/relax/' + result.relax._id;
+      } else if ('error' in result) {
+        datamonkey.errorModal(result.error);
+      }
+    };
+    xhr.send(formData);
+  }
+  render_branch_selection("branch-selection-container", user_tree , nj_tree , datamonkey_post_annotated_tree, 800, 600, true)
+</script>

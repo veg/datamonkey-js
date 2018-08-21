@@ -4,7 +4,7 @@
 
    <%- include header.ejs %>
 
-  <h2 class="page-header">Analysis Options</h2>
+  <h5 class="phylotree-header">Select Test Branches</h5>
 
   <div class="container" id="branch-selection-container"></div>
 
@@ -13,7 +13,6 @@
 <%- include ../includes/modal.ejs %>
 <%- include ../includes/footer.ejs %>
 
-<//Scirpt source the branch selection react component>
 <script>
   // Get trees.
   var user_tree = "<%= absrel.msa[0].usertree %>"
