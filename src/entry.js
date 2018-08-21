@@ -6,9 +6,9 @@ window.io = io;
 var _ = require("underscore");
 window._ = _;
 
-require("font-awesome/css/font-awesome.css");
 require("./scss/application.scss");
 require("phylotree.css");
+require("font-awesome/css/font-awesome.css");
 require("blueimp-file-upload");
 
 var hyphyVision = require("hyphy-vision");
