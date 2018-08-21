@@ -2,18 +2,21 @@
 
 @import url("https://fonts.googleapis.com/css?family=Exo+2:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Exo:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i");
 
+@import "~hyphy-vision/dist/application.scss";
+
 // Hyphy & Datamonkey Colors
 $hyphy-green: #479167;
 $datamonkey-turquoise: #00a99d;
 
 // General Typography
-html, body {
+html,
+body {
   position: relative;
   font-family: "Montserrat", sans-serif;
   font-size: 14px;
   font-weight: 500;
   line-height: 1.5;
-  color: #484D56;
+  color: #484d56;
 }
 
 .glyphicon {
@@ -23,11 +26,13 @@ html, body {
 
 ::selection {
   color: #fff;
-  background-color: #DD4631;
+  background-color: #dd4631;
 }
 
 // Headings
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-weight: 600;
 }
 
@@ -63,7 +68,8 @@ small {
 }
 
 // Gives clearance/offset space under fixed-header
-#results::before, .clearance {
+#results::before,
+.clearance {
   display: block;
   height: 70px;
   width: 100%;
@@ -75,7 +81,7 @@ small {
 
 .fa {
   font-weight: 600;
-  color: #DD4631;
+  color: #dd4631;
   font-size: 16px;
 }
 
@@ -101,7 +107,7 @@ $table-bg-hover: #bfbfbf;
 // Buttons
 $btn-border-radius-base: none;
 $btn-default-bg: #ccc;
-$btn-default-color: #484D56;
+$btn-default-color: #484d56;
 $btn-font-weight: 700;
 $btn-primary-border: $datamonkey-turquoise;
 $btn-primary-bg: $datamonkey-turquoise;
@@ -117,8 +123,8 @@ $btn-primary-color: #fff;
 }
 
 .btn-primary:hover {
-  background-color: #484D56 !important;
-  border: 2px solid #484D56 !important;
+  background-color: #484d56 !important;
+  border: 2px solid #484d56 !important;
   box-shadow: 0px 3px 3px #d0d0d0;
   color: #fff;
 }
@@ -147,18 +153,22 @@ $btn-primary-color: #fff;
   border-color: #11aa9b;
 }
 
-.btn-default:active:hover, .btn-default.active:hover, .open >
-.dropdown-toggle.btn-default:hover, .btn-default:active:focus,
-.btn-default.active:focus, .open > .dropdown-toggle.btn-default:focus,
-.btn-default:active.focus, .btn-default.active.focus, .open >
-.dropdown-toggle.btn-default.focus {
+.btn-default:active:hover,
+.btn-default.active:hover,
+.open > .dropdown-toggle.btn-default:hover,
+.btn-default:active:focus,
+.btn-default.active:focus,
+.open > .dropdown-toggle.btn-default:focus,
+.btn-default:active.focus,
+.btn-default.active.focus,
+.open > .dropdown-toggle.btn-default.focus {
   color: #fff;
   background-color: #555;
 }
 
 .btn-default:hover {
   color: #fff;
-  background-color: #484D56;
+  background-color: #484d56;
 }
 
 .btn-primary:active:hover,
@@ -178,7 +188,7 @@ $btn-primary-color: #fff;
 // Dropdowns
 $dropdown-border: $hyphy-green;
 $dropdown-link-hover-color: #038c7f;
-$dropdown-link-color: #484D56;
+$dropdown-link-color: #484d56;
 
 .dropdown-menu {
   position: absolute;
@@ -201,7 +211,8 @@ $dropdown-link-color: #484D56;
   background-clip: padding-box;
 }
 
-.dropdown-menu > li > a, .navbar-nav > li > a {
+.dropdown-menu > li > a,
+.navbar-nav > li > a {
   padding-top: 10px;
   padding-bottom: 10px;
   font-weight: 600;
@@ -253,9 +264,9 @@ $jumbotron-font-size: ceil($font-size-base * 1.15);
 $navbar-inverse-bg: #fff;
 $navbar-inverse-bg-highlight: #fff;
 $navbar-inverse-border: #fff;
-$navbar-inverse-text: #484D56;
-$navbar-inverse-link-color: #484D56;
-$navbar-inverse-link-hover-color: #009BA1;
+$navbar-inverse-text: #484d56;
+$navbar-inverse-link-color: #484d56;
+$navbar-inverse-link-hover-color: #009ba1;
 $navbar-inverse-link-hover-bg: transparent;
 
 // Navbar
@@ -284,7 +295,8 @@ $navbar-inverse-link-hover-bg: transparent;
   border-width: 5px 0px 0px 0px;
 }
 
-.navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+.navbar-inverse .navbar-collapse,
+.navbar-inverse .navbar-form {
   border-color: $navbar-inverse-border;
 }
 
@@ -312,7 +324,7 @@ $navbar-default-border: $datamonkey-turquoise;
 // Panels
 $panel-default-border: #fff;
 $panel-primary-border: #fff;
-$panel-default-heading-bg: #484D56;
+$panel-default-heading-bg: #484d56;
 $panel-default-text: $datamonkey-turquoise;
 
 .panel {
@@ -401,9 +413,12 @@ $tooltip-max-width: 200px;
   border: none;
 }
 
-.table > thead > tr > th, .table > tbody > tr > th,
-.table > tfoot > tr > th, .table > thead > tr > td,
-.table > tbody > tr > td, .table > tfoot > tr > td,
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td,
 .table-condensed > tfoot > tr > td {
   font-family: "Montserrat", sans-serif;
   text-align: center;
@@ -414,7 +429,7 @@ $tooltip-max-width: 200px;
   border-bottom: 7px solid $datamonkey-turquoise;
   text-align: center;
   font-weight: 600;
-  background-color: #484D56;
+  background-color: #484d56;
   color: #fff;
   vertical-align: middle;
 }
@@ -471,7 +486,8 @@ $tooltip-max-width: 200px;
 
 @media (max-width: 768px) {
   // General Includes
-  html, body {
+  html,
+  body {
     font-size: 15px;
   }
 
@@ -479,21 +495,25 @@ $tooltip-max-width: 200px;
     display: block !important;
   }
 
-  .navbar li, .navbar-nav {
+  .navbar li,
+  .navbar-nav {
     float: none;
   }
 
-  .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open >
-  a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+  .navbar-inverse .navbar-nav > .open > a,
+  .navbar-inverse .navbar-nav > .open > a:hover,
+  .navbar-inverse .navbar-nav > .open > a:focus {
     color: #fff;
     background-color: $datamonkey-turquoise;
   }
 
-  .navbar-nav .open .dropdown-menu > li > a, .navbar-nav .open .dropdown-menu .dropdown-header {
+  .navbar-nav .open .dropdown-menu > li > a,
+  .navbar-nav .open .dropdown-menu .dropdown-header {
     padding: 15px 25px;
   }
 
-  .dropdown-menu > li > a, .navbar-nav > li > a {
+  .dropdown-menu > li > a,
+  .navbar-nav > li > a {
     padding-top: 15px;
     padding-bottom: 15px;
   }

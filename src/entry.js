@@ -12,7 +12,6 @@ require("phylotree.css");
 require("blueimp-file-upload");
 
 var hyphyVision = require("hyphy-vision");
-require("hyphy-vision/dist/hyphyvision.css");
 
 var datamonkey = require("./js/datamonkey.js");
 datamonkey.helpers = require("./js/datamonkey_helpers.js");
