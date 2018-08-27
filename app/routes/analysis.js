@@ -27,7 +27,6 @@ var globals = require("../../config/globals.js"),
       if (err || !model_var) {
         res.json(500, error.errorResponse("invalid id : " + req.params.id));
       } else {
-        // Should return results page
         // Append PMID to results
         fs.readFile(model_var.results_path, 'utf8', (err, results) => {
           if (err) winston.warn(err);

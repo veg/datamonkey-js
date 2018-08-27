@@ -213,7 +213,6 @@ exports.getInfo = function(req, res) {
       if (err || !fel_info) {
         res.json(500, error.errorResponse("Invalid ID : " + id));
       } else {
-        // Should return results page
         res.json(200, fel_info);
       }
     }
