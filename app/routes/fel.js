@@ -201,24 +201,6 @@ exports.getPage = function(req, res) {
 
 };
 
-exports.getResults = function(req, res) {
-
-  var felid = req.params.id;
-
-  FEL.findOne({ _id: felid }, function(err, fel) {
-    if (err || !fel) {
-      res.json(500, error.errorResponse("invalid id : " + felid));
-    } else {
-      // Should return results page
-      // Append PMID to results
-      var fel_results = JSON.parse(fel.results);
-      fel_results["PMID"] = fel.pmid;
-      res.json(200, fel_results);
-    }
-  });
-
-};
-
 // app.get('/fel/:id/info', fel.getInfo);
 exports.getInfo = function(req, res) {
   var id = req.params.id;

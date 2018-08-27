@@ -146,6 +146,10 @@ AnalysisSchema.virtual("generic_error_msg").get(function() {
   return error_msg;
 });
 
+AnalysisSchema.virtual("results_path").get(function() {
+  return path.resolve(__dirname + "../../../results/jobs/" + this._id + "-results" + ".json");
+});
+
 AnalysisSchema.methods.resubscribe = function() {
   var jobproxy = new hpcsocket.HPCSocket(
     {
