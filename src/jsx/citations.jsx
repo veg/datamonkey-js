@@ -1,7 +1,6 @@
 var React = require("react");
 var ReactDOM = require("react-dom");
 
-// TODO: Move this to hyphyvision to be shared by datamonkey and the gui.
 class Citations extends React.Component {
   constructor(props) {
     super(props);
@@ -421,5 +420,5 @@ function render_citations(element, datamonkey) {
   );
 }
 
-//module.exports.Citations = Citations;
+module.exports.Citations = Citations;
 module.exports = render_citations;

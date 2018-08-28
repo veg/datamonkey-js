@@ -4,11 +4,6 @@ var ReactDOM = require("react-dom");
 var DataFiles = require("./data_files.jsx");
 var AnalyzingData = require("./analyzing_data.jsx");
 
-/*
-import DataFiles from "./data_files.jsx";
-import AnalyzingData from "./analyzing_data.jsx";
-*/
-
 class Help extends React.Component {
   constructor(props) {
     super(props);
@@ -42,7 +37,6 @@ class Help extends React.Component {
             <br />
 
             <div className="help-content tab-content col-md-9">
-              {/* TODO: insert datalinks */}
               <div>{this.props.datamonkey ? null : null}</div>
               <br />
 
@@ -94,5 +88,5 @@ function render_help(element, datamonkey) {
   );
 }
 
-//module.exports.Help = Help;
+module.exports.Help = Help;
 module.exports = render_help;
