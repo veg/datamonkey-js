@@ -134,4 +134,4 @@ io.sockets.on('connection', function (socket) {
   });
 });
 
-setInterval(queueSet, 5000, function(job_queue) {});
+setInterval(queueSet, 15000, function(job_queue) {});

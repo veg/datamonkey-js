@@ -1,5 +1,6 @@
 var mongoose = require("mongoose"),
   globals = require("../../config/globals.js"),
+  setup = require('./../../config/setup'),
   moment = require("moment"),
   _ = require("underscore"),
   winston = require("winston"),
@@ -134,7 +135,7 @@ AnalysisSchema.statics.usageStatistics = function(cb) {
           }
         )
         .exec(function(err, items) {
-          client.set(self.collection.name + "_job_stats", JSON.stringify(items), (err, reply) => {});
+          client.set(setup.database_name + "_" + self.collection.name + "_job_stats", JSON.stringify(items), (err, reply) => {});
           cb(err, items);
 
           });
@@ -151,6 +152,10 @@ AnalysisSchema.virtual("generic_error_msg").get(function() {
   var error_msg =
     'We\'re sorry, there was an error processing your job. Please try again, or visit <a href="http://github.com/veg/hyphy/issues/">our GitHub issues</a> and create an issue if the issue persists.';
   return error_msg;
+});
+
+AnalysisSchema.virtual("results_path").get(function() {
+  return path.resolve(__dirname + "../../../results/jobs/" + this._id + "-results" + ".json");
 });
 
 AnalysisSchema.methods.resubscribe = function() {
@@ -181,7 +186,7 @@ AnalysisSchema.methods.cancel = function(callback) {
 };
 
 AnalysisSchema.statics.cachePath = function() {
-   return this.collection.name + "_job_stats";
+   return setup.database_name + "_" + this.collection.name + "_job_stats";
   };
 
 

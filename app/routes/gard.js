@@ -116,21 +116,6 @@ exports.getPage = function(req, res) {
   });
 };
 
-exports.getResults = function(req, res) {
-  var gardid = req.params.id;
-  GARD.findOne({ _id: gardid }, function(err, gard) {
-    if (err || !gard) {
-      res.json(500, error.errorResponse("invalid id : " + gardid));
-    } else {
-      // Should return results page
-      // Append PMID to results
-      var gard_results = JSON.parse(gard.results);
-      gard_results["PMID"] = gard.pmid;
-      res.json(200, gard_results);
-    }
-  });
-};
-
 // app.get('/gard/:id/info', gard.getInfo);
 exports.getInfo = function(req, res) {
   var id = req.params.id;
