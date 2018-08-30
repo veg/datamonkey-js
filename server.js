@@ -13,6 +13,7 @@ var express          = require('express'),
     mongoose         = require('mongoose'),
     upload           = require('jquery-file-upload-middleware'),
     helpers          = require('./lib/helpers'),
+    loadBal          = require('./lib/loadBal'),
     fs               = require('fs'),
     path             = require("path"),
     redis            = require('redis'),
@@ -133,5 +134,8 @@ io.sockets.on('connection', function (socket) {
     });
   });
 });
+
+// Set any initial redis keys
+loadBal.setInitialLoadBalanceKeys();
 
 setInterval(queueSet, 15000, function(job_queue) {});
