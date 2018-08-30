@@ -372,3 +372,6 @@ var genetic_code = {
 define("genetic_code", genetic_code)
 define('fasta_validator', __dirname + '/../node_modules/tn93/validate_fasta');
 define('hyphy', __dirname + '/../.hyphy/HYPHYMP');
+define('redis_iteration', "loadBalance_iteration");
+define('redis_current_url', "loadBalance_url");
+

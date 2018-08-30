@@ -1,5 +1,5 @@
 var assert = require('assert');
-var loadBalance = require('./../lib/loadBal.js');
+var loadBalance = require('./../lib/loadBal.js').loadBalance;
 var _ = require('underscore');
 
 //var urls = ["www.1.com", "www.2.com", "www.3.com", "www.4.com"]; //replace this with URL array
@@ -22,7 +22,6 @@ const willRunloadBalance = () => {
   });
 };
 
-//describe logic used for mocha tests
 describe('loadBalance function: test iteration with string cross check', function() {
 
   it('Iterates and returns URLs correctly', function() {
@@ -31,19 +30,16 @@ describe('loadBalance function: test iteration with string cross check', functio
       return willRunloadBalance;
       }).reduce((p, f) => p.then(f), Promise.resolve())
       .then((return_url) => {
-          //console.log(history);
-          //assert.equal((_.intersection(history).length, urls.length));
           assert.equal((_.intersection(history, urls)).length, urls.length);
           });
   });
 });
 
 describe('loadBalance function: single string cross check', function() {
-  var history = [];
-  //var urls = ["www.1.com", "www.2.com", "www.3.com", "www.4.com"]; //replace this with URL array
+
   it('Returns one string that is cross referenced with URLs array', function(){
     loadBalance(urls, (err, return_url) => {
-      history.push(return_url);
+      var history = [return_url];
       assert.equal((_.intersection(history, urls)).length, 1);
     })
 

@@ -110,21 +110,6 @@ exports.getPage = function(req, res) {
   });
 };
 
-exports.getResults = function(req, res) {
-  var slacid = req.params.id;
-  SLAC.findOne({ _id: slacid }, function(err, slac) {
-    if (err || !slac) {
-      res.json(500, error.errorResponse("invalid id : " + slacid));
-    } else {
-      // Should return results page
-      // Append PMID to results
-      var slac_results = JSON.parse(slac.results);
-      slac_results["PMID"] = slac.pmid;
-      res.json(200, slac_results);
-    }
-  });
-};
-
 // app.get('/slac/:id/info', slac.getInfo);
 exports.getInfo = function(req, res) {
   var id = req.params.id;

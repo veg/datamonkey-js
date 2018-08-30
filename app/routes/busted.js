@@ -212,27 +212,6 @@ exports.getInfo = function(req, res) {
   );
 };
 
-/**
- * Displays id page for analysis
- * app.get('/busted/:bustedid/results', busted.getBustedResults);
- */
-exports.getResults = function(req, res) {
-  var bustedid = req.params.bustedid;
-
-  //Return all results
-  Busted.findOne({ _id: bustedid }, function(err, busted) {
-    if (err || !busted) {
-      res.json(500, error.errorResponse("invalid id : " + bustedid));
-    } else {
-      // Should return results page
-      // append file information
-      var busted_results = JSON.parse(busted.results);
-      busted_results["input_data"] = busted.input_data;
-      res.json(200, busted_results);
-    }
-  });
-};
-
 exports.resubscribePendingJobs = function(req, res) {
   Busted.subscribePendingJobs();
 };

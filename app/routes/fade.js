@@ -205,33 +205,12 @@ exports.getInfo = function(req, res) {
   );
 };
 
-/**
- * Displays id page for analysis
- * app.get('/msa/:msaid/fade/:fadeid/results', fade.getFadeResults);
- */
-exports.getResults = function(req, res) {
-  var fadeid = req.params.fadeid;
-
-  //Return all results
-  Fade.findOne({ _id: fadeid }, function(err, fade) {
-    if (err || !fade) {
-      res.json(500, error.errorResponse("invalid id : " + fadeid));
-    } else {
-      // Should return results page
-      res.json(200, {
-        results: JSON.parse(fade.results),
-        msa: fade.msa[0]
-      });
-    }
-  });
-};
-
 exports.resubscribePendingJobs = function(req, res) {
   Fade.subscribePendingJobs();
 };
 
 /**
- * Returns log txt file 
+ * Returns log txt file
  * app.get('/fade/:fadeid/results', fade.getFadeResults);
  */
 exports.getLog = function(req, res) {
