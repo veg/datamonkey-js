@@ -1,5 +1,5 @@
 var assert = require('assert');
-var loadBalance = require('./../lib/loadBal.js');
+var loadBalance = require('./../lib/loadBal.js').loadBalance;
 var _ = require('underscore');
 
 //var urls = ["www.1.com", "www.2.com", "www.3.com", "www.4.com"]; //replace this with URL array
