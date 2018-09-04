@@ -31,21 +31,21 @@
 <% } %>
 
 <div id="standard-output"  <% if(!job.last_status_msg) { %> class="hidden" <% } %> >
-  <div class="panel-body">
+  <div class="card-body">
     <h6> Standard Output </h6>
     <a href="<%= job._id%>/log.txt">
-    <div class="stdOut-container"></div>
     <button id="job-stdout-copy-button" class="btn btn-default btn-sm pull-right" type="button">
       <span class="fa fa-download"></span> Download Log
     </button>
     </a>
-    <pre id="job-pre"><%= job.last_status_msg %></pre>
+    <div id="stdOut-container"></div>
   </div>
 </div>
 
+<script>
+
+  render_stdOut("stdOut-container", "<%=job.last_status_msg%>")
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.js"></script>
 <script src="/assets/js/job.js"></script>
-<script>
-  var stdOut = "<%= job._id%>/log.txt"
-  render_stdOut("stdOut-container", stdOut)
-</script>
+

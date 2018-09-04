@@ -4,8 +4,6 @@ $(document).ready(function() {
   var top_modal_container = "#neighbor-tree";
   var nj_nwk = $(top_modal_container).data("tree");
   var user_tree_nwk = $(top_modal_container).data("usertree");
-  console.log("test");
-  console.log(user_tree_nwk);
 });
 
 var top_modal_container = "#neighbor-tree";
