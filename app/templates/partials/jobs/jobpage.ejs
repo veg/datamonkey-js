@@ -1,32 +1,30 @@
-<div class="row">
+<div>
 
-  <section id="job-info-pane" class="bs-callout bs-callout-danger panel panel-status">
+  <div class="row panel-status">
 
-    <div class="panel-body">
-
-      <div class="col-lg-4">
-        <ul class="list-unstyled">
-          <li><span class="glyphicon glyphicon-dashboard"></span><h6> Job is currently </h6><span id="job-status-text"><%= job.status %></span></li>
-          <li><span class="glyphicon glyphicon-tag"></span><h6> Ticket Number </h6><span id="torque_id"><% if(job.torque_id) { %> <%= job.torque_id %> <% } else { %> Waiting for Ticket Number <% } %> </span></li>
-        </ul>
-      </div>
-
-      <div class="col-lg-4">
-        <ul class="list-unstyled">
-          <li id="job-run-time-row"><span class="glyphicon glyphicon-time"></span><h6> Running for </h6><span id="job-run-time" data-started="<%=job.start_time %>">-</span></li>
-          <li id="job-submitted-time-row"><span class="glyphicon glyphicon-calendar"></span><h6> Job submitted </h6><span id="job-created" data-started="<%=job.creation_time %>">-</span></li>
-        </ul>
-      </div>
-
-      <div class="col-lg-4">
-        <button type="button" id="job-cancel-button" data-loading-text="Canceling job..." class="btn btn-danger pull-right" autocomplete="off">
-         <span class="glyphicon glyphicon-remove-circle"></span> Cancel Job
-        </button>
-      </div>
-
+    <div class="col-lg-4">
+      <ul class="list-unstyled">
+        <li><span class="fa fa-dashboard"></span><h6> Job is currently </h6><span id="job-status-text"><%= job.status %></span></li>
+        <li><span class="fa fa-tag"></span><h6> Ticket Number </h6><span id="torque_id"><% if(job.torque_id) { %> <%= job.torque_id %> <% } else { %> Waiting for Ticket Number <% } %> </span></li>
+      </ul>
     </div>
 
-  </section>
+    <div class="col-lg-4">
+      <ul class="list-unstyled">
+        <li id="job-run-time-row"><span class="fa fa-clock-o"></span><h6> Running for </h6><span id="job-run-time" data-started="<%=job.start_time %>">-</span></li>
+        <li id="job-submitted-time-row"><span class="fa fa-calendar"></span><h6> Job submitted </h6><span id="job-created" data-started="<%=job.creation_time %>">-</span></li>
+      </ul>
+    </div>
+
+    <div class="col-lg-4">
+      <button type="button" id="job-cancel-button" data-loading-text="Canceling job..." class="btn btn-danger pull-right" autocomplete="off">
+       <span class="fa fa-times-circle"></span> Cancel Job
+      </button>
+    </div>
+
+  </div>
+
+<div>
 
 <% if (job.status == 'aborted') { %>
   <div class="alert alert-danger"><%- job.generic_error_msg %></div>
@@ -36,15 +34,18 @@
   <div class="panel-body">
     <h6> Standard Output </h6>
     <a href="<%= job._id%>/log.txt">
+    <div class="stdOut-container"></div>
     <button id="job-stdout-copy-button" class="btn btn-default btn-sm pull-right" type="button">
-      <span class="glyphicon glyphicon-download"></span> Download Log
+      <span class="fa fa-download"></span> Download Log
     </button>
     </a>
     <pre id="job-pre"><%= job.last_status_msg %></pre>
   </div>
 </div>
 
-</div>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.js"></script>
 <script src="/assets/js/job.js"></script>
+<script>
+  var stdOut = "<%= job._id%>/log.txt"
+  render_stdOut("stdOut-container", stdOut)
+</script>
