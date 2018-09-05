@@ -53,7 +53,7 @@ class DecisionBranch extends React.Component {
           <h2 style={h2Style}>{this.props.text}</h2>
 
           <div
-            className="analysis-tree btn-group btn-group-justified"
+            className="analysis-tree dm-group dm-btn-group-justified btn-group btn-group-justified"
             role="group"
             aria-label="..."
             style={borderStyle}
@@ -62,7 +62,7 @@ class DecisionBranch extends React.Component {
               return (
                 <a
                   role="button"
-                  className="btn btn-default"
+                  className="dm-btn btn"
                   style={self.state.choice == choice.name ? selected_style : {}}
                   onClick={() => {
                     self.setState({ choice: choice.name });
@@ -117,18 +117,14 @@ function DecisionTreeRoot(props) {
     }
   ];
   return (
-    <div style={{ marginTop: "-20px" }}>
-      <div className="analysis-tree jumbotron">
-        {props.datamonkey ? (
-          <h1>Datamonkey</h1>
-        ) : (
-          <h1 style={{ fontWeight: "150px" }}>HyPhy Desktop</h1>
-        )}
+    <div>
+      <div className="analysis-tree dm-jumbotron">
+        {props.datamonkey ? <h1>Datamonkey</h1> : <h1>HyPhy Desktop</h1>}
         <hr />
-        <div>
+        <p>
           A Collection of State of the Art Statistical Models and Bioinformatics
           Tools
-        </div>
+        </p>
       </div>
       <div className="container">
         <DecisionBranch
@@ -338,7 +334,7 @@ class Method extends React.Component {
             style={analysisBorder}
           >
             <h2 style={h2Style}>
-              {this.props.datamonkey ? "datamonkey " : "HyPhy "}
+              {this.props.datamonkey ? "Datamonkey " : "HyPhy "}
               recommends that you use...
             </h2>
             <a
