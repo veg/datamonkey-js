@@ -82,11 +82,6 @@ $body-color: #555;
 $table-condensed-cell-padding: 10px;
 $table-bg-hover: #bfbfbf;
 
-
-
-
-
-
 // Components
 //// Badge
 $badge-color: #038c7f;
@@ -217,7 +212,6 @@ $btn-primary-color: #f7f7f7;
   color: #f7f7f7;
 }
 
-
 //// Label
 label {
   font-family: "Montserrat", sans-serif;
@@ -236,13 +230,20 @@ $panel-default-text: $datamonkey-turquoise;
 }
 
 .dm-panel-default > .dm-panel-heading {
-  color: #f7f7f7;
+  background-color: #484d56;
+  padding: 10px 15px 5px 15px;
   border-bottom: 8px solid $datamonkey-turquoise;
 }
 
 .dm-panel-title {
   font-size: 24px;
   font-weight: 600;
+  color: #f7f7f7;
+}
+
+.panel-default > .panel-heading,
+.panel-body {
+  text-align: left;
 }
 
 //// Popovers
@@ -320,9 +321,6 @@ $tooltip-max-width: 200px;
 .dm-table > thead > tr > th,
 .dm-table > tbody > tr > th,
 .dm-table > tfoot > tr > th,
-.dm-table > thead > tr > td,
-.dm-table > tbody > tr > td,
-.dm-table > tfoot > tr > td,
 .dm-table-condensed > tfoot > tr > td {
   font-family: "Montserrat", sans-serif;
   text-align: center;
@@ -342,16 +340,6 @@ $tooltip-max-width: 200px;
 .dm-table-header {
   margin: 0;
 }
-
-
-
-
-
-
-
-
-
-
 
 // CONTENT
 .container {
@@ -429,8 +417,13 @@ nav .dm-dropdown-menu {
   text-align: center;
 }
 
-.dm-jumbotron h1, .dm-jumbotron h2, .dm-jumbotron h3, .dm-jumbotron h4,
-.dm-jumbotron h5, .dm-jumbotron h6, .dm-jumbotron p {
+.dm-jumbotron h1,
+.dm-jumbotron h2,
+.dm-jumbotron h3,
+.dm-jumbotron h4,
+.dm-jumbotron h5,
+.dm-jumbotron h6,
+.dm-jumbotron p {
   color: #f7f7f7;
   font-weight: 700;
 }
@@ -471,15 +464,9 @@ nav .dm-dropdown-menu {
 }
 
 .analysis-tree a.dm-btn:hover {
-  background-color: #484D56;
+  background-color: #484d56;
   color: #f7f7f7;
 }
-
-
-
-
-
-
 
 //.dm-navbar-static-top {
 //  border-width: 0 0 5px;
@@ -513,25 +500,10 @@ nav .dm-dropdown-menu {
 //$navbar-height: 70px;
 //$navbar-default-border: $datamonkey-turquoise;
 
-
-
 #results,
 #summary-tab {
   margin-top: 0 /*!important*/;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .dm-main-result {
   margin-bottom: 30px;
