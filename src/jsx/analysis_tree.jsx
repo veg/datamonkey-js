@@ -62,7 +62,7 @@ class DecisionBranch extends React.Component {
               return (
                 <a
                   role="button"
-                  className="dm-btn dm-btn-default btn btn-default"
+                  className="dm-btn btn"
                   style={self.state.choice == choice.name ? selected_style : {}}
                   onClick={() => {
                     self.setState({ choice: choice.name });
@@ -334,7 +334,7 @@ class Method extends React.Component {
             style={analysisBorder}
           >
             <h2 style={h2Style}>
-              {this.props.datamonkey ? "datamonkey " : "HyPhy "}
+              {this.props.datamonkey ? "Datamonkey " : "HyPhy "}
               recommends that you use...
             </h2>
             <a
