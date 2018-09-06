@@ -25,13 +25,15 @@ body {
 h1,
 h2,
 h3 {
-  font-weight: 600;
+  font-weight: 700;
 }
+
 h1 {
-  font-size: 42px;
+  font-size: 3em;
 }
+
 h3 {
-  font-size: 21px;
+  font-size: 1.5em;
   color: $datamonkey-turquoise;
 }
 
@@ -39,14 +41,13 @@ h3 {
   font-size: 80%;
 }
 
-.glyphicon {
-  right: 10px;
-  line-height: 1.1;
-}
-
 .dm-fa {
   color: #dd4631;
+  font-family: "Font Awesome\ 5 Free";
+  font-size: 0.9em;
+  font-style: normal;
   font-weight: 900;
+  vertical-align: text-top;
 }
 
 /*/// square bullets ///*/
@@ -62,52 +63,24 @@ h3:before {
   vertical-align: middle;
 }
 
-// *Hides content :before any .panel h3* //
-.panel h3:before {
-  content: "";
-  display: none;
-}
-
-// Gives clearance/offset space under fixed-header
-#results::before,
-.clearance {
-  display: block;
-  height: 70px;
-  width: 100%;
-}
-
-// Bootstrap Variables & Styles
-$body-bg: #f7f7f7;
-$body-color: #555;
-$table-condensed-cell-padding: 10px;
-$table-bg-hover: #bfbfbf;
-
 // Components
 //// Badge
 $badge-color: #038c7f;
 $badge-bg: #f7f7f7;
 
 //// Buttons
-$btn-border-radius-base: none;
-$btn-default-bg: #ccc;
-$btn-default-color: #484d56;
-$btn-font-weight: 700;
-$btn-primary-border: $datamonkey-turquoise;
-$btn-primary-bg: $datamonkey-turquoise;
-$btn-primary-color: #f7f7f7;
-
 .dm-btn-primary {
   border-radius: 30px;
   border-width: 2px;
   padding: 10px 20px;
   text-transform: uppercase;
-  font-size: 12px;
+  font-size: 0.857em;
   font-weight: 600;
 }
 
 .dm-btn-primary:hover {
-  background-color: #484d56 /*!important*/;
-  border: 2px solid #484d56 /*!important*/;
+  background-color: #484d56;
+  border: 2px solid #484d56;
   box-shadow: 0px 3px 3px #d0d0d0;
   color: #f7f7f7;
 }
@@ -184,10 +157,10 @@ $btn-primary-color: #f7f7f7;
   padding: 0px;
   margin: 2px 0 0;
   list-style: none;
-  font-size: 14px;
+  font-size: 1em;
   text-align: left;
   background-color: #f7f7f7;
-  border: none /*!important*/;
+  border: none;
   border-radius: 0px;
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
@@ -208,21 +181,20 @@ $btn-primary-color: #f7f7f7;
   transition: ease-in-out 100ms;
   padding-left: 25px;
   background-color: $datamonkey-turquoise;
+
   /*border-left: 15px solid #343846;*/
   color: #f7f7f7;
 }
 
-//// Label
-label {
-  font-family: "Montserrat", sans-serif;
-  font-size: 12px;
-  text-transform: uppercase;
+.dm-cancel-job-button-div {
+  padding: 12px;
 }
 
 // Cards
 .dm-card {
   box-shadow: none;
   border: none;
+  margin-bottom: 20px;
 }
 
 .dm-card-header {
@@ -231,30 +203,48 @@ label {
   padding: 10px 15px 5px 15px;
   border-bottom: 8px solid $datamonkey-turquoise;
   text-align: left;
-  font-size: 24px;
+  font-size: 1.714em;
   font-weight: 600;
 }
 
 .dm-card-body {
-  text-align: left;
+}
+
+.dm-card-body a {
+  color: #484d56;
+  border-bottom: 3px dotted #ceefe8;
+}
+
+.dm-card-body a:hover {
+  color: $datamonkey-turquoise;
+  text-decoration: none;
+  border-bottom: 3px solid #ceefe8;
 }
 
 .dm-card-title {
+  font-size: 1.286em;
 }
 
 .dm-card-text {
 }
 
+//// Label
+label {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.857em;
+  text-transform: uppercase;
+}
+
 //// Popovers
-$popover-max-width: 400px;
-$popover-title-bg: #f7f7f7;
-$popover-arrow-color: #f7f7f7;
-$popover-border-color: $hyphy-green;
-$popover-fallback-border-color: $hyphy-green;
+//$popover-max-width: 400px;
+//$popover-title-bg: #f7f7f7;
+//$popover-arrow-color: #f7f7f7;
+//$popover-border-color: $hyphy-green;
+//$popover-fallback-border-color: $hyphy-green;
 
 .dm-popover {
   font-family: "Montserrat", sans-serif;
-  font-size: 13.5px;
+  font-size: 0.964em;
   letter-spacing: 0.25px;
   color: #444;
   border: 3px solid $hyphy-green;
@@ -267,7 +257,7 @@ $popover-fallback-border-color: $hyphy-green;
   padding: 12px 14px 0px 14px;
   margin: 0;
   font-family: "Montserrat", sans-serif;
-  font-size: 15.5px;
+  font-size: 1.107em;
   font-weight: 700;
   color: #038c7f;
   letter-spacing: 0.25px;
@@ -289,7 +279,7 @@ $popover-fallback-border-color: $hyphy-green;
 
 .dm-popover-content ul li {
   font-family: "Noto Sans", sans-serif;
-  font-size: 13.5px;
+  font-size: 0.964em;
 }
 
 .dm-popover.bottom > .dm-arrow {
@@ -351,13 +341,16 @@ nav.dm-navbar {
   align-items: center;
   justify-content: space-around;
   border-bottom: 2px solid $datamonkey-turquoise;
+  height: 70px;
   width: 100%;
   position: fixed;
   background-color: #fff;
   z-index: 9999;
 }
 
-nav::after {
+.clearance {
+  display: block;
+  height: 70px;
 }
 
 nav.dm-nav-links a:link,
@@ -404,7 +397,7 @@ nav .dm-dropdown-menu {
   padding: 0px;
   margin: 2px 0 0;
   list-style: none;
-  font-size: 14px;
+  font-size: 1em;
   text-align: left;
   background-color: #f7f7f7;
   border: none;
@@ -508,7 +501,7 @@ nav .dm-dropdown-menu {
 
 #results,
 #summary-tab {
-  margin-top: 0 /*!important*/;
+  margin-top: 0;
 }
 
 .dm-main-result {
@@ -517,7 +510,7 @@ nav .dm-dropdown-menu {
 
 .dm-bs-docs-sidebar .nav > li > a {
   padding-right: 45px;
-  letter-spacing: 0 /*!important*/;
+  letter-spacing: 0;
 }
 
 // Footer
@@ -548,7 +541,7 @@ nav .dm-dropdown-menu {
   }
 
   .navbar {
-    display: block /*!important*/;
+    display: block;
   }
 
   .navbar li,
@@ -603,11 +596,11 @@ nav .dm-dropdown-menu {
   }
 
   #datamonkey .footer {
-    margin-top: 0px /*!important*/;
+    margin-top: 0px;
   }
 
   .panel-datamonkey {
-    padding: 20px 10px /*!important*/;
+    padding: 20px 10px;
   }
 
   // Help page
