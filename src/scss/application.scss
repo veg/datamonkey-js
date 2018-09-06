@@ -1,6 +1,8 @@
 @import "~bootstrap/scss/bootstrap";
 @import "~hyphy-vision/dist/application.scss";
+
 @import url("https://use.fontawesome.com/releases/v5.0.9/css/all.css");
+
 @import url("https://fonts.googleapis.com/css?family=Exo+2:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Exo:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Noto+Sans:400,400i,700,700i");
 
 // Hyphy & Datamonkey Colors
@@ -27,9 +29,11 @@ h2,
 h3 {
   font-weight: 600;
 }
+
 h1 {
   font-size: 42px;
 }
+
 h3 {
   font-size: 21px;
   color: $datamonkey-turquoise;
@@ -82,11 +86,6 @@ $body-color: #555;
 $table-condensed-cell-padding: 10px;
 $table-bg-hover: #bfbfbf;
 
-
-
-
-
-
 // Components
 //// Badge
 $badge-color: #038c7f;
@@ -111,8 +110,8 @@ $btn-primary-color: #f7f7f7;
 }
 
 .dm-btn-primary:hover {
-  background-color: #484d56 /*!important*/;
-  border: 2px solid #484d56 /*!important*/;
+  background-color: #484d56;
+  border: 2px solid #484d56;
   box-shadow: 0px 3px 3px #d0d0d0;
   color: #f7f7f7;
 }
@@ -192,7 +191,7 @@ $btn-primary-color: #f7f7f7;
   font-size: 14px;
   text-align: left;
   background-color: #f7f7f7;
-  border: none /*!important*/;
+  border: none;
   border-radius: 0px;
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
@@ -213,10 +212,14 @@ $btn-primary-color: #f7f7f7;
   transition: ease-in-out 100ms;
   padding-left: 25px;
   background-color: $datamonkey-turquoise;
+
   /*border-left: 15px solid #343846;*/
   color: #f7f7f7;
 }
 
+.dm-cancel-job-button-div {
+  padding: 12px;
+}
 
 //// Label
 label {
@@ -343,16 +346,6 @@ $tooltip-max-width: 200px;
   margin: 0;
 }
 
-
-
-
-
-
-
-
-
-
-
 // CONTENT
 .container {
   margin-top: 30px;
@@ -475,12 +468,6 @@ nav .dm-dropdown-menu {
   color: #f7f7f7;
 }
 
-
-
-
-
-
-
 //.dm-navbar-static-top {
 //  border-width: 0 0 5px;
 //}
@@ -513,25 +500,10 @@ nav .dm-dropdown-menu {
 //$navbar-height: 70px;
 //$navbar-default-border: $datamonkey-turquoise;
 
-
-
 #results,
 #summary-tab {
-  margin-top: 0 /*!important*/;
+  margin-top: 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .dm-main-result {
   margin-bottom: 30px;
@@ -539,7 +511,7 @@ nav .dm-dropdown-menu {
 
 .dm-bs-docs-sidebar .nav > li > a {
   padding-right: 45px;
-  letter-spacing: 0 /*!important*/;
+  letter-spacing: 0;
 }
 
 // Footer
@@ -570,7 +542,7 @@ nav .dm-dropdown-menu {
   }
 
   .navbar {
-    display: block /*!important*/;
+    display: block;
   }
 
   .navbar li,
@@ -625,11 +597,11 @@ nav .dm-dropdown-menu {
   }
 
   #datamonkey .footer {
-    margin-top: 0px /*!important*/;
+    margin-top: 0px;
   }
 
   .panel-datamonkey {
-    padding: 20px 10px /*!important*/;
+    padding: 20px 10px;
   }
 
   // Help page
