@@ -1,6 +1,21 @@
 var React = require("react");
 var ReactDOM = require("react-dom");
 
+var dmCard = {};
+var dmCardHeader = {};
+var dmCardBody = {};
+var dmCardTitle = {};
+
+var h2Style = {
+  fontFamily: "montserrat",
+  fontSize: "18px",
+  fontWeight: "700",
+  color: "#009BA1",
+  marginTop: "0px",
+  marginBottom: "10px",
+  textAlign: "center"
+};
+
 class Citations extends React.Component {
   constructor(props) {
     super(props);
@@ -17,11 +32,9 @@ class Citations extends React.Component {
             application notes.
           </p>
           <br />
-          <div className="dm-panel dm-panel-default panel panel-default">
-            <div className="dm-panel-heading panel-heading">
-              <h3 className="dm-panel-title panel-title">Datamonkey</h3>
-            </div>
-            <div className="dm-panel-body panel-body">
+          <div className="dm-card card">
+            <div className="dm-card-header card-header">Datamonkey</div>
+            <div className="dm-card-body card-body">
               <div>
                 Steven Weaver, Stephen D. Shank, Stephanie J. Spielman, Michael
                 Li, Spencer V. Muse, Sergei L. Kosakovsky Pond
@@ -111,11 +124,9 @@ class Citations extends React.Component {
 
         <div className="row">
           <div className="col">
-            <div className="dm-panel dm-panel-default panel panel-default">
-              <div className="dm-panel-heading panel-heading">
-                <h3 className="dm-panel-title panel-title">HyPhy</h3>
-              </div>
-              <div className="dm-panel-body panel-body">
+            <div className="dm-card card">
+              <div className="dm-card-header card-header">Hyphy</div>
+              <div className="dm-card-body card-body">
                 <div>
                   Sergei L. Kosakovsky Pond, Simon D. W. Frost and Spencer V.
                   Muse (2005)
@@ -142,11 +153,9 @@ class Citations extends React.Component {
         <div className="row">
           <div className="col">
             <h2>Method Citations</h2>
-            <div className="dm-panel dm-panel-default panel panel-default">
-              <div className="dm-panel-heading panel-heading">
-                <h3 className="dm-panel-title panel-title">aBSREL</h3>
-              </div>
-              <div className="dm-panel-body panel-body">
+            <div className="dm-card card">
+              <div className="dm-card-header card-header">aBSREL</div>
+              <div className="dm-card-body card-body">
                 <div>
                   M. D. Smith, J. O. Wertheim, S. Weaver, B. Murrell, K.
                   Scheffler and S. L. Kosakovsky Pond
@@ -198,11 +207,9 @@ class Citations extends React.Component {
 
         <div className="row">
           <div className="col">
-            <div className="dm-panel dm-panel-default panel panel-default">
-              <div className="dm-panel-heading panel-heading">
-                <h3 className="dm-panel-title panel-title">BUSTED</h3>
-              </div>
-              <div className="dm-panel-body panel-body">
+            <div className="dm-card card">
+              <div className="dm-card-header card-header">BUSTED</div>
+              <div className="dm-card-body card-body">
                 <div>
                   B. Murrell, S. Weaver, M. D. Smith, J. O. Wertheim, S.
                   Murrell, A. Aylward and K. Eren, T. Pollner, D. P. Martin, D.
@@ -230,11 +237,9 @@ class Citations extends React.Component {
 
         <div className="row">
           <div className="col">
-            <div className="dm-panel dm-panel-default panel panel-default">
-              <div className="dm-panel-heading panel-heading">
-                <h3 className="dm-panel-title panel-title">FEL</h3>
-              </div>
-              <div className="dm-panel-body panel-body">
+            <div className="dm-card card">
+              <div className="dm-card-header card-header">FEL</div>
+              <div className="dm-card-body card-body">
                 <div>
                   Sergei L. Kosakovsky Pond and Simon D. W. Frost (2005)
                 </div>
@@ -261,11 +266,9 @@ class Citations extends React.Component {
 
         <div className="row">
           <div className="col">
-            <div className="dm-panel dm-panel-default panel panel-default">
-              <div className="dm-panel-heading panel-heading">
-                <h3 className="dm-panel-title panel-title">FUBAR</h3>
-              </div>
-              <div className="dm-panel-body panel-body">
+            <div className="dm-card card">
+              <div className="dm-card-header card-header">FUBAR</div>
+              <div className="dm-card-body card-body">
                 <div>
                   B. Murrell, S. Moola, A. Mabona, T. Weighill, D. Sheward, S.
                   L. Kosakovsky Pond and K. Scheffler
@@ -293,11 +296,9 @@ class Citations extends React.Component {
 
         <div className="row">
           <div className="col">
-            <div className="dm-panel dm-panel-default panel panel-default">
-              <div className="dm-panel-heading panel-heading">
-                <h3 className="dm-panel-title panel-title">GARD</h3>
-              </div>
-              <div className="dm-panel-body panel-body">
+            <div className="dm-card card">
+              <div className="dm-card-header card-header">GARD</div>
+              <div className="dm-card-body card-body">
                 <div>
                   Sergei L Kosakovsky Pond, David Posada, Michael B Gravenor,
                   Christopher H Woelk and Simon DW Frost
@@ -325,11 +326,9 @@ class Citations extends React.Component {
 
         <div className="row">
           <div className="col">
-            <div className="dm-panel dm-panel-default panel panel-default">
-              <div className="dm-panel-heading panel-heading">
-                <h3 className="dm-panel-title panel-title">MEME</h3>
-              </div>
-              <div className="dm-panel-body panel-body">
+            <div className="dm-card card">
+              <div className="dm-card-header card-header">MEME</div>
+              <div className="dm-card-body card-body">
                 <div>
                   Ben Murrell, Joel O. Wertheim, Sasha Moola, Thomas Weighill,
                   Konrad Scheffler and Sergei L. Kosakovsky Pond (2012)
@@ -357,11 +356,9 @@ class Citations extends React.Component {
 
         <div className="row">
           <div className="col">
-            <div className="dm-panel dm-panel-default panel panel-default">
-              <div className="dm-panel-heading panel-heading">
-                <h3 className="dm-panel-title panel-title">RELAX</h3>
-              </div>
-              <div className="dm-panel-body panel-body">
+            <div className="dm-card card">
+              <div className="dm-card-header card-header">RELAX</div>
+              <div className="dm-card-body card-body">
                 <div>
                   J. O. Wertheim, B. Murrell, M. D. Smith, S. L. Kosakovsky Pond
                   and K. Scheffler
@@ -389,11 +386,9 @@ class Citations extends React.Component {
 
         <div className="row">
           <div className="col">
-            <div className="dm-panel dm-panel-default panel panel-default">
-              <div className="dm-panel-heading panel-heading">
-                <h3 className="dm-panel-title panel-title">SLAC</h3>
-              </div>
-              <div className="dm-panel-body panel-body">
+            <div className="dm-card card">
+              <div className="dm-card-header card-header">SLAC</div>
+              <div className="dm-card-body card-body">
                 <div>
                   Sergei L. Kosakovsky Pond and Simon D. W. Frost (2005)
                 </div>

@@ -219,31 +219,30 @@ label {
   text-transform: uppercase;
 }
 
-// Panels
-$panel-default-border: #f7f7f7;
-$panel-primary-border: #f7f7f7;
-$panel-default-heading-bg: #484d56;
-$panel-default-text: $datamonkey-turquoise;
-
-.dm-panel {
+// Cards
+.dm-card {
   box-shadow: none;
+  border: none;
 }
 
-.dm-panel-default > .dm-panel-heading {
+.dm-card-header {
   background-color: #484d56;
+  color: #f7f7f7;
   padding: 10px 15px 5px 15px;
   border-bottom: 8px solid $datamonkey-turquoise;
-}
-
-.dm-panel-title {
+  text-align: left;
   font-size: 24px;
   font-weight: 600;
-  color: #f7f7f7;
 }
 
-.panel-default > .panel-heading,
-.panel-body {
+.dm-card-body {
   text-align: left;
+}
+
+.dm-card-title {
+}
+
+.dm-card-text {
 }
 
 //// Popovers
@@ -352,6 +351,13 @@ nav.dm-navbar {
   align-items: center;
   justify-content: space-around;
   border-bottom: 2px solid $datamonkey-turquoise;
+  width: 100%;
+  position: fixed;
+  background-color: #fff;
+  z-index: 9999;
+}
+
+nav::after {
 }
 
 nav.dm-nav-links a:link,
