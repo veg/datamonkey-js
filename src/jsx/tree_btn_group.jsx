@@ -19,7 +19,7 @@ function TreeBtnGroup(props) {
   }
 
   return (
-    <div className="phylo-nav">
+    <div className="phylo-nav" style={{ padding: "0px" }}>
       <div className="btn-group">
         <button
           title="Expand spacing"

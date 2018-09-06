@@ -16,7 +16,7 @@
       </ul>
     </div>
 
-    <div class="col-lg-4">
+    <div class="col-lg-4 dm-cancel-job-button-div">
       <button type="button" id="job-cancel-button" data-loading-text="Canceling job..." class="btn btn-danger pull-right" autocomplete="off">
        <span class="fa fa-times-circle"></span> Cancel Job
       </button>
@@ -42,9 +42,13 @@
   </div>
 </div>
 
-<script>
+<div id="stdOut-placeholder" style="display:none">
+  <%=job.last_status_msg%>
+<div>
 
-  render_stdOut("stdOut-container", "<%=job.last_status_msg%>")
+<script>
+  var stdOut = $("#stdOut-placeholder").text()
+  render_stdOut("stdOut-container", stdOut)
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.js"></script>
 <script src="/assets/js/job.js"></script>

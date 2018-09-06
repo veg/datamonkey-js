@@ -253,9 +253,14 @@ function TreeSelectBtnGroup(props) {
 function BranchSelectionTypeBtnGroup(props) {
   return (
     <div
-      className="btn-group btn-group-toggle"
+      className="btn-group btn-group-toggle ml-auto"
       data-toggle="buttons"
-      style={{ paddingLeft: "2rem" }}
+      style={{
+        paddingTop: "1rem",
+        paddingRight: "2rem",
+        paddingBottom: "1rem",
+        float: "right"
+      }}
     >
       <label
         title="Highlight Test Branches"

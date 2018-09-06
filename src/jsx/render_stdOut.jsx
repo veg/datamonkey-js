@@ -9,7 +9,20 @@ function Table(props) {
 
 function render_stdOut(element, stdOut) {
   ReactDOM.render(
-    <ReactMarkdown source={stdOut} renders={{ table: Table }} />,
+    <div
+      style={{
+        borderStyle: "solid",
+        paddingLeft: "20px",
+        paddingRight: "20px",
+        marginRight: "0px",
+        marginLeft: "0px",
+        height: "500px",
+        width: "100%",
+        overflow: "scroll"
+      }}
+    >
+      <ReactMarkdown source={stdOut} renders={{ table: Table }} />
+    </div>,
     document.getElementById(element)
   );
 }
