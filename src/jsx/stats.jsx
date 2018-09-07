@@ -421,20 +421,25 @@ var UsageDashboard = React.createClass({
       ],
       tabs = methods.map(function(method) {
         return (
-          <li
-            role="presentation"
-            className={method == self.state.active ? "active" : ""}
+          <a
+            href="#"
+            onClick={self.tabClick(method)}
+            id={
+              method == self.state.active
+                ? "stats-method-active"
+                : "stats-method"
+            }
           >
-            <a href="#" onClick={self.tabClick(method)}>
-              {method}
-            </a>
-          </li>
+            {method}
+          </a>
         );
       });
 
     return (
       <div>
-        <ul className="nav nav-tabs">{tabs}</ul>
+        <nav className="navbar navbar-light" style={{ border: "none" }}>
+          {tabs}
+        </nav>
         <UsageInformation active={this.state.active} />
       </div>
     );

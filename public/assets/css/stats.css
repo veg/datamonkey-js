@@ -140,3 +140,12 @@ aside {
 a {
   color: #00a99d;
 }
+
+#stats-method {
+  color: #555555;
+}
+
+#stats-method-active {
+  color: #dd4631;
+  font-size: 18px;
+}
