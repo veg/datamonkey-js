@@ -8,195 +8,187 @@ class DataFiles extends React.Component {
   render() {
     return (
       <div>
-        <div className="bs-docs-section">
-          <div className="panel panel-default">
-            <div className="panel-heading">
-              <h3 id="example-files" className="panel-title">
-                Example Files
-              </h3>
-            </div>
+        <div className="dm-card card-default">
+          <div className="dm-card-header card-header" id="#example-files">
+            Example Files
           </div>
-          <div>
-            <a
-              href="/assets/Flu.fasta"
-              role="button"
-              className="btn btn-primary"
-            >
-              Influenza A H5N1 hemagluttinin
-            </a>
-            <a href="/assets/pol.nex" role="button" className="btn btn-primary">
-              HIV-1 pol (recombinant data)
-            </a>
+        </div>
+        <div>
+          <a
+            href="/assets/Flu.fasta"
+            role="button"
+            className="btn dm-btn-primary btn-primary"
+          >
+            Influenza A H5N1 hemagluttinin
+          </a>
+          <a
+            href="/assets/pol.nex"
+            role="button"
+            className="btn dm-btn-primary btn-primary"
+          >
+            HIV-1 pol (recombinant data)
+          </a>
+        </div>
+        <br />
+        <br />
+        <div className="dm-card card-default">
+          <div className="dm-card-header card-header" id="data-files">
+            Data Files
           </div>
-          <br />
-
-          <h3>General Remarks</h3>
-
-          <p>
+        </div>
+        <h3>General Remarks</h3>
+        <p>
+          <strong>
             To perform a selection analysis, datamonkey.org needs a multiple
             alignment of at least three homologous coding nucleotide sequences.
             Codon based methods for estimating dN and dS can be applied to any
             sequence alignment, but there are several considerations to keep in
             mind:
-          </p>
-
-          <p>
-            Ideally, the alignment should represent a single gene, or protein
-            product, sampled over multiple taxa (e.g. mammalian interferon
-            genes), or a diverse population sample (e.g. Influenza A viruses
-            infecting different individuals). Because comparative methods
-            estimate relative rates of synonymous and non-synonymous
-            substitution, substantial sequence diversity is needed for reliable
-            inference. For example when, Suzuki and Nei applied a REL-type
-            method to a very low divergence (1 or 2 substitutions per sequence
-            along a star phylogeny) sample of the Human T-lymphotropic virus
-            (HTLV), they found that the method performed poorly. Yang and
-            colleagues have suggested that the total length of the phylogenetic
-            tree should be at least one expected substitution per codon site,
-            but it is impossible to give a generally valid range for desirable
-            sequence divergence. However, sequences that are too divergent could
-            lead to saturation, i.e. our inability to reliably infer branch
-            lengths and substitution parameters. The number of sequences in the
-            alignment is important: too few sequences will contain too little
-            information for meaningful inference, while too many may take too
-            long to run. At the time of this writing, Datamonkey permits up to
-            150 sequences for SLAC analyses, 100 for FEL/IFEL analyses, 40 for
-            REL and PARRIS and 25 for GA-Branch. As a rule of thumb, at least 10
-            sequences are needed to detect selection at a single site
-            (SLAC/FEL/IFEL/REL) with any degree of reliability, while as few as
-            4 may be sufficient for alignment-wide inference (PARRIS/GA-Branch).
-            The median number of sequences in an alignment submitted to
-            Datamonkey is 19. Comparative methods are ill suited to study
-            certain kinds of selection. For example, they should not be applied
-            to the detection of selective sweeps (rapid replacement of one
-            allele with a more fit one, resulting in a homogeneous population),
-            unless sequences sampled prior to and following the selective sweep
-            are included in the sample. A number of publications have dealt with
-            this issue extensively (e.g. Selection using HyPhy), and we refer an
-            interested reader to one of these works for further insight.
-          </p>
-
-          <p>
-            It is a good practice to visually inspect your data to make sure
-            that the sequences are alignment correctly. Of course, one can never
-            be sure that an alignment is objectively correct, but gross
-            misalignments (e.g. sequences that are out of frame) are easy to
-            spot with software that provides a graphical visualization of the
-            alignment, such as HyPhy, Se-Al, or BioEdit. Datamonkey uses the
-            HyPhy package as its processing engine, and if an alignment does not
-            open in HyPhy on your machine (using the File:Open:Open Data File
-            command), then it will not be properly read by Datamonkey.
-          </p>
-
-          <p>
-            You should verify that the alignment is in frame, i.e. that it does
-            not contain stop codons, including premature stop codons (indicative
-            of a frame shift, e.g. due to misalignment, or a non-functional
-            coding sequence) and the terminal stop codon. Your alignment should
-            exclude any non-coding region of the nucleotide sequence, such as
-            introns or promoter regions, for which existing models of codon
-            substitution would not apply. When coding nucleotide sequences are
-            aligned directly, frameshifting (i.e. not in multiples of 3) gaps
-            may be inserted, since the alignment program often does not take the
-            coding nature of the sequence into account. Therefore it is
-            generally a good idea to align translated protein sequences and then
-            map them back onto constituent nucleotides. Datamonkey will perform
-            a number of checks when it receives coding sequences and report all
-            problems it encounters.
-          </p>
-
-          <p>
-            If the alignment contains identical sequences, Datamonkey will
-            discard all but one copy before proceeding. This is done to speed up
-            the analyses, because identical sequences do not contribute any
-            information to the likelihood inference procedure (except via base
-            frequencies), but the computational complexity of phylogenetic
-            analyses grows with the number of sequences.
-          </p>
-
-          <p>
-            Finally, Datamonkey may rename some of the sequences to conform to
-            HyPhy naming conventions for technical reasons (all sequence names
-            must be valid identifiers, e.g. they cannot contain spaces). This is
-            done automatically and has no effect on the subsequent analyses.
-          </p>
-          <br />
-          <h3>Common issues</h3>
-
-          <div className="bs-callout bs-callout-danger">
-            <h4>Non-text files</h4>
-            Datamonkey expects sequence alignments to be uploaded as text files.
-            Any other format (Word, RTF, PDF) will not be recognized and must be
-            converted into plain text prior to submission.
-          </div>
-
-          <div className="bs-callout bs-callout-danger">
-            <h4>Nonstandard characters in the alignment</h4>
-            For instance, BioEdit may use the tilde ('~') character to denote a
-            gap. The dot ('.') character is sometimes used as "match the first
-            sequence" character and sometimes as the gap character. Datamonkey
-            will accept
-            <a href="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html#300">
-              IUPAC nucleotide characters
-            </a>{" "}
-            (ACGT/U and ambiguity characters) and '?', 'X', 'N' or '-' for gap
-            or missing data (Datamonkey is not case sensitive). All other
-            characters in sequence data will be skipped and could result in
-            frame shifts.
-          </div>
-
-          <div className="bs-callout bs-callout-danger">
-            <h4>Uploading an amino-acid alignment</h4>
-            Datamonkey employs codon models which require the knowledge of
-            silent substitutions, lost upon translation to amino-acids.
-          </div>
-
-          <div className="bs-callout bs-callout-danger">
-            <h4>Termination codons</h4>
-            Datamonkey will reject any alignments that contains stop codons,
-            even if the stop codon is at the end of the sequence (i.e. is a
-            proper termination codon). Please strip all stop codons out of the
-            alignment prior to uploading it (the HyPhy standard analysis{" "}
-            <tt>Data File Tools:CleanStopCodons.bf</tt> can do this by replacing
-            all stop codons with indels).
-          </div>
-
-          <div className="bs-callout bs-callout-danger">
-            <h4>Alignments that are too gappy</h4>
-            If an alignment contains more than 50% of indels, it may not be
-            properly processed (e.g. it could be read as a protein alignment,
-            depending on the alignment format).
-          </div>
-
-          <div className="bs-callout bs-callout-danger">
-            <h4>Alignments that are too large</h4>
-            If your alignment exceeds the size currently allowed by Datamonkey,
-            consider running your analysis locally in HyPhy. A detailed
-            discussion of how HyPhy can be used for that purpose can be found in{" "}
-            <a
-              href="http://www.hyphy.org/pubs/hyphybook2007.pdf"
-              className="REFERENCE"
-            >
-              Selection using HyPhy
-            </a>
-            .
-          </div>
-
-          <div className="bs-callout bs-callout-danger">
-            <h4>Incorrect genetic code</h4>
-            If the genetic code is misspecified (e.g. the mitochondrial code is
-            applied to nuclear sequences), valid alignments may fail to upload
-            and if they do, then the results may be compromised (because codons
-            are mistranslated). Make sure the correct genetic code is selected
-            on the data upload page.
-          </div>
+          </strong>
+        </p>
+        <p>
+          Ideally, the alignment should represent a single gene, or protein
+          product, sampled over multiple taxa (e.g. mammalian interferon genes),
+          or a diverse population sample (e.g. Influenza A viruses infecting
+          different individuals). Because comparative methods estimate relative
+          rates of synonymous and non-synonymous substitution, substantial
+          sequence diversity is needed for reliable inference. For example when,
+          Suzuki and Nei applied a REL-type method to a very low divergence (1
+          or 2 substitutions per sequence along a star phylogeny) sample of the
+          Human T-lymphotropic virus (HTLV), they found that the method
+          performed poorly. Yang and colleagues have suggested that the total
+          length of the phylogenetic tree should be at least one expected
+          substitution per codon site, but it is impossible to give a generally
+          valid range for desirable sequence divergence. However, sequences that
+          are too divergent could lead to saturation, i.e. our inability to
+          reliably infer branch lengths and substitution parameters. The number
+          of sequences in the alignment is important: too few sequences will
+          contain too little information for meaningful inference, while too
+          many may take too long to run. At the time of this writing, Datamonkey
+          permits up to 150 sequences for SLAC analyses, 100 for FEL/IFEL
+          analyses, 40 for REL and PARRIS and 25 for GA-Branch. As a rule of
+          thumb, at least 10 sequences are needed to detect selection at a
+          single site (SLAC/FEL/IFEL/REL) with any degree of reliability, while
+          as few as 4 may be sufficient for alignment-wide inference
+          (PARRIS/GA-Branch). The median number of sequences in an alignment
+          submitted to Datamonkey is 19. Comparative methods are ill suited to
+          study certain kinds of selection. For example, they should not be
+          applied to the detection of selective sweeps (rapid replacement of one
+          allele with a more fit one, resulting in a homogeneous population),
+          unless sequences sampled prior to and following the selective sweep
+          are included in the sample. A number of publications have dealt with
+          this issue extensively (e.g. Selection using HyPhy), and we refer an
+          interested reader to one of these works for further insight.
+        </p>
+        <hr />
+        <p>
+          It is a good practice to visually inspect your data to make sure that
+          the sequences are alignment correctly. Of course, one can never be
+          sure that an alignment is objectively correct, but gross misalignments
+          (e.g. sequences that are out of frame) are easy to spot with software
+          that provides a graphical visualization of the alignment, such as
+          HyPhy, Se-Al, or BioEdit. Datamonkey uses the HyPhy package as its
+          processing engine, and if an alignment does not open in HyPhy on your
+          machine (using the File:Open:Open Data File command), then it will not
+          be properly read by Datamonkey.
+        </p>
+        <hr />
+        <p>
+          You should verify that the alignment is in frame, i.e. that it does
+          not contain stop codons, including premature stop codons (indicative
+          of a frame shift, e.g. due to misalignment, or a non-functional coding
+          sequence) and the terminal stop codon. Your alignment should exclude
+          any non-coding region of the nucleotide sequence, such as introns or
+          promoter regions, for which existing models of codon substitution
+          would not apply. When coding nucleotide sequences are aligned
+          directly, frameshifting (i.e. not in multiples of 3) gaps may be
+          inserted, since the alignment program often does not take the coding
+          nature of the sequence into account. Therefore it is generally a good
+          idea to align translated protein sequences and then map them back onto
+          constituent nucleotides. Datamonkey will perform a number of checks
+          when it receives coding sequences and report all problems it
+          encounters.
+        </p>
+        <hr />
+        <p>
+          If the alignment contains identical sequences, Datamonkey will discard
+          all but one copy before proceeding. This is done to speed up the
+          analyses, because identical sequences do not contribute any
+          information to the likelihood inference procedure (except via base
+          frequencies), but the computational complexity of phylogenetic
+          analyses grows with the number of sequences.
+        </p>
+        <hr />
+        <p>
+          Finally, Datamonkey may rename some of the sequences to conform to
+          HyPhy naming conventions for technical reasons (all sequence names
+          must be valid identifiers, e.g. they cannot contain spaces). This is
+          done automatically and has no effect on the subsequent analyses.
+        </p>
+        <br />
+        <h3>Common issues</h3>
+        <div className="bs-callout bs-callout-danger">
+          <h4>Non-text files</h4>
+          Datamonkey expects sequence alignments to be uploaded as text files.
+          Any other format (Word, RTF, PDF) will not be recognized and must be
+          converted into plain text prior to submission.
         </div>
-        <div className="panel panel-default">
-          <div className="panel-heading">
-            <h3 id="genetic-codes" className="panel-title">
-              Genetic Codes
-            </h3>
-          </div>
+        <div className="bs-callout bs-callout-danger">
+          <h4>Nonstandard characters in the alignment</h4>
+          For instance, BioEdit may use the tilde ('~') character to denote a
+          gap. The dot ('.') character is sometimes used as "match the first
+          sequence" character and sometimes as the gap character. Datamonkey
+          will accept
+          <a href="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html#300">
+            IUPAC nucleotide characters
+          </a>{" "}
+          (ACGT/U and ambiguity characters) and '?', 'X', 'N' or '-' for gap or
+          missing data (Datamonkey is not case sensitive). All other characters
+          in sequence data will be skipped and could result in frame shifts.
+        </div>
+        <div className="bs-callout bs-callout-danger">
+          <h4>Uploading an amino-acid alignment</h4>
+          Datamonkey employs codon models which require the knowledge of silent
+          substitutions, lost upon translation to amino-acids.
+        </div>
+        <div className="bs-callout bs-callout-danger">
+          <h4>Termination codons</h4>
+          Datamonkey will reject any alignments that contains stop codons, even
+          if the stop codon is at the end of the sequence (i.e. is a proper
+          termination codon). Please strip all stop codons out of the alignment
+          prior to uploading it (the HyPhy standard analysis{" "}
+          <tt>Data File Tools:CleanStopCodons.bf</tt> can do this by replacing
+          all stop codons with indels).
+        </div>
+        <div className="bs-callout bs-callout-danger">
+          <h4>Alignments that are too gappy</h4>
+          If an alignment contains more than 50% of indels, it may not be
+          properly processed (e.g. it could be read as a protein alignment,
+          depending on the alignment format).
+        </div>
+        <div className="bs-callout bs-callout-danger">
+          <h4>Alignments that are too large</h4>
+          If your alignment exceeds the size currently allowed by Datamonkey,
+          consider running your analysis locally in HyPhy. A detailed discussion
+          of how HyPhy can be used for that purpose can be found in{" "}
+          <a
+            href="http://www.hyphy.org/pubs/hyphybook2007.pdf"
+            className="REFERENCE"
+          >
+            Selection using HyPhy
+          </a>
+          .
+        </div>
+        <div className="bs-callout bs-callout-danger">
+          <h4>Incorrect genetic code</h4>
+          If the genetic code is misspecified (e.g. the mitochondrial code is
+          applied to nuclear sequences), valid alignments may fail to upload and
+          if they do, then the results may be compromised (because codons are
+          mistranslated). Make sure the correct genetic code is selected on the
+          data upload page.
+        </div>
+        <div className="dm-card card-default">
+          <div className="dm-card-header card-header">Genetic Codes</div>
         </div>
         <h3>Universal Genetic Code</h3>
         <table className="table table-bordered table-striped">
@@ -516,12 +508,8 @@ class DataFiles extends React.Component {
           </tr>
         </table>
         <br />
-        <div className="panel panel-default">
-          <div className="panel-heading">
-            <h3 id="data-formats" className="panel-title">
-              Data Formats
-            </h3>
-          </div>
+        <div className="dm-card card-default">
+          <div className="dm-card-header card-header">Data Formats</div>
         </div>
         <p>
           Datamonkey automatically recognizes five aligned sequence data formats

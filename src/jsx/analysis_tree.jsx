@@ -331,7 +331,7 @@ class Method extends React.Component {
     return (
       <div className="row">
         <div className="col">
-          <div className="card" style={analysisBorder}>
+          <div className="dm-card card" style={analysisBorder}>
             <h2 style={h2Style}>
               {this.props.datamonkey ? "Datamonkey " : "HyPhy "}
               recommends that you use...
@@ -346,7 +346,7 @@ class Method extends React.Component {
               onMouseEnter={() => this.setState({ hover: true })}
               onMouseLeave={() => this.setState({ hover: false })}
             >
-              <div className="card-heading">
+              <div className="card-header">
                 <center>
                   <h1 style={analysisName}>{this.props.title}</h1>
                 </center>

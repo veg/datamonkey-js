@@ -33,7 +33,7 @@ h1 {
 }
 
 h3 {
-  font-size: 1.5em;
+  font-size: 1.65em;
   color: $datamonkey-turquoise;
 }
 
@@ -76,29 +76,19 @@ $badge-bg: #f7f7f7;
   text-transform: uppercase;
   font-size: 0.857em;
   font-weight: 600;
+  margin: 0 5px;
 }
 
-.dm-btn-primary:hover {
-  background-color: #484d56;
-  border: 2px solid #484d56;
-  box-shadow: 0px 3px 3px #d0d0d0;
+.dm-btn-primary:hover,
+.dm-btn-primary:focus,
+.dm-btn-primary.focus {
   color: #f7f7f7;
+  background-color: #36c9b7;
+  box-shadow: 0px 3px 3px #ccc;
 }
 
 .dm-btn .caret {
   margin-left: 15px;
-}
-
-.dm-btn-primary:focus,
-.dm-btn-primary.focus {
-  color: #f7f7f7;
-  background-color: #00766e;
-}
-
-.dm-btn-primary:hover {
-  color: #f7f7f7;
-  background-color: #00766e;
-  border-color: #11aa9b;
 }
 
 .dm-btn-primary:active,
@@ -212,13 +202,12 @@ $badge-bg: #f7f7f7;
 
 .dm-card-body a {
   color: #484d56;
-  border-bottom: 3px dotted #ceefe8;
 }
 
 .dm-card-body a:hover {
   color: $datamonkey-turquoise;
   text-decoration: none;
-  border-bottom: 3px solid #ceefe8;
+  border-bottom: 3px solid orange;
 }
 
 .dm-card-title {

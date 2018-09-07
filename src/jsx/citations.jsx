@@ -186,7 +186,7 @@ class Citations extends React.Component {
 
         <div className="row">
           <div className="col">
-            <h2>Method Citations</h2>
+            <h3>Method Citations</h3>
             <div style={dmCard} className="dm-card card">
               <div style={dmCardHeader} className="dm-card-header card-header">
                 aBSREL

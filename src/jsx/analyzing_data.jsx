@@ -8,11 +8,9 @@ class AnalyzingData extends React.Component {
   render() {
     return (
       <div>
-        <div className="panel panel-default">
-          <div className="panel-heading">
-            <h3 id="analyzing-data" className="panel-title">
-              Analyzing Data
-            </h3>
+        <div className="dm-card card-default">
+          <div className="dm-card-header card-header" id="#analyzing-data">
+            Analyzing Data
           </div>
         </div>
 
@@ -48,13 +46,11 @@ class AnalyzingData extends React.Component {
           depending on the nucleotide model (it rarely does, unless the model is
           very wrong).
         </p>
+
         <br />
-        <div className="panel panel-default">
-          <div className="panel-heading">
-            <h3 id="ambiguities" className="panel-title">
-              Handling Ambiguities
-            </h3>
-          </div>
+
+        <div className="dm-card card-default">
+          <div className="dm-card-header card-header">Handling Ambiguities</div>
         </div>
 
         <div className="bs-callout bs-callout-info">
@@ -111,12 +107,12 @@ class AnalyzingData extends React.Component {
           entire data file, then the contribution of ACA will be
           f(ACA)/(f(ACA)+f(ACG)) and of 'ACG' : f(ACG)/(f(ACA)+f(ACG)).
         </p>
+
         <br />
-        <div className="panel panel-default">
-          <div className="panel-heading">
-            <h3 id="significance-levels" className="panel-title">
-              Choosing significance levels
-            </h3>
+
+        <div className="dm-card card-default">
+          <div className="dm-card-header card-header">
+            Choosing significance levels
           </div>
         </div>
 
