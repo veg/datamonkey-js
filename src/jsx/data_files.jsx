@@ -287,9 +287,9 @@ class DataFiles extends React.Component {
             Universal code.
           </p>
         </div>
+        <br />
+        <h3>Vertebrate mtDNA</h3>
         <table className="table table-bordered table-striped">
-          <br />
-          <h3>Vertebrate mtDNA</h3>
           <tr>
             <td> Codon</td>
             <td> New translation</td>
