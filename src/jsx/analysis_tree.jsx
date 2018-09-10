@@ -5,7 +5,7 @@ var selected_style = { backgroundColor: "#00A99D", color: "white" };
 
 var h2Style = {
   fontFamily: "montserrat",
-  fontSize: "18px",
+  fontSize: "1.286em",
   fontWeight: "700",
   color: "#009BA1",
   marginTop: "0px",
@@ -29,8 +29,10 @@ var analysisName = {
   fontFamily: "montserrat",
   fontStyle: "italic",
   fontWeight: "700",
-  color: "009BA1",
-  textAlign: "center"
+  color: "#00a99d",
+  textAlign: "center",
+  backgroundColor: "#F5F5F5",
+  padding: "15px 0"
 };
 
 var analysisText = {
@@ -329,10 +331,7 @@ class Method extends React.Component {
     return (
       <div className="row">
         <div className="col">
-          <div
-            className="panel panel-default panel-datamonkey"
-            style={analysisBorder}
-          >
+          <div className="dm-card card" style={analysisBorder}>
             <h2 style={h2Style}>
               {this.props.datamonkey ? "Datamonkey " : "HyPhy "}
               recommends that you use...
@@ -347,13 +346,13 @@ class Method extends React.Component {
               onMouseEnter={() => this.setState({ hover: true })}
               onMouseLeave={() => this.setState({ hover: false })}
             >
-              <div className="panel-heading">
+              <div className="card-header">
                 <center>
-                  <h3 style={analysisName}>{this.props.title}</h3>
+                  <h1 style={analysisName}>{this.props.title}</h1>
                 </center>
               </div>
             </a>
-            <div className="panel-body" style={analysisText}>
+            <div className="card-body" style={analysisText}>
               {this.props.children}
             </div>
           </div>

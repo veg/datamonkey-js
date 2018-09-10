@@ -1,8 +1,6 @@
 @import "~bootstrap/scss/bootstrap";
 @import "~hyphy-vision/dist/application.scss";
-
 @import url("https://use.fontawesome.com/releases/v5.0.9/css/all.css");
-
 @import url("https://fonts.googleapis.com/css?family=Exo+2:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Exo:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Noto+Sans:400,400i,700,700i");
 
 // Hyphy & Datamonkey Colors
@@ -27,15 +25,15 @@ body {
 h1,
 h2,
 h3 {
-  font-weight: 600;
+  font-weight: 700;
 }
 
 h1 {
-  font-size: 42px;
+  font-size: 3em;
 }
 
 h3 {
-  font-size: 21px;
+  font-size: 1.65em;
   color: $datamonkey-turquoise;
 }
 
@@ -43,14 +41,13 @@ h3 {
   font-size: 80%;
 }
 
-.glyphicon {
-  right: 10px;
-  line-height: 1.1;
-}
-
 .dm-fa {
   color: #dd4631;
+  font-family: "Font Awesome\ 5 Free";
+  font-size: 0.9em;
+  font-style: normal;
   font-weight: 900;
+  vertical-align: text-top;
 }
 
 /*/// square bullets ///*/
@@ -66,70 +63,32 @@ h3:before {
   vertical-align: middle;
 }
 
-// *Hides content :before any .panel h3* //
-.panel h3:before {
-  content: "";
-  display: none;
-}
-
-// Gives clearance/offset space under fixed-header
-#results::before,
-.clearance {
-  display: block;
-  height: 70px;
-  width: 100%;
-}
-
-// Bootstrap Variables & Styles
-$body-bg: #f7f7f7;
-$body-color: #555;
-$table-condensed-cell-padding: 10px;
-$table-bg-hover: #bfbfbf;
-
 // Components
 //// Badge
 $badge-color: #038c7f;
 $badge-bg: #f7f7f7;
 
 //// Buttons
-$btn-border-radius-base: none;
-$btn-default-bg: #ccc;
-$btn-default-color: #484d56;
-$btn-font-weight: 700;
-$btn-primary-border: $datamonkey-turquoise;
-$btn-primary-bg: $datamonkey-turquoise;
-$btn-primary-color: #f7f7f7;
-
 .dm-btn-primary {
   border-radius: 30px;
   border-width: 2px;
   padding: 10px 20px;
   text-transform: uppercase;
-  font-size: 12px;
+  font-size: 0.857em;
   font-weight: 600;
+  margin: 0 5px;
 }
 
-.dm-btn-primary:hover {
-  background-color: #484d56;
-  border: 2px solid #484d56;
-  box-shadow: 0px 3px 3px #d0d0d0;
+.dm-btn-primary:hover,
+.dm-btn-primary:focus,
+.dm-btn-primary.focus {
   color: #f7f7f7;
+  background-color: #36c9b7;
+  box-shadow: 0px 3px 3px #ccc;
 }
 
 .dm-btn .caret {
   margin-left: 15px;
-}
-
-.dm-btn-primary:focus,
-.dm-btn-primary.focus {
-  color: #f7f7f7;
-  background-color: #00766e;
-}
-
-.dm-btn-primary:hover {
-  color: #f7f7f7;
-  background-color: #00766e;
-  border-color: #11aa9b;
 }
 
 .dm-btn-primary:active,
@@ -188,7 +147,7 @@ $btn-primary-color: #f7f7f7;
   padding: 0px;
   margin: 2px 0 0;
   list-style: none;
-  font-size: 14px;
+  font-size: 1em;
   text-align: left;
   background-color: #f7f7f7;
   border: none;
@@ -221,43 +180,60 @@ $btn-primary-color: #f7f7f7;
   padding: 12px;
 }
 
-//// Label
-label {
-  font-family: "Montserrat", sans-serif;
-  font-size: 12px;
-  text-transform: uppercase;
-}
-
-// Panels
-$panel-default-border: #f7f7f7;
-$panel-primary-border: #f7f7f7;
-$panel-default-heading-bg: #484d56;
-$panel-default-text: $datamonkey-turquoise;
-
-.dm-panel {
+// Cards
+.dm-card {
   box-shadow: none;
+  border: none;
+  margin-bottom: 20px;
 }
 
-.dm-panel-default > .dm-panel-heading {
+.dm-card-header {
+  background-color: #484d56;
   color: #f7f7f7;
+  padding: 10px 15px 5px 15px;
   border-bottom: 8px solid $datamonkey-turquoise;
-}
-
-.dm-panel-title {
-  font-size: 24px;
+  text-align: left;
+  font-size: 1.714em;
   font-weight: 600;
 }
 
+.dm-card-body {
+}
+
+.dm-card-body a {
+  color: #484d56;
+}
+
+.dm-card-body a:hover {
+  color: $datamonkey-turquoise;
+  text-decoration: none;
+  border-bottom: 3px solid orange;
+}
+
+.dm-card-title {
+  font-size: 1.286em;
+}
+
+.dm-card-text {
+}
+
+//// Label
+label {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.857em;
+  text-transform: uppercase;
+}
+
 //// Popovers
-$popover-max-width: 400px;
-$popover-title-bg: #f7f7f7;
-$popover-arrow-color: #f7f7f7;
-$popover-border-color: $hyphy-green;
-$popover-fallback-border-color: $hyphy-green;
+//$popover-max-width: 400px;
+//$popover-title-bg: #f7f7f7;
+//$popover-arrow-color: #f7f7f7;
+//$popover-border-color: $hyphy-green;
+//$popover-fallback-border-color: $hyphy-green;
 
 .dm-popover {
   font-family: "Montserrat", sans-serif;
-  font-size: 13.5px;
+  font-size: 0.964em;
   letter-spacing: 0.25px;
   color: #444;
   border: 3px solid $hyphy-green;
@@ -270,7 +246,7 @@ $popover-fallback-border-color: $hyphy-green;
   padding: 12px 14px 0px 14px;
   margin: 0;
   font-family: "Montserrat", sans-serif;
-  font-size: 15.5px;
+  font-size: 1.107em;
   font-weight: 700;
   color: #038c7f;
   letter-spacing: 0.25px;
@@ -292,7 +268,7 @@ $popover-fallback-border-color: $hyphy-green;
 
 .dm-popover-content ul li {
   font-family: "Noto Sans", sans-serif;
-  font-size: 13.5px;
+  font-size: 0.964em;
 }
 
 .dm-popover.bottom > .dm-arrow {
@@ -323,9 +299,6 @@ $tooltip-max-width: 200px;
 .dm-table > thead > tr > th,
 .dm-table > tbody > tr > th,
 .dm-table > tfoot > tr > th,
-.dm-table > thead > tr > td,
-.dm-table > tbody > tr > td,
-.dm-table > tfoot > tr > td,
 .dm-table-condensed > tfoot > tr > td {
   font-family: "Montserrat", sans-serif;
   text-align: center;
@@ -357,6 +330,16 @@ nav.dm-navbar {
   align-items: center;
   justify-content: space-around;
   border-bottom: 2px solid $datamonkey-turquoise;
+  height: 70px;
+  width: 100%;
+  position: fixed;
+  background-color: #fff;
+  z-index: 9999;
+}
+
+.clearance {
+  display: block;
+  height: 70px;
 }
 
 nav.dm-nav-links a:link,
@@ -403,7 +386,7 @@ nav .dm-dropdown-menu {
   padding: 0px;
   margin: 2px 0 0;
   list-style: none;
-  font-size: 14px;
+  font-size: 1em;
   text-align: left;
   background-color: #f7f7f7;
   border: none;
@@ -422,8 +405,13 @@ nav .dm-dropdown-menu {
   text-align: center;
 }
 
-.dm-jumbotron h1, .dm-jumbotron h2, .dm-jumbotron h3, .dm-jumbotron h4,
-.dm-jumbotron h5, .dm-jumbotron h6, .dm-jumbotron p {
+.dm-jumbotron h1,
+.dm-jumbotron h2,
+.dm-jumbotron h3,
+.dm-jumbotron h4,
+.dm-jumbotron h5,
+.dm-jumbotron h6,
+.dm-jumbotron p {
   color: #f7f7f7;
   font-weight: 700;
 }
@@ -464,7 +452,7 @@ nav .dm-dropdown-menu {
 }
 
 .analysis-tree a.dm-btn:hover {
-  background-color: #484D56;
+  background-color: #484d56;
   color: #f7f7f7;
 }
 
