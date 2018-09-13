@@ -1,6 +1,8 @@
 @import "~bootstrap/scss/bootstrap";
 @import "~hyphy-vision/dist/application.scss";
+
 @import url("https://use.fontawesome.com/releases/v5.0.9/css/all.css");
+
 @import url("https://fonts.googleapis.com/css?family=Exo+2:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Exo:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Noto+Sans:400,400i,700,700i");
 
 // Hyphy & Datamonkey Colors
@@ -48,19 +50,6 @@ h3 {
   font-style: normal;
   font-weight: 900;
   vertical-align: text-top;
-}
-
-/*/// square bullets ///*/
-h3:before {
-  content: "";
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  margin: 5px 8px 8px 0px;
-  padding: 0;
-  line-height: 0;
-  background-color: $datamonkey-turquoise;
-  vertical-align: middle;
 }
 
 // Components
@@ -312,11 +301,6 @@ $tooltip-max-width: 200px;
   background-color: #484d56;
   color: #f7f7f7;
   vertical-align: middle;
-}
-
-// Not sure where to put these atm.
-.dm-table-header {
-  margin: 0;
 }
 
 // CONTENT
@@ -596,4 +580,19 @@ nav .dm-dropdown-menu {
   .help-content .btn-primary {
     margin-bottom: 15px;
   }
+
+  // Vision scroll-spy
+  .bs-docs-sidebar {
+    display: none;
+  }
+}
+
+// hyphy-vision specific styling that didn't seem to belong anywhere else.
+.dm-table,
+.table-hover {
+  border: none;
+}
+
+#job-report {
+  padding: 0;
 }
