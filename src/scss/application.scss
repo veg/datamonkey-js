@@ -7,6 +7,10 @@
 $hyphy-green: #479167;
 $datamonkey-turquoise: #00a99d;
 
+//Datamonkey Logo
+.navbar-brand #datamonkey-logo {
+}
+
 html,
 body {
   font-family: "Montserrat", sans-serif;
@@ -37,10 +41,6 @@ h3 {
   color: $datamonkey-turquoise;
 }
 
-.dm-small-text {
-  font-size: 80%;
-}
-
 .dm-fa {
   color: #dd4631;
   font-family: "Font Awesome\ 5 Free";
@@ -50,26 +50,21 @@ h3 {
   vertical-align: text-top;
 }
 
-/*/// square bullets ///*/
-h3:before {
-  content: "";
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  margin: 5px 8px 8px 0px;
-  padding: 0;
-  line-height: 0;
-  background-color: $datamonkey-turquoise;
-  vertical-align: middle;
-}
-
 // Components
 //// Badge
 $badge-color: #038c7f;
 $badge-bg: #f7f7f7;
 
-//// Buttons
+//// Buttons and Dropdowns
+//Button
+.dm-btn {
+  padding: 0;
+  border: none;
+}
+
+//// Buttons	//// Buttons and Dropdowns
 .dm-btn-primary {
+  //Button
   border-radius: 30px;
   border-width: 2px;
   padding: 10px 20px;
@@ -78,7 +73,6 @@ $badge-bg: #f7f7f7;
   font-weight: 600;
   margin: 0 5px;
 }
-
 .dm-btn-primary:hover,
 .dm-btn-primary:focus,
 .dm-btn-primary.focus {
@@ -86,11 +80,9 @@ $badge-bg: #f7f7f7;
   background-color: #36c9b7;
   box-shadow: 0px 3px 3px #ccc;
 }
-
 .dm-btn .caret {
   margin-left: 15px;
 }
-
 .dm-btn-primary:active,
 .dm-btn-primary.active,
 .dm-open > .dm-dropdown-toggle.dm-btn-primary {
@@ -99,41 +91,13 @@ $badge-bg: #f7f7f7;
   border-color: #11aa9b;
 }
 
-.dm-btn-default:active:hover,
-.dm-btn-default.active:hover,
-.dm-open > .dm-dropdown-toggle.dm-btn-default:hover,
-.dm-btn-default:active:focus,
-.dm-btn-default.active:focus,
-.dm-open > .dm-dropdown-toggle.dm-btn-default:focus,
-.dm-btn-default:active.focus,
-.dm-btn-default.active.focus,
-.dm-open > .dm-dropdown-toggle.dm-btn-default.focus {
-  color: #f7f7f7;
-  background-color: #555;
+button.dm-mobile-menu {
+  display: none;
 }
 
-.dm-btn-default:hover {
-  color: #f7f7f7;
-  background-color: #484d56;
-}
-
-.dm-btn-primary:active:hover,
-.dm-btn-primary.active:hover,
-.dm-open > .dm-dropdown-toggle.dm-btn-primary:hover,
-.dm-btn-primary:active:focus,
-.dm-btn-primary.active:focus,
-.dm-open > .dm-dropdown-toggle.dm-btn-primary:focus,
-.dm-btn-primary:active.focus,
-.dm-btn-primary.active.focus,
-.dm-open > .dm-dropdown-toggle.dm-btn-primary.focus {
-  color: #f7f7f7;
-  background-color: #00524c;
-  border-color: #00100f;
-}
-
-.dm-btn {
-  padding: 0;
-  border: none;
+//Dropdown
+.dm-dropdown {
+  float: left;
 }
 
 .dm-dropdown-menu {
@@ -157,13 +121,6 @@ $badge-bg: #f7f7f7;
   background-clip: padding-box;
 }
 
-.dm-dropdown-menu > li > a,
-.dm-navbar-nav > li > a {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  font-weight: 600;
-}
-
 .dm-dropdown .dropdown-menu a:hover {
   -webkit-transition: ease-in-out 100ms;
   -moz-transition: ease-in-out 100ms;
@@ -171,13 +128,7 @@ $badge-bg: #f7f7f7;
   transition: ease-in-out 100ms;
   padding-left: 25px;
   background-color: $datamonkey-turquoise;
-
-  /*border-left: 15px solid #343846;*/
-  color: #f7f7f7;
-}
-
-.dm-cancel-job-button-div {
-  padding: 12px;
+  color: #f7f7f7; /*border-left: 15px solid #343846;*/
 }
 
 // Cards
@@ -292,6 +243,10 @@ $tooltip-bg: #333;
 $tooltip-max-width: 200px;
 
 //// Tables
+div#table {
+  overflow: scroll;
+}
+
 .dm-table-bordered {
   border: none;
 }
@@ -314,8 +269,8 @@ $tooltip-max-width: 200px;
   vertical-align: middle;
 }
 
-// Not sure where to put these atm.
 .dm-table-header {
+  // Not sure where to put these atm.
   margin: 0;
 }
 
@@ -329,30 +284,33 @@ nav.dm-navbar {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  border-bottom: 2px solid $datamonkey-turquoise;
-  height: 70px;
+  border-bottom: 3px solid $datamonkey-turquoise;
   width: 100%;
   position: fixed;
   background-color: #fff;
   z-index: 9999;
 }
 
-.clearance {
-  display: block;
-  height: 70px;
+div.dm-nav-links {
+  float: none;
 }
 
-nav.dm-nav-links a:link,
-nav.dm-nav-links a:visited {
+div.dm-nav-links a:link,
+div.dm-nav-links a:visited {
   display: inline-block;
   color: #484d56;
   font-weight: 600;
-  padding: 10px 15px;
+  padding: 8.5px 15px;
 }
 
-nav.dm-nav-links a:hover {
+div.dm-nav-links a:hover {
   color: $datamonkey-turquoise;
   text-decoration: none;
+}
+
+.clearance {
+  display: block;
+  height: 70px;
 }
 
 ////// Navbar Dropdown Button/Menu
@@ -456,38 +414,6 @@ nav .dm-dropdown-menu {
   color: #f7f7f7;
 }
 
-//.dm-navbar-static-top {
-//  border-width: 0 0 5px;
-//}
-//
-//.dm-navbar-collapse {
-//  border-color: #f7f7f7;
-//  border-width: 5px 0px 0px 0px;
-//}
-//
-//.dm-navbar-inverse .dm-navbar-collapse,
-//.dm-navbar-inverse .dm-navbar-form {
-//  border-color: #f7f7f7;
-//}
-
-//.navbar .btn-navbar .icon-bar {
-//  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.25);
-//}
-//.dm-nav-stacked {
-//  padding-top: 0 /*!important*/;
-//}
-//
-//.dm-nav-stacked > li + li {
-//  margin: 0;
-//}
-//$border-radius-base: 0px;
-//$nav-link-padding: 10px 25px;
-//$nav-pills-border-radius: $border-radius-base;
-//
-//$navbar-default-bg: #f7f7f7;
-//$navbar-height: 70px;
-//$navbar-default-border: $datamonkey-turquoise;
-
 #results,
 #summary-tab {
   margin-top: 0;
@@ -522,78 +448,84 @@ nav .dm-dropdown-menu {
   padding-top: 20px;
 }
 
-@media (max-width: 768px) {
-  // General Includes
-  html,
-  body {
-    font-size: 15px;
+//Responsive
+@media (max-width: 575.98px) {
+  .navbar-brand #datamonkey-logo {
+    width: 230px;
   }
 
-  .navbar {
+  button.dm-mobile-menu {
+    display: inline-block;
+  }
+
+  .dm-navbar-toggle .icon-bar {
     display: block;
+    width: 20px;
+    height: 3px;
+    margin: 4px;
+    background-color: #fff;
   }
 
-  .navbar li,
-  .navbar-nav {
-    float: none;
+  button.dm-btn {
+    width: 100%;
+    text-align: left;
+    margin-top: -1px;
   }
 
-  .navbar-inverse .navbar-nav > .open > a,
-  .navbar-inverse .navbar-nav > .open > a:hover,
-  .navbar-inverse .navbar-nav > .open > a:focus {
-    color: #f7f7f7;
+  //Navbar
+  nav.dm-navbar {
+    justify-content: space-between;
+  }
+
+  .dm-nav-links {
+    width: 100%;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+  }
+
+  .dm-navbar-toggle {
+    padding: 8px;
     background-color: $datamonkey-turquoise;
-  }
-
-  .navbar-nav .open .dropdown-menu > li > a,
-  .navbar-nav .open .dropdown-menu .dropdown-header {
-    padding: 15px 25px;
-  }
-
-  .dropdown-menu > li > a,
-  .navbar-nav > li > a {
-    padding-top: 15px;
-    padding-bottom: 15px;
-  }
-
-  .navbar-inverse .navbar-toggle {
-    position: relative;
-    float: right;
-    margin-right: 15px;
-    padding: 9px 10px;
-    margin-top: 18px;
-    margin-bottom: 18px;
-    background-color: $datamonkey-turquoise;
-    background-image: none;
     border: none;
   }
 
-  .open {
-    border-bottom: 3px solid #ccc;
+  .dm-navbar-toggle:active,
+  .dm-navbar-toggle:focus,
+  .dm-navbar-toggle:hover {
+    background-color: #333;
   }
 
-  #table {
-    overflow: auto;
+  .navbar-collapse {
+    flexwrap: wrap !important;
   }
 
-  #datamonkey-logo {
-    float: none;
+  .dm-dropdown {
+    width: 100%;
+    padding: 6px 0;
   }
 
-  .container {
-    margin-top: 15px;
+  .dm-dropdown-menu.show {
+    width: 100%;
   }
 
-  #datamonkey .footer {
-    margin-top: 0px;
+  div.dm-nav-links a:link,
+  div.dm-nav-links a:visited {
+    display: block;
+    background-color: #fff;
   }
 
-  .panel-datamonkey {
-    padding: 20px 10px;
+  .dm-jumbotron h1 {
+    font-size: 3em;
   }
 
-  // Help page
-  .help-content .btn-primary {
+  .dm-jumbotron hr {
+    width: 50%;
+  }
+
+  .dm-btn-primary {
     margin-bottom: 15px;
+  }
+
+  .clearance {
+    height: 67px;
   }
 }
