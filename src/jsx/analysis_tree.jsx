@@ -20,7 +20,7 @@ var borderStyle = {
 };
 
 var analysisBorder = {
-  padding: "30px 10% 30px 10%",
+  padding: "30px 5%",
   border: "2px #AEDBDA solid",
   marginBottom: "40px"
 };
