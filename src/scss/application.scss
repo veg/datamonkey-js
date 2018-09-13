@@ -7,6 +7,10 @@
 $hyphy-green: #479167;
 $datamonkey-turquoise: #00a99d;
 
+//Datamonkey Logo
+.navbar-brand #datamonkey-logo {
+}
+
 html,
 body {
   font-family: "Montserrat", sans-serif;
@@ -37,19 +41,6 @@ h3 {
   color: $datamonkey-turquoise;
 }
 
-h3:before {
-  /*/// square bullets ///*/
-  content: "";
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  margin: 5px 8px 8px 0px;
-  padding: 0;
-  line-height: 0;
-  background-color: $datamonkey-turquoise;
-  vertical-align: middle;
-}
-
 .dm-fa {
   color: #dd4631;
   font-family: "Font Awesome\ 5 Free";
@@ -69,6 +60,35 @@ $badge-bg: #f7f7f7;
 .dm-btn {
   padding: 0;
   border: none;
+}
+
+//// Buttons	//// Buttons and Dropdowns
+.dm-btn-primary {
+  //Button
+  border-radius: 30px;
+  border-width: 2px;
+  padding: 10px 20px;
+  text-transform: uppercase;
+  font-size: 0.857em;
+  font-weight: 600;
+  margin: 0 5px;
+}
+.dm-btn-primary:hover,
+.dm-btn-primary:focus,
+.dm-btn-primary.focus {
+  color: #f7f7f7;
+  background-color: #36c9b7;
+  box-shadow: 0px 3px 3px #ccc;
+}
+.dm-btn .caret {
+  margin-left: 15px;
+}
+.dm-btn-primary:active,
+.dm-btn-primary.active,
+.dm-open > .dm-dropdown-toggle.dm-btn-primary {
+  color: #f7f7f7;
+  background-color: #00766e;
+  border-color: #11aa9b;
 }
 
 button.dm-mobile-menu {
@@ -99,13 +119,6 @@ button.dm-mobile-menu {
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
   background-clip: padding-box;
-}
-
-.dm-dropdown-menu > li > a,
-.dm-navbar-nav > li > a {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  font-weight: 600;
 }
 
 .dm-dropdown .dropdown-menu a:hover {
@@ -268,7 +281,6 @@ nav.dm-navbar {
   align-items: center;
   justify-content: space-around;
   border-bottom: 3px solid $datamonkey-turquoise;
-  height: 70px;
   width: 100%;
   position: fixed;
   background-color: #fff;
@@ -433,9 +445,27 @@ nav .dm-dropdown-menu {
 }
 
 //Responsive
-@media (max-width: 768px) {
+@media (max-width: 575.98px) {
+  .navbar-brand #datamonkey-logo {
+    width: 230px;
+  }
+
   button.dm-mobile-menu {
     display: inline-block;
+  }
+
+  .dm-navbar-toggle .icon-bar {
+    display: block;
+    width: 20px;
+    height: 3px;
+    margin: 4px;
+    background-color: #fff;
+  }
+
+  button.dm-btn {
+    width: 100%;
+    text-align: left;
+    margin-top: -1px;
   }
 
   //Navbar
@@ -460,18 +490,8 @@ nav .dm-dropdown-menu {
     background-color: #333;
   }
 
-  .dm-navbar-toggle .icon-bar {
-    display: block;
-    width: 20px;
-    height: 3px;
-    margin: 4px;
-    background-color: #fff;
-  }
-
-  button.dm-btn {
-    width: 100%;
-    text-align: left;
-    margin-top: -1px;
+  .navbar-collapse {
+    flexwrap: wrap !important;
   }
 
   .dm-dropdown {
@@ -496,80 +516,12 @@ nav .dm-dropdown-menu {
   .dm-jumbotron hr {
     width: 50%;
   }
-}
 
-//@media (max-width: 768px) {
-//  // General Includes
-//  html,
-//  body {
-//    font-size: 15px;
-//  }
-//
-//  .navbar {
-//    display: block;
-//  }
-//
-//  .navbar li,
-//  .navbar-nav {
-//    float: none;
-//  }
-//
-//  .navbar-inverse .navbar-nav > .open > a,
-//  .navbar-inverse .navbar-nav > .open > a:hover,
-//  .navbar-inverse .navbar-nav > .open > a:focus {
-//    color: #f7f7f7;
-//    background-color: $datamonkey-turquoise;
-//  }
-//
-//  .navbar-nav .open .dropdown-menu > li > a,
-//  .navbar-nav .open .dropdown-menu .dropdown-header {
-//    padding: 15px 25px;
-//  }
-//
-//  .dropdown-menu > li > a,
-//  .navbar-nav > li > a {
-//    padding-top: 15px;
-//    padding-bottom: 15px;
-//  }
-//
-//  .navbar-toggle {
-//    position: relative;
-//    float: right;
-//    margin-right: 15px;
-//    padding: 9px 10px;
-//    margin-top: 18px;
-//    margin-bottom: 18px;
-//    background-color: $datamonkey-turquoise;
-//    background-image: none;
-//    border: none;
-//  }
-//
-//  .open {
-//    border-bottom: 3px solid #ccc;
-//  }
-//
-//  #table {
-//    overflow: auto;
-//  }
-//
-//  #datamonkey-logo {
-//    float: none;
-//  }
-//
-//  .container {
-//    margin-top: 15px;
-//  }
-//
-//  #datamonkey .footer {
-//    margin-top: 0px;
-//  }
-//
-//  .panel-datamonkey {
-//    padding: 20px 10px;
-//  }
-//
-//  // Help page
-//  .help-content .btn-primary {
-//    margin-bottom: 15px;
-//  }
-//}
+  .dm-btn-primary {
+    margin-bottom: 15px;
+  }
+
+  .clearance {
+    height: 67px;
+  }
+}

@@ -35,7 +35,7 @@
     <div class="container-fluid p-0">
       <div class="row no-gutters">
         <div class="col-sm">
-          <nav class="dm-navbar navbar navbar-expand-sm ">
+          <nav class="dm-navbar navbar navbar-expand-sm">
             <a class="navbar-brand" href="/"><img id="datamonkey-logo" src="/assets/img/header-logo.svg" alt="Datamonkey Logo" /></a>
             
             <button type="button" class="dm-mobile-menu dm-navbar-toggle navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -44,7 +44,37 @@
               <span class="icon-bar"></span>
             </button>
 
-            <div class="dm-nav-links d-sm-none">
+            <div class="dm-nav-links">
+              <div class="navbar-collapse collapse flex-wrap" aria-expanded="false">
+                <div class="dm-dropdown dropdown">
+                  <button class="dm-btn dm-dropdown-toggle btn dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Methods and Tools
+                  </button>
+                  <div class="dm-dropdown-menu dropdown-menu" aria-labelledby="dropdownMenu">
+                    <a class="dropdown-item" href="/absrel">aBSREL</a>
+                    <a class="dropdown-item" href="/busted">BUSTED</a>
+                    <a class="dropdown-item" href="/fel">FEL</a>
+                    <a class="dropdown-item" href="/fubar">FUBAR</a>
+                    <a class="dropdown-item" href="/gard">GARD</a>
+                    <a class="dropdown-item" href="/hivtrace">HIV-TRACE</a>
+                    <a class="dropdown-item" href="/meme">MEME</a>
+                    <a class="dropdown-item" href="/relax">RELAX</a>
+                    <a class="dropdown-item" href="/slac">SLAC</a>
+                    <a class="dropdown-item" href="/analyses">All Methods</a>
+                  </div>
+                </div>
+                <a href="/jobqueue">Job Queue</a>
+                <a href="/stats">Usage statistics</a>
+                <a href="/citations">Citations</a>
+                <a href="/help">Help</a></li>
+                <a href="http://classic.datamonkey.org" target="_blank"><i class="dm-fa fa-external-link-alt"></i> Classic</a>
+              </div>
+            </div>   
+
+
+
+
+            <div class="dm-nav-links d-none">
               <div class="navbar-collapse collapse" aria-expanded="false">
                 <div class="dm-dropdown dropdown">
                   <button class="dm-btn dm-dropdown-toggle btn dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -70,33 +100,11 @@
                 <a href="http://classic.datamonkey.org" target="_blank"><i class="dm-fa fa-external-link-alt"></i> Classic</a>
               </div>
             </div>    
-              
-              
-              
-            <div class="dm-nav-links d-none d-sm-block" aria-expanded="false">
-              <div class="dm-dropdown dropdown">
-                <button class="dm-btn dm-dropdown-toggle btn dropdown-toggle" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Methods and Tools
-                </button>
-                <div class="dm-dropdown-menu dropdown-menu" aria-labelledby="dropdownMenu">
-                  <a class="dropdown-item" href="/absrel">aBSREL</a>
-                  <a class="dropdown-item" href="/busted">BUSTED</a>
-                  <a class="dropdown-item" href="/fel">FEL</a>
-                  <a class="dropdown-item" href="/fubar">FUBAR</a>
-                  <a class="dropdown-item" href="/gard">GARD</a>
-                  <a class="dropdown-item" href="/hivtrace">HIV-TRACE</a>
-                  <a class="dropdown-item" href="/meme">MEME</a>
-                  <a class="dropdown-item" href="/relax">RELAX</a>
-                  <a class="dropdown-item" href="/slac">SLAC</a>
-                  <a class="dropdown-item" href="/analyses">All Methods</a>
-                </div>
-              </div>
-              <a href="/jobqueue">Job Queue</a>
-              <a href="/stats">Usage statistics</a>
-              <a href="/citations">Citations</a>
-              <a href="/help">Help</a></li>
-              <a href="http://classic.datamonkey.org" target="_blank"><i class="dm-fa fa-external-link-alt"></i> Classic</a>
-            </div>
+
+
+
+
+
           </nav>
           <div class="clearance"></div>
         </div>
