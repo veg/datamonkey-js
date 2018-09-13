@@ -39,3 +39,7 @@ public/assets/js/datamonkey.js*
 *vendor*
 *.aa
 dump.rdb
+
+.DS_Store
+.yalc/
+yalc.lock

@@ -1,6 +1,8 @@
 @import "~bootstrap/scss/bootstrap";
 @import "~hyphy-vision/dist/application.scss";
+
 @import url("https://use.fontawesome.com/releases/v5.0.9/css/all.css");
+
 @import url("https://fonts.googleapis.com/css?family=Exo+2:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Exo:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Noto+Sans:400,400i,700,700i");
 
 // Hyphy & Datamonkey Colors
@@ -50,6 +52,10 @@ h3 {
   vertical-align: text-top;
 }
 
+.hidden {
+  display: none;
+}
+
 // Components
 //// Badge
 $badge-color: #038c7f;
@@ -60,6 +66,10 @@ $badge-bg: #f7f7f7;
 .dm-btn {
   padding: 0;
   border: none;
+}
+
+.run-analysis-button-text {
+  font-weight: 500;
 }
 
 //// Buttons	//// Buttons and Dropdowns
@@ -73,6 +83,7 @@ $badge-bg: #f7f7f7;
   font-weight: 600;
   margin: 0 5px;
 }
+
 .dm-btn-primary:hover,
 .dm-btn-primary:focus,
 .dm-btn-primary.focus {
@@ -80,9 +91,11 @@ $badge-bg: #f7f7f7;
   background-color: #36c9b7;
   box-shadow: 0px 3px 3px #ccc;
 }
+
 .dm-btn .caret {
   margin-left: 15px;
 }
+
 .dm-btn-primary:active,
 .dm-btn-primary.active,
 .dm-open > .dm-dropdown-toggle.dm-btn-primary {
@@ -128,7 +141,9 @@ button.dm-mobile-menu {
   transition: ease-in-out 100ms;
   padding-left: 25px;
   background-color: $datamonkey-turquoise;
-  color: #f7f7f7; /*border-left: 15px solid #343846;*/
+  color: #f7f7f7;
+
+  /*border-left: 15px solid #343846;*/
 }
 
 // Cards
@@ -244,7 +259,7 @@ $tooltip-max-width: 200px;
 
 //// Tables
 div#table {
-  overflow: scroll;
+  overflow: auto;
 }
 
 .dm-table-bordered {
@@ -267,11 +282,6 @@ div#table {
   background-color: #484d56;
   color: #f7f7f7;
   vertical-align: middle;
-}
-
-.dm-table-header {
-  // Not sure where to put these atm.
-  margin: 0;
 }
 
 // CONTENT
@@ -521,6 +531,11 @@ nav .dm-dropdown-menu {
     width: 50%;
   }
 
+  // Vision scroll-spy
+  .bs-docs-sidebar {
+    display: none;
+  }
+
   .dm-btn-primary {
     margin-bottom: 15px;
   }
@@ -528,4 +543,14 @@ nav .dm-dropdown-menu {
   .clearance {
     height: 67px;
   }
+}
+
+// hyphy-vision specific styling that didn't seem to belong anywhere else.
+.dm-table,
+.table-hover {
+  border: none;
+}
+
+#job-report {
+  padding: 0;
 }
