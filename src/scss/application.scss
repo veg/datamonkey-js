@@ -243,6 +243,10 @@ $tooltip-bg: #333;
 $tooltip-max-width: 200px;
 
 //// Tables
+div#table {
+  overflow: scroll;
+}
+
 .dm-table-bordered {
   border: none;
 }
