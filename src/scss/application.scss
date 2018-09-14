@@ -65,6 +65,10 @@ samp {
   font-family: "IBM Plex Mono", monospace;
 }
 
+.hidden {
+  display: none;
+}
+
 // Components
 //// Badge
 $badge-color: #038c7f;
@@ -75,6 +79,10 @@ $badge-bg: #f7f7f7;
 .dm-btn {
   padding: 0;
   border: none;
+}
+
+.run-analysis-button-text {
+  font-weight: 500;
 }
 
 //// Buttons	//// Buttons and Dropdowns
@@ -105,6 +113,7 @@ $badge-bg: #f7f7f7;
 .dm-btn .caret {
   margin-left: 15px;
 }
+
 
 .form-group label.dm-btn-primary:active,
 .form-group label.dm-btn-primary.active,
@@ -153,7 +162,9 @@ button.dm-mobile-menu {
   transition: ease-in-out 100ms;
   padding-left: 25px;
   background-color: $datamonkey-turquoise;
-  color: #f7f7f7; /*border-left: 15px solid #343846;*/
+  color: #f7f7f7;
+
+  /*border-left: 15px solid #343846;*/
 }
 
 // Cards
@@ -328,11 +339,6 @@ div#table {
   background-color: #484d56;
   color: #f7f7f7;
   vertical-align: middle;
-}
-
-.dm-table-header {
-  // Not sure where to put these atm.
-  margin: 0;
 }
 
 // CONTENT
@@ -582,6 +588,11 @@ nav .dm-dropdown-menu {
     width: 50%;
   }
 
+  // Vision scroll-spy
+  .bs-docs-sidebar {
+    display: none;
+  }
+
   .dm-btn-primary {
     margin-bottom: 15px;
   }
@@ -589,4 +600,14 @@ nav .dm-dropdown-menu {
   .clearance {
     height: 67px;
   }
+}
+
+// hyphy-vision specific styling that didn't seem to belong anywhere else.
+.dm-table,
+.table-hover {
+  border: none;
+}
+
+#job-report {
+  padding: 0;
 }
