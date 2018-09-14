@@ -1,9 +1,7 @@
 @import "~bootstrap/scss/bootstrap";
 @import "~hyphy-vision/dist/application.scss";
-
 @import url("https://use.fontawesome.com/releases/v5.0.9/css/all.css");
-
-@import url("https://fonts.googleapis.com/css?family=Exo+2:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Exo:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Noto+Sans:400,400i,700,700i");
+@import url("https://fonts.googleapis.com/css?family=Exo+2:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Exo:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Noto+Sans:400,400i,700,700i|IBM+Plex+Mono:400,500,600,700");
 
 // Hyphy & Datamonkey Colors
 $hyphy-green: #479167;
@@ -52,6 +50,21 @@ h3 {
   vertical-align: text-top;
 }
 
+.dm-continue-btn {
+  padding: 5px 20px;
+}
+
+label i.dm-fa {
+  font-size: 1.35em;
+}
+
+pre,
+code,
+kbd,
+samp {
+  font-family: "IBM Plex Mono", monospace;
+}
+
 .hidden {
   display: none;
 }
@@ -73,6 +86,7 @@ $badge-bg: #f7f7f7;
 }
 
 //// Buttons	//// Buttons and Dropdowns
+.form-group label.dm-btn-primary,
 .dm-btn-primary {
   //Button
   border-radius: 30px;
@@ -82,8 +96,12 @@ $badge-bg: #f7f7f7;
   font-size: 0.857em;
   font-weight: 600;
   margin: 0 5px;
+  color: #f7f7f7;
 }
 
+.form-group label.dm-btn-primary:hover,
+.form-group label.dm-btn-primary:focus,
+.form-group label.dm-btn-primary:focus,
 .dm-btn-primary:hover,
 .dm-btn-primary:focus,
 .dm-btn-primary.focus {
@@ -96,6 +114,9 @@ $badge-bg: #f7f7f7;
   margin-left: 15px;
 }
 
+
+.form-group label.dm-btn-primary:active,
+.form-group label.dm-btn-primary.active,
 .dm-btn-primary:active,
 .dm-btn-primary.active,
 .dm-open > .dm-dropdown-toggle.dm-btn-primary {
@@ -183,19 +204,45 @@ button.dm-mobile-menu {
 .dm-card-text {
 }
 
-//// Label
-label {
+.pull-right::after {
+  content: "";
+  clear: right;
+}
+
+// Forms/Labels
+.form-group {
+  margin-bottom: 15px;
+}
+.form-group label {
   font-family: "Montserrat", sans-serif;
   font-size: 0.857em;
   text-transform: uppercase;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+}
+.form-control {
+  width: 100%;
+}
+////Checkbox next to Email Form
+.dm-input-group-addon {
+  align-self: center;
+  background-color: #eee;
+  border: 2px solid #ced4da;
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+  padding: 7px 12px 6px 12px;
+}
+
+button.continue-btn:hover {
+  background-color: #dd4631;
+  color: #f7f7f7;
 }
 
 //// Popovers
-//$popover-max-width: 400px;
-//$popover-title-bg: #f7f7f7;
-//$popover-arrow-color: #f7f7f7;
-//$popover-border-color: $hyphy-green;
-//$popover-fallback-border-color: $hyphy-green;
+.popover {
+  max-width: 300px;
+}
 
 .dm-popover {
   font-family: "Montserrat", sans-serif;
@@ -204,6 +251,7 @@ label {
   color: #444;
   border: 3px solid $hyphy-green;
   border-radius: 0;
+  max-width: 300px;
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.45);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.45);
 }
@@ -251,6 +299,15 @@ label {
   content: "";
   border-top-width: 3px;
   border-bottom-color: #f7f7f7;
+}
+
+.bs-popover-bottom .arrow::after,
+.bs-popover-auto[x-placement^="bottom"] .arrow::after {
+  top: 4px;
+}
+.bs-popover-bottom .arrow::before,
+.bs-popover-auto[x-placement^="bottom"] .arrow::before {
+  border-bottom-color: rgba(0, 169, 157, 1);
 }
 
 //// Tooltips
