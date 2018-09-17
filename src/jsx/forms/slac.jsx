@@ -164,12 +164,13 @@ var SLACForm = React.createClass({
         </div>
         <button
           type="submit"
-          className="run-analysis-button-text btn pull-right"
+          className="run-analysis-button-text continue-btn btn"
           onClick={this.submit}
         >
           Run Analysis
           <span className="dm-continue-btn fas fa-play" />
         </button>
+
         <div style={{ paddingBottom: "30px" }} />
       </form>
     );
