@@ -193,28 +193,6 @@ exports.getPage = function(req, res) {
 };
 
 /**
- * Displays id page for analysis
- * app.get('/msa/:msaid/relax/:relaxid/results', relax.getRelaxResults);
- */
-exports.getResults = function(req, res) {
-  var relaxid = req.params.id;
-
-  //Return all results
-  Relax.findOne({ _id: relaxid }, function(err, relax) {
-    if (err || !relax) {
-      res.json(500, error.errorResponse("invalid id : " + relaxid));
-    } else {
-      // Should return results page
-      // Append PMID to results
-      var relax_results = JSON.parse(relax.results);
-      relax_results["PMID"] = relax.pmid;
-      relax_results["input_data"] = relax.input_data;
-      res.json(200, relax_results);
-    }
-  });
-};
-
-/**
  * Handles a job request by the user
  * app.post('/msa/:msaid/relax', Relax.invokeRelax);
  */

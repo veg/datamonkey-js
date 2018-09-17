@@ -110,21 +110,6 @@ exports.getPage = function(req, res) {
   });
 };
 
-exports.getResults = function(req, res) {
-  var memeid = req.params.id;
-  MEME.findOne({ _id: memeid }, function(err, meme) {
-    if (err || !meme) {
-      res.json(500, error.errorResponse("invalid id : " + memeid));
-    } else {
-      // Should return results page
-      // Append PMID to results
-      var meme_results = JSON.parse(meme.results);
-      meme_results["PMID"] = meme.pmid;
-      res.json(200, meme_results);
-    }
-  });
-};
-
 // app.get('/meme/:id/info', meme.getInfo);
 exports.getInfo = function(req, res) {
   var id = req.params.id;
