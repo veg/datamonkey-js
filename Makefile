@@ -10,4 +10,4 @@ install:
 	@cd ./.tn93/ && cmake . && make && cd ../
 	@yarn install
 	@webpack
-	@mkdir -p ./uploads/msa ./uploads/hivtrace;
+	@mkdir -p ./uploads/msa ./uploads/hivtrace ./results/jobs/;

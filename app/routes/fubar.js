@@ -119,22 +119,6 @@ exports.getPage = function(req, res) {
   });
 };
 
-exports.getResults = function(req, res) {
-  var fubarid = req.params.id;
-  FUBAR.findOne({ _id: fubarid }, function(err, fubar) {
-    if (err || !fubar) {
-      logger.error("invalid id : " + fubarid);
-      res.json(500, error.errorResponse("invalid id : " + fubarid));
-    } else {
-      // Should return results page
-      // Append PMID to results
-      var fubar_results = JSON.parse(fubar.results);
-      fubar_results["PMID"] = fubar.pmid;
-      res.json(200, fubar_results);
-    }
-  });
-};
-
 // app.get('/fubar/:id/info', fubar.getInfo);
 exports.getInfo = function(req, res) {
   var id = req.params.id;

@@ -334,6 +334,7 @@ HivTrace.methods.addAttributesToResults = function(cb) {
 
   // read from trace results
   fs.readFile(self.trace_results, function(err, results) {
+    //fs.readFile(path.resolve(__dirname + "../../../results/jobs/" + this._id + "-results" + ".json"), function(err, results) {
     if (err) {
       cb(err, null);
       return;
