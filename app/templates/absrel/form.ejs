@@ -16,6 +16,7 @@
 <script>
   // Get trees.
   var user_tree = "<%= absrel.msa[0].usertree %>"
+  user_tree == 'undefined' ? user_tree = undefined : null
   var nj_tree = "<%= absrel.msa[0].nj %>"
 
   // Create callback for posting annotated tree.
