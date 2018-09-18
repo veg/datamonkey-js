@@ -88,14 +88,6 @@ li.media {
   margin-top: 5px;
 }
 
-.upload-div {
-  margin: 0px 0px 15px 0px;
-}
-
-.upload-div > label {
-  padding-right: 15px;
-}
-
 .boxed-group {
   background: none repeat scroll 0 0 #efefef;
   border-radius: 3px 3px 3px 3px;
@@ -631,10 +623,6 @@ span.glyphicon {
   bottom: 0px;
   position: fixed;
   right: 0px;
-}
-
-.dm-continue-btn {
-  padding-left: 20px;
 }
 
 .datamonkey-splash {

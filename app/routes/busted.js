@@ -31,9 +31,7 @@ exports.uploadFile = function(req, res) {
   var datatype = 0,
     gencodeid = data.gencodeid;
 
-  if (postdata.receive_mail == "true") {
-    busted.mail = postdata.mail;
-  }
+  busted.mail = postdata.mail;
 
   Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
     if (err) {

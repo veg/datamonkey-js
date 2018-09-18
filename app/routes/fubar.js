@@ -34,9 +34,7 @@ exports.invoke = function(req, res) {
     datatype = 0,
     gencodeid = postdata.gencodeid;
 
-  if (postdata.receive_mail == "true") {
-    fubar.mail = postdata.mail;
-  }
+  fubar.mail = postdata.mail;
 
   Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
     if (err) {

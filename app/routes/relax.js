@@ -30,9 +30,8 @@ exports.uploadFile = function(req, res) {
     datatype = 0,
     gencodeid = postdata.gencodeid;
 
-  if (postdata.receive_mail == "true") {
-    relax.mail = postdata.mail;
-  }
+  relax.mail = postdata.mail;
+
   relax.analysis_type = postdata.analysis_type;
   relax.original_extension = path.basename(fn).split(".")[1];
   Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {

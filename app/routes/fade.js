@@ -32,9 +32,7 @@ exports.uploadFile = function(req, res) {
   msa.datatype = data.datatype;
   msa.gencodeid = PROTEIN_GENCODE;
 
-  if (postdata.receive_mail == "true") {
-    fade.mail = postdata.mail;
-  }
+  fade.mail = postdata.mail;
 
   msa.dataReader(fn, function(err, result) {
     if (err) {

@@ -515,6 +515,26 @@ nav .dm-dropdown-menu {
   padding-top: 20px;
 }
 
+// hyphy-vision specific styling that didn't seem to belong anywhere else.
+.dm-table,
+.table-hover {
+  border: none;
+}
+
+#job-report {
+  padding: 0;
+}
+
+.dm-upload-div {
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+.dm-continue-btn {
+  background-color: lightgray;
+}
+
+
 //Responsive
 @media (max-width: 575.98px) {
   .navbar-brand #datamonkey-logo {
@@ -602,12 +622,4 @@ nav .dm-dropdown-menu {
   }
 }
 
-// hyphy-vision specific styling that didn't seem to belong anywhere else.
-.dm-table,
-.table-hover {
-  border: none;
-}
 
-#job-report {
-  padding: 0;
-}

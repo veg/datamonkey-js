@@ -11,10 +11,6 @@ $(function() {
     formData.append("files", file);
     formData.append("datatype", $("select[name='datatype']").val());
     formData.append("gencodeid", $("select[name='gencodeid']").val());
-    formData.append(
-      "receive_mail",
-      $("input[name='receive_mail']").prop("checked")
-    );
     formData.append("mail", $("input[name='mail']").val());
 
     var action_url = $("#msa-form").attr("action");

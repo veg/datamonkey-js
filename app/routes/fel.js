@@ -37,10 +37,7 @@ exports.uploadFile = function(req, res) {
     ds_variation = postdata.ds_variation;
 
   fel.original_extension = path.basename(fn).split(".")[1];
-
-  if (postdata.receive_mail == "true") {
-    fel.mail = postdata.mail;
-  }
+  fel.mail = postdata.mail;
 
   Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
     if (err) {

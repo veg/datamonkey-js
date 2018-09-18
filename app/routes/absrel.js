@@ -34,9 +34,7 @@ exports.uploadFile = function(req, res) {
     datatype = 0,
     gencodeid = postdata.gencodeid;
 
-  if (postdata.receive_mail == "true") {
-    absrel.mail = postdata.mail;
-  }
+  absrel.mail = postdata.mail;
 
   Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
     if (err) {

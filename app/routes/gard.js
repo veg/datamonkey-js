@@ -40,9 +40,7 @@ exports.invoke = function(req, res) {
   gard.site_to_site_variation = site_to_site_variation;
   gard.rate_classes = rate_classes;
 
-  if (postdata.receive_mail == "true") {
-    gard.mail = postdata.mail;
-  }
+  gard.mail = postdata.mail;
 
   Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
     if (err) {
