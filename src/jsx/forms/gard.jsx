@@ -204,7 +204,7 @@ var GARDForm = React.createClass({
           onClick={this.submit}
         >
           Run Analysis
-          <span className="dm-continue-btn fas fa-play" />
+          <span className="dm-continue-btn fa fa-play" />
         </button>
 
         <div style={{ paddingBottom: "30px" }} />
