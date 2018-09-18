@@ -1,19 +1,18 @@
 @import "~bootstrap/scss/bootstrap";
-
-@import url("https://use.fontawesome.com/releases/v5.0.9/css/all.css");
-
-@import url("https://fonts.googleapis.com/css?family=Exo+2:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Exo:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i");
-
 @import "~hyphy-vision/dist/application.scss";
+@import url("https://use.fontawesome.com/releases/v5.0.9/css/all.css");
+@import url("https://fonts.googleapis.com/css?family=Exo+2:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Exo:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Noto+Sans:400,400i,700,700i|IBM+Plex+Mono:400,500,600,700");
 
 // Hyphy & Datamonkey Colors
 $hyphy-green: #479167;
 $datamonkey-turquoise: #00a99d;
 
-// General Typography
+//Datamonkey Logo
+.navbar-brand #datamonkey-logo {
+}
+
 html,
 body {
-  position: relative;
   font-family: "Montserrat", sans-serif;
   font-size: 14px;
   font-weight: 500;
@@ -21,178 +20,121 @@ body {
   color: #484d56;
 }
 
-.glyphicon {
-  right: 10px;
-  line-height: 1.1;
-}
-
+// Typography
 ::selection {
-  color: #fff;
+  color: #f7f7f7;
   background-color: #dd4631;
 }
 
-// Headings
 h1,
 h2,
 h3 {
-  font-weight: 600;
+  font-weight: 700;
 }
 
 h1 {
-  font-size: 42px;
+  font-size: 3em;
 }
 
 h3 {
-  font-size: 21px;
+  font-size: 1.65em;
   color: $datamonkey-turquoise;
 }
 
-// *Hides content :before any .panel h3* //
-.panel h3:before {
-  content: "";
+.dm-fa {
+  color: #dd4631;
+  font-family: "Font Awesome\ 5 Free";
+  font-size: 0.9em;
+  font-style: normal;
+  font-weight: 900;
+  vertical-align: text-top;
+}
+
+.dm-continue-btn {
+  padding: 5px 20px;
+}
+
+label i.dm-fa {
+  font-size: 1.35em;
+}
+
+pre,
+code,
+kbd,
+samp {
+  font-family: "IBM Plex Mono", monospace;
+}
+
+.hidden {
   display: none;
 }
 
-h3:before {
-  content: "";
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  margin: 5px 8px 8px 0px;
+// Components
+//// Badge
+$badge-color: #038c7f;
+$badge-bg: #f7f7f7;
+
+//// Buttons and Dropdowns
+//Button
+.dm-btn {
   padding: 0;
-  line-height: 0;
-  background-color: $datamonkey-turquoise;
-  vertical-align: middle;
+  border: none;
 }
 
-small {
-  font-size: 80%;
+.run-analysis-button-text {
+  font-weight: 500;
 }
 
-// Gives clearance/offset space under fixed-header
-#results::before,
-.clearance {
-  display: block;
-  height: 70px;
-  width: 100%;
-}
-
-.container {
-  margin-top: 30px;
-}
-
-.fa {
-  font-weight: 600;
-  color: #dd4631;
-  font-size: 16px;
-}
-
-.fa:hover {
-  color: $datamonkey-turquoise;
-}
-
-// Horizontal Rules
-$hrborder: #000;
-
-.analysis-tree hr {
-  width: 15%;
-  max-width: 244px;
-  border: 3px $datamonkey-turquoise solid;
-}
-
-// Bootstrap Variables & Styles
-$body-bg: #fff;
-$body-color: #555;
-$table-condensed-cell-padding: 10px;
-$table-bg-hover: #bfbfbf;
-
-// Buttons
-$btn-border-radius-base: none;
-$btn-default-bg: #ccc;
-$btn-default-color: #484d56;
-$btn-font-weight: 700;
-$btn-primary-border: $datamonkey-turquoise;
-$btn-primary-bg: $datamonkey-turquoise;
-$btn-primary-color: #fff;
-
-.btn-primary {
+//// Buttons	//// Buttons and Dropdowns
+.form-group label.dm-btn-primary,
+.dm-btn-primary {
+  //Button
   border-radius: 30px;
   border-width: 2px;
   padding: 10px 20px;
   text-transform: uppercase;
-  font-size: 12px;
+  font-size: 0.857em;
   font-weight: 600;
+  margin: 0 5px;
+  color: #f7f7f7;
 }
 
-.btn-primary:hover {
-  background-color: #484d56 !important;
-  border: 2px solid #484d56 !important;
-  box-shadow: 0px 3px 3px #d0d0d0;
-  color: #fff;
+.form-group label.dm-btn-primary:hover,
+.form-group label.dm-btn-primary:focus,
+.form-group label.dm-btn-primary:focus,
+.dm-btn-primary:hover,
+.dm-btn-primary:focus,
+.dm-btn-primary.focus {
+  color: #f7f7f7;
+  background-color: #36c9b7;
+  box-shadow: 0px 3px 3px #ccc;
 }
 
-.btn .caret {
+.dm-btn .caret {
   margin-left: 15px;
 }
 
-.btn-primary:focus,
-.btn-primary.focus {
-  color: #fff;
-  background-color: #00766e;
-}
 
-.btn-primary:hover {
-  color: #fff;
-  background-color: #00766e;
-  border-color: #11aa9b;
-}
-
-.btn-primary:active,
-.btn-primary.active,
-.open > .dropdown-toggle.btn-primary {
-  color: #fff;
+.form-group label.dm-btn-primary:active,
+.form-group label.dm-btn-primary.active,
+.dm-btn-primary:active,
+.dm-btn-primary.active,
+.dm-open > .dm-dropdown-toggle.dm-btn-primary {
+  color: #f7f7f7;
   background-color: #00766e;
   border-color: #11aa9b;
 }
 
-.btn-default:active:hover,
-.btn-default.active:hover,
-.open > .dropdown-toggle.btn-default:hover,
-.btn-default:active:focus,
-.btn-default.active:focus,
-.open > .dropdown-toggle.btn-default:focus,
-.btn-default:active.focus,
-.btn-default.active.focus,
-.open > .dropdown-toggle.btn-default.focus {
-  color: #fff;
-  background-color: #555;
+button.dm-mobile-menu {
+  display: none;
 }
 
-.btn-default:hover {
-  color: #fff;
-  background-color: #484d56;
+//Dropdown
+.dm-dropdown {
+  float: left;
 }
 
-.btn-primary:active:hover,
-.btn-primary.active:hover,
-.open > .dropdown-toggle.btn-primary:hover,
-.btn-primary:active:focus,
-.btn-primary.active:focus,
-.open > .dropdown-toggle.btn-primary:focus,
-.btn-primary:active.focus,
-.btn-primary.active.focus,
-.open > .dropdown-toggle.btn-primary.focus {
-  color: #fff;
-  background-color: #00524c;
-  border-color: #00100f;
-}
-
-// Dropdowns
-$dropdown-border: $hyphy-green;
-$dropdown-link-hover-color: #038c7f;
-$dropdown-link-color: #484d56;
-
-.dropdown-menu {
+.dm-dropdown-menu {
   position: absolute;
   top: 100%;
   left: 0;
@@ -203,175 +145,128 @@ $dropdown-link-color: #484d56;
   padding: 0px;
   margin: 2px 0 0;
   list-style: none;
-  font-size: 14px;
+  font-size: 1em;
   text-align: left;
-  background-color: #fff;
-  border: none !important;
+  background-color: #f7f7f7;
+  border: none;
   border-radius: 0px;
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
   background-clip: padding-box;
 }
 
-.dropdown-menu > li > a,
-.navbar-nav > li > a {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  font-weight: 600;
-}
-
-.dropdown-menu > li > a:hover {
+.dm-dropdown .dropdown-menu a:hover {
   -webkit-transition: ease-in-out 100ms;
   -moz-transition: ease-in-out 100ms;
   -o-transition: ease-in-out 100ms;
   transition: ease-in-out 100ms;
   padding-left: 25px;
   background-color: $datamonkey-turquoise;
+  color: #f7f7f7;
 
   /*border-left: 15px solid #343846;*/
-  color: #fff;
 }
 
-// Badge
-$badge-color: #038c7f;
-$badge-bg: #fff;
-
-// Label
-label {
-  font-family: "Montserrat", sans-serif;
-  font-size: 12px;
-  text-transform: uppercase;
-}
-
-// Jumbotron
-$jumbotron-bg: #333745;
-
-.jumbotron {
-  text-align: center;
-  background-image: url("/assets/img/jumbotron.jpg");
-  margin-bottom: 50px;
-}
-
-$jumbotron-heading-color: #fff;
-$jumbotron-heading-font-size: ceil($font-size-base * 5.5);
-$jumbotron-color: #fff;
-$jumbotron-font-size: ceil($font-size-base * 1.15);
-
-.jumbotron p {
-  font-weight: 400;
-  letter-spacing: 1.5px;
-}
-
-// Inverted Navbar
-$navbar-inverse-bg: #fff;
-$navbar-inverse-bg-highlight: #fff;
-$navbar-inverse-border: #fff;
-$navbar-inverse-text: #484d56;
-$navbar-inverse-link-color: #484d56;
-$navbar-inverse-link-hover-color: #009ba1;
-$navbar-inverse-link-hover-bg: transparent;
-
-// Navbar
-.nav-stacked {
-  padding-top: 0 !important;
-}
-
-.nav-stacked > li + li {
-  margin: 0;
-}
-
-.navbar {
-  display: flex !important;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: $datamonkey-turquoise;
-  margin: 0;
-}
-
-.navbar-static-top {
-  border-width: 0 0 5px;
-}
-
-.navbar-collapse {
-  border-color: $navbar-inverse-border;
-  border-width: 5px 0px 0px 0px;
-}
-
-.navbar-inverse .navbar-collapse,
-.navbar-inverse .navbar-form {
-  border-color: $navbar-inverse-border;
-}
-
-.navbar .btn-navbar .icon-bar {
-  box-shadow: 0px 0px 0px rgba(0, 0, 0, 0.25);
-}
-
-.navbar-nav {
-  float: right;
-  margin: 0;
-}
-
-.navbar-nav > li {
-  float: left;
-}
-
-$border-radius-base: 0px;
-$nav-link-padding: 10px 25px;
-$nav-pills-border-radius: $border-radius-base;
-
-$navbar-default-bg: #fff;
-$navbar-height: 70px;
-$navbar-default-border: $datamonkey-turquoise;
-
-// Panels
-$panel-default-border: #fff;
-$panel-primary-border: #fff;
-$panel-default-heading-bg: #484d56;
-$panel-default-text: $datamonkey-turquoise;
-
-.panel {
+// Cards
+.dm-card {
   box-shadow: none;
+  border: none;
+  margin-bottom: 20px;
 }
 
-.panel-default > .panel-heading {
-  color: #fff;
+.dm-card-header {
+  background-color: #484d56;
+  color: #f7f7f7;
+  padding: 10px 15px 5px 15px;
   border-bottom: 8px solid $datamonkey-turquoise;
-}
-
-.panel-title {
-  font-size: 24px;
+  text-align: left;
+  font-size: 1.714em;
   font-weight: 600;
 }
 
-//Popovers
-$popover-max-width: 400px;
-$popover-title-bg: #fff;
-$popover-arrow-color: #fff;
-$popover-border-color: $hyphy-green;
-$popover-fallback-border-color: $hyphy-green;
+.dm-card-body {
+}
 
-.popover {
+.dm-card-body a {
+  color: #484d56;
+}
+
+.dm-card-body a:hover {
+  color: $datamonkey-turquoise;
+  text-decoration: none;
+  border-bottom: 3px solid orange;
+}
+
+.dm-card-title {
+  font-size: 1.286em;
+}
+
+.dm-card-text {
+}
+
+.pull-right::after {
+  content: "";
+  clear: right;
+}
+
+// Forms/Labels
+.form-group {
+  margin-bottom: 15px;
+}
+.form-group label {
   font-family: "Montserrat", sans-serif;
-  font-size: 13.5px;
+  font-size: 0.857em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+}
+.form-control {
+  width: 100%;
+}
+////Checkbox next to Email Form
+.dm-input-group-addon {
+  align-self: center;
+  background-color: #eee;
+  border: 2px solid #ced4da;
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+  padding: 7px 12px 6px 12px;
+}
+
+button.continue-btn:hover {
+  background-color: #dd4631;
+  color: #f7f7f7;
+}
+
+//// Popovers
+.popover {
+  max-width: 300px;
+}
+
+.dm-popover {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.964em;
   letter-spacing: 0.25px;
   color: #444;
   border: 3px solid $hyphy-green;
   border-radius: 0;
+  max-width: 300px;
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.45);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.45);
 }
 
-.popover-title {
+.dm-popover-title {
   padding: 12px 14px 0px 14px;
   margin: 0;
   font-family: "Montserrat", sans-serif;
-  font-size: 15.5px;
+  font-size: 1.107em;
   font-weight: 700;
   color: #038c7f;
   letter-spacing: 0.25px;
 }
 
-.popover-title:after {
+.dm-popover-title:after {
   content: "";
   display: block;
   width: 100%;
@@ -380,17 +275,17 @@ $popover-fallback-border-color: $hyphy-green;
   background-color: #91cec2;
 }
 
-.popover-content ul {
+.dm-popover-content ul {
   list-style: none;
   padding: 0;
 }
 
-.popover-content ul li {
+.dm-popover-content ul li {
   font-family: "Noto Sans", sans-serif;
-  font-size: 13.5px;
+  font-size: 0.964em;
 }
 
-.popover.bottom > .arrow {
+.dm-popover.bottom > .dm-arrow {
   top: -16px;
   left: 50%;
   margin-left: -11px;
@@ -398,46 +293,211 @@ $popover-fallback-border-color: $hyphy-green;
   border-bottom-color: $datamonkey-turquoise;
 }
 
-.popover.bottom > .arrow:after {
+.dm-popover.bottom > .dm-arrow:after {
   top: 1px;
   margin-left: -10px;
-  content: " ";
+  content: "";
   border-top-width: 3px;
-  border-bottom-color: #fff;
+  border-bottom-color: #f7f7f7;
 }
 
-//Tooltips
+.bs-popover-bottom .arrow::after,
+.bs-popover-auto[x-placement^="bottom"] .arrow::after {
+  top: 4px;
+}
+.bs-popover-bottom .arrow::before,
+.bs-popover-auto[x-placement^="bottom"] .arrow::before {
+  border-bottom-color: rgba(0, 169, 157, 1);
+}
+
+//// Tooltips
 $tooltip-bg: #333;
 $tooltip-max-width: 200px;
 
-// Tables
-.table-bordered {
+//// Tables
+div#table {
+  overflow: auto;
+}
+
+.dm-table-bordered {
   border: none;
 }
 
-.table > thead > tr > th,
-.table > tbody > tr > th,
-.table > tfoot > tr > th,
-.table > thead > tr > td,
-.table > tbody > tr > td,
-.table > tfoot > tr > td,
-.table-condensed > tfoot > tr > td {
+.dm-table > thead > tr > th,
+.dm-table > tbody > tr > th,
+.dm-table > tfoot > tr > th,
+.dm-table-condensed > tfoot > tr > td {
   font-family: "Montserrat", sans-serif;
   text-align: center;
   border: none;
 }
 
-.table > thead > tr > th {
+.dm-table > thead > tr > th {
   border-bottom: 7px solid $datamonkey-turquoise;
   text-align: center;
   font-weight: 600;
   background-color: #484d56;
-  color: #fff;
+  color: #f7f7f7;
   vertical-align: middle;
 }
 
-// Twitter
-.twitter-diamond {
+// CONTENT
+.container {
+  margin-top: 30px;
+}
+
+//// Navbar
+nav.dm-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  border-bottom: 3px solid $datamonkey-turquoise;
+  width: 100%;
+  position: fixed;
+  background-color: #fff;
+  z-index: 9999;
+}
+
+div.dm-nav-links {
+  float: none;
+}
+
+div.dm-nav-links a:link,
+div.dm-nav-links a:visited {
+  display: inline-block;
+  color: #484d56;
+  font-weight: 600;
+  padding: 8.5px 15px;
+}
+
+div.dm-nav-links a:hover {
+  color: $datamonkey-turquoise;
+  text-decoration: none;
+}
+
+.clearance {
+  display: block;
+  height: 70px;
+}
+
+////// Navbar Dropdown Button/Menu
+nav .dm-btn {
+  background-color: #fff;
+  color: #484d56;
+  font-weight: 600;
+  padding: 0 15px;
+}
+
+nav .dm-btn:hover {
+  color: #f7f7f7;
+  background-color: $datamonkey-turquoise;
+}
+
+.dm-btn.dropdown-toggle:focus,
+.dm-btn:focus {
+  color: #f7f7f7;
+  background-color: $datamonkey-turquoise;
+  box-shadow: 0 0 0 0.4rem #ceefe8;
+}
+
+nav .dm-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  float: left;
+  min-width: 230px;
+  padding: 0px;
+  margin: 2px 0 0;
+  list-style: none;
+  font-size: 1em;
+  text-align: left;
+  background-color: #f7f7f7;
+  border: none;
+  border-radius: 0px;
+  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+  background-clip: padding-box;
+}
+
+//// Homepage Jumbotron
+.dm-jumbotron {
+  background-image: url("/assets/img/jumbotron.jpg");
+  border-radius: 0;
+  margin-bottom: 50px;
+  padding: 58px 15px;
+  text-align: center;
+}
+
+.dm-jumbotron h1,
+.dm-jumbotron h2,
+.dm-jumbotron h3,
+.dm-jumbotron h4,
+.dm-jumbotron h5,
+.dm-jumbotron h6,
+.dm-jumbotron p {
+  color: #f7f7f7;
+  font-weight: 700;
+}
+
+.dm-jumbotron h1 {
+  font-size: 5.5em;
+}
+
+.dm-jumbotron p {
+  font-size: 1em;
+  font-weight: 500;
+}
+
+.dm-jumbotron hr {
+  width: 15%;
+  max-width: 244px;
+  margin-bottom: 20px;
+  border: 3px $datamonkey-turquoise solid;
+}
+
+//// Homepage Analysis Buttons
+.analysis-tree.dm-btn-group-justified {
+  display: flex;
+  justify-content: center;
+  padding: 0 15px;
+}
+
+.analysis-tree a.dm-btn {
+  padding: 12px 0px;
+  font-family: "Montserrat", sans-serif;
+  height: auto;
+  width: 100%;
+  letter-spacing: 0.25px;
+  border: 5px solid #fff;
+  background-color: #ccc;
+  color: #484d56;
+  font-weight: 700;
+}
+
+.analysis-tree a.dm-btn:hover {
+  background-color: #484d56;
+  color: #f7f7f7;
+}
+
+#results,
+#summary-tab {
+  margin-top: 0;
+}
+
+.dm-main-result {
+  margin-bottom: 30px;
+}
+
+.dm-bs-docs-sidebar .nav > li > a {
+  padding-right: 45px;
+  letter-spacing: 0;
+}
+
+// Footer
+//// Twitter
+.dm-twitter-diamond {
   position: absolute;
   width: 52px;
   height: 52px;
@@ -445,7 +505,7 @@ $tooltip-max-width: 200px;
   left: 41%;
 }
 
-.twitter-feed {
+.dm-twitter-feed {
   display: block;
   position: relative;
   border: 2px solid rgb(174, 219, 218);
@@ -455,119 +515,99 @@ $tooltip-max-width: 200px;
   padding-top: 20px;
 }
 
-// Not sure where to put these atm.
-.dm-table-header {
-  margin: 0;
-}
-
-#results,
-#summary-tab {
-  margin-top: 0 !important;
-}
-
-.analysis-tree .btn {
-  padding: 10px 0px;
-  font-family: "Montserrat", sans-serif;
-  height: 38px;
-  letter-spacing: 0.25px;
-  border: 5px solid #fff;
-}
-
-.analysis-tree .btn:hover {
-  border-color: white;
-}
-
-.main-result {
-  margin-bottom: 30px;
-}
-
-.bs-docs-sidebar .nav > li > a {
-  padding-right: 45px;
-  letter-spacing: 0 !important;
-}
-
-@media (max-width: 768px) {
-  // General Includes
-  html,
-  body {
-    font-size: 15px;
+//Responsive
+@media (max-width: 575.98px) {
+  .navbar-brand #datamonkey-logo {
+    width: 230px;
   }
 
-  .navbar {
-    display: block !important;
+  button.dm-mobile-menu {
+    display: inline-block;
   }
 
-  .navbar li,
-  .navbar-nav {
-    float: none;
+  .dm-navbar-toggle .icon-bar {
+    display: block;
+    width: 20px;
+    height: 3px;
+    margin: 4px;
+    background-color: #fff;
   }
 
-  .navbar-inverse .navbar-nav > .open > a,
-  .navbar-inverse .navbar-nav > .open > a:hover,
-  .navbar-inverse .navbar-nav > .open > a:focus {
-    color: #fff;
+  button.dm-btn {
+    width: 100%;
+    text-align: left;
+    margin-top: -1px;
+  }
+
+  //Navbar
+  nav.dm-navbar {
+    justify-content: space-between;
+  }
+
+  .dm-nav-links {
+    width: 100%;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+  }
+
+  .dm-navbar-toggle {
+    padding: 8px;
     background-color: $datamonkey-turquoise;
-  }
-
-  .navbar-nav .open .dropdown-menu > li > a,
-  .navbar-nav .open .dropdown-menu .dropdown-header {
-    padding: 15px 25px;
-  }
-
-  .dropdown-menu > li > a,
-  .navbar-nav > li > a {
-    padding-top: 15px;
-    padding-bottom: 15px;
-  }
-
-  .navbar-inverse .navbar-toggle {
-    position: relative;
-    float: right;
-    margin-right: 15px;
-    padding: 9px 10px;
-    margin-top: 18px;
-    margin-bottom: 18px;
-    background-color: $datamonkey-turquoise;
-    background-image: none;
     border: none;
   }
 
-  .open {
-    border-bottom: 3px solid #ccc;
+  .dm-navbar-toggle:active,
+  .dm-navbar-toggle:focus,
+  .dm-navbar-toggle:hover {
+    background-color: #333;
   }
 
-  #table {
-    overflow: auto;
+  .navbar-collapse {
+    flexwrap: wrap !important;
   }
 
-  #datamonkey-logo {
-    margin: 10px 0px 0px 10px;
+  .dm-dropdown {
+    width: 100%;
+    padding: 6px 0;
   }
 
-  .container {
-    margin-top: 15px;
+  .dm-dropdown-menu.show {
+    width: 100%;
   }
 
-  .footer {
-    margin-top: 0px !important;
+  div.dm-nav-links a:link,
+  div.dm-nav-links a:visited {
+    display: block;
+    background-color: #fff;
   }
 
-  // Analysis Tree page
-  .jumbotron {
-    margin-bottom: 30px;
-    padding: 30px 15px;
+  .dm-jumbotron h1 {
+    font-size: 3em;
   }
 
-  .analysis-tree hr {
+  .dm-jumbotron hr {
     width: 50%;
   }
 
-  .panel-datamonkey {
-    padding: 20px 10px !important;
+  // Vision scroll-spy
+  .bs-docs-sidebar {
+    display: none;
   }
 
-  // Help page
-  .help-content .btn-primary {
+  .dm-btn-primary {
     margin-bottom: 15px;
   }
+
+  .clearance {
+    height: 67px;
+  }
+}
+
+// hyphy-vision specific styling that didn't seem to belong anywhere else.
+.dm-table,
+.table-hover {
+  border: none;
+}
+
+#job-report {
+  padding: 0;
 }

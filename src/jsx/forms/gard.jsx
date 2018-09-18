@@ -198,9 +198,16 @@ var GARDForm = React.createClass({
             />
           </div>
         </div>
-        <button type="submit" className="btn pull-right" onClick={this.submit}>
+        <button
+          type="submit"
+          className="run-analysis-button-text continue-btn btn"
+          onClick={this.submit}
+        >
+          Run Analysis
           <span className="dm-continue-btn fas fa-play" />
         </button>
+
+        <div style={{ paddingBottom: "30px" }} />
       </form>
     );
   }

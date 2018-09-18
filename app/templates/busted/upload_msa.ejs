@@ -72,7 +72,7 @@
       </div>
 
       <div class="form-group <%if (typeof errors != "undefined" && typeof errors.mail != "undefined") { %>has-error<% } %>">
-        <label id="datatype-content" class="col-lg-3 control-label">Notify When Completed?</label>
+        <label id="datatype-content" class="control-label">Notify When Completed?</label>
         <div class="col-lg-9 input-group mail-group">
           <span class="input-group-addon">
             <input name="receive_mail" type="checkbox" value="on" checked>
@@ -80,9 +80,9 @@
           <input name="mail" type="text" class="form-control" placeholder="Email Address">
         </div>
       </div><!-- /form-group -->
-      <button type="submit" class="btn pull-right">
-        <span class="glyphicon dm-continue-btn fas fa-play"></span>
-      </button>
+        <button type="submit" class="continue-btn btn">
+          Run Analysis
+        <span class="dm-continue-btn fas fa-play"></span></button>
     </form>
   </div>
 

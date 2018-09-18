@@ -87,17 +87,22 @@ var JobTable = React.createClass({
     });
 
     return (
-      <table className="table table-bordered table-hover tablesorter table-striped">
-        <thead>
+      <table className="table table-hover tablesorter table-striped">
+        <thead
+          style={{
+            backgroundColor: "#484D56",
+            borderBottom: "7px solid #00a99d"
+          }}
+        >
           <tr>
-            <th>Ticket Number</th>
-            <th>Status</th>
-            <th>Kind</th>
-            <th>Sequences</th>
-            <th>Sites</th>
-            <th>Running Time</th>
-            <th>Creation Time</th>
-            <th>Queue Time</th>
+            <th style={{ color: "#fff" }}>Ticket Number</th>
+            <th style={{ color: "#fff" }}>Status</th>
+            <th style={{ color: "#fff" }}>Kind</th>
+            <th style={{ color: "#fff" }}>Sequences</th>
+            <th style={{ color: "#fff" }}>Sites</th>
+            <th style={{ color: "#fff" }}>Running Time</th>
+            <th style={{ color: "#fff" }}>Creation Time</th>
+            <th style={{ color: "#fff" }}>Queue Time</th>
           </tr>
         </thead>
         <tbody>{Jobs}</tbody>

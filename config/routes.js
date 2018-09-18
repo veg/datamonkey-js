@@ -1,6 +1,23 @@
 var path = require("path");
+var _ = require("underscore");
+
+var mongoose = require("mongoose"),
+  Msa = mongoose.model("Msa"),
+  Sequences = mongoose.model("Sequences"),
+  PartitionInfo = mongoose.model("PartitionInfo"),
+  FEL = mongoose.model("FEL"),
+  aBSREL = mongoose.model("aBSREL"),
+  Busted = mongoose.model("Busted"),
+  FUBAR = mongoose.model("FUBAR"),
+  GARD = mongoose.model("GARD"),
+  MEME = mongoose.model("MEME"),
+  Relax = mongoose.model("Relax"),
+  HivTrace = mongoose.model("HivTrace"),
+  Fade = mongoose.model("Fade"),
+  SLAC = mongoose.model("SLAC");
 
 module.exports = function(app) {
+  var analysis = require("../app/routes/analysis.js");
   // HOME PAGE
   home = require(path.join(__dirname, "../app/routes/home"));
   app.get("/", home.homePage);
@@ -29,7 +46,7 @@ module.exports = function(app) {
   app.post("/absrel/:id/select-foreground", absrel.invoke);
   app.get("/absrel/:id", absrel.getPage);
   app.get("/absrel/:id/info", absrel.getInfo);
-  app.get("/absrel/:id/results", absrel.getResults);
+  app.get("/absrel/:id/results", _.partial(analysis.getResults, aBSREL));
   app.get("/absrel/:id/cancel", absrel.cancel);
   app.get("/absrel/:id/log.txt", absrel.getLog);
   absrel.resubscribePendingJobs();
@@ -46,7 +63,7 @@ module.exports = function(app) {
   app.get("/busted/:bustedid", busted.getPage);
   app.get("/busted/:bustedid/info", busted.getInfo);
   app.get("/busted/:bustedid/cancel", busted.cancel);
-  app.get("/busted/:bustedid/results", busted.getResults);
+  app.get("/busted/:id/results", _.partial(analysis.getResults, Busted));
   app.get("/busted/:bustedid/log.txt", busted.getLog);
   busted.resubscribePendingJobs();
 
@@ -59,7 +76,7 @@ module.exports = function(app) {
   app.get("/fade/:fadeid", fade.getPage);
   app.get("/fade/:fadeid/info", fade.getInfo);
   app.get("/fade/:fadeid/cancel", fade.cancel);
-  app.get("/fade/:fadeid/results", fade.getResults);
+  app.get("/fade/:fadeid/results", _.partial(analysis.getResults, Fade));
   app.get("/fade/:fadeid/log.txt", fade.getLog);
   //fade.resubscribePendingJobs();
 
@@ -74,7 +91,7 @@ module.exports = function(app) {
   app.get("/fel/:id/fasta", fel.fasta);
   app.get("/fel/:id", fel.getPage);
   app.get("/fel/:id/info", fel.getInfo);
-  app.get("/fel/:id/results", fel.getResults);
+  app.get("/fel/:id/results", _.partial(analysis.getResults, FEL));
   app.get("/fel/:id/cancel", fel.cancel);
   app.get("/fel/:id/log.txt", fel.getLog);
   fel.resubscribePendingJobs();
@@ -99,7 +116,7 @@ module.exports = function(app) {
   app.get("/fubar/:id/original_file/:name", fubar.getMSAFile);
   app.get("/fubar/:id/fasta", fubar.fasta);
   app.get("/fubar/:id/info", fubar.getInfo);
-  app.get("/fubar/:id/results", fubar.getResults);
+  app.get("/fubar/:id/results", _.partial(analysis.getResults, FUBAR));
   app.get("/fubar/:id/cancel", fubar.cancel);
   app.get("/fubar/:id/log.txt", fubar.getLog);
   fubar.resubscribePendingJobs();
@@ -114,7 +131,7 @@ module.exports = function(app) {
   app.get("/gard/:id/original_file/:name", gard.getMSAFile);
   app.get("/gard/:id/fasta", gard.fasta);
   app.get("/gard/:id/info", gard.getInfo);
-  app.get("/gard/:id/results", gard.getResults);
+  app.get("/gard/:id/results", _.partial(analysis.getResults, GARD));
   app.get("/gard/:id/cancel", gard.cancel);
   app.get("/gard/:id/log.txt", gard.getLog);
   gard.resubscribePendingJobs();
@@ -144,7 +161,7 @@ module.exports = function(app) {
   app.get("/meme/:id/original_file/:name", meme.getMSAFile);
   app.get("/meme/:id/fasta", meme.fasta);
   app.get("/meme/:id/info", meme.getInfo);
-  app.get("/meme/:id/results", meme.getResults);
+  app.get("/meme/:id/results", _.partial(analysis.getResults, MEME));
   app.get("/meme/:id/cancel", meme.cancel);
   app.get("/meme/:id/log.txt", meme.getLog);
   meme.resubscribePendingJobs();
@@ -173,7 +190,7 @@ module.exports = function(app) {
   app.get("/relax/:id/info", relax.getInfo);
   app.get("/relax/:id/cancel", relax.cancel);
   app.get("/relax/:id/restart", relax.restart);
-  app.get("/relax/:id/results", relax.getResults);
+  app.get("/relax/:id/results", _.partial(analysis.getResults, Relax));
   app.get("/relax/:id/recheck", relax.getRecheck);
   app.get("/relax/:id/log.txt", relax.getLog);
   relax.resubscribePendingJobs();
@@ -187,7 +204,7 @@ module.exports = function(app) {
   app.get("/slac/:id/original_file/:name", slac.getMSAFile);
   app.get("/slac/:id/fasta", slac.fasta);
   app.get("/slac/:id/info", slac.getInfo);
-  app.get("/slac/:id/results", slac.getResults);
+  app.get("/slac/:id/results", _.partial(analysis.getResults, SLAC));
   app.get("/slac/:id/cancel", slac.cancel);
   app.get("/slac/:id/log.txt", slac.getLog);
   slac.resubscribePendingJobs();

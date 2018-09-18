@@ -5,7 +5,7 @@ var selected_style = { backgroundColor: "#00A99D", color: "white" };
 
 var h2Style = {
   fontFamily: "montserrat",
-  fontSize: "18px",
+  fontSize: "1.286em",
   fontWeight: "700",
   color: "#009BA1",
   marginTop: "0px",
@@ -20,7 +20,7 @@ var borderStyle = {
 };
 
 var analysisBorder = {
-  padding: "30px 10% 30px 10%",
+  padding: "30px 5%",
   border: "2px #AEDBDA solid",
   marginBottom: "40px"
 };
@@ -29,8 +29,10 @@ var analysisName = {
   fontFamily: "montserrat",
   fontStyle: "italic",
   fontWeight: "700",
-  color: "009BA1",
-  textAlign: "center"
+  color: "#00a99d",
+  textAlign: "center",
+  backgroundColor: "#F5F5F5",
+  padding: "15px 0"
 };
 
 var analysisText = {
@@ -53,7 +55,7 @@ class DecisionBranch extends React.Component {
           <h2 style={h2Style}>{this.props.text}</h2>
 
           <div
-            className="analysis-tree btn-group btn-group-justified"
+            className="analysis-tree dm-group dm-btn-group-justified btn-group btn-group-justified"
             role="group"
             aria-label="..."
             style={borderStyle}
@@ -62,7 +64,7 @@ class DecisionBranch extends React.Component {
               return (
                 <a
                   role="button"
-                  className="btn btn-default"
+                  className="dm-btn btn"
                   style={self.state.choice == choice.name ? selected_style : {}}
                   onClick={() => {
                     self.setState({ choice: choice.name });
@@ -117,18 +119,14 @@ function DecisionTreeRoot(props) {
     }
   ];
   return (
-    <div style={{ marginTop: "-20px" }}>
-      <div className="analysis-tree jumbotron">
-        {props.datamonkey ? (
-          <h1>Datamonkey</h1>
-        ) : (
-          <h1 style={{ fontWeight: "150px" }}>HyPhy Desktop</h1>
-        )}
+    <div>
+      <div className="analysis-tree dm-jumbotron">
+        {props.datamonkey ? <h1>Datamonkey</h1> : <h1>HyPhy Desktop</h1>}
         <hr />
-        <div>
+        <p>
           A Collection of State of the Art Statistical Models and Bioinformatics
           Tools
-        </div>
+        </p>
       </div>
       <div className="container">
         <DecisionBranch
@@ -333,12 +331,9 @@ class Method extends React.Component {
     return (
       <div className="row">
         <div className="col">
-          <div
-            className="panel panel-default panel-datamonkey"
-            style={analysisBorder}
-          >
+          <div className="dm-card card" style={analysisBorder}>
             <h2 style={h2Style}>
-              {this.props.datamonkey ? "datamonkey " : "HyPhy "}
+              {this.props.datamonkey ? "Datamonkey " : "HyPhy "}
               recommends that you use...
             </h2>
             <a
@@ -351,13 +346,13 @@ class Method extends React.Component {
               onMouseEnter={() => this.setState({ hover: true })}
               onMouseLeave={() => this.setState({ hover: false })}
             >
-              <div className="panel-heading">
+              <div className="card-header">
                 <center>
-                  <h3 style={analysisName}>{this.props.title}</h3>
+                  <h1 style={analysisName}>{this.props.title}</h1>
                 </center>
               </div>
             </a>
-            <div className="panel-body" style={analysisText}>
+            <div className="card-body" style={analysisText}>
               {this.props.children}
             </div>
           </div>
