@@ -27,6 +27,10 @@ Busted.virtual("status_stack").get(function() {
   return ["queue", "running", "completed"];
 });
 
+Busted.virtual("upload_redirect_path").get(function() {
+  return path.join("/busted/", String(this._id), "/select-foreground");
+});
+
 /**
  * Complete file path for document's file upload
  */

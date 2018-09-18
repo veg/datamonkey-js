@@ -18,7 +18,8 @@ var redis = require("redis"),
   client = redis.createClient({ host: "localhost", port: 6379 });
 
 exports.createForm = function(req, res) {
-  res.render("busted/upload_msa.ejs");
+  var post_to = "/busted";
+  res.render("busted/upload_msa.ejs", { post_to: post_to });
 };
 
 exports.uploadFile = function(req, res) {
@@ -76,7 +77,10 @@ exports.uploadFile = function(req, res) {
           );
           move.then(
             val => {
-              res.json(200, busted_result);
+              res.json(200, {
+                analysis: busted_result,
+                upload_redirect_path: busted.upload_redirect_path
+              });
             },
             reason => {
               res.json(500, { error: "issue removing tree from file" });

@@ -54,7 +54,7 @@ module.exports = function(app) {
   // BUSTED ROUTES
   busted = require(path.join(__dirname, "../app/routes/busted"));
   app.get("/busted", busted.createForm);
-  app.post("/busted/uploadfile", busted.uploadFile);
+  app.post("/busted", busted.uploadFile);
   app.get("/busted/:id/original_file/:name", busted.getMSAFile);
   app.get("/busted/:id/fasta", busted.fasta);
   app.get("/busted/usage", busted.getUsage);
@@ -70,7 +70,7 @@ module.exports = function(app) {
   // FADE ROUTES
   fade = require(path.join(__dirname, "../app/routes/fade"));
   app.get("/fade", fade.createForm);
-  app.post("/fade/uploadfile", fade.uploadFile);
+  app.post("/fade", fade.uploadFile);
   app.get("/fade/:id/select-foreground", fade.selectForeground);
   app.post("/fade/:id/select-foreground", fade.invokeFade);
   app.get("/fade/:fadeid", fade.getPage);
