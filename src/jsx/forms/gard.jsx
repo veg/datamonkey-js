@@ -22,10 +22,7 @@ var GARDForm = React.createClass({
     );
     formData.append("rate_classes", $("input[name='rate_classes']").val());
 
-    formData.append(
-      "receive_mail",
-      $("input[name='receive_mail']").prop("checked")
-    );
+    formData.append("receive_mail", $("input[name='mail']").val().length > 0);
     formData.append("mail", $("input[name='mail']").val());
 
     var action_url = $("#msa-form").attr("action");
@@ -187,9 +184,6 @@ var GARDForm = React.createClass({
             Notify When Completed?
           </label>
           <div className="col-lg-9 input-group mail-group">
-            <span className="input-group-addon">
-              <input name="receive_mail" type="checkbox" defaultValue="on" />
-            </span>
             <input
               name="mail"
               type="text"

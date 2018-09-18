@@ -110,10 +110,7 @@ class FUBARForm extends React.Component {
     formData.append("files", file);
     formData.append("datatype", $("select[name='datatype']").val());
     formData.append("gencodeid", $("select[name='gencodeid']").val());
-    formData.append(
-      "receive_mail",
-      $("input[name='receive_mail']").prop("checked")
-    );
+    formData.append("receive_mail", $("input[name='mail']").val().length > 0);
     formData.append("mail", $("input[name='mail']").val());
     formData.append("number_of_grid_points", $("#number_of_grid_points").val());
     formData.append("number_of_mcmc_chains", $("#number_of_mcmc_chains").val());
@@ -249,9 +246,6 @@ class FUBARForm extends React.Component {
             Notify When Completed?
           </label>
           <div className="col-lg-9 input-group mail-group">
-            <span className="input-group-addon">
-              <input name="receive_mail" type="checkbox" defaultValue="on" />
-            </span>
             <input
               name="mail"
               type="text"
