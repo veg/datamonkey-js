@@ -33,10 +33,14 @@ function setupJob() {
   var socket_address = document.location.origin;
 
   var socket = io.connect(socket_address, {
-        reconnect : false
+        reconnect : true
       });
 
   var was_error = false;
+
+  // initialize stdout renderer
+  var stdOut = $("#stdOut-placeholder").text();
+  render_stdOut("stdOut-container", stdOut, socket)
 
   d3.json(jobid + '/info', function(data) {
 
@@ -67,11 +71,6 @@ function setupJob() {
   });
 
   var changeStatus = function (data) {
-
-    if(data.msg != undefined) {
-      d3.select("#standard-output").classed({'hidden' : false});
-      $('#job-pre').html(data.msg);
-    }
 
     if(data.creation_time && !job_creation_time) {
 

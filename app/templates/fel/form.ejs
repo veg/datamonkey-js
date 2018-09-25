@@ -16,6 +16,7 @@
 <script>
   // Get trees.
   var user_tree = "<%= fel.msa[0].usertree %>"
+  user_tree == 'undefined' ? user_tree = undefined : null
   var nj_tree = "<%= fel.msa[0].nj %>"
 
   // Create callback for posting annotated tree.
@@ -39,4 +40,5 @@
     xhr.send(formData);
   }
   render_branch_selection("branch-selection-container", user_tree , nj_tree , datamonkey_post_annotated_tree, 800, 600, false)
+  $('.dropdown-toggle').dropdown();
 </script>

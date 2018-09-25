@@ -622,4 +622,24 @@ nav .dm-dropdown-menu {
   }
 }
 
+.panel-status {
+  padding-top: 20px !important;
+  padding-bottom: 20px !important;
+  /*max-height : 145px;*/
+  background-color: #fafaf8;
+  font-family: "Droid Serif", Georgia;
+  font-size: 12px;
+  padding: 0px;
+}
 
+.panel-status h6 {
+  display: inline;
+}
+
+.panel-status li {
+  padding: 3px;
+}
+
+#standard-output {
+  margin-top:15px;
+}

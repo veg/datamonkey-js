@@ -17,10 +17,7 @@ var SLACForm = React.createClass({
     formData.append("files", file);
     formData.append("datatype", $("select[name='datatype']").val());
     formData.append("gencodeid", $("select[name='gencodeid']").val());
-    formData.append(
-      "receive_mail",
-      $("input[name='receive_mail']").prop("checked")
-    );
+    formData.append("receive_mail", $("input[name='mail']").val().length > 0);
     formData.append("mail", $("input[name='mail']").val());
 
     formData.append("dnds_value", $("input[name='dnds_value']").val());
@@ -147,13 +144,10 @@ var SLACForm = React.createClass({
         </div>
 
         <div className="form-group">
-          <label id="datatype-content" className="col-lg-3 control-label">
+          <label id="datatype-content">
             Notify When Completed?
           </label>
-          <div className="col-lg-9 input-group mail-group">
-            <span className="input-group-addon">
-              <input name="receive_mail" type="checkbox" defaultValue="on" />
-            </span>
+          <div>
             <input
               name="mail"
               type="text"
@@ -164,11 +158,10 @@ var SLACForm = React.createClass({
         </div>
         <button
           type="submit"
-          className="run-analysis-button-text continue-btn btn"
+          className="run-analysis-button-text dm-continue-btn btn pull-right"
           onClick={this.submit}
         >
-          Run Analysis
-          <span className="dm-continue-btn fas fa-play" />
+          Run Analysis <span className="fa fa-play" />
         </button>
 
         <div style={{ paddingBottom: "30px" }} />

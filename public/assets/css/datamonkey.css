@@ -88,6 +88,15 @@ li.media {
   margin-top: 5px;
 }
 
+.upload-div {
+  margin: 0px 0px 15px 0px;
+}
+
+.upload-div > label {
+  padding-right: 15px;
+}
+
+
 .boxed-group {
   background: none repeat scroll 0 0 #efefef;
   border-radius: 3px 3px 3px 3px;
@@ -560,24 +569,9 @@ span.glyphicon {
   margin-left: 5px;
 }
 
-.panel-status {
-  /*max-height : 145px;*/
-  background-color: #fafaf8;
-  font-family: "Droid Serif", Georgia;
-  font-size: 12px;
-  padding: 0px;
-}
-
-.panel-status h6 {
-  display: inline;
-}
 
 .panel-body {
   /*padding : 0px;*/
-}
-
-.panel-status li {
-  padding: 3px;
 }
 
 .job-concel {
@@ -658,3 +652,22 @@ a.hyphy-anchor {
 #cluster_table td:first-child {
   min-width: 200px;
 }
+
+.panel-status {
+  padding: 20px;
+  /*max-height : 145px;*/
+  background-color: #fafaf8;
+  font-family: "Droid Serif", Georgia;
+  font-size: 12px;
+  padding: 0px;
+}
+
+.panel-status h6 {
+  display: inline;
+}
+
+.panel-status li {
+  padding: 3px;
+}
+
+

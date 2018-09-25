@@ -30,26 +30,28 @@
   <div class="alert alert-danger"><%- job.generic_error_msg %></div>
 <% } %>
 
-<div id="standard-output"  <% if(!job.last_status_msg) { %> class="hidden" <% } %> >
+<div id="standard-output" class="row">
+
+  <div class="card-header col-12"> 
+    <h2 class="pull-left">Progress</h2>
+    <div class="pull-right">
+      <a href="<%= job._id%>/log.txt">
+        <button id="job-stdout-copy-button" class="btn btn-primary btn-sm pull-right" type="button">
+          <span class="fa fa-download"></span> Download Log
+        </button>
+      </a>
+    </div>
+  </div>
+
   <div class="card-body">
-    <h6> Standard Output </h6>
-    <a href="<%= job._id%>/log.txt">
-    <button id="job-stdout-copy-button" class="btn btn-default btn-sm pull-right" type="button">
-      <span class="fa fa-download"></span> Download Log
-    </button>
-    </a>
     <div id="stdOut-container"></div>
   </div>
 </div>
 
 <div id="stdOut-placeholder" style="display:none">
-  <%=job.last_status_msg%>
+  <%=job.last_status_msg || "## Intializing" %>
 <div>
 
-<script>
-  var stdOut = $("#stdOut-placeholder").text()
-  render_stdOut("stdOut-container", stdOut)
-</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.js"></script>
 <script src="/assets/js/job.js"></script>
 

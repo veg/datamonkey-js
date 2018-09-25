@@ -16,6 +16,7 @@ function ErrorMessage(props) {
 }
 
 class FUBARForm extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -25,14 +26,18 @@ class FUBARForm extends React.Component {
       number_of_samples: 100,
       message: null
     };
+
     this.toggleShow = this.toggleShow.bind(this);
     this.onLengthChange = this.onLengthChange.bind(this);
     this.onBurninChange = this.onBurninChange.bind(this);
     this.onSampleChange = this.onSampleChange.bind(this);
+
   }
+
   onMailChange() {
     //datamonkey.helpers.validate_email(elem);
   }
+
   toggleShow() {
     var self = this;
     var showAdvanced = !self.state.showAdvanced;
@@ -40,6 +45,7 @@ class FUBARForm extends React.Component {
       showAdvanced: showAdvanced
     });
   }
+
   onLengthChange(event) {
     var value = event.target.value;
     if (value < 500000) {
@@ -57,6 +63,7 @@ class FUBARForm extends React.Component {
       });
     }
   }
+
   onBurninChange(event) {
     var value = event.target.value,
       length = this.state.length_of_each_chain;
@@ -110,10 +117,7 @@ class FUBARForm extends React.Component {
     formData.append("files", file);
     formData.append("datatype", $("select[name='datatype']").val());
     formData.append("gencodeid", $("select[name='gencodeid']").val());
-    formData.append(
-      "receive_mail",
-      $("input[name='receive_mail']").prop("checked")
-    );
+    formData.append("receive_mail", $("input[name='mail']").val().length > 0);
     formData.append("mail", $("input[name='mail']").val());
     formData.append("number_of_grid_points", $("#number_of_grid_points").val());
     formData.append("number_of_mcmc_chains", $("#number_of_mcmc_chains").val());
@@ -245,24 +249,20 @@ class FUBARForm extends React.Component {
         </div>
 
         <div className="form-group">
-          <label id="datatype-content" className="col-lg-3 control-label">
+          <label id="datatype-content">
             Notify When Completed?
           </label>
-          <div className="col-lg-9 input-group mail-group">
-            <span className="input-group-addon">
-              <input name="receive_mail" type="checkbox" defaultValue="on" />
-            </span>
-            <input
-              name="mail"
-              type="text"
-              className="form-control"
-              placeholder="Email Address"
-            />
-          </div>
+          <input
+            name="mail"
+            type="text"
+            className="form-control"
+            placeholder="Email Address"
+          />
         </div>
 
         <button
-          className="btn"
+          className="btn btn-outline-secondary"
+          data-toggle="button"
           type="button"
           onClick={self.toggleShow}
           style={{ display: "block", verticalAlign: "middle" }}
@@ -279,7 +279,7 @@ class FUBARForm extends React.Component {
         </button>
 
         <div style={{ display: self.state.showAdvanced ? "block" : "none" }}>
-          <div className="row">
+          <div className="row" style={{marginTop:'10px', marginBottom:'10px'}}>
             <div className="col-md-6">
               <div>
                 <label>Number of grid points</label>
@@ -364,11 +364,10 @@ class FUBARForm extends React.Component {
 
         <button
           type="submit"
-          className="run-analysis-button-text continue-btn btn"
+          className="run-analysis-button-text dm-continue-btn btn pull-right"
           onClick={this.submit}
         >
-          Run Analysis
-          <span className="dm-continue-btn fas fa-play" />
+          Run Analysis  <span className="fa fa-play" />
         </button>
 
         <div style={{ paddingBottom: "30px" }} />
