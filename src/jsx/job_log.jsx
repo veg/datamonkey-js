@@ -8,26 +8,21 @@ function Table(props) {
 }
 
 class LogFile extends React.Component {
-
   constructor(props) {
     super(props);
     console.log(props);
-    this.state = {job_log: props.initialStdOut};
+    this.state = { job_log: props.initialStdOut };
   }
 
-  socketListeners () {
-
+  socketListeners() {
     // Status update
-    this.props.socket.on('status update', data => {
-
+    this.props.socket.on("status update", data => {
       console.log(data);
 
-      if(data) {
-        this.setState({job_log : data.msg});
+      if (data) {
+        this.setState({ job_log: data.msg });
       }
-
     });
-
   }
 
   componentDidMount() {
@@ -35,25 +30,23 @@ class LogFile extends React.Component {
   }
 
   render() {
-    return (<div
-      style={{
-        height: "500px",
-        width: "100%",
-        overflow: "scroll"
-      }}
-    >
-      <ReactMarkdown source={this.state.job_log} renders={{ table: Table }} />
-    </div>)
-
+    return (
+      <div
+        style={{
+          height: "500px",
+          width: "100%",
+          overflow: "scroll"
+        }}
+      >
+        <ReactMarkdown source={this.state.job_log} renders={{ table: Table }} />
+      </div>
+    );
   }
 }
 
-
 function render_stdOut(element, stdOut, socket) {
   ReactDOM.render(
-    <LogFile
-      initialStdOut={stdOut}
-      socket={socket} />,
+    <LogFile initialStdOut={stdOut} socket={socket} />,
     document.getElementById(element)
   );
 }

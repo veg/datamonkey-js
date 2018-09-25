@@ -27,7 +27,7 @@ var jobqueue = require("jsx/jobqueue.jsx");
 var render_attribute_modal = require("jsx/attribute_table.jsx");
 var render_citations = require("jsx/citations.jsx");
 var render_help = require("jsx/help.jsx");
-var render_stdOut = require("jsx/render_stdOut.jsx");
+var render_stdOut = require("jsx/job_log.jsx");
 
 window.gard_form = gard_form;
 window.slac_form = slac_form;
