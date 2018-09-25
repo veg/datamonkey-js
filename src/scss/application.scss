@@ -114,7 +114,6 @@ $badge-bg: #f7f7f7;
   margin-left: 15px;
 }
 
-
 .form-group label.dm-btn-primary:active,
 .form-group label.dm-btn-primary.active,
 .dm-btn-primary:active,
@@ -534,7 +533,6 @@ nav .dm-dropdown-menu {
   background-color: lightgray;
 }
 
-
 //Responsive
 @media (max-width: 575.98px) {
   .navbar-brand #datamonkey-logo {
@@ -641,5 +639,47 @@ nav .dm-dropdown-menu {
 }
 
 #standard-output {
-  margin-top:15px;
+  margin-top: 15px;
+}
+
+.panel-datamonkey {
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+.panel-datamonkey h3 {
+  font-family: "Droid Serif", Georgia;
+  display: inline;
+  font-size: 1em;
+}
+
+.panel-datamonkey .panel-heading {
+  background-color: #f5f5f5;
+  border-color: #dddddd;
+  font-size: 3em;
+}
+
+.panel-datamonkey .panel-title {
+  padding: 10px;
+}
+
+.panel-datamonkey .panel-body {
+  font-family: "Montserrat", "Arial", sans-serif;
+  text-align: left;
+  /*font-size: 12em;*/
+}
+
+/* all links */
+.panel-datamonkey > a {
+  color: #444;
+  font-weight: 400;
+}
+
+/* active & hover links */
+.panel-datamonkey a:hover,
+.panel-datamonkey a:focus {
+  color: #00a99d;
+  text-decoration: none;
+  background-color: transparent;
+  border-left-color: #563d7c;
 }

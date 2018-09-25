@@ -1,6 +1,6 @@
 <%- include includes/header.ejs %>
 
-<div class="container">
+<div class="container dm-analysis-container">
 
   <div class="row"> 
     <div class="datamonkey-sm-header">
@@ -32,7 +32,9 @@
       </p>
     </div>
 
-    <h3>Individual Site Models</h3>
+    <div class="row">
+      <h4>Individual Site Models</h4>
+    </div>
 
     <div class="row">
       <div class="panel panel-default panel-datamonkey">
@@ -44,12 +46,14 @@
         </a>
         <div class="panel-body">
 
+          <p>
           FEL (<strong>F</strong>ixed <strong>E</strong>ffects
           <strong>L</strong>ikelihood) uses a maximum-likelihood (ML) approach
           to infer nonsynoymous (dN) and synonymous (dS) substitution rates on a
           per-site basis for a given coding alignment and corresponding
           phylogeny. This method assumes that the selection pressure for each
           site is constant along the entire phylogeny.
+          </p>
 
           <p>For more information, please see the <a
           href="http://hyphy.org/methods/selection-methods/#fel">summary on hyphy.org</a> or see 
@@ -63,7 +67,6 @@
       </div>
     </div>
 
-    <!--
     <div class="row">
       <div class="panel panel-default panel-datamonkey">
         <a href="fubar">
@@ -73,7 +76,6 @@
           </div>
         </a>
         <div class="panel-body">
-
           <p>FUBAR (<strong>F</strong>ast, <strong>U</strong>nconstrained
           <strong>B</strong>ayesian <strong>A</strong>pp<strong>R</strong>oximation) uses
           a Bayesian approach to infer nonsynoymous (dN) and synonymous (dS) substitution
@@ -90,7 +92,7 @@
 
         </div>
       </div>
-    </div> -->
+    </div>
 
     <div class="row">
       <div class="panel panel-default panel-datamonkey">
@@ -146,7 +148,9 @@
       </div>
     </div>
 
-    <h3>Individual Branch Models</h3>
+    <div class="row">
+      <h4>Individual Branch Models</h4>
+    </div>
 
     <div class="row">
       <div class="panel panel-default panel-datamonkey">
@@ -175,7 +179,9 @@
       </div>
     </div>
 
-    <h3>Gene-Wide Models</h3>
+    <div class="row">
+      <h4>Gene-Wide Models</h4>
+    </div>
 
     <div class="row">
       <div class="panel panel-default panel-datamonkey">
@@ -234,8 +240,11 @@
       </div>
     </div>
 
+    <div class="row page-header">
+      <h2>Recombination Detection</h2>
+    </div>
 
-    <!--<div class="row">
+    <div class="row">
       <div class="panel panel-default panel-datamonkey">
         <a href="gard">
           <div class="panel-heading">
@@ -244,6 +253,7 @@
           </div>
         </a>
         <div class="panel-body">
+        <p>
         GARD (<strong>G</strong>enetic <strong>A</strong>lgorithm for <strong>R</strong>ecombination <strong>D</strong>etection) is a method to
         screen a multiple sequence analysis for the presence of recombination
         and is extremely useful as a pre-processing step for selection
@@ -252,22 +262,21 @@
         data often leads to a significant increase in false positives. GARD
         alleviates this concern by comprehensively screening an alignment for
         recombination breakpoints and inferring a unique phylogenetic history
-        for each detected recombination block. <p>For more information, please see
+        for each detected recombination block.</p> <p>For more information, please see
           <a href="https://doi.org/10.1093/molbev/msl051">Kosakovsky Pond,
           SL et al. "Automated Phylogenetic Detection of Recombination Using a
           Genetic Algorithm." Mol. Biol. Evol. 23, 1891–1901 (2006).</a></p>
         </div>
       </div>
     </div>
-    -->
 
-    <div class="page-header">
+    <div class="row page-header">
       <h2>Additional Methods</h2>
     </div>
-
+    
     <div class="row">
-      <a href="hivtrace">
       <div class="panel panel-default panel-datamonkey">
+        <a href="hivtrace">
         <div class="panel-heading">
           <h3 class="panel-title">HIV-TRACE</h3>
           <span class="pull-right glyphicon glyphicon-chevron-right hide"></span>
@@ -275,10 +284,11 @@
         </a>
         <div class="panel-body">
 
-          HIV-TRACE infers transmission networks given a sequence alignment.
-          <p>For more information, please see the <a
-          href="https://github.com/veg/hivtrace">github
-          repository</a></p>
+          <p>HIV-TRACE implements an approach inspired by traditional epidemiology, by identifying chains of partners whose viral genetic relatedness imply direct or indirect epidemiological connections. Molecular transmission clusters are constructed using codon-aware pairwise alignment to a reference sequence followed by pairwise genetic distance estimation among all sequences.</p>
+
+          <p>For more information, please see
+          <a href="https://academic.oup.com/mbe/article-abstract/35/7/1812/4833215">Kosakovsky Pond, Sergei L., et al. "HIV-TRACE (TRAnsmission Cluster Engine): a Tool for Large Scale Molecular Epidemiology of HIV-1 and Other Rapidly Evolving Pathogens." Molecular biology and evolution 35.7 (2018): 1812-1819.
+          </a></p>
 
         </div>
       </div>
