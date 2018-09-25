@@ -1,0 +1,685 @@
+@import "~bootstrap/scss/bootstrap";
+@import "~hyphy-vision/dist/application.scss";
+@import url("https://use.fontawesome.com/releases/v5.0.9/css/all.css");
+@import url("https://fonts.googleapis.com/css?family=Exo+2:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Exo:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i|Noto+Sans:400,400i,700,700i|IBM+Plex+Mono:400,500,600,700");
+
+// Hyphy & Datamonkey Colors
+$hyphy-green: #479167;
+$datamonkey-turquoise: #00a99d;
+
+//Datamonkey Logo
+.navbar-brand #datamonkey-logo {
+}
+
+html,
+body {
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  color: #484d56;
+}
+
+// Typography
+::selection {
+  color: #f7f7f7;
+  background-color: #dd4631;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 700;
+}
+
+h1 {
+  font-size: 3em;
+}
+
+h3 {
+  font-size: 1.65em;
+  color: $datamonkey-turquoise;
+}
+
+.dm-fa {
+  color: #dd4631;
+  font-family: "Font Awesome\ 5 Free";
+  font-size: 0.9em;
+  font-style: normal;
+  font-weight: 900;
+  vertical-align: text-top;
+}
+
+.dm-continue-btn {
+  padding: 5px 20px;
+}
+
+label i.dm-fa {
+  font-size: 1.35em;
+}
+
+pre,
+code,
+kbd,
+samp {
+  font-family: "IBM Plex Mono", monospace;
+}
+
+.hidden {
+  display: none;
+}
+
+// Components
+//// Badge
+$badge-color: #038c7f;
+$badge-bg: #f7f7f7;
+
+//// Buttons and Dropdowns
+//Button
+.dm-btn {
+  padding: 0;
+  border: none;
+}
+
+.run-analysis-button-text {
+  font-weight: 500;
+}
+
+//// Buttons	//// Buttons and Dropdowns
+.form-group label.dm-btn-primary,
+.dm-btn-primary {
+  //Button
+  border-radius: 30px;
+  border-width: 2px;
+  padding: 10px 20px;
+  text-transform: uppercase;
+  font-size: 0.857em;
+  font-weight: 600;
+  margin: 0 5px;
+  color: #f7f7f7;
+}
+
+.form-group label.dm-btn-primary:hover,
+.form-group label.dm-btn-primary:focus,
+.form-group label.dm-btn-primary:focus,
+.dm-btn-primary:hover,
+.dm-btn-primary:focus,
+.dm-btn-primary.focus {
+  color: #f7f7f7;
+  background-color: #36c9b7;
+  box-shadow: 0px 3px 3px #ccc;
+}
+
+.dm-btn .caret {
+  margin-left: 15px;
+}
+
+.form-group label.dm-btn-primary:active,
+.form-group label.dm-btn-primary.active,
+.dm-btn-primary:active,
+.dm-btn-primary.active,
+.dm-open > .dm-dropdown-toggle.dm-btn-primary {
+  color: #f7f7f7;
+  background-color: #00766e;
+  border-color: #11aa9b;
+}
+
+button.dm-mobile-menu {
+  display: none;
+}
+
+//Dropdown
+.dm-dropdown {
+  float: left;
+}
+
+.dm-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  float: left;
+  min-width: 230px;
+  padding: 0px;
+  margin: 2px 0 0;
+  list-style: none;
+  font-size: 1em;
+  text-align: left;
+  background-color: #f7f7f7;
+  border: none;
+  border-radius: 0px;
+  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+  background-clip: padding-box;
+}
+
+.dm-dropdown .dropdown-menu a:hover {
+  -webkit-transition: ease-in-out 100ms;
+  -moz-transition: ease-in-out 100ms;
+  -o-transition: ease-in-out 100ms;
+  transition: ease-in-out 100ms;
+  padding-left: 25px;
+  background-color: $datamonkey-turquoise;
+  color: #f7f7f7;
+
+  /*border-left: 15px solid #343846;*/
+}
+
+// Cards
+.dm-card {
+  box-shadow: none;
+  border: none;
+  margin-bottom: 20px;
+}
+
+.dm-card-header {
+  background-color: #484d56;
+  color: #f7f7f7;
+  padding: 10px 15px 5px 15px;
+  border-bottom: 8px solid $datamonkey-turquoise;
+  text-align: left;
+  font-size: 1.714em;
+  font-weight: 600;
+}
+
+.dm-card-body {
+}
+
+.dm-card-body a {
+  color: #484d56;
+}
+
+.dm-card-body a:hover {
+  color: $datamonkey-turquoise;
+  text-decoration: none;
+  border-bottom: 3px solid orange;
+}
+
+.dm-card-title {
+  font-size: 1.286em;
+}
+
+.dm-card-text {
+}
+
+.pull-right::after {
+  content: "";
+  clear: right;
+}
+
+// Forms/Labels
+.form-group {
+  margin-bottom: 15px;
+}
+.form-group label {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.857em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+}
+.form-control {
+  width: 100%;
+}
+////Checkbox next to Email Form
+.dm-input-group-addon {
+  align-self: center;
+  background-color: #eee;
+  border: 2px solid #ced4da;
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+  padding: 7px 12px 6px 12px;
+}
+
+button.continue-btn:hover {
+  background-color: #dd4631;
+  color: #f7f7f7;
+}
+
+//// Popovers
+.popover {
+  max-width: 300px;
+}
+
+.dm-popover {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.964em;
+  letter-spacing: 0.25px;
+  color: #444;
+  border: 3px solid $hyphy-green;
+  border-radius: 0;
+  max-width: 300px;
+  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.45);
+}
+
+.dm-popover-title {
+  padding: 12px 14px 0px 14px;
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.107em;
+  font-weight: 700;
+  color: #038c7f;
+  letter-spacing: 0.25px;
+}
+
+.dm-popover-title:after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 3px;
+  margin: 9px auto 0px auto;
+  background-color: #91cec2;
+}
+
+.dm-popover-content ul {
+  list-style: none;
+  padding: 0;
+}
+
+.dm-popover-content ul li {
+  font-family: "Noto Sans", sans-serif;
+  font-size: 0.964em;
+}
+
+.dm-popover.bottom > .dm-arrow {
+  top: -16px;
+  left: 50%;
+  margin-left: -11px;
+  border-top-width: 3px;
+  border-bottom-color: $datamonkey-turquoise;
+}
+
+.dm-popover.bottom > .dm-arrow:after {
+  top: 1px;
+  margin-left: -10px;
+  content: "";
+  border-top-width: 3px;
+  border-bottom-color: #f7f7f7;
+}
+
+.bs-popover-bottom .arrow::after,
+.bs-popover-auto[x-placement^="bottom"] .arrow::after {
+  top: 4px;
+}
+.bs-popover-bottom .arrow::before,
+.bs-popover-auto[x-placement^="bottom"] .arrow::before {
+  border-bottom-color: rgba(0, 169, 157, 1);
+}
+
+//// Tooltips
+$tooltip-bg: #333;
+$tooltip-max-width: 200px;
+
+//// Tables
+div#table {
+  overflow: auto;
+}
+
+.dm-table-bordered {
+  border: none;
+}
+
+.dm-table > thead > tr > th,
+.dm-table > tbody > tr > th,
+.dm-table > tfoot > tr > th,
+.dm-table-condensed > tfoot > tr > td {
+  font-family: "Montserrat", sans-serif;
+  text-align: center;
+  border: none;
+}
+
+.dm-table > thead > tr > th {
+  border-bottom: 7px solid $datamonkey-turquoise;
+  text-align: center;
+  font-weight: 600;
+  background-color: #484d56;
+  color: #f7f7f7;
+  vertical-align: middle;
+}
+
+// CONTENT
+.container {
+  margin-top: 30px;
+}
+
+//// Navbar
+nav.dm-navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  border-bottom: 3px solid $datamonkey-turquoise;
+  width: 100%;
+  position: fixed;
+  background-color: #fff;
+  z-index: 9999;
+}
+
+div.dm-nav-links {
+  float: none;
+}
+
+div.dm-nav-links a:link,
+div.dm-nav-links a:visited {
+  display: inline-block;
+  color: #484d56;
+  font-weight: 600;
+  padding: 8.5px 15px;
+}
+
+div.dm-nav-links a:hover {
+  color: $datamonkey-turquoise;
+  text-decoration: none;
+}
+
+.clearance {
+  display: block;
+  height: 70px;
+}
+
+////// Navbar Dropdown Button/Menu
+nav .dm-btn {
+  background-color: #fff;
+  color: #484d56;
+  font-weight: 600;
+  padding: 0 15px;
+}
+
+nav .dm-btn:hover {
+  color: #f7f7f7;
+  background-color: $datamonkey-turquoise;
+}
+
+.dm-btn.dropdown-toggle:focus,
+.dm-btn:focus {
+  color: #f7f7f7;
+  background-color: $datamonkey-turquoise;
+  box-shadow: 0 0 0 0.4rem #ceefe8;
+}
+
+nav .dm-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  float: left;
+  min-width: 230px;
+  padding: 0px;
+  margin: 2px 0 0;
+  list-style: none;
+  font-size: 1em;
+  text-align: left;
+  background-color: #f7f7f7;
+  border: none;
+  border-radius: 0px;
+  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+  background-clip: padding-box;
+}
+
+//// Homepage Jumbotron
+.dm-jumbotron {
+  background-image: url("/assets/img/jumbotron.jpg");
+  border-radius: 0;
+  margin-bottom: 50px;
+  padding: 58px 15px;
+  text-align: center;
+}
+
+.dm-jumbotron h1,
+.dm-jumbotron h2,
+.dm-jumbotron h3,
+.dm-jumbotron h4,
+.dm-jumbotron h5,
+.dm-jumbotron h6,
+.dm-jumbotron p {
+  color: #f7f7f7;
+  font-weight: 700;
+}
+
+.dm-jumbotron h1 {
+  font-size: 5.5em;
+}
+
+.dm-jumbotron p {
+  font-size: 1em;
+  font-weight: 500;
+}
+
+.dm-jumbotron hr {
+  width: 15%;
+  max-width: 244px;
+  margin-bottom: 20px;
+  border: 3px $datamonkey-turquoise solid;
+}
+
+//// Homepage Analysis Buttons
+.analysis-tree.dm-btn-group-justified {
+  display: flex;
+  justify-content: center;
+  padding: 0 15px;
+}
+
+.analysis-tree a.dm-btn {
+  padding: 12px 0px;
+  font-family: "Montserrat", sans-serif;
+  height: auto;
+  width: 100%;
+  letter-spacing: 0.25px;
+  border: 5px solid #fff;
+  background-color: #ccc;
+  color: #484d56;
+  font-weight: 700;
+}
+
+.analysis-tree a.dm-btn:hover {
+  background-color: #484d56;
+  color: #f7f7f7;
+}
+
+#results,
+#summary-tab {
+  margin-top: 0;
+}
+
+.dm-main-result {
+  margin-bottom: 30px;
+}
+
+.dm-bs-docs-sidebar .nav > li > a {
+  padding-right: 45px;
+  letter-spacing: 0;
+}
+
+// Footer
+//// Twitter
+.dm-twitter-diamond {
+  position: absolute;
+  width: 52px;
+  height: 52px;
+  top: -25px;
+  left: 41%;
+}
+
+.dm-twitter-feed {
+  display: block;
+  position: relative;
+  border: 2px solid rgb(174, 219, 218);
+  padding: 0px;
+  width: 310px;
+  margin: 30px auto;
+  padding-top: 20px;
+}
+
+// hyphy-vision specific styling that didn't seem to belong anywhere else.
+.dm-table,
+.table-hover {
+  border: none;
+}
+
+#job-report {
+  padding: 0;
+}
+
+.dm-upload-div {
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+.dm-continue-btn {
+  background-color: lightgray;
+}
+
+//Responsive
+@media (max-width: 575.98px) {
+  .navbar-brand #datamonkey-logo {
+    width: 230px;
+  }
+
+  button.dm-mobile-menu {
+    display: inline-block;
+  }
+
+  .dm-navbar-toggle .icon-bar {
+    display: block;
+    width: 20px;
+    height: 3px;
+    margin: 4px;
+    background-color: #fff;
+  }
+
+  button.dm-btn {
+    width: 100%;
+    text-align: left;
+    margin-top: -1px;
+  }
+
+  //Navbar
+  nav.dm-navbar {
+    justify-content: space-between;
+  }
+
+  .dm-nav-links {
+    width: 100%;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+  }
+
+  .dm-navbar-toggle {
+    padding: 8px;
+    background-color: $datamonkey-turquoise;
+    border: none;
+  }
+
+  .dm-navbar-toggle:active,
+  .dm-navbar-toggle:focus,
+  .dm-navbar-toggle:hover {
+    background-color: #333;
+  }
+
+  .navbar-collapse {
+    flexwrap: wrap !important;
+  }
+
+  .dm-dropdown {
+    width: 100%;
+    padding: 6px 0;
+  }
+
+  .dm-dropdown-menu.show {
+    width: 100%;
+  }
+
+  div.dm-nav-links a:link,
+  div.dm-nav-links a:visited {
+    display: block;
+    background-color: #fff;
+  }
+
+  .dm-jumbotron h1 {
+    font-size: 3em;
+  }
+
+  .dm-jumbotron hr {
+    width: 50%;
+  }
+
+  // Vision scroll-spy
+  .bs-docs-sidebar {
+    display: none;
+  }
+
+  .dm-btn-primary {
+    margin-bottom: 15px;
+  }
+
+  .clearance {
+    height: 67px;
+  }
+}
+
+.panel-status {
+  padding-top: 20px !important;
+  padding-bottom: 20px !important;
+  /*max-height : 145px;*/
+  background-color: #fafaf8;
+  font-family: "Droid Serif", Georgia;
+  font-size: 12px;
+  padding: 0px;
+}
+
+.panel-status h6 {
+  display: inline;
+}
+
+.panel-status li {
+  padding: 3px;
+}
+
+#standard-output {
+  margin-top: 15px;
+}
+
+.panel-datamonkey {
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+.panel-datamonkey h3 {
+  font-family: "Droid Serif", Georgia;
+  display: inline;
+  font-size: 1em;
+}
+
+.panel-datamonkey .panel-heading {
+  background-color: #f5f5f5;
+  border-color: #dddddd;
+  font-size: 3em;
+}
+
+.panel-datamonkey .panel-title {
+  padding: 10px;
+}
+
+.panel-datamonkey .panel-body {
+  font-family: "Montserrat", "Arial", sans-serif;
+  text-align: left;
+  /*font-size: 12em;*/
+}
+
+/* all links */
+.panel-datamonkey > a {
+  color: #444;
+  font-weight: 400;
+}
+
+/* active & hover links */
+.panel-datamonkey a:hover,
+.panel-datamonkey a:focus {
+  color: #00a99d;
+  text-decoration: none;
+  background-color: transparent;
+  border-left-color: #563d7c;
+}

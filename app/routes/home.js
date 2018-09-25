@@ -3,13 +3,12 @@ var mongoose = require("mongoose"),
   path = require("path"),
   hpcsocket = require(path.join(__dirname, "/../../lib/hpcsocket.js")),
   globals = require(path.join(__dirname, "/../../config/globals.js"));
-  redis = require('redis'),
-  client = redis.createClient({host : 'localhost', port : 6379});
+(redis = require("redis")),
+  (client = redis.createClient({ host: "localhost", port: 6379 }));
 
-var queueGet = require('../../lib/queue.js');
+var queueGet = require("../../lib/queue.js");
 
-
-var setup = require('./../../config/setup.js');
+var setup = require("./../../config/setup.js");
 var cluster_ip_urls_array = setup.cluster_ip_urls_array;
 
 exports.homePage = function(req, res) {
@@ -45,20 +44,17 @@ exports.citations = function(req, res) {
   res.render("citations.ejs");
 };
 
-
 exports.jobQueue = function(req, res) {
   //This will set the queue cache when ran.
-  queueGet(function(job_queue){
+  queueGet(function(job_queue) {
     var jobs = job_queue;
     res.format({
       json: function() {
         res.json(200, jobs);
       }
     });
-
   });
 };
-
 
 exports.jobQueuePage = function(req, res) {
   res.render("jobqueue.ejs");
@@ -67,11 +63,13 @@ exports.jobQueuePage = function(req, res) {
 exports.clusterhealth = function(req, res) {
   function connect_callback(result) {
     res.json(200, result);
-  };
+  }
 
   //console.log(cluster_ip_urls_array[req.params.id])
-  new hpcsocket.ClusterStatus(cluster_ip_urls_array[req.params.id], connect_callback);
-
+  new hpcsocket.ClusterStatus(
+    cluster_ip_urls_array[req.params.id],
+    connect_callback
+  );
 };
 
 exports.stats = function(req, res) {

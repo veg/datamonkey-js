@@ -1,23 +1,19 @@
-
-var fs = require('fs'),
-    mongoose = require('mongoose'),
-    should   = require('should');
+var fs = require("fs"),
+  mongoose = require("mongoose"),
+  should = require("should");
 
 // Bootstrap models
-require('../app/models/busted');
+require("../app/models/busted");
 
-var Busted = mongoose.model('Busted'),
-    mailer = require('../lib/mailer.js');
+var Busted = mongoose.model("Busted"),
+  mailer = require("../lib/mailer.js");
 
-describe('mailer', function() {
+describe("mailer", function() {
+  var busted = new Busted();
+  busted.mail = "no-reply@datamonkey.org";
 
-  var busted = new Busted;
-  busted.mail = 'no-reply@datamonkey.org';
-
-  it('should send mail', function(done) {
+  it("should send mail", function(done) {
     mailer.sendJobComplete(busted);
     done();
-
   });
-
 });

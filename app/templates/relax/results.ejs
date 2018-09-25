@@ -4,7 +4,23 @@
 <canvas id="hyphy-chart-canvas"></canvas>
 
 <script>
-  $(document).ready( function () {
-    hyphyVision.relax($("#job-report").data('jobid') + '/results', "content")
+
+  var fasta_ready = false;
+
+  d3.json(window.location.href+"/fasta", (err, data) => {
+    var fasta = data.fasta
+    fasta_ready = true;
+
+    $(document).ready( function () {
+      hyphyVision.relax($("#job-report").data('jobid') + '/results', "content", fasta, true, true)
+    });
+
   });
+
+  if (fasta_ready == false) {
+    $(document).ready( function () {
+      hyphyVision.relax($("#job-report").data('jobid') + '/results', "content", null, true, true)
+    });
+  }
+
 </script>

@@ -11,28 +11,28 @@ var React = require("react"),
 
 */
 var AttributeModal = React.createClass({
-
   getInitialState: function() {
-    return { attr : {} };
+    return { attr: {} };
   },
 
-  displayModal : function(attributes) {
-    this.setState( { attr : attributes } );
-    $('#shiv-attribute-modal').modal();
+  displayModal: function(attributes) {
+    this.setState({ attr: attributes });
+    $("#shiv-attribute-modal").modal();
   },
 
   componentDidMount: function() {
-
     var self = this;
 
     // append to passed container
-    $( "#shiv-attribute-modal" ).on( "view-attributes", function( event, attributes ) {
+    $("#shiv-attribute-modal").on("view-attributes", function(
+      event,
+      attributes
+    ) {
       self.displayModal(attributes);
     });
-
   },
 
-  attributeRow : function(val) {
+  attributeRow: function(val) {
     return (
       <tr>
         <td>{val[0]}</td>
@@ -41,15 +41,21 @@ var AttributeModal = React.createClass({
     );
   },
 
-  attributeTable : function() {
-
+  attributeTable: function() {
     var self = this;
 
     // filter out _id from attributes
-    var attr = _.omit(self.state.attr, '_id');
+    var attr = _.omit(self.state.attr, "_id");
 
     // transform to tuples and sort by key
-    var attr_tuple = _.sortBy(_.map(attr, function(v,k) { return [k,v]}), function(d) { return d[0] });
+    var attr_tuple = _.sortBy(
+      _.map(attr, function(v, k) {
+        return [k, v];
+      }),
+      function(d) {
+        return d[0];
+      }
+    );
 
     var attributeRows = _.map(attr_tuple, self.attributeRow);
 
@@ -61,46 +67,49 @@ var AttributeModal = React.createClass({
         </thead>
         {attributeRows}
       </table>
-    )
-
+    );
   },
 
-  render : function() {
-
+  render: function() {
     var self = this;
     var attributeTable = self.attributeTable();
 
     return (
-
       <div role="dialog" id="shiv-attribute-modal" className="modal ng-scope">
-        <div className="modal-dialog"><div className="modal-content">
-          <div className="modal-header dialog-header-attribute">
-            <button data-dismiss="modal" className="close" type="button">×</button>
-            <h4 className="modal-title">Patient Attributes</h4>
-          </div>
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header dialog-header-attribute">
+              <button data-dismiss="modal" className="close" type="button">
+                ×
+              </button>
+              <h4 className="modal-title">Patient Attributes</h4>
+            </div>
 
-          <div id="modal-attribute-msg" className="modal-body">
-            {attributeTable}
-          </div>
+            <div id="modal-attribute-msg" className="modal-body">
+              {attributeTable}
+            </div>
 
-          <div className="modal-footer">
-            <button data-dismiss="modal" className="btn btn-warning" type="button">Close</button>
+            <div className="modal-footer">
+              <button
+                data-dismiss="modal"
+                className="btn btn-warning"
+                type="button"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       </div>
-      </div>
-
-    )
-
+    );
   }
-
 });
 
 function render_attribute_modal() {
   ReactDOM.render(
-    <AttributeModal />, document.getElementById("shiv-node-tab-attribute-modal")
+    <AttributeModal />,
+    document.getElementById("shiv-node-tab-attribute-modal")
   );
 }
-
 
 module.exports = render_attribute_modal;

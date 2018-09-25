@@ -14,11 +14,12 @@ var mongoose = require("mongoose"),
   PartitionInfo = mongoose.model("PartitionInfo"),
   Busted = mongoose.model("Busted");
 
-var redis = require('redis'),
-  client = redis.createClient({host : 'localhost', port : 6379});
+var redis = require("redis"),
+  client = redis.createClient({ host: "localhost", port: 6379 });
 
 exports.createForm = function(req, res) {
-  res.render("busted/upload_msa.ejs");
+  var post_to = "/busted";
+  res.render("busted/upload_msa.ejs", { post_to: post_to });
 };
 
 exports.uploadFile = function(req, res) {
@@ -28,14 +29,12 @@ exports.uploadFile = function(req, res) {
   var busted = new Busted();
   var postdata = req.body;
 
-  var datatype = 0, gencodeid = data.gencodeid;
+  var datatype = 0,
+    gencodeid = data.gencodeid;
 
-  if (postdata.receive_mail == "true") {
-    busted.mail = postdata.mail;
-  }
+  busted.mail = postdata.mail;
 
   Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
-
     if (err) {
       res.json(500, { error: err });
       return;
@@ -61,7 +60,6 @@ exports.uploadFile = function(req, res) {
     busted.msa = msa;
 
     busted.save(function(err, busted_result) {
-
       if (err) {
         logger.error("busted save failed");
         res.json(500, { error: err });
@@ -73,14 +71,21 @@ exports.uploadFile = function(req, res) {
           logger.error("busted rename failed");
           res.json(500, { error: err });
         } else {
-
-          var move = Msa.removeTreeFromNexus(busted_result.filepath, busted_result.filepath);
-          move.then(val=>{
-            res.json(200, busted_result);
-          }, reason => {
-            res.json(500, {error: "issue removing tree from file"});
-          });
-
+          var move = Msa.removeTreeFromNexus(
+            busted_result.filepath,
+            busted_result.filepath
+          );
+          move.then(
+            val => {
+              res.json(200, {
+                analysis: busted_result,
+                upload_redirect_path: busted.upload_redirect_path
+              });
+            },
+            reason => {
+              res.json(500, { error: "issue removing tree from file" });
+            }
+          );
         }
       }
 
@@ -90,16 +95,18 @@ exports.uploadFile = function(req, res) {
           res.json(500, { error: err });
         }
 
-        fs.writeFile(busted_result.original_fn,  data, err => {
+        fs.writeFile(busted_result.original_fn, data, err => {
           if (err) {
             logger.error("write file failed");
             res.json(500, { error: err });
           }
-          helpers.moveSafely(req.files.files.file, busted_result.filepath, move_cb);
+          helpers.moveSafely(
+            req.files.files.file,
+            busted_result.filepath,
+            move_cb
+          );
         });
       });
-
-
     });
   });
 };
@@ -261,7 +268,8 @@ exports.cancel = function(req, res) {
 };
 
 exports.getMSAFile = function(req, res) {
-  var id = req.params.id, name = req.params.name;
+  var id = req.params.id,
+    name = req.params.name;
 
   var options = {};
 
@@ -278,16 +286,18 @@ exports.fasta = function(req, res) {
   var id = req.params.id;
 
   Busted.findOne({ _id: id }, function(err, busted) {
-    if(err || !busted) {
+    if (err || !busted) {
       winston.info(err);
       res.json(500, error.errorReponse("invalid id : " + id));
     }
-    Msa.deliverFasta(busted.filepath).then(value => {
-      res.json(200, {fasta: value});
-    }).catch(err => {
-      winston.info(err);
-      res.json(500, {error: "Unable to deliver fasta."});
-    });
+    Msa.deliverFasta(busted.filepath)
+      .then(value => {
+        res.json(200, { fasta: value });
+      })
+      .catch(err => {
+        winston.info(err);
+        res.json(500, { error: "Unable to deliver fasta." });
+      });
   });
 };
 
@@ -295,8 +305,8 @@ exports.getUsage = function(req, res) {
   client.get(Busted.cachePath(), function(err, data) {
     try {
       res.json(200, JSON.parse(data));
-    } catch(err){
-        winston.info(err);
-      };
-    });
-  };
+    } catch (err) {
+      winston.info(err);
+    }
+  });
+};

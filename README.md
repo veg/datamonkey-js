@@ -53,4 +53,4 @@ Start datamonkey.js
 
     node server.js
 
-Datamonkey should now be running at [localhost:4000](http://localhost:4000).
+Datamonkey should now be running at [localhost:4002](http://localhost:4002).

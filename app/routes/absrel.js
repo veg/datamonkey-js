@@ -13,8 +13,8 @@ var mongoose = require("mongoose"),
   PartitionInfo = mongoose.model("PartitionInfo"),
   aBSREL = mongoose.model("aBSREL");
 
-var redis = require('redis'),
-  client = redis.createClient({host : 'localhost', port : 6379});
+var redis = require("redis"),
+  client = redis.createClient({ host: "localhost", port: 6379 });
 
 exports.form = function(req, res) {
   var post_to = "/absrel";
@@ -34,9 +34,7 @@ exports.uploadFile = function(req, res) {
     datatype = 0,
     gencodeid = postdata.gencodeid;
 
-  if (postdata.receive_mail == "true") {
-    absrel.mail = postdata.mail;
-  }
+  absrel.mail = postdata.mail;
 
   Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
     if (err) {
@@ -76,15 +74,21 @@ exports.uploadFile = function(req, res) {
           logger.error("absrel rename failed");
           res.json(500, { error: err });
         } else {
-          var move = Msa.removeTreeFromNexus(absrel_result.filepath, absrel_result.filepath);
-          move.then(val=>{
-            res.json(200, {
-              analysis: absrel,
-              upload_redirect_path: absrel.upload_redirect_path
-            });
-          }, reason => {
-            res.json(500, {error: "issue removing tree from file"});
-          });
+          var move = Msa.removeTreeFromNexus(
+            absrel_result.filepath,
+            absrel_result.filepath
+          );
+          move.then(
+            val => {
+              res.json(200, {
+                analysis: absrel,
+                upload_redirect_path: absrel.upload_redirect_path
+              });
+            },
+            reason => {
+              res.json(500, { error: "issue removing tree from file" });
+            }
+          );
         }
       }
 
@@ -93,16 +97,18 @@ exports.uploadFile = function(req, res) {
           logger.error("read file failed");
           res.json(500, { error: err });
         }
-        fs.writeFile(absrel_result.original_fn,  data, err => {
+        fs.writeFile(absrel_result.original_fn, data, err => {
           if (err) {
             logger.error("write file failed");
             res.json(500, { error: err });
           }
-          helpers.moveSafely(req.files.files.file, absrel_result.filepath, move_cb);
+          helpers.moveSafely(
+            req.files.files.file,
+            absrel_result.filepath,
+            move_cb
+          );
         });
       });
-
-
     });
   });
 };
@@ -247,7 +253,8 @@ exports.resubscribePendingJobs = function(req, res) {
 };
 
 exports.getMSAFile = function(req, res) {
-  var id = req.params.id, name = req.params.name;
+  var id = req.params.id,
+    name = req.params.name;
 
   var options = {};
 
@@ -264,16 +271,18 @@ exports.fasta = function(req, res) {
   var id = req.params.id;
 
   aBSREL.findOne({ _id: id }, function(err, absrel) {
-    if(err || !absrel) {
+    if (err || !absrel) {
       winston.info(err);
       res.json(500, error.errorResponse("invalid id : " + id));
     }
-    Msa.deliverFasta(absrel.filepath).then(value => {
-      res.json(200, {fasta: value});
-    }).catch(err => {
-      winston.info(err);
-      res.json(500, {error: "Unable to deliver fasta."});
-    });
+    Msa.deliverFasta(absrel.filepath)
+      .then(value => {
+        res.json(200, { fasta: value });
+      })
+      .catch(err => {
+        winston.info(err);
+        res.json(500, { error: "Unable to deliver fasta." });
+      });
   });
 };
 
@@ -281,8 +290,8 @@ exports.getUsage = function(req, res) {
   client.get(aBSREL.cachePath(), function(err, data) {
     try {
       res.json(200, JSON.parse(data));
-    } catch(err){
-        winston.info(err);
-      };
-    });
+    } catch (err) {
+      winston.info(err);
+    }
+  });
 };
