@@ -74,7 +74,7 @@ exports.uploadFile = function(req, res) {
           logger.error("absrel rename failed");
           res.json(500, { error: err });
         } else {
-          var move = Msa.removeTreeFromNexus(
+          var move = Msa.removeTreeFromFile(
             absrel_result.filepath,
             absrel_result.filepath
           );

@@ -79,7 +79,7 @@ exports.uploadFile = function(req, res) {
           logger.error("fel rename failed");
           res.json(500, { error: err });
         } else {
-          var move = Msa.removeTreeFromNexus(
+          var move = Msa.removeTreeFromFile(
             fel_result.filepath,
             fel_result.filepath
           );

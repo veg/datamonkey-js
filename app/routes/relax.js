@@ -72,7 +72,7 @@ exports.uploadFile = function(req, res) {
           logger.error("relax rename failed");
           res.json(500, { error: err });
         } else {
-          var move = Msa.removeTreeFromNexus(
+          var move = Msa.removeTreeFromFile(
             relax_result.filepath,
             relax_result.filepath
           );

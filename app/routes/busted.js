@@ -71,7 +71,7 @@ exports.uploadFile = function(req, res) {
           logger.error("busted rename failed");
           res.json(500, { error: err });
         } else {
-          var move = Msa.removeTreeFromNexus(
+          var move = Msa.removeTreeFromFile(
             busted_result.filepath,
             busted_result.filepath
           );
