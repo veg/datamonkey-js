@@ -222,15 +222,15 @@ describe("validate fasta file", function() {
 
 describe("nexus tree remover", function() {
   it("should remove tree from Nexus file containing one", function(done) {
-    var first = Msa.removeTreeFromNexus(
+    var first = Msa.removeTreeFromFile(
         "test/res/HIV_gp120.nex",
         "test/res/HIV_gp120-pruned.nex"
       ),
-      second = Msa.removeTreeFromNexus(
+      second = Msa.removeTreeFromFile(
         "test/res/CD2.nex",
         "test/res/CD2-pruned.nex"
       ),
-      third = Msa.removeTreeFromNexus(
+      third = Msa.removeTreeFromFile(
         "test/res/pol.nex",
         "test/res/pol-pruned.nex"
       );
@@ -251,14 +251,28 @@ describe("nexus tree remover", function() {
     });
   });
 
-  it("should not alter a fasta file", function(done) {
+  it("should alter a fasta file with \r", function(done) {
     var input_file_path = "test/res/Flu.fasta",
       output_file_path = "test/res/Flu-pruned.fasta",
-      fasta = Msa.removeTreeFromNexus(input_file_path, output_file_path);
+      fasta = Msa.removeTreeFromFile(input_file_path, output_file_path);
     fasta.then(result => {
       var input = fs.readFileSync(input_file_path).toString(),
         output = fs.readFileSync(output_file_path).toString();
-      should.equal(input, output);
+      should.notEqual(input, output);
+      fs.unlinkSync(output_file_path);
+      done();
+    });
+  });
+
+  it("remove tree from fasta file", function(done) {
+    var input_file_path = "test/res/user_tree.fasta",
+      output_file_path = "test/res/user_tree_pruned.fasta";
+
+    fasta = Msa.removeTreeFromFile(input_file_path, output_file_path);
+    fasta.then(result => {
+      var input = fs.readFileSync(input_file_path).toString(),
+        output = fs.readFileSync(output_file_path).toString();
+      should.notEqual(input, output);
       fs.unlinkSync(output_file_path);
       done();
     });

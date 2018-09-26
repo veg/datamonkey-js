@@ -121,15 +121,15 @@ Msa.virtual("hyphy_friendly").get(function() {
 
   //Remove attribute_map
   delete hyphy_obj["attribute_map"];
-
   return hyphy_obj;
 });
 
-Msa.statics.removeTreeFromNexus = function(input_file_path, output_file_path) {
+Msa.statics.removeTreeFromFile = function(input_file_path, output_file_path) {
   return new Promise(function(resolve, reject) {
     fs.readFile(input_file_path, function(err, data) {
       if (err) reject(err);
-      var file_lines = data.toString().split("\n"),
+      var adjusted = data.toString().replace(/(?:\r\n|\r|\n)/g, "\n");
+      var file_lines = adjusted.split("\n"),
         begin_tree_index = file_lines.indexOf("BEGIN TREES;");
       if (begin_tree_index > -1) {
         var end_tree_index = file_lines.indexOf("END;", begin_tree_index),
@@ -137,10 +137,15 @@ Msa.statics.removeTreeFromNexus = function(input_file_path, output_file_path) {
         if (/\s/.exec(file_lines[end_tree_index + 1])) {
           number_to_remove++;
         }
-
         file_lines.splice(begin_tree_index, number_to_remove);
       }
-      fs.writeFile(output_file_path, file_lines.join("\n"), function(err) {
+
+      // should take care of FASTA
+      var to_write = _.reject(file_lines, function(line) {
+        return line.trim().startsWith("(");
+      }).join("\n");
+
+      fs.writeFile(output_file_path, to_write, function(err) {
         if (err) reject(err);
         resolve();
       });
@@ -270,6 +275,7 @@ Msa.methods.dataReader = function(file, cb) {
   var hyphy = spawn(globals.hyphy, [
     __dirname + "/../../lib/bfs/datareader.bf"
   ]);
+
   var result = "";
 
   hyphy.stdout.on("data", function(data) {
@@ -355,9 +361,10 @@ Msa.statics.validateFasta = function(fn, cb, options) {
 
 Msa.statics.parseFile = function(fn, datatype, gencodeid, cb) {
   var msa = new this();
-
   msa.datatype = datatype;
   msa.gencodeid = gencodeid;
+
+  // convert all uploaded files to NEXUS
 
   msa.dataReader(fn, function(err, result) {
     if (err) {
@@ -396,28 +403,9 @@ Msa.statics.parseFile = function(fn, datatype, gencodeid, cb) {
     var partition_info = _.map(fpi, partition_info => {
       return new PartitionInfo(partition_info);
     });
+
     msa.partition_info = partition_info;
     cb(null, msa);
-  });
-};
-
-Msa.statics.scrubUserTree = function(fn, cb) {
-  // Match newick tree
-
-  fs.readFile(fn, function(err, data) {
-    if (err) {
-      cb(err);
-    }
-
-    // Split data sequences out
-    var seq_array = seqio.parseFile(data.toString());
-    var translated_arr = seqio.translateSequenceArray(
-      seq_array,
-      self.gencodeid.toString()
-    );
-    var translated_fasta = seqio.toFasta(translated_arr);
-
-    cb(null, translated_fasta);
   });
 };
 
