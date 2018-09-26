@@ -17,7 +17,7 @@
     </div>
 
     <div class="col-lg-4 dm-cancel-job-button-div">
-      <button type="button" id="job-cancel-button" data-loading-text="Canceling job..." class="btn btn-danger pull-right" autocomplete="off">
+      <button type="button" id="job-cancel-button" data-loading-text="Canceling job..." class="btn btn-danger float-right" autocomplete="off">
        <span class="fa fa-times-circle"></span> Cancel Job
       </button>
     </div>
@@ -33,10 +33,10 @@
 <div id="standard-output" class="row">
 
   <div class="card-header col-12"> 
-    <h2 class="pull-left">Progress</h2>
-    <div class="pull-right">
+    <h2 class="float-left">Progress</h2>
+    <div class="float-right">
       <a href="<%= job._id%>/log.txt">
-        <button id="job-stdout-copy-button" class="btn btn-primary btn-sm pull-right" type="button">
+        <button id="job-stdout-copy-button" class="btn btn-primary btn-sm float-right" type="button">
           <span class="fa fa-download"></span> Download Log
         </button>
       </a>
