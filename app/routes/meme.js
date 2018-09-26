@@ -13,8 +13,8 @@ var mongoose = require("mongoose"),
   PartitionInfo = mongoose.model("PartitionInfo"),
   MEME = mongoose.model("MEME");
 
-var redis = require('redis'),
-  client = redis.createClient({host : 'localhost', port : 6379});
+var redis = require("redis"),
+  client = redis.createClient({ host: "localhost", port: 6379 });
 
 exports.form = function(req, res) {
   var post_to = "/meme";
@@ -34,9 +34,7 @@ exports.invoke = function(req, res) {
     datatype = 0,
     gencodeid = postdata.gencodeid;
 
-  if (postdata.receive_mail == "true") {
-    meme.mail = postdata.mail;
-  }
+  meme.mail = postdata.mail;
 
   Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
     if (err) {
@@ -110,40 +108,6 @@ exports.getPage = function(req, res) {
   });
 };
 
-exports.getResults = function(req, res) {
-  var memeid = req.params.id;
-  MEME.findOne({ _id: memeid }, function(err, meme) {
-    if (err || !meme) {
-      res.json(500, error.errorResponse("invalid id : " + memeid));
-    } else {
-      // Should return results page
-      // Append PMID to results
-      var meme_results = JSON.parse(meme.results);
-      meme_results["PMID"] = meme.pmid;
-      res.json(200, meme_results);
-    }
-  });
-};
-
-// app.get('/meme/:id/info', meme.getInfo);
-exports.getInfo = function(req, res) {
-  var id = req.params.id;
-
-  //Return all results
-  MEME.findOne(
-    { _id: id },
-    { creation_time: 1, start_time: 1, status: 1 },
-    function(err, meme_info) {
-      if (err || !meme_info) {
-        res.json(500, error.errorResponse("Invalid ID : " + id));
-      } else {
-        // Should return results page
-        res.json(200, meme_info);
-      }
-    }
-  );
-};
-
 /**
  * Returns log txt file
  * app.get('/meme/:id/results', meme.getLog);
@@ -193,7 +157,8 @@ exports.resubscribePendingJobs = function(req, res) {
 };
 
 exports.getMSAFile = function(req, res) {
-  var id = req.params.id, name = req.params.name;
+  var id = req.params.id,
+    name = req.params.name;
 
   var options = {};
 
@@ -210,16 +175,18 @@ exports.fasta = function(req, res) {
   var id = req.params.id;
 
   MEME.findOne({ _id: id }, function(err, meme) {
-    if(err || !meme) {
+    if (err || !meme) {
       winston.info(err);
       res.json(500, error.errorReponse("invalid id : " + id));
     }
-    Msa.deliverFasta(meme.filepath).then(value => {
-      res.json(200, {fasta: value});
-    }).catch(err => {
-      winston.info(err);
-      res.json(500, {error: "Unable to deliver fasta."});
-    });
+    Msa.deliverFasta(meme.filepath)
+      .then(value => {
+        res.json(200, { fasta: value });
+      })
+      .catch(err => {
+        winston.info(err);
+        res.json(500, { error: "Unable to deliver fasta." });
+      });
   });
 };
 
@@ -227,9 +194,8 @@ exports.getUsage = function(req, res) {
   client.get(MEME.cachePath(), function(err, data) {
     try {
       res.json(200, JSON.parse(data));
-    } catch(err){
-        winston.info(err);
-      };
-
+    } catch (err) {
+      winston.info(err);
+    }
   });
 };

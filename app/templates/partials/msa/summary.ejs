@@ -16,7 +16,7 @@
   </div>
 
   <div class="row">
-    <div class="pull-left col-lg-9">
+    <div class="float-left col-lg-9">
       <div id="analysis-data">
         <table class="table table-bordered table-striped table-hover" >
           <tr><td>PRIME<a target="_blank" href="/help#prime"><sup>?</sup></a></td><td>No results. <a href="/msa/<%= details._id %>/prime">Set up an analysis.</a></td></tr>
@@ -25,25 +25,25 @@
       </div>
     </div>
 
-    <div class="pull-right col-lg-3">
+    <div class="float-right col-lg-3">
       <ul class="list-group">
         <li  class="list-group-item">
           Nucleotide sequences 
-          <ul class="list-inline pull-right">
+          <ul class="list-inline float-right">
             <li><a href="/uploads/msa/<%= details._id %>.fasta"><span class="glyphicon glyphicon-eye-open big"></span></a></li>
             <li><a href="/uploads/msa/<%= details._id %>.fasta"><span class="glyphicon glyphicon-download"></span></a></li>
           </ul>
         </li>
         <li class="list-group-item">
           Aminoacid translation 
-          <ul class="list-inline pull-right">
+          <ul class="list-inline float-right">
             <li><a href="<%= details._id %>/aa/view"><span class="glyphicon glyphicon-eye-open"></span></a></li>
             <li><a href="<%= details._id %>/aa"><span class="glyphicon glyphicon-download"></span></a></li>
           </ul>
         </li>
         <li class="list-group-item">
           Neighbor Joining Tree
-          <a id="neighbor-joining-tree" class="pull-right" href="#" data-toggle="modal" data-target="#neighbor-tree-modal"><span class="glyphicon glyphicon-eye-open"></a>
+          <a id="neighbor-joining-tree" class="float-right" href="#" data-toggle="modal" data-target="#neighbor-tree-modal"><span class="glyphicon glyphicon-eye-open"></a>
         </li>
       </ul>
     </div>
