@@ -16,7 +16,6 @@ function ErrorMessage(props) {
 }
 
 class FUBARForm extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -31,7 +30,6 @@ class FUBARForm extends React.Component {
     this.onLengthChange = this.onLengthChange.bind(this);
     this.onBurninChange = this.onBurninChange.bind(this);
     this.onSampleChange = this.onSampleChange.bind(this);
-
   }
 
   onMailChange() {
@@ -249,9 +247,7 @@ class FUBARForm extends React.Component {
         </div>
 
         <div className="form-group">
-          <label id="datatype-content">
-            Notify When Completed?
-          </label>
+          <label id="datatype-content">Notify When Completed?</label>
           <input
             name="mail"
             type="text"
@@ -279,7 +275,10 @@ class FUBARForm extends React.Component {
         </button>
 
         <div style={{ display: self.state.showAdvanced ? "block" : "none" }}>
-          <div className="row" style={{marginTop:'10px', marginBottom:'10px'}}>
+          <div
+            className="row"
+            style={{ marginTop: "10px", marginBottom: "10px" }}
+          >
             <div className="col-md-6">
               <div>
                 <label>Number of grid points</label>
@@ -364,10 +363,10 @@ class FUBARForm extends React.Component {
 
         <button
           type="submit"
-          className="run-analysis-button-text dm-continue-btn btn pull-right"
+          className="run-analysis-button-text dm-continue-btn btn float-right"
           onClick={this.submit}
         >
-          Run Analysis  <span className="fa fa-play" />
+          Run Analysis <span className="fa fa-play" />
         </button>
 
         <div style={{ paddingBottom: "30px" }} />

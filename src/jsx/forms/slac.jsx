@@ -144,9 +144,7 @@ var SLACForm = React.createClass({
         </div>
 
         <div className="form-group">
-          <label id="datatype-content">
-            Notify When Completed?
-          </label>
+          <label id="datatype-content">Notify When Completed?</label>
           <div>
             <input
               name="mail"
@@ -158,7 +156,7 @@ var SLACForm = React.createClass({
         </div>
         <button
           type="submit"
-          className="run-analysis-button-text dm-continue-btn btn pull-right"
+          className="run-analysis-button-text dm-continue-btn btn float-right"
           onClick={this.submit}
         >
           Run Analysis <span className="fa fa-play" />
