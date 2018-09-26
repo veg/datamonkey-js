@@ -108,25 +108,6 @@ exports.getPage = function(req, res) {
   });
 };
 
-// app.get('/meme/:id/info', meme.getInfo);
-exports.getInfo = function(req, res) {
-  var id = req.params.id;
-
-  //Return all results
-  MEME.findOne(
-    { _id: id },
-    { creation_time: 1, start_time: 1, status: 1 },
-    function(err, meme_info) {
-      if (err || !meme_info) {
-        res.json(500, error.errorResponse("Invalid ID : " + id));
-      } else {
-        // Should return results page
-        res.json(200, meme_info);
-      }
-    }
-  );
-};
-
 /**
  * Returns log txt file
  * app.get('/meme/:id/results', meme.getLog);

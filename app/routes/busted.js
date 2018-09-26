@@ -200,25 +200,6 @@ exports.getPage = function(req, res) {
   });
 };
 
-// app.get('/busted/:bustedid/info', busted.getBustedInfo);
-exports.getInfo = function(req, res) {
-  var bustedid = req.params.bustedid;
-
-  //Return all results
-  Busted.findOne(
-    { _id: bustedid },
-    { creation_time: 1, start_time: 1, status: 1 },
-    function(err, busted_info) {
-      if (err || !busted_info) {
-        res.json(500, error.errorResponse("Invalid ID : " + bustedid));
-      } else {
-        // Should return results page
-        res.json(200, busted_info);
-      }
-    }
-  );
-};
-
 exports.resubscribePendingJobs = function(req, res) {
   Busted.subscribePendingJobs();
 };

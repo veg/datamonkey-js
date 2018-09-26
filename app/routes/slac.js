@@ -108,25 +108,6 @@ exports.getPage = function(req, res) {
   });
 };
 
-// app.get('/slac/:id/info', slac.getInfo);
-exports.getInfo = function(req, res) {
-  var id = req.params.id;
-
-  //Return all results
-  SLAC.findOne(
-    { _id: id },
-    { creation_time: 1, start_time: 1, status: 1 },
-    function(err, slac_info) {
-      if (err || !slac_info) {
-        res.json(500, error.errorResponse("Invalid ID : " + id));
-      } else {
-        // Should return results page
-        res.json(200, slac_info);
-      }
-    }
-  );
-};
-
 /**
  * Returns log txt file
  * app.get('/slac/:id/results', slac.getLog);

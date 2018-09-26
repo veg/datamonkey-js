@@ -184,25 +184,6 @@ exports.getPage = function(req, res) {
   });
 };
 
-// app.get('/fade/:fadeid/info', fade.getFadeInfo);
-exports.getInfo = function(req, res) {
-  var fadeid = req.params.fadeid;
-
-  //Return all results
-  Fade.findOne(
-    { _id: fadeid },
-    { creation_time: 1, start_time: 1, status: 1 },
-    function(err, fade_info) {
-      if (err || !fade_info) {
-        res.json(500, error.errorResponse("Invalid ID : " + fadeid));
-      } else {
-        // Should return results page
-        res.json(200, fade_info);
-      }
-    }
-  );
-};
-
 exports.resubscribePendingJobs = function(req, res) {
   Fade.subscribePendingJobs();
 };

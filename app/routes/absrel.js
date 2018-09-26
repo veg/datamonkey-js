@@ -185,25 +185,6 @@ exports.getPage = function(req, res) {
   });
 };
 
-// app.get('/absrel/:id/info', absrel.getInfo);
-exports.getInfo = function(req, res) {
-  var id = req.params.id;
-
-  //Return all results
-  aBSREL.findOne(
-    { _id: id },
-    { creation_time: 1, start_time: 1, status: 1 },
-    function(err, absrel_info) {
-      if (err || !absrel_info) {
-        res.json(500, error.errorResponse("Invalid ID : " + id));
-      } else {
-        // Should return results page
-        res.json(200, absrel_info);
-      }
-    }
-  );
-};
-
 /**
  * Returns log txt file
  * app.get('/absrel/:id/results', absrel.getLog);

@@ -117,29 +117,9 @@ exports.getPage = function(req, res) {
   });
 };
 
-// app.get('/fubar/:id/info', fubar.getInfo);
-exports.getInfo = function(req, res) {
-  var id = req.params.id;
-
-  //Return all results
-  FUBAR.findOne(
-    { _id: id },
-    { creation_time: 1, start_time: 1, status: 1 },
-    function(err, fubar_info) {
-      if (err || !fubar_info) {
-        logger.error(err);
-        res.json(500, error.errorResponse("Invalid ID : " + id));
-      } else {
-        // Should return results page
-        res.json(200, fubar_info);
-      }
-    }
-  );
-};
-
 /**
  * Returns log txt file
- * app.get('/fubar/:id/results', fubar.getLog);
+ * app.get('/fubar/:id/log.txt', fubar.getLog);
  */
 exports.getLog = function(req, res) {
   var id = req.params.id;

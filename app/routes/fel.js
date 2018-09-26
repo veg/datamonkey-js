@@ -197,24 +197,6 @@ exports.getPage = function(req, res) {
   });
 };
 
-// app.get('/fel/:id/info', fel.getInfo);
-exports.getInfo = function(req, res) {
-  var id = req.params.id;
-
-  //Return all results
-  FEL.findOne(
-    { _id: id },
-    { creation_time: 1, start_time: 1, status: 1 },
-    function(err, fel_info) {
-      if (err || !fel_info) {
-        res.json(500, error.errorResponse("Invalid ID : " + id));
-      } else {
-        res.json(200, fel_info);
-      }
-    }
-  );
-};
-
 /**
  * Returns log txt file
  * app.get('/fel/:id/results', fel.getLog);
