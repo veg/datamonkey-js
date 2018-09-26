@@ -114,25 +114,6 @@ exports.getPage = function(req, res) {
   });
 };
 
-// app.get('/gard/:id/info', gard.getInfo);
-exports.getInfo = function(req, res) {
-  var id = req.params.id;
-
-  //Return all results
-  GARD.findOne(
-    { _id: id },
-    { creation_time: 1, start_time: 1, status: 1 },
-    function(err, gard_info) {
-      if (err || !gard_info) {
-        res.json(500, error.errorResponse("Invalid ID : " + id));
-      } else {
-        // Should return results page
-        res.json(200, gard_info);
-      }
-    }
-  );
-};
-
 /**
  * Returns log txt file
  * app.get('/gard/:id/results', gard.getLog);

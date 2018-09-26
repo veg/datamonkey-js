@@ -249,25 +249,6 @@ exports.getRecheck = function(req, res) {
   });
 };
 
-// app.get('/relax/:id/info', relax.getInfo);
-exports.getInfo = function(req, res) {
-  var id = req.params.id;
-
-  //Return all results
-  Relax.findOne(
-    { _id: id },
-    { creation_time: 1, start_time: 1, status: 1 },
-    function(err, relax_info) {
-      if (err || !relax_info) {
-        res.json(500, error.errorResponse("Invalid ID : " + id));
-      } else {
-        // Should return results page
-        res.json(200, relax_info);
-      }
-    }
-  );
-};
-
 /**
  * Returns log txt file
  * app.get('/relax/:id/log.txt', relax.getLog);
