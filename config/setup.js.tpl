@@ -5,8 +5,7 @@ function define(name, value) {
     });
 }
 
-const cluster_ip_urls_array = [
-    'http://silverback.temple.edu:7013',
+const cluster_ip_urls_array = [ 
     'http://silverback.temple.edu:7014',
     'http://silverback.temple.edu:7015',
     'http://silverback.temple.edu:7016'
@@ -26,4 +25,4 @@ define('flea_ip_address', 'http://silverback.temple.edu:7004');
 define('fasta_validator', '/home/sweaver/TN93/validate_fasta');
 define('hyphy', __dirname + '/node_modules/hyphy/HYPHYMP');
 define('cluster_ip_urls_array', cluster_ip_urls_array);
-define('default_url', cluster_ip_urls_array[0]);
+define('default_url', 'http://silverback.temple.edu:7013');

@@ -22,7 +22,8 @@
   fill: steelblue;
 }
 
-.axis path, .axis line {
+.axis path,
+.axis line {
   fill: none;
   stroke: #000;
   shape-rendering: crispEdges;
@@ -34,7 +35,7 @@
 
 .brush rect.extent {
   fill: steelblue;
-  fill-opacity: .125;
+  fill-opacity: 0.125;
 }
 
 .brush .resize path {
@@ -64,7 +65,7 @@
 
 #job-list .date,
 #job-list .day {
-  margin-bottom: .4em;
+  margin-bottom: 0.4em;
 }
 
 #job-list .job {
@@ -101,8 +102,7 @@ aside {
   width: 220px;
 }
 
-
-.stat-buttons button{
+.stat-buttons button {
   margin-bottom: 5px;
 }
 
@@ -114,21 +114,38 @@ aside {
 }
 
 .glyphicon-refresh-animate {
-    -animation: spin 2s infinite linear;
-    -webkit-animation: spin2 2s infinite linear;
-    font-size: 1.2em!important;
+  -animation: spin 2s infinite linear;
+  -webkit-animation: spin2 2s infinite linear;
+  font-size: 1.2em /*!important*/;
 }
 
 @-webkit-keyframes spin2 {
-    from { -webkit-transform: rotate(0deg);}
-    to { -webkit-transform: rotate(360deg);}
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
 }
 
 @keyframes spin {
-    from { transform: scale(1) rotate(0deg);}
-    to { transform: scale(1) rotate(360deg);}
+  from {
+    transform: scale(1) rotate(0deg);
+  }
+  to {
+    transform: scale(1) rotate(360deg);
+  }
 }
 
 a {
   color: #00a99d;
+}
+
+#stats-method {
+  color: #555555;
+}
+
+#stats-method-active {
+  color: #dd4631;
+  font-size: 18px;
 }

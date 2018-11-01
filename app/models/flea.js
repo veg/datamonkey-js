@@ -80,8 +80,6 @@ Flea.virtual("pdb_structure").get(function() {
   return __dirname + "/../../public/assets/flea/pdbs/env_structure.pdb";
 });
 
-
-
 /**
  * URL for a envmonkey path
  */

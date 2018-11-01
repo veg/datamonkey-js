@@ -14,8 +14,8 @@ var mongoose = require("mongoose"),
   PartitionInfo = mongoose.model("PartitionInfo"),
   FEL = mongoose.model("FEL");
 
-var redis = require('redis'),
-  client = redis.createClient({host : 'localhost', port : 6379});
+var redis = require("redis"),
+  client = redis.createClient({ host: "localhost", port: 6379 });
 
 exports.form = function(req, res) {
   var post_to = "/fel";
@@ -23,7 +23,6 @@ exports.form = function(req, res) {
 };
 
 exports.uploadFile = function(req, res) {
-
   var connect_callback = function(data) {
     if (data == "connected") {
       logger.log("connected");
@@ -37,14 +36,10 @@ exports.uploadFile = function(req, res) {
     gencodeid = postdata.gencodeid,
     ds_variation = postdata.ds_variation;
 
-  fel.original_extension = path.basename(fn).split('.')[1];
-
-  if (postdata.receive_mail == "true") {
-    fel.mail = postdata.mail;
-  }
+  fel.original_extension = path.basename(fn).split(".")[1];
+  fel.mail = postdata.mail;
 
   Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
-
     if (err) {
       res.json(500, { error: err });
       return;
@@ -84,17 +79,21 @@ exports.uploadFile = function(req, res) {
           logger.error("fel rename failed");
           res.json(500, { error: err });
         } else {
-
-          var move = Msa.removeTreeFromNexus(fel_result.filepath, fel_result.filepath);
-          move.then(val=>{
-            res.json(200, {
-              analysis: fel,
-              upload_redirect_path: fel.upload_redirect_path
-            });
-          }, reason => {
-            res.json(500, {error: "issue removing tree from file"});
-          });
-
+          var move = Msa.removeTreeFromFile(
+            fel_result.filepath,
+            fel_result.filepath
+          );
+          move.then(
+            val => {
+              res.json(200, {
+                analysis: fel,
+                upload_redirect_path: fel.upload_redirect_path
+              });
+            },
+            reason => {
+              res.json(500, { error: "issue removing tree from file" });
+            }
+          );
         }
       }
 
@@ -103,12 +102,16 @@ exports.uploadFile = function(req, res) {
           logger.error("read file failed");
           res.json(500, { error: err });
         }
-        fs.writeFile(fel_result.original_fn,  data, err => {
+        fs.writeFile(fel_result.original_fn, data, err => {
           if (err) {
             logger.error("write file failed");
             res.json(500, { error: err });
           }
-        helpers.moveSafely(req.files.files.file, fel_result.filepath, move_cb);
+          helpers.moveSafely(
+            req.files.files.file,
+            fel_result.filepath,
+            move_cb
+          );
         });
       });
     });
@@ -173,69 +176,25 @@ exports.invoke = function(req, res) {
 };
 
 exports.getPage = function(req, res) {
-
   // Find the analysis
   var felid = req.params.id;
 
   //Return all results
   FEL.findOne({ _id: felid }, function(err, fel) {
-
     if (err || !fel) {
       res.json(500, error.errorResponse("invalid id : " + felid));
     } else {
       res.format({
-
         json: function() {
           res.json(fel);
         },
 
-        html : function() {
+        html: function() {
           res.render("fel/jobpage.ejs", { job: fel });
         }
-
       });
-
-    }
-
-  });
-
-};
-
-exports.getResults = function(req, res) {
-
-  var felid = req.params.id;
-
-  FEL.findOne({ _id: felid }, function(err, fel) {
-    if (err || !fel) {
-      res.json(500, error.errorResponse("invalid id : " + felid));
-    } else {
-      // Should return results page
-      // Append PMID to results
-      var fel_results = JSON.parse(fel.results);
-      fel_results["PMID"] = fel.pmid;
-      res.json(200, fel_results);
     }
   });
-
-};
-
-// app.get('/fel/:id/info', fel.getInfo);
-exports.getInfo = function(req, res) {
-  var id = req.params.id;
-
-  //Return all results
-  FEL.findOne(
-    { _id: id },
-    { creation_time: 1, start_time: 1, status: 1 },
-    function(err, fel_info) {
-      if (err || !fel_info) {
-        res.json(500, error.errorResponse("Invalid ID : " + id));
-      } else {
-        // Should return results page
-        res.json(200, fel_info);
-      }
-    }
-  );
 };
 
 /**
@@ -287,7 +246,8 @@ exports.resubscribePendingJobs = function(req, res) {
 };
 
 exports.getMSAFile = function(req, res) {
-  var id = req.params.id, name = req.params.name;
+  var id = req.params.id,
+    name = req.params.name;
 
   var options = {};
 
@@ -304,16 +264,18 @@ exports.fasta = function(req, res) {
   var id = req.params.id;
 
   FEL.findOne({ _id: id }, function(err, fel) {
-    if(err || !fel) {
+    if (err || !fel) {
       winston.info(err);
       res.json(500, error.errorReponse("invalid id : " + id));
     }
-    Msa.deliverFasta(fel.filepath).then(value => {
-      res.json(200, {fasta: value});
-    }).catch(err => {
-      winston.info(err);
-      res.json(500, {error: "Unable to deliver fasta."});
-    });
+    Msa.deliverFasta(fel.filepath)
+      .then(value => {
+        res.json(200, { fasta: value });
+      })
+      .catch(err => {
+        winston.info(err);
+        res.json(500, { error: "Unable to deliver fasta." });
+      });
   });
 };
 
@@ -321,9 +283,8 @@ exports.getUsage = function(req, res) {
   client.get(FEL.cachePath(), function(err, data) {
     try {
       res.json(200, JSON.parse(data));
-    } catch(err){
-        winston.info(err);
-      };
-
+    } catch (err) {
+      winston.info(err);
+    }
   });
 };

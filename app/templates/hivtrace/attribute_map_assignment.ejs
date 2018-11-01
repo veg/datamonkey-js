@@ -7,7 +7,7 @@
                 <div class="alert alert-danger">
                     <%= error.msg %>
                 </div>
-                <button id="attr_skip" type="submit" class="btn btn-primary pull-right">Skip</button>
+                <button id="attr_skip" type="submit" class="btn btn-primary float-right">Skip</button>
                 <% } else { %>
 
                     <div class="alert alert-info">
@@ -33,7 +33,7 @@
                                     </td>
 
                                     <td>
-                                        <span class="badge pull-left" style = "width:70px">
+                                        <span class="badge float-left" style = "width:70px">
                                             <%= (map[i].calculated_proportion*100).toPrecision(3) %>%
                                         </span>
                                         &nbsp;
@@ -71,7 +71,7 @@
                     
                         
                     <div class="row">
-                          <button id="attr_continue" type="submit" class="btn btn-primary pull-right">Continue</button>
+                          <button id="attr_continue" type="submit" class="btn btn-primary float-right">Continue</button>
                        <% if (map.some (function (d) {return d.calculated == 'date'}) && map.some (function (d) {return d.calculated == 'id'})) { %>
                         <div class="btn-group" data-toggle="buttons">
                             <label class="btn btn-success disabled">

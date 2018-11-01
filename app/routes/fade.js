@@ -32,9 +32,7 @@ exports.uploadFile = function(req, res) {
   msa.datatype = data.datatype;
   msa.gencodeid = PROTEIN_GENCODE;
 
-  if (postdata.receive_mail == "true") {
-    fade.mail = postdata.mail;
-  }
+  fade.mail = postdata.mail;
 
   msa.dataReader(fn, function(err, result) {
     if (err) {
@@ -186,52 +184,12 @@ exports.getPage = function(req, res) {
   });
 };
 
-// app.get('/fade/:fadeid/info', fade.getFadeInfo);
-exports.getInfo = function(req, res) {
-  var fadeid = req.params.fadeid;
-
-  //Return all results
-  Fade.findOne(
-    { _id: fadeid },
-    { creation_time: 1, start_time: 1, status: 1 },
-    function(err, fade_info) {
-      if (err || !fade_info) {
-        res.json(500, error.errorResponse("Invalid ID : " + fadeid));
-      } else {
-        // Should return results page
-        res.json(200, fade_info);
-      }
-    }
-  );
-};
-
-/**
- * Displays id page for analysis
- * app.get('/msa/:msaid/fade/:fadeid/results', fade.getFadeResults);
- */
-exports.getResults = function(req, res) {
-  var fadeid = req.params.fadeid;
-
-  //Return all results
-  Fade.findOne({ _id: fadeid }, function(err, fade) {
-    if (err || !fade) {
-      res.json(500, error.errorResponse("invalid id : " + fadeid));
-    } else {
-      // Should return results page
-      res.json(200, {
-        results: JSON.parse(fade.results),
-        msa: fade.msa[0]
-      });
-    }
-  });
-};
-
 exports.resubscribePendingJobs = function(req, res) {
   Fade.subscribePendingJobs();
 };
 
 /**
- * Returns log txt file 
+ * Returns log txt file
  * app.get('/fade/:fadeid/results', fade.getFadeResults);
  */
 exports.getLog = function(req, res) {

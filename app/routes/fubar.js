@@ -13,8 +13,8 @@ var mongoose = require("mongoose"),
   PartitionInfo = mongoose.model("PartitionInfo"),
   FUBAR = mongoose.model("FUBAR");
 
-var redis = require('redis'),
-  client = redis.createClient({host : 'localhost', port : 6379});
+var redis = require("redis"),
+  client = redis.createClient({ host: "localhost", port: 6379 });
 
 exports.form = function(req, res) {
   var post_to = "/fubar";
@@ -34,9 +34,7 @@ exports.invoke = function(req, res) {
     datatype = 0,
     gencodeid = postdata.gencodeid;
 
-  if (postdata.receive_mail == "true") {
-    fubar.mail = postdata.mail;
-  }
+  fubar.mail = postdata.mail;
 
   Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
     if (err) {
@@ -105,13 +103,11 @@ exports.invoke = function(req, res) {
 };
 
 exports.getPage = function(req, res) {
-
   // Find the analysis
   var fubarid = req.params.id;
 
   //Return all results
   FUBAR.findOne({ _id: fubarid }, function(err, fubar) {
-
     if (err || !fubar) {
       res.json(500, error.errorResponse("Invalid ID : " + fubarid));
     } else {
@@ -121,45 +117,9 @@ exports.getPage = function(req, res) {
   });
 };
 
-exports.getResults = function(req, res) {
-  var fubarid = req.params.id;
-  FUBAR.findOne({ _id: fubarid }, function(err, fubar) {
-    if (err || !fubar) {
-      logger.error("invalid id : " + fubarid);
-      res.json(500, error.errorResponse("invalid id : " + fubarid));
-    } else {
-      // Should return results page
-      // Append PMID to results
-      var fubar_results = JSON.parse(fubar.results);
-      fubar_results["PMID"] = fubar.pmid;
-      res.json(200, fubar_results);
-    }
-  });
-};
-
-// app.get('/fubar/:id/info', fubar.getInfo);
-exports.getInfo = function(req, res) {
-  var id = req.params.id;
-
-  //Return all results
-  FUBAR.findOne(
-    { _id: id },
-    { creation_time: 1, start_time: 1, status: 1 },
-    function(err, fubar_info) {
-      if (err || !fubar_info) {
-        logger.error(err);
-        res.json(500, error.errorResponse("Invalid ID : " + id));
-      } else {
-        // Should return results page
-        res.json(200, fubar_info);
-      }
-    }
-  );
-};
-
 /**
  * Returns log txt file
- * app.get('/fubar/:id/results', fubar.getLog);
+ * app.get('/fubar/:id/log.txt', fubar.getLog);
  */
 exports.getLog = function(req, res) {
   var id = req.params.id;
@@ -206,7 +166,8 @@ exports.resubscribePendingJobs = function(req, res) {
 };
 
 exports.getMSAFile = function(req, res) {
-  var id = req.params.id, name = req.params.name;
+  var id = req.params.id,
+    name = req.params.name;
 
   var options = {};
 
@@ -223,16 +184,18 @@ exports.fasta = function(req, res) {
   var id = req.params.id;
 
   FUBAR.findOne({ _id: id }, function(err, fubar) {
-    if(err || !fubar) {
+    if (err || !fubar) {
       winston.info(err);
       res.json(500, error.errorReponse("invalid id : " + id));
     }
-    Msa.deliverFasta(fubar.filepath).then(value => {
-      res.json(200, {fasta: value});
-    }).catch(err => {
-      winston.info(err);
-      res.json(500, {error: "Unable to deliver fasta."});
-    });
+    Msa.deliverFasta(fubar.filepath)
+      .then(value => {
+        res.json(200, { fasta: value });
+      })
+      .catch(err => {
+        winston.info(err);
+        res.json(500, { error: "Unable to deliver fasta." });
+      });
   });
 };
 
@@ -240,9 +203,8 @@ exports.getUsage = function(req, res) {
   client.get(FUBAR.cachePath(), function(err, data) {
     try {
       res.json(200, JSON.parse(data));
-    } catch(err){
-        winston.info(err);
-      };
-
+    } catch (err) {
+      winston.info(err);
+    }
   });
 };
