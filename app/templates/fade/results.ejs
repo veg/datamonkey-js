@@ -1,136 +1,26 @@
-<div class='container'></div>
-    <div class = 'row'>
-        <div class = 'col-md-9'>
-        <div class='panel-group accordion' id='data_info_box'>
-          <div class='panel panel-default'>
-            <div class='panel-heading accordion-heading'>
-              <h4 class="panel-title"> 
-                <a class='accordion-toggle' data-toggle='collapse' data-parent='#data_info_box' href='#collapseOne'>
-                  Analysis overview
-                </a>
-              </h4>
-            </div>
-            <div id='collapseOne' class='accordion-body collapse in'>
-              <div class='panel-body' id='summary-div'></div>
-            </div>
-          </div>
-         </div>
+<div id='content'></div>
 
-        <div class='panel panel-default' id='property_plot'>
-            <div class='panel-heading'>
-              <h4 class='panel-title'>
-                <a class='accordion-toggle' data-toggle='collapse' data-parent='#property_plot' href='#property_plot_collapse'>
-                  Site-wise Posteriors
-                </a>
-              </h4>
-            </div>
-
-            <div id='property_plot_collapse' class='panel-body collapse out'>
-                <svg id='property_plot_svg'></svg>
-          <div class='btn-group' data-toggle='buttons-checkbox' id = 'property_selector' >
-                    <button type='button' class='btn btn-small active' data-property-id = '1' id = 'show_property1'>A</button>
-                    <button type='button' class='btn btn-small' data-property-id = '2' id = 'show_property2'>C</button>
-                    <button type='button' class='btn btn-small' data-property-id = '3' id = 'show_property3'>D</button>
-                    <button type='button' class='btn btn-small' data-property-id = '4' id = 'show_property4'>E</button>
-                    <button type='button' class='btn btn-small' data-property-id = '5' id = 'show_property5'>F</button>
-          <button type='button' class='btn btn-small' data-property-id = '6' id = 'show_property6'>G</button>
-                    <button type='button' class='btn btn-small' data-property-id = '7' id = 'show_property7'>H</button>
-                    <button type='button' class='btn btn-small' data-property-id = '8' id = 'show_property8'>I</button>
-                    <button type='button' class='btn btn-small' data-property-id = '9' id = 'show_property9'>K</button>
-                    <button type='button' class='btn btn-small' data-property-id = '10' id = 'show_property10'>L</button>
-          <button type='button' class='btn btn-small' data-property-id = '11' id = 'show_property11'>M</button>
-                    <button type='button' class='btn btn-small' data-property-id = '12' id = 'show_property12'>N</button>
-                    <button type='button' class='btn btn-small' data-property-id = '13' id = 'show_property13'>P</button>
-                    <button type='button' class='btn btn-small' data-property-id = '14' id = 'show_property14'>Q</button>
-                    <button type='button' class='btn btn-small' data-property-id = '15' id = 'show_property15'>R</button>
-          <button type='button' class='btn btn-small' data-property-id = '16' id = 'show_property16'>S</button>
-                    <button type='button' class='btn btn-small' data-property-id = '17' id = 'show_property17'>T</button>
-                    <button type='button' class='btn btn-small' data-property-id = '18' id = 'show_property18'>V</button>
-                    <button type='button' class='btn btn-small' data-property-id = '19' id = 'show_property19'>W</button>
-                    <button type='button' class='btn btn-small' data-property-id = '20' id = 'show_property20'>Y</button>
-                </div>
-               </div>
-         </div>
-                 
-         <div class='panel panel-default' id='property_table'>
-            <div class='panel-heading'>
-              <h4 class="panel-title">
-              <a class='accordion-toggle' data-toggle='collapse' data-parent='#property_plot' href='#property_table_collapse'>
-                Site-by-site analysis of directional evolution.
-              </a>
-              </h4>
-            </div>
-            <div id='property_table_collapse' class='accordion-body collapse in'>
-              <div class='panel-body'>            
-                <table id = 'prime_table' class = 'table table-condensed'>
-                <caption id = 'total_sites_found'>
-                    <small>
-                       <span class='badge'></span> sites found: 
-             <span class='badge badge-important'></span> amino acid targets.
-                    </small>                
-                    </caption>
-                <thead>
-        
-                </thead>
-                <tbody>
-        
-                </tbody>
-                </table>
-               </div>
-            </div>
-         </div>
-           
-        </div>
-        <div class = 'col-md-3'>
-            <form class='form-inline affix' id = 'filter_on_pvalue'>
-              <div class='input-append input-prepend'>
-                <div class='btn-group'>
-                    <button class='btn dropdown-toggle' data-toggle='dropdown' id = 'pq_selector'>
-                      Posterior
-                      <span class='caret'></span>
-                    </button>
-                    <ul class='dropdown-menu'>
-                        <li><a href='#' id='set-p-value'>Posterior</a></li>
-                        <li><a href='#' id='set-q-value'>BF</a></li>
-                    </ul>
-                  </div>
-                <input class = 'input-mini' id = 'pvalue' type='text' value = '0.9'>
-                <button type='submit' class='btn btn-info' >Filter</button>
-              </div>
-             
-                
-            </form>  
-        </div>
-
-        <div id='site_rate_display' class='modal hide fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>
-          <div class='modal-header'>
-            <button type='button' class='close' data-dismiss='modal' aria-hidden='true'></button>
-            <h3 id='site_rate_display_header'></h3>
-          </div>
-          <div class='modal-body'>
-            <div class='container' id= 'site_info'>
-                 <table id = 'site_info_table' class = 'table table-condensed'>
-                 <thead>
-        
-                </thead>
-                <tbody>
-        
-                </tbody>
-                </table>
-           </div>         
-            </div>
-         <div class='modal-footer'>
-            <button class='btn' data-dismiss='modal' aria-hidden='true'>Close</button>
-          </div>
-          </div>
-
-    </div>
+<img id="hyphy-chart-image" />
+<canvas id="hyphy-chart-canvas"></canvas>
 
 <script>
-  var cutoff = 0.9;
-  var fade_id = $("#job-report").data("jobid")
-  d3.json(fade_id + "/results", function (json) {
-    datamonkey.fade(json);
-    render_fade_summary(json['results'], json['msa']);
-  }); 
+
+  var fasta_ready = false;
+
+  d3.json(window.location.href+"/fasta", (err, data) => {
+    var fasta = data.fasta
+    fasta_ready = true;
+
+    $(document).ready( function () {
+      hyphyVision.fade($("#job-report").data('jobid') + '/results', "content", fasta, true, true)
+    });
+
+  });
+
+  if (fasta_ready == false) {
+    $(document).ready( function () {
+      hyphyVision.fade($("#job-report").data('jobid') + '/results', "content", null, true, true)
+    });
+  }
+
 </script>
