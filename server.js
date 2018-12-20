@@ -1,7 +1,7 @@
 const logger = require("./lib/logger");
 var setup = require("./config/setup");
 var error = require("./lib/error");
-var queueSet = require("./lib/queue.js");
+var queue = require("./lib/queue.js");
 
 ROOT_PATH = __dirname;
 HOST = setup.host;
@@ -134,4 +134,4 @@ io.sockets.on("connection", function(socket) {
 // Set any initial redis keys
 loadBal.setInitialLoadBalanceKeys();
 
-setInterval(queueSet, 120000, function(job_queue) {});
+setInterval(queue.queueSet, 15000);
