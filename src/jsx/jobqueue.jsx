@@ -113,7 +113,7 @@ var JobTable = React.createClass({
 
 function render_jobqueue() {
   ReactDOM.render(
-    <JobTable url="/jobqueue/json" pollInterval={30000} />,
+    <JobTable url="/jobqueue/json" pollInterval={2000} />,
     document.getElementById("table")
   );
 }

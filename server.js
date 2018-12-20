@@ -134,4 +134,4 @@ io.sockets.on("connection", function(socket) {
 // Set any initial redis keys
 loadBal.setInitialLoadBalanceKeys();
 
-setInterval(queue.queueSet, 120000, function(job_queue) {});
+setInterval(queue.queueSet, 15000);
