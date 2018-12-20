@@ -6,7 +6,7 @@ var mongoose = require("mongoose"),
 (redis = require("redis")),
   (client = redis.createClient({ host: "localhost", port: 6379 }));
 
-var queueGet = require("../../lib/queue.js");
+var queue = require("../../lib/queue.js");
 
 var setup = require("./../../config/setup.js");
 var cluster_ip_urls_array = setup.cluster_ip_urls_array;
@@ -46,12 +46,16 @@ exports.citations = function(req, res) {
 
 exports.jobQueue = function(req, res) {
   //This will set the queue cache when ran.
-  queueGet(function(job_queue) {
-    res.format({
-      json: function() {
-        res.json(200, job_queue);
-      }
-    });
+  queue.queueGet(function(err, job_queue) {
+    if (err) {
+      res.json(500, { err: err });
+    } else {
+      res.format({
+        json: function() {
+          res.json(200, job_queue);
+        }
+      });
+    }
   });
 };
 
