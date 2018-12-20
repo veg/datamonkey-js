@@ -46,12 +46,16 @@ exports.citations = function(req, res) {
 
 exports.jobQueue = function(req, res) {
   //This will set the queue cache when ran.
-  queue.queueGet(function(job_queue) {
-    res.format({
-      json: function() {
-        res.json(200, job_queue);
-      }
-    });
+  queue.queueGet(function(err, job_queue) {
+    if (err) {
+      res.json(500, { err: err });
+    } else {
+      res.format({
+        json: function() {
+          res.json(200, job_queue);
+        }
+      });
+    }
   });
 };
 
