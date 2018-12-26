@@ -1,4 +1,7 @@
 window.jQuery = window.$ = $;
+window.Popper = require("popper.js");
+
+require("bootstrap");
 
 var io = require("socket.io-client");
 window.io = io;
