@@ -82,6 +82,7 @@ class FADEForm extends React.Component {
       });
     }
   }
+
   onSampleChange(event) {
     var value = event.target.value;
     if (value < 50) {
@@ -104,6 +105,7 @@ class FADEForm extends React.Component {
       });
     }
   }
+
   submit(e) {
     e.preventDefault();
 
@@ -113,8 +115,16 @@ class FADEForm extends React.Component {
     var file = document.getElementById("seq-file").files[0];
 
     formData.append("files", file);
-    formData.append("datatype", $("select[name='datatype']").val());
-    formData.append("gencodeid", $("select[name='gencodeid']").val());
+    formData.append("datatype", 2); // fade only accepts protien data
+    formData.append(
+      "substitution_model",
+      $("select[name='substitution_model']").val()
+    );
+    formData.append(
+      "posterior_estimation_method",
+      $("select[name='posterior_estimation_method']").val()
+    );
+    //formData.append("gencodeid", $("select[name='gencodeid']").val());
     formData.append("receive_mail", $("input[name='mail']").val().length > 0);
     formData.append("mail", $("input[name='mail']").val());
     formData.append("number_of_grid_points", $("#number_of_grid_points").val());
@@ -190,6 +200,8 @@ class FADEForm extends React.Component {
         method="post"
         action={this.props.post_to}
       >
+        Uploaded file must contain both an amino acid multiple sequence
+        alignment and a rooted tree
         <div id="seq-file-div" className="upload-div">
           <input id="seq-file" type="file" name="files" />
           <div
@@ -207,45 +219,64 @@ class FADEForm extends React.Component {
             </div>
           </div>
         </div>
-
         <div className="upload-div">
-          <label id="geneticcode-content">
-            Genetic code
-            <a href="/help#genetic-code" target="_blank">
-              <sup>?</sup>
-            </a>
-          </label>
-          <select name="gencodeid">
-            <option value="0">Universal code</option>
-
-            <option value="1">Vertebrate mitochondrial DNA code</option>
-
-            <option value="2">Yeast mitochondrial DNA code</option>
-
+          <label id="substitution_model">Substitution Model</label>
+          <select name="substitution_model">
+            <option value="1">
+              LG (Generalist empirical model from Le and Gascuel 2008)
+            </option>
+            <option value="2">
+              WAG (Generalist empirical model from Whelon and Goldman 2001)
+            </option>
             <option value="3">
-              Mold, Protozoan and Coelenterate mt; Mycloplasma/Spiroplasma
+              JTT (Generalist empirical model from Jones, Taylor and Thornton
+              1996)
             </option>
-
-            <option value="4">Invertebrate mitochondrial DNA code</option>
-
+            ption value="4"> JC69 (Generalist empirical model with equal
+            exhangeability rates among all amino acids) option>
             <option value="5">
-              Ciliate, Dasycladacean and Hexamita Nuclear code
+              mtMet (Specialist empirical model for metazoan mitochondrial
+              genomes from Le, Dang and Le 2007)
             </option>
-
-            <option value="6">Echinoderm mitochondrial DNA code</option>
-
-            <option value="7">Euplotid Nuclear code</option>
-
-            <option value="8">Alternative Yeast Nuclear code</option>
-
-            <option value="9">Ascidian mitochondrial DNA code</option>
-
-            <option value="10">Flatworm mitochondrial DNA code</option>
-
-            <option value="11">Blepharisma Nuclear code</option>
+            <option value="6">
+              mtVer (Specialist empirical model for vertebrate mitochondrial
+              gemones from Le, Dang and Le 2007)
+            </option>
+            ption value="7"> mtInv (Specialist empirical model for invertebrate
+            mitochondrial genomes from Le, Dang and Le 2007) option>
+            <option value="8">
+              gcpREV (Specialist empirical model for green plant chloroplast
+              genomes from Cox and Foster 20013)
+            </option>
+            <option value="9">
+              HIVBm (Specialist empirical model for between-host HIV sequences
+              from Nickle et al. 2007)
+            </option>
+            <option value="10">
+              HIVWm (Specialist empirical model for within-host HIV sequences
+              from Nickle et al. 2007)
+            </option>
+            <option value="11">
+              GTR (General time reversible model; 189 estimated parameters)
+            </option>
           </select>
         </div>
-
+        <label id="posterior_estimation_method_content">
+          Posterior Estimation Method
+        </label>
+        <select name="posterior_estimation_method" defaultValue="3">
+          <option value="1">
+            Metropolis-Hastings - Full Metropolis-Hastings MCMC algorithm
+            (slowest, original 2013 paper implementation)
+          </option>
+          <option value="2">
+            Collapsed Gibbs - Collapsed Gibbs sampler (intermediate speed)
+          </option>
+          <option value="3">
+            Variational Bayes - 0-th order Variational Bayes approximations
+            (fastest, recommended default)
+          </option>
+        </select>
         <div className="form-group">
           <label id="datatype-content">Notify When Completed?</label>
           <input
@@ -255,7 +286,6 @@ class FADEForm extends React.Component {
             placeholder="Email Address"
           />
         </div>
-
         <button
           className="btn btn-outline-secondary"
           data-toggle="button"
@@ -273,7 +303,6 @@ class FADEForm extends React.Component {
             aria-hidden="true"
           />
         </button>
-
         <div style={{ display: self.state.showAdvanced ? "block" : "none" }}>
           <div
             className="row"
@@ -358,9 +387,7 @@ class FADEForm extends React.Component {
             </div>
           </div>
         </div>
-
         <ErrorMessage message={this.state.message} />
-
         <button
           type="submit"
           className="run-analysis-button-text dm-continue-btn btn float-right"
@@ -368,7 +395,6 @@ class FADEForm extends React.Component {
         >
           Run Analysis <span className="fa fa-play" />
         </button>
-
         <div style={{ paddingBottom: "30px" }} />
       </form>
     );
