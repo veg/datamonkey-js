@@ -200,8 +200,8 @@ class FADEForm extends React.Component {
         method="post"
         action={this.props.post_to}
       >
-        Uploaded file must contain both an amino acid multiple sequence
-        alignment and a rooted tree
+        Uploaded file must contain both an <b>amino acid</b> multiple sequence
+        alignment and a <b>rooted</b> tree
         <div id="seq-file-div" className="upload-div">
           <input id="seq-file" type="file" name="files" />
           <div
