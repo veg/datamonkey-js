@@ -5,7 +5,8 @@ var querystring = require("querystring"),
   helpers = require(__dirname + "/../../lib/helpers.js"),
   hpcsocket = require(__dirname + "/../../lib/hpcsocket.js"),
   fs = require("fs"),
-  logger = require("../../lib/logger");
+  logger = require("../../lib/logger"),
+  setup = require(__dirname + "/../../config/setup.js");
 
 var mongoose = require("mongoose"),
   Msa = mongoose.model("Msa"),
@@ -14,7 +15,7 @@ var mongoose = require("mongoose"),
   FADE = mongoose.model("Fade");
 
 var redis = require("redis"),
-  client = redis.createClient({ host: "localhost", port: 6379 });
+  client = redis.createClient({ host: setup.redisHost, port: setup.redisPort });
 
 exports.form = function(req, res) {
   var post_to = "/fade";

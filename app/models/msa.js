@@ -240,7 +240,6 @@ Msa.methods.aminoAcidTranslation = function(cb, options) {
 
 Msa.methods.dataReader = function(file, datatype, cb) {
   // Skip the datareader batch file for fastq and non-coding DNA/RNA files.
-  console.log("datatype: ", datatype);
   if (file.indexOf("fastq") != -1 || datatype != 0) {
     // TODO: Support FASTQ
     // TODO: Provide validation for non-coding DRA/RNA files. Currently skipping the datareader batch file for these

@@ -149,7 +149,6 @@ class FUBARForm extends React.Component {
 
     xhr.onload = function(res) {
       // Replace field with green text, name of file
-      console.log("this.responseText: ", this.responseText);
       var result = JSON.parse(this.responseText);
 
       if (_.has(result, "error")) {
