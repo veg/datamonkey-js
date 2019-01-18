@@ -27,4 +27,4 @@ define('hyphy', __dirname + '/node_modules/hyphy/HYPHYMP');
 define('cluster_ip_urls_array', cluster_ip_urls_array);
 define('default_url', 'http://silverback.temple.edu:7013');
 define('redisPort', 6379);
-define('redisHost', "localhost")
+define('redisHost', "localhost");
