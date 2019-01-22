@@ -239,11 +239,9 @@ Msa.methods.aminoAcidTranslation = function(cb, options) {
 };
 
 Msa.methods.dataReader = function(file, datatype, cb) {
-  // Skip the datareader batch file for fastq and non-coding DNA/RNA files.
-  if (file.indexOf("fastq") != -1 || datatype != 0) {
+  // Skip the datareader batch file for fastq files.
+  if (file.indexOf("fastq") != -1) {
     // TODO: Support FASTQ
-    // TODO: Provide validation for non-coding DRA/RNA files. Currently skipping the datareader batch file for these
-    // to avoid errors if not multiple of 3 or stop codons.
     var result = {};
     result.FILE_INFO = {};
     result.FILE_PARTITION_INFO = [];
@@ -309,6 +307,12 @@ Msa.methods.dataReader = function(file, datatype, cb) {
   winston.info(hyphy_process + " : " + "file : " + file);
 
   this.gencodeid = this.gencodeid || 0;
+  // The dataReader batch file wants a gencodeid of 0 or higher for codon data, -1 for nucleotide data, -2 for amino acid data
+  if (datatype == 1) {
+    this.gencodeid = -1;
+  } else if (datatype == 2) {
+    this.gencodeid = -2;
+  }
   hyphy.stdin.write(this.gencodeid.toString());
 
   winston.info(hyphy_process + " : " + "gencodeid : " + this.gencodeid);
