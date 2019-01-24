@@ -13,7 +13,7 @@ var mongoose = require("mongoose"),
   MEME = mongoose.model("MEME"),
   Relax = mongoose.model("Relax"),
   HivTrace = mongoose.model("HivTrace"),
-  Fade = mongoose.model("Fade"),
+  FADE = mongoose.model("Fade"),
   SLAC = mongoose.model("SLAC");
 
 module.exports = function(app) {
@@ -69,16 +69,17 @@ module.exports = function(app) {
 
   // FADE ROUTES
   fade = require(path.join(__dirname, "../app/routes/fade"));
-  app.get("/fade", fade.createForm);
-  app.post("/fade", fade.uploadFile);
-  app.get("/fade/:id/select-foreground", fade.selectForeground);
-  app.post("/fade/:id/select-foreground", fade.invokeFade);
-  app.get("/fade/:fadeid", fade.getPage);
-  app.get("/fade/:id/info", _.partial(analysis.getInfo, Fade));
-  app.get("/fade/:fadeid/cancel", fade.cancel);
-  app.get("/fade/:fadeid/results", _.partial(analysis.getResults, Fade));
-  app.get("/fade/:fadeid/log.txt", fade.getLog);
-  //fade.resubscribePendingJobs();
+  app.get("/fade", fade.form);
+  app.post("/fade", fade.invoke);
+  app.get("/fade/usage", fade.getUsage);
+  app.get("/fade/:id", fade.getPage);
+  app.get("/fade/:id/original_file/:name", fade.getMSAFile);
+  app.get("/fade/:id/fasta", fade.fasta);
+  app.get("/fade/:id/info", _.partial(analysis.getInfo, FADE));
+  app.get("/fade/:id/results", _.partial(analysis.getResults, FADE));
+  app.get("/fade/:id/cancel", fade.cancel);
+  app.get("/fade/:id/log.txt", fade.getLog);
+  fade.resubscribePendingJobs();
 
   // FEL ROUTES
   fel = require(path.join(__dirname, "../app/routes/fel"));
