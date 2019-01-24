@@ -128,11 +128,21 @@ Msa.statics.removeTreeFromFile = function(input_file_path, output_file_path) {
   return new Promise(function(resolve, reject) {
     fs.readFile(input_file_path, function(err, data) {
       if (err) reject(err);
-      var adjusted = data.toString().replace(/(?:\r\n|\r|\n)/g, "\n");
-      var file_lines = adjusted.split("\n"),
-        begin_tree_index = file_lines.indexOf("BEGIN TREES;");
+      var adjusted = data.toString().replace(/(?:\r\n|\r|\n)/g, "\n"),
+        begin_regex = /begin trees;/i,
+        end_regex = /end;/i,
+        file_lines = adjusted.split("\n"),
+        begin_tree_index = file_lines
+          .map(function(line) {
+            return Boolean(line.match(begin_regex));
+          })
+          .indexOf(true);
       if (begin_tree_index > -1) {
-        var end_tree_index = file_lines.indexOf("END;", begin_tree_index),
+        var end_tree_index = file_lines
+            .map(function(line) {
+              return Boolean(line.match(end_regex));
+            })
+            .indexOf(true, begin_tree_index),
           number_to_remove = end_tree_index - begin_tree_index + 1;
         if (/\s/.exec(file_lines[end_tree_index + 1])) {
           number_to_remove++;
