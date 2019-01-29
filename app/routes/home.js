@@ -12,7 +12,7 @@ var setup = require("./../../config/setup.js");
 var cluster_ip_urls_array = setup.cluster_ip_urls_array;
 
 exports.homePage = function(req, res) {
-  res.render("index.ejs");
+  res.render("index.ejs", { warning_message: setup.warning_message });
 };
 
 exports.help = function(req, res) {
