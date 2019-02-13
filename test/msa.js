@@ -222,33 +222,43 @@ describe("validate fasta file", function() {
 
 describe("nexus tree remover", function() {
   it("should remove tree from Nexus file containing one", function(done) {
-    var first = Msa.removeTreeFromFile(
+    var single_tree = Msa.removeTreeFromFile(
         "test/res/HIV_gp120.nex",
         "test/res/HIV_gp120-pruned.nex"
       ),
-      second = Msa.removeTreeFromFile(
+      lowercase_tree = Msa.removeTreeFromFile(
+        "test/res/HIV_gp120_lowercase.nex",
+        "test/res/HIV_gp120_lowercase-pruned.nex"
+      ),
+      no_tree = Msa.removeTreeFromFile(
         "test/res/CD2.nex",
         "test/res/CD2-pruned.nex"
       ),
-      third = Msa.removeTreeFromFile(
+      multiple_trees = Msa.removeTreeFromFile(
         "test/res/pol.nex",
         "test/res/pol-pruned.nex"
       );
-    Promise.all([first, second, third]).then(values => {
-      ["HIV_gp120-pruned.nex", "CD2-pruned.nex", "pol-pruned.nex"].forEach(
-        filename => {
+    Promise.all([single_tree, lowercase_tree, no_tree, multiple_trees]).then(
+      values => {
+        [
+          "HIV_gp120-pruned.nex",
+          "HIV_gp120_lowercase-pruned.nex",
+          "CD2-pruned.nex",
+          "pol-pruned.nex"
+        ].forEach(filename => {
           var filepath = "test/res/" + filename;
           (
             fs
               .readFileSync(filepath)
               .toString()
-              .indexOf("BEGIN TREES;") == -1
+              .toLowerCase()
+              .indexOf("begin trees;") == -1
           ).should.be.true();
           fs.unlinkSync(filepath);
-        }
-      );
-      done();
-    });
+        });
+        done();
+      }
+    );
   });
 
   it("should alter a fasta file with \r", function(done) {

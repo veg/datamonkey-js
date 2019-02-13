@@ -71,6 +71,23 @@ var fubar = {
   prime_property_choice: 0
 };
 
+var fade = {
+  full_name: "FUBAR Approach to Directional Selection",
+  help: "http://hyphy.org/w/index.php/API:Fade",
+  id: 100,
+  root: "SRC1",
+  namedmodels: "",
+  modelstring: "",
+  roptions: 4,
+  dnds: 1.0,
+  ambchoice: 0,
+  rateoption: 0,
+  rateclasses: 2,
+  rateoption2: 1,
+  rateclasses2: 2,
+  prime_property_choice: 0
+};
+
 var asr = {
   full_name: "Ancestral State Reconstruction",
   help: "http://hyphy.org/w/index.php/API:ASR",
@@ -309,6 +326,7 @@ define("cms", cms);
 define("fel", fel);
 define("ifel", ifel);
 define("fubar", fubar);
+define("fade", fade);
 define("modelselection", modelselection);
 define("gard", gard);
 define("gabranch", gabranch);
@@ -330,6 +348,7 @@ var types = {
   fel: fel,
   ifel: ifel,
   fubar: fubar,
+  fade: fade,
   modelselection: modelselection,
   gard: gard,
   gabranch: gabranch,

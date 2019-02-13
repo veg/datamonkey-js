@@ -412,6 +412,7 @@ var UsageDashboard = React.createClass({
         "absrel",
         "busted",
         "relax",
+        "fade",
         "fel",
         "meme",
         "fubar",

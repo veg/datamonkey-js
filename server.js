@@ -1,7 +1,7 @@
 const logger = require("./lib/logger");
 var setup = require("./config/setup");
 var error = require("./lib/error");
-var queueSet = require("./lib/queue.js");
+var queue = require("./lib/queue.js");
 
 ROOT_PATH = __dirname;
 HOST = setup.host;
@@ -20,7 +20,10 @@ var express = require("express"),
   bb = require("express-busboy");
 
 // Connect to database
-mongoose.connect(setup.database);
+mongoose.connect(
+  setup.database,
+  { useMongoClient: true }
+);
 
 //Ensure that upload paths exists
 mkdirErrorLogger = error.errorLogger(["EEXIST"]);
@@ -134,4 +137,4 @@ io.sockets.on("connection", function(socket) {
 // Set any initial redis keys
 loadBal.setInitialLoadBalanceKeys();
 
-setInterval(queueSet, 15000, function(job_queue) {});
+setInterval(queue.queueSet, 15000);
