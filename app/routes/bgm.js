@@ -15,7 +15,7 @@ var mongoose = require("mongoose"),
   BGM = mongoose.model("BGM");
 
 var redis = require("redis"),
-  client = redis.createClient({ host: "localhost", port: 6379 });
+  client = redis.createClient({ host: setup.redisHost, port: setup.redisPort });
 
 exports.form = function(req, res) {
   var post_to = "/bgm";

@@ -259,7 +259,8 @@ class BGMForm extends React.Component {
         </div>
 
         <button
-          className="btn"
+          className="btn btn-outline-secondary"
+          data-toggle="button"
           type="button"
           onClick={() => self.toggleShow()}
           style={{ display: "block", verticalAlign: "middle" }}
@@ -347,9 +348,14 @@ class BGMForm extends React.Component {
 
         <ErrorMessage message={this.state.message} />
 
-        <button type="submit" className="btn pull-right" onClick={this.submit}>
-          <span className="dm-continue-btn glyphicon glyphicon-play" />
+        <button
+          type="submit"
+          className="run-analysis-button-text dm-continue-btn btn float-right"
+          onClick={this.submit}
+        >
+          Run Analysis <span className="fa fa-play" />
         </button>
+        <div style={{ paddingBottom: "30px" }} />
       </form>
     );
   }

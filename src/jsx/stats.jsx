@@ -411,6 +411,7 @@ var UsageDashboard = React.createClass({
       methods = [
         "absrel",
         "busted",
+        "bgm",
         "relax",
         "fade",
         "fel",
