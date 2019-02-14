@@ -19,6 +19,7 @@ class BGMForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      datatype: "3",
       showAdvanced: false,
       length_of_each_chain: 100000,
       number_of_burn_in_samples: 10000,
@@ -31,6 +32,11 @@ class BGMForm extends React.Component {
     var showAdvanced = !self.state.showAdvanced;
     self.setState({
       showAdvanced: showAdvanced
+    });
+  }
+  onDatatypeChange(event) {
+    this.setState({
+      datatype: event.target.value
     });
   }
   onLengthChange(event) {
@@ -95,10 +101,21 @@ class BGMForm extends React.Component {
 
     var formData = new FormData();
     var file = document.getElementById("seq-file").files[0];
+    const datatype = +$("select[name='datatype']").val();
+    const gencodeid =
+      datatype == 2
+        ? -2
+        : datatype == 1
+          ? -1
+          : $("select[name='gencodeid']").val();
 
     formData.append("files", file);
-    formData.append("datatype", $("select[name='datatype']").val());
-    formData.append("gencodeid", $("select[name='gencodeid']").val());
+    formData.append("datatype", datatype);
+    formData.append(
+      "substitution_model",
+      $("select[name='substitution_model']").val() || 0
+    );
+    formData.append("gencodeid", gencodeid);
     formData.append(
       "receive_mail",
       $("input[name='receive_mail']").prop("checked")
@@ -194,52 +211,104 @@ class BGMForm extends React.Component {
           </div>
         </div>
 
-        <div className="upload-div">
-          <label id="geneticcode-content">
-            Genetic code
-            <a href="/help#genetic-code" target="_blank">
-              <sup>?</sup>
-            </a>
-          </label>
-          <select name="gencodeid">
-            <option value="0">Universal code</option>
-
-            <option value="1">Vertebrate mitochondrial DNA code</option>
-
-            <option value="2">Yeast mitochondrial DNA code</option>
-
-            <option value="3">
-              Mold, Protozoan and Coelenterate mt; Mycloplasma/Spiroplasma
-            </option>
-
-            <option value="4">Invertebrate mitochondrial DNA code</option>
-
-            <option value="5">
-              Ciliate, Dasycladacean and Hexamita Nuclear code
-            </option>
-
-            <option value="6">Echinoderm mitochondrial DNA code</option>
-
-            <option value="7">Euplotid Nuclear code</option>
-
-            <option value="8">Alternative Yeast Nuclear code</option>
-
-            <option value="9">Ascidian mitochondrial DNA code</option>
-
-            <option value="10">Flatworm mitochondrial DNA code</option>
-
-            <option value="11">Blepharisma Nuclear code</option>
-          </select>
-        </div>
-
         <div>
           <label id="datatype-content">Data type</label>
-          <select name="datatype">
+          <select
+            name="datatype"
+            value={this.state.datatype}
+            onChange={e => this.onDatatypeChange(e)}
+          >
             <option value="1">Nucleotide</option>
             <option value="2">Amino acid</option>
             <option value="3">Codon</option>
           </select>
         </div>
+
+        {this.state.datatype == "2" ? (
+          <div className="upload-div">
+            <label id="substitution_model">Substitution Model</label>
+            <select name="substitution_model">
+              <option value="1">
+                LG (Generalist empirical model from Le and Gascuel 2008)
+              </option>
+              <option value="2">
+                WAG (Generalist empirical model from Whelon and Goldman 2001)
+              </option>
+              <option value="3">
+                JTT (Generalist empirical model from Jones, Taylor and Thornton
+                1996)
+              </option>
+              ption value="4"> JC69 (Generalist empirical model with equal
+              exhangeability rates among all amino acids) option>
+              <option value="5">
+                mtMet (Specialist empirical model for metazoan mitochondrial
+                genomes from Le, Dang and Le 2007)
+              </option>
+              <option value="6">
+                mtVer (Specialist empirical model for vertebrate mitochondrial
+                gemones from Le, Dang and Le 2007)
+              </option>
+              ption value="7"> mtInv (Specialist empirical model for
+              invertebrate mitochondrial genomes from Le, Dang and Le 2007)
+              option>
+              <option value="8">
+                gcpREV (Specialist empirical model for green plant chloroplast
+                genomes from Cox and Foster 20013)
+              </option>
+              <option value="9">
+                HIVBm (Specialist empirical model for between-host HIV sequences
+                from Nickle et al. 2007)
+              </option>
+              <option value="10">
+                HIVWm (Specialist empirical model for within-host HIV sequences
+                from Nickle et al. 2007)
+              </option>
+              <option value="11">
+                GTR (General time reversible model; 189 estimated parameters)
+              </option>
+            </select>
+          </div>
+        ) : null}
+
+        {this.state.datatype == "3" ? (
+          <div className="upload-div">
+            <label id="geneticcode-content">
+              Genetic code
+              <a href="/help#genetic-code" target="_blank">
+                <sup>?</sup>
+              </a>
+            </label>
+            <select name="gencodeid">
+              <option value="0">Universal code</option>
+
+              <option value="1">Vertebrate mitochondrial DNA code</option>
+
+              <option value="2">Yeast mitochondrial DNA code</option>
+
+              <option value="3">
+                Mold, Protozoan and Coelenterate mt; Mycloplasma/Spiroplasma
+              </option>
+
+              <option value="4">Invertebrate mitochondrial DNA code</option>
+
+              <option value="5">
+                Ciliate, Dasycladacean and Hexamita Nuclear code
+              </option>
+
+              <option value="6">Echinoderm mitochondrial DNA code</option>
+
+              <option value="7">Euplotid Nuclear code</option>
+
+              <option value="8">Alternative Yeast Nuclear code</option>
+
+              <option value="9">Ascidian mitochondrial DNA code</option>
+
+              <option value="10">Flatworm mitochondrial DNA code</option>
+
+              <option value="11">Blepharisma Nuclear code</option>
+            </select>
+          </div>
+        ) : null}
 
         <div className="form-group">
           <label className="col-lg-3 control-label">

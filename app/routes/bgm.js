@@ -32,7 +32,7 @@ exports.invoke = function(req, res) {
   var fn = req.files.files.file,
     bgm = new BGM(),
     postdata = req.body,
-    datatype = 0,
+    datatype = +postdata.datatype,
     gencodeid = postdata.gencodeid;
 
   if (postdata.receive_mail == "true") {
@@ -67,6 +67,7 @@ exports.invoke = function(req, res) {
 
     bgm.status = bgm.status_stack[0];
     bgm.length_of_each_chain = postdata.length_of_each_chain;
+    bgm.substitution_model = +postdata.substitution_model;
     bgm.number_of_burn_in_samples = postdata.number_of_burn_in_samples;
     bgm.number_of_samples = postdata.number_of_samples;
     bgm.maximum_parents_per_node = postdata.maximum_parents_per_node;
@@ -74,7 +75,7 @@ exports.invoke = function(req, res) {
 
     bgm.save(function(err, bgm_result) {
       if (err) {
-        logger.error("bgm save failed");
+        logger.error("bgm save failed", err);
         res.json(500, { error: err });
         return;
       }
