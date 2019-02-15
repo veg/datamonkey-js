@@ -685,3 +685,14 @@ nav .dm-dropdown-menu {
   background-color: transparent;
   border-left-color: #563d7c;
 }
+
+.fade_pre_publication_note {
+  margin: 10px 0px;
+  padding: 12px;
+  color: #ffffff;
+  background-color: $hyphy-green;
+}
+
+.fade_beta_badge {
+  background-color: $datamonkey-turquoise;
+}
