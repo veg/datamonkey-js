@@ -106,8 +106,8 @@ class BGMForm extends React.Component {
       datatype == 2
         ? -2
         : datatype == 1
-          ? -1
-          : $("select[name='gencodeid']").val();
+        ? -1
+        : $("select[name='gencodeid']").val();
 
     formData.append("files", file);
     formData.append("datatype", datatype);
@@ -194,6 +194,10 @@ class BGMForm extends React.Component {
         action={this.props.post_to}
       >
         <div id="seq-file-div" className="upload-div">
+          <label className="font-weight-bold mr-1 mb-2" id="datatype-content">
+            Multiple Sequence Alignment
+          </label>
+
           <input id="seq-file" type="file" name="files" />
           <div
             id="file-progress"
@@ -212,7 +216,9 @@ class BGMForm extends React.Component {
         </div>
 
         <div>
-          <label id="datatype-content">Data type</label>
+          <label className="font-weight-bold mr-1 mb-2" id="datatype-content">
+            Data type
+          </label>
           <select
             name="datatype"
             value={this.state.datatype}
@@ -272,7 +278,10 @@ class BGMForm extends React.Component {
 
         {this.state.datatype == "3" ? (
           <div className="upload-div">
-            <label id="geneticcode-content">
+            <label
+              className="font-weight-bold mr-1 mb-2"
+              id="geneticcode-content"
+            >
               Genetic code
               <a href="/help#genetic-code" target="_blank">
                 <sup>?</sup>
@@ -311,20 +320,15 @@ class BGMForm extends React.Component {
         ) : null}
 
         <div className="form-group">
-          <label className="col-lg-3 control-label">
+          <label className="font-weight-bold mr-1 mb-2">
             Notify When Completed?
           </label>
-          <div className="col-lg-9 input-group mail-group">
-            <span className="input-group-addon">
-              <input name="receive_mail" type="checkbox" defaultValue="on" />
-            </span>
-            <input
-              name="mail"
-              type="text"
-              className="form-control"
-              placeholder="Email Address"
-            />
-          </div>
+          <input
+            name="mail"
+            type="text"
+            className="form-control"
+            placeholder="Email Address"
+          />
         </div>
 
         <button
