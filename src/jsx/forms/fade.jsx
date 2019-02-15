@@ -200,9 +200,15 @@ class FADEForm extends React.Component {
         method="post"
         action={this.props.post_to}
       >
-        Uploaded file must contain both an <b>amino acid</b> multiple sequence
-        alignment and a <b>rooted</b> tree
+        <div className="alert alert-warning" role="alert">
+          Uploaded file must contain both an <b>amino acid</b> multiple sequence
+          alignment and a <b>rooted</b> tree
+        </div>
         <div id="seq-file-div" className="upload-div">
+          <label className="font-weight-bold mr-1 mb-2">
+            Multiple Sequence Alignment
+          </label>
+
           <input id="seq-file" type="file" name="files" />
           <div
             id="file-progress"
@@ -220,7 +226,9 @@ class FADEForm extends React.Component {
           </div>
         </div>
         <div className="upload-div">
-          <label id="substitution_model">Substitution Model</label>
+          <label className="font-weight-bold mr-1 mb-2" id="substitution_model">
+            Substitution Model
+          </label>
           <select name="substitution_model">
             <option value="1">
               LG (Generalist empirical model from Le and Gascuel 2008)
@@ -261,7 +269,10 @@ class FADEForm extends React.Component {
             </option>
           </select>
         </div>
-        <label id="posterior_estimation_method_content">
+        <label
+          className="font-weight-bold mr-1 mb-2"
+          id="posterior_estimation_method_content"
+        >
           Posterior Estimation Method
         </label>
         <select name="posterior_estimation_method" defaultValue="3">
@@ -277,7 +288,8 @@ class FADEForm extends React.Component {
             (fastest, recommended default)
           </option>
         </select>
-        <div className="form-group">
+
+        <div className="form-group mt-2">
           <label id="datatype-content">Notify When Completed?</label>
           <input
             name="mail"
