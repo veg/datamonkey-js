@@ -8,6 +8,7 @@ var mongoose = require("mongoose"),
   FEL = mongoose.model("FEL"),
   aBSREL = mongoose.model("aBSREL"),
   Busted = mongoose.model("Busted"),
+  BGM = mongoose.model("BGM"),
   FUBAR = mongoose.model("FUBAR"),
   GARD = mongoose.model("GARD"),
   MEME = mongoose.model("MEME"),
@@ -208,5 +209,17 @@ module.exports = function(app) {
   app.get("/slac/:id/results", _.partial(analysis.getResults, SLAC));
   app.get("/slac/:id/cancel", slac.cancel);
   app.get("/slac/:id/log.txt", slac.getLog);
+
+  // BGM ROUTES
+  bgm = require(path.join(__dirname, "../app/routes/bgm"));
+  app.get("/bgm", bgm.form);
+  app.post("/bgm", bgm.invoke);
+  app.get("/bgm/usage", bgm.getUsage);
+  app.get("/bgm/:id", bgm.getPage);
+  app.get("/bgm/:id/info", _.partial(analysis.getInfo, BGM));
+  app.get("/bgm/:id/results", _.partial(analysis.getResults, BGM));
+  app.get("/bgm/:id/cancel", bgm.cancel);
+  app.get("/bgm/:id/log.txt", bgm.getLog);
+  bgm.resubscribePendingJobs();
   slac.resubscribePendingJobs();
 };

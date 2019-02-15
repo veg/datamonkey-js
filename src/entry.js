@@ -1,6 +1,5 @@
 window.jQuery = window.$ = $;
 
-
 var io = require("socket.io-client");
 window.io = io;
 
@@ -21,6 +20,7 @@ var gard_form = require("jsx/forms/gard.jsx");
 var slac_form = require("jsx/forms/slac.jsx");
 var fubar_form = require("jsx/forms/fubar.jsx");
 var fade_form = require("jsx/forms/fade.jsx");
+var bgm_form = require("jsx/forms/bgm.jsx");
 var render_branch_selection = require("jsx/branch-selection.jsx");
 var datamonkey_branch_selection = require("js/datamonkey_branch_selection");
 var stats = require("jsx/stats.jsx");
@@ -35,6 +35,7 @@ window.gard_form = gard_form;
 window.slac_form = slac_form;
 window.fubar_form = fubar_form;
 window.fade_form = fade_form;
+window.bgm_form = bgm_form;
 window.render_branch_selection = render_branch_selection;
 window.datamonkey_branch_selection = datamonkey_branch_selection;
 window.datamonkey = datamonkey;
