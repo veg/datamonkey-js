@@ -7,6 +7,7 @@
 
   var fasta_ready = false;
 
+  /* TODO: alignment.js doesn't handle amino acid alignments yet (this is disabling the "view msa" option for FADE for now)
   d3.json(window.location.href+"/fasta", (err, data) => {
     var fasta = data.fasta
     fasta_ready = true;
@@ -16,6 +17,7 @@
     });
 
   });
+  */
 
   if (fasta_ready == false) {
     $(document).ready( function () {
