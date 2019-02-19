@@ -248,7 +248,8 @@ Msa.methods.aminoAcidTranslation = function(cb, options) {
   );
 };
 
-Msa.methods.dataReader = function(file, cb) {
+Msa.methods.dataReader = function(file, datatype, cb) {
+  // Skip the datareader batch file for fastq files.
   if (file.indexOf("fastq") != -1) {
     // TODO: Support FASTQ
     var result = {};
@@ -316,6 +317,12 @@ Msa.methods.dataReader = function(file, cb) {
   winston.info(hyphy_process + " : " + "file : " + file);
 
   this.gencodeid = this.gencodeid || 0;
+  // The dataReader batch file wants a gencodeid of 0 or higher for codon data, -1 for nucleotide data, -2 for amino acid data
+  if (datatype == 1) {
+    this.gencodeid = -1;
+  } else if (datatype == 2) {
+    this.gencodeid = -2;
+  }
   hyphy.stdin.write(this.gencodeid.toString());
 
   winston.info(hyphy_process + " : " + "gencodeid : " + this.gencodeid);
@@ -376,7 +383,7 @@ Msa.statics.parseFile = function(fn, datatype, gencodeid, cb) {
 
   // convert all uploaded files to NEXUS
 
-  msa.dataReader(fn, function(err, result) {
+  msa.dataReader(fn, datatype, function(err, result) {
     if (err) {
       logger.error(err);
       cb(err, null);

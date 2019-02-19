@@ -2,9 +2,13 @@ var mongoose = require("mongoose"),
   moment = require("moment"),
   path = require("path"),
   hpcsocket = require(path.join(__dirname, "/../../lib/hpcsocket.js")),
-  globals = require(path.join(__dirname, "/../../config/globals.js"));
+  globals = require(path.join(__dirname, "/../../config/globals.js")),
+  setup = require(__dirname + "/../../config/setup.js");
 (redis = require("redis")),
-  (client = redis.createClient({ host: "localhost", port: 6379 }));
+  (client = redis.createClient({
+    host: setup.redisHost,
+    port: setup.redisPort
+  }));
 
 var queue = require("../../lib/queue.js");
 
@@ -12,7 +16,7 @@ var setup = require("./../../config/setup.js");
 var cluster_ip_urls_array = setup.cluster_ip_urls_array;
 
 exports.homePage = function(req, res) {
-  res.render("index.ejs");
+  res.render("index.ejs", { warning_message: setup.warning_message });
 };
 
 exports.help = function(req, res) {

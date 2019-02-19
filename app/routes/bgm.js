@@ -5,21 +5,21 @@ var querystring = require("querystring"),
   helpers = require(__dirname + "/../../lib/helpers.js"),
   hpcsocket = require(__dirname + "/../../lib/hpcsocket.js"),
   fs = require("fs"),
-  logger = require("../../lib/logger"),
-  setup = require(__dirname + "/../../config/setup.js");
+  winston = require("winston"),
+  logger = require("../../lib/logger");
 
 var mongoose = require("mongoose"),
   Msa = mongoose.model("Msa"),
   Sequences = mongoose.model("Sequences"),
   PartitionInfo = mongoose.model("PartitionInfo"),
-  FUBAR = mongoose.model("FUBAR");
+  BGM = mongoose.model("BGM");
 
 var redis = require("redis"),
   client = redis.createClient({ host: setup.redisHost, port: setup.redisPort });
 
 exports.form = function(req, res) {
-  var post_to = "/fubar";
-  res.render("fubar/form.ejs", { post_to: post_to });
+  var post_to = "/bgm";
+  res.render("bgm/form.ejs", { post_to: post_to });
 };
 
 exports.invoke = function(req, res) {
@@ -30,12 +30,14 @@ exports.invoke = function(req, res) {
   };
 
   var fn = req.files.files.file,
-    fubar = new FUBAR(),
+    bgm = new BGM(),
     postdata = req.body,
-    datatype = 0,
+    datatype = +postdata.datatype,
     gencodeid = postdata.gencodeid;
 
-  fubar.mail = postdata.mail;
+  if (postdata.receive_mail == "true") {
+    bgm.mail = postdata.mail;
+  }
 
   Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
     if (err) {
@@ -44,114 +46,140 @@ exports.invoke = function(req, res) {
     }
 
     // Check if msa exceeds limitations
-    if (msa.sites > fubar.max_sites) {
+    if (msa.sites > bgm.max_sites) {
       var error =
-        "Site limit exceeded! Sites must be less than " + fubar.max_sites;
+        "Site limit exceeded! Sites must be less than " + bgm.max_sites;
       logger.error(error);
       res.json(500, { error: error });
       return;
     }
 
-    if (msa.sequences > fubar.max_sequences) {
+    if (msa.sequences > bgm.max_sequences) {
       var error =
         "Sequence limit exceeded! Sequences must be less than " +
-        fubar.max_sequences;
+        bgm.max_sequences;
       logger.error(error);
       res.json(500, { error: error });
       return;
     }
 
-    fubar.msa = msa;
+    bgm.msa = msa;
 
-    fubar.status = fubar.status_stack[0];
-    fubar.number_of_grid_points = postdata.number_of_grid_points;
-    fubar.number_of_mcmc_chains = postdata.number_of_mcmc_chains;
-    fubar.length_of_each_chain = postdata.length_of_each_chain;
-    fubar.number_of_burn_in_samples = postdata.number_of_burn_in_samples;
-    fubar.number_of_samples = postdata.number_of_samples;
-    fubar.concentration_of_dirichlet_prior =
-      postdata.concentration_of_dirichlet_prior;
+    bgm.status = bgm.status_stack[0];
+    bgm.length_of_each_chain = postdata.length_of_each_chain;
+    bgm.substitution_model = +postdata.substitution_model;
+    bgm.number_of_burn_in_samples = postdata.number_of_burn_in_samples;
+    bgm.number_of_samples = postdata.number_of_samples;
+    bgm.maximum_parents_per_node = postdata.maximum_parents_per_node;
+    bgm.minimum_subs_per_site = postdata.minimum_subs_per_site;
 
-    fubar.save(function(err, fubar_result) {
+    bgm.save(function(err, bgm_result) {
       if (err) {
-        logger.error("fubar save failed");
-        logger.error(err);
+        logger.error("bgm save failed", err);
         res.json(500, { error: err });
         return;
       }
 
       function move_cb(err, result) {
         if (err) {
-          logger.error(err);
-          logger.error("fubar rename failed");
+          logger.error("bgm rename failed");
           res.json(500, { error: err });
         } else {
-          var to_send = fubar;
-          to_send.upload_redirect_path = fubar.upload_redirect_path;
+          var to_send = bgm;
+          to_send.upload_redirect_path = bgm.upload_redirect_path;
           res.json(200, {
-            analysis: fubar,
-            upload_redirect_path: fubar.upload_redirect_path
+            analysis: bgm,
+            upload_redirect_path: bgm.upload_redirect_path
           });
 
           // Send the MSA and analysis type
-          FUBAR.submitJob(fubar_result, connect_callback);
+          BGM.submitJob(bgm_result, connect_callback);
         }
       }
 
-      helpers.moveSafely(req.files.files.file, fubar_result.filepath, move_cb);
+      helpers.moveSafely(req.files.files.file, bgm_result.filepath, move_cb);
     });
   });
 };
 
 exports.getPage = function(req, res) {
   // Find the analysis
-  var fubarid = req.params.id;
+  var bgmid = req.params.id;
 
   //Return all results
-  FUBAR.findOne({ _id: fubarid }, function(err, fubar) {
-    if (err || !fubar) {
-      res.json(500, error.errorResponse("Invalid ID : " + fubarid));
+  BGM.findOne({ _id: bgmid }, function(err, bgm) {
+    if (err || !bgm) {
+      res.json(500, error.errorResponse("Invalid ID : " + bgmid));
     } else {
       // Should return results page
-      res.render("fubar/jobpage.ejs", { job: fubar });
+      res.render("bgm/jobpage.ejs", { job: bgm });
     }
   });
 };
 
-/**
- * Returns log txt file
- * app.get('/fubar/:id/log.txt', fubar.getLog);
- */
+exports.getResults = function(req, res) {
+  var bgmid = req.params.id;
+  BGM.findOne({ _id: bgmid }, function(err, bgm) {
+    if (err || !bgm) {
+      res.json(500, error.errorResponse("invalid id : " + bgmid));
+    } else {
+      // Should return results page
+      // Append PMID to results
+      var bgm_results = JSON.parse(bgm.results);
+      bgm_results["PMID"] = bgm.pmid;
+      res.json(200, bgm_results);
+    }
+  });
+};
+
+exports.getInfo = function(req, res) {
+  var id = req.params.id;
+
+  //Return all results
+  BGM.findOne(
+    { _id: id },
+    { creation_time: 1, start_time: 1, status: 1 },
+    function(err, bgm_info) {
+      if (err || !bgm_info) {
+        res.json(500, error.errorResponse("Invalid ID : " + id));
+      } else {
+        // Should return results page
+        res.json(200, bgm_info);
+      }
+    }
+  );
+};
+
 exports.getLog = function(req, res) {
   var id = req.params.id;
 
   //Return all results
-  FUBAR.findOne({ _id: id }, function(err, fubar) {
-    if (err || !fubar) {
+  BGM.findOne({ _id: id }, function(err, bgm) {
+    if (err || !bgm) {
       winston.info(err);
       res.json(500, error.errorResponse("invalid id : " + id));
     } else {
       res.set({ "Content-Disposition": 'attachment; filename="log.txt"' });
       res.set({ "Content-type": "text/plain" });
-      res.send(fubar.last_status_msg);
+      res.send(bgm.last_status_msg);
     }
   });
 };
 
 /**
  * cancels existing job
- * app.get('/fubar/:id/cancel', fubar.cancel);
+ * app.get('/busted/:id/cancel', meme.cancel);
  */
 exports.cancel = function(req, res) {
   var id = req.params.id;
 
   //Return all results
-  FUBAR.findOne({ _id: id }, function(err, fubar) {
-    if (err || !fubar) {
+  BGM.findOne({ _id: id }, function(err, bgm) {
+    if (err || !bgm) {
       winston.info(err);
       res.json(500, error.errorResponse("invalid id : " + id));
     } else {
-      fubar.cancel(function(err, success) {
+      bgm.cancel(function(err, success) {
         if (success) {
           res.json(200, { success: "yes" });
         } else {
@@ -163,7 +191,7 @@ exports.cancel = function(req, res) {
 };
 
 exports.resubscribePendingJobs = function(req, res) {
-  FUBAR.subscribePendingJobs();
+  BGM.subscribePendingJobs();
 };
 
 exports.getMSAFile = function(req, res) {
@@ -172,8 +200,8 @@ exports.getMSAFile = function(req, res) {
 
   var options = {};
 
-  FUBAR.findOne({ _id: id }, function(err, fubar) {
-    res.sendFile(fubar.filepath, options, function(err) {
+  BGM.findOne({ _id: id }, function(err, bgm) {
+    res.sendFile(bgm.filepath, options, function(err) {
       if (err) {
         res.status(err.status).end();
       }
@@ -184,12 +212,12 @@ exports.getMSAFile = function(req, res) {
 exports.fasta = function(req, res) {
   var id = req.params.id;
 
-  FUBAR.findOne({ _id: id }, function(err, fubar) {
-    if (err || !fubar) {
+  BGM.findOne({ _id: id }, function(err, bgm) {
+    if (err || !bgm) {
       winston.info(err);
       res.json(500, error.errorReponse("invalid id : " + id));
     }
-    Msa.deliverFasta(fubar.filepath)
+    Msa.deliverFasta(bgm.filepath)
       .then(value => {
         res.json(200, { fasta: value });
       })
@@ -201,7 +229,7 @@ exports.fasta = function(req, res) {
 };
 
 exports.getUsage = function(req, res) {
-  client.get(FUBAR.cachePath(), function(err, data) {
+  client.get(BGM.cachePath(), function(err, data) {
     try {
       res.json(200, JSON.parse(data));
     } catch (err) {

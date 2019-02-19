@@ -8,12 +8,13 @@ var mongoose = require("mongoose"),
   FEL = mongoose.model("FEL"),
   aBSREL = mongoose.model("aBSREL"),
   Busted = mongoose.model("Busted"),
+  BGM = mongoose.model("BGM"),
   FUBAR = mongoose.model("FUBAR"),
   GARD = mongoose.model("GARD"),
   MEME = mongoose.model("MEME"),
   Relax = mongoose.model("Relax"),
   HivTrace = mongoose.model("HivTrace"),
-  Fade = mongoose.model("Fade"),
+  FADE = mongoose.model("Fade"),
   SLAC = mongoose.model("SLAC");
 
 module.exports = function(app) {
@@ -69,16 +70,17 @@ module.exports = function(app) {
 
   // FADE ROUTES
   fade = require(path.join(__dirname, "../app/routes/fade"));
-  app.get("/fade", fade.createForm);
-  app.post("/fade", fade.uploadFile);
-  app.get("/fade/:id/select-foreground", fade.selectForeground);
-  app.post("/fade/:id/select-foreground", fade.invokeFade);
-  app.get("/fade/:fadeid", fade.getPage);
-  app.get("/fade/:id/info", _.partial(analysis.getInfo, Fade));
-  app.get("/fade/:fadeid/cancel", fade.cancel);
-  app.get("/fade/:fadeid/results", _.partial(analysis.getResults, Fade));
-  app.get("/fade/:fadeid/log.txt", fade.getLog);
-  //fade.resubscribePendingJobs();
+  app.get("/fade", fade.form);
+  app.post("/fade", fade.invoke);
+  app.get("/fade/usage", fade.getUsage);
+  app.get("/fade/:id", fade.getPage);
+  app.get("/fade/:id/original_file/:name", fade.getMSAFile);
+  app.get("/fade/:id/fasta", fade.fasta);
+  app.get("/fade/:id/info", _.partial(analysis.getInfo, FADE));
+  app.get("/fade/:id/results", _.partial(analysis.getResults, FADE));
+  app.get("/fade/:id/cancel", fade.cancel);
+  app.get("/fade/:id/log.txt", fade.getLog);
+  fade.resubscribePendingJobs();
 
   // FEL ROUTES
   fel = require(path.join(__dirname, "../app/routes/fel"));
@@ -207,5 +209,17 @@ module.exports = function(app) {
   app.get("/slac/:id/results", _.partial(analysis.getResults, SLAC));
   app.get("/slac/:id/cancel", slac.cancel);
   app.get("/slac/:id/log.txt", slac.getLog);
+
+  // BGM ROUTES
+  bgm = require(path.join(__dirname, "../app/routes/bgm"));
+  app.get("/bgm", bgm.form);
+  app.post("/bgm", bgm.invoke);
+  app.get("/bgm/usage", bgm.getUsage);
+  app.get("/bgm/:id", bgm.getPage);
+  app.get("/bgm/:id/info", _.partial(analysis.getInfo, BGM));
+  app.get("/bgm/:id/results", _.partial(analysis.getResults, BGM));
+  app.get("/bgm/:id/cancel", bgm.cancel);
+  app.get("/bgm/:id/log.txt", bgm.getLog);
+  bgm.resubscribePendingJobs();
   slac.resubscribePendingJobs();
 };

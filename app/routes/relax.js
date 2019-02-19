@@ -8,7 +8,8 @@ var querystring = require("querystring"),
   hpcsocket = require(__dirname + "/../../lib/hpcsocket.js"),
   fs = require("fs"),
   path = require("path"),
-  logger = require("../../lib/logger");
+  logger = require("../../lib/logger"),
+  setup = require(__dirname + "/../../config/setup.js");
 
 var mongoose = require("mongoose"),
   Msa = mongoose.model("Msa"),
@@ -17,7 +18,7 @@ var mongoose = require("mongoose"),
   Relax = mongoose.model("Relax");
 
 var redis = require("redis"),
-  client = redis.createClient({ host: "localhost", port: 6379 });
+  client = redis.createClient({ host: setup.redisHost, port: setup.redisPort });
 
 exports.createForm = function(req, res) {
   res.render("relax/upload_msa.ejs");
