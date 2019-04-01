@@ -209,6 +209,7 @@ module.exports = function(app) {
   app.get("/slac/:id/results", _.partial(analysis.getResults, SLAC));
   app.get("/slac/:id/cancel", slac.cancel);
   app.get("/slac/:id/log.txt", slac.getLog);
+  slac.resubscribePendingJobs();
 
   // BGM ROUTES
   bgm = require(path.join(__dirname, "../app/routes/bgm"));
@@ -216,10 +217,10 @@ module.exports = function(app) {
   app.post("/bgm", bgm.invoke);
   app.get("/bgm/usage", bgm.getUsage);
   app.get("/bgm/:id", bgm.getPage);
+  app.get("/bgm/:id/original_file/:name", bgm.getMSAFile);
   app.get("/bgm/:id/info", _.partial(analysis.getInfo, BGM));
   app.get("/bgm/:id/results", _.partial(analysis.getResults, BGM));
   app.get("/bgm/:id/cancel", bgm.cancel);
   app.get("/bgm/:id/log.txt", bgm.getLog);
   bgm.resubscribePendingJobs();
-  slac.resubscribePendingJobs();
 };
