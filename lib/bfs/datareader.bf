@@ -74,7 +74,7 @@ function checkTreeString (treeS, treeID) {
       if (genCodeID >= 0)
       {
         //TODO: update path
-        notify("info", "Aminoacid translation in <a href='" + BASE_CGI_URL_STRING + "showdata.pl?" + filePath + ".aa'");
+        notify("info", "Aminoacid translation in " + BASE_CGI_URL_STRING + "showdata.pl?" + filePath + ".aa'");
       }
     }
 	if (Abs(treeS))
@@ -344,7 +344,7 @@ if (genCodeID >= 0 && filteredData.sites*3 < ds.sites)
 if (filteredData.species > maxUploadSize || filteredData.sites > maxDMSites)
 {
   except("Your data set is too large ("+filteredData.species+" species and "+filteredData.sites+" sites). We currently reject files with more than " + maxSLACSize + " sequences or " + maxDMSites + " sites. " +  
-                  "We'll increase the numbers when we acquire better dedicated hardware. Alternatively, you can download <a href='http://www.hyphy.org/downloads/'>HyPhy</a> and selection analyses locally (see <a href='http://www.hyphy.org/pubs/hyphybook2007.pdf'>[this document]</a> for details).");
+                  "We'll increase the numbers when we acquire better dedicated hardware. Alternatively, you can download hyphy at: http://www.hyphy.org/downloads/ and perform selection analyses locally.");
 	return 1;
 }
 
@@ -496,7 +496,7 @@ if (Abs(renameSequenceWarning))
 if (padWarning)
 {
   notify("warning", "It appears that some of the sequences were of unequal length and were padded by HyPhy. This could be because unaligned sequences were uploaded or non-standard characters were used to mark gaps ('-' and '?' are allowed; but '~' (BioEdit) and '_' for example, are not)." +
-					 "Always use the standard IUPAC-IUB <a href='http://en.wikipedia.org/wiki/Nucleic_acid_notation#IUPAC_notation'>character table</a> to prepare the alignment for DataMonkey.org.");
+					 "Always use the standard IUPAC-IUB character table (http://en.wikipedia.org/wiki/Nucleic_acid_notation#IUPAC_notation) to prepare the alignment for DataMonkey.org.");
 }
 
 /* convert to AA */
