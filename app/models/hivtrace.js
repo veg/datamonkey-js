@@ -29,7 +29,8 @@ var error_codes = {
   FAILED_ASSIGNMENT: 1
 };
 
-var Schema = mongoose.Schema, ObjectId = Schema.ObjectId;
+var Schema = mongoose.Schema,
+  ObjectId = Schema.ObjectId;
 
 function notEmptyValidator(val) {
   return val !== null;
@@ -107,7 +108,7 @@ var HivTrace = new Schema({
     validate: [notEmptyValidator, "Ambiguity Handling field is empty"]
   },
   sequence_length: Number,
-  job_started : { type: Boolean, default:false },
+  job_started: { type: Boolean, default: false },
   status_stack: Array,
   status: {
     type: String
@@ -208,8 +209,8 @@ HivTrace.virtual("analysistype").get(function() {
 });
 
 /**
-* file path for aligned document
-*/
+ * file path for aligned document
+ */
 HivTrace.virtual("aligned_fasta_fn").get(function() {
   return __dirname + "/../../uploads/hivtrace/" + this._id + ".aligned.fa";
 });
@@ -233,15 +234,15 @@ HivTrace.virtual("trace_results").get(function() {
 });
 
 /**
-* file path for trace results
-*/
+ * file path for trace results
+ */
 HivTrace.virtual("rel_trace_results").get(function() {
   return this._id + ".trace.json";
 });
 
 /**
-* relative file path for aligned document
-*/
+ * relative file path for aligned document
+ */
 HivTrace.virtual("rel_aligned_fasta_fn").get(function() {
   return this._id + ".aligned.fa";
 });
@@ -268,7 +269,7 @@ HivTrace.virtual("status_index").get(function() {
  * Percentage of job complete
  */
 HivTrace.virtual("percentage_complete").get(function() {
-  return (this.status_index + 1) / this.status_stack.length * 100 + "%";
+  return ((this.status_index + 1) / this.status_stack.length) * 100 + "%";
 });
 
 /**
@@ -286,7 +287,6 @@ HivTrace.virtual("url").get(function() {
 });
 
 HivTrace.methods.saveAttributes = function(cb) {
-
   var self = this;
 
   // Once annotations are configured, save the mapped attributes so that we
@@ -301,19 +301,16 @@ HivTrace.methods.saveAttributes = function(cb) {
   });
 
   var patient_attributes = _.map(headers, function(d) {
-
     var attrs = d.split(delimiter);
     var key_val = _.object(annotations, attrs);
     key_val["header"] = d;
     return key_val;
-
   });
 
   // save attributes for each patient
   self.patient_attributes = patient_attributes;
 
   cb(null, self);
-
 };
 
 HivTrace.methods.addAttributesToResults = function(cb) {
@@ -323,9 +320,9 @@ HivTrace.methods.addAttributesToResults = function(cb) {
   var attr_keys = _.keys(attributes[0]);
 
   var category_map = {
-    "categorical" : "String",
-    "individual" : "String",
-    "temporal" : "Date"
+    categorical: "String",
+    individual: "String",
+    temporal: "Date"
   };
 
   // transform attributes to be a dictionary
@@ -348,6 +345,7 @@ HivTrace.methods.addAttributesToResults = function(cb) {
 
   // read from trace results
   fs.readFile(self.trace_results, function(err, results) {
+    //fs.readFile(path.resolve(__dirname + "../../../results/jobs/" + this._id + "-results" + ".json"), function(err, results) {
     if (err) {
       cb(err, null);
       return;
@@ -467,10 +465,10 @@ HivTrace.statics.usageStatistics = function(cb) {
     .sort({ created: -1 })
     .limit(1)
     .exec(function(err1, items1) {
-      if (err1 || items1.length == 0){
+      if (err1 || items1.length == 0) {
         cb(err1, null);
         return;
-      };
+      }
       self
         .find(
           {

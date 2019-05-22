@@ -8,10 +8,10 @@ var mongoose = require("mongoose"),
   winston = require("winston"),
   _ = require("lodash"),
   seqio = require("../../lib/biohelpers/sequenceio.js"),
-  setup = require('../../config/setup'),
+  setup = require("../../config/setup"),
   logger = require("../../lib/logger");
 
-winston.level = setup.log_level || 'info';
+winston.level = setup.log_level || "info";
 
 var error_codes = {
   INCORRECT_SPLIT: 0,
@@ -22,7 +22,8 @@ function notEmptyValidator(val) {
   return val != null;
 }
 
-var Schema = mongoose.Schema, ObjectId = Schema.ObjectId;
+var Schema = mongoose.Schema,
+  ObjectId = Schema.ObjectId;
 
 var PartitionInfo = new Schema({
   _creator: {
@@ -120,25 +121,42 @@ Msa.virtual("hyphy_friendly").get(function() {
 
   //Remove attribute_map
   delete hyphy_obj["attribute_map"];
-
   return hyphy_obj;
 });
 
-Msa.statics.removeTreeFromNexus = function(input_file_path, output_file_path){
+Msa.statics.removeTreeFromFile = function(input_file_path, output_file_path) {
   return new Promise(function(resolve, reject) {
     fs.readFile(input_file_path, function(err, data) {
       if (err) reject(err);
-      var file_lines = data.toString().split('\n'),
-        begin_tree_index = file_lines.indexOf('BEGIN TREES;');
-      if(begin_tree_index > -1) { 
-        var end_tree_index = file_lines.indexOf('END;', begin_tree_index),
+      var adjusted = data.toString().replace(/(?:\r\n|\r|\n)/g, "\n"),
+        begin_regex = /begin trees;/i,
+        end_regex = /end;/i,
+        file_lines = adjusted.split("\n"),
+        begin_tree_index = file_lines
+          .map(function(line) {
+            return Boolean(line.match(begin_regex));
+          })
+          .indexOf(true);
+      if (begin_tree_index > -1) {
+        var end_tree_index = file_lines
+            .map(function(line) {
+              return Boolean(line.match(end_regex));
+            })
+            .indexOf(true, begin_tree_index),
           number_to_remove = end_tree_index - begin_tree_index + 1;
-        if (/\s/.exec(file_lines[end_tree_index + 1])) { number_to_remove++ };
-
+        if (/\s/.exec(file_lines[end_tree_index + 1])) {
+          number_to_remove++;
+        }
         file_lines.splice(begin_tree_index, number_to_remove);
       }
-      fs.writeFile(output_file_path, file_lines.join('\n'), function(err){
-        if(err) reject(err);
+
+      // should take care of FASTA
+      var to_write = _.reject(file_lines, function(line) {
+        return line.trim().startsWith("(");
+      }).join("\n");
+
+      fs.writeFile(output_file_path, to_write, function(err) {
+        if (err) reject(err);
         resolve();
       });
     });
@@ -147,25 +165,27 @@ Msa.statics.removeTreeFromNexus = function(input_file_path, output_file_path){
 
 Msa.statics.deliverFasta = function(filepath) {
   return new Promise(function(resolve, reject) {
-    fs.readFile(filepath, function (err, data) {
-      if(err) reject(err);
-      if(data.slice(0,6) != "#NEXUS") resolve(data.toString());
-      const split_data = data.toString().split('\n'),
-        start_index = split_data.indexOf('MATRIX')+1,
-        end_index = split_data.indexOf('END;', start_index),
-        tax_labels_index = split_data.indexOf('\tTAXLABELS')+1,
+    fs.readFile(filepath, function(err, data) {
+      if (err) reject(err);
+      if (data.slice(0, 6) != "#NEXUS") resolve(data.toString());
+      const split_data = data.toString().split("\n"),
+        start_index = split_data.indexOf("MATRIX") + 1,
+        end_index = split_data.indexOf("END;", start_index),
+        tax_labels_index = split_data.indexOf("\tTAXLABELS") + 1,
         tax_labels = split_data[tax_labels_index]
-          .slice(0,-1)
+          .slice(0, -1)
           .trim()
-          .split(' ')
-          .map(name=>name.slice(1,-1));
+          .split(" ")
+          .map(name => name.slice(1, -1));
       resolve(
-        split_data.slice(start_index, end_index)
+        split_data
+          .slice(start_index, end_index)
           .map((line, index) => {
-            const header = '>' + tax_labels[index],
-              sequence = line.trim().replace(';','');
-            return [header, sequence].join('\n');
-          }).join('\n') + '\n'
+            const header = ">" + tax_labels[index],
+              sequence = line.trim().replace(";", "");
+            return [header, sequence].join("\n");
+          })
+          .join("\n") + "\n"
       );
     });
   });
@@ -175,7 +195,9 @@ var MsaModel = mongoose.model("MsaModel", Msa);
 
 MsaModel.schema.path("mailaddr").validate(function(value) {
   if (value) {
-    check(value).len(6, 64).isEmail();
+    check(value)
+      .len(6, 64)
+      .isEmail();
   } else {
     return true;
   }
@@ -226,10 +248,9 @@ Msa.methods.aminoAcidTranslation = function(cb, options) {
   );
 };
 
-Msa.methods.dataReader = function(file, cb) {
-
+Msa.methods.dataReader = function(file, datatype, cb) {
+  // Skip the datareader batch file for fastq files.
   if (file.indexOf("fastq") != -1) {
-
     // TODO: Support FASTQ
     var result = {};
     result.FILE_INFO = {};
@@ -243,12 +264,11 @@ Msa.methods.dataReader = function(file, cb) {
     result.FILE_INFO.timestamp = -1;
     result.FILE_INFO.goodtree = 0;
     result.FILE_INFO.nj = "";
-    result.FILE_PARTITION_INFO.push({usertree: ""});
+    result.FILE_PARTITION_INFO.push({ usertree: "" });
     result.FILE_INFO.rawsites = -1;
     cb("", result);
 
     return;
-
   }
 
   var hyphy_process =
@@ -266,6 +286,7 @@ Msa.methods.dataReader = function(file, cb) {
   var hyphy = spawn(globals.hyphy, [
     __dirname + "/../../lib/bfs/datareader.bf"
   ]);
+
   var result = "";
 
   hyphy.stdout.on("data", function(data) {
@@ -273,7 +294,6 @@ Msa.methods.dataReader = function(file, cb) {
   });
 
   hyphy.stdout.on("close", function(code) {
-
     try {
       results = JSON.parse(result);
     } catch (e) {
@@ -297,6 +317,12 @@ Msa.methods.dataReader = function(file, cb) {
   winston.info(hyphy_process + " : " + "file : " + file);
 
   this.gencodeid = this.gencodeid || 0;
+  // The dataReader batch file wants a gencodeid of 0 or higher for codon data, -1 for nucleotide data, -2 for amino acid data
+  if (datatype == 1) {
+    this.gencodeid = -1;
+  } else if (datatype == 2) {
+    this.gencodeid = -2;
+  }
   hyphy.stdin.write(this.gencodeid.toString());
 
   winston.info(hyphy_process + " : " + "gencodeid : " + this.gencodeid);
@@ -352,12 +378,12 @@ Msa.statics.validateFasta = function(fn, cb, options) {
 
 Msa.statics.parseFile = function(fn, datatype, gencodeid, cb) {
   var msa = new this();
-
   msa.datatype = datatype;
   msa.gencodeid = gencodeid;
 
-  msa.dataReader(fn, function(err, result) {
+  // convert all uploaded files to NEXUS
 
+  msa.dataReader(fn, datatype, function(err, result) {
     if (err) {
       logger.error(err);
       cb(err, null);
@@ -391,31 +417,12 @@ Msa.statics.parseFile = function(fn, datatype, gencodeid, cb) {
     fpi = _.values(fpi);
 
     var PartitionInfo = mongoose.model("PartitionInfo", PartitionInfo);
-    var partition_info = _.map(fpi, (partition_info) => { return new PartitionInfo(partition_info) });
+    var partition_info = _.map(fpi, partition_info => {
+      return new PartitionInfo(partition_info);
+    });
+
     msa.partition_info = partition_info;
     cb(null, msa);
-
-  });
-
-};
-
-Msa.statics.scrubUserTree = function(fn, cb) {
-  // Match newick tree
-
-  fs.readFile(fn, function(err, data) {
-    if (err) {
-      cb(err);
-    }
-
-    // Split data sequences out
-    var seq_array = seqio.parseFile(data.toString());
-    var translated_arr = seqio.translateSequenceArray(
-      seq_array,
-      self.gencodeid.toString()
-    );
-    var translated_fasta = seqio.toFasta(translated_arr);
-
-    cb(null, translated_fasta);
   });
 };
 

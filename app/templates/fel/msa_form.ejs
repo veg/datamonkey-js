@@ -3,10 +3,10 @@
 <div id="container" class="container">
   <%- include header.ejs %>
 
-  <div class="nav nav-list pull-right span4i"><a href="/help" target="_blank"><span class="glyphicon glyphicon-info-sign"></span></a></div>
-  <div class="row col-lg-9">  
+  <div class="nav nav-list float-right span4i"><a href="/help" target="_blank"><span class="glyphicon glyphicon-info-sign"></span></a></div>
+  <div class="row">  
 
-    <form id="msa-form" class="form-horizontal upload-form" name="uploadform" enctype="multipart/form-data" method="post" action=<%= post_to %>>
+    <form id="msa-form" class="form-horizontal upload-form col-12" name="uploadform" enctype="multipart/form-data" method="post" action=<%= post_to %>>
 
       <div id="seq-file-div" class="upload-div">
           <input id="seq-file" type="file" name="files">
@@ -86,18 +86,15 @@
       </div>
 
       <div class="form-group <%if (typeof errors != "undefined" && typeof errors.mail != "undefined") { %>has-error<% } %>">
-        <label id="datatype-content" class="col-lg-3 control-label">Notify When Completed?</label>
-        <div class="col-lg-9 input-group mail-group">
-          <span class="input-group-addon">
-            <input name="receive_mail" type="checkbox" value="on" checked>
-          </span>
+        <label id="datatype-content" class="control-label">Notify When Completed?</label>
+        <div class="input-group mail-group">
           <input name="mail" type="text" class="form-control" placeholder="Email Address">
         </div>
       </div><!-- /form-group -->
 
-      <button type="submit" class="btn pull-right">
-        <span class="dm-continue-btn glyphicon glyphicon-play"></span>
-      </button>
+        <button type="submit" class="dm-continue-btn btn float-right">
+          Run Analysis
+        <span class="fa fa-play"></span></button>
 
     </form>
   </div>

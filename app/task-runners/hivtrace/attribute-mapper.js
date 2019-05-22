@@ -188,7 +188,7 @@ function perform_the_mapping(headers, publisher_push) {
   };
 
   var all_maps = headers.map(function(header, index) {
-    publisher_push(70 * (1 + index) / headers.length);
+    publisher_push((70 * (1 + index)) / headers.length);
     return testForAttributes(header);
   });
 
@@ -198,7 +198,7 @@ function perform_the_mapping(headers, publisher_push) {
   ) {
     var fields = [];
 
-    publisher_push(70 + 10 * (1 + index) / attributes.delimiters.length);
+    publisher_push(70 + (10 * (1 + index)) / attributes.delimiters.length);
 
     _.each(_.pluck(all_maps, delimiter), function(field_list) {
       for (var i = fields.length; i < field_list.length; i++) {
@@ -208,27 +208,27 @@ function perform_the_mapping(headers, publisher_push) {
       }
 
       _.each(field_list, function(a_field, i) {
-        fields[i][a_field[0]] = a_field[0] in fields[i]
-          ? fields[i][a_field[0]] + 1
-          : 1;
+        fields[i][a_field[0]] =
+          a_field[0] in fields[i] ? fields[i][a_field[0]] + 1 : 1;
       });
     });
     return [delimiter, fields];
   });
 
   binned_by_delimiter.forEach(function(delimiter_record, index) {
-    publisher_push(80 + 5 * (1 + index) / attributes.delimiters.length);
+    publisher_push(80 + (5 * (1 + index)) / attributes.delimiters.length);
     delimiter_record.push(
       _.reduce(
         delimiter_record[1].map(function(mapping) {
           return _.reduce(
             mapping,
             function(memo, count, kind) {
-              var value = kind != attributes.types.UNKNOWN &&
+              var value =
+                kind != attributes.types.UNKNOWN &&
                 kind != attributes.types.ID &&
                 count * 2 >= all_maps.length
-                ? count / all_maps.length
-                : 0;
+                  ? count / all_maps.length
+                  : 0;
               return value > memo ? value : memo;
             },
             0
@@ -251,10 +251,12 @@ function perform_the_mapping(headers, publisher_push) {
 
   all_maps = _.pluck(all_maps, best_delimiter);
 
-  var err = "", mapped_attributes = [], used_ids = {};
+  var err = "",
+    mapped_attributes = [],
+    used_ids = {};
 
   best_attr_map.forEach(function(mapping, index) {
-    publisher_push(85 + 5 * (1 + index) / best_attr_map.length);
+    publisher_push(85 + (5 * (1 + index)) / best_attr_map.length);
     var label = attributes.types.UNKNOWN,
       label_prop = _.reduce(
         mapping,
@@ -286,8 +288,9 @@ function perform_the_mapping(headers, publisher_push) {
   var id_tag = [-1, 0];
 
   mapped_attributes.forEach(function(ca, index) {
-    publisher_push(90 + 10 * (1 + index) / mapped_attributes.length);
-    var value_range = {}, mismatched = {};
+    publisher_push(90 + (10 * (1 + index)) / mapped_attributes.length);
+    var value_range = {},
+      mismatched = {};
 
     all_maps.forEach(function(mapping) {
       if (index < mapping.length) {

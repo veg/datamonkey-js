@@ -8,7 +8,7 @@
 
   <%- include header.ejs %>
 
-  <div class="nav nav-list pull-right span4i"><a href="/help" target="_blank"><span class="glyphicon glyphicon-info-sign"></span></a></div>
+  <div class="nav nav-list float-right span4i"><a href="/assets/flea/examples/example.zip"><span class="fa fa-download"></span> Example Files</a></div>
 
 
   <div class="col-md-12">
@@ -61,7 +61,7 @@
   </div>
 
   <form class="form-horizontal upload-form" name="uploadform" enctype="multipart/form-data" method="post" action="/flea">
-    <button id="upload-button" type="submit" class="btn pull-right"><span class="glyphicon glyphicon-play dm-continue-btn"></span></button>
+    <button id="upload-button" type="submit" class="btn float-right"><span class="glyphicon glyphicon-play dm-continue-btn"></span></button>
   </form>
 
 </div>
@@ -74,7 +74,9 @@
       </div>
       <div id="modal-error-msg" class="modal-body text-danger">This is my error message</div>
       <div class="modal-footer">
-        <button data-dismiss="modal" class="btn btn-primary" type="button">Close</button>
+        <button type="submit" class="continue-btn btn">
+          Run Analysis
+        <span class="dm-continue-btn fas fa-play"></span></button>
       </div>
     </div>
   </div>

@@ -31,9 +31,7 @@ exports.invoke = function(req, res) {
     datatype = postdata.datatype,
     gencodeid = postdata.gencodeid;
 
-  if (postdata.receive_mail == "true") {
-    prime.mail = postdata.mail;
-  }
+  prime.mail = postdata.mail;
 
   Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
     if (err) {
@@ -103,27 +101,8 @@ exports.getResults = function(req, res) {
   });
 };
 
-// app.get('/prime/:id/info', prime.getInfo);
-exports.getInfo = function(req, res) {
-  var id = req.params.id;
-
-  //Return all results
-  PRIME.findOne(
-    { _id: id },
-    { creation_time: 1, start_time: 1, status: 1 },
-    function(err, prime_info) {
-      if (err || !prime_info) {
-        res.json(500, error.errorResponse("Invalid ID : " + id));
-      } else {
-        // Should return results page
-        res.json(200, prime_info);
-      }
-    }
-  );
-};
-
 /**
- * Returns log txt file 
+ * Returns log txt file
  * app.get('/prime/:id/results', prime.getLog);
  */
 exports.getLog = function(req, res) {
@@ -171,7 +150,8 @@ exports.resubscribePendingJobs = function(req, res) {
 };
 
 exports.getMSAFile = function(req, res) {
-  var id = req.params.id, name = req.params.name;
+  var id = req.params.id,
+    name = req.params.name;
 
   var options = {};
 

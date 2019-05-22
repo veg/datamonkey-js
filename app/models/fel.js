@@ -37,7 +37,13 @@ FEL.virtual("filepath").get(function() {
  * Original file path for document's file upload
  */
 FEL.virtual("original_fn").get(function() {
-  return path.resolve(__dirname + "/../../uploads/msa/" + this._id + "-original." + this.original_extension);
+  return path.resolve(
+    __dirname +
+      "/../../uploads/msa/" +
+      this._id +
+      "-original." +
+      this.original_extension
+  );
 });
 
 /**

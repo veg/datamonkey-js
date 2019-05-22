@@ -5,7 +5,8 @@ var querystring = require("querystring"),
   helpers = require(__dirname + "/../../lib/helpers.js"),
   hpcsocket = require(__dirname + "/../../lib/hpcsocket.js"),
   fs = require("fs"),
-  logger = require("../../lib/logger");
+  logger = require("../../lib/logger"),
+  setup = require(__dirname + "/../../config/setup.js");
 
 var mongoose = require("mongoose"),
   Msa = mongoose.model("Msa"),
@@ -13,8 +14,8 @@ var mongoose = require("mongoose"),
   PartitionInfo = mongoose.model("PartitionInfo"),
   SLAC = mongoose.model("SLAC");
 
-var redis = require('redis'),
-  client = redis.createClient({host : 'localhost', port : 6379});
+var redis = require("redis"),
+  client = redis.createClient({ host: setup.redisHost, port: setup.redisPort });
 
 exports.form = function(req, res) {
   var post_to = "/slac";
@@ -34,9 +35,7 @@ exports.invoke = function(req, res) {
     datatype = 0,
     gencodeid = postdata.gencodeid;
 
-  if (postdata.receive_mail == "true") {
-    slac.mail = postdata.mail;
-  }
+  slac.mail = postdata.mail;
 
   Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
     if (err) {
@@ -110,40 +109,6 @@ exports.getPage = function(req, res) {
   });
 };
 
-exports.getResults = function(req, res) {
-  var slacid = req.params.id;
-  SLAC.findOne({ _id: slacid }, function(err, slac) {
-    if (err || !slac) {
-      res.json(500, error.errorResponse("invalid id : " + slacid));
-    } else {
-      // Should return results page
-      // Append PMID to results
-      var slac_results = JSON.parse(slac.results);
-      slac_results["PMID"] = slac.pmid;
-      res.json(200, slac_results);
-    }
-  });
-};
-
-// app.get('/slac/:id/info', slac.getInfo);
-exports.getInfo = function(req, res) {
-  var id = req.params.id;
-
-  //Return all results
-  SLAC.findOne(
-    { _id: id },
-    { creation_time: 1, start_time: 1, status: 1 },
-    function(err, slac_info) {
-      if (err || !slac_info) {
-        res.json(500, error.errorResponse("Invalid ID : " + id));
-      } else {
-        // Should return results page
-        res.json(200, slac_info);
-      }
-    }
-  );
-};
-
 /**
  * Returns log txt file
  * app.get('/slac/:id/results', slac.getLog);
@@ -193,7 +158,8 @@ exports.resubscribePendingJobs = function(req, res) {
 };
 
 exports.getMSAFile = function(req, res) {
-  var id = req.params.id, name = req.params.name;
+  var id = req.params.id,
+    name = req.params.name;
 
   var options = {};
 
@@ -210,16 +176,18 @@ exports.fasta = function(req, res) {
   var id = req.params.id;
 
   SLAC.findOne({ _id: id }, function(err, slac) {
-    if(err || !slac) {
+    if (err || !slac) {
       winston.info(err);
       res.json(500, error.errorReponse("invalid id : " + id));
     }
-    Msa.deliverFasta(slac.filepath).then(value => {
-      res.json(200, {fasta: value});
-    }).catch(err => {
-      winston.info(err);
-      res.json(500, {error: "Unable to deliver fasta."});
-    });
+    Msa.deliverFasta(slac.filepath)
+      .then(value => {
+        res.json(200, { fasta: value });
+      })
+      .catch(err => {
+        winston.info(err);
+        res.json(500, { error: "Unable to deliver fasta." });
+      });
   });
 };
 
@@ -227,9 +195,8 @@ exports.getUsage = function(req, res) {
   client.get(SLAC.cachePath(), function(err, data) {
     try {
       res.json(200, JSON.parse(data));
-    } catch(err){
-        winston.info(err);
-      };
-
+    } catch (err) {
+      winston.info(err);
+    }
   });
 };

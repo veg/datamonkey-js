@@ -6,7 +6,8 @@ var querystring = require("querystring"),
   hpcsocket = require(__dirname + "/../../lib/hpcsocket.js"),
   fs = require("fs"),
   path = require("path"),
-  logger = require("../../lib/logger");
+  logger = require("../../lib/logger"),
+  setup = require(__dirname + "/../../config/setup.js");
 
 var mongoose = require("mongoose"),
   Msa = mongoose.model("Msa"),
@@ -14,8 +15,8 @@ var mongoose = require("mongoose"),
   PartitionInfo = mongoose.model("PartitionInfo"),
   GARD = mongoose.model("GARD");
 
-var redis = require('redis'),
-  client = redis.createClient({host : 'localhost', port : 6379});
+var redis = require("redis"),
+  client = redis.createClient({ host: setup.redisHost, port: setup.redisPort });
 
 exports.form = function(req, res) {
   var post_to = "/gard";
@@ -40,9 +41,7 @@ exports.invoke = function(req, res) {
   gard.site_to_site_variation = site_to_site_variation;
   gard.rate_classes = rate_classes;
 
-  if (postdata.receive_mail == "true") {
-    gard.mail = postdata.mail;
-  }
+  gard.mail = postdata.mail;
 
   Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
     if (err) {
@@ -116,40 +115,6 @@ exports.getPage = function(req, res) {
   });
 };
 
-exports.getResults = function(req, res) {
-  var gardid = req.params.id;
-  GARD.findOne({ _id: gardid }, function(err, gard) {
-    if (err || !gard) {
-      res.json(500, error.errorResponse("invalid id : " + gardid));
-    } else {
-      // Should return results page
-      // Append PMID to results
-      var gard_results = JSON.parse(gard.results);
-      gard_results["PMID"] = gard.pmid;
-      res.json(200, gard_results);
-    }
-  });
-};
-
-// app.get('/gard/:id/info', gard.getInfo);
-exports.getInfo = function(req, res) {
-  var id = req.params.id;
-
-  //Return all results
-  GARD.findOne(
-    { _id: id },
-    { creation_time: 1, start_time: 1, status: 1 },
-    function(err, gard_info) {
-      if (err || !gard_info) {
-        res.json(500, error.errorResponse("Invalid ID : " + id));
-      } else {
-        // Should return results page
-        res.json(200, gard_info);
-      }
-    }
-  );
-};
-
 /**
  * Returns log txt file
  * app.get('/gard/:id/results', gard.getLog);
@@ -199,7 +164,8 @@ exports.resubscribePendingJobs = function(req, res) {
 };
 
 exports.getMSAFile = function(req, res) {
-  var id = req.params.id, name = req.params.name;
+  var id = req.params.id,
+    name = req.params.name;
 
   var options = {};
 
@@ -216,32 +182,40 @@ exports.fasta = function(req, res) {
   var id = req.params.id;
 
   GARD.findOne({ _id: id }, function(err, gard) {
-    if(err || !gard) {
+    if (err || !gard) {
       winston.info(err);
       res.json(500, error.errorReponse("invalid id : " + id));
     }
-    Msa.deliverFasta(gard.filepath).then(value => {
-      res.json(200, {fasta: value});
-    }).catch(err => {
-      winston.info(err);
-      res.json(500, {error: "Unable to deliver fasta."});
-    });
+    Msa.deliverFasta(gard.filepath)
+      .then(value => {
+        res.json(200, { fasta: value });
+      })
+      .catch(err => {
+        winston.info(err);
+        res.json(500, { error: "Unable to deliver fasta." });
+      });
   });
 };
 
 exports.getScreenedData = function(req, res) {
   var id = req.params.id,
-    file_path = path.join(__dirname, '..', '..', 'uploads', 'msa', id+'.gard.result.nex');
-    res.download(file_path, 'screened_data.nex');
+    file_path = path.join(
+      __dirname,
+      "..",
+      "..",
+      "uploads",
+      "msa",
+      id + ".gard.result.nex"
+    );
+  res.download(file_path, "screened_data.nex");
 };
 
 exports.getUsage = function(req, res) {
   client.get(GARD.cachePath(), function(err, data) {
     try {
       res.json(200, JSON.parse(data));
-    } catch(err){
-        winston.info(err);
-      };
-
+    } catch (err) {
+      winston.info(err);
+    }
   });
 };
