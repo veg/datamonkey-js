@@ -12,14 +12,14 @@
     fasta_ready = true;
 
     $(document).ready( function () {
-      hyphyVision.gard($("#job-report").data('jobid') + '/results', "content", fasta, true, true)
+      hyphyVision.gard($("#job-report").data('jobid') + '/results', "content", fasta, true, true, true)
     });
 
   });
 
   if (fasta_ready == false) {
     $(document).ready( function () {
-      hyphyVision.gard($("#job-report").data('jobid') + '/results', "content", null, true, true)
+      hyphyVision.gard($("#job-report").data('jobid') + '/results', "content", null, true, true, true)
     });
   }
 
