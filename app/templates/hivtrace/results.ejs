@@ -11,6 +11,7 @@
     <li class='disabled' id="clusters-tab"><a href="#trace-clusters" data-toggle="tab">Clusters</a></li>
     <li class='disabled' id="nodes-tab"><a href="#trace-nodes" data-toggle="tab">Nodes</a></li>
     <li class='disabled' id="attributes-tab"><a href="#trace-attributes" data-toggle="tab">Attributes</a></li>
+    <li class='enabled' id="tn93-tab"><a href="#tn93-results" data-toggle="tab">TN93 Results</a></li>
   </ul>
 
   <div class="tab-content">
@@ -144,6 +145,14 @@
       </div>
     </div>
 
+  </div>
+
+  <div id="tn93-results" class="tab-pane shiv-tab-content">
+    <div class='row'>
+      <div class='col-lg-12'>
+          <p style="margin-top: 10px; margin-bottom: 10 px;"><a href="<%=hivtrace._id%>/tn93.csv" class="btn btn-primary" role="button">Download Results</a></p>
+      </div>
+    </div>
   </div>
 
   <%if (hivtrace.lanl_compare == true) { %>

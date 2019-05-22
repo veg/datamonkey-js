@@ -137,6 +137,7 @@ module.exports = function(app) {
   app.get('/hivtrace/:id/settings', hivtrace.settings);
   app.get('/hivtrace/:id/attributes', hivtrace.attributeMap);
   app.get('/hivtrace/:id/aligned.fasta', hivtrace.aligned_fasta);
+  app.get('/hivtrace/:id/tn93.csv', hivtrace.tn93_results);
 
   // MEME ROUTES
   meme = require(path.join(__dirname, '../app/routes/meme'));
