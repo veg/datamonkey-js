@@ -531,6 +531,36 @@ exports.aligned_fasta = function(req, res) {
   });
 };
 
+exports.tn93_results = function(req, res) {
+  var id = req.params.id;
+  HivTrace.findOne({ _id: id }, function(err, hivtrace) {
+    if (err || !hivtrace) {
+      res.json(
+        500,
+        error.errorResponse("There is no HIV-TRACE job with id of " + id)
+      );
+    } else {
+      var options = {
+        root: __dirname + "/../../uploads/hivtrace/",
+        dotfiles: "deny",
+        headers: {
+          "x-timestamp": Date.now(),
+          "x-sent": true
+        }
+      };
+      console.log("res.sendfile");
+      res.sendfile(hivtrace.tn93_dl, options, function(err) {
+        if (err) {
+          console.log(err);
+          res.status(err.status).end();
+        } else {
+          console.log("sent:", hivtrace.tn93_dl);
+        }
+      });
+    }
+  });
+};
+
 exports.getUsage = function(req, res) {
   HivTrace.usageStatistics(function(err, hivtrace) {
     res.json(200, hivtrace);

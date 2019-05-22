@@ -215,6 +215,17 @@ HivTrace.virtual("aligned_fasta_fn").get(function() {
 });
 
 /**
+* file path for TN93 document
+*/
+HivTrace.virtual("tn93_fn").get(function() {
+  return __dirname + "/../../uploads/hivtrace/" + this._id + ".tn93.csv";
+});
+
+HivTrace.virtual("tn93_dl").get(function() {
+  return this._id + ".tn93.csv";
+});
+
+/**
 * file path for trace results
 */
 HivTrace.virtual("trace_results").get(function() {
