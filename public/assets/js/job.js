@@ -29,12 +29,9 @@ function setupJob() {
 
   var socket_address = document.location.origin;
 
-  var socket = io.connect(
-    socket_address,
-    {
-      reconnect: true
-    }
-  );
+  var socket = io.connect(socket_address, {
+    reconnect: true
+  });
 
   var was_error = false;
 
@@ -148,7 +145,7 @@ function setupJob() {
   });
 
   socket.on("script error", function(data) {
-    $("#modal-error-msg").html(msg);
+    $("#modal-error-msg").html(data);
     $("#errorModal").modal();
   });
 
