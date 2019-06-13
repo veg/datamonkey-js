@@ -1,7 +1,8 @@
 var React = require("react"),
-  ReactDOM = require("react-dom");
+  ReactDOM = require("react-dom"),
+  createReactClass = require("create-react-class");
 
-var SLACForm = React.createClass({
+var SLACForm = createReactClass({
   onMailChange: function() {
     //datamonkey.helpers.validate_email(elem);
   },

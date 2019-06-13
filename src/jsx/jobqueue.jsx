@@ -1,5 +1,6 @@
 var React = require("react"),
   ReactDOM = require("react-dom"),
+  createReactClass = require("create-react-class"),
   moment = require("moment");
 
 var SetIntervalMixin = {
@@ -14,7 +15,7 @@ var SetIntervalMixin = {
   }
 };
 
-var Job = React.createClass({
+var Job = createReactClass({
   mixins: [SetIntervalMixin],
   getInitialState: function() {
     return { seconds: 0 };
@@ -66,7 +67,7 @@ var Job = React.createClass({
   }
 });
 
-var JobTable = React.createClass({
+var JobTable = createReactClass({
   loadJobsFromServer: function() {
     var self = this;
     d3.json(this.props.url, function(data) {
