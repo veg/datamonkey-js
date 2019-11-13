@@ -9,7 +9,8 @@ var AnalysisSchema = require(__dirname + "/analysis");
 var Busted = AnalysisSchema.extend({
   tagged_nwk_tree: String,
   last_status_msg: String,
-  results: Object
+  results: Object,
+  ds_variation: Number
 });
 
 Busted.virtual("analysistype").get(function() {

@@ -177,16 +177,20 @@ Msa.statics.deliverFasta = function(filepath) {
           .trim()
           .split(" ")
           .map(name => name.slice(1, -1));
-      resolve(
-        split_data
-          .slice(start_index, end_index)
-          .map((line, index) => {
-            const header = ">" + tax_labels[index],
-              sequence = line.trim().replace(";", "");
-            return [header, sequence].join("\n");
-          })
-          .join("\n") + "\n"
-      );
+      if ((start_index == 0) | (tax_labels == 0)) {
+        resolve(null);
+      } else {
+        resolve(
+          split_data
+            .slice(start_index, end_index)
+            .map((line, index) => {
+              const header = ">" + tax_labels[index],
+                sequence = line.trim().replace(";", "");
+              return [header, sequence].join("\n");
+            })
+            .join("\n") + "\n"
+        );
+      }
     });
   });
 };

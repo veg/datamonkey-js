@@ -1,8 +1,9 @@
 var React = require("react"),
   ReactDOM = require("react-dom"),
+  createReactClass = require("create-react-class"),
   moment = require("moment");
 
-var UsageChart = React.createClass({
+var UsageChart = createReactClass({
   initialize: function() {
     var margin = { top: 20, right: 40, bottom: 20, left: 40 },
       width = 1100 - margin.left - margin.right,
@@ -121,7 +122,7 @@ var UsageChart = React.createClass({
   }
 });
 
-var Histogram = React.createClass({
+var Histogram = createReactClass({
   initialize: function() {
     var margin = { top: 20, right: 40, bottom: 40, left: 40 },
       width = 500 - margin.left - margin.right,
@@ -217,7 +218,7 @@ var Histogram = React.createClass({
   }
 });
 
-var SitesAndSequencesScatterPlot = React.createClass({
+var SitesAndSequencesScatterPlot = createReactClass({
   initialize: function() {
     var margin = { top: 50, bottom: 50, right: 50, left: 50 },
       width = 500 - margin.right - margin.left,
@@ -318,7 +319,7 @@ var SitesAndSequencesScatterPlot = React.createClass({
   }
 });
 
-var UsageInformation = React.createClass({
+var UsageInformation = createReactClass({
   fetchData: function(method) {
     var self = this;
     self.setState({ data: null }, function() {
@@ -396,7 +397,7 @@ var UsageInformation = React.createClass({
   }
 });
 
-var UsageDashboard = React.createClass({
+var UsageDashboard = createReactClass({
   tabClick: function(selection) {
     var self = this;
     return function() {

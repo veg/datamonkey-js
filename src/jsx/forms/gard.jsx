@@ -1,7 +1,8 @@
 var React = require("react"),
-  ReactDOM = require("react-dom");
+  ReactDOM = require("react-dom"),
+  createReactClass = require("create-react-class");
 
-var GARDForm = React.createClass({
+var GARDForm = createReactClass({
   onMailChange: function() {},
 
   submit: function(e) {

@@ -1,5 +1,6 @@
 var React = require("react"),
-  ReactDOM = require("react-dom");
+  ReactDOM = require("react-dom"),
+  createReactClass = require("create-react-class");
 
 /* 
 
@@ -10,7 +11,7 @@ var React = require("react"),
   The object associated with it will be a dictionary with keys and its respective values.
 
 */
-var AttributeModal = React.createClass({
+var AttributeModal = createReactClass({
   getInitialState: function() {
     return { attr: {} };
   },
