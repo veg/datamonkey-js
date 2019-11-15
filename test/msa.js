@@ -295,15 +295,10 @@ describe("delivering fasta", function() {
       output_file_path = path.join(__dirname, "..", "test", "res", "CD2.fasta"),
       converted_data = Msa.deliverFasta(input_file_path),
       output_data = fs.readFileSync(output_file_path).toString();
-    converted_data
-      .then(function(value) {
-        assert.equal(value, output_data);
-        done();
-      })
-      .catch(err => {
-        throw err;
-        done();
-      });
+    converted_data.then(function(value) {
+      assert.equal(value, output_data);
+      done();
+    });
   });
 
   it("should deliver fasta without alteration", function(done) {
