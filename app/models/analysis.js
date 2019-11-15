@@ -9,7 +9,10 @@ var mongoose = require("mongoose"),
   extend = require("mongoose-schema-extend");
 
 var redis = require("redis"),
-  client = redis.createClient();
+  client = redis.createClient({
+    host: setup.redisHost,
+    port: setup.redisPort
+  });
 
 var Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
