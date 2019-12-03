@@ -287,6 +287,7 @@ class FUBARForm extends React.Component {
 
         <button
           type="submit"
+          id="submit-button"
           className="run-analysis-button-text dm-continue-btn btn float-right"
           onClick={this.submit}
         >
