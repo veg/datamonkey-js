@@ -20,20 +20,14 @@ class FUBARForm extends React.Component {
     super(props);
     this.state = {
       showAdvanced: false,
-      length_of_each_chain: 2000000,
-      number_of_burn_in_samples: 1000000,
-      number_of_samples: 100,
+      grid_points: 20,
+      concentration: 0.5,
       message: null
     };
 
     this.toggleShow = this.toggleShow.bind(this);
-    this.onLengthChange = this.onLengthChange.bind(this);
-    this.onBurninChange = this.onBurninChange.bind(this);
-    this.onSampleChange = this.onSampleChange.bind(this);
-  }
-
-  onMailChange() {
-    //datamonkey.helpers.validate_email(elem);
+    this.onGridPointChange = this.onGridPointChange.bind(this);
+    this.onConcentrationChange = this.onConcentrationChange.bind(this);
   }
 
   toggleShow() {
@@ -44,62 +38,37 @@ class FUBARForm extends React.Component {
     });
   }
 
-  onLengthChange(event) {
+  onGridPointChange(event) {
     var value = event.target.value;
-    if (value < 500000) {
+    if (value < 5) {
       this.setState({
-        message: "Please enter a length that is at least 500000."
+        message: "Please enter an amount of grid points that is more than 5."
       });
-    } else if (value > 50000000) {
+    } else if (value > 50) {
       this.setState({
-        message: "Please enter a length that is no more than 50000000."
+        message: "Please enter an amount of grid points that is less than 50."
       });
     } else {
       this.setState({
-        length_of_each_chain: value,
+        grid_points: value,
         message: null
       });
     }
   }
 
-  onBurninChange(event) {
-    var value = event.target.value,
-      length = this.state.length_of_each_chain;
-    if (value < Math.ceil(0.05 * length)) {
-      this.setState({
-        message:
-          "Please enter a burn in that is at least 5% of the chain length."
-      });
-    } else if (value > Math.ceil(0.95 * length)) {
-      this.setState({
-        message:
-          "Please enter a burn in that is no more than 95% of the chain length."
-      });
-    } else {
-      this.setState({
-        number_of_burn_in_samples: value,
-        message: null
-      });
-    }
-  }
-  onSampleChange(event) {
+  onConcentrationChange(event) {
     var value = event.target.value;
-    if (value < 50) {
+    if (value < 0.001) {
       this.setState({
-        message:
-          "Please enter an amount of samples to be drawn that is more than 50."
+        message: "Please enter a concentration that is more than .001."
       });
-    } else if (
-      value >
-      this.state.length_of_each_chain - this.state.number_of_burn_in_samples
-    ) {
+    } else if (value > 1) {
       this.setState({
-        message:
-          "Please enter an amount of samples that is no more than the chain length minus the amount of burn in."
+        message: "Please enter a concentration that is less than 1."
       });
     } else {
       this.setState({
-        number_of_samples: value,
+        concentration: value,
         message: null
       });
     }
@@ -290,59 +259,12 @@ class FUBARForm extends React.Component {
                   step="1"
                   min="5"
                   max="50"
-                />
-              </div>
-
-              <div>
-                <label>Number of MCMC chains</label>
-                <input
-                  id="number_of_mcmc_chains"
-                  className="form-control"
-                  type="number"
-                  defaultValue="5"
-                  step="1"
-                  min="2"
-                  max="20"
-                />
-              </div>
-
-              <div>
-                <label>Length of each chain</label>
-                <input
-                  id="length_of_each_chain"
-                  className="form-control"
-                  type="number"
-                  step="500000"
-                  value={this.state.length_of_each_chain}
-                  onChange={this.onLengthChange}
+                  value={self.state.grid_points}
+                  onChange={self.onGridPointChange}
                 />
               </div>
             </div>
             <div className="col-md-6">
-              <div>
-                <label>Use this many samples as burn-in</label>
-                <input
-                  id="number_of_burn_in_samples"
-                  className="form-control"
-                  type="number"
-                  step="500000"
-                  value={this.state.number_of_burn_in_samples}
-                  onChange={this.onBurninChange}
-                />
-              </div>
-
-              <div>
-                <label>How many samples should be drawn from each chain?</label>
-                <input
-                  id="number_of_samples"
-                  className="form-control"
-                  type="number"
-                  step="10"
-                  value={this.state.number_of_samples}
-                  onChange={this.onSampleChange}
-                />
-              </div>
-
               <div>
                 <label>Concentration parameter of the Dirichlet prior</label>
                 <input
@@ -350,9 +272,11 @@ class FUBARForm extends React.Component {
                   className="form-control"
                   type="number"
                   defaultValue=".5"
-                  step="1"
+                  step=".1"
                   min="0.001"
                   max="1"
+                  value={self.state.concentration}
+                  onChange={self.onConcentrationChange}
                 />
               </div>
             </div>
