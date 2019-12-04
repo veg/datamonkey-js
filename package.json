@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "mocha",
-    "ui-tests": "mocha -t 100000 test/ui/",
+    "ui-tests": "mocha-parallel-tests -t 86400000 test/ui/",
     "lint": "./node_modules/.bin/eslint",
     "format": "prettier 'src/**/*.{js,jsx}' 'app/**/*.{js,jsx}' 'lib/**/*.{js,jsx}' 'config/**/*.{js,jsx}' 'test/**/*.{js,jsx}' --write",
     "precommit": "pretty-quick --staged"
@@ -98,7 +98,8 @@
     "less": "^2.7.2",
     "less-loader": "^4.0.4",
     "lodash.clonedeep": "^4.5.0",
-    "mocha": "^2.0.0",
+    "mocha": "^6.2.2",
+    "mocha-parallel-tests": "^2.2.2",
     "node-inspect": "^1.11.2",
     "node-sass": "^4.9.3",
     "prettier": "^1.14.2",
