@@ -9,7 +9,7 @@
   },
   "scripts": {
     "test": "mocha",
-    "ui-tests": "mocha-parallel-tests -t 86400000 test/ui/",
+    "ui-tests": "mocha-parallel-tests -t 86400000 --max-parallel 10 test/ui/",
     "lint": "./node_modules/.bin/eslint",
     "format": "prettier 'src/**/*.{js,jsx}' 'app/**/*.{js,jsx}' 'lib/**/*.{js,jsx}' 'config/**/*.{js,jsx}' 'test/**/*.{js,jsx}' --write",
     "precommit": "pretty-quick --staged"
