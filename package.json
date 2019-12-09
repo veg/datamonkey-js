@@ -61,7 +61,7 @@
     "underscore": "^1.9.1",
     "validator": "1.2.x",
     "winston": "^0.8.3",
-    "yarn": "^0.27.5"
+    "yarn": "^1.19.1"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.3.1",
