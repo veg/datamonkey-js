@@ -17,6 +17,8 @@ var database_name = "datamonkey-dev";
 
 define('host','datamonkey-dev');
 define('port', 4002);
+define('redisHost', 'localhost');
+define('redisPort', '6379');
 define('database', database_path + database_name);
 define('database_name', database_name);
 define('log_level', 'warn');
