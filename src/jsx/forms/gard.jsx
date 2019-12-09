@@ -193,6 +193,7 @@ var GARDForm = createReactClass({
         </div>
         <button
           type="submit"
+          id="submit-button"
           className="run-analysis-button-text dm-continue-btn btn float-right"
           onClick={this.submit}
         >

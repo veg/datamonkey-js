@@ -200,6 +200,7 @@ class BranchSelection extends React.Component {
         </div>
 
         <button
+          id="branch-selection-submit-button"
           onClick={() =>
             this.submit(this.state.tree, this.props.returnAnnotatedTreeCallback)
           }

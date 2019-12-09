@@ -16,7 +16,10 @@ var mongoose = require("mongoose"),
   HivTrace = mongoose.model("HivTrace"),
   Msa = mongoose.model("Msa");
 
-var publisher = redis.createClient();
+var publisher = redis.createClient({
+  host: setup.redisHost,
+  port: setup.redisPort
+});
 
 /**
  * Request a new job ID
@@ -88,7 +91,10 @@ exports.uploadFile = function(req, res) {
           hivtrace.mail = postdata.mail;
         }
 
-        var publisher = redis.createClient(),
+        var publisher = redis.createClient({
+            host: setup.redisHost,
+            port: setup.redisPort
+          }),
           channel_id = "fasta_parsing_progress_" + hivtrace._id;
 
         var file_path = req.files.files.file;

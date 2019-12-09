@@ -402,6 +402,7 @@ class FADEForm extends React.Component {
         <ErrorMessage message={this.state.message} />
         <button
           type="submit"
+          id="submit-button"
           className="run-analysis-button-text dm-continue-btn btn float-right"
           onClick={this.submit}
         >

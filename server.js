@@ -20,10 +20,7 @@ var express = require("express"),
   bb = require("express-busboy");
 
 // Connect to database
-mongoose.connect(
-  setup.database,
-  { useMongoClient: true }
-);
+mongoose.connect(setup.database, { useMongoClient: true });
 
 //Ensure that upload paths exists
 mkdirErrorLogger = error.errorLogger(["EEXIST"]);
@@ -112,7 +109,10 @@ io.sockets.on("connection", function(socket) {
   });
 
   socket.on("fasta_parsing_progress_start", function(data) {
-    var fasta_listener = redis.createClient();
+    var fasta_listener = redis.createClient({
+      host: setup.redisHost,
+      port: setup.redisPort
+    });
     fasta_listener.subscribe("fasta_parsing_progress_" + data.id);
     fasta_listener.on("message", function(channel, message) {
       socket.emit("fasta_parsing_update", message);
@@ -123,7 +123,10 @@ io.sockets.on("connection", function(socket) {
   });
 
   socket.on("attribute_parsing_progress_start", function(data) {
-    var attr_listener = redis.createClient();
+    var attr_listener = redis.createClient({
+      host: setup.redisHost,
+      port: setup.redisPort
+    });
     attr_listener.subscribe("attribute_parsing_progress_" + data.id);
     attr_listener.on("message", function(channel, message) {
       socket.emit("attribute_parsing_progress", message);

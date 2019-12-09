@@ -1,6 +1,6 @@
 {
   "name": "datamonkey.js",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "A free public server for comparative analysis of sequence alignments using state-of-the-art statistical models.",
   "private": true,
   "author": {
@@ -9,6 +9,7 @@
   },
   "scripts": {
     "test": "mocha",
+    "ui-tests": "mocha-parallel-tests -t 86400000 --max-parallel 10 test/ui/",
     "lint": "./node_modules/.bin/eslint",
     "format": "prettier 'src/**/*.{js,jsx}' 'app/**/*.{js,jsx}' 'lib/**/*.{js,jsx}' 'config/**/*.{js,jsx}' 'test/**/*.{js,jsx}' --write",
     "precommit": "pretty-quick --staged"
@@ -61,7 +62,7 @@
     "underscore": "^1.9.1",
     "validator": "1.2.x",
     "winston": "^0.8.3",
-    "yarn": "^0.27.5"
+    "yarn": "^1.19.1"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.3.1",
@@ -97,10 +98,12 @@
     "less": "^2.7.2",
     "less-loader": "^4.0.4",
     "lodash.clonedeep": "^4.5.0",
-    "mocha": "^2.0.0",
+    "mocha": "^6.2.2",
+    "mocha-parallel-tests": "^2.2.2",
     "node-inspect": "^1.11.2",
     "node-sass": "^4.9.3",
     "prettier": "^1.14.2",
+    "puppeteer": "^2.0.0",
     "reactify": "^1.1.1",
     "sass-loader": "6.0.7",
     "scss-loader": "^0.0.1",

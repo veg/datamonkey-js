@@ -17,6 +17,8 @@ var database_name = "datamonkey-dev";
 
 define('host','datamonkey-dev');
 define('port', 4002);
+define('redisHost', 'localhost');
+define('redisPort', '6379');
 define('database', database_path + database_name);
 define('database_name', database_name);
 define('log_level', 'warn');
@@ -26,6 +28,4 @@ define('fasta_validator', '/home/sweaver/TN93/validate_fasta');
 define('hyphy', __dirname + '/node_modules/hyphy/HYPHYMP');
 define('cluster_ip_urls_array', cluster_ip_urls_array);
 define('default_url', 'http://silverback.temple.edu:7013');
-define('redisPort', 6379);
-define('redisHost', "localhost");
 //define('warning_message', "Hi");
