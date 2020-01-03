@@ -43,7 +43,6 @@ describe("loadBalance function: single string cross check", function() {
   it("Returns one string that is cross referenced with URLs array", function() {
     loadBalance(urls, (err, return_url) => {
       var history = [return_url];
-      console.log(history);
       assert.equal(
         _.intersection(history, urls).length,
         1,
