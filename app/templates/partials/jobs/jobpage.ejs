@@ -27,8 +27,27 @@
 <div>
 
 <% if (job.status == 'aborted') { %>
-  <div class="alert alert-danger"><%- job.generic_error_msg %></div>
-<% } %>
+
+  <div class="row alert alert-danger"><%- job.generic_error_msg %></div>
+
+  <div class="row">
+    <div class="card-header col-12"> 
+      <h2 class="float-left">Standard Error Message</h2>
+      <div class="float-right">
+        <a href="<%= job._id%>/log.txt">
+          <button id="job-stdout-copy-button" class="btn btn-primary btn-sm float-right" type="button">
+            <span class="fa fa-download"></span> Download Log
+          </button>
+        </a>
+      </div>
+    </div>
+
+    <div class="card-body bg-light" style="overflow-x: hidden;">
+      <pre><code class="card-body"><%- job.stderr %></code></pre>
+    </div>
+  </div>
+
+<% } else { %>
 
 <div id="standard-output" class="row">
 
@@ -47,6 +66,7 @@
     <div id="stdOut-container"></div>
   </div>
 </div>
+<% } %>
 
 <div id="stdOut-placeholder" style="display:none">
   <%=job.last_status_msg || "## Intializing" %>
