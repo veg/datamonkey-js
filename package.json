@@ -1,6 +1,6 @@
 {
   "name": "datamonkey.js",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "A free public server for comparative analysis of sequence alignments using state-of-the-art statistical models.",
   "private": true,
   "author": {
@@ -8,7 +8,7 @@
     "email": "steven@stevenweaver.org"
   },
   "scripts": {
-    "test": "mocha",
+    "test": "mocha --exit",
     "ui-tests": "mocha-parallel-tests -t 86400000 --max-parallel 10 test/ui/",
     "lint": "./node_modules/.bin/eslint",
     "format": "prettier 'src/**/*.{js,jsx}' 'app/**/*.{js,jsx}' 'lib/**/*.{js,jsx}' 'config/**/*.{js,jsx}' 'test/**/*.{js,jsx}' --write",
@@ -29,7 +29,7 @@
     "express-busboy": "^2.4.4",
     "express-validator": "^2.21.0",
     "hivtrace-viz": "^0.0.14",
-    "hyphy-vision": "2.6.1",
+    "hyphy-vision": "2.6.3",
     "jade": "^1.0.0",
     "jquery-file-upload": "^4.0.5",
     "jquery-file-upload-middleware": "^0.1.8",
