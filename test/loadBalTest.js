@@ -1,5 +1,7 @@
 var assert = require("assert");
 var loadBalance = require("./../lib/loadBal.js").loadBalance;
+var intializeLoadBalancer = require("./../lib/loadBal.js")
+  .setInitialLoadBalanceKeys;
 var _ = require("underscore");
 
 //var urls = ["www.1.com", "www.2.com", "www.3.com", "www.4.com"]; //replace this with URL array
@@ -34,6 +36,10 @@ describe("loadBalance function: test iteration with string cross check", functio
 });
 
 describe("loadBalance function: single string cross check", function() {
+  before(function() {
+    intializeLoadBalancer();
+  });
+
   it("Returns one string that is cross referenced with URLs array", function() {
     loadBalance(urls, (err, return_url) => {
       var history = [return_url];
