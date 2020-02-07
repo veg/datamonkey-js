@@ -161,6 +161,32 @@ class Citations extends React.Component {
               </div>
               <div style={dmCardBody} className="dm-card-body card-body">
                 <div style={dmCardTitle} className="dm-card-title card-title">
+                  Sergei L Kosakovsky Pond, Art FY Poon, Ryan Velazquez, Steven
+                  Weaver, N Lance Hepler, Ben Murrell, Stephen D Shank, Brittany
+                  Rife Magalis, Dave Bouvier, Anton Nekrutenko, Sadie Wisotsky,
+                  Stephanie J Spielman, Simon DW Frost, Spencer V Muse (2020)
+                </div>
+                <div>
+                  <a
+                    style={dmLink}
+                    target="_blank"
+                    href="https://academic.oup.com/mbe/article-abstract/37/1/295/5555420"
+                  >
+                    <i
+                      style={dmFa}
+                      className="dm-fa fa-external-link-alt"
+                      aria-hidden="true"
+                    />
+                    HyPhy 2.5—A Customizable Platform for Evolutionary
+                    Hypothesis Testing Using Phylogenies.
+                  </a>
+                  <p>Molecular Biology and Evolution 37.1 (2020): 295-299.</p>
+                </div>
+              </div>
+              <hr />
+
+              <div style={dmCardBody} className="dm-card-body card-body">
+                <div style={dmCardTitle} className="dm-card-title card-title">
                   Sergei L. Kosakovsky Pond, Simon D. W. Frost and Spencer V.
                   Muse (2005)
                 </div>
