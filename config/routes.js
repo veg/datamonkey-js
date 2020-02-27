@@ -68,6 +68,25 @@ module.exports = function(app) {
   app.get("/busted/:bustedid/log.txt", busted.getLog);
   busted.resubscribePendingJobs();
 
+  // Contrast-FEL ROUTES
+  contrast_fel = require(path.join(__dirname, "../app/routes/contrast-fel"));
+  app.get("/contrast_fel", contrast_fel.form);
+  app.post("/contrast_fel", contrast_fel.uploadFile);
+  app.get("/contrast_fel/usage", contrast_fel.getUsage);
+  app.get("/contrast_fel/:id/select-foreground", contrast_fel.selectForeground);
+  app.post("/contrast_fel/:id/select-foreground", contrast_fel.invoke);
+  app.get("/contrast_fel/:id/original_file/:name", contrast_fel.getMSAFile);
+  app.get("/contrast_fel/:id/fasta", contrast_fel.fasta);
+  app.get("/contrast_fel/:id", contrast_fel.getPage);
+  app.get("/contrast_fel/:id/info", _.partial(analysis.getInfo, contrast_fel));
+  app.get(
+    "/contrast_fel/:id/results",
+    _.partial(analysis.getResults, contrast_fel)
+  );
+  app.get("/contrast_fel/:id/cancel", contrast_fel.cancel);
+  app.get("/contrast_fel/:id/log.txt", contrast_fel.getLog);
+  contrast_fel.resubscribePendingJobs();
+
   // FADE ROUTES
   fade = require(path.join(__dirname, "../app/routes/fade"));
   app.get("/fade", fade.form);

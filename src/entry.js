@@ -1,9 +1,9 @@
 window.jQuery = window.$ = $;
 
-var io = require("socket.io-client");
+const io = require("socket.io-client");
 window.io = io;
 
-var _ = require("underscore");
+const _ = require("underscore");
 window._ = _;
 
 require("./scss/application.scss");
@@ -11,25 +11,25 @@ require("phylotree.css");
 require("@fortawesome/fontawesome-free/css/all.css");
 require("blueimp-file-upload");
 
-var hyphyVision = require("hyphy-vision");
-
 var datamonkey = require("./js/datamonkey.js");
 datamonkey.helpers = require("./js/datamonkey_helpers.js");
 
-var gard_form = require("jsx/forms/gard.jsx");
-var slac_form = require("jsx/forms/slac.jsx");
-var fubar_form = require("jsx/forms/fubar.jsx");
-var fade_form = require("jsx/forms/fade.jsx");
-var bgm_form = require("jsx/forms/bgm.jsx");
-var render_branch_selection = require("jsx/branch-selection.jsx");
-var datamonkey_branch_selection = require("js/datamonkey_branch_selection");
-var stats = require("jsx/stats.jsx");
-var analysis_tree = require("jsx/analysis_tree.jsx");
-var jobqueue = require("jsx/jobqueue.jsx");
-var render_attribute_modal = require("jsx/attribute_table.jsx");
-var render_citations = require("jsx/citations.jsx");
-var render_help = require("jsx/help.jsx");
-var render_stdOut = require("jsx/job_log.jsx");
+const hyphyVision = require("hyphy-vision");
+const gard_form = require("jsx/forms/gard.jsx");
+const slac_form = require("jsx/forms/slac.jsx");
+const contrast_fel_form = require("jsx/forms/slac.jsx");
+const fubar_form = require("jsx/forms/fubar.jsx");
+const fade_form = require("jsx/forms/fade.jsx");
+const bgm_form = require("jsx/forms/bgm.jsx");
+const render_branch_selection = require("jsx/branch-selection.jsx");
+const datamonkey_branch_selection = require("js/datamonkey_branch_selection");
+const stats = require("jsx/stats.jsx");
+const analysis_tree = require("jsx/analysis_tree.jsx");
+const jobqueue = require("jsx/jobqueue.jsx");
+const render_attribute_modal = require("jsx/attribute_table.jsx");
+const render_citations = require("jsx/citations.jsx");
+const render_help = require("jsx/help.jsx");
+const render_stdOut = require("jsx/job_log.jsx");
 
 window.gard_form = gard_form;
 window.slac_form = slac_form;
