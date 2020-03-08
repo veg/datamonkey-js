@@ -109,7 +109,7 @@
     "scss-loader": "^0.0.1",
     "should": "^7.0.0",
     "style-loader": "^0.22.1",
-    "url-loader": "^0.5.7",
+    "url-loader": "^1.1.2",
     "watchify": "^3.6.0",
     "webpack": "^3.12.0",
     "webpack-cli": "^3.2.1",
