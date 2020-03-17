@@ -95,7 +95,7 @@
     "reactify": "^1.1.1",
     "sass-loader": "6.0.7",
     "scss-loader": "^0.0.1",
-    "should": "^7.0.0",
+    "should": "^13.2.3",
     "style-loader": "^0.22.1",
     "url-loader": "^0.5.7",
     "watchify": "^3.6.0",
