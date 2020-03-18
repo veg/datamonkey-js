@@ -10,15 +10,12 @@ function Table(props) {
 class LogFile extends React.Component {
   constructor(props) {
     super(props);
-    console.log(props);
     this.state = { job_log: props.initialStdOut };
   }
 
   socketListeners() {
     // Status update
     this.props.socket.on("status update", data => {
-      console.log(data);
-
       if (data) {
         this.setState({ job_log: data.msg });
       }
