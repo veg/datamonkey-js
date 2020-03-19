@@ -46,7 +46,7 @@
     "nodemailer": "^1.0.0",
     "nodemailer-sendmail-transport": "^1.0.0",
     "nvm": "0.0.4",
-    "phylotree": "0.1.4",
+    "phylotree": "0.1.6",
     "popper.js": "1.14.4",
     "pretty-quick": "^1.6.0",
     "q": "^1.4.0",
