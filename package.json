@@ -23,7 +23,7 @@
     "blueimp-file-upload": "^9.19.1",
     "bootstrap": "4.1.2",
     "create-react-class": "^15.6.3",
-    "d3": "^3.0.0",
+    "d3": "^5.15.0",
     "ejs": "^3.0.1",
     "express": "^4.15.4",
     "express-busboy": "^2.4.4",
