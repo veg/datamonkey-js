@@ -1,8 +1,8 @@
-<%- include ../includes/header.ejs %>
+<%- include("../includes/header.ejs") %>
 
 <div class="container">
 
-  <%- include header.ejs %>
+  <%- include("header.ejs") %>
   <div id="form-error" class="alert alert-danger" <%if (typeof errors == "undefined") { %>style="display: none;"<% } %>>
       There were errors with your request. Errors are highlighted in red.
   </div>
@@ -30,7 +30,7 @@
                 <i class="dm-fa fa fa-question-circle fa-fw helper_text" 
                    data-title = "Viral sequences"
                    data-content="A FASTA file, with <b>nucleotide</b> sequences to be analyzed. Each sequence will be aligned to the chosen reference sequence prior to network inference. 
-                   Sequence names may include munged attributes, e.g. ISOLATE_XYZ|2005|SAN DIEGO|MSM">
+                   Sequence names may include("munged attributes, e.g. ISOLATE_XYZ|2005|SAN") DIEGO|MSM">
                 </i>
                 Sequence file
               </label>
@@ -320,7 +320,7 @@
               <label class="control-label">
                 <i class="dm-fa fa fa-question-circle fa-fw helper_text" 
                   data-title="Drug resistance associated mutations"
-                  data-content="How to handle analyses of proteins (HIV-1 pr and/or RT only) which include drug resistance associated positions.">
+                  data-content="How to handle analyses of proteins (HIV-1 pr and/or RT only) which include("drug resistance associated") positions.">
                 </i>    
                 Remove DRAMS
               </label>
@@ -402,6 +402,6 @@
   </div>
 </div>
 
-<%- include ../includes/modal.ejs %>
-<%- include ../includes/footer.ejs %>
+<%- include("../includes/modal.ejs") %>
+<%- include("../includes/footer.ejs") %>
 <script src="/assets/js/hivtrace/form.js"></script>

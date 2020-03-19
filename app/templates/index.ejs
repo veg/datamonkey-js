@@ -1,10 +1,10 @@
 <%if (warning_message) { %>
   <div class="alert alert-warning sticky-top" role="alert" style="margin-bottom: 0px;"> <h2><%= warning_message %></h2> </div>
 <% } %>
-<%- include includes/header.ejs %>
+<%- include('includes/header.ejs') %>
   <div id="main">
   </div>
 <script>
   datamonkey_analysis_tree("main", true);
 </script>
-<%- include includes/footer.ejs %>
+<%- include('includes/footer.ejs') %>

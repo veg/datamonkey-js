@@ -1,4 +1,4 @@
-<%- include includes/header.ejs %>
+<%- include("includes/header.ejs") %>
 
 <div id="tutorial-container" class="container">
 
@@ -256,14 +256,14 @@ Msa.statics.validateFasta = function (fn, cb) {
 
     <pre>
 <code class="language-html">
-&lt;%- include ../includes/header.ejs %&gt;
+&lt;%- include("../includes/header.ejs") %&gt;
 &lt;link href=&quot;/assets/css/absrel.css&quot; rel=&quot;stylesheet&quot;&gt;
 &lt;div id=&quot;container&quot; class=&quot;container&quot;&gt;
-  &lt;%- include header.ejs %&gt;
-  &lt;%- include ../partials/msa/form.ejs %&gt;
-  &lt;%- include ../includes/modal.ejs %&gt;
+  &lt;%- include("header.ejs") %&gt;
+  &lt;%- include("../partials/msa/form.ejs") %&gt;
+  &lt;%- include("../includes/modal.ejs") %&gt;
 &lt;/div&gt;
-&lt;%- include ../includes/footer.ejs %&gt;
+&lt;%- include("../includes/footer.ejs") %&gt;
 </code>
     </pre>
 
@@ -271,7 +271,7 @@ Msa.statics.validateFasta = function (fn, cb) {
     <p> 
       Typically, not much needs to be done for the multiple sequence alignment
       upload form. Currently, a stub needs to be made for each analysis simply
-      for the header include portion. Once this is parameterized, the form can
+      for the header include("portion. Once this is parameterized, the form") can
       be generic.
     </p>
 
@@ -284,26 +284,26 @@ Msa.statics.validateFasta = function (fn, cb) {
     <h4>Example <code>app/templates/absrel/jobpage.ejs</code></h4>
     <pre>
     <code>
-&lt;%- include ../includes/header.ejs %&gt;
+&lt;%- include("../includes/header.ejs") %&gt;
 
 &lt;div class=&quot;container&quot; id=&quot;job-report&quot; data-jobid=&quot;&lt;%= job._id %&gt;&quot; data-socket-address=&quot;&lt;%= socket_addr %&gt;&quot;&gt;
-  &lt;%- include header.ejs %&gt;
+  &lt;%- include("header.ejs") %&gt;
   &lt;% if (job.status != &#39;completed&#39;) { %&gt;
-    &lt;%- include ../partials/jobs/jobpage.ejs %&gt;
+    &lt;%- include("../partials/jobs/jobpage.ejs") %&gt;
   &lt;% } else { %&gt;
-    &lt;%- include ./results.ejs %&gt;
+    &lt;%- include("./results.ejs") %&gt;
   &lt;% } %&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
-&lt;%- include ../includes/modal.ejs %&gt;
-&lt;%- include ../includes/footer.ejs %&gt;
+&lt;%- include("../includes/modal.ejs") %&gt;
+&lt;%- include("../includes/footer.ejs") %&gt;
     </code>
     </pre>
 
     <p> 
       Typically, not much needs to be done for the job page. Currently, a stub
-      needs to be made for each analysis simply for the header include portion. Once
+      needs to be made for each analysis simply for the header include("portion.") Once
       this is parameterized, the page can be generic.
     </p>
 
@@ -399,7 +399,7 @@ var jobproxy = new hpcsocket.HPCSocket({'filepath'    : absrel_result.filepath,
       }
     </pre>
 
-    <p>Edit <code>server.js</code> to include new analysis in the case statement.</p>
+    <p>Edit <code>server.js</code> to include("new analysis in the case") statement.</p>
 
     <h4>Create a New Directory Example <a href="https://github.com/veg/datamonkey-server/blob/socketio/app/absrel/"><code>app/absrel/</code></a></h4>
     <pre>
@@ -510,5 +510,5 @@ drwxr-xr-x  2 sweaver sweaver  40K Feb 25 16:36 output
 
 
 <span class="clear"></span>
-<%- include includes/footer.ejs %>
+<%- include("includes/footer.ejs") %>
 
