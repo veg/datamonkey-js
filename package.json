@@ -24,7 +24,7 @@
     "bootstrap": "4.1.2",
     "create-react-class": "^15.6.3",
     "d3": "^3.0.0",
-    "ejs": "^1.0.0",
+    "ejs": "^3.0.1",
     "express": "^4.15.4",
     "express-busboy": "^2.4.4",
     "express-validator": "^2.21.0",

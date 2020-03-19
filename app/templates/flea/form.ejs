@@ -1,4 +1,4 @@
-<%- include ../includes/header.ejs %>
+<%- include("../includes/header.ejs") %>
 
 <!--
 <link rel="stylesheet" href="/assets/lib/jquery-file-upload/css/jquery.fileupload.css">
@@ -6,7 +6,7 @@
 
 <div id="container" class="container">
 
-  <%- include header.ejs %>
+  <%- include("header.ejs") %>
 
   <div class="nav nav-list float-right span4i"><a href="/assets/flea/examples/example.zip"><span class="fa fa-download"></span> Example Files</a></div>
 
@@ -82,7 +82,7 @@
   </div>
 </div>
 
-<%- include ../includes/footer.ejs %>
+<%- include("../includes/footer.ejs") %>
 
 <!-- The basic File Upload plugin -->
 <script src="/assets/js/flea/form.js"></script>
