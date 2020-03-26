@@ -40,7 +40,7 @@
     "moment": "^2.8.0",
     "mongodb": "^2.0.0",
     "mongoose": "^4.11.7",
-    "mongoose-schema-extend": "^0.1.0",
+    "mongoose-schema-extend": "^0.2.2",
     "morgan": "x.x.x",
     "multer": "^1.3.0",
     "nodemailer": "^1.0.0",
