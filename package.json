@@ -86,7 +86,7 @@
     "file-loader": "^0.9.0",
     "husky": "^0.14.3",
     "lodash.clonedeep": "^4.5.0",
-    "mocha": "^6.2.2",
+    "mocha": "^7.1.1",
     "mocha-parallel-tests": "^2.2.2",
     "node-inspect": "^1.11.2",
     "node-sass": "^4.9.3",
