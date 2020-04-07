@@ -285,7 +285,7 @@ class MultiBranchSelection extends React.Component {
     function validate_selection(tree, callback) {
       var nwkToReturn = exportNewick(tree);
       if (tree.nodes.get_selection().length) {
-        callback(nwkToReturn);
+        callback(nwkToReturn, self.state.selectionSet);
       } else {
         alert(
           "No branch selections were made, please select one. Alternatively, you can choose to select all via the menu."

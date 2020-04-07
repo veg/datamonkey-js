@@ -145,6 +145,7 @@ exports.invoke = function(req, res) {
     contrast_fel.tagged_nwk_tree = postdata.nwk_tree;
     contrast_fel.analysis_type = postdata.analysis_type;
     contrast_fel.status = contrast_fel.status_stack[0];
+    contrast_fel.branch_sets = postdata.branch_sets.split(",");
 
     contrast_fel.save(function(err, result) {
       if (err) {

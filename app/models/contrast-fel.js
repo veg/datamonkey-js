@@ -10,6 +10,7 @@ var ContrastFEL = AnalysisSchema.extend({
   analysis_type: Number,
   original_extension: String,
   last_status_msg: String,
+  branch_sets: [String],
   results: Object,
   ds_variation: Number
 });
@@ -19,7 +20,7 @@ ContrastFEL.virtual("pmid").get(function() {
 });
 
 ContrastFEL.virtual("analysistype").get(function() {
-  return "contrast_fel";
+  return "cfel";
 });
 
 ContrastFEL.virtual("upload_redirect_path").get(function() {

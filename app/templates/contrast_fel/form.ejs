@@ -21,10 +21,11 @@
   var nj_tree = "<%= contrast_fel.msa[0].nj %>"
 
   // Create callback for posting annotated tree.
-  datamonkey_post_annotated_tree = function (annotated_tree) {
+  datamonkey_post_annotated_tree = function (annotated_tree, branch_sets) {
 
     var formData = new FormData();
     formData.append('nwk_tree', annotated_tree);
+    formData.append('branch_sets', branch_sets);
 
     var xhr = new XMLHttpRequest();
     var id = "<%= contrast_fel._id %>"
@@ -39,7 +40,9 @@
       }
     };
     xhr.send(formData);
+
   }
+
   render_multibranch_selection("branch-selection-container", user_tree , nj_tree , datamonkey_post_annotated_tree, 800, 600, false)
   $('.dropdown-toggle').dropdown();
 
