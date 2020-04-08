@@ -1,0 +1,10 @@
+{
+  "env": {
+    "start": {
+      "presets": [
+        "react-hmre"
+      ]
+    }
+  },
+  plugins: ["babel-plugin-transform-strict-mode"]
+}

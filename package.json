@@ -19,7 +19,9 @@
     "url": "git://github.com/veg/datamonkey-js.git"
   },
   "dependencies": {
+    "alignment.js": "^0.3.0",
     "async": "^0.1.0",
+    "babel-plugin-transform-strict-mode": "^6.24.1",
     "blueimp-file-upload": "^9.19.1",
     "bootstrap": "4.1.2",
     "create-react-class": "^15.6.3",
@@ -53,6 +55,7 @@
     "react": "16",
     "react-dom": "16",
     "react-markdown": "^4.3.1",
+    "react-phylotree": "0.4.1",
     "redis": "^2.0.0",
     "socket.io": "1.4.x",
     "socket.io-client": "1.4.x",
