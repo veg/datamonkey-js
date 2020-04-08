@@ -11,6 +11,7 @@ var mongoose = require("mongoose"),
   Sequences = mongoose.model("Sequences"),
   PartitionInfo = mongoose.model("PartitionInfo"),
   FEL = mongoose.model("FEL"),
+  ContrastFEL = mongoose.model("ContrastFEL"),
   aBSREL = mongoose.model("aBSREL"),
   Busted = mongoose.model("Busted"),
   FUBAR = mongoose.model("FUBAR"),
@@ -22,6 +23,7 @@ var mongoose = require("mongoose"),
   SLAC = mongoose.model("SLAC");
 
 exports.getInfo = function(model_up, req, res) {
+
   var id = req.params.id;
 
   //Return all results
@@ -37,9 +39,11 @@ exports.getInfo = function(model_up, req, res) {
       }
     }
   );
+
 };
 
 exports.getResults = function(model_up, req, res) {
+
   model_up.findOne({ _id: req.params.id }, function(err, model_var) {
     if (err || !model_var) {
       res.json(500, error.errorResponse("invalid id : " + req.params.id));

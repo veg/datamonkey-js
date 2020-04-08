@@ -6,6 +6,7 @@ var mongoose = require("mongoose"),
   Sequences = mongoose.model("Sequences"),
   PartitionInfo = mongoose.model("PartitionInfo"),
   FEL = mongoose.model("FEL"),
+  ContrastFEL = mongoose.model("ContrastFEL"),
   aBSREL = mongoose.model("aBSREL"),
   Busted = mongoose.model("Busted"),
   BGM = mongoose.model("BGM"),
@@ -78,10 +79,10 @@ module.exports = function(app) {
   app.get("/contrast_fel/:id/original_file/:name", contrast_fel.getMSAFile);
   app.get("/contrast_fel/:id/fasta", contrast_fel.fasta);
   app.get("/contrast_fel/:id", contrast_fel.getPage);
-  app.get("/contrast_fel/:id/info", _.partial(analysis.getInfo, contrast_fel));
+  app.get("/contrast_fel/:id/info", _.partial(analysis.getInfo, ContrastFEL));
   app.get(
     "/contrast_fel/:id/results",
-    _.partial(analysis.getResults, contrast_fel)
+    _.partial(analysis.getResults, ContrastFEL)
   );
   app.get("/contrast_fel/:id/cancel", contrast_fel.cancel);
   app.get("/contrast_fel/:id/log.txt", contrast_fel.getLog);

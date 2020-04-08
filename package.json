@@ -19,6 +19,7 @@
     "url": "git://github.com/veg/datamonkey-js.git"
   },
   "dependencies": {
+    "alignment.js": "^0.3.0",
     "async": "^0.1.0",
     "blueimp-file-upload": "^9.19.1",
     "bootstrap": "4.1.2",
@@ -54,6 +55,7 @@
     "react-dom": "16",
     "react-markdown": "^4.3.1",
     "redis": "^2.0.0",
+    "save-svg-as-png": "^1.4.17",
     "socket.io": "1.4.x",
     "socket.io-client": "1.4.x",
     "socket.io-stream": "0.6.x",
