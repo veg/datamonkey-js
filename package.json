@@ -21,7 +21,6 @@
   "dependencies": {
     "alignment.js": "^0.3.0",
     "async": "^0.1.0",
-    "babel-plugin-transform-strict-mode": "^6.24.1",
     "blueimp-file-upload": "^9.19.1",
     "bootstrap": "4.1.2",
     "circos": "^2.1.0",
@@ -72,6 +71,7 @@
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.3.1",
     "babel-core": "^6.17.0",
+    "babel-plugin-transform-strict-mode": "^6.24.1",
     "babel-eslint": "^7.2.3",
     "babel-jest": "^19.0.0",
     "babel-loader": "^7.0.0",
