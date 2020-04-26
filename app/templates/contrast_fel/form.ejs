@@ -1,0 +1,50 @@
+<%- include("../includes/header.ejs") %>
+
+<div class="container">
+
+   <%- include("header.ejs") %>
+
+  <h5 class="phylotree-header">Select Test Branches</h5>
+
+  <div class="container" id="branch-selection-container"></div>
+
+ </div>
+
+<%- include("../includes/modal.ejs") %>
+<%- include("../includes/footer.ejs") %>
+
+<script>
+
+  // Get trees.
+  var user_tree = "<%= contrast_fel.msa[0].usertree %>"
+  user_tree == 'undefined' ? user_tree = undefined : null
+  var nj_tree = "<%= contrast_fel.msa[0].nj %>"
+
+  // Create callback for posting annotated tree.
+  datamonkey_post_annotated_tree = function (annotated_tree, branch_sets) {
+
+    var formData = new FormData();
+    formData.append('nwk_tree', annotated_tree);
+    formData.append('branch_sets', branch_sets);
+
+    var xhr = new XMLHttpRequest();
+    var id = "<%= contrast_fel._id %>"
+    xhr.open('post','/contrast_fel/' + id + '/select-foreground', true);
+    xhr.onload = function(res) {
+      // Replace field with green text, name of file
+      var result = JSON.parse(this.responseText);
+      if('_id' in result.contrast_fel) {
+        window.location.href =  '/contrast_fel/' + result.contrast_fel._id;
+      } else if ('error' in result) {
+        datamonkey.errorModal(result.error);
+      }
+    };
+    xhr.send(formData);
+
+  }
+
+  render_multibranch_selection("branch-selection-container", user_tree , nj_tree , datamonkey_post_annotated_tree, 800, 600, false)
+  $('.dropdown-toggle').dropdown();
+
+</script>
+

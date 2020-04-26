@@ -1,0 +1,10 @@
+{
+  "env": {
+    "start": {
+      "presets": [
+        "react-hmre"
+      ]
+    }
+  },
+  plugins: ["transform-remove-strict-mode"]
+}

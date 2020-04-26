@@ -47,7 +47,7 @@ GARD.virtual("status_stack").get(function() {
 });
 
 /**
- * URL for a busted path
+ * URL for GARD path
  */
 GARD.virtual("url").get(function() {
   return "http://" + setup.host + "/gard/" + this._id;
