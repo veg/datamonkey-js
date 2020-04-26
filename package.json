@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "alignment.js": "^0.3.0",
-    "async": "^0.1.0",
+    "async": "^3.2.0",
     "blueimp-file-upload": "^9.19.1",
     "bootstrap": "4.1.2",
     "circos": "^2.1.0",
