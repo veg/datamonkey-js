@@ -28,7 +28,7 @@
     "d3": "^3.0.0",
     "ejs": "^3.0.1",
     "express": "^4.15.4",
-    "express-busboy": "^2.4.4",
+    "express-busboy": "^8.0.0",
     "express-validator": "^2.21.0",
     "hivtrace-viz": "^0.0.14",
     "hyphy-vision": "^2.8.0",
