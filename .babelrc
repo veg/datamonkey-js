@@ -1,10 +1,16 @@
 {
+  "plugins": [
+    "@babel/plugin-proposal-class-properties"
+  ],
+  "presets": [
+    "@babel/preset-env",
+    "@babel/preset-react"
+  ],
   "env": {
     "start": {
       "presets": [
-        "react-hmre"
+        "@babel/preset-env"
       ]
     }
-  },
-  plugins: ["transform-remove-strict-mode"]
+  }
 }

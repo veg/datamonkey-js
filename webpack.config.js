@@ -1,28 +1,25 @@
 var path = require("path"),
   webpack = require("webpack"),
   cloneDeep = require("lodash.clonedeep"),
-  ExtractTextPlugin = require("extract-text-webpack-plugin"),
   CopyWebpackPlugin = require("copy-webpack-plugin");
+
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const PreloadWebpackPlugin = require("preload-webpack-plugin");
 
 config = {
   devtool: "source-map",
+  mode: "development",
   entry: {
-    datamonkey: ["./src/entry.js"],
-    vendor: [
-      "tether",
-      "jquery",
-      "jquery-ui-bundle",
-      "jquery-file-upload",
-      "bootstrap",
-      "moment",
-      "phylotree",
-      "react",
-      "underscore"
-    ]
+    datamonkey: ["./src/entry.js"]
   },
   output: {
     path: path.resolve(__dirname, "public/assets/js/"),
     filename: "[name].js"
+  },
+  optimization: {
+    splitChunks: {
+      chunks: "all"
+    }
   },
   externals: {
     jsdom: "window"
@@ -30,19 +27,23 @@ config = {
   module: {
     rules: [
       {
+        test: /\.(sass|scss|css)$/,
+        use: [
+          "style-loader",
+          "css-loader",
+          {
+            loader: "sass-loader",
+            options: { implementation: require("sass") }
+          }
+        ]
+      },
+      {
         test: /\.(js|jsx)?$/,
         exclude: /node_modules/,
         loaders: "babel-loader",
         query: {
-          presets: ["react", "stage-1"]
+          presets: ["@babel/preset-env"]
         }
-      },
-      {
-        test: /\.css$/,
-        loader: ExtractTextPlugin.extract({
-          fallback: "style-loader",
-          use: "css-loader"
-        })
       },
       {
         test: require.resolve("jquery"),
@@ -101,23 +102,20 @@ config = {
         exclude: /node_modules/,
         loader: "eslint-loader",
         options: {}
-      },
-      {
-        test: /\.scss?$/,
-        use: ExtractTextPlugin.extract({
-          fallback: "style-loader",
-          use: ["css-loader", "sass-loader"]
-        })
       }
     ]
   },
   plugins: [
+    //new PreloadWebpackPlugin(),
     new webpack.LoaderOptionsPlugin({ debug: true }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: "vendor",
-      filename: "vendor.js"
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: "[name].css",
+      chunkFilename: "[id].css"
     }),
     new webpack.ProvidePlugin({
+      "window.$": "jquery",
       $: "jquery",
       jQuery: "jquery",
       d3: "d3",
@@ -154,8 +152,7 @@ config = {
         copyUnmodified: true
       }
     ),
-    new webpack.IgnorePlugin(/jsdom$/),
-    new ExtractTextPlugin("[name].css")
+    new webpack.IgnorePlugin(/jsdom$/)
   ],
   resolve: {
     alias: {

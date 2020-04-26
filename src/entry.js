@@ -6,6 +6,7 @@ window.io = io;
 const _ = require("underscore");
 window._ = _;
 
+require("bootstrap");
 require("./scss/application.scss");
 require("phylotree.css");
 require("@fortawesome/fontawesome-free/css/all.css");
