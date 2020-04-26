@@ -19,7 +19,7 @@
 
   if (fasta_ready == false) {
     $(document).ready( function () {
-      hyphyVision.ContrastFEL('results', "content", null, true, true)
+      hyphyVision.ContrastFEL($("#job-report").data('jobid') + '/results', "content", null, true, true)
     });
   }
 
