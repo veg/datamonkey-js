@@ -49,7 +49,7 @@
     "nodemailer-sendmail-transport": "^1.0.0",
     "nvm": "0.0.4",
     "phylotree": "0.1.10",
-    "popper.js": "1.14.4",
+    "popper.js": "1.16.1",
     "pretty-quick": "^1.6.0",
     "q": "^1.4.0",
     "react": "16",
