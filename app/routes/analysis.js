@@ -17,13 +17,13 @@ var mongoose = require("mongoose"),
   FUBAR = mongoose.model("FUBAR"),
   GARD = mongoose.model("GARD"),
   MEME = mongoose.model("MEME"),
+  MULTIHIT = mongoose.model("MULTIHIT"),
   Relax = mongoose.model("Relax"),
   HivTrace = mongoose.model("HivTrace"),
   Fade = mongoose.model("Fade"),
   SLAC = mongoose.model("SLAC");
 
 exports.getInfo = function(model_up, req, res) {
-
   var id = req.params.id;
 
   //Return all results
@@ -39,10 +39,10 @@ exports.getInfo = function(model_up, req, res) {
       }
     }
   );
-
 };
 
 exports.getResults = function(model_up, req, res) {
+  console.log(model_up);
 
   model_up.findOne({ _id: req.params.id }, function(err, model_var) {
     if (err || !model_var) {
