@@ -42,7 +42,6 @@ exports.getInfo = function(model_up, req, res) {
 };
 
 exports.getResults = function(model_up, req, res) {
-  console.log(model_up);
 
   model_up.findOne({ _id: req.params.id }, function(err, model_var) {
     if (err || !model_var) {
