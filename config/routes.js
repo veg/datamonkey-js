@@ -13,6 +13,7 @@ var mongoose = require("mongoose"),
   FUBAR = mongoose.model("FUBAR"),
   GARD = mongoose.model("GARD"),
   MEME = mongoose.model("MEME"),
+  MULTIHIT = mongoose.model("MULTIHIT"),
   Relax = mongoose.model("Relax"),
   HivTrace = mongoose.model("HivTrace"),
   FADE = mongoose.model("Fade"),
@@ -173,6 +174,20 @@ module.exports = function(app) {
   app.get("/hivtrace/:id/settings", hivtrace.settings);
   app.get("/hivtrace/:id/attributes", hivtrace.attributeMap);
   app.get("/hivtrace/:id/aligned.fasta", hivtrace.aligned_fasta);
+
+  // MULTIHIT ROUTES
+  multihit = require(path.join(__dirname, "../app/routes/multihit"));
+  app.get("/multihit", multihit.form);
+  app.post("/multihit", multihit.invoke);
+  app.get("/multihit/usage", multihit.getUsage);
+  app.get("/multihit/:id", multihit.getPage);
+  app.get("/multihit/:id/original_file/:name", multihit.getMSAFile);
+  app.get("/multihit/:id/fasta", multihit.fasta);
+  app.get("/multihit/:id/info", _.partial(analysis.getInfo, MULTIHIT));
+  app.get("/multihit/:id/results", _.partial(analysis.getResults, MULTIHIT));
+  app.get("/multihit/:id/cancel", multihit.cancel);
+  app.get("/multihit/:id/log.txt", multihit.getLog);
+  multihit.resubscribePendingJobs();
 
   // MEME ROUTES
   meme = require(path.join(__dirname, "../app/routes/meme"));
