@@ -1,9 +1,7 @@
 var mongoose = require("mongoose"),
   moment = require("moment"),
-  check = require("validator").check,
   globals = require("../../config/globals.js"),
   spawn = require("child_process").spawn,
-  sanitize = require("validator").sanitize,
   fs = require("fs"),
   winston = require("winston"),
   _ = require("lodash"),
@@ -66,7 +64,6 @@ var Msa = new Schema({
   visit_code: String,
   visit_date: Date,
   original_filename: String,
-  mailaddr: String,
   created: {
     type: Date,
     default: Date.now
@@ -192,16 +189,6 @@ Msa.statics.deliverFasta = function(filepath) {
 };
 
 var MsaModel = mongoose.model("MsaModel", Msa);
-
-MsaModel.schema.path("mailaddr").validate(function(value) {
-  if (value) {
-    check(value)
-      .len(6, 64)
-      .isEmail();
-  } else {
-    return true;
-  }
-}, "Invalid email");
 
 Msa.methods.AnalysisCount = function(cb) {
   var type_counts = {};
