@@ -1,6 +1,6 @@
 {
   "name": "datamonkey.js",
-  "version": "1.5.1",
+  "version": "1.6.0",
   "description": "A free public server for comparative analysis of sequence alignments using state-of-the-art statistical models.",
   "private": true,
   "author": {
@@ -8,6 +8,7 @@
     "email": "steven@stevenweaver.org"
   },
   "scripts": {
+    "prod": "webpack --mode production",
     "test": "mocha --exit",
     "ui-tests": "mocha-parallel-tests -t 86400000 --max-parallel 10 test/ui/",
     "lint": "./node_modules/.bin/eslint",
