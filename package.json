@@ -68,7 +68,7 @@
     "socket.io": "1.4.x",
     "socket.io-client": "1.4.x",
     "socket.io-stream": "0.6.x",
-    "tar-fs": "^1.16.3",
+    "tar-fs": "^2.0.1",
     "tether": "^1.4.0",
     "underscore": "^1.9.1",
     "winston": "^3.2.1",
