@@ -1,4 +1,4 @@
-<%- include ../includes/header.ejs %>
+<%- include("../includes/header.ejs") %>
 
 <script type="text/json" id="last-status-update">
 <%- last_status_msg %>
@@ -47,10 +47,10 @@
       </div>
 
   <% } else { %>
-    <%- include ./results.ejs %>
+    <%- include("./results.ejs") %>
   <% } %>
   </div>
 
 </div>
-<%- include ../includes/footer.ejs %>
+<%- include("../includes/footer.ejs") %>
 <script src="/assets/js/hivtrace/network.js"></script>

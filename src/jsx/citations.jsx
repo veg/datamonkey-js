@@ -212,6 +212,42 @@ class Citations extends React.Component {
 
         <div className="row">
           <div className="col">
+            <div style={dmCard} className="dm-card card">
+              <div style={dmCardHeader} className="dm-card-header card-header">
+                HIV-TRACE
+              </div>
+              <div style={dmCardBody} className="dm-card-body card-body">
+                <div style={dmCardTitle} className="dm-card-title card-title">
+                  Sergei L Kosakovsky Pond, Steven Weaver, Andrew J Leigh Brown,
+                  Joel O Wertheim (2018)
+                </div>
+                <div>
+                  <a
+                    style={dmLink}
+                    target="_blank"
+                    href="https://doi.org/10.1093/molbev/msy016"
+                  >
+                    <i
+                      style={dmFa}
+                      className="dm-fa fa-external-link-alt"
+                      aria-hidden="true"
+                    />
+                    HIV-TRACE (TRAnsmission Cluster Engine): a Tool for Large
+                    Scale Molecular Epidemiology of HIV-1 and Other Rapidly
+                    Evolving Pathogens
+                  </a>
+                  <p>
+                    Molecular Biology and Evolution, Volume 35, Issue 7, July
+                    2018, Pages 1812–1819
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col">
             <h3>Method Citations</h3>
             <div style={dmCard} className="dm-card card">
               <div style={dmCardHeader} className="dm-card-header card-header">

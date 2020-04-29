@@ -1,7 +1,7 @@
-<%- include ../includes/header.ejs %>
+<%- include("../includes/header.ejs") %>
 
 <div id="container" class="container">
-  <%- include header.ejs %>
+  <%- include("header.ejs") %>
   <div class="row">
 
     <form id="msa-form" class="form-horizontal upload-form col-12" name="uploadform" enctype="multipart/form-data" method="post" action=<%= post_to %>>
@@ -117,4 +117,4 @@
 </div>
 
 <script src="/assets/js/busted/form.js"></script>
-<%- include ../includes/footer.ejs %>
+<%- include("../includes/footer.ejs") %>

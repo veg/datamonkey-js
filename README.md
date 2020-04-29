@@ -4,7 +4,7 @@ datamonkey-js
 INSTALL
 ===========================
 ## System Dependencies
-* node >= 12
+* node >= 14
 * mongodb-server
 * redis
 
