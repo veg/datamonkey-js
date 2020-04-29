@@ -9,7 +9,6 @@ window._ = _;
 require("bootstrap");
 require("./scss/application.scss");
 require("phylotree.css");
-require("@fortawesome/fontawesome-free/css/all.css");
 require("blueimp-file-upload");
 
 var datamonkey = require("./js/datamonkey.js");
