@@ -61,7 +61,7 @@
     "react-dom": "16.12",
     "react-json-view": "^1.19.1",
     "react-markdown": "^4.3.1",
-    "react-phylotree": "0.4.1",
+    "react-phylotree": "0.4.3",
     "react-range": "^1.5.3",
     "react-router-dom": "^5.1.2",
     "react-router-hash-link": "^1.2.2",
