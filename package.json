@@ -58,7 +58,7 @@
     "q": "^1.4.0",
     "react": "16.12",
     "react-copy-to-clipboard": "^5.0.2",
-    "react-dom": "16.12",
+    "react-dom": "16.13",
     "react-json-view": "^1.19.1",
     "react-markdown": "^4.3.1",
     "react-phylotree": "0.4.1",
