@@ -3,9 +3,9 @@ var React = require("react"),
   createReactClass = require("create-react-class");
 
 var GARDForm = createReactClass({
-  onMailChange: function() {},
+  onMailChange: function () {},
 
-  submit: function(e) {
+  submit: function (e) {
     e.preventDefault();
 
     $("#file-progress").removeClass("hidden");
@@ -31,7 +31,7 @@ var GARDForm = createReactClass({
 
     xhr.open("post", action_url, true);
 
-    xhr.upload.onprogress = function(e) {
+    xhr.upload.onprogress = function (e) {
       if (e.lengthComputable) {
         var percentage = (e.loaded / e.total) * 100;
         $("#file-progress").css("display", "block");
@@ -40,11 +40,11 @@ var GARDForm = createReactClass({
       }
     };
 
-    xhr.onerror = function(e) {
+    xhr.onerror = function (e) {
       $("#file-progress").html(e);
     };
 
-    xhr.onload = function(res) {
+    xhr.onload = function (res) {
       // Replace field with green text, name of file
       var result = JSON.parse(this.responseText);
 
@@ -76,7 +76,7 @@ var GARDForm = createReactClass({
     xhr.send(formData);
   },
 
-  render: function() {
+  render: function () {
     return (
       <form
         id="msa-form"
@@ -165,7 +165,7 @@ var GARDForm = createReactClass({
           </select>
         </div>
 
-        <div className="row upload-div">
+        <div className="upload-div">
           <div>
             <label id="datatype-content">Rate classes</label>
             <input
@@ -203,12 +203,12 @@ var GARDForm = createReactClass({
         <div style={{ paddingBottom: "30px" }} />
       </form>
     );
-  }
+  },
 });
 
 function render_gard_form() {
   ReactDOM.render(
-    <GARDForm post_to={"gard"} />,
+    <GARDForm post_to={"/gard"} />,
     document.getElementById("upload-form")
   );
 }
