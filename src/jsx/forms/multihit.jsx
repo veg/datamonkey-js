@@ -3,9 +3,9 @@ var React = require("react"),
   createReactClass = require("create-react-class");
 
 var MULTIHITForm = createReactClass({
-  onMailChange: function() {},
+  onMailChange: function () {},
 
-  submit: function(e) {
+  submit: function (e) {
     e.preventDefault();
 
     $("#file-progress").removeClass("hidden");
@@ -28,7 +28,7 @@ var MULTIHITForm = createReactClass({
 
     xhr.open("post", action_url, true);
 
-    xhr.upload.onprogress = function(e) {
+    xhr.upload.onprogress = function (e) {
       if (e.lengthComputable) {
         var percentage = (e.loaded / e.total) * 100;
         $("#file-progress").css("display", "block");
@@ -37,11 +37,11 @@ var MULTIHITForm = createReactClass({
       }
     };
 
-    xhr.onerror = function(e) {
+    xhr.onerror = function (e) {
       $("#file-progress").html(e);
     };
 
-    xhr.onload = function(res) {
+    xhr.onload = function (res) {
       // Replace field with green text, name of file
       var result = JSON.parse(this.responseText);
 
@@ -73,7 +73,7 @@ var MULTIHITForm = createReactClass({
     xhr.send(formData);
   },
 
-  render: function() {
+  render: function () {
     return (
       <form
         id="msa-form"
@@ -199,12 +199,12 @@ var MULTIHITForm = createReactClass({
         <div style={{ paddingBottom: "30px" }} />
       </form>
     );
-  }
+  },
 });
 
 function render_multihit_form() {
   ReactDOM.render(
-    <MULTIHITForm post_to={"multihit"} />,
+    <MULTIHITForm post_to={"/multihit"} />,
     document.getElementById("upload-form")
   );
 }
