@@ -107,7 +107,7 @@
     "mini-css-extract-plugin": "^0.9.0",
     "mocha": "^7.1.2",
     "mocha-parallel-tests": "^2.2.2",
-    "node-inspect": "^1.11.2",
+    "node-inspect": "^2.0.0",
     "node-sass": "^4.9.3",
     "preload-webpack-plugin": "^2.3.0",
     "prettier": "^2.0.5",
