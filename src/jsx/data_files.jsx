@@ -155,7 +155,7 @@ class DataFiles extends React.Component {
         <h3>Common issues</h3>
         <div className="bs-callout bs-callout-danger">
           <h4>Non-text files</h4>
-          Datamonkey expects sequence alignments to be uploaded as text files.
+          Datamonkey expects sequence alignments to be uploaded as text files ie, .fasta, .nex, .txt.
           Any other format (Word, RTF, PDF) will not be recognized and must be
           converted into plain text prior to submission.
         </div>
@@ -164,8 +164,8 @@ class DataFiles extends React.Component {
           For instance, BioEdit may use the tilde ('~') character to denote a
           gap. The dot ('.') character is sometimes used as "match the first
           sequence" character and sometimes as the gap character. Datamonkey
-          will accept
-          <a href="http://www.chem.qmul.ac.uk/iubmb/misc/naseq.html#300">
+          will accept 
+          <a href="http://www.insdc.org/documents/feature_table.html#7.4.1">
             IUPAC nucleotide characters
           </a>{" "}
           (ACGT/U and ambiguity characters) and '?', 'X', 'N' or '-' for gap or
@@ -174,17 +174,15 @@ class DataFiles extends React.Component {
         </div>
         <div className="bs-callout bs-callout-danger">
           <h4>Uploading an amino-acid alignment</h4>
-          Datamonkey employs codon models which require the knowledge of silent
-          substitutions, lost upon translation to amino-acids.
+          Current Datamonkey methods do <b> not </b> support amino scid alignments.
         </div>
         <div className="bs-callout bs-callout-danger">
           <h4>Termination codons</h4>
           Datamonkey will reject any alignments that contains stop codons, even
           if the stop codon is at the end of the sequence (i.e. is a proper
           termination codon). Please strip all stop codons out of the alignment
-          prior to uploading it (the HyPhy standard analysis{" "}
-          <tt>Data File Tools:CleanStopCodons.bf</tt> can do this by replacing
-          all stop codons with indels).
+          prior to uploading it. This can be done with the command line version of
+          HyPhy using the <a href="https://github.com/veg/hyphy/blob/master/res/TemplateBatchFiles/CleanStopCodons.bf"> CleanStopCodons.bf </a>        
         </div>
         <div className="bs-callout bs-callout-danger">
           <h4>Alignments that are too gappy</h4>
@@ -198,11 +196,11 @@ class DataFiles extends React.Component {
           consider running your analysis locally in HyPhy. A detailed discussion
           of how HyPhy can be used for that purpose can be found in{" "}
           <a
-            href="http://www.hyphy.org/pubs/hyphybook2007.pdf"
+            href="http://hyphy.org/resources/tutorial-2017.pdf"
             className="REFERENCE"
           >
-            Selection using HyPhy
-          </a>
+            Tutorial
+          </a> 
           .
         </div>
         <div className="bs-callout bs-callout-danger">
@@ -214,7 +212,9 @@ class DataFiles extends React.Component {
           data upload page.
         </div>
         <div className="dm-card card-default">
-          <div className="dm-card-header card-header">Genetic Codes</div>
+          <div className="dm-card-header card-header">
+            Genetic Codes
+          </div>
         </div>
         <h3>Universal Genetic Code</h3>
         <table className="table table-bordered table-striped">
