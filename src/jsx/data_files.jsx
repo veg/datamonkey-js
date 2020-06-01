@@ -47,38 +47,53 @@ class DataFiles extends React.Component {
           </strong>
         </p>
         <p>
+          <li>
           Ideally, the alignment should represent a single gene, or protein
           product, sampled over multiple taxa (e.g. mammalian interferon genes),
           or a diverse population sample (e.g. Influenza A viruses infecting
           different individuals). Because comparative methods estimate relative
           rates of synonymous and non-synonymous substitution, substantial
-          sequence diversity is needed for reliable inference. For example when,
-          Suzuki and Nei applied a REL-type method to a very low divergence (1
+          sequence diversity is needed for reliable inference.
+          </li>
+          <li>
+              For example when, 
+          <a href = "https://www.pnas.org/content/106/16/6700.short">
+          Suzuki and Nei </a> applied a REL-type method to a very low divergence (1
           or 2 substitutions per sequence along a star phylogeny) sample of the
           Human T-lymphotropic virus (HTLV), they found that the method
-          performed poorly. Yang and colleagues have suggested that the total
+          performed poorly.
+          </li>
+          <li>
+            <a href = ""> Yang </a> and colleagues have suggested that the total
           length of the phylogenetic tree should be at least one expected
           substitution per codon site, but it is impossible to give a generally
-          valid range for desirable sequence divergence. However, sequences that
-          are too divergent could lead to saturation, i.e. our inability to
+          valid range for desirable sequence divergence.
+          </li>
+          <li>
+          However, sequences that are too divergent could lead to saturation, i.e. our inability to
           reliably infer branch lengths and substitution parameters. The number
           of sequences in the alignment is important: too few sequences will
           contain too little information for meaningful inference, while too
-          many may take too long to run. At the time of this writing, Datamonkey
-          permits up to 150 sequences for SLAC analyses, 100 for FEL/IFEL
-          analyses, 40 for REL and PARRIS and 25 for GA-Branch. As a rule of
+          many may take too long to run. 
+          </li>  
+          <li>  
+          As a rule of
           thumb, at least 10 sequences are needed to detect selection at a
-          single site (SLAC/FEL/IFEL/REL) with any degree of reliability, while
+          single site (SLAC/FEL/REL) with any degree of reliability, while
           as few as 4 may be sufficient for alignment-wide inference
-          (PARRIS/GA-Branch). The median number of sequences in an alignment
-          submitted to Datamonkey is 19. Comparative methods are ill suited to
+          (BUSTED). For information about typical datasets sizes gathered from other DataMonkey users see: 
+            <a href= "http://www.datamonkey.org/stats#"> Usage Statistics</a>
+          </li>
+          <li>  
+            Comparative methods are ill suited to
           study certain kinds of selection. For example, they should not be
           applied to the detection of selective sweeps (rapid replacement of one
           allele with a more fit one, resulting in a homogeneous population),
           unless sequences sampled prior to and following the selective sweep
           are included in the sample. A number of publications have dealt with
-          this issue extensively (e.g. Selection using HyPhy), and we refer an
+            this issue extensively (e.g. <a href= "http://www.hyphy.org/pubs/hyphybook2007.pdf"> Selection using HyPhy </a>), and we refer an
           interested reader to one of these works for further insight.
+         </li>
         </p>
         <hr />
         <p>
@@ -86,28 +101,39 @@ class DataFiles extends React.Component {
           the sequences are alignment correctly. Of course, one can never be
           sure that an alignment is objectively correct, but gross misalignments
           (e.g. sequences that are out of frame) are easy to spot with software
-          that provides a graphical visualization of the alignment, such as
-          HyPhy, Se-Al, or BioEdit. Datamonkey uses the HyPhy package as its
+          that provides a graphical visualization of the alignment. Datamonkey uses the HyPhy package as its
           processing engine, and if an alignment does not open in HyPhy on your
-          machine (using the File:Open:Open Data File command), then it will not
+          machine (see <a href = "http://hyphy.org/getting-started/">HyPhy</a> for info about running HyPhy), then it will not
           be properly read by Datamonkey.
         </p>
         <hr />
         <p>
+          <li>
           You should verify that the alignment is in frame, i.e. that it does
           not contain stop codons, including premature stop codons (indicative
           of a frame shift, e.g. due to misalignment, or a non-functional coding
-          sequence) and the terminal stop codon. Your alignment should exclude
+          sequence) and the terminal stop codon. 
+          </li>
+          <li>
+          Your alignment should exclude
           any non-coding region of the nucleotide sequence, such as introns or
           promoter regions, for which existing models of codon substitution
-          would not apply. When coding nucleotide sequences are aligned
+          would not apply.
+          </li>
+          <li>
+            When coding nucleotide sequences are aligned
           directly, frameshifting (i.e. not in multiples of 3) gaps may be
           inserted, since the alignment program often does not take the coding
           nature of the sequence into account. Therefore it is generally a good
-          idea to align translated protein sequences and then map them back onto
-          constituent nucleotides. Datamonkey will perform a number of checks
+          idea to use a codon-aware aligner like <a href="https://github.com/veg/hyphy-analyses/tree/master/codon-msa"> Codon-MSA</a> 
+          or align translated protein sequences and then map them back onto
+          constituent nucleotides.
+          </li>
+          <li>
+          Datamonkey will perform a number of checks
           when it receives coding sequences and report all problems it
           encounters.
+          </li>
         </p>
         <hr />
         <p>
