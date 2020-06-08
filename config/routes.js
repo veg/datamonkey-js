@@ -1,6 +1,9 @@
 var path = require("path");
 var _ = require("underscore");
 
+//import {apiSubmit} from '../app/routes/api.js';
+const api = require("../app/routes/api.js");
+
 var mongoose = require("mongoose"),
   Msa = mongoose.model("Msa"),
   Sequences = mongoose.model("Sequences"),
@@ -19,7 +22,7 @@ var mongoose = require("mongoose"),
   FADE = mongoose.model("Fade"),
   SLAC = mongoose.model("SLAC");
 
-module.exports = function(app) {
+module.exports = function (app) {
   var analysis = require("../app/routes/analysis.js");
   // HOME PAGE
   home = require(path.join(__dirname, "../app/routes/home"));
@@ -236,6 +239,7 @@ module.exports = function(app) {
   slac = require(path.join(__dirname, "../app/routes/slac"));
   app.get("/slac", slac.form);
   app.post("/slac", slac.invoke);
+  //app.post("/slac", slac.invokeAPI);
   app.get("/slac/usage", slac.getUsage);
   app.get("/slac/:id", slac.getPage);
   app.get("/slac/:id/original_file/:name", slac.getMSAFile);
@@ -258,4 +262,9 @@ module.exports = function(app) {
   app.get("/bgm/:id/cancel", bgm.cancel);
   app.get("/bgm/:id/log.txt", bgm.getLog);
   bgm.resubscribePendingJobs();
+
+  // API ROUTES
+  //app.post("/api/v1/submit", api.apiSubmit);
+  app.post("/api/v1/submit", api.apiSubmit);
+  app.post("/api/v1/debug", slac.invokeDEBUG);
 };
