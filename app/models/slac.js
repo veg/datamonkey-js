@@ -65,9 +65,8 @@ SLAC.statics.spawn = function (fn, datatype, gencodeid, callback) {
   Msa.parseFile(fn, datatype, gencodeid, function (err, msa) {
     /* 
 
-    Currently parseFile will say it isn't a function 
-    OR statics.spawn will say it isn't a function.
-
+    Currently function is not being passed anything from req
+    Need to retrieve the saved file from /temp/randomname.ext
 
     NONE OF THE BELOW CODE HAS RAN TO EVEN ATTEMPT ANY CHANGES
     this.xyz most likely won't work, but I am crossing that bridge when I get there.
@@ -111,7 +110,7 @@ SLAC.statics.spawn = function (fn, datatype, gencodeid, callback) {
         if (err) {
           logger.error(
             "slac rename failed" +
-              " Errored on line 282~ within slac.js :: move_cb " +
+              " Errored on line 113~ within models/slac.js :: move_cb " +
               err
           );
           callback(err);
