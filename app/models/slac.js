@@ -1,11 +1,11 @@
-var mongoose = require("mongoose"),
+const mongoose = require("mongoose"),
   extend = require("mongoose-schema-extend"),
   path = require("path"),
-  Msa = require(__dirname + "/msa");
+  helpers = require("../../lib/helpers");
 
-var AnalysisSchema = require(__dirname + "/analysis");
+const AnalysisSchema = require(__dirname + "/analysis");
 
-var SLAC = AnalysisSchema.extend({
+const SLAC = AnalysisSchema.extend({
   analysis_type: Number,
   last_status_msg: String,
   results: Object,
@@ -49,63 +49,64 @@ SLAC.virtual("url").get(function () {
 () params will depend on model related params
 () callback is triggered after .save triggers move callback
 */
-//SLAC.spawn = function(fileName, params, callback) { //Worked but had null for req.body
-//SLAC.virtual("spawn").get(function(fileName, params, callback) { //Does not work, req.body null
-//function spawn(fileName, req, callback){
-//SLAC.statics.spawn = function(fileName, params, callback) { //did not work (no function found)
-//SLAC.statics.spawn(function(fileName, req, callback){ //Error SLAC.statics.spawn not a function
-SLAC.statics.spawn = function (fn, datatype, gencodeid, callback) {
-  //Worked but had null for req.body
-  var connect_callback = function (data) {
+SLAC.statics.spawn = function (fn, options, callback) {
+  const Msa = mongoose.model("Msa");
+
+  var slac = new this();
+  slac.mail = options.mail;
+
+  let gencodeid = options.gencodeid;
+  let datatype = options.datatype;
+
+  //console.log(fn);
+  //console.log(options);
+
+  // options
+  // datatype, gencodeid, mail
+  const connect_callback = function (data) {
     if (data == "connected") {
       logger.log("connected");
     }
   };
 
-  Msa.parseFile(fn, datatype, gencodeid, function (err, msa) {
-    /* 
+  Msa.parseFile(fn, datatype, gencodeid, (err, msa) => {
+    const today2 = new Date();
 
-    Currently function is not being passed anything from req
-    Need to retrieve the saved file from /temp/randomname.ext
-
-    NONE OF THE BELOW CODE HAS RAN TO EVEN ATTEMPT ANY CHANGES
-    this.xyz most likely won't work, but I am crossing that bridge when I get there.
-
-    */
-
-    var today2 = new Date();
     console.log("Attempting to run ParseFile " + today2.getMilliseconds());
+
     if (err) {
       res.json(500, { error: err + today2.getMilliseconds() });
       callback(err);
       return;
     }
     // Check if msa exceeds limitations
-    if (msa.sites > this.max_sites) {
-      var error =
-        "Site limit exceeded! Sites must be less than " + this.max_sites;
+    if (msa.sites > slac.max_sites) {
+      const error =
+        "Site limit exceeded! Sites must be less than " + slac.max_sites;
       logger.error(error);
       callback(error);
       return;
     }
-    if (msa.sequences > this.max_sequences) {
+
+    if (msa.sequences > slac.max_sequences) {
       var error =
         "Sequence limit exceeded! Sequences must be less than " +
-        this.max_sequences;
+        slac.max_sequences;
       logger.error(error);
       callback(error);
       return;
     }
 
-    this.msa = msa;
-    this.status = this.status_stack[0];
+    slac.msa = msa;
+    slac.status = slac.status_stack[0];
 
-    this.save(function (err, slac_result) {
+    slac.save((err, slac_result) => {
       if (err) {
         logger.error("slac save failed");
         callback(err);
         return;
       }
+
       function move_cb(err, result) {
         if (err) {
           logger.error(
@@ -113,15 +114,15 @@ SLAC.statics.spawn = function (fn, datatype, gencodeid, callback) {
               " Errored on line 113~ within models/slac.js :: move_cb " +
               err
           );
-          callback(err);
+          callback(err, null);
         } else {
-          var to_send = this;
-          to_send.upload_redirect_path = this.upload_redirect_path;
-          SLAC.submitJob(slac_result, connect_callback);
-          callback(result);
+          var to_send = slac;
+          to_send.upload_redirect_path = slac.upload_redirect_path;
+          this.submitJob(slac_result, connect_callback);
+          callback(null, slac);
         }
       }
-      helpers.moveSafely(fn, slac_result.filepath, move_cb);
+      helpers.moveSafely(fn, slac_result.filepath, move_cb.bind(this));
     });
   });
 };

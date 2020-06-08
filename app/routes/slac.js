@@ -247,8 +247,6 @@ exports.invokeDEBUG = function (req, res, callback) {
     slac.mail = postdata.mail;
 
     Msa.parseFile(fn, datatype, gencodeid, function (err, msa) {
-      var today2 = new Date();
-      console.log("Attempting to run ParseFile " + today2.getMilliseconds());
       if (err) {
         res.json(500, { error: err + today2.getMilliseconds() });
         return;
@@ -283,7 +281,7 @@ exports.invokeDEBUG = function (req, res, callback) {
           if (err) {
             logger.error(
               "slac rename failed" +
-                " Errored on line 282~ within slac.js :: move_cb " +
+                " Errored within routes/slac.js :: move_cb " +
                 err
             );
             res.json(500, { error: err });
