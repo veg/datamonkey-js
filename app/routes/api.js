@@ -29,7 +29,6 @@ function apiSubmit(req, res) {
   );
 
   let postdata = req.body;
-
   var url_fasta = postdata.fastaLoc,
     today = new Date();
   (fileName =
@@ -37,12 +36,9 @@ function apiSubmit(req, res) {
     (dest = os.tmpdir()),
     (fullFileName = path.join(dest, fileName));
 
-  let datatype = 0,
-    gencodeid = postdata.gencodeid;
-
   let options = {
     datatype: 0,
-    gencodeid: gencodeid,
+    gencodeid: postdata.gencodeid,
     mail: postdata.mail,
   };
 

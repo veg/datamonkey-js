@@ -239,7 +239,6 @@ module.exports = function (app) {
   slac = require(path.join(__dirname, "../app/routes/slac"));
   app.get("/slac", slac.form);
   app.post("/slac", slac.invoke);
-  //app.post("/slac", slac.invokeAPI);
   app.get("/slac/usage", slac.getUsage);
   app.get("/slac/:id", slac.getPage);
   app.get("/slac/:id/original_file/:name", slac.getMSAFile);
@@ -266,5 +265,5 @@ module.exports = function (app) {
   // API ROUTES
   //app.post("/api/v1/submit", api.apiSubmit);
   app.post("/api/v1/submit", api.apiSubmit);
-  app.post("/api/v1/debug", slac.invokeDEBUG);
+  //app.post("/api/v1/debug", slac.invokeDEBUG);
 };

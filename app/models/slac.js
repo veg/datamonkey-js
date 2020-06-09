@@ -70,12 +70,8 @@ SLAC.statics.spawn = function (fn, options, callback) {
   };
 
   Msa.parseFile(fn, datatype, gencodeid, (err, msa) => {
-    const today2 = new Date();
-
-    console.log("Attempting to run ParseFile " + today2.getMilliseconds());
-
     if (err) {
-      res.json(500, { error: err + today2.getMilliseconds() });
+      res.json(500, { error: err });
       callback(err);
       return;
     }
