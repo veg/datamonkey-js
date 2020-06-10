@@ -76,8 +76,19 @@ function apiSubmit(req, res) {
           url: "dev.datamonkey.org/slac/" + result._id,
         });
       });
+    } else if (postdata.method.toUpperCase() == "MEME") {
+      MEME.spawn(fullFileName, options, (err, result) => {
+        if (err) {
+          logger.warn("Error with spawning job from API :: " + err);
+        }
+        res.json(200, {
+          time_stamp: result.created,
+          id: result._id,
+          status: result.status,
+          url: "dev.datamonkey.org/meme/" + result._id,
+        });
+      });
     } else {
-    /* if <job> */
       logger.warn(
         "Invalid Method given or method not support :: " + postdata.method
       );

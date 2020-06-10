@@ -18,9 +18,6 @@ var mongoose = require("mongoose"),
 var redis = require("redis"),
   client = redis.createClient({ host: setup.redisHost, port: setup.redisPort });
 
-const shortid = require("shortid"),
-  os = require("os");
-
 exports.form = function (req, res) {
   var post_to = "/slac";
   res.render("slac/form.ejs", { post_to: post_to });
