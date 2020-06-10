@@ -58,9 +58,6 @@ SLAC.statics.spawn = function (fn, options, callback) {
   let gencodeid = options.gencodeid;
   let datatype = options.datatype;
 
-  //console.log(fn);
-  //console.log(options);
-
   // options
   // datatype, gencodeid, mail
   const connect_callback = function (data) {

@@ -40,12 +40,6 @@ function apiSubmit(req, res) {
     dest = os.tmpdir(),
     fullFileName = path.join(dest, fileName);
 
-  let options = {
-    datatype: 0,
-    gencodeid: postdata.gencodeid,
-    mail: postdata.mail,
-  };
-
   function getRequest(url, dest, callback) {
     request(url, function (err) {
       if (err) {
@@ -65,6 +59,12 @@ function apiSubmit(req, res) {
 
     /* if SLAC */
     if (postdata.method.toUpperCase() == "SLAC") {
+      let options = {
+        datatype: 0,
+        gencodeid: postdata.gencodeid,
+        mail: postdata.mail,
+      };
+
       SLAC.spawn(fullFileName, options, (err, result) => {
         if (err) {
           logger.warn("Error with spawning job from API :: " + err);
@@ -77,6 +77,14 @@ function apiSubmit(req, res) {
         });
       });
     } else if (postdata.method.toUpperCase() == "MEME") {
+
+    /* if MEME */
+      let options = {
+        datatype: 0,
+        gencodeid: postdata.gencodeid,
+        mail: postdata.mail,
+      };
+
       MEME.spawn(fullFileName, options, (err, result) => {
         if (err) {
           logger.warn("Error with spawning job from API :: " + err);
@@ -88,13 +96,42 @@ function apiSubmit(req, res) {
           url: "dev.datamonkey.org/meme/" + result._id,
         });
       });
+    } else if (postdata.method.toUpperCase() == "FUBAR") {
+
+    /* if FUBAR */
+      let options = {
+        datatype: 0,
+        gencodeid: postdata.gencodeid,
+        mail: postdata.mail,
+        number_of_grid_points: postdata.number_of_grid_points,
+        number_of_mcmc_chains: postdata.number_of_mcmc_chains,
+        length_of_each_chain: postdata.length_of_each_chain,
+        number_of_burn_in_samples: postdata.number_of_burn_in_samples,
+        number_of_samples: postdata.number_of_samples,
+        concentration_of_dirichlet_prior:
+          postdata.concentration_of_dirichlet_prior,
+      };
+
+      FUBAR.spawn(fullFileName, options, (err, result) => {
+        if (err) {
+          logger.warn("Error with spawning job from API :: " + err);
+        }
+        res.json(200, {
+          time_stamp: result.created,
+          id: result._id,
+          status: result.status,
+          url: "dev.datamonkey.org/fubar/" + result._id,
+        });
+      });
     } else {
+
+    /* if Method Not Listed Above */
       logger.warn(
-        "Invalid Method given or method not support :: " + postdata.method
+        "Invalid Method given or method not supported :: " + postdata.method
       );
       res.json(500, {
         error:
-          "Invalid Method given or method not support :: " + postdata.method,
+          "Invalid Method given or method not supported :: " + postdata.method,
       });
     }
   });
