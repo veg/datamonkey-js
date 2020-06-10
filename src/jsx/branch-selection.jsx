@@ -43,18 +43,6 @@ class BranchSelection extends React.Component {
 
   createTree(nwk) {
     var self = this;
-    function style_element(element, data, stylingType) {
-      var reference_style = "red";
-      var test_style = "rgb(31, 119, 180)";
-      if (data["reference"]) {
-        element.style("stroke", reference_style, "important");
-      } else if (data["test"]) {
-        element.style("stroke", test_style, "important");
-      } else {
-        element.style("stroke", "");
-      }
-    }
-
     var default_tree_settings = function (tree) {
       tree.branch_length(null);
       tree.branch_name(null);
@@ -171,8 +159,10 @@ class BranchSelection extends React.Component {
           ) : null}
         </div>
 
-        <div id="tree-body">
-          <div id="tree_container" className="tree-widget" />
+        <div className="row">
+          <div id="tree-body">
+            <div id="tree_container" className="tree-widget" />
+          </div>
         </div>
 
         <button
@@ -198,7 +188,7 @@ function TreeSelectBtnGroup(props) {
       <label
         title="User Defined Tree"
         id="dm-usertree-highlighter"
-        className="btn btn-sm btn-light btn-active"
+        className="btn btn-sm btn-light active"
         onClick={() => props.toggleSelectedTree("userSuppliedNwkTree")}
       >
         <input
@@ -206,6 +196,7 @@ function TreeSelectBtnGroup(props) {
           name="options"
           id="dm-ut-select"
           autoComplete="off"
+          checked
         />
         User Defined Tree
       </label>
@@ -233,9 +224,7 @@ function BranchSelectionTypeBtnGroup(props) {
       className="btn-group btn-group-toggle ml-auto"
       data-toggle="buttons"
       style={{
-        paddingTop: "1rem",
         paddingRight: "2rem",
-        paddingBottom: "1rem",
         float: "right",
       }}
     >
@@ -245,7 +234,13 @@ function BranchSelectionTypeBtnGroup(props) {
         style={{ color: "rgb(31, 119, 180)" }}
         onClick={() => props.toggleSelectionType("test")}
       >
-        <input type="radio" name="options" id="relax-tbh" autoComplete="off" />
+        <input
+          type="radio"
+          name="options"
+          id="relax-tbh"
+          autoComplete="off"
+          checked
+        />
         Test Branches
       </label>
       <label
