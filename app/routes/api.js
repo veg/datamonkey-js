@@ -28,13 +28,17 @@ function apiSubmit(req, res) {
     "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_"
   );
 
-  let postdata = req.body;
-  var url_fasta = postdata.fastaLoc,
-    today = new Date();
-  (fileName =
-    "api_" + shortid.generate() + today.getMilliseconds() + req.fileExtension),
-    (dest = os.tmpdir()),
-    (fullFileName = path.join(dest, fileName));
+  var postdata = req.body,
+    url_fasta = postdata.fastaLoc,
+    today = new Date(),
+    fileName =
+      "api_" +
+      shortid.generate() +
+      today.getMilliseconds() +
+      "." +
+      req.fileExtension,
+    dest = os.tmpdir(),
+    fullFileName = path.join(dest, fileName);
 
   let options = {
     datatype: 0,
@@ -59,6 +63,7 @@ function apiSubmit(req, res) {
 
     logger.info("File Saved to " + fullFileName);
 
+    /* if SLAC */
     if (postdata.method.toUpperCase() == "SLAC") {
       SLAC.spawn(fullFileName, options, (err, result) => {
         if (err) {
@@ -70,6 +75,15 @@ function apiSubmit(req, res) {
           status: result.status,
           url: "dev.datamonkey.org/slac/" + result._id,
         });
+      });
+    } else {
+    /* if <job> */
+      logger.warn(
+        "Invalid Method given or method not support :: " + postdata.method
+      );
+      res.json(500, {
+        error:
+          "Invalid Method given or method not support :: " + postdata.method,
       });
     }
   });
