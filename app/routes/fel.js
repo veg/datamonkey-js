@@ -86,7 +86,7 @@ exports.uploadFile = function (req, res) {
           );
           move.then(
             (val) => {
-              console.log("REDIRECT PATH ======== " + fel.upload_redirect_path);
+              //console.log("REDIRECT PATH ======== " + fel.upload_redirect_path);
               res.json(200, {
                 analysis: fel,
                 upload_redirect_path: fel.upload_redirect_path,

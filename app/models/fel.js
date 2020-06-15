@@ -123,17 +123,23 @@ FEL.statics.spawn = function (fn, options, callback) {
           );
           move.then(
             (val) => {
-              var connect_callback = function (data) {
-                if (data == "connected") {
-                  logger.log("connected");
-                }
-              };
+              // var connect_callback = function(data) {
+              //   if (data == "connected") {
+              //     logger.log("connected");
+              //   }
+              // };
               //callback(null, fel);
               //FEL.submitJob(result, connect_callback);
 
               // SHOULD INVOKE HERE?
 
               FEL.findOne({ _id: id }, function (err, fel) {
+                if (err) {
+                  // Error with request
+                  logger.error("Could not find FEL file");
+                  callback(err, null);
+                  // Successful upload, spawn job
+                }
                 // User Parameters
                 fel.tagged_nwk_tree = postdata.nwk_tree;
                 fel.analysis_type = postdata.analysis_type;
@@ -152,8 +158,8 @@ FEL.statics.spawn = function (fn, options, callback) {
                       }
                     };
 
-                    callback(null, fel);
                     FEL.submitJob(result, connect_callback);
+                    callback(null, fel);
                   }
                 });
               });
