@@ -63,6 +63,7 @@ FEL.virtual("url").get(function () {
 });
 
 /*
+
   FEL uses three difference calls in this order:
   fel.uploadFile
   GET = fel.select-foreground
@@ -73,7 +74,6 @@ FEL.statics.spawn = function (fn, options, callback) {
   const Msa = mongoose.model("Msa");
   var postdata = options;
   //NEEDS TO RECIEVE BRANCH SELECTION (User should submit)!!
-  console.log("1");
   var fel = new this(),
     datatype = 0,
     gencodeid = options.gencodeid,
@@ -84,12 +84,12 @@ FEL.statics.spawn = function (fn, options, callback) {
   fel.analysis_type = options.analysis_type;
   fel.mail = options.mail;
 
-  Msa.parseFile(fn, datatype, gencodeid, function (err, msa) {
+  Msa.parseFile(fn, datatype, gencodeid, (err, msa) => {
     if (err) {
       res.json(500, { error: err });
       return;
     }
-    console.log("2");
+
     // Check if msa exceeds limitations
     if (msa.sites > fel.max_sites) {
       var error =
@@ -112,7 +112,7 @@ FEL.statics.spawn = function (fn, options, callback) {
     fel.status = fel.status_stack[0];
     fel.ds_variation = ds_variation;
 
-    fel.save(function (err, fel_result) {
+    fel.save((err, fel_result) => {
       if (err) {
         logger.error("fel save failed");
         callback(err, null);
@@ -120,7 +120,6 @@ FEL.statics.spawn = function (fn, options, callback) {
       }
 
       function move_cb(err, result) {
-        console.log("3");
         if (err) {
           logger.error("fel rename failed");
           callback(err, null);
@@ -131,54 +130,13 @@ FEL.statics.spawn = function (fn, options, callback) {
           );
           move.then(
             (val) => {
-              // var connect_callback = function(data) {
-              //   if (data == "connected") {
-              //     logger.log("connected");
-              //   }
-              // };
-              //callback(null, fel);
-              //FEL.submitJob(result, connect_callback);
-
-              // SHOULD INVOKE HERE?
-
-              //findOne is not a function! Error
-              FEL.findOne({ _id: fel._id }, function (err, fel) {
-                if (err) {
-                  // Error with request
-                  logger.error("Could not find FEL file");
-                  callback(err, null);
-                  // Successful upload, spawn job
+              var connect_callback = function (data) {
+                if (data == "connected") {
+                  logger.log("connected");
                 }
-
-                /////FAILS BEFORE THIS, findOne is not a function
-                console.log("4");
-
-                // User Parameters
-                fel.tagged_nwk_tree = postdata.nwk_tree;
-                fel.analysis_type = postdata.analysis_type;
-                fel.status = fel.status_stack[0];
-
-                fel.save(function (err, result) {
-                  if (err) {
-                    // Error with request
-                    logger.error("fel rename failed");
-                    callback(err, null);
-                    // Successful upload, spawn job
-                  } else {
-                    var connect_callback = function (data) {
-                      if (data == "connected") {
-                        logger.log("connected");
-                      }
-                    };
-
-                    FEL.submitJob(result, connect_callback);
-                    console.log("5");
-                    callback(null, fel);
-                  }
-                });
-              });
-
-              // END INPROGRESS CODE
+              };
+              callback(null, fel);
+              this.submitJob(fel_result, connect_callback);
             },
             (reason) => {
               callback(err, "issue removing tree from file");
@@ -187,7 +145,6 @@ FEL.statics.spawn = function (fn, options, callback) {
         }
       }
 
-      //Maybe run this sooner?
       fs.readFile(fn, (err, data) => {
         if (err) {
           logger.error("read file failed");
@@ -198,25 +155,11 @@ FEL.statics.spawn = function (fn, options, callback) {
             logger.error("write file failed");
             callback(err, null);
           }
-          helpers.moveSafely(fn, fel_result.filepath, move_cb);
+          helpers.moveSafely(fn, fel_result.filepath, move_cb.bind(this));
         });
       });
     });
   });
-};
-
-FEL.statics.spawn2 = function (fn, options, callback) {
-  const Msa = mongoose.model("Msa");
-
-  var fel = new this(),
-    datatype = 0,
-    gencodeid = options.gencodeid,
-    ds_variation = options.ds_variation;
-
-  fel.original_extension = options.original_extension;
-  fel.tagged_nwk_tree = options.nwk_tree;
-  fel.analysis_type = options.analysis_type;
-  fel.mail = options.mail;
 };
 
 module.exports = mongoose.model("FEL", FEL);
