@@ -72,8 +72,7 @@ FEL.virtual("url").get(function () {
 */
 FEL.statics.spawn = function (fn, options, callback) {
   const Msa = mongoose.model("Msa");
-  var postdata = options;
-  //NEEDS TO RECIEVE BRANCH SELECTION (User should submit)!!
+
   var fel = new this(),
     datatype = 0,
     gencodeid = options.gencodeid,

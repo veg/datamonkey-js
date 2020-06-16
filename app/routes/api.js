@@ -123,6 +123,7 @@ function apiSubmit(req, res) {
       });
     } else if (postdata.method.toUpperCase() == "FEL") {
     /* if FEL */
+    /* User must provide branch selection */
       let options = {
         datatype: 0,
         gencodeid: postdata.gencodeid,
@@ -143,6 +144,35 @@ function apiSubmit(req, res) {
           id: result._id,
           status: result.status,
           url: "dev.datamonkey.org/fel/" + result._id,
+        });
+      });
+    } else if (postdata.method.toUpperCase() == "CONTRAST-FEL") {
+    /* 
+      if contrast-FEL
+      User must provide branch selection
+      Branch tags should be included in NWK
+      Use http://phylotree.hyphy.org/ to assit in NWK tagging  
+    */
+      let options = {
+        datatype: 0,
+        gencodeid: postdata.gencodeid,
+        mail: postdata.mail,
+        ds_variation: postdata.ds_variation,
+        email: postdata.email,
+        original_extension: postdata.fileExtension,
+        nwk_tree: postdata.nwk_tree, //Requester provides as string with tags
+        analysis_type: postdata.analysis_type,
+      };
+
+      ContrastFEL.spawn(fullFileName, options, (err, result) => {
+        if (err) {
+          logger.warn("Error with spawning job from API :: " + err);
+        }
+        res.json(200, {
+          time_stamp: result.created,
+          id: result._id,
+          status: result.status,
+          url: "dev.datamonkey.org/contrast_fel/" + result._id,
         });
       });
     } else {
