@@ -122,8 +122,8 @@ function apiSubmit(req, res) {
         });
       });
     } else if (postdata.method.toUpperCase() == "FEL") {
-    /* if FEL */
-    /* User must provide branch selection */
+      /* if FEL */
+      /* User must provide branch selection */
       let options = {
         datatype: 0,
         gencodeid: postdata.gencodeid,
@@ -147,7 +147,7 @@ function apiSubmit(req, res) {
         });
       });
     } else if (postdata.method.toUpperCase() == "CONTRAST-FEL") {
-    /* 
+      /* 
       if contrast-FEL
       User must provide branch selection
       Branch tags should be included in NWK
