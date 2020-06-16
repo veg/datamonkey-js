@@ -18,13 +18,13 @@ var mongoose = require("mongoose"),
 var redis = require("redis"),
   client = redis.createClient({ host: setup.redisHost, port: setup.redisPort });
 
-exports.form = function(req, res) {
+exports.form = function (req, res) {
   var post_to = "/gard";
   res.render("gard/form.ejs", { post_to: post_to });
 };
 
-exports.invoke = function(req, res) {
-  var connect_callback = function(data) {
+exports.invoke = function (req, res) {
+  var connect_callback = function (data) {
     if (data == "connected") {
       logger.log("connected");
     }
@@ -41,9 +41,11 @@ exports.invoke = function(req, res) {
   gard.site_to_site_variation = site_to_site_variation;
   gard.rate_classes = rate_classes;
 
+  console.log("site to site var = " + site_to_site_variation);
+  console.log("rate classes = " + rate_classes);
   gard.mail = postdata.mail;
 
-  Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
+  Msa.parseFile(fn, datatype, gencodeid, function (err, msa) {
     if (err) {
       res.json(500, { error: err });
       return;
@@ -71,7 +73,7 @@ exports.invoke = function(req, res) {
 
     gard.status = gard.status_stack[0];
 
-    gard.save(function(err, gard_result) {
+    gard.save(function (err, gard_result) {
       if (err) {
         logger.error("gard save failed");
         res.json(500, { error: err });
@@ -87,7 +89,7 @@ exports.invoke = function(req, res) {
           to_send.upload_redirect_path = gard.upload_redirect_path;
           res.json(200, {
             analysis: gard,
-            upload_redirect_path: gard.upload_redirect_path
+            upload_redirect_path: gard.upload_redirect_path,
           });
 
           // Send the MSA and analysis type
@@ -100,12 +102,12 @@ exports.invoke = function(req, res) {
   });
 };
 
-exports.getPage = function(req, res) {
+exports.getPage = function (req, res) {
   // Find the analysis
   var gardid = req.params.id;
 
   //Return all results
-  GARD.findOne({ _id: gardid }, function(err, gard) {
+  GARD.findOne({ _id: gardid }, function (err, gard) {
     if (err || !gard) {
       res.json(500, error.errorResponse("Invalid ID : " + gardid));
     } else {
@@ -119,11 +121,11 @@ exports.getPage = function(req, res) {
  * Returns log txt file
  * app.get('/gard/:id/results', gard.getLog);
  */
-exports.getLog = function(req, res) {
+exports.getLog = function (req, res) {
   var id = req.params.id;
 
   //Return all results
-  GARD.findOne({ _id: id }, function(err, gard) {
+  GARD.findOne({ _id: id }, function (err, gard) {
     if (err || !busted) {
       winston.info(err);
       res.json(500, error.errorResponse("invalid id : " + id));
@@ -139,16 +141,16 @@ exports.getLog = function(req, res) {
  * cancels existing job
  * app.get('/busted/:id/cancel', gard.cancel);
  */
-exports.cancel = function(req, res) {
+exports.cancel = function (req, res) {
   var id = req.params.id;
 
   //Return all results
-  GARD.findOne({ _id: id }, function(err, gard) {
+  GARD.findOne({ _id: id }, function (err, gard) {
     if (err || !busted) {
       winston.info(err);
       res.json(500, error.errorResponse("invalid id : " + id));
     } else {
-      gard.cancel(function(err, success) {
+      gard.cancel(function (err, success) {
         if (success) {
           res.json(200, { success: "yes" });
         } else {
@@ -159,18 +161,18 @@ exports.cancel = function(req, res) {
   });
 };
 
-exports.resubscribePendingJobs = function(req, res) {
+exports.resubscribePendingJobs = function (req, res) {
   GARD.subscribePendingJobs();
 };
 
-exports.getMSAFile = function(req, res) {
+exports.getMSAFile = function (req, res) {
   var id = req.params.id,
     name = req.params.name;
 
   var options = {};
 
-  GARD.findOne({ _id: id }, function(err, gard) {
-    res.sendFile(gard.filepath, options, function(err) {
+  GARD.findOne({ _id: id }, function (err, gard) {
+    res.sendFile(gard.filepath, options, function (err) {
       if (err) {
         res.status(err.status).end();
       }
@@ -178,26 +180,26 @@ exports.getMSAFile = function(req, res) {
   });
 };
 
-exports.fasta = function(req, res) {
+exports.fasta = function (req, res) {
   var id = req.params.id;
 
-  GARD.findOne({ _id: id }, function(err, gard) {
+  GARD.findOne({ _id: id }, function (err, gard) {
     if (err || !gard) {
       winston.info(err);
       res.json(500, error.errorReponse("invalid id : " + id));
     }
     Msa.deliverFasta(gard.filepath)
-      .then(value => {
+      .then((value) => {
         res.json(200, { fasta: value });
       })
-      .catch(err => {
+      .catch((err) => {
         winston.info(err);
         res.json(500, { error: "Unable to deliver fasta." });
       });
   });
 };
 
-exports.getScreenedData = function(req, res) {
+exports.getScreenedData = function (req, res) {
   var id = req.params.id,
     file_path = path.join(
       __dirname,
@@ -210,8 +212,8 @@ exports.getScreenedData = function(req, res) {
   res.download(file_path, "screened_data.nex");
 };
 
-exports.getUsage = function(req, res) {
-  client.get(GARD.cachePath(), function(err, data) {
+exports.getUsage = function (req, res) {
+  client.get(GARD.cachePath(), function (err, data) {
     try {
       res.json(200, JSON.parse(data));
     } catch (err) {

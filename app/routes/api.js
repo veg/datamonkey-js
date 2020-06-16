@@ -175,6 +175,28 @@ function apiSubmit(req, res) {
           url: "dev.datamonkey.org/contrast_fel/" + result._id,
         });
       });
+    } else if (postdata.method.toUpperCase() == "GARD") {
+
+    /* if GARD */
+      let options = {
+        datatype: 0,
+        gencodeid: postdata.gencodeid,
+        mail: postdata.mail,
+        site_to_site_variation: postdata.site_to_site_variation,
+        rate_classes: postdata.rate_classes,
+      };
+
+      GARD.spawn(fullFileName, options, (err, result) => {
+        if (err) {
+          logger.warn("Error with spawning job from API :: " + err);
+        }
+        res.json(200, {
+          time_stamp: result.created,
+          id: result._id,
+          status: result.status,
+          url: "dev.datamonkey.org/gard/" + result._id,
+        });
+      });
     } else {
       /* if Method Not Listed Above */
       logger.warn(
