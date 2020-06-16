@@ -159,10 +159,8 @@ class BranchSelection extends React.Component {
           ) : null}
         </div>
 
-        <div className="row">
-          <div id="tree-body">
-            <div id="tree_container" className="tree-widget" />
-          </div>
+        <div id="tree-body">
+          <div id="tree_container" className="tree-widget" />
         </div>
 
         <button
