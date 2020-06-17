@@ -66,7 +66,7 @@ GARD.statics.spawn = function (fn, options, callback) {
 
   gard.site_to_site_variation = site_to_site_variation;
   gard.rate_classes = rate_classes;
-  gard.mail = options.email;
+  gard.mail = options.mail;
 
   // options
   // datatype, gencodeid, mail

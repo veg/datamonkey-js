@@ -129,7 +129,6 @@ function apiSubmit(req, res) {
         gencodeid: postdata.gencodeid,
         mail: postdata.mail,
         ds_variation: postdata.ds_variation,
-        email: postdata.email,
         original_extension: postdata.fileExtension,
         nwk_tree: postdata.nwk_tree, //Requester provides as string
         analysis_type: postdata.analysis_type,
@@ -158,7 +157,6 @@ function apiSubmit(req, res) {
         gencodeid: postdata.gencodeid,
         mail: postdata.mail,
         ds_variation: postdata.ds_variation,
-        email: postdata.email,
         original_extension: postdata.fileExtension,
         nwk_tree: postdata.nwk_tree, //Requester provides as string with tags
         analysis_type: postdata.analysis_type,
@@ -176,7 +174,7 @@ function apiSubmit(req, res) {
         });
       });
     } else if (postdata.method.toUpperCase() == "GARD") {
-    /* if GARD */
+      /* if GARD */
       let options = {
         datatype: 0,
         gencodeid: postdata.gencodeid,

@@ -81,7 +81,7 @@ FEL.statics.spawn = function (fn, options, callback) {
   fel.original_extension = options.original_extension;
   fel.tagged_nwk_tree = options.nwk_tree;
   fel.analysis_type = options.analysis_type;
-  fel.mail = options.email;
+  fel.mail = options.mail;
 
   Msa.parseFile(fn, datatype, gencodeid, (err, msa) => {
     if (err) {

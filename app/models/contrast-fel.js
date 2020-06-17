@@ -73,7 +73,7 @@ ContrastFEL.statics.spawn = function (fn, options, callback) {
   contrast_fel.original_extension = options.original_extension;
   contrast_fel.tagged_nwk_tree = options.nwk_tree;
   contrast_fel.analysis_type = options.analysis_type;
-  contrast_fel.mail = options.email;
+  contrast_fel.mail = options.mail;
   Msa.parseFile(fn, datatype, gencodeid, (err, msa) => {
     if (err) {
       res.json(500, { error: err });

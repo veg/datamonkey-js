@@ -35,7 +35,7 @@ exports.invoke = function (req, res) {
     gencodeid: postdata.gencodeid,
     site_to_site_variation: postdata.site_to_site_variation,
     rate_classes: postdata.rate_classes,
-    email: postdata.mail,
+    mail: postdata.mail,
   };
 
   GARD.spawn(fn, options, (err, result) => {
