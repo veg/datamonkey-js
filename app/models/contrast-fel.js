@@ -62,8 +62,6 @@ ContrastFEL.virtual("url").get(function () {
   return "http://" + setup.host + "/contrast_fel/" + this._id;
 });
 
-console.log("1");
-
 ContrastFEL.statics.spawn = function (fn, options, callback) {
   const Msa = mongoose.model("Msa");
   //NEEDS TO RECIEVE BRANCH SELECTION (User should submit)!!
@@ -75,15 +73,13 @@ ContrastFEL.statics.spawn = function (fn, options, callback) {
   contrast_fel.original_extension = options.original_extension;
   contrast_fel.tagged_nwk_tree = options.nwk_tree;
   contrast_fel.analysis_type = options.analysis_type;
-  contrast_fel.mail = options.mail;
-  console.log("2");
+  contrast_fel.mail = options.email;
   Msa.parseFile(fn, datatype, gencodeid, (err, msa) => {
     if (err) {
       res.json(500, { error: err });
       return;
     }
 
-    console.log("3");
     // Check if msa exceeds limitations
     if (msa.sites > fel.max_sites) {
       var error =
@@ -114,8 +110,6 @@ ContrastFEL.statics.spawn = function (fn, options, callback) {
         return;
       }
 
-      console.log("4");
-
       function move_cb(err, result) {
         if (err) {
           logger.error("contrast_fel rename failed");
@@ -133,11 +127,9 @@ ContrastFEL.statics.spawn = function (fn, options, callback) {
                 }
               };
               callback(null, contrast_fel);
-              console.log("SPAWNING JOB NOW!!");
               this.submitJob(contrast_fel_result, connect_callback);
             },
             (reason) => {
-              console.log("eerrr");
               callback(err, "issue removing tree from file");
             }
           );

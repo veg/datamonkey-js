@@ -67,7 +67,7 @@ function apiSubmit(req, res) {
 
       SLAC.spawn(fullFileName, options, (err, result) => {
         if (err) {
-          logger.warn("Error with spawning job from API :: " + err);
+          logger.warn("Error with spawning SLAC job from API :: " + err);
         }
         res.json(200, {
           time_stamp: result.created,
@@ -86,7 +86,7 @@ function apiSubmit(req, res) {
 
       MEME.spawn(fullFileName, options, (err, result) => {
         if (err) {
-          logger.warn("Error with spawning job from API :: " + err);
+          logger.warn("Error with spawning MEME job from API :: " + err);
         }
         res.json(200, {
           time_stamp: result.created,
@@ -112,7 +112,7 @@ function apiSubmit(req, res) {
 
       FUBAR.spawn(fullFileName, options, (err, result) => {
         if (err) {
-          logger.warn("Error with spawning job from API :: " + err);
+          logger.warn("Error with spawning FUBAR job from API :: " + err);
         }
         res.json(200, {
           time_stamp: result.created,
@@ -137,7 +137,7 @@ function apiSubmit(req, res) {
 
       FEL.spawn(fullFileName, options, (err, result) => {
         if (err) {
-          logger.warn("Error with spawning job from API :: " + err);
+          logger.warn("Error with spawning FEL job from API :: " + err);
         }
         res.json(200, {
           time_stamp: result.created,
@@ -166,7 +166,7 @@ function apiSubmit(req, res) {
 
       ContrastFEL.spawn(fullFileName, options, (err, result) => {
         if (err) {
-          logger.warn("Error with spawning job from API :: " + err);
+          logger.warn("Error with spawning CFEL job from API :: " + err);
         }
         res.json(200, {
           time_stamp: result.created,
@@ -176,19 +176,18 @@ function apiSubmit(req, res) {
         });
       });
     } else if (postdata.method.toUpperCase() == "GARD") {
-
     /* if GARD */
       let options = {
         datatype: 0,
         gencodeid: postdata.gencodeid,
         mail: postdata.mail,
-        site_to_site_variation: postdata.site_to_site_variation,
+        site_to_site_variation: postdata.site_to_site_variation.toLowerCase(),
         rate_classes: postdata.rate_classes,
       };
 
       GARD.spawn(fullFileName, options, (err, result) => {
         if (err) {
-          logger.warn("Error with spawning job from API :: " + err);
+          logger.warn("Error with spawning GARD job from API :: " + err);
         }
         res.json(200, {
           time_stamp: result.created,

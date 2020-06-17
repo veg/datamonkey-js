@@ -24,80 +24,28 @@ exports.form = function (req, res) {
 };
 
 exports.invoke = function (req, res) {
-  var connect_callback = function (data) {
-    if (data == "connected") {
-      logger.log("connected");
-    }
+  let postdata = req.body;
+  var fn = req.files.files.file;
+
+  (site_to_site_variation = postdata.site_to_site_variation),
+    (rate_classes = postdata.rate_classes);
+
+  let options = {
+    datatype: postdata.datatype,
+    gencodeid: postdata.gencodeid,
+    site_to_site_variation: postdata.site_to_site_variation,
+    rate_classes: postdata.rate_classes,
+    email: postdata.mail,
   };
 
-  var fn = req.files.files.file,
-    gard = new GARD(),
-    postdata = req.body,
-    datatype = postdata.datatype,
-    gencodeid = postdata.gencodeid,
-    site_to_site_variation = postdata.site_to_site_variation,
-    rate_classes = postdata.rate_classes;
-
-  gard.site_to_site_variation = site_to_site_variation;
-  gard.rate_classes = rate_classes;
-
-  console.log("site to site var = " + site_to_site_variation);
-  console.log("rate classes = " + rate_classes);
-  gard.mail = postdata.mail;
-
-  Msa.parseFile(fn, datatype, gencodeid, function (err, msa) {
+  GARD.spawn(fn, options, (err, result) => {
     if (err) {
-      res.json(500, { error: err });
-      return;
+      logger.warn("Error with spawning GARD job from browser :: " + err);
     }
 
-    // Check if msa exceeds limitations
-    if (msa.sites > gard.max_sites) {
-      var error =
-        "Site limit exceeded! Sites must be less than " + gard.max_sites;
-      logger.error(error);
-      res.json(500, { error: error });
-      return;
-    }
-
-    if (msa.sequences > gard.max_sequences) {
-      var error =
-        "Sequence limit exceeded! Sequences must be less than " +
-        gard.max_sequences;
-      logger.error(error);
-      res.json(500, { error: error });
-      return;
-    }
-
-    gard.msa = msa;
-
-    gard.status = gard.status_stack[0];
-
-    gard.save(function (err, gard_result) {
-      if (err) {
-        logger.error("gard save failed");
-        res.json(500, { error: err });
-        return;
-      }
-
-      function move_cb(err, result) {
-        if (err) {
-          logger.error("gard rename failed");
-          res.json(500, { error: err });
-        } else {
-          var to_send = gard;
-          to_send.upload_redirect_path = gard.upload_redirect_path;
-          res.json(200, {
-            analysis: gard,
-            upload_redirect_path: gard.upload_redirect_path,
-          });
-
-          // Send the MSA and analysis type
-          GARD.submitJob(gard_result, connect_callback);
-        }
-      }
-
-      helpers.moveSafely(req.files.files.file, gard_result.filepath, move_cb);
+    res.json(200, {
+      analysis: result,
+      upload_redirect_path: result.upload_redirect_path,
     });
   });
 };

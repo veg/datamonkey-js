@@ -58,7 +58,6 @@ GARD.statics.spawn = function (fn, options, callback) {
   const Msa = mongoose.model("Msa");
 
   var gard = new this();
-  gard.mail = options.mail;
 
   let gencodeid = options.gencodeid,
     site_to_site_variation = options.site_to_site_variation,
@@ -67,6 +66,7 @@ GARD.statics.spawn = function (fn, options, callback) {
 
   gard.site_to_site_variation = site_to_site_variation;
   gard.rate_classes = rate_classes;
+  gard.mail = options.email;
 
   // options
   // datatype, gencodeid, mail
