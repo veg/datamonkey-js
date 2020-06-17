@@ -27,9 +27,6 @@ exports.invoke = function (req, res) {
   let postdata = req.body;
   var fn = req.files.files.file;
 
-  (site_to_site_variation = postdata.site_to_site_variation),
-    (rate_classes = postdata.rate_classes);
-
   let options = {
     datatype: postdata.datatype,
     gencodeid: postdata.gencodeid,

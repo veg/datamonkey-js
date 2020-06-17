@@ -57,8 +57,8 @@ function apiSubmit(req, res) {
 
     logger.info("File Saved to " + fullFileName);
 
-    /* if SLAC */
     if (postdata.method.toUpperCase() == "SLAC") {
+      /* if SLAC */
       let options = {
         datatype: 0,
         gencodeid: postdata.gencodeid,
@@ -151,7 +151,7 @@ function apiSubmit(req, res) {
       User must provide branch selection
       Branch tags should be included in NWK
       Use http://phylotree.hyphy.org/ to assit in NWK tagging  
-    */
+      */
       let options = {
         datatype: 0,
         gencodeid: postdata.gencodeid,
@@ -192,6 +192,27 @@ function apiSubmit(req, res) {
           id: result._id,
           status: result.status,
           url: "dev.datamonkey.org/gard/" + result._id,
+        });
+      });
+    } else if (postdata.method.toUpperCase() == "MULTIHIT") {
+      /* if MULTIHIT */
+      let options = {
+        datatype: 0,
+        gencodeid: postdata.gencodeid,
+        mail: postdata.mail,
+        rate_classes: postdata.rate_classes,
+        triple_islands: postdata.triple_islands,
+      };
+
+      MULTIHIT.spawn(fullFileName, options, (err, result) => {
+        if (err) {
+          logger.warn("Error with spawning MULTIHIT job from API :: " + err);
+        }
+        res.json(200, {
+          time_stamp: result.created,
+          id: result._id,
+          status: result.status,
+          url: "dev.datamonkey.org/multihit/" + result._id,
         });
       });
     } else {
