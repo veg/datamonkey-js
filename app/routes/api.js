@@ -215,6 +215,72 @@ function apiSubmit(req, res) {
           url: "dev.datamonkey.org/multihit/" + result._id,
         });
       });
+    } else if (postdata.method.toUpperCase() == "ABSREL") {
+      /* if aBSREL */
+      /* User must provide branch selection */
+      let options = {
+        datatype: 0,
+        gencodeid: postdata.gencodeid,
+        mail: postdata.mail,
+        nwk_tree: postdata.nwk_tree, //Requester provides as string
+      };
+
+      aBSREL.spawn(fullFileName, options, (err, result) => {
+        if (err) {
+          logger.warn("Error with spawning aBSREL job from API :: " + err);
+        }
+        res.json(200, {
+          time_stamp: result.created,
+          id: result._id,
+          status: result.status,
+          url: "dev.datamonkey.org/absrel/" + result._id,
+        });
+      });
+    } else if (postdata.method.toUpperCase() == "BUSTED") {
+      /* if Busted */
+      /* User must provide branch selection */
+      let options = {
+        datatype: 0,
+        gencodeid: postdata.gencodeid,
+        mail: postdata.mail,
+        nwk_tree: postdata.nwk_tree, //Requester provides as string
+        ds_variation: postdata.ds_variation,
+      };
+
+      Busted.spawn(fullFileName, options, (err, result) => {
+        if (err) {
+          logger.warn("Error with spawning BUSTED job from API :: " + err);
+        }
+        res.json(200, {
+          time_stamp: result.created,
+          id: result._id,
+          status: result.status,
+          url: "dev.datamonkey.org/busted/" + result._id,
+        });
+      });
+    } else if (postdata.method.toUpperCase() == "RELAX") {
+      /* if Relax */
+      /* User must provide branch selection */
+      let options = {
+        datatype: 0,
+        gencodeid: postdata.gencodeid,
+        mail: postdata.mail,
+        nwk_tree: postdata.nwk_tree, //Requester provides as string
+        analysis_type: postdata.analysis_type, //1 or 2 <-- no 0
+        fileExtension: postdata.fileExtension,
+      };
+
+      Relax.spawn(fullFileName, options, (err, result) => {
+        if (err) {
+          logger.warn("Error with spawning Relax job from API :: " + err);
+        }
+        res.json(200, {
+          time_stamp: result.created,
+          id: result._id,
+          status: result.status,
+          url: "dev.datamonkey.org/relax/" + result._id,
+        });
+      });
     } else {
       /* if Method Not Listed Above */
       logger.warn(
