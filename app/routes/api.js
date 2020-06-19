@@ -36,7 +36,7 @@ function apiSubmit(req, res) {
       shortid.generate() +
       today.getMilliseconds() +
       "." +
-      req.fileExtension,
+      postdata.fileExtension,
     dest = os.tmpdir(),
     fullFileName = path.join(dest, fileName);
 
@@ -68,6 +68,9 @@ function apiSubmit(req, res) {
       SLAC.spawn(fullFileName, options, (err, result) => {
         if (err) {
           logger.warn("Error with spawning SLAC job from API :: " + err);
+          res.json(400, {
+            error: err,
+          });
         }
         res.json(200, {
           time_stamp: result.created,
@@ -87,6 +90,9 @@ function apiSubmit(req, res) {
       MEME.spawn(fullFileName, options, (err, result) => {
         if (err) {
           logger.warn("Error with spawning MEME job from API :: " + err);
+          res.json(400, {
+            error: err,
+          });
         }
         res.json(200, {
           time_stamp: result.created,
@@ -113,6 +119,9 @@ function apiSubmit(req, res) {
       FUBAR.spawn(fullFileName, options, (err, result) => {
         if (err) {
           logger.warn("Error with spawning FUBAR job from API :: " + err);
+          res.json(400, {
+            error: err,
+          });
         }
         res.json(200, {
           time_stamp: result.created,
@@ -137,6 +146,9 @@ function apiSubmit(req, res) {
       FEL.spawn(fullFileName, options, (err, result) => {
         if (err) {
           logger.warn("Error with spawning FEL job from API :: " + err);
+          res.json(400, {
+            error: err,
+          });
         }
         res.json(200, {
           time_stamp: result.created,
@@ -165,6 +177,9 @@ function apiSubmit(req, res) {
       ContrastFEL.spawn(fullFileName, options, (err, result) => {
         if (err) {
           logger.warn("Error with spawning CFEL job from API :: " + err);
+          res.json(400, {
+            error: err,
+          });
         }
         res.json(200, {
           time_stamp: result.created,
@@ -186,6 +201,9 @@ function apiSubmit(req, res) {
       GARD.spawn(fullFileName, options, (err, result) => {
         if (err) {
           logger.warn("Error with spawning GARD job from API :: " + err);
+          res.json(400, {
+            error: err,
+          });
         }
         res.json(200, {
           time_stamp: result.created,
@@ -207,6 +225,9 @@ function apiSubmit(req, res) {
       MULTIHIT.spawn(fullFileName, options, (err, result) => {
         if (err) {
           logger.warn("Error with spawning MULTIHIT job from API :: " + err);
+          res.json(400, {
+            error: err,
+          });
         }
         res.json(200, {
           time_stamp: result.created,
@@ -228,6 +249,9 @@ function apiSubmit(req, res) {
       aBSREL.spawn(fullFileName, options, (err, result) => {
         if (err) {
           logger.warn("Error with spawning aBSREL job from API :: " + err);
+          res.json(400, {
+            error: err,
+          });
         }
         res.json(200, {
           time_stamp: result.created,
@@ -250,6 +274,9 @@ function apiSubmit(req, res) {
       Busted.spawn(fullFileName, options, (err, result) => {
         if (err) {
           logger.warn("Error with spawning BUSTED job from API :: " + err);
+          res.json(400, {
+            error: err,
+          });
         }
         res.json(200, {
           time_stamp: result.created,
@@ -273,12 +300,79 @@ function apiSubmit(req, res) {
       Relax.spawn(fullFileName, options, (err, result) => {
         if (err) {
           logger.warn("Error with spawning Relax job from API :: " + err);
+          res.json(400, {
+            error: err,
+          });
         }
         res.json(200, {
           time_stamp: result.created,
           id: result._id,
           status: result.status,
           url: "dev.datamonkey.org/relax/" + result._id,
+        });
+      });
+    } else if (postdata.method.toUpperCase() == "FADE") {
+      /* if MEME */
+      let options = {
+        datatype: 0,
+        gencodeid: postdata.gencodeid,
+        mail: postdata.mail,
+
+        number_of_grid_points: postdata.number_of_grid_points,
+        number_of_mcmc_chains: postdata.number_of_mcmc_chains,
+        length_of_each_chain: postdata.length_of_each_chain,
+        number_of_burn_in_samples: postdata.number_of_burn_in_samples,
+        number_of_samples: postdata.number_of_samples,
+        concentration_of_dirichlet_prior:
+          postdata.concentration_of_dirichlet_prior,
+        substitution_model: postdata.substitution_model,
+        posterior_estimation_method: postdata.posterior_estimation_method,
+      };
+
+      FADE.spawn(fullFileName, options, (err, result) => {
+        if (err) {
+          logger.warn("Error with spawning FADE job from API :: " + err);
+          res.json(400, {
+            error: err,
+            filename: fullFileName,
+          });
+        }
+        res.json(200, {
+          time_stamp: result.created,
+          id: result._id,
+          status: result.status,
+          url: "dev.datamonkey.org/fade/" + result._id,
+        });
+      });
+    } else if (postdata.method.toUpperCase() == "BGM") {
+      /* if MEME */
+      let options = {
+        datatype: 0,
+        gencodeid: postdata.gencodeid,
+        mail: postdata.mail,
+
+        length_of_each_chain: postdata.length_of_each_chain,
+        substitution_model: postdata.substitution_model,
+        number_of_burn_in_samples: postdata.number_of_burn_in_samples,
+        number_of_samples: postdata.number_of_samples,
+        maximum_parents_per_node: postdata.maximum_parents_per_node,
+        minimum_subs_per_site: postdata.minimum_subs_per_site,
+      };
+
+      console.log(options);
+
+      BGM.spawn(fullFileName, options, (err, result) => {
+        if (err) {
+          logger.warn("Error with spawning BGM job from API :: " + err);
+          res.json(400, {
+            error: err,
+          });
+        }
+        res.json(200, {
+          time_stamp: result.created,
+          id: result._id,
+          status: result.status,
+          url: "dev.datamonkey.org/bgm/" + result._id,
         });
       });
     } else {
