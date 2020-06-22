@@ -47,17 +47,18 @@ FUBAR.virtual("url").get(function () {
   return "http://" + setup.host + "/fubar/" + this._id;
 });
 
+/**
+ * Shared API / Web request job spawn
+ */
 FUBAR.statics.spawn = function (fn, options, callback) {
   const Msa = mongoose.model("Msa");
-
   var fubar = new this();
+
+  let gencodeid = options.gencodeid,
+    datatype = options.datatype;
+
   fubar.mail = options.mail;
 
-  let gencodeid = options.gencodeid;
-  let datatype = options.datatype;
-
-  // options
-  // datatype, gencodeid, mail
   const connect_callback = function (data) {
     if (data == "connected") {
       logger.log("connected");

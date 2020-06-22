@@ -55,6 +55,9 @@ GARD.virtual("url").get(function () {
   return "http://" + setup.host + "/gard/" + this._id;
 });
 
+/**
+ * Shared API / Web request job spawn
+ */
 GARD.statics.spawn = function (fn, options, callback) {
   const Msa = mongoose.model("Msa");
 
@@ -69,8 +72,6 @@ GARD.statics.spawn = function (fn, options, callback) {
   gard.rate_classes = rate_classes;
   gard.mail = options.mail;
 
-  // options
-  // datatype, gencodeid, mail
   const connect_callback = function (data) {
     if (data == "connected") {
       logger.log("connected");

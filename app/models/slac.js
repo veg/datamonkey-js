@@ -44,22 +44,18 @@ SLAC.virtual("url").get(function () {
   return "http://" + setup.host + "/slac/" + this._id;
 });
 
-/*
-() fileName should be full proper file name :: /temp/filename.nex
-() params will depend on model related params
-() callback is triggered after .save triggers move callback
-*/
+/**
+ * Shared API / Web request job spawn
+ */
 SLAC.statics.spawn = function (fn, options, callback) {
   const Msa = mongoose.model("Msa");
-
   var slac = new this();
+
+  let gencodeid = options.gencodeid,
+    datatype = options.datatype;
+
   slac.mail = options.mail;
 
-  let gencodeid = options.gencodeid;
-  let datatype = options.datatype;
-
-  // options
-  // datatype, gencodeid, mail
   const connect_callback = function (data) {
     if (data == "connected") {
       logger.log("connected");

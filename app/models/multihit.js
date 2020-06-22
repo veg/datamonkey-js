@@ -48,6 +48,9 @@ MULTIHIT.virtual("url").get(function () {
   return "http://" + setup.host + "/multihit/" + this._id;
 });
 
+/**
+ * Shared API / Web request job spawn
+ */
 MULTIHIT.statics.spawn = function (fn, options, callback) {
   const Msa = mongoose.model("Msa");
 

@@ -48,6 +48,9 @@ Busted.virtual("url").get(function () {
   return "http://" + setup.host + "/busted/" + this._id;
 });
 
+/**
+ * API request job spawn
+ */
 Busted.statics.spawn = function (fn, options, callback) {
   const Msa = mongoose.model("Msa");
 

@@ -46,20 +46,18 @@ MEME.virtual("url").get(function () {
   return "http://" + setup.host + "/meme/" + this._id;
 });
 
+/**
+ * Shared API / Web request job spawn
+ */
 MEME.statics.spawn = function (fn, options, callback) {
   const Msa = mongoose.model("Msa");
-
   var meme = new this();
+
+  let gencodeid = options.gencodeid,
+    datatype = options.datatype;
+
   meme.mail = options.mail;
 
-  let gencodeid = options.gencodeid;
-  let datatype = options.datatype;
-
-  //console.log(fn);
-  //console.log(options);
-
-  // options
-  // datatype, gencodeid, mail
   const connect_callback = function (data) {
     if (data == "connected") {
       logger.log("connected");

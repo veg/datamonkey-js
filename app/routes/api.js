@@ -1,7 +1,4 @@
 const mongoose = require("mongoose"),
-  Msa = mongoose.model("Msa"),
-  Sequences = mongoose.model("Sequences"),
-  PartitionInfo = mongoose.model("PartitionInfo"),
   FEL = mongoose.model("FEL"),
   ContrastFEL = mongoose.model("ContrastFEL"),
   aBSREL = mongoose.model("aBSREL"),
@@ -12,7 +9,6 @@ const mongoose = require("mongoose"),
   MEME = mongoose.model("MEME"),
   MULTIHIT = mongoose.model("MULTIHIT"),
   Relax = mongoose.model("Relax"),
-  HivTrace = mongoose.model("HivTrace"),
   FADE = mongoose.model("Fade"),
   SLAC = mongoose.model("SLAC");
 
@@ -314,10 +310,7 @@ function apiSubmit(req, res) {
     } else if (postdata.method.toUpperCase() == "FADE") {
       /* if MEME */
       let options = {
-        datatype: 0,
-        gencodeid: postdata.gencodeid,
         mail: postdata.mail,
-
         number_of_grid_points: postdata.number_of_grid_points,
         number_of_mcmc_chains: postdata.number_of_mcmc_chains,
         length_of_each_chain: postdata.length_of_each_chain,
@@ -327,6 +320,8 @@ function apiSubmit(req, res) {
           postdata.concentration_of_dirichlet_prior,
         substitution_model: postdata.substitution_model,
         posterior_estimation_method: postdata.posterior_estimation_method,
+        //datatype: 2, //Hard coded in orignal invoke
+        //gencodeid: 1, // Hard coded in original invoke
       };
 
       FADE.spawn(fullFileName, options, (err, result) => {
@@ -334,7 +329,6 @@ function apiSubmit(req, res) {
           logger.warn("Error with spawning FADE job from API :: " + err);
           res.json(400, {
             error: err,
-            filename: fullFileName,
           });
         }
         res.json(200, {

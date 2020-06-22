@@ -62,14 +62,9 @@ FEL.virtual("url").get(function () {
   return "http://" + setup.host + "/fel/" + this._id;
 });
 
-/*
-
-  FEL uses three difference calls in this order:
-  fel.uploadFile
-  GET = fel.select-foreground
-  POST = fel.invoke
-
-*/
+/**
+ * API request job spawn
+ */
 FEL.statics.spawn = function (fn, options, callback) {
   const Msa = mongoose.model("Msa");
 

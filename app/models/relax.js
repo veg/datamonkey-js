@@ -57,6 +57,9 @@ Relax.virtual("url").get(function () {
   return "http://" + setup.host + "/relax/" + this._id;
 });
 
+/**
+ * API request job spawn
+ */
 Relax.statics.spawn = function (fn, options, callback) {
   const Msa = mongoose.model("Msa");
 
@@ -75,7 +78,6 @@ Relax.statics.spawn = function (fn, options, callback) {
       return;
     }
 
-    // Check if msa exceeds limitations
     if (msa.sites > relax.max_sites) {
       var error =
         "Site limit exceeded! Sites must be less than " + relax.max_sites;

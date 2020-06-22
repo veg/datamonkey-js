@@ -60,14 +60,9 @@ Fade.statics.spawn = function (fn, options, callback) {
   var fade = new this();
   fade.mail = options.mail;
 
-  let gencodeid = options.gencodeid, //1 hardcoded .invoke
-    datatype = options.datatype; //2 hardcoded .invoke
+  let gencodeid = 1, //1 hardcoded .invoke
+    datatype = 2; //2 hardcoded .invoke
 
-  //console.log(fn);
-  //console.log(options);
-
-  // options
-  // datatype, gencodeid, mail
   const connect_callback = function (data) {
     if (data == "connected") {
       logger.log("connected");

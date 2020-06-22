@@ -64,6 +64,9 @@ aBSREL.virtual("url").get(function () {
   return "http://" + setup.host + "/absrel/" + this._id;
 });
 
+/**
+ * API request job spawn
+ */
 aBSREL.statics.spawn = function (fn, options, callback) {
   const Msa = mongoose.model("Msa");
 

@@ -41,7 +41,6 @@ exports.invoke = function (req, res) {
     if (err) {
       logger.warn("Error with spawning SLAC job from browser :: " + err);
     }
-
     res.json(200, {
       analysis: result,
       upload_redirect_path: result.upload_redirect_path,
