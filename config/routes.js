@@ -265,5 +265,6 @@ module.exports = function (app) {
   // API ROUTES
   //app.post("/api/v1/submit", api.apiSubmit);
   app.post("/api/v1/submit", api.apiSubmit);
+  app.get("/api/v1/status", api.apiStatus);
   //app.post("/api/v1/debug", slac.invokeDEBUG);
 };
