@@ -94,7 +94,7 @@
     "bootstrap-webpack": "^0.0.6",
     "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.5.3",
-    "eslint": "^4.0.0",
+    "eslint": "^7.3.1",
     "eslint-loader": "^4.0.2",
     "eslint-plugin-react": "^7.4.0",
     "exports-loader": "^0.7.0",
