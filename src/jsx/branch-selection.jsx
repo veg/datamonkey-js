@@ -1,7 +1,6 @@
 var React = require("react");
 var ReactDOM = require("react-dom");
 var d3 = require("d3");
-var $ = require("jquery");
 var _ = require("underscore");
 
 var TreeBtnGroup = require("./tree_btn_group.jsx");
@@ -14,38 +13,24 @@ class BranchSelection extends React.Component {
     // TODO : hide user button if not available
     // TODO : if multiple partitions, we will not be able to select partitions
 
-    var current_selection_name = "";
-
     // set up the phylotree object.
     var tree_container = "#tree-body";
     var phylotreeObject = d3.layout
       .phylotree(tree_container)
-      .size([this.props.height, this.props.width])
-      .separation(function(a, b) {
-        return 0;
-      })
-      .count_handler(function(count) {
-        $("#selected_branch_counter").text(function(d) {
-          // TODO: current_selection_name should be a state
-          return count[current_selection_name];
-        });
-        $("#selected_filtered_counter").text(count.tag);
-      });
+      .size([this.props.height, this.props.width]);
 
     this.state = {
       selectedTree:
         this.props.userSuppliedNwkTree || this.props.neighborJoiningNwkTree,
       tree: phylotreeObject,
       selectionType: "test",
-      multipleTrees: false
+      multipleTrees:
+        this.props.neighborJoiningNwkTree && this.props.userSuppliedNwkTree,
     };
   }
 
   componentDidMount() {
     this.createTree(this.state.selectedTree);
-    if (this.props.neighborJoiningNwkTree && this.props.userSuppliedNwkTree) {
-      this.setState({ multipleTrees: true });
-    }
   }
 
   componentDidUpdate() {
@@ -53,28 +38,12 @@ class BranchSelection extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.state.selectionType != nextState.selectionType) {
-      return false;
-    } else {
-      return true;
-    }
+    return this.state.selectedTree != nextState.selectedTree;
   }
 
   createTree(nwk) {
     var self = this;
-    function style_element(element, data, stylingType) {
-      var reference_style = "red";
-      var test_style = "rgb(31, 119, 180)";
-      if (data["reference"]) {
-        element.style("stroke", reference_style, "important");
-      } else if (data["test"]) {
-        element.style("stroke", test_style, "important");
-      } else {
-        element.style("stroke", "");
-      }
-    }
-
-    var default_tree_settings = function(tree) {
+    var default_tree_settings = function (tree) {
       tree.branch_length(null);
       tree.branch_name(null);
       tree.node_span("equal");
@@ -111,9 +80,7 @@ class BranchSelection extends React.Component {
     var container_id = "#tree_container";
 
     // clear all svgs under container_id first
-    d3.select(container_id)
-      .select("svg")
-      .remove();
+    d3.select(container_id).select("svg").remove();
 
     var svg = d3
       .select(container_id)
@@ -122,10 +89,7 @@ class BranchSelection extends React.Component {
       .attr("height", this.props.height);
 
     default_tree_settings(this.state.tree);
-    this.state
-      .tree(this.state.selectedTree)
-      .svg(svg)
-      .layout();
+    this.state.tree(this.state.selectedTree).svg(svg).layout();
 
     _.delay(this.state.tree.placenodes().update, 100);
 
@@ -134,20 +98,20 @@ class BranchSelection extends React.Component {
     }
   }
 
-  toggleSelectedTree = treeType => {
+  toggleSelectedTree = (treeType) => {
     if (this.props[treeType] != this.state.selectedTree) {
       this.setState({ selectedTree: this.props[treeType] });
     }
   };
 
-  toggleSelectionType = selectionType => {
+  toggleSelectionType = (selectionType) => {
     this.state.tree.selection_label(selectionType);
     this.setState({ selectionType: selectionType });
   };
 
   submit(tree, callback) {
     function exportNewick(tree) {
-      return tree.get_newick(function(node) {
+      return tree.get_newick(function (node) {
         var tags = [];
         // Add the tags.
         if (node.selected) {
@@ -230,6 +194,7 @@ function TreeSelectBtnGroup(props) {
           name="options"
           id="dm-ut-select"
           autoComplete="off"
+          checked
         />
         User Defined Tree
       </label>
@@ -257,10 +222,8 @@ function BranchSelectionTypeBtnGroup(props) {
       className="btn-group btn-group-toggle ml-auto"
       data-toggle="buttons"
       style={{
-        paddingTop: "1rem",
         paddingRight: "2rem",
-        paddingBottom: "1rem",
-        float: "right"
+        float: "right",
       }}
     >
       <label
@@ -269,7 +232,13 @@ function BranchSelectionTypeBtnGroup(props) {
         style={{ color: "rgb(31, 119, 180)" }}
         onClick={() => props.toggleSelectionType("test")}
       >
-        <input type="radio" name="options" id="relax-tbh" autoComplete="off" />
+        <input
+          type="radio"
+          name="options"
+          id="relax-tbh"
+          autoComplete="off"
+          checked
+        />
         Test Branches
       </label>
       <label
@@ -282,18 +251,6 @@ function BranchSelectionTypeBtnGroup(props) {
         Reference Branches
       </label>
     </div>
-  );
-}
-
-function render_branch_selection_old(trees, post_to, element_id) {
-  ReactDOM.render(
-    <BranchSelection
-      trees={trees}
-      post_to={post_to}
-      height={800}
-      width={600}
-    />,
-    document.getElementById(element_id)
   );
 }
 
