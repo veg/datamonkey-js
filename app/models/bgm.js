@@ -52,6 +52,9 @@ BGM.virtual("url").get(function () {
   return "http://" + setup.host + "/bgm/" + this._id;
 });
 
+/**
+ * API request job spawn
+ */
 BGM.statics.spawn = function (fn, options, callback) {
   const Msa = mongoose.model("Msa");
   var bgm = new this();
@@ -93,17 +96,12 @@ BGM.statics.spawn = function (fn, options, callback) {
 
     bgm.msa = msa;
     bgm.status = bgm.status_stack[0];
-
     bgm.length_of_each_chain = options.length_of_each_chain;
     bgm.substitution_model = options.substitution_model;
     bgm.number_of_burn_in_samples = options.number_of_burn_in_samples;
     bgm.number_of_samples = options.number_of_samples;
     bgm.maximum_parents_per_node = options.maximum_parents_per_node;
     bgm.minimum_subs_per_site = options.minimum_subs_per_site;
-
-    console.log("**** API bgm ****");
-    console.log(bgm);
-    console.log("**** API bgm ****");
 
     bgm.save((err, bgm_result) => {
       if (err) {

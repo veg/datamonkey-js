@@ -23,83 +23,29 @@ exports.form = function (req, res) {
 };
 
 exports.invoke = function (req, res) {
-  var connect_callback = function (data) {
-    if (data == "connected") {
-      logger.log("connected");
-    }
+  var fn = req.files.files.file,
+    postdata = req.body;
+
+  let options = {
+    datatype: postdata.datatype,
+    gencodeid: postdata.gencodeid,
+    mail: postdata.mail,
+    length_of_each_chain: postdata.length_of_each_chain,
+    substitution_model: postdata.substitution_model,
+    number_of_burn_in_samples: postdata.number_of_burn_in_samples,
+    number_of_samples: postdata.number_of_samples,
+    maximum_parents_per_node: postdata.maximum_parents_per_node,
+    minimum_subs_per_site: postdata.minimum_subs_per_site,
   };
 
-  var fn = req.files.files.file,
-    bgm = new BGM(),
-    postdata = req.body,
-    datatype = +postdata.datatype,
-    gencodeid = postdata.gencodeid;
-
-  bgm.mail = postdata.mail;
-
-  Msa.parseFile(fn, datatype, gencodeid, function (err, msa) {
+  BGM.spawn(fn, options, (err, result) => {
     if (err) {
+      logger.error("bgm rename failed");
       res.json(500, { error: err });
-      return;
     }
-
-    // Check if msa exceeds limitations
-    if (msa.sites > bgm.max_sites) {
-      var error =
-        "Site limit exceeded! Sites must be less than " + bgm.max_sites;
-      logger.error(error);
-      res.json(500, { error: error });
-      return;
-    }
-
-    if (msa.sequences > bgm.max_sequences) {
-      var error =
-        "Sequence limit exceeded! Sequences must be less than " +
-        bgm.max_sequences;
-      logger.error(error);
-      res.json(500, { error: error });
-      return;
-    }
-
-    bgm.msa = msa;
-
-    bgm.status = bgm.status_stack[0];
-    bgm.length_of_each_chain = postdata.length_of_each_chain;
-    bgm.substitution_model = +postdata.substitution_model;
-    bgm.number_of_burn_in_samples = postdata.number_of_burn_in_samples;
-    bgm.number_of_samples = postdata.number_of_samples;
-    bgm.maximum_parents_per_node = postdata.maximum_parents_per_node;
-    bgm.minimum_subs_per_site = postdata.minimum_subs_per_site;
-
-    console.log("**** WEB bgm ****");
-    console.log(bgm);
-    console.log("**** WEB bgm ****");
-
-    bgm.save(function (err, bgm_result) {
-      if (err) {
-        logger.error("bgm save failed", err);
-        res.json(500, { error: err });
-        return;
-      }
-
-      function move_cb(err, result) {
-        if (err) {
-          logger.error("bgm rename failed");
-          res.json(500, { error: err });
-        } else {
-          var to_send = bgm;
-          to_send.upload_redirect_path = bgm.upload_redirect_path;
-          res.json(200, {
-            analysis: bgm,
-            upload_redirect_path: bgm.upload_redirect_path,
-          });
-
-          // Send the MSA and analysis type
-          BGM.submitJob(bgm_result, connect_callback);
-        }
-      }
-
-      helpers.moveSafely(req.files.files.file, bgm_result.filepath, move_cb);
+    res.json(200, {
+      analysis: result,
+      upload_redirect_path: result.upload_redirect_path,
     });
   });
 };

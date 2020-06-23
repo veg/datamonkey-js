@@ -341,10 +341,9 @@ function apiSubmit(req, res) {
     } else if (postdata.method.toUpperCase() == "BGM") {
       /* if MEME */
       let options = {
-        datatype: 0,
+        datatype: postdata.datatype,
         gencodeid: postdata.gencodeid,
         mail: postdata.mail,
-
         length_of_each_chain: postdata.length_of_each_chain,
         substitution_model: postdata.substitution_model,
         number_of_burn_in_samples: postdata.number_of_burn_in_samples,
@@ -352,8 +351,6 @@ function apiSubmit(req, res) {
         maximum_parents_per_node: postdata.maximum_parents_per_node,
         minimum_subs_per_site: postdata.minimum_subs_per_site,
       };
-
-      console.log(options);
 
       BGM.spawn(fullFileName, options, (err, result) => {
         if (err) {
