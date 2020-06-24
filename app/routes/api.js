@@ -24,7 +24,8 @@ function apiSubmit(req, res) {
     "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_"
   );
 
-  var postdata = req.body,
+  var website_url = "datamonkey.org",
+    postdata = req.body,
     url_fasta = postdata.fastaLoc,
     today = new Date(),
     fileName =
@@ -78,7 +79,7 @@ function apiSubmit(req, res) {
             time_stamp: result.created,
             id: result._id,
             status: result.status,
-            url: "dev.datamonkey.org/fel/" + result._id,
+            url: website_url + "/" + postdata.method + "/" + result._id,
           });
         });
         break;
@@ -111,7 +112,7 @@ function apiSubmit(req, res) {
             time_stamp: result.created,
             id: result._id,
             status: result.status,
-            url: "dev.datamonkey.org/contrast_fel/" + result._id,
+            url: website_url + "/" + postdata.method + "/" + result._id,
           });
         });
         break;
@@ -145,7 +146,7 @@ function apiSubmit(req, res) {
             time_stamp: result.created,
             id: result._id,
             status: result.status,
-            url: "dev.datamonkey.org/contrast_fel/" + result._id,
+            url: website_url + "/" + postdata.method + "/" + result._id,
           });
         });
         break;
@@ -171,7 +172,7 @@ function apiSubmit(req, res) {
             time_stamp: result.created,
             id: result._id,
             status: result.status,
-            url: "dev.datamonkey.org/absrel/" + result._id,
+            url: website_url + "/" + postdata.method + "/" + result._id,
           });
         });
         break;
@@ -198,7 +199,7 @@ function apiSubmit(req, res) {
             time_stamp: result.created,
             id: result._id,
             status: result.status,
-            url: "dev.datamonkey.org/busted/" + result._id,
+            url: website_url + "/" + postdata.method + "/" + result._id,
           });
         });
         break;
@@ -228,7 +229,7 @@ function apiSubmit(req, res) {
             time_stamp: result.created,
             id: result._id,
             status: result.status,
-            url: "dev.datamonkey.org/bgm/" + result._id,
+            url: website_url + "/" + postdata.method + "/" + result._id,
           });
         });
         break;
@@ -259,7 +260,7 @@ function apiSubmit(req, res) {
             time_stamp: result.created,
             id: result._id,
             status: result.status,
-            url: "dev.datamonkey.org/fubar/" + result._id,
+            url: website_url + "/" + postdata.method + "/" + result._id,
           });
         });
         break;
@@ -285,7 +286,7 @@ function apiSubmit(req, res) {
             time_stamp: result.created,
             id: result._id,
             status: result.status,
-            url: "dev.datamonkey.org/gard/" + result._id,
+            url: website_url + "/" + postdata.method + "/" + result._id,
           });
         });
         break;
@@ -309,7 +310,7 @@ function apiSubmit(req, res) {
             time_stamp: result.created,
             id: result._id,
             status: result.status,
-            url: "dev.datamonkey.org/meme/" + result._id,
+            url: website_url + "/" + postdata.method + "/" + result._id,
           });
         });
         break;
@@ -335,7 +336,7 @@ function apiSubmit(req, res) {
             time_stamp: result.created,
             id: result._id,
             status: result.status,
-            url: "dev.datamonkey.org/multihit/" + result._id,
+            url: website_url + "/" + postdata.method + "/" + result._id,
           });
         });
         break;
@@ -363,7 +364,7 @@ function apiSubmit(req, res) {
             time_stamp: result.created,
             id: result._id,
             status: result.status,
-            url: "dev.datamonkey.org/relax/" + result._id,
+            url: website_url + "/" + postdata.method + "/" + result._id,
           });
         });
         break;
@@ -396,7 +397,7 @@ function apiSubmit(req, res) {
             time_stamp: result.created,
             id: result._id,
             status: result.status,
-            url: "dev.datamonkey.org/fade/" + result._id,
+            url: website_url + "/" + postdata.method + "/" + result._id,
           });
         });
         break;
@@ -420,7 +421,7 @@ function apiSubmit(req, res) {
             time_stamp: result.created,
             id: result._id,
             status: result.status,
-            url: "dev.datamonkey.org/slac/" + result._id,
+            url: website_url + "/" + postdata.method + "/" + result._id,
           });
         });
         break;
@@ -465,7 +466,7 @@ exports.apiStatus = function apiSubmit(req, res) {
       completion: result.creation_time,
       id: result._id,
       status: result.status,
-      url: "dev.datamonkey.org/" + options.method + "/" + result._id,
+      url: website_url + "/" + options.method + "/" + result._id,
     });
   });
 };
