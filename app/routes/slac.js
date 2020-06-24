@@ -23,11 +23,6 @@ exports.form = function (req, res) {
   res.render("slac/form.ejs", { post_to: post_to });
 };
 
-/**
- * Used to invoke jobs from the website
- * models/slac.js:SLAC.spawn is shared with API and website submission.
- * routes.js :: app.post("/slac", slac.invoke);
- */
 exports.invoke = function (req, res) {
   var fn = req.files.files.file;
   let postdata = req.body;

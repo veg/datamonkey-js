@@ -106,10 +106,6 @@ Fade.statics.spawn = function (fn, options, callback) {
     fade.substitution_model = options.substitution_model;
     fade.posterior_estimation_method = options.posterior_estimation_method;
 
-    console.log("**** API Fade ****");
-    console.log(fade);
-    console.log("**** API Fade ****");
-
     fade.save((err, fade_result) => {
       if (err) {
         logger.error("fade save failed");

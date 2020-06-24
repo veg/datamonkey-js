@@ -74,10 +74,6 @@ exports.invoke = function (req, res) {
     fade.substitution_model = postdata.substitution_model;
     fade.posterior_estimation_method = postdata.posterior_estimation_method;
 
-    console.log("**** WEB Fade ****");
-    console.log(fade);
-    console.log("**** WEB Fade ****");
-
     fade.save(function (err, fade_result) {
       if (err) {
         logger.error("fade save failed");

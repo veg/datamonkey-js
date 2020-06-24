@@ -73,7 +73,7 @@ MULTIHIT.statics.spawn = function (fn, options, callback) {
 
   Msa.parseFile(fn, datatype, gencodeid, (err, msa) => {
     if (err) {
-      res.json(500, { error: err });
+      logger.error(err);
       callback(err);
       return;
     }
