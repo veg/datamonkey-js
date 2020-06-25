@@ -10,6 +10,7 @@ const mongoose = require("mongoose"),
   MULTIHIT = mongoose.model("MULTIHIT"),
   Relax = mongoose.model("Relax"),
   FADE = mongoose.model("Fade"),
+  API = mongoose.model("API"),
   SLAC = mongoose.model("SLAC");
 
 const shortid = require("shortid"),
@@ -453,6 +454,13 @@ function apiSubmit(req, res) {
 }
 
 exports.apiStatus = function apiSubmit(req, res) {
+  var api = new API();
+  api.associated_job_ids.push("TESTING");
+  api.iterate_job_count;
+  api.iterate_job_count;
+  console.log("Jobs remaining = " + api.remaining_jobs);
+  console.log(api);
+
   var analysis = require("./analysis.js"),
     postdata = req.body;
 
