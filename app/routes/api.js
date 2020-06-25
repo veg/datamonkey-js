@@ -24,7 +24,7 @@ function apiSubmit(req, res) {
     "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_"
   );
 
-  var website_url = "datamonkey.org",
+  var website_url = "datamonkey.org", //Used to build reply URL
     postdata = req.body,
     url_fasta = postdata.fastaLoc,
     today = new Date(),
@@ -55,10 +55,10 @@ function apiSubmit(req, res) {
     logger.info("File Saved to " + fullFileName);
 
     switch (postdata.method.toUpperCase()) {
-      case "FEL":
+      case "FEL": {
         /* if FEL */
         /* User must provide branch selection */
-        options = {
+        let options = {
           datatype: 0,
           gencodeid: postdata.gencodeid,
           mail: postdata.mail,
@@ -83,15 +83,16 @@ function apiSubmit(req, res) {
           });
         });
         break;
+      }
 
-      case "CONTRAST-FEL":
+      case "CONTRAST-FEL": {
         /* 
         if contrast-FEL
         User must provide branch selection
         Branch tags should be included in NWK
         Use http://phylotree.hyphy.org/ to assit in NWK tagging  
         */
-        options = {
+        let options = {
           datatype: 0,
           gencodeid: postdata.gencodeid,
           mail: postdata.mail,
@@ -112,12 +113,12 @@ function apiSubmit(req, res) {
             time_stamp: result.created,
             id: result._id,
             status: result.status,
-            url: website_url + "/" + postdata.method + "/" + result._id,
+            url: website_url + "/" + "contrast_fel" + "/" + result._id,
           });
         });
         break;
-
-      case "CONTRASTFEL":
+      }
+      case "CONTRASTFEL": {
         /* 
         Catch condition if given contrastfel vs contrast-fel
         if contrastFEL 
@@ -125,7 +126,7 @@ function apiSubmit(req, res) {
         Branch tags should be included in NWK
         Use http://phylotree.hyphy.org/ to assit in NWK tagging  
         */
-        options = {
+        let options = {
           datatype: 0,
           gencodeid: postdata.gencodeid,
           mail: postdata.mail,
@@ -146,15 +147,15 @@ function apiSubmit(req, res) {
             time_stamp: result.created,
             id: result._id,
             status: result.status,
-            url: website_url + "/" + postdata.method + "/" + result._id,
+            url: website_url + "/" + "contrast_fel" + "/" + result._id,
           });
         });
         break;
-
-      case "ABSREL":
+      }
+      case "ABSREL": {
         /* if aBSREL */
         /* User must provide branch selection */
-        options = {
+        let options = {
           datatype: 0,
           gencodeid: postdata.gencodeid,
           mail: postdata.mail,
@@ -176,11 +177,11 @@ function apiSubmit(req, res) {
           });
         });
         break;
-
-      case "BUSTED":
+      }
+      case "BUSTED": {
         /* if Busted */
         /* User must provide branch selection */
-        options = {
+        let options = {
           datatype: 0,
           gencodeid: postdata.gencodeid,
           mail: postdata.mail,
@@ -203,10 +204,11 @@ function apiSubmit(req, res) {
           });
         });
         break;
+      }
 
-      case "BGM":
+      case "BGM": {
         /* if BGM */
-        options = {
+        let options = {
           datatype: postdata.datatype,
           gencodeid: postdata.gencodeid,
           mail: postdata.mail,
@@ -233,10 +235,11 @@ function apiSubmit(req, res) {
           });
         });
         break;
+      }
 
-      case "FUBAR":
+      case "FUBAR": {
         /* if FUBAR */
-        options = {
+        let options = {
           datatype: 0,
           gencodeid: postdata.gencodeid,
           mail: postdata.mail,
@@ -264,10 +267,11 @@ function apiSubmit(req, res) {
           });
         });
         break;
+      }
 
-      case "GARD":
+      case "GARD": {
         /* if GARD */
-        options = {
+        let options = {
           datatype: 0,
           gencodeid: postdata.gencodeid,
           mail: postdata.mail,
@@ -290,10 +294,11 @@ function apiSubmit(req, res) {
           });
         });
         break;
+      }
 
-      case "MEME":
+      case "MEME": {
         /* if MEME */
-        options = {
+        let options = {
           datatype: 0,
           gencodeid: postdata.gencodeid,
           mail: postdata.mail,
@@ -314,10 +319,11 @@ function apiSubmit(req, res) {
           });
         });
         break;
+      }
 
-      case "MULTIHIT":
+      case "MULTIHIT": {
         /* if MULTIHIT */
-        options = {
+        let options = {
           datatype: 0,
           gencodeid: postdata.gencodeid,
           mail: postdata.mail,
@@ -340,11 +346,12 @@ function apiSubmit(req, res) {
           });
         });
         break;
+      }
 
-      case "RELAX":
+      case "RELAX": {
         /* if Relax */
         /* User must provide branch selection */
-        options = {
+        let options = {
           datatype: 0,
           gencodeid: postdata.gencodeid,
           mail: postdata.mail,
@@ -368,10 +375,11 @@ function apiSubmit(req, res) {
           });
         });
         break;
+      }
 
-      case "FADE":
+      case "FADE": {
         /* if FADE */
-        options = {
+        let options = {
           mail: postdata.mail,
           number_of_grid_points: postdata.number_of_grid_points,
           number_of_mcmc_chains: postdata.number_of_mcmc_chains,
@@ -383,7 +391,7 @@ function apiSubmit(req, res) {
           substitution_model: postdata.substitution_model,
           posterior_estimation_method: postdata.posterior_estimation_method,
           //datatype: 2, //Hard coded in orignal invoke
-          //gencodeid: 1, // Hard coded in original invoke
+          //gencodeid: 1, //Hard coded in original invoke
         };
 
         FADE.spawn(fullFileName, options, (err, result) => {
@@ -401,10 +409,11 @@ function apiSubmit(req, res) {
           });
         });
         break;
+      }
 
-      case "SLAC":
+      case "SLAC": {
         /* if SLAC */
-        options = {
+        let options = {
           datatype: 0,
           gencodeid: postdata.gencodeid,
           mail: postdata.mail,
@@ -425,6 +434,7 @@ function apiSubmit(req, res) {
           });
         });
         break;
+      }
 
       default:
         /* if Method Not Listed Above */
@@ -452,6 +462,7 @@ exports.apiStatus = function apiSubmit(req, res) {
   };
 
   analysis.getInfoApi(options, (err, result) => {
+    var website_url = "datamonkey.org";
     if (err) {
       logger.warn(
         "Error with displaying Info for Job ID: " + options.id + " :: " + err

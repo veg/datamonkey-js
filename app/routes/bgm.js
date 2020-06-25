@@ -1,17 +1,9 @@
-var querystring = require("querystring"),
-  error = require(__dirname + " /../../lib/error.js"),
-  globals = require(__dirname + "/../../config/globals.js"),
-  mailer = require(__dirname + "/../../lib/mailer.js"),
-  helpers = require(__dirname + "/../../lib/helpers.js"),
-  hpcsocket = require(__dirname + "/../../lib/hpcsocket.js"),
-  fs = require("fs"),
+var error = require(__dirname + " /../../lib/error.js"),
   winston = require("winston"),
   logger = require("../../lib/logger");
 
 var mongoose = require("mongoose"),
   Msa = mongoose.model("Msa"),
-  Sequences = mongoose.model("Sequences"),
-  PartitionInfo = mongoose.model("PartitionInfo"),
   BGM = mongoose.model("BGM");
 
 var redis = require("redis"),

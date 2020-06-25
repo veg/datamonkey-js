@@ -1,29 +1,8 @@
-const { callbackify } = require("util");
-
-var globals = require("../../config/globals.js"),
-  error = require(__dirname + "./../../lib/error.js"),
-  moment = require("moment"),
-  _ = require("underscore"),
+var error = require(__dirname + "./../../lib/error.js"),
   winston = require("winston"),
-  fs = require("fs"),
-  extend = require("mongoose-schema-extend");
+  fs = require("fs");
 
-var mongoose = require("mongoose"),
-  Msa = mongoose.model("Msa"),
-  Sequences = mongoose.model("Sequences"),
-  PartitionInfo = mongoose.model("PartitionInfo"),
-  FEL = mongoose.model("FEL"),
-  ContrastFEL = mongoose.model("ContrastFEL"),
-  aBSREL = mongoose.model("aBSREL"),
-  Busted = mongoose.model("Busted"),
-  FUBAR = mongoose.model("FUBAR"),
-  GARD = mongoose.model("GARD"),
-  MEME = mongoose.model("MEME"),
-  MULTIHIT = mongoose.model("MULTIHIT"),
-  Relax = mongoose.model("Relax"),
-  HivTrace = mongoose.model("HivTrace"),
-  Fade = mongoose.model("Fade"),
-  SLAC = mongoose.model("SLAC");
+var mongoose = require("mongoose");
 
 exports.getInfo = function (model_up, req, res) {
   var id = req.params.id;
