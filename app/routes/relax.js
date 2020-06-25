@@ -1,11 +1,7 @@
 /*jslint node: true */
 
-var querystring = require("querystring"),
-  error = require(__dirname + " /../../lib/error.js"),
-  globals = require(__dirname + "/../../config/globals.js"),
-  mailer = require(__dirname + "/../../lib/mailer.js"),
+var error = require(__dirname + " /../../lib/error.js"),
   helpers = require(__dirname + "/../../lib/helpers.js"),
-  hpcsocket = require(__dirname + "/../../lib/hpcsocket.js"),
   fs = require("fs"),
   path = require("path"),
   logger = require("../../lib/logger"),
@@ -13,8 +9,6 @@ var querystring = require("querystring"),
 
 var mongoose = require("mongoose"),
   Msa = mongoose.model("Msa"),
-  Sequences = mongoose.model("Sequences"),
-  PartitionInfo = mongoose.model("PartitionInfo"),
   Relax = mongoose.model("Relax");
 
 var redis = require("redis"),

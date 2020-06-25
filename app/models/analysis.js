@@ -1,17 +1,15 @@
 var mongoose = require("mongoose"),
-  globals = require("../../config/globals.js"),
   setup = require("./../../config/setup"),
   moment = require("moment"),
   _ = require("underscore"),
   winston = require("winston"),
   hpcsocket = require(__dirname + "/../../lib/hpcsocket.js"),
-  Msa = require(__dirname + "/msa"),
-  extend = require("mongoose-schema-extend");
+  Msa = require(__dirname + "/msa");
 
 var redis = require("redis"),
   client = redis.createClient({
     host: setup.redisHost,
-    port: setup.redisPort
+    port: setup.redisPort,
   });
 
 var Schema = mongoose.Schema,
@@ -32,10 +30,10 @@ var AnalysisSchema = new Schema({
   error_message: String,
   stderr: String,
   stdout: String,
-  cpu_time: Number
+  cpu_time: Number,
 });
 
-AnalysisSchema.virtual("since_created").get(function() {
+AnalysisSchema.virtual("since_created").get(function () {
   moment.lang("en");
   var time = moment(this.timestamp);
   return time.fromNow();
@@ -44,7 +42,7 @@ AnalysisSchema.virtual("since_created").get(function() {
 /**
  * Original file path for document's file upload
  */
-AnalysisSchema.virtual("original_fn").get(function() {
+AnalysisSchema.virtual("original_fn").get(function () {
   return path.resolve(
     __dirname +
       "/../../uploads/msa/" +
@@ -54,40 +52,40 @@ AnalysisSchema.virtual("original_fn").get(function() {
   );
 });
 
-AnalysisSchema.virtual("max_sites").get(function() {
+AnalysisSchema.virtual("max_sites").get(function () {
   return 12000;
 });
 
-AnalysisSchema.virtual("max_sequences").get(function() {
+AnalysisSchema.virtual("max_sequences").get(function () {
   return 500;
 });
 
-AnalysisSchema.virtual("input_data").get(function() {
+AnalysisSchema.virtual("input_data").get(function () {
   return {
     filename: this.msa[0].id,
     sequences: this.msa[0].sequences,
-    sites: this.msa[0].sites
+    sites: this.msa[0].sites,
   };
 });
 
 /**
  * Filename of document's file upload
  */
-AnalysisSchema.virtual("valid_statuses").get(function() {
+AnalysisSchema.virtual("valid_statuses").get(function () {
   return ["queue", "running", "completed"];
 });
 
-AnalysisSchema.statics.pendingJobs = function(cb) {
+AnalysisSchema.statics.pendingJobs = function (cb) {
   this.find({
-    $or: [{ status: "running" }]
+    $or: [{ status: "running" }],
   })
     .populate("upload_id")
-    .exec(function(err, items) {
+    .exec(function (err, items) {
       cb(err, items);
     });
 };
 
-AnalysisSchema.statics.submitJob = function(job, cb) {
+AnalysisSchema.statics.submitJob = function (job, cb) {
   winston.info(
     "submitting " + job.analysistype + " : " + job._id + " to cluster"
   );
@@ -98,22 +96,22 @@ AnalysisSchema.statics.submitJob = function(job, cb) {
       msa: job.msa,
       analysis: job,
       status_stack: job.status_stack,
-      type: job.analysistype
+      type: job.analysistype,
     },
     "spawn",
     cb
   );
 };
 
-AnalysisSchema.statics.subscribePendingJobs = function() {
-  this.pendingJobs(function(err, items) {
-    _.each(items, function(item) {
+AnalysisSchema.statics.subscribePendingJobs = function () {
+  this.pendingJobs(function (err, items) {
+    _.each(items, function (item) {
       item.resubscribe();
     });
   });
 };
 
-AnalysisSchema.statics.usageStatistics = function(cb) {
+AnalysisSchema.statics.usageStatistics = function (cb) {
   // Aggregation is done client-side
   var self = this;
 
@@ -121,7 +119,7 @@ AnalysisSchema.statics.usageStatistics = function(cb) {
     .find({ status: "completed" }, { created: 1 })
     .sort({ created: -1 })
     .limit(1)
-    .exec(function(err1, items1) {
+    .exec(function (err1, items1) {
       if (err1 || items1.length == 0) {
         cb(err1, null);
         return;
@@ -131,17 +129,17 @@ AnalysisSchema.statics.usageStatistics = function(cb) {
           {
             status: "completed",
             created: {
-              $gt: moment(items1[0].created).subtract(1, "years")
-            }
+              $gt: moment(items1[0].created).subtract(1, "years"),
+            },
           },
           {
             _id: 0,
             created: 1,
             "msa.sites": 1,
-            "msa.sequences": 1
+            "msa.sequences": 1,
           }
         )
-        .exec(function(err, items) {
+        .exec(function (err, items) {
           client.set(
             setup.database_name + "_" + self.collection.name + "_job_stats",
             JSON.stringify(items),
@@ -154,51 +152,51 @@ AnalysisSchema.statics.usageStatistics = function(cb) {
 /**
  * unix timestamp
  */
-AnalysisSchema.virtual("timestamp").get(function() {
+AnalysisSchema.virtual("timestamp").get(function () {
   return moment(this.created).unix();
 });
 
-AnalysisSchema.virtual("generic_error_msg").get(function() {
+AnalysisSchema.virtual("generic_error_msg").get(function () {
   var error_msg =
     'We\'re sorry, there was an error processing your job. Please try again, or visit <a href="http://github.com/veg/hyphy/issues/">our GitHub issues</a> and create an issue if the issue persists.';
 
   return error_msg;
 });
 
-AnalysisSchema.virtual("results_path").get(function() {
+AnalysisSchema.virtual("results_path").get(function () {
   return path.resolve(
     __dirname + "../../../results/jobs/" + this._id + "-results" + ".json"
   );
 });
 
-AnalysisSchema.methods.resubscribe = function() {
+AnalysisSchema.methods.resubscribe = function () {
   var jobproxy = new hpcsocket.HPCSocket(
     {
       filepath: this.filepath,
       msa: this.msa,
       analysis: this,
       status_stack: this.status_stack,
-      type: this.analysistype
+      type: this.analysistype,
     },
     "resubscribe"
   );
 };
 
-AnalysisSchema.methods.cancel = function(callback) {
+AnalysisSchema.methods.cancel = function (callback) {
   var jobproxy = new hpcsocket.HPCSocket(
     {
       filepath: this.filepath,
       msa: this.msa,
       analysis: this,
       status_stack: this.status_stack,
-      type: this.analysistype
+      type: this.analysistype,
     },
     "cancel",
     callback
   );
 };
 
-AnalysisSchema.statics.cachePath = function() {
+AnalysisSchema.statics.cachePath = function () {
   return setup.database_name + "_" + this.collection.name + "_job_stats";
 };
 

@@ -1,25 +1,18 @@
-var querystring = require("querystring"),
-  error = require(__dirname + " /../../lib/error.js"),
-  globals = require(__dirname + "/../../config/globals.js"),
-  mailer = require(__dirname + "/../../lib/mailer.js"),
+var error = require(__dirname + " /../../lib/error.js"),
   helpers = require(__dirname + "/../../lib/helpers.js"),
-  hpcsocket = require(__dirname + "/../../lib/hpcsocket.js"),
   fs = require("fs"),
   path = require("path"),
-  winston = require("winston"),
   logger = require("../../lib/logger");
 
 var mongoose = require("mongoose"),
   Msa = mongoose.model("Msa"),
-  Sequences = mongoose.model("Sequences"),
-  PartitionInfo = mongoose.model("PartitionInfo"),
   Flea = mongoose.model("Flea");
 
-exports.form = function(req, res) {
+exports.form = function (req, res) {
   res.render("flea/form.ejs");
 };
 
-exports.invoke = function(req, res) {
+exports.invoke = function (req, res) {
   var postdata = req.body,
     msas = [],
     flea_files = postdata.flea_files,
@@ -28,12 +21,12 @@ exports.invoke = function(req, res) {
     datatype = 0,
     gencodeid = 1;
 
-  var populateFilename = function(obj) {
+  var populateFilename = function (obj) {
     return {
       fn: flea_tmp_dir + obj.fn,
       last_modified: obj.last_modified,
       visit_code: obj.visit_code,
-      visit_date: obj.visit_date
+      visit_date: obj.visit_date,
     };
   };
 
@@ -44,8 +37,8 @@ exports.invoke = function(req, res) {
   }
 
   // Loop through each file upload
-  flea_files.forEach(function(flea_file) {
-    Msa.parseFile(flea_file.fn, datatype, gencodeid, function(err, msa) {
+  flea_files.forEach(function (flea_file) {
+    Msa.parseFile(flea_file.fn, datatype, gencodeid, function (err, msa) {
       if (err) {
         // remove all files from tmp directory and start over
         res.render("flea/form.ejs");
@@ -60,7 +53,7 @@ exports.invoke = function(req, res) {
         var flea = new Flea();
         flea.msas = msas;
 
-        flea.save(function(err, flea_result) {
+        flea.save(function (err, flea_result) {
           if (err) {
             logger.error("flea save failed");
             res.json(500, { error: err });
@@ -74,13 +67,13 @@ exports.invoke = function(req, res) {
             } else {
               // Send the MSA and analysis type
               //
-              var connect_callback = function(err, result) {
+              var connect_callback = function (err, result) {
                 logger.log(result);
               };
 
               var stream = Flea.pack(flea);
 
-              stream.on("close", function() {
+              stream.on("close", function () {
                 res.json(200, { flea: flea });
               });
 
@@ -92,7 +85,7 @@ exports.invoke = function(req, res) {
           var count = 1;
           var was_error = false;
 
-          var move_cb = function(err, result) {
+          var move_cb = function (err, result) {
             count = count + 1;
             if (err) {
               was_error = true;
@@ -107,7 +100,7 @@ exports.invoke = function(req, res) {
             }
           };
 
-          msas.forEach(function(flea_file) {
+          msas.forEach(function (flea_file) {
             var current_location = flea_tmp_dir + flea_file.original_filename;
             var final_dest = flea_result.filedir + flea_file._id + ".fastq";
             helpers.moveSafely(current_location, final_dest, move_cb);
@@ -122,21 +115,21 @@ exports.invoke = function(req, res) {
  * Displays id page for analysis
  * app.get('/flea/:id', flea.getFlea);
  */
-exports.getPage = function(req, res) {
+exports.getPage = function (req, res) {
   // Find the analysis
   // Return its results
   var fleaid = req.params.id;
 
   //Return all results
-  Flea.findOne({ _id: fleaid }, function(err, flea) {
+  Flea.findOne({ _id: fleaid }, function (err, flea) {
     if (err || !flea) {
       res.json(500, error.errorResponse("Invalid ID : " + fleaid));
     } else {
       if (flea.status != "completed") {
-        flea.filesize(function(err, bytes) {
+        flea.filesize(function (err, bytes) {
           res.render("flea/jobpage.ejs", {
             job: flea,
-            size: bytes
+            size: bytes,
           });
         });
       } else {
@@ -150,27 +143,27 @@ exports.getPage = function(req, res) {
 /**
  * Displays id page for analysis
  */
-exports.restart = function(req, res) {
+exports.restart = function (req, res) {
   // Find the analysis
   // Return its results
   var fleaid = req.params.id;
 
-  var connect_callback = function(err, result) {
+  var connect_callback = function (err, result) {
     logger.log(result);
   };
 
   //Return all results
-  Flea.findOne({ _id: fleaid }, function(err, flea) {
+  Flea.findOne({ _id: fleaid }, function (err, flea) {
     if (err || !flea) {
       res.json(500, error.errorResponse("invalid id : " + fleaid));
       return;
     } else {
       flea.status = "running";
 
-      flea.save(function(err, flea_result) {
+      flea.save(function (err, flea_result) {
         res.redirect("/flea/" + fleaid);
 
-        var connect_callback = function(err, result) {
+        var connect_callback = function (err, result) {
           logger.log(result);
         };
 
@@ -180,11 +173,11 @@ exports.restart = function(req, res) {
   });
 };
 
-exports.getSessionJSON = function(req, res) {
+exports.getSessionJSON = function (req, res) {
   var fleaid = req.params.id;
 
   //Return all results
-  Flea.findOne({ _id: fleaid }, function(err, flea) {
+  Flea.findOne({ _id: fleaid }, function (err, flea) {
     if (err || !flea) {
       res.json(500, error.errorResponse("invalid id : " + fleaid));
       return;
@@ -249,10 +242,10 @@ exports.getSessionJSON = function(req, res) {
   });
 };
 
-exports.getSessionZip = function(req, res) {
+exports.getSessionZip = function (req, res) {
   var fleaid = req.params.id;
   //Return all results
-  Flea.findOne({ _id: fleaid }, function(err, flea) {
+  Flea.findOne({ _id: fleaid }, function (err, flea) {
     if (err || !flea) {
       res.json(500, error.errorResponse("invalid id : " + fleaid));
     } else {

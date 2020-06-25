@@ -1,25 +1,18 @@
-var querystring = require("querystring"),
-  error = require(__dirname + " /../../lib/error.js"),
-  globals = require(__dirname + "/../../config/globals.js"),
-  mailer = require(__dirname + "/../../lib/mailer.js"),
+var error = require(__dirname + " /../../lib/error.js"),
   helpers = require(__dirname + "/../../lib/helpers.js"),
-  hpcsocket = require(__dirname + "/../../lib/hpcsocket.js"),
-  fs = require("fs"),
   logger = require("../../lib/logger");
 
 var mongoose = require("mongoose"),
   Msa = mongoose.model("Msa"),
-  Sequences = mongoose.model("Sequences"),
-  PartitionInfo = mongoose.model("PartitionInfo"),
   PRIME = mongoose.model("PRIME");
 
-exports.form = function(req, res) {
+exports.form = function (req, res) {
   var post_to = "/prime";
   res.render("prime/form.ejs", { post_to: post_to });
 };
 
-exports.invoke = function(req, res) {
-  var connect_callback = function(data) {
+exports.invoke = function (req, res) {
+  var connect_callback = function (data) {
     if (data == "connected") {
       logger.log("connected");
     }
@@ -33,7 +26,7 @@ exports.invoke = function(req, res) {
 
   prime.mail = postdata.mail;
 
-  Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
+  Msa.parseFile(fn, datatype, gencodeid, function (err, msa) {
     if (err) {
       res.json(500, { error: err });
       return;
@@ -42,7 +35,7 @@ exports.invoke = function(req, res) {
     prime.msa = msa;
     prime.status = prime.status_stack[0];
 
-    prime.save(function(err, prime_result) {
+    prime.save(function (err, prime_result) {
       if (err) {
         logger.error("prime save failed");
         res.json(500, { error: err });
@@ -58,7 +51,7 @@ exports.invoke = function(req, res) {
           to_send.upload_redirect_path = prime.upload_redirect_path;
           res.json(200, {
             analysis: prime,
-            upload_redirect_path: prime.upload_redirect_path
+            upload_redirect_path: prime.upload_redirect_path,
           });
 
           // Send the MSA and analysis type
@@ -71,12 +64,12 @@ exports.invoke = function(req, res) {
   });
 };
 
-exports.getPage = function(req, res) {
+exports.getPage = function (req, res) {
   // Find the analysis
   var primeid = req.params.id;
 
   //Return all results
-  PRIME.findOne({ _id: primeid }, function(err, prime) {
+  PRIME.findOne({ _id: primeid }, function (err, prime) {
     if (err || !prime) {
       res.json(500, error.errorResponse("Invalid ID : " + primeid));
     } else {
@@ -86,9 +79,9 @@ exports.getPage = function(req, res) {
   });
 };
 
-exports.getResults = function(req, res) {
+exports.getResults = function (req, res) {
   var primeid = req.params.id;
-  PRIME.findOne({ _id: primeid }, function(err, prime) {
+  PRIME.findOne({ _id: primeid }, function (err, prime) {
     if (err || !prime) {
       res.json(500, error.errorResponse("invalid id : " + primeid));
     } else {
@@ -105,11 +98,11 @@ exports.getResults = function(req, res) {
  * Returns log txt file
  * app.get('/prime/:id/results', prime.getLog);
  */
-exports.getLog = function(req, res) {
+exports.getLog = function (req, res) {
   var id = req.params.id;
 
   //Return all results
-  PRIME.findOne({ _id: id }, function(err, prime) {
+  PRIME.findOne({ _id: id }, function (err, prime) {
     if (err || !busted) {
       winston.info(err);
       res.json(500, error.errorResponse("invalid id : " + id));
@@ -125,16 +118,16 @@ exports.getLog = function(req, res) {
  * cancels existing job
  * app.get('/busted/:id/cancel', prime.cancel);
  */
-exports.cancel = function(req, res) {
+exports.cancel = function (req, res) {
   var id = req.params.id;
 
   //Return all results
-  PRIME.findOne({ _id: id }, function(err, prime) {
+  PRIME.findOne({ _id: id }, function (err, prime) {
     if (err || !busted) {
       winston.info(err);
       res.json(500, error.errorResponse("invalid id : " + id));
     } else {
-      prime.cancel(function(err, success) {
+      prime.cancel(function (err, success) {
         if (success) {
           res.json(200, { success: "yes" });
         } else {
@@ -145,18 +138,18 @@ exports.cancel = function(req, res) {
   });
 };
 
-exports.resubscribePendingJobs = function(req, res) {
+exports.resubscribePendingJobs = function (req, res) {
   PRIME.subscribePendingJobs();
 };
 
-exports.getMSAFile = function(req, res) {
+exports.getMSAFile = function (req, res) {
   var id = req.params.id,
     name = req.params.name;
 
   var options = {};
 
-  PRIME.findOne({ _id: id }, function(err, prime) {
-    res.sendFile(prime.filepath, options, function(err) {
+  PRIME.findOne({ _id: id }, function (err, prime) {
+    res.sendFile(prime.filepath, options, function (err) {
       if (err) {
         res.status(err.status).end();
       }
