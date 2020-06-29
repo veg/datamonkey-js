@@ -1,14 +1,11 @@
 var mongoose = require("mongoose"), //Used for schema
   setup = require("./../../config/setup.js"); //Used for max per api key
-(redis = require("redis")),
-  (client = redis.createClient({
-    host: setup.redisHost,
-    port: setup.redisPort,
-  })),
-  (Schema = mongoose.Schema);
+
+var Schema = mongoose.Schema,
+  ObjectId = Schema.ObjectId;
 
 var API = new Schema({
-  id: { type: Number, require: true },
+  id: ObjectId,
   created: { type: Date, default: Date.now },
   expires: {
     type: Date,
@@ -17,13 +14,6 @@ var API = new Schema({
   job_request_limit: { type: Number, default: setup.api_request_limit }, //Defined in setup.js
   job_request_made: { type: Number, default: 0 },
   associated_job_ids: [String],
-});
-
-/**
- * Get UUID
- */
-API.virtual("uuid").get(function () {
-  return this.id;
 });
 
 /**

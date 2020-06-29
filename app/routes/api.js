@@ -489,4 +489,51 @@ exports.apiStatus = function apiSubmit(req, res) {
     });
   });
 };
+
+exports.checkAPIKey = function checkAPIKey(req, res) {
+  //Search API for API Key
+  console.log("req.id = " + req.body.id);
+  var id = req.body.id;
+  //id = "5ef23c1f38c6edc2a03d2b10"; //FEL job id
+  //FEL.findById( id, ...) works for above id.
+  //Above function works for FEL (from api call) must be an issue with API model.
+  API.findById(id, function (err, info) {
+    if (err || !info) {
+      res.json(500, "invalid id : " + id + " err = " + err);
+      console.log("info1 = " + info);
+      console.log("err1 = " + err);
+      //cb(err, null);
+    } else {
+      res.json(200, "id is valid : " + id);
+      console.log("info2 = " + info);
+      console.log("err2 = " + err);
+      //cb(null, info);
+    }
+  });
+  //Check key limits
+  //console.log("Jobs remaining = " + api.remaining_jobs);
+};
+
 exports.apiSubmit = apiSubmit;
+
+// API.findOne(
+//   { _id: req.body.id },
+//   function (err, info) {
+//     if (err || !info) {
+//       let error = "Error retrieving API key :: " + err + " !info = " + info;
+//       console.log("1" + error);
+//       return(error, null);
+//     } else {
+//       // Found check if job limit has been reached
+//       if(API.remaining_jobs <= 0){
+//         let error = "Error API job limit has been reached";
+//         console.log("2" + error);
+//         return(error, null);
+//       }else{
+//         //Else key looks good.
+//         console.log("Info = " + info);
+//         return(null, info);
+//       }
+//     }
+//   }
+// );
