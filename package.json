@@ -22,7 +22,7 @@
   "dependencies": {
     "@fortawesome/free-brands-svg-icons": "5.13.0",
     "@fortawesome/free-regular-svg-icons": "5.13.0",
-    "@fortawesome/free-solid-svg-icons": "5.13.0",
+    "@fortawesome/free-solid-svg-icons": "5.13.1",
     "alignment.js": "^0.3.0",
     "async": "^0.1.0",
     "blueimp-file-upload": "^9.19.1",
