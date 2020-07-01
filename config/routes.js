@@ -263,9 +263,7 @@ module.exports = function (app) {
   bgm.resubscribePendingJobs();
 
   // API ROUTES
-  //app.post("/api/v1/submit", api.apiSubmit);
-  app.post("/api/v1/submit", api.apiSubmit);
+  app.post("/api/v1/submit", api.checkAPIKey, api.apiSubmit);
   app.get("/api/v1/status", api.apiStatus);
-  app.get("/api/v1/key", api.checkAPIKey);
-  //app.post("/api/v1/debug", slac.invokeDEBUG);
+  app.post("/api/v1/issueKey", api.issueKey);
 };

@@ -18,6 +18,9 @@ const shortid = require("shortid"),
   request = require("request"),
   logger = require("../../lib/logger");
 
+/*
+ * Submit a job via API
+ */
 function apiSubmit(req, res) {
   logger.info("Incoming request recieved REQ = " + JSON.stringify(req.body));
 
@@ -453,14 +456,10 @@ function apiSubmit(req, res) {
   return;
 }
 
+/*
+ * Get status of running job
+ */
 exports.apiStatus = function apiSubmit(req, res) {
-  var api = new API();
-  api.associated_job_ids.push("TESTING");
-  api.iterate_job_count;
-  api.iterate_job_count;
-  console.log("Jobs remaining = " + api.remaining_jobs);
-  console.log(api);
-
   var analysis = require("./analysis.js"),
     postdata = req.body;
 
@@ -490,50 +489,46 @@ exports.apiStatus = function apiSubmit(req, res) {
   });
 };
 
-exports.checkAPIKey = function checkAPIKey(req, res) {
-  //Search API for API Key
-  console.log("req.id = " + req.body.id);
-  var id = req.body.id;
-  //id = "5ef23c1f38c6edc2a03d2b10"; //FEL job id
-  //FEL.findById( id, ...) works for above id.
-  //Above function works for FEL (from api call) must be an issue with API model.
+/*
+ * Check if user API key is valid
+ */
+exports.checkAPIKey = function checkAPIKey(req, res, next) {
+  var id = req.body.api_key;
+  console.log(id);
   API.findById(id, function (err, info) {
     if (err || !info) {
       res.json(500, "invalid id : " + id + " err = " + err);
-      console.log("info1 = " + info);
-      console.log("err1 = " + err);
-      //cb(err, null);
     } else {
-      res.json(200, "id is valid : " + id);
-      console.log("info2 = " + info);
-      console.log("err2 = " + err);
-      //cb(null, info);
+      if (info.job_request_made > info.job_request_limit) {
+        res.json(500, "Job limit exceeded for this API key " + id);
+      } else if (Date.now() > info.expires) {
+        res.json(500, "Time has expired for this API key " + id);
+      } else {
+        info.iterate_job_count;
+        info.save();
+        //api.associated_job_ids.push("new job's ID"); <- This will most likely need to go into submit call.
+        next();
+      }
     }
   });
-  //Check key limits
-  //console.log("Jobs remaining = " + api.remaining_jobs);
+};
+
+/*
+ * Creates new API key
+ */
+exports.issueKey = function issueKey(req, res, next) {
+  var api = new API();
+  api.save();
+  res.json(
+    200,
+    "New API key issued :: api_key = " +
+      api._id +
+      " || Total Jobs available = " +
+      api.remaining_jobs +
+      " || Expiratation date = " +
+      api.expires
+  );
+  return;
 };
 
 exports.apiSubmit = apiSubmit;
-
-// API.findOne(
-//   { _id: req.body.id },
-//   function (err, info) {
-//     if (err || !info) {
-//       let error = "Error retrieving API key :: " + err + " !info = " + info;
-//       console.log("1" + error);
-//       return(error, null);
-//     } else {
-//       // Found check if job limit has been reached
-//       if(API.remaining_jobs <= 0){
-//         let error = "Error API job limit has been reached";
-//         console.log("2" + error);
-//         return(error, null);
-//       }else{
-//         //Else key looks good.
-//         console.log("Info = " + info);
-//         return(null, info);
-//       }
-//     }
-//   }
-// );
