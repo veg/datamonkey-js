@@ -498,16 +498,21 @@ exports.checkAPIKey = function checkAPIKey(req, res, next) {
   API.findById(id, function (err, info) {
     if (err || !info) {
       res.json(500, "invalid id : " + id + " err = " + err);
+      return;
     } else {
       if (info.job_request_made > info.job_request_limit) {
         res.json(500, "Job limit exceeded for this API key " + id);
+        return;
       } else if (Date.now() > info.expires) {
         res.json(500, "Time has expired for this API key " + id);
+        return;
       } else {
         info.iterate_job_count;
         info.save();
         //api.associated_job_ids.push("new job's ID"); <- This will most likely need to go into submit call.
+        //return remaining jobs with reply from API submit
         next();
+        return;
       }
     }
   });
@@ -529,6 +534,10 @@ exports.issueKey = function issueKey(req, res, next) {
       api.expires
   );
   return;
+};
+
+exports.renderApi = function (req, res) {
+  res.render("api.ejs");
 };
 
 exports.apiSubmit = apiSubmit;

@@ -1,7 +1,6 @@
 var path = require("path");
 var _ = require("underscore");
 
-//import {apiSubmit} from '../app/routes/api.js';
 const api = require("../app/routes/api.js");
 
 var mongoose = require("mongoose"),
@@ -265,5 +264,9 @@ module.exports = function (app) {
   // API ROUTES
   app.post("/api/v1/submit", api.checkAPIKey, api.apiSubmit);
   app.get("/api/v1/status", api.apiStatus);
+
+  // API issue routes
   app.post("/api/v1/issueKey", api.issueKey);
+  api_verify = require(path.join(__dirname, "../app/routes/api"));
+  app.get("/apikey", api_verify.renderApi);
 };
