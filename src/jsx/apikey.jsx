@@ -2,14 +2,23 @@ var React = require("react"),
   ReactDOM = require("react-dom"),
   Recaptcha = require("react-recaptcha");
 
+// const request     = require("request"),
+//     api         = require("../../app/routes/api.js");
+
 var api_top_div = {
   fontFamily: "montserrat",
   fontSize: "1.286em",
   fontWeight: "700",
   color: "#009BA1",
   marginTop: "5%",
-  marginBottom: "5%",
+  marginBottom: "1%",
   textAlign: "center",
+};
+
+var api_cap_div = {
+  marginLeft: "30%",
+  marginRight: "30%",
+  marginBottom: "5%",
 };
 
 var api_button = {
@@ -28,8 +37,16 @@ class ApiKey extends React.Component {
     this.verifyCallback = this.verifyCallback.bind(this);
 
     this.state = {
+      //isVerified: false,
       isVerified: false,
     };
+  }
+
+  componentDidMount() {
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = "https://www.google.com/recaptcha/api.js";
+    this.div.appendChild(script);
   }
 
   recaptchaLoaded() {
@@ -38,9 +55,25 @@ class ApiKey extends React.Component {
 
   handleSubscribe() {
     if (this.state.isVerified) {
-      alert("You have successfully subscribed!");
+      fetch("http://dev.datamonkey.org/api/v1/issueKey")
+        .then((response) => {
+          return response.json();
+        })
+        .then((api) => {
+          this.setState({
+            isLoaded: true,
+            posts: api,
+          });
+          alert("New API key = " + api);
+        });
+
+      //Prevent button spam and set back to false
+      this.state = {
+        isVerified: false,
+      };
+      grecaptcha.reset();
     } else {
-      alert("Please verify that you are a human!");
+      alert("Please verify that you are human before continuing");
     }
   }
 
@@ -62,12 +95,15 @@ class ApiKey extends React.Component {
         >
           Get API Key
         </div>
-        <Recaptcha
-          sitekey="6LclsawZAAAAAE8UAQK08flCbFFRcLQ_wZwU0DIn"
-          render="explicit"
-          onloadCallback={this.recaptchaLoaded}
-          verifyCallback={this.verifyCallback}
-        />
+
+        <div style={api_cap_div} ref={(el) => (this.div = el)}>
+          <Recaptcha
+            sitekey="6LclsawZAAAAAE8UAQK08flCbFFRcLQ_wZwU0DIn"
+            render="explicit"
+            onloadCallback={this.recaptchaLoaded}
+            verifyCallback={this.verifyCallback}
+          />
+        </div>
       </div>
     );
   }

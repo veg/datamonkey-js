@@ -521,20 +521,31 @@ exports.checkAPIKey = function checkAPIKey(req, res, next) {
 /*
  * Creates new API key
  */
-exports.issueKey = function issueKey(req, res, next) {
+exports.issueKey = function issueKey(req, res) {
   var api = new API();
   api.save();
-  res.json(
-    200,
-    "New API key issued :: api_key = " +
-      api._id +
-      " || Total Jobs available = " +
-      api.remaining_jobs +
-      " || Expiratation date = " +
-      api.expires
-  );
+  //res.json(200, "apiKey: " + api._id);
+  res.json(200, JSON.stringify(api._id));
   return;
 };
+
+/*
+ * API key Info
+ */
+// exports.keyInfo = function keyInfo(req, res) {
+//   var api = new API();
+//   api.save();
+//   res.json(
+//     200,
+//     "New API key issued :: api_key = " +
+//       api._id +
+//       " || Total Jobs available = " +
+//       api.remaining_jobs +
+//       " || Expiratation date = " +
+//       api.expires
+//   );
+//   return;
+// };
 
 exports.renderApi = function (req, res) {
   res.render("api.ejs");

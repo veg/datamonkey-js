@@ -266,7 +266,7 @@ module.exports = function (app) {
   app.get("/api/v1/status", api.apiStatus);
 
   // API issue routes
-  app.post("/api/v1/issueKey", api.issueKey);
+  app.get("/api/v1/issueKey", api.issueKey);
   api_verify = require(path.join(__dirname, "../app/routes/api"));
   app.get("/apikey", api_verify.renderApi);
 };
