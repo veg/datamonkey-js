@@ -265,8 +265,8 @@ module.exports = function (app) {
   app.post("/api/v1/submit", api.checkAPIKey, api.apiSubmit);
   app.get("/api/v1/status", api.apiStatus);
 
-  // API issue routes
-  app.get("/api/v1/issueKey", api.issueKey);
+  // API KEY ROUTES
   api_verify = require(path.join(__dirname, "../app/routes/api"));
   app.get("/apikey", api_verify.renderApi);
+  app.post("/api/v1/issueKey", api.checkCapcha, api.issueKey);
 };

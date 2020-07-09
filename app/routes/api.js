@@ -16,6 +16,7 @@ const mongoose = require("mongoose"),
 const shortid = require("shortid"),
   os = require("os"),
   request = require("request"),
+  setup = require("./../../config/setup"),
   logger = require("../../lib/logger");
 
 /*
@@ -524,9 +525,36 @@ exports.checkAPIKey = function checkAPIKey(req, res, next) {
 exports.issueKey = function issueKey(req, res) {
   var api = new API();
   api.save();
-  //res.json(200, "apiKey: " + api._id);
   res.json(200, JSON.stringify(api._id));
   return;
+};
+
+/*
+ * Check if capcha key was given
+ */
+exports.checkCapcha = function checkCapcha(req, res, next) {
+  const PRIVATE_KEY = setup.api_recapcha_pri;
+  var captcha_obj = { secret: PRIVATE_KEY, response: req.body.cap };
+
+  request.post(
+    "https://www.google.com/recaptcha/api/siteverify",
+    {
+      form: captcha_obj,
+    },
+    (error, response, body) => {
+      if (error) {
+        res.json(417, "Error with verification request");
+        return;
+      }
+      if (JSON.parse(body).success == true) {
+        next();
+        return;
+      } else {
+        res.json(417, "Invalid Capcha");
+        return;
+      }
+    }
+  );
 };
 
 /*
