@@ -80,6 +80,7 @@ function apiSubmit(req, res) {
               error: err,
             });
           }
+          recordJob(website_url, postdata.api_key, postdata.method, result._id);
           res.json(200, {
             time_stamp: result.created,
             id: result._id,
@@ -114,6 +115,7 @@ function apiSubmit(req, res) {
               error: err,
             });
           }
+          recordJob(website_url, postdata.api_key, postdata.method, result._id);
           res.json(200, {
             time_stamp: result.created,
             id: result._id,
@@ -148,6 +150,7 @@ function apiSubmit(req, res) {
               error: err,
             });
           }
+          recordJob(website_url, postdata.api_key, postdata.method, result._id);
           res.json(200, {
             time_stamp: result.created,
             id: result._id,
@@ -174,6 +177,7 @@ function apiSubmit(req, res) {
               error: err,
             });
           }
+          recordJob(website_url, postdata.api_key, postdata.method, result._id);
           res.json(200, {
             time_stamp: result.created,
             id: result._id,
@@ -201,6 +205,7 @@ function apiSubmit(req, res) {
               error: err,
             });
           }
+          recordJob(website_url, postdata.api_key, postdata.method, result._id);
           res.json(200, {
             time_stamp: result.created,
             id: result._id,
@@ -232,6 +237,7 @@ function apiSubmit(req, res) {
               error: err,
             });
           }
+          recordJob(website_url, postdata.api_key, postdata.method, result._id);
           res.json(200, {
             time_stamp: result.created,
             id: result._id,
@@ -264,6 +270,7 @@ function apiSubmit(req, res) {
               error: err,
             });
           }
+          recordJob(website_url, postdata.api_key, postdata.method, result._id);
           res.json(200, {
             time_stamp: result.created,
             id: result._id,
@@ -291,6 +298,7 @@ function apiSubmit(req, res) {
               error: err,
             });
           }
+          recordJob(website_url, postdata.api_key, postdata.method, result._id);
           res.json(200, {
             time_stamp: result.created,
             id: result._id,
@@ -316,6 +324,7 @@ function apiSubmit(req, res) {
               error: err,
             });
           }
+          recordJob(website_url, postdata.api_key, postdata.method, result._id);
           res.json(200, {
             time_stamp: result.created,
             id: result._id,
@@ -343,6 +352,7 @@ function apiSubmit(req, res) {
               error: err,
             });
           }
+          recordJob(website_url, postdata.api_key, postdata.method, result._id);
           res.json(200, {
             time_stamp: result.created,
             id: result._id,
@@ -372,6 +382,7 @@ function apiSubmit(req, res) {
               error: err,
             });
           }
+          recordJob(website_url, postdata.api_key, postdata.method, result._id);
           res.json(200, {
             time_stamp: result.created,
             id: result._id,
@@ -406,6 +417,7 @@ function apiSubmit(req, res) {
               error: err,
             });
           }
+          recordJob(website_url, postdata.api_key, postdata.method, result._id);
           res.json(200, {
             time_stamp: result.created,
             id: result._id,
@@ -431,6 +443,7 @@ function apiSubmit(req, res) {
               error: err,
             });
           }
+          recordJob(website_url, postdata.api_key, postdata.method, result._id);
           res.json(200, {
             time_stamp: result.created,
             id: result._id,
@@ -495,7 +508,6 @@ exports.apiStatus = function apiSubmit(req, res) {
  */
 exports.checkAPIKey = function checkAPIKey(req, res, next) {
   var id = req.body.api_key;
-  console.log(id);
   API.findById(id, function (err, info) {
     if (err || !info) {
       res.json(500, "invalid id : " + id + " err = " + err);
@@ -518,6 +530,22 @@ exports.checkAPIKey = function checkAPIKey(req, res, next) {
     }
   });
 };
+
+/*
+ * Add Job to API key
+ */
+function recordJob(website, id, method, job_id) {
+  API.findById(id, function (err, info) {
+    if (err || !info) {
+      logger.warn("Failed to add job ID to API key, API key not found");
+      return;
+    } else {
+      //log job
+      info.associated_job_ids.push(website + "/" + method + "/" + job_id);
+      info.save();
+    }
+  });
+}
 
 /*
  * Creates new API key
@@ -558,25 +586,39 @@ exports.checkCapcha = function checkCapcha(req, res, next) {
 };
 
 /*
- * API key Info
+ * Check API Key's information
  */
-// exports.keyInfo = function keyInfo(req, res) {
-//   var api = new API();
-//   api.save();
-//   res.json(
-//     200,
-//     "New API key issued :: api_key = " +
-//       api._id +
-//       " || Total Jobs available = " +
-//       api.remaining_jobs +
-//       " || Expiratation date = " +
-//       api.expires
-//   );
-//   return;
-// };
+exports.keyInfo = function keyInfo(req, res) {
+  var id = req.body.id;
+  API.findById(id, function (err, info) {
+    if (err || !info) {
+      res.json(500, "invalid id : " + id + " err = " + err);
+      return;
+    } else {
+      if (info.job_request_made > info.job_request_limit) {
+        res.json(500, "Job limit exceeded for this API key " + id);
+        return;
+      } else if (Date.now() > info.expires) {
+        res.json(500, "Time has expired for this API key " + id);
+        return;
+      } else {
+        res.json(200, info);
+        return;
+      }
+    }
+  });
+};
 
 exports.renderApi = function (req, res) {
   res.render("api.ejs");
+};
+
+exports.renderApiKeyInfo = function (req, res) {
+  res.render("apikeyinfo.ejs");
+};
+
+exports.renderApiKeyLookup = function (req, res) {
+  res.render("apikeylookup.ejs");
 };
 
 exports.apiSubmit = apiSubmit;

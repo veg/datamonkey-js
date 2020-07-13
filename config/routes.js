@@ -269,4 +269,7 @@ module.exports = function (app) {
   api_verify = require(path.join(__dirname, "../app/routes/api"));
   app.get("/apikey", api_verify.renderApi);
   app.post("/api/v1/issueKey", api.checkCapcha, api.issueKey);
+  app.get("/keysearch", api_verify.renderApiKeyLookup); //Ask for ID here
+  app.get("/keyInfo/:id", api_verify.renderApiKeyInfo); //Will be used as redirection after key search
+  app.get("/keyInfo", api_verify.keyInfo);
 };

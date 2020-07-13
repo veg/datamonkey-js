@@ -50,10 +50,6 @@ class ApiKey extends React.Component {
     console.log("Capcha successfully loaded");
   }
 
-  // var recaptcha_response = postdata["g-recaptcha-response"];
-  // var captcha_obj = {secret : PRIVATE_KEY, response : recaptcha_response };
-  // request.post('https://www.google.com/recaptcha/api/siteverify', {form : captcha_obj }, (error, response, body) => {
-
   handleSubscribe() {
     if (this.state.isVerified) {
       //console.log("Outgoing capcha = " + grecaptcha.getResponse);
