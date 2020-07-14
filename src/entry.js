@@ -33,7 +33,7 @@ const render_citations = require("jsx/citations.jsx");
 const render_help = require("jsx/help.jsx");
 const render_stdOut = require("jsx/job_log.jsx");
 const render_api = require("jsx/apikey.jsx");
-const render_api_check = require("jsx/apikeycheck.jsx");
+const render_api_info = require("jsx/apikeyinfo.jsx");
 const render_api_lookup = require("jsx/apikeylookup.jsx");
 
 window.gard_form = gard_form;
@@ -56,5 +56,5 @@ window.render_citations = render_citations;
 window.render_help = render_help;
 window.render_stdOut = render_stdOut;
 window.render_api = render_api;
-window.render_api_check = render_api_check;
 window.render_api_lookup = render_api_lookup;
+window.render_api_info = render_api_info;

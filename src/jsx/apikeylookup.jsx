@@ -6,19 +6,46 @@ var api_top_div = {
   fontSize: "1.286em",
   fontWeight: "700",
   color: "#009BA1",
-  marginTop: "20%",
-  marginBottom: "20%",
+  marginTop: "10%",
+  marginBottom: "5%",
   marginLeft: "40%",
 };
 
 class ApiKeyLookup extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+  state = {
+    value: "",
+  };
+
+  handleInputChange = (e) => {
+    this.setState({
+      value: e.target.value,
+    });
+  };
+
+  handleSearch = (e) => {
+    e.preventDefault();
+    if (this.state.value.length > 24 || this.state.value.length < 24) {
+      alert("Incorrect length, API Key should have a length of 24");
+    } else {
+      const redirection = `/keysearch/${this.state.value}`;
+      console.log("Value = " + redirection);
+      window.location.href = redirection;
+    }
+  };
+
   render() {
+    const { value } = this.state;
     return (
-      <div className="api_top_div" style={api_top_div}>
-        <h1>Under Construction</h1>
+      <div style={api_top_div}>
+        <form onSubmit={this.handleSearch}>
+          <input
+            className="search"
+            placeholder="Enter API Key ⌕"
+            type="text"
+            value={value}
+            onChange={this.handleInputChange}
+          />
+        </form>
       </div>
     );
   }
