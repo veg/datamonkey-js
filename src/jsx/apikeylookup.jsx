@@ -6,9 +6,8 @@ var api_top_div = {
   fontSize: "1.286em",
   fontWeight: "700",
   color: "#009BA1",
-  marginTop: "10%",
-  marginBottom: "5%",
-  marginLeft: "40%",
+  marginTop: "2%",
+  marginBottom: "0.5%",
 };
 
 class ApiKeyLookup extends React.Component {
@@ -35,17 +34,24 @@ class ApiKeyLookup extends React.Component {
   render() {
     const { value } = this.state;
     return (
-      <div style={api_top_div}>
-        <form onSubmit={this.handleSearch}>
-          <input
-            className="search"
-            placeholder="Enter API Key ⌕"
-            type="text"
-            value={value}
-            onChange={this.handleInputChange}
-          />
-        </form>
-      </div>
+      <center>
+        <div className="dm-card-header card-header" style={api_top_div}>
+          <center>
+            <h3>Search for an API Key</h3>
+            <div>
+              <form onSubmit={this.handleSearch}>
+                <input
+                  className="search"
+                  placeholder="Enter API Key ID ⌕"
+                  type="text"
+                  value={value}
+                  onChange={this.handleInputChange}
+                />
+              </form>
+            </div>
+          </center>
+        </div>
+      </center>
     );
   }
 }

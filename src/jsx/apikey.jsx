@@ -6,10 +6,9 @@ var api_top_div = {
   fontFamily: "montserrat",
   fontSize: "1.286em",
   fontWeight: "700",
-  color: "#009BA1",
+  color: "#00A99D", //#00A99D
   marginTop: "3%",
   marginBottom: "1%",
-  marginLeft: "40%",
 };
 
 var api_cap_div = {
@@ -19,11 +18,14 @@ var api_cap_div = {
 };
 
 var api_button = {
-  border: "outset",
+  border: "3px outset",
   marginTop: "2%",
-  height: "35px",
+  marginBottom: "0.5%",
+  height: "40px",
   width: "304px",
-  borderRightColor: "#009BA1",
+  border_radius: "4px",
+  backgroundColor: "#F9F9F9",
+  textAlign: "center",
 };
 
 class ApiKey extends React.Component {
@@ -88,24 +90,30 @@ class ApiKey extends React.Component {
 
   render() {
     return (
-      <div className="api_top_div" style={api_top_div}>
-        <div
-          style={api_button}
-          className="api_button"
-          onClick={this.handleSubscribe}
-        >
-          Get API Key
-        </div>
+      <center>
+        <div className="dm-card-header card-header" style={api_top_div}>
+          <center>
+            <div className="api_top_div" style={api_top_div}>
+              <div
+                style={api_button}
+                className="api_button"
+                onClick={this.handleSubscribe}
+              >
+                Get API Key
+              </div>
 
-        <div style={api_cap_div} ref={(el) => (this.div = el)}>
-          <Recaptcha
-            sitekey="6LclsawZAAAAAE8UAQK08flCbFFRcLQ_wZwU0DIn"
-            render="explicit"
-            onloadCallback={this.recaptchaLoaded}
-            verifyCallback={this.verifyCallback}
-          />
+              <div style={api_cap_div} ref={(el) => (this.div = el)}>
+                <Recaptcha
+                  sitekey="6LclsawZAAAAAE8UAQK08flCbFFRcLQ_wZwU0DIn"
+                  render="explicit"
+                  onloadCallback={this.recaptchaLoaded}
+                  verifyCallback={this.verifyCallback}
+                />
+              </div>
+            </div>
+          </center>
         </div>
-      </div>
+      </center>
     );
   }
 }

@@ -10,7 +10,12 @@ var api_top_div = {
   color: "#009BA1",
   marginTop: "5%",
   marginBottom: "5%",
-  marginLeft: "28%",
+};
+
+var text_align = {
+  //border: "1px solid #dddddd",
+  textAlign: "left",
+  //padding: "8px"
 };
 
 class ApiKeyCheck extends React.Component {
@@ -60,38 +65,93 @@ class ApiKeyCheck extends React.Component {
 
   render() {
     return (
-      <div className="api_top_div" style={api_top_div}>
-        <h1>API Key Details</h1>
-        <table id="single_Table">
-          <tbody>
-            <tr>
-              <td> API Key </td>
-              <td id="api_key_id"> {this.state.api_key} </td>
-            </tr>
-            <tr>
-              <td> Jobs remaining </td>
-              <td id="api_key_remainig"> {this.state.remaining} </td>
-            </tr>
-            <tr>
-              <td> Created </td>
-              <td id="api_key_create"> {this.state.created} </td>
-            </tr>
-            <tr>
-              <td> Expires </td>
-              <td id="api_key_expire"> {this.state.expires} </td>
-            </tr>
-            <tr>
-              <td> Associated Jobs </td>
-              <td id="api_key_jobs">
-                {" "}
-                {this.state.jobs.map((job) => (
-                  <li key={job}> {job} </li>
-                ))}{" "}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <center>
+        <div className="dm-card-header card-header" style={api_top_div}>
+          <center>
+            <div className="api_top_div" style={api_top_div}>
+              <h3>API Key Details</h3>
+              <table
+                id="table"
+                class="table table-light table-bordered table-striped table-hover"
+              >
+                <tbody>
+                  <tr>
+                    <td scope="row" class="font-weight-bold" style={text_align}>
+                      {" "}
+                      Key ID{" "}
+                    </td>
+                    <td
+                      id="api_key_id"
+                      class="font-weight-normal"
+                      style={text_align}
+                    >
+                      {" "}
+                      {this.state.api_key}{" "}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td scope="row" class="font-weight-bold" style={text_align}>
+                      Remaining Jobs{" "}
+                    </td>
+                    <td
+                      id="api_key_remainig"
+                      class="font-weight-normal"
+                      style={text_align}
+                    >
+                      {" "}
+                      {this.state.remaining}{" "}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td scope="row" class="font-weight-bold" style={text_align}>
+                      {" "}
+                      Created{" "}
+                    </td>
+                    <td
+                      id="api_key_create"
+                      class="font-weight-normal"
+                      style={text_align}
+                    >
+                      {" "}
+                      {this.state.created}{" "}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td scope="row" class="font-weight-bold" style={text_align}>
+                      {" "}
+                      Expires{" "}
+                    </td>
+                    <td
+                      id="api_key_expire"
+                      class="font-weight-normal"
+                      style={text_align}
+                    >
+                      {" "}
+                      {this.state.expires}{" "}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td scope="row" class="font-weight-bold" style={text_align}>
+                      {" "}
+                      Associated Jobs{" "}
+                    </td>
+                    <td
+                      id="api_key_jobs"
+                      class="text-justify font-weight-normal"
+                      style={text_align}
+                    >
+                      {" "}
+                      {this.state.jobs.map((job) => (
+                        <li key={job}> {job} </li>
+                      ))}{" "}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </center>
+        </div>
+      </center>
     );
   }
 }
