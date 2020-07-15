@@ -28,7 +28,6 @@ class ApiKeyLookup extends React.Component {
       alert("Incorrect length, API Key should have a length of 24");
     } else {
       const redirection = `/keysearch/${this.state.value}`;
-      console.log("Value = " + redirection);
       window.location.href = redirection;
     }
   };

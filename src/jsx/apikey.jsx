@@ -46,13 +46,12 @@ class ApiKey extends React.Component {
     this.div.appendChild(script);
   }
 
-  recaptchaLoaded() {
-    console.log("Capcha successfully loaded");
-  }
+  // recaptchaLoaded() {
+  //   console.log("Capcha successfully loaded");
+  // }
 
   handleSubscribe() {
     if (this.state.isVerified) {
-      //console.log("Outgoing capcha = " + grecaptcha.getResponse);
       fetch("http://dev.datamonkey.org/api/v1/issueKey", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -66,7 +65,8 @@ class ApiKey extends React.Component {
             isLoaded: true,
             posts: api,
           });
-          alert("New API key = " + api);
+          const redirection = `/keysearch/${api.replace(/["]+/g, "")}`;
+          window.location.href = redirection;
           //Prevent button spam and set back to false
           this.state = {
             isVerified: false,

@@ -13,6 +13,7 @@ var API = new Schema({
   }, //Setup value(s) * 1000 = timeout(ms)
   job_request_limit: { type: Number, default: setup.api_request_limit }, //Defined in setup.js
   job_request_made: { type: Number, default: 0 },
+  job_remaining: { type: Number, default: setup.api_request_limit },
   associated_job_ids: [String],
 });
 
@@ -27,7 +28,7 @@ API.virtual("iterate_job_count").get(function () {
  * Gives remaining jobs for this UUID
  */
 API.virtual("remaining_jobs").get(function () {
-  return this.job_request_limit - this.job_request_made;
+  this.job_remaining = this.job_request_limit - this.job_request_made;
 });
 
 /* Debug, example obj

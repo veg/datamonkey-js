@@ -590,8 +590,6 @@ exports.checkCapcha = function checkCapcha(req, res, next) {
  */
 exports.keyInfo = function keyInfo(req, res) {
   var id = req.body.api_key;
-  console.log("REQUEST = ", req.body);
-  console.log("INCOMING ID = " + req.body.api_key);
   API.findById(id, function (err, info) {
     if (err || !info) {
       res.json(500, "invalid id : " + id + " err = " + err);
@@ -604,6 +602,7 @@ exports.keyInfo = function keyInfo(req, res) {
         res.json(500, "Time has expired for this API key " + id);
         return;
       } else {
+        info.remaining_jobs;
         res.json(200, info);
         return;
       }

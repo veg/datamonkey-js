@@ -1,4 +1,6 @@
 var React = require("react"),
+  Router = "react-router",
+  url = require("url"),
   ReactDOM = require("react-dom");
 
 var api_top_div = {
@@ -16,7 +18,7 @@ class ApiKeyCheck extends React.Component {
     super(props),
       (this.state = {
         loaded: false,
-        api_key: "", //Should come from URL
+        api_key: "",
         remaining: "",
         expires: "",
         created: "",
@@ -25,7 +27,8 @@ class ApiKeyCheck extends React.Component {
   }
 
   componentDidMount() {
-    var api_key_id = "5f0c81601a544049b62f1147";
+    var api_key_id = url.parse(window.location.href).pathname.substr(11);
+
     this.setState({
       api_key: api_key_id,
     });
@@ -40,7 +43,7 @@ class ApiKeyCheck extends React.Component {
         (result) => {
           this.setState({
             loaded: true,
-            remaining: result.job_request_made,
+            remaining: result.job_remaining,
             expires: result.expires,
             created: result.created,
             jobs: result.associated_job_ids,
@@ -51,7 +54,6 @@ class ApiKeyCheck extends React.Component {
             loaded: true,
             error,
           });
-          console.log("error = ", error);
         }
       );
   }
@@ -59,38 +61,36 @@ class ApiKeyCheck extends React.Component {
   render() {
     return (
       <div className="api_top_div" style={api_top_div}>
-        <h1>API Key information</h1>
-        <div className="col">
-          <table id="single_Table">
-            <tbody>
-              <tr>
-                <td> ID </td>
-                <td id="api_key_id"> {this.state.api_key} </td>
-              </tr>
-              <tr>
-                <td> Jobs remaining </td>
-                <td id="api_key_remainig"> {this.state.remaining} </td>
-              </tr>
-              <tr>
-                <td> Created </td>
-                <td id="api_key_create"> {this.state.created} </td>
-              </tr>
-              <tr>
-                <td> Expires </td>
-                <td id="api_key_expire"> {this.state.expires} </td>
-              </tr>
-              <tr>
-                <td> Associated Jobs </td>
-                <td id="api_key_jobs">
-                  {" "}
-                  {this.state.jobs.map((job) => (
-                    <li key={job}> {job} </li>
-                  ))}{" "}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <h1>API Key Details</h1>
+        <table id="single_Table">
+          <tbody>
+            <tr>
+              <td> API Key </td>
+              <td id="api_key_id"> {this.state.api_key} </td>
+            </tr>
+            <tr>
+              <td> Jobs remaining </td>
+              <td id="api_key_remainig"> {this.state.remaining} </td>
+            </tr>
+            <tr>
+              <td> Created </td>
+              <td id="api_key_create"> {this.state.created} </td>
+            </tr>
+            <tr>
+              <td> Expires </td>
+              <td id="api_key_expire"> {this.state.expires} </td>
+            </tr>
+            <tr>
+              <td> Associated Jobs </td>
+              <td id="api_key_jobs">
+                {" "}
+                {this.state.jobs.map((job) => (
+                  <li key={job}> {job} </li>
+                ))}{" "}
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     );
   }

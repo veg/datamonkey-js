@@ -56,5 +56,5 @@ window.render_citations = render_citations;
 window.render_help = render_help;
 window.render_stdOut = render_stdOut;
 window.render_api = render_api;
-window.render_api_lookup = render_api_lookup;
 window.render_api_info = render_api_info;
+window.render_api_lookup = render_api_lookup;
