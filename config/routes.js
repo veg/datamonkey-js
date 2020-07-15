@@ -271,5 +271,5 @@ module.exports = function (app) {
   app.post("/api/v1/issueKey", api.checkCapcha, api.issueKey);
   app.get("/keysearch", api_verify.renderApiKeyLookup); //Ask for ID here
   app.get("/keysearch/:id", api_verify.renderApiKeyInfo); //Will be used as redirection after key search
-  app.post("/keyInfo", api_verify.keyInfo);
+  app.post("/api/v1/keyInfo", api_verify.keyInfo);
 };

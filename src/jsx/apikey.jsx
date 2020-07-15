@@ -46,9 +46,9 @@ class ApiKey extends React.Component {
     this.div.appendChild(script);
   }
 
-  // recaptchaLoaded() {
-  //   console.log("Capcha successfully loaded");
-  // }
+  recaptchaLoaded() {
+    console.log("Capcha successfully loaded");
+  }
 
   handleSubscribe() {
     if (this.state.isVerified) {
