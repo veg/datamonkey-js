@@ -1,11 +1,7 @@
 /*jslint node: true */
 
-var querystring = require("querystring"),
-  error = require(__dirname + " /../../lib/error.js"),
-  globals = require(__dirname + "/../../config/globals.js"),
-  mailer = require(__dirname + "/../../lib/mailer.js"),
+var error = require(__dirname + " /../../lib/error.js"),
   helpers = require(__dirname + "/../../lib/helpers.js"),
-  hpcsocket = require(__dirname + "/../../lib/hpcsocket.js"),
   fs = require("fs"),
   path = require("path"),
   logger = require("../../lib/logger"),
@@ -13,18 +9,16 @@ var querystring = require("querystring"),
 
 var mongoose = require("mongoose"),
   Msa = mongoose.model("Msa"),
-  Sequences = mongoose.model("Sequences"),
-  PartitionInfo = mongoose.model("PartitionInfo"),
   Relax = mongoose.model("Relax");
 
 var redis = require("redis"),
   client = redis.createClient({ host: setup.redisHost, port: setup.redisPort });
 
-exports.createForm = function(req, res) {
+exports.createForm = function (req, res) {
   res.render("relax/upload_msa.ejs");
 };
 
-exports.uploadFile = function(req, res) {
+exports.uploadFile = function (req, res) {
   var fn = req.files.files.file,
     relax = new Relax(),
     postdata = req.body,
@@ -32,10 +26,10 @@ exports.uploadFile = function(req, res) {
     gencodeid = postdata.gencodeid;
 
   relax.mail = postdata.mail;
-
   relax.analysis_type = postdata.analysis_type;
   relax.original_extension = path.basename(fn).split(".")[1];
-  Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
+
+  Msa.parseFile(fn, datatype, gencodeid, function (err, msa) {
     if (err) {
       res.json(500, { error: err });
       return;
@@ -61,7 +55,7 @@ exports.uploadFile = function(req, res) {
 
     relax.msa = msa;
 
-    relax.save(function(err, relax_result) {
+    relax.save(function (err, relax_result) {
       if (err) {
         logger.error("relax save failed");
         res.json(500, { error: err });
@@ -78,10 +72,10 @@ exports.uploadFile = function(req, res) {
             relax_result.filepath
           );
           move.then(
-            val => {
+            (val) => {
               res.json(200, relax);
             },
-            reason => {
+            (reason) => {
               res.json(500, { error: "issue removing tree from file" });
             }
           );
@@ -93,7 +87,7 @@ exports.uploadFile = function(req, res) {
           logger.error("read file failed");
           res.json(500, { error: err });
         }
-        fs.writeFile(relax_result.original_fn, data, err => {
+        fs.writeFile(relax_result.original_fn, data, (err) => {
           if (err) {
             logger.error("write file failed");
             res.json(500, { error: err });
@@ -109,17 +103,17 @@ exports.uploadFile = function(req, res) {
   });
 };
 
-exports.selectForeground = function(req, res) {
+exports.selectForeground = function (req, res) {
   var id = req.params.id;
 
-  Relax.findOne({ _id: id }, function(err, relax) {
+  Relax.findOne({ _id: id }, function (err, relax) {
     res.format({
-      html: function() {
+      html: function () {
         res.render("relax/form.ejs", { relax: relax });
       },
-      json: function() {
+      json: function () {
         res.json(200, relax);
-      }
+      },
     });
   });
 };
@@ -128,35 +122,35 @@ exports.selectForeground = function(req, res) {
  * Handles a job request by the user
  * app.post('/msa/:msaid/relax', Relax.invokeRelax);
  */
-exports.invokeRelax = function(req, res) {
+exports.invokeRelax = function (req, res) {
   var postdata = req.body;
   var id = req.params.id;
 
   // Find the correct multiple sequence alignment to act upon
-  Relax.findOne({ _id: id }, function(err, relax) {
+  Relax.findOne({ _id: id }, function (err, relax) {
     // User Parameters
     relax.tagged_nwk_tree = postdata.nwk_tree;
     relax.status = relax.status_stack[0];
 
-    relax.save(function(err, result) {
+    relax.save(function (err, result) {
       if (err) {
         // Redisplay form with errors
         res.format({
-          html: function() {
+          html: function () {
             res.render("relax/form.ejs", {
               errors: err.errors,
-              relax: relax
+              relax: relax,
             });
           },
-          json: function() {
+          json: function () {
             // Save relax analysis
             res.json(200, { msg: "Job with relax id " + id + " not found" });
-          }
+          },
         });
 
         // Successful upload, spawn job
       } else {
-        var connect_callback = function(data) {
+        var connect_callback = function (data) {
           if (data == "connected") {
             logger.log("connected");
           }
@@ -173,13 +167,13 @@ exports.invokeRelax = function(req, res) {
  * Displays id page for analysis
  * app.get('/relax/:relaxid', relax.getRelax);
  */
-exports.getPage = function(req, res) {
+exports.getPage = function (req, res) {
   // Find the analysis
   // Return its results
   var relaxid = req.params.id;
 
   //Return all results
-  Relax.findOne({ _id: relaxid }, function(err, relax) {
+  Relax.findOne({ _id: relaxid }, function (err, relax) {
     if (err || !relax) {
       res.json(500, error.errorResponse("Invalid ID : " + relaxid));
     } else {
@@ -196,29 +190,29 @@ exports.getPage = function(req, res) {
  * Handles a job request by the user
  * app.post('/msa/:msaid/relax', Relax.invokeRelax);
  */
-exports.restart = function(req, res) {
+exports.restart = function (req, res) {
   var id = req.params.id;
 
   // Find the correct multiple sequence alignment to act upon
-  Relax.findOne({ _id: id }, function(err, result) {
+  Relax.findOne({ _id: id }, function (err, result) {
     if (err) {
       // Redisplay form with errors
       res.format({
-        html: function() {
+        html: function () {
           res.render("analysis/relax/form.ejs", {
             errors: err.errors,
-            relax: relax
+            relax: relax,
           });
         },
-        json: function() {
+        json: function () {
           // Save relax analysis
           res.json(200, { msg: "Job with relax id " + id + " not found" });
-        }
+        },
       });
 
       // Successful upload, spawn job
     } else {
-      var connect_callback = function(data) {
+      var connect_callback = function (data) {
         if (data == "connected") {
           logger.log("connected");
         }
@@ -234,14 +228,14 @@ exports.restart = function(req, res) {
  * Displays id page for analysis
  * app.get('/relax/:relaxid', relax.getRelax);
  */
-exports.getRecheck = function(req, res) {
+exports.getRecheck = function (req, res) {
   var relaxid = req.params.id;
 
-  Relax.findOne({ _id: relaxid }, function(err, relax) {
+  Relax.findOne({ _id: relaxid }, function (err, relax) {
     if (err || !relax) {
       res.json(500, error.errorResponse("Invalid ID : " + relaxid));
     } else {
-      var callback = function(data) {
+      var callback = function (data) {
         res.json(200, data);
       };
 
@@ -254,11 +248,11 @@ exports.getRecheck = function(req, res) {
  * Returns log txt file
  * app.get('/relax/:id/log.txt', relax.getLog);
  */
-exports.getLog = function(req, res) {
+exports.getLog = function (req, res) {
   var id = req.params.id;
 
   //Return all results
-  Relax.findOne({ _id: id }, function(err, relax) {
+  Relax.findOne({ _id: id }, function (err, relax) {
     if (err || !busted) {
       winston.info(err);
       res.json(500, error.errorResponse("invalid id : " + id));
@@ -274,16 +268,16 @@ exports.getLog = function(req, res) {
  * cancels existing job
  * app.get('/relax/:id/cancel', relax.cancel);
  */
-exports.cancel = function(req, res) {
+exports.cancel = function (req, res) {
   var id = req.params.id;
 
   //Return all results
-  Relax.findOne({ _id: id }, function(err, relax) {
+  Relax.findOne({ _id: id }, function (err, relax) {
     if (err || !relax) {
       winston.info(err);
       res.json(500, error.errorResponse("invalid id : " + id));
     } else {
-      relax.cancel(function(err, success) {
+      relax.cancel(function (err, success) {
         if (success) {
           res.json(200, { success: "yes" });
         } else {
@@ -294,18 +288,18 @@ exports.cancel = function(req, res) {
   });
 };
 
-exports.resubscribePendingJobs = function(req, res) {
+exports.resubscribePendingJobs = function (req, res) {
   Relax.subscribePendingJobs();
 };
 
-exports.getMSAFile = function(req, res) {
+exports.getMSAFile = function (req, res) {
   var id = req.params.id,
     name = req.params.name;
 
   var options = {};
 
-  Relax.findOne({ _id: id }, function(err, relax) {
-    res.sendFile(relax.original_fn, options, function(err) {
+  Relax.findOne({ _id: id }, function (err, relax) {
+    res.sendFile(relax.original_fn, options, function (err) {
       if (err) {
         res.status(err.status).end();
       }
@@ -313,27 +307,27 @@ exports.getMSAFile = function(req, res) {
   });
 };
 
-exports.fasta = function(req, res) {
+exports.fasta = function (req, res) {
   var id = req.params.id;
 
-  Relax.findOne({ _id: id }, function(err, relax) {
+  Relax.findOne({ _id: id }, function (err, relax) {
     if (err || !relax) {
       winston.info(err);
       res.json(500, error.errorReponse("invalid id : " + id));
     }
     Msa.deliverFasta(relax.filepath)
-      .then(value => {
+      .then((value) => {
         res.json(200, { fasta: value });
       })
-      .catch(err => {
+      .catch((err) => {
         winston.info(err);
         res.json(500, { error: "Unable to deliver fasta." });
       });
   });
 };
 
-exports.getUsage = function(req, res) {
-  client.get(Relax.cachePath(), function(err, data) {
+exports.getUsage = function (req, res) {
+  client.get(Relax.cachePath(), function (err, data) {
     try {
       res.json(200, JSON.parse(data));
     } catch (err) {

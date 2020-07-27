@@ -1,7 +1,6 @@
 var path = require("path");
 var _ = require("underscore");
 
-//import {apiSubmit} from '../app/routes/api.js';
 const api = require("../app/routes/api.js");
 
 var mongoose = require("mongoose"),
@@ -239,7 +238,6 @@ module.exports = function (app) {
   slac = require(path.join(__dirname, "../app/routes/slac"));
   app.get("/slac", slac.form);
   app.post("/slac", slac.invoke);
-  //app.post("/slac", slac.invokeAPI);
   app.get("/slac/usage", slac.getUsage);
   app.get("/slac/:id", slac.getPage);
   app.get("/slac/:id/original_file/:name", slac.getMSAFile);
@@ -264,7 +262,14 @@ module.exports = function (app) {
   bgm.resubscribePendingJobs();
 
   // API ROUTES
-  //app.post("/api/v1/submit", api.apiSubmit);
-  app.post("/api/v1/submit", api.apiSubmit);
-  app.post("/api/v1/debug", slac.invokeDEBUG);
+  app.post("/api/v1/submit", api.checkAPIKey, api.apiSubmit);
+  app.get("/api/v1/status", api.apiStatus);
+
+  // API KEY ROUTES
+  api_verify = require(path.join(__dirname, "../app/routes/api"));
+  app.get("/apikey", api_verify.renderApi);
+  app.post("/api/v1/issueKey", api.checkCapcha, api.issueKey);
+  app.get("/keysearch", api_verify.renderApiKeyLookup); //Ask for ID here
+  app.get("/keysearch/:id", api_verify.renderApiKeyInfo); //Will be used as redirection after key search
+  app.post("/api/v1/keyInfo", api_verify.keyInfo);
 };

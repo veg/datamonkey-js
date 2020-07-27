@@ -1,25 +1,13 @@
-var querystring = require("querystring"),
-  error = require(__dirname + " /../../lib/error.js"),
-  globals = require(__dirname + "/../../config/globals.js"),
-  mailer = require(__dirname + "/../../lib/mailer.js"),
-  helpers = require(__dirname + "/../../lib/helpers.js"),
-  hpcsocket = require(__dirname + "/../../lib/hpcsocket.js"),
-  fs = require("fs"),
+var error = require(__dirname + " /../../lib/error.js"),
   logger = require("../../lib/logger"),
-  setup = require(__dirname + "/../../config/setup.js"),
-  request = require("request");
+  setup = require(__dirname + "/../../config/setup.js");
 
 var mongoose = require("mongoose"),
   Msa = mongoose.model("Msa"),
-  Sequences = mongoose.model("Sequences"),
-  PartitionInfo = mongoose.model("PartitionInfo"),
   SLAC = mongoose.model("SLAC");
 
 var redis = require("redis"),
   client = redis.createClient({ host: setup.redisHost, port: setup.redisPort });
-
-const shortid = require("shortid"),
-  os = require("os");
 
 exports.form = function (req, res) {
   var post_to = "/slac";
@@ -27,73 +15,21 @@ exports.form = function (req, res) {
 };
 
 exports.invoke = function (req, res) {
-  var connect_callback = function (data) {
-    if (data == "connected") {
-      logger.log("connected");
-    }
+  var fn = req.files.files.file;
+  let postdata = req.body;
+  let options = {
+    datatype: 0,
+    gencodeid: postdata.gencodeid,
+    mail: postdata.mail,
   };
 
-  var fn = req.files.files.file,
-    slac = new SLAC(),
-    postdata = req.body,
-    datatype = 0,
-    gencodeid = postdata.gencodeid;
-
-  slac.mail = postdata.mail;
-
-  Msa.parseFile(fn, datatype, gencodeid, function (err, msa) {
+  SLAC.spawn(fn, options, (err, result) => {
     if (err) {
-      res.json(500, { error: err });
-      return;
+      logger.warn("Error with spawning SLAC job from browser :: " + err);
     }
-
-    // Check if msa exceeds limitations
-    if (msa.sites > slac.max_sites) {
-      var error =
-        "Site limit exceeded! Sites must be less than " + slac.max_sites;
-      logger.error(error);
-      res.json(500, { error: error });
-      return;
-    }
-
-    if (msa.sequences > slac.max_sequences) {
-      var error =
-        "Sequence limit exceeded! Sequences must be less than " +
-        slac.max_sequences;
-      logger.error(error);
-      res.json(500, { error: error });
-      return;
-    }
-
-    slac.msa = msa;
-
-    slac.status = slac.status_stack[0];
-
-    slac.save(function (err, slac_result) {
-      if (err) {
-        logger.error("slac save failed");
-        res.json(500, { error: err });
-        return;
-      }
-
-      function move_cb(err, result) {
-        if (err) {
-          logger.error("slac rename failed");
-          res.json(500, { error: err });
-        } else {
-          var to_send = slac;
-          to_send.upload_redirect_path = slac.upload_redirect_path;
-          res.json(200, {
-            analysis: slac,
-            upload_redirect_path: slac.upload_redirect_path,
-          });
-
-          // Send the MSA and analysis type
-          SLAC.submitJob(slac_result, connect_callback);
-        }
-      }
-
-      helpers.moveSafely(req.files.files.file, slac_result.filepath, move_cb);
+    res.json(200, {
+      analysis: result,
+      upload_redirect_path: result.upload_redirect_path,
     });
   });
 };
@@ -202,106 +138,5 @@ exports.getUsage = function (req, res) {
     } catch (err) {
       winston.info(err);
     }
-  });
-};
-
-exports.invokeDEBUG = function (req, res, callback) {
-  // console.log("SLAC DEBUG EVENT TRIGGERED REQ = " + JSON.stringify(req));
-  // console.log("SLAC DEBUG EVENT TRIGGERED RES = " + JSON.stringify(res));
-
-  shortid.characters(
-    "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_"
-  );
-  var url_fasta = req.body.fastaLoc,
-    fileName = "api_" + shortid.generate() + "z.nex",
-    dest = os.tmpdir() + "/",
-    fullFileName = dest + fileName;
-
-  function getRequest(url, dest, callback) {
-    request(url, function (err) {
-      if (err) {
-        console.log("error :: Request failed due to URL");
-        return err;
-      }
-    }).pipe(fs.createWriteStream(dest).on("finish", callback));
-  }
-
-  getRequest(url_fasta, fullFileName, function (err) {
-    if (err) {
-      console.log("There was an error saving this file to " + fullFileName);
-      return;
-    }
-    console.log("File Saved to " + fullFileName);
-
-    var connect_callback = function (data) {
-      if (data == "connected") {
-        logger.log("connected");
-      }
-    };
-
-    var fn = fullFileName,
-      slac = new SLAC(),
-      postdata = req.body,
-      datatype = 0,
-      gencodeid = postdata.gencodeid;
-    slac.mail = postdata.mail;
-
-    Msa.parseFile(fn, datatype, gencodeid, function (err, msa) {
-      var today2 = new Date();
-      console.log("Attempting to run ParseFile " + today2.getMilliseconds());
-      if (err) {
-        res.json(500, { error: err + today2.getMilliseconds() });
-        return;
-      }
-      // Check if msa exceeds limitations
-      if (msa.sites > slac.max_sites) {
-        var error =
-          "Site limit exceeded! Sites must be less than " + slac.max_sites;
-        logger.error(error);
-        res.json(500, { error: error });
-        return;
-      }
-      if (msa.sequences > slac.max_sequences) {
-        var error =
-          "Sequence limit exceeded! Sequences must be less than " +
-          slac.max_sequences;
-        logger.error(error);
-        res.json(500, { error: error });
-        return;
-      }
-
-      slac.msa = msa;
-      slac.status = slac.status_stack[0];
-
-      slac.save(function (err, slac_result) {
-        if (err) {
-          logger.error("slac save failed");
-          res.json(500, { error: err });
-          return;
-        }
-        function move_cb(err, result) {
-          if (err) {
-            logger.error(
-              "slac rename failed" +
-                " Errored on line 282~ within slac.js :: move_cb " +
-                err
-            );
-            res.json(500, { error: err });
-          } else {
-            var to_send = slac;
-            to_send.upload_redirect_path = slac.upload_redirect_path;
-            //callback remove below for api
-            res.json(200, {
-              analysis: slac,
-              upload_redirect_path: slac.upload_redirect_path,
-            });
-
-            // Send the MSA and analysis type
-            SLAC.submitJob(slac_result, connect_callback);
-          }
-        }
-        helpers.moveSafely(fn, slac_result.filepath, move_cb);
-      });
-    });
   });
 };

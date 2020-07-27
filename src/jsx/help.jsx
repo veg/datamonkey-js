@@ -21,7 +21,10 @@ class Help extends React.Component {
           <div className="col">
             <h1>Help</h1>
             <p>Documentation for Datamonkey's Analyses</p>
-
+            <p> For persistent errors or questions not answered here please open an issue on our 
+              <a href="https://github.com/veg/hyphy/issues">
+            Github
+          </a>{" "}  </p>
             <div>{this.props.datamonkey ? null : null}</div>
 
             <br />
