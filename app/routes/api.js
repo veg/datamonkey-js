@@ -522,8 +522,6 @@ exports.checkAPIKey = function checkAPIKey(req, res, next) {
       } else {
         info.iterate_job_count;
         info.save();
-        //api.associated_job_ids.push("new job's ID"); <- This will most likely need to go into submit call.
-        //return remaining jobs with reply from API submit
         next();
         return;
       }
