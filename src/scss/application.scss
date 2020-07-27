@@ -185,9 +185,6 @@ button.dm-mobile-menu {
   font-weight: 600;
 }
 
-.dm-card-body {
-}
-
 .dm-card-body a {
   color: #484d56;
 }
@@ -200,9 +197,6 @@ button.dm-mobile-menu {
 
 .dm-card-title {
   font-size: 1.286em;
-}
-
-.dm-card-text {
 }
 
 .pull-right::after {
@@ -582,7 +576,7 @@ nav .dm-dropdown-menu {
   }
 
   .navbar-collapse {
-    flexwrap: wrap !important;
+    flex-wrap: wrap !important;
   }
 
   .dm-dropdown {

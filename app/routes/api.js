@@ -10,13 +10,18 @@ const mongoose = require("mongoose"),
   MULTIHIT = mongoose.model("MULTIHIT"),
   Relax = mongoose.model("Relax"),
   FADE = mongoose.model("Fade"),
+  API = mongoose.model("API"),
   SLAC = mongoose.model("SLAC");
 
 const shortid = require("shortid"),
   os = require("os"),
   request = require("request"),
+  setup = require("./../../config/setup"),
   logger = require("../../lib/logger");
 
+/*
+ * Submit a job via API
+ */
 function apiSubmit(req, res) {
   logger.info("Incoming request recieved REQ = " + JSON.stringify(req.body));
 
@@ -75,6 +80,7 @@ function apiSubmit(req, res) {
               error: err,
             });
           }
+          recordJob(website_url, postdata.api_key, postdata.method, result._id);
           res.json(200, {
             time_stamp: result.created,
             id: result._id,
@@ -109,6 +115,7 @@ function apiSubmit(req, res) {
               error: err,
             });
           }
+          recordJob(website_url, postdata.api_key, postdata.method, result._id);
           res.json(200, {
             time_stamp: result.created,
             id: result._id,
@@ -143,6 +150,7 @@ function apiSubmit(req, res) {
               error: err,
             });
           }
+          recordJob(website_url, postdata.api_key, postdata.method, result._id);
           res.json(200, {
             time_stamp: result.created,
             id: result._id,
@@ -169,6 +177,7 @@ function apiSubmit(req, res) {
               error: err,
             });
           }
+          recordJob(website_url, postdata.api_key, postdata.method, result._id);
           res.json(200, {
             time_stamp: result.created,
             id: result._id,
@@ -196,6 +205,7 @@ function apiSubmit(req, res) {
               error: err,
             });
           }
+          recordJob(website_url, postdata.api_key, postdata.method, result._id);
           res.json(200, {
             time_stamp: result.created,
             id: result._id,
@@ -227,6 +237,7 @@ function apiSubmit(req, res) {
               error: err,
             });
           }
+          recordJob(website_url, postdata.api_key, postdata.method, result._id);
           res.json(200, {
             time_stamp: result.created,
             id: result._id,
@@ -259,6 +270,7 @@ function apiSubmit(req, res) {
               error: err,
             });
           }
+          recordJob(website_url, postdata.api_key, postdata.method, result._id);
           res.json(200, {
             time_stamp: result.created,
             id: result._id,
@@ -286,6 +298,7 @@ function apiSubmit(req, res) {
               error: err,
             });
           }
+          recordJob(website_url, postdata.api_key, postdata.method, result._id);
           res.json(200, {
             time_stamp: result.created,
             id: result._id,
@@ -311,6 +324,7 @@ function apiSubmit(req, res) {
               error: err,
             });
           }
+          recordJob(website_url, postdata.api_key, postdata.method, result._id);
           res.json(200, {
             time_stamp: result.created,
             id: result._id,
@@ -338,6 +352,7 @@ function apiSubmit(req, res) {
               error: err,
             });
           }
+          recordJob(website_url, postdata.api_key, postdata.method, result._id);
           res.json(200, {
             time_stamp: result.created,
             id: result._id,
@@ -367,6 +382,7 @@ function apiSubmit(req, res) {
               error: err,
             });
           }
+          recordJob(website_url, postdata.api_key, postdata.method, result._id);
           res.json(200, {
             time_stamp: result.created,
             id: result._id,
@@ -401,6 +417,7 @@ function apiSubmit(req, res) {
               error: err,
             });
           }
+          recordJob(website_url, postdata.api_key, postdata.method, result._id);
           res.json(200, {
             time_stamp: result.created,
             id: result._id,
@@ -426,6 +443,7 @@ function apiSubmit(req, res) {
               error: err,
             });
           }
+          recordJob(website_url, postdata.api_key, postdata.method, result._id);
           res.json(200, {
             time_stamp: result.created,
             id: result._id,
@@ -452,6 +470,9 @@ function apiSubmit(req, res) {
   return;
 }
 
+/*
+ * Get status of running job
+ */
 exports.apiStatus = function apiSubmit(req, res) {
   var analysis = require("./analysis.js"),
     postdata = req.body;
@@ -481,4 +502,122 @@ exports.apiStatus = function apiSubmit(req, res) {
     });
   });
 };
+
+/*
+ * Check if user API key is valid
+ */
+exports.checkAPIKey = function checkAPIKey(req, res, next) {
+  var id = req.body.api_key;
+  API.findById(id, function (err, info) {
+    if (err || !info) {
+      res.json(500, "invalid id : " + id + " err = " + err);
+      return;
+    } else {
+      if (info.job_request_made > info.job_request_limit) {
+        res.json(500, "Job limit exceeded for this API key " + id);
+        return;
+      } else if (Date.now() > info.expires) {
+        res.json(500, "Time has expired for this API key " + id);
+        return;
+      } else {
+        info.iterate_job_count;
+        info.save();
+        next();
+        return;
+      }
+    }
+  });
+};
+
+/*
+ * Add Job to API key
+ */
+function recordJob(website, id, method, job_id) {
+  API.findById(id, function (err, info) {
+    if (err || !info) {
+      logger.warn("Failed to add job ID to API key, API key not found");
+      return;
+    } else {
+      //log job
+      info.associated_job_ids.push(website + "/" + method + "/" + job_id);
+      info.save();
+    }
+  });
+}
+
+/*
+ * Creates new API key
+ */
+exports.issueKey = function issueKey(req, res) {
+  var api = new API();
+  api.save();
+  res.json(200, JSON.stringify(api._id));
+  return;
+};
+
+/*
+ * Check if capcha key was given
+ */
+exports.checkCapcha = function checkCapcha(req, res, next) {
+  const PRIVATE_KEY = setup.api_recapcha_pri;
+  var captcha_obj = { secret: PRIVATE_KEY, response: req.body.cap };
+
+  request.post(
+    "https://www.google.com/recaptcha/api/siteverify",
+    {
+      form: captcha_obj,
+    },
+    (error, response, body) => {
+      if (error) {
+        res.json(417, "Error with verification request");
+        return;
+      }
+      if (JSON.parse(body).success == true) {
+        next();
+        return;
+      } else {
+        res.json(417, "Invalid Capcha");
+        return;
+      }
+    }
+  );
+};
+
+/*
+ * Check API Key's information
+ */
+exports.keyInfo = function keyInfo(req, res) {
+  var id = req.body.api_key;
+  API.findById(id, function (err, info) {
+    if (err || !info) {
+      res.json(500, "invalid id : " + id + " err = " + err);
+      return;
+    } else {
+      if (info.job_request_made > info.job_request_limit) {
+        res.json(500, "Job limit exceeded for this API key " + id);
+        return;
+      } else if (Date.now() > info.expires) {
+        res.json(500, "Time has expired for this API key " + id);
+        return;
+      } else {
+        info.remaining_jobs;
+        res.json(200, info);
+        return;
+      }
+    }
+  });
+};
+
+exports.renderApi = function (req, res) {
+  res.render("api.ejs");
+};
+
+exports.renderApiKeyInfo = function (req, res) {
+  res.render("apikeyinfo.ejs");
+};
+
+exports.renderApiKeyLookup = function (req, res) {
+  res.render("apikeylookup.ejs");
+};
+
 exports.apiSubmit = apiSubmit;
