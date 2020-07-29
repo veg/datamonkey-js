@@ -29,7 +29,7 @@ function apiSubmit(req, res) {
     "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_"
   );
 
-  var website_url = "datamonkey.org", //Used to build reply URL
+  var website_url = setup.api_base_url, //Used to build reply URL
     postdata = req.body,
     url_fasta = postdata.fastaLoc,
     today = new Date(),
@@ -508,6 +508,13 @@ exports.apiStatus = function apiSubmit(req, res) {
  */
 exports.checkAPIKey = function checkAPIKey(req, res, next) {
   var id = req.body.api_key;
+
+  //Dev bypass, will not log jobs as no key found.
+  if (setup.api_dev_mode === true) {
+    next();
+    return;
+  }
+
   API.findById(id, function (err, info) {
     if (err || !info) {
       res.json(500, "invalid id : " + id + " err = " + err);
@@ -535,6 +542,11 @@ exports.checkAPIKey = function checkAPIKey(req, res, next) {
  * Add Job to API key
  */
 function recordJob(website, id, method, job_id) {
+  //Dev bypass, will not log jobs as no key found.
+  if (setup.api_dev_mode === true) {
+    return;
+  }
+
   API.findById(id, function (err, info) {
     if (err || !info) {
       logger.warn("Failed to add job ID to API key, API key not found");
