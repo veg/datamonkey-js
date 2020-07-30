@@ -42,18 +42,57 @@ function apiSubmit(req, res) {
     dest = os.tmpdir(),
     fullFileName = path.join(dest, fileName);
 
-  function getRequest(url, dest, callback) {
-    request(url, function (err) {
-      if (err) {
-        logger.warn("error :: Request failed due to URL");
-        return err;
+  function headRequest(url, cb) {
+    request(
+      {
+        method: "HEAD",
+        uri: url,
+      },
+      function (err, response) {
+        if (err) {
+          var error =
+            "error: with retrieving HEAD request for content-length please ensure your file location provides this. ERR: " +
+            err;
+          cb(error);
+          return;
+        }
+        if (response.headers["content-length"] > setup.api_max_file_size) {
+          var error =
+            "Error: Requested download file is too large. Max is currently set to " +
+            setup.api_max_file_size +
+            "bytes";
+          cb(error);
+          return;
+        } else {
+          cb();
+          return;
+        }
       }
-    }).pipe(fs.createWriteStream(dest).on("finish", callback));
+    );
+  }
+
+  function getRequest(url, dest, callback) {
+    headRequest(url, function (err) {
+      if (err) {
+        logger.warn("error :: File size too large for request");
+        return callback(err);
+      }
+      request(url, function (err) {
+        if (err) {
+          logger.warn("error :: Request failed due to URL");
+          return callback(err);
+        }
+      }).pipe(fs.createWriteStream(dest).on("finish", callback));
+    });
   }
 
   getRequest(url_fasta, fullFileName, function (err) {
     if (err) {
+      console.log("request had an error: " + err);
       logger.warn("There was an error saving this file to " + fullFileName);
+      res.json(400, {
+        error: err,
+      });
       return;
     }
 
