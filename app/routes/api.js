@@ -88,7 +88,6 @@ function apiSubmit(req, res) {
 
   getRequest(url_fasta, fullFileName, function (err) {
     if (err) {
-      console.log("request had an error: " + err);
       logger.warn("There was an error saving this file to " + fullFileName);
       res.json(400, {
         error: err,
