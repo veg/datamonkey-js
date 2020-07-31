@@ -555,7 +555,7 @@ exports.checkAPIKey = function checkAPIKey(req, res, next) {
 
   API.findById(id, function (err, info) {
     if (err || !info) {
-      res.json(500, "invalid id : " + id + " err = " + err);
+      res.json(500, "invalid id : " + id);
       return;
     } else {
       if (info.job_request_made > info.job_request_limit) {
@@ -665,11 +665,11 @@ exports.renderApi = function (req, res) {
 };
 
 exports.renderApiKeyInfo = function (req, res) {
-  res.render("apikeyinfo.ejs");
+  res.render("api.ejs");
 };
 
 exports.renderApiKeyLookup = function (req, res) {
-  res.render("apikeylookup.ejs");
+  res.render("api.ejs");
 };
 
 exports.apiSubmit = apiSubmit;

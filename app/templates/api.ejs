@@ -1,7 +1,17 @@
   
 <%- include("includes/header.ejs") %>
+
 <div id="api-container"></div>
+<div id="api-container-id-given"></div>
+<div id="api-container-id-lookup"></div>
+
 <script>
-  render_api("api-container", true);
+  if(window.location.href.includes("apiKey")){
+    render_api("api-container", true);
+  } else if(window.location.href.includes("keylookup")){
+    render_api_lookup("api-container-id-lookup", true);
+  } else if(window.location.href.includes("keysearch")){
+    render_api_check("api-container-id-given", true);
+  }
 </script>
 <%- include("includes/footer.ejs") %>
