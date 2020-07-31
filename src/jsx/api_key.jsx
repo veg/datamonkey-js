@@ -31,7 +31,6 @@ var api_button = {
 class ApiKey extends React.Component {
   constructor(props) {
     super(props);
-
     this.handleSubscribe = this.handleSubscribe.bind(this);
     this.recaptchaLoaded = this.recaptchaLoaded.bind(this);
     this.verifyCallback = this.verifyCallback.bind(this);

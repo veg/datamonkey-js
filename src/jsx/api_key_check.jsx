@@ -72,17 +72,21 @@ class ApiKeyCheck extends React.Component {
               <h3>API Key Details</h3>
               <table
                 id="table"
-                class="table table-light table-bordered table-striped table-hover"
+                className="table table-light table-bordered table-striped table-hover"
               >
                 <tbody>
                   <tr>
-                    <td scope="row" class="font-weight-bold" style={text_align}>
+                    <td
+                      scope="row"
+                      className="font-weight-bold"
+                      style={text_align}
+                    >
                       {" "}
                       Key ID{" "}
                     </td>
                     <td
                       id="api_key_id"
-                      class="font-weight-normal"
+                      className="font-weight-normal"
                       style={text_align}
                     >
                       {" "}
@@ -90,12 +94,16 @@ class ApiKeyCheck extends React.Component {
                     </td>
                   </tr>
                   <tr>
-                    <td scope="row" class="font-weight-bold" style={text_align}>
+                    <td
+                      scope="row"
+                      className="font-weight-bold"
+                      style={text_align}
+                    >
                       Remaining Jobs{" "}
                     </td>
                     <td
                       id="api_key_remainig"
-                      class="font-weight-normal"
+                      className="font-weight-normal"
                       style={text_align}
                     >
                       {" "}
@@ -103,13 +111,17 @@ class ApiKeyCheck extends React.Component {
                     </td>
                   </tr>
                   <tr>
-                    <td scope="row" class="font-weight-bold" style={text_align}>
+                    <td
+                      scope="row"
+                      className="font-weight-bold"
+                      style={text_align}
+                    >
                       {" "}
                       Created{" "}
                     </td>
                     <td
                       id="api_key_create"
-                      class="font-weight-normal"
+                      className="font-weight-normal"
                       style={text_align}
                     >
                       {" "}
@@ -117,13 +129,17 @@ class ApiKeyCheck extends React.Component {
                     </td>
                   </tr>
                   <tr>
-                    <td scope="row" class="font-weight-bold" style={text_align}>
+                    <td
+                      scope="row"
+                      className="font-weight-bold"
+                      style={text_align}
+                    >
                       {" "}
                       Expires{" "}
                     </td>
                     <td
                       id="api_key_expire"
-                      class="font-weight-normal"
+                      className="font-weight-normal"
                       style={text_align}
                     >
                       {" "}
@@ -131,13 +147,17 @@ class ApiKeyCheck extends React.Component {
                     </td>
                   </tr>
                   <tr>
-                    <td scope="row" class="font-weight-bold" style={text_align}>
+                    <td
+                      scope="row"
+                      className="font-weight-bold"
+                      style={text_align}
+                    >
                       {" "}
                       Associated Jobs{" "}
                     </td>
                     <td
                       id="api_key_jobs"
-                      class="text-justify font-weight-normal"
+                      className="text-justify font-weight-normal"
                       style={text_align}
                     >
                       {" "}
