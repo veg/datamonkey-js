@@ -12,8 +12,7 @@ var redis = require("redis"),
     port: setup.redisPort,
   });
 
-var Schema = mongoose.Schema,
-  ObjectId = Schema.ObjectId;
+var Schema = mongoose.Schema;
 
 var AnalysisSchema = new Schema({
   msa: [Msa.MsaSchema],

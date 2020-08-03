@@ -1,8 +1,9 @@
 var mongoose = require("mongoose"),
-  extend = require("mongoose-schema-extend"),
   path = require("path"),
   logger = require("../../lib/logger"),
   helpers = require(__dirname + "/../../lib/helpers.js");
+
+require("mongoose-schema-extend");
 
 var AnalysisSchema = require(__dirname + "/analysis");
 

@@ -11,44 +11,34 @@ var mongoose = require("mongoose"),
 
 winston.level = setup.log_level || "info";
 
-var error_codes = {
-  INCORRECT_SPLIT: 0,
-  FAILED_ASSIGNMENT: 1
-};
-
-function notEmptyValidator(val) {
-  return val != null;
-}
-
-var Schema = mongoose.Schema,
-  ObjectId = Schema.ObjectId;
+var Schema = mongoose.Schema;
 
 var PartitionInfo = new Schema({
   _creator: {
     type: Schema.Types.ObjectId,
-    ref: "Msa"
+    ref: "Msa",
   },
   partition: Number,
   startcodon: Number,
   endcodon: Number,
   span: Number,
-  usertree: String
+  usertree: String,
 });
 
 var Sequences = new Schema({
   _creator: {
     type: Schema.Types.ObjectId,
-    ref: "Msa"
+    ref: "Msa",
   },
   seqindex: Number,
-  name: String
+  name: String,
 });
 
 var Msa = new Schema({
   datatype: {
     type: Number,
     default: 0,
-    require: true
+    require: true,
   },
   partition_info: [PartitionInfo],
   sequence_info: [Sequences],
@@ -66,20 +56,20 @@ var Msa = new Schema({
   original_filename: String,
   created: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
-Msa.virtual("genetic_code").get(function() {
+Msa.virtual("genetic_code").get(function () {
   return globals.genetic_code[this.gencodeid];
 });
 
-Msa.virtual("day_created_on").get(function() {
+Msa.virtual("day_created_on").get(function () {
   var time = moment(this.timestamp);
   return time.format("YYYY-MMM-DD");
 });
 
-Msa.virtual("time_created_on").get(function() {
+Msa.virtual("time_created_on").get(function () {
   var time = moment(this.timestamp);
   return time.format("HH:mm");
 });
@@ -87,23 +77,23 @@ Msa.virtual("time_created_on").get(function() {
 /**
  * Filename of document's file upload
  */
-Msa.virtual("filename").get(function() {
+Msa.virtual("filename").get(function () {
   return this._id;
 });
 
 /**
  * Complete file path for document's file upload
  */
-Msa.virtual("filepath").get(function() {
+Msa.virtual("filepath").get(function () {
   return __dirname + "/../../uploads/msa/" + this._id + ".fasta";
 });
 
-Msa.virtual("hyphy_friendly").get(function() {
+Msa.virtual("hyphy_friendly").get(function () {
   //Hyphy does not support arrays
   var hyphy_obj = {};
   var self = this;
 
-  Object.keys(this._doc).forEach(function(key) {
+  Object.keys(this._doc).forEach(function (key) {
     if (Array.isArray(self[key])) {
       hyphy_obj[key] = {};
       for (var i = 0; i < self[key].length; i++) {
@@ -121,22 +111,22 @@ Msa.virtual("hyphy_friendly").get(function() {
   return hyphy_obj;
 });
 
-Msa.statics.removeTreeFromFile = function(input_file_path, output_file_path) {
-  return new Promise(function(resolve, reject) {
-    fs.readFile(input_file_path, function(err, data) {
+Msa.statics.removeTreeFromFile = function (input_file_path, output_file_path) {
+  return new Promise(function (resolve, reject) {
+    fs.readFile(input_file_path, function (err, data) {
       if (err) reject(err);
       var adjusted = data.toString().replace(/(?:\r\n|\r|\n)/g, "\n"),
         begin_regex = /begin trees;/i,
         end_regex = /end;/i,
         file_lines = adjusted.split("\n"),
         begin_tree_index = file_lines
-          .map(function(line) {
+          .map(function (line) {
             return Boolean(line.match(begin_regex));
           })
           .indexOf(true);
       if (begin_tree_index > -1) {
         var end_tree_index = file_lines
-            .map(function(line) {
+            .map(function (line) {
               return Boolean(line.match(end_regex));
             })
             .indexOf(true, begin_tree_index),
@@ -148,11 +138,11 @@ Msa.statics.removeTreeFromFile = function(input_file_path, output_file_path) {
       }
 
       // should take care of FASTA
-      var to_write = _.reject(file_lines, function(line) {
+      var to_write = _.reject(file_lines, function (line) {
         return line.trim().startsWith("(");
       }).join("\n");
 
-      fs.writeFile(output_file_path, to_write, function(err) {
+      fs.writeFile(output_file_path, to_write, function (err) {
         if (err) reject(err);
         resolve();
       });
@@ -160,21 +150,21 @@ Msa.statics.removeTreeFromFile = function(input_file_path, output_file_path) {
   });
 };
 
-Msa.statics.deliverFasta = function(filepath) {
-  return new Promise(function(resolve, reject) {
-    fs.readFile(filepath, function(err, data) {
+Msa.statics.deliverFasta = function (filepath) {
+  return new Promise(function (resolve, reject) {
+    fs.readFile(filepath, function (err, data) {
       if (err) reject(err);
       if (data.slice(0, 1) == ">") resolve(data.toString());
       const converted_filepath = filepath.split(".")[0] + "-converted.fasta";
       const hyphy = spawn(globals.hyphy, [
-        __dirname + "/../../.hyphy/res/TemplateBatchFiles/ConvertDataFile.bf"
+        __dirname + "/../../.hyphy/res/TemplateBatchFiles/ConvertDataFile.bf",
       ]);
 
-      hyphy.on("exit", function(code) {
-        fs.readFile(converted_filepath, function(err, data) {
+      hyphy.on("exit", function (code) {
+        fs.readFile(converted_filepath, function (err, data) {
           if (err) reject(err);
           const fasta = data.toString();
-          fs.unlink(converted_filepath, function(err) {
+          fs.unlink(converted_filepath, function (err) {
             resolve(fasta);
           });
         });
@@ -190,11 +180,11 @@ Msa.statics.deliverFasta = function(filepath) {
 
 var MsaModel = mongoose.model("MsaModel", Msa);
 
-Msa.methods.AnalysisCount = function(cb) {
+Msa.methods.AnalysisCount = function (cb) {
   var type_counts = {};
   var c = 0;
 
-  var count_increment = function(err, analysis) {
+  var count_increment = function (err, analysis) {
     c += 1;
     if (analysis != null) {
       type_counts[analysis.type] = analysis.id || 0;
@@ -207,23 +197,23 @@ Msa.methods.AnalysisCount = function(cb) {
 
   //TODO: Change to get children
   for (var t in globals.types) {
-    Analysis = mongoose.model(t.capitalize());
+    let Analysis = mongoose.model(t.capitalize());
     //Get count of this analysis
     Analysis.findOne({
-      upload_id: this._id
+      upload_id: this._id,
     })
       .sort("-id")
       .exec(count_increment);
   }
 };
 
-Msa.methods.aminoAcidTranslation = function(cb, options) {
+Msa.methods.aminoAcidTranslation = function (cb, options) {
   var self = this;
 
   // Split data sequences out
-  var seq_array = seqio.parseFile(
+  seqio.parseFile(
     this.filepath,
-    function(err, seq_array) {
+    function (err, seq_array) {
       var translated_arr = seqio.translateSequenceArray(
         seq_array,
         self.gencodeid.toString()
@@ -235,7 +225,7 @@ Msa.methods.aminoAcidTranslation = function(cb, options) {
   );
 };
 
-Msa.methods.dataReader = function(file, datatype, cb) {
+Msa.methods.dataReader = function (file, datatype, cb) {
   // Skip the datareader batch file for fastq files.
   if (file.indexOf("fastq") != -1) {
     // TODO: Support FASTQ
@@ -271,16 +261,16 @@ Msa.methods.dataReader = function(file, datatype, cb) {
   );
 
   var hyphy = spawn(globals.hyphy, [
-    __dirname + "/../../lib/bfs/datareader.bf"
+    __dirname + "/../../lib/bfs/datareader.bf",
   ]);
 
   var result = "";
 
-  hyphy.stdout.on("data", function(data) {
+  hyphy.stdout.on("data", function (data) {
     result += data.toString();
   });
 
-  hyphy.stdout.on("close", function(code) {
+  hyphy.stdout.on("close", function (code) {
     try {
       results = JSON.parse(result);
     } catch (e) {
@@ -320,10 +310,10 @@ Msa.methods.dataReader = function(file, datatype, cb) {
  * Ensure that the file is in valid FASTA format
  * @param fn {String} path to file to be validated
  */
-Msa.statics.validateFasta = function(fn, cb, options) {
+Msa.statics.validateFasta = function (fn, cb, options) {
   seqio.parseFile(
     fn,
-    function(err, result) {
+    function (err, result) {
       if (err) {
         cb(err, result);
         return;
@@ -332,7 +322,7 @@ Msa.statics.validateFasta = function(fn, cb, options) {
       if (result.length <= 1) {
         cb(
           {
-            msg: "The FASTA file must have more than one sequence record"
+            msg: "The FASTA file must have more than one sequence record",
           },
           false
         );
@@ -342,14 +332,14 @@ Msa.statics.validateFasta = function(fn, cb, options) {
       // Check that all sequences are the same length
       if (options && !options["no-equal-length"]) {
         var reference_length = result[0].seq.length;
-        var all_the_same = result.every(function(d) {
+        var all_the_same = result.every(function (d) {
           return d.seq.length == reference_length;
         });
 
         if (!all_the_same) {
           cb(
             {
-              msg: "Sequence lengths do not all match"
+              msg: "Sequence lengths do not all match",
             },
             result
           );
@@ -363,14 +353,14 @@ Msa.statics.validateFasta = function(fn, cb, options) {
   );
 };
 
-Msa.statics.parseFile = function(fn, datatype, gencodeid, cb) {
+Msa.statics.parseFile = function (fn, datatype, gencodeid, cb) {
   var msa = new this();
   msa.datatype = datatype;
   msa.gencodeid = gencodeid;
 
   // convert all uploaded files to NEXUS
 
-  msa.dataReader(fn, datatype, function(err, result) {
+  msa.dataReader(fn, datatype, function (err, result) {
     if (err) {
       logger.error(err);
       cb(err, null);
@@ -395,8 +385,8 @@ Msa.statics.parseFile = function(fn, datatype, gencodeid, cb) {
 
     var Sequences = mongoose.model("Sequences", Sequences);
 
-    for (i in sequences) {
-      var sequences_i = new Sequences(sequences[i]);
+    for (let i in sequences) {
+      let sequences_i = new Sequences(sequences[i]);
       msa.sequence_info.push(sequences_i);
     }
 
@@ -404,7 +394,7 @@ Msa.statics.parseFile = function(fn, datatype, gencodeid, cb) {
     fpi = _.values(fpi);
 
     var PartitionInfo = mongoose.model("PartitionInfo", PartitionInfo);
-    var partition_info = _.map(fpi, partition_info => {
+    var partition_info = _.map(fpi, (partition_info) => {
       return new PartitionInfo(partition_info);
     });
 
@@ -417,7 +407,7 @@ exports = {
   MsaSchema: Msa,
   Msa: mongoose.model("Msa", Msa),
   PartitionInfo: mongoose.model("PartitionInfo", PartitionInfo),
-  Sequences: mongoose.model("Sequences", Sequences)
+  Sequences: mongoose.model("Sequences", Sequences),
 };
 
 module.exports = exports;
