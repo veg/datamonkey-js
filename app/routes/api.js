@@ -659,15 +659,15 @@ exports.keyInfo = function keyInfo(req, res) {
 };
 
 exports.renderApi = function (req, res) {
-  res.render("api.ejs");
+  res.render("api.ejs", { captchaKey: setup.api_recaptcha_public_key });
 };
 
 exports.renderApiKeyInfo = function (req, res) {
-  res.render("api.ejs");
+  res.render("api.ejs", { captchaKey: setup.api_recaptcha_public_key });
 };
 
 exports.renderApiKeyLookup = function (req, res) {
-  res.render("api.ejs");
+  res.render("api.ejs", { captchaKey: setup.api_recaptcha_public_key });
 };
 
 exports.apiSubmit = apiSubmit;

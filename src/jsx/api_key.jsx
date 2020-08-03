@@ -103,7 +103,7 @@ class ApiKey extends React.Component {
 
               <div style={api_cap_div} ref={(el) => (this.div = el)}>
                 <Recaptcha
-                  sitekey="6LclsawZAAAAAE8UAQK08flCbFFRcLQ_wZwU0DIn"
+                  sitekey={this.props.publicKey}
                   render="explicit"
                   onloadCallback={this.recaptchaLoaded}
                   verifyCallback={this.verifyCallback}
@@ -118,7 +118,11 @@ class ApiKey extends React.Component {
 }
 
 function render_api(element) {
-  ReactDOM.render(<ApiKey />, document.getElementById(element));
+  let publicKey = document.getElementById("api-container").dataset["captcha"];
+  ReactDOM.render(
+    <ApiKey publicKey={publicKey} />,
+    document.getElementById(element)
+  );
 }
 
 module.exports.ApiKey = ApiKey;

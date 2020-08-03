@@ -31,5 +31,6 @@ define('api_request_limit', 100);
 define('api_expires_in_sec', 1728000); //default 48 hours 172800
 define('api_base_url', 'dev.datamonkey.org');
 define('api_recapcha_pri', "YOUR SECRET"); //Ensure you are using the right private key!
+define('api_recaptcha_public_key', 'YOUR PUBLIC'); 
 define('api_dev_mode', false); //True will ignore recapcha
 define('api_max_file_size', 625000); //Max file size for incoming requests in bytes. default: 625000 (5mb)
