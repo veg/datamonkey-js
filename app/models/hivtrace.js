@@ -1,34 +1,17 @@
-var setup = require("../../config/setup"),
-  attributes = require("../../config/attributes.json");
-path = require("path");
+const setup = require("../../config/setup"),
+  attributes = require("../../config/attributes.json"),
+  path = require("path");
 
-var mongoose = require("mongoose"),
+const mongoose = require("mongoose"),
   moment = require("moment"),
-  d3 = require("d3"),
-  globals = require("../../config/globals.js"),
   fs = require("fs"),
-  readline = require("readline"),
   spawn = require("child_process").spawn,
   _ = require("underscore"),
   hpcsocket = require(path.join(__dirname, "/../../lib/hpcsocket.js")),
   mailer = require(path.join(__dirname, "/../../lib/mailer.js")),
   winston = require("winston");
 
-var ident = {
-  SUBTYPE: "subtype",
-  DATE: "date",
-  ID: "id",
-  COUNTRY: "country",
-  UNKNOWN: "unknown"
-};
-
-var error_codes = {
-  INCORRECT_SPLIT: 0,
-  FAILED_ASSIGNMENT: 1
-};
-
-var Schema = mongoose.Schema,
-  ObjectId = Schema.ObjectId;
+const Schema = mongoose.Schema;
 
 function notEmptyValidator(val) {
   return val !== null;
@@ -47,27 +30,25 @@ var SequenceAttribute = new Schema({
   calculated: {
     type: String,
     require: false,
-    enum: _.map(attributes.types, function(value) {
+    enum: _.map(attributes.types, function (value) {
       return value;
-    })
+    }),
   },
   calculated_proportion: Number,
   category: {
     type: String,
     require: true,
-    enum: ["categorical", "individual", "temporal"]
+    enum: ["categorical", "individual", "temporal"],
   },
   annotation: {
     type: String,
-    require: true
+    require: true,
   },
   unique_values: Number,
   value_examples: Array,
   failed_examples: Array,
-  failed_count: 0
+  failed_count: 0,
 });
-
-var AttributeModel = mongoose.model("AttributeModel", SequenceAttribute);
 
 var HivTrace = new Schema({
   reference: String,
@@ -76,14 +57,13 @@ var HivTrace = new Schema({
   delimiter: String,
   data_id: Array,
   attributes: [SequenceAttribute],
-  patient_attributes: Object,
   distance_threshold: {
     type: Number,
     require: true,
     min: 0,
     max: 0.02,
     default: 0.015,
-    validate: [notEmptyValidator, "Distance Threshold is empty"]
+    validate: [notEmptyValidator, "Distance Threshold is empty"],
   },
   min_overlap: {
     type: Number,
@@ -91,39 +71,39 @@ var HivTrace = new Schema({
     min: 50,
     max: 5000,
     default: 500,
-    validate: [notEmptyValidator, "Minimum Overlap is empty"]
+    validate: [notEmptyValidator, "Minimum Overlap is empty"],
   },
   fraction: {
     type: Number,
     require: true,
     min: 0,
     max: 1,
-    default: 0.05
+    default: 0.05,
   },
   ambiguity_handling: {
     type: String,
     require: true,
-    validate: [notEmptyValidator, "Ambiguity Handling field is empty"]
+    validate: [notEmptyValidator, "Ambiguity Handling field is empty"],
   },
   sequence_length: Number,
   job_started: { type: Boolean, default: false },
   status_stack: Array,
   status: {
-    type: String
+    type: String,
   },
   prealigned: Boolean,
   lanl_compare: Boolean,
   filter_edges: {
     type: String,
-    enum: ["no", "report", "remove"]
+    enum: ["no", "report", "remove"],
   },
   strip_drams: {
     type: String,
-    enum: ["no", "wheeler", "lewis"]
+    enum: ["no", "wheeler", "lewis"],
   },
   reference_strip: {
     type: String,
-    enum: ["no", "report", "remove"]
+    enum: ["no", "report", "remove"],
   },
   patient_attributes: Object,
   torque_id: String,
@@ -142,8 +122,8 @@ var HivTrace = new Schema({
   // if not empty, then combine the ID (index 0) with the date (index 1)
   created: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
 /**
@@ -151,18 +131,18 @@ var HivTrace = new Schema({
  * a FASTA file
  */
 
-HivTrace.virtual("valid_statuses").get(function() {
+HivTrace.virtual("valid_statuses").get(function () {
   return [
     "In Queue",
     "Aligning",
     "BAM to FASTA conversion",
     "Computing pairwise TN93 distances",
     "Inferring, filtering, and analyzing molecular transmission network",
-    "Completed"
+    "Completed",
   ];
 });
 
-HivTrace.virtual("valid_lanl_statuses").get(function() {
+HivTrace.virtual("valid_lanl_statuses").get(function () {
   return [
     "In Queue",
     "Aligning",
@@ -171,11 +151,11 @@ HivTrace.virtual("valid_lanl_statuses").get(function() {
     "Inferring, filtering, and analyzing molecular transmission network",
     "Computing pairwise TN93 distances against a public database",
     "Inferring connections to sequences in a public database",
-    "Completed"
+    "Completed",
   ];
 });
 
-HivTrace.virtual("off_kilter_statuses").get(function() {
+HivTrace.virtual("off_kilter_statuses").get(function () {
   return [
     "In Queue",
     "Aligning",
@@ -184,67 +164,67 @@ HivTrace.virtual("off_kilter_statuses").get(function() {
     "Inferring, filtering, and analyzing molecular transmission network",
     "Computing pairwise TN93 distances against a public database",
     "Inferring connections to sequences in a public database",
-    "Completed"
+    "Completed",
   ];
 });
 
 /**
  * Filename of document's file upload
  */
-HivTrace.virtual("filename").get(function() {
+HivTrace.virtual("filename").get(function () {
   return this._id;
 });
 
 /**
  * Complete file path for document's file upload
  */
-HivTrace.virtual("filepath").get(function() {
+HivTrace.virtual("filepath").get(function () {
   return __dirname + "/../../uploads/hivtrace/" + this._id;
 });
 
-HivTrace.virtual("analysistype").get(function() {
+HivTrace.virtual("analysistype").get(function () {
   return "hivtrace";
 });
 
 /**
  * file path for aligned document
  */
-HivTrace.virtual("aligned_fasta_fn").get(function() {
+HivTrace.virtual("aligned_fasta_fn").get(function () {
   return __dirname + "/../../uploads/hivtrace/" + this._id + ".aligned.fa";
 });
 
 /**
  * file path for trace results
  */
-HivTrace.virtual("trace_results").get(function() {
+HivTrace.virtual("trace_results").get(function () {
   return __dirname + "/../../uploads/hivtrace/" + this._id + ".trace.json";
 });
 
 /**
  * file path for trace results
  */
-HivTrace.virtual("rel_trace_results").get(function() {
+HivTrace.virtual("rel_trace_results").get(function () {
   return this._id + ".trace.json";
 });
 
 /**
  * relative file path for aligned document
  */
-HivTrace.virtual("rel_aligned_fasta_fn").get(function() {
+HivTrace.virtual("rel_aligned_fasta_fn").get(function () {
   return this._id + ".aligned.fa";
 });
 
 /**
  * TODO: Change storage to mongodb instead of file
  */
-HivTrace.virtual("input_sequences").get(function() {
+HivTrace.virtual("input_sequences").get(function () {
   return "/uploads/hivtrace/" + this._id;
 });
 
 /**
  * Index of status
  */
-HivTrace.virtual("status_index").get(function() {
+HivTrace.virtual("status_index").get(function () {
   if (this.status !== undefined) {
     return this.status_stack.indexOf(this.status);
   } else {
@@ -255,25 +235,25 @@ HivTrace.virtual("status_index").get(function() {
 /**
  * Percentage of job complete
  */
-HivTrace.virtual("percentage_complete").get(function() {
+HivTrace.virtual("percentage_complete").get(function () {
   return ((this.status_index + 1) / this.status_stack.length) * 100 + "%";
 });
 
 /**
  * Unix timestamp
  */
-HivTrace.virtual("timestamp").get(function() {
+HivTrace.virtual("timestamp").get(function () {
   return moment(this.created).unix();
 });
 
 /**
  * URL
  */
-HivTrace.virtual("url").get(function() {
+HivTrace.virtual("url").get(function () {
   return "http://" + setup.host + "/hivtrace/" + this._id;
 });
 
-HivTrace.methods.saveAttributes = function(cb) {
+HivTrace.methods.saveAttributes = function (cb) {
   var self = this;
 
   // Once annotations are configured, save the mapped attributes so that we
@@ -283,11 +263,11 @@ HivTrace.methods.saveAttributes = function(cb) {
     headers = self.headers,
     attributes = self.attributes;
 
-  var annotations = _.map(attributes, function(d) {
+  var annotations = _.map(attributes, function (d) {
     return d.annotation;
   });
 
-  var patient_attributes = _.map(headers, function(d) {
+  var patient_attributes = _.map(headers, function (d) {
     var attrs = d.split(delimiter);
     var key_val = _.object(annotations, attrs);
     key_val["header"] = d;
@@ -300,38 +280,40 @@ HivTrace.methods.saveAttributes = function(cb) {
   cb(null, self);
 };
 
-HivTrace.methods.addAttributesToResults = function(cb) {
+HivTrace.methods.addAttributesToResults = function (cb) {
   var self = this;
 
   var attributes = self.patient_attributes;
-  var attr_keys = _.keys(attributes[0]);
 
   var category_map = {
     categorical: "String",
     individual: "String",
-    temporal: "Date"
+    temporal: "Date",
   };
 
   // transform attributes to be a dictionary
   var attrs_by_id = _.object(
-    _.map(attributes, function(item) {
+    _.map(attributes, function (item) {
       return [item.header, item];
     })
   );
 
   // return key, instance, and label
   patient_schema = _.object(
-    _.map(self.attributes, function(d) {
+    _.map(self.attributes, function (d) {
       return d.annotation;
     }),
-    _.map(self.attributes, function(val, key) {
-      new_dict = { type: category_map[val.category], label: val.annotation };
+    _.map(self.attributes, function (val, key) {
+      let new_dict = {
+        type: category_map[val.category],
+        label: val.annotation,
+      };
       return new_dict;
     })
   );
 
   // read from trace results
-  fs.readFile(self.trace_results, function(err, results) {
+  fs.readFile(self.trace_results, function (err, results) {
     //fs.readFile(path.resolve(__dirname + "../../../results/jobs/" + this._id + "-results" + ".json"), function(err, results) {
     if (err) {
       cb(err, null);
@@ -339,25 +321,22 @@ HivTrace.methods.addAttributesToResults = function(cb) {
     }
 
     try {
-      json_results = JSON.parse(results);
+      let json_results = JSON.parse(results);
 
       json_results["trace_results"][
         "patient_attribute_schema"
       ] = patient_schema;
 
       // annotate each node with the attributes
-      var nodes = _.map(json_results["trace_results"].Nodes, function(node) {
+      _.each(json_results["trace_results"].Nodes, function (node) {
         return (node["patient_attributes"] = attrs_by_id[node["id"]]);
       });
 
       // annotate each singleton with the attributes
       if (json_results["trace_results"].Singletons) {
-        var singletons = _.map(
-          json_results["trace_results"].Singletons,
-          function(node) {
-            return (node["patient_attributes"] = attrs_by_id[node["id"]]);
-          }
-        );
+        _.each(json_results["trace_results"].Singletons, function (node) {
+          return (node["patient_attributes"] = attrs_by_id[node["id"]]);
+        });
       }
 
       cb(err, json_results);
@@ -368,11 +347,11 @@ HivTrace.methods.addAttributesToResults = function(cb) {
 };
 
 // execute function on complete
-HivTrace.methods.onComplete = function(data, publisher, channel) {
+HivTrace.methods.onComplete = function (data, publisher, channel) {
   var self = this;
 
   var redis_packet = {
-    type: "completed"
+    type: "completed",
   };
 
   // Write to database
@@ -381,7 +360,7 @@ HivTrace.methods.onComplete = function(data, publisher, channel) {
   if (data) {
     // save results to file
     //self.results = data.results;
-    fs.writeFile(self.trace_results, JSON.stringify(data.results), function(
+    fs.writeFile(self.trace_results, JSON.stringify(data.results), function (
       err
     ) {
       if (err) throw err;
@@ -392,7 +371,7 @@ HivTrace.methods.onComplete = function(data, publisher, channel) {
       }
 
       //Update the status for the analysis
-      self.save(function(err, result) {
+      self.save(function (err, result) {
         if (err) throw err;
         publisher.publish(channel, JSON.stringify(redis_packet));
       });
@@ -407,7 +386,7 @@ HivTrace.methods.onComplete = function(data, publisher, channel) {
  * Validators to be passed to an html template as data attributes for
  * form validation
  */
-HivTrace.statics.validators = function() {
+HivTrace.statics.validators = function () {
   var validators = [];
   validators.min_overlap = HivTrace.paths.min_overlap.options;
   validators.distance_threshold = HivTrace.paths.distance_threshold.options;
@@ -419,7 +398,7 @@ HivTrace.statics.validators = function() {
  * Validators to be passed to an html template as data attributes for
  * form validation
  */
-HivTrace.statics.lanl_validators = function() {
+HivTrace.statics.lanl_validators = function () {
   var validators = [];
   validators.min_overlap = HivTrace.paths.lanl_min_overlap.options;
   validators.distance_threshold =
@@ -427,7 +406,7 @@ HivTrace.statics.lanl_validators = function() {
   return validators;
 };
 
-HivTrace.statics.submitJob = function(result, cb) {
+HivTrace.statics.submitJob = function (result, cb) {
   winston.info(
     "submitting " + result.analysistype + " : " + result._id + " to cluster"
   );
@@ -437,21 +416,21 @@ HivTrace.statics.submitJob = function(result, cb) {
       msa: result.msa,
       analysis: result,
       status_stack: result.status_stack,
-      type: result.analysistype
+      type: result.analysistype,
     },
     "spawn",
     cb
   );
 };
 
-HivTrace.statics.usageStatistics = function(cb) {
+HivTrace.statics.usageStatistics = function (cb) {
   var self = this;
   // Aggregation is done client-side
   self
     .find({ status: "completed" }, { created: 1 })
     .sort({ created: -1 })
     .limit(1)
-    .exec(function(err1, items1) {
+    .exec(function (err1, items1) {
       if (err1 || items1.length == 0) {
         cb(err1, null);
         return;
@@ -460,11 +439,11 @@ HivTrace.statics.usageStatistics = function(cb) {
         .find(
           {
             status: "completed",
-            created: { $gt: moment(items1[0].created).subtract(1, "years") }
+            created: { $gt: moment(items1[0].created).subtract(1, "years") },
           },
           { _id: 0, created: 1 }
         )
-        .exec(function(err, items) {
+        .exec(function (err, items) {
           cb(err, items);
         });
     });

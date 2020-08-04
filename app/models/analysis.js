@@ -1,6 +1,7 @@
 var mongoose = require("mongoose"),
   setup = require("./../../config/setup"),
   moment = require("moment"),
+  path = require("path"),
   _ = require("underscore"),
   winston = require("winston"),
   hpcsocket = require(__dirname + "/../../lib/hpcsocket.js"),
@@ -12,8 +13,7 @@ var redis = require("redis"),
     port: setup.redisPort,
   });
 
-var Schema = mongoose.Schema,
-  ObjectId = Schema.ObjectId;
+var Schema = mongoose.Schema;
 
 var AnalysisSchema = new Schema({
   msa: [Msa.MsaSchema],

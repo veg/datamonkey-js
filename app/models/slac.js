@@ -1,7 +1,8 @@
 const mongoose = require("mongoose"),
-  extend = require("mongoose-schema-extend"),
   path = require("path"),
   helpers = require("../../lib/helpers");
+
+require("mongoose-schema-extend");
 
 const AnalysisSchema = require(__dirname + "/analysis");
 

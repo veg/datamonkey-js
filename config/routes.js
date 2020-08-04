@@ -1,9 +1,7 @@
-var path = require("path");
-var _ = require("underscore");
+const path = require("path"),
+  _ = require("underscore");
 
-const api = require("../app/routes/api.js");
-
-var mongoose = require("mongoose"),
+const mongoose = require("mongoose"),
   Msa = mongoose.model("Msa"),
   Sequences = mongoose.model("Sequences"),
   PartitionInfo = mongoose.model("PartitionInfo"),
@@ -22,9 +20,9 @@ var mongoose = require("mongoose"),
   SLAC = mongoose.model("SLAC");
 
 module.exports = function (app) {
-  var analysis = require("../app/routes/analysis.js");
+  const analysis = require("../app/routes/analysis.js");
   // HOME PAGE
-  home = require(path.join(__dirname, "../app/routes/home"));
+  const home = require(path.join(__dirname, "../app/routes/home"));
   app.get("/", home.homePage);
   app.get("/help", home.help);
   app.get("/jobqueue", home.jobQueuePage);
@@ -41,7 +39,7 @@ module.exports = function (app) {
   app.get("/analysistree", home.analysis_tree);
 
   // aBSREL ROUTES
-  absrel = require(path.join(__dirname, "../app/routes/absrel"));
+  const absrel = require(path.join(__dirname, "../app/routes/absrel"));
   app.get("/absrel", absrel.form);
   app.post("/absrel", absrel.uploadFile);
   app.get("/absrel/:id/original_file/:name", absrel.getMSAFile);
@@ -57,7 +55,7 @@ module.exports = function (app) {
   absrel.resubscribePendingJobs();
 
   // BUSTED ROUTES
-  busted = require(path.join(__dirname, "../app/routes/busted"));
+  const busted = require(path.join(__dirname, "../app/routes/busted"));
   app.get("/busted", busted.createForm);
   app.post("/busted", busted.uploadFile);
   app.get("/busted/:id/original_file/:name", busted.getMSAFile);
@@ -73,7 +71,10 @@ module.exports = function (app) {
   busted.resubscribePendingJobs();
 
   // Contrast-FEL ROUTES
-  contrast_fel = require(path.join(__dirname, "../app/routes/contrast-fel"));
+  let contrast_fel = require(path.join(
+    __dirname,
+    "../app/routes/contrast-fel"
+  ));
   app.get("/contrast_fel", contrast_fel.form);
   app.post("/contrast_fel", contrast_fel.uploadFile);
   app.get("/contrast_fel/usage", contrast_fel.getUsage);
@@ -92,7 +93,7 @@ module.exports = function (app) {
   contrast_fel.resubscribePendingJobs();
 
   // FADE ROUTES
-  fade = require(path.join(__dirname, "../app/routes/fade"));
+  const fade = require(path.join(__dirname, "../app/routes/fade"));
   app.get("/fade", fade.form);
   app.post("/fade", fade.invoke);
   app.get("/fade/usage", fade.getUsage);
@@ -106,7 +107,7 @@ module.exports = function (app) {
   fade.resubscribePendingJobs();
 
   // FEL ROUTES
-  fel = require(path.join(__dirname, "../app/routes/fel"));
+  const fel = require(path.join(__dirname, "../app/routes/fel"));
   app.get("/fel", fel.form);
   app.post("/fel", fel.uploadFile);
   app.get("/fel/usage", fel.getUsage);
@@ -122,7 +123,7 @@ module.exports = function (app) {
   fel.resubscribePendingJobs();
 
   // FLEA ROUTES
-  flea = require(path.join(__dirname, "../app/routes/flea"));
+  const flea = require(path.join(__dirname, "../app/routes/flea"));
   app.get("/flea", flea.form);
   app.post("/flea", flea.invoke);
   app.get("/flea/:id", flea.getPage);
@@ -133,7 +134,7 @@ module.exports = function (app) {
   app.get("/flea/api/zips/:id.zip", flea.getSessionZip);
 
   // FUBAR ROUTES
-  fubar = require(path.join(__dirname, "../app/routes/fubar"));
+  const fubar = require(path.join(__dirname, "../app/routes/fubar"));
   app.get("/fubar", fubar.form);
   app.post("/fubar", fubar.invoke);
   app.get("/fubar/usage", fubar.getUsage);
@@ -147,7 +148,7 @@ module.exports = function (app) {
   fubar.resubscribePendingJobs();
 
   // GARD ROUTES
-  gard = require(path.join(__dirname, "../app/routes/gard"));
+  const gard = require(path.join(__dirname, "../app/routes/gard"));
   app.get("/gard", gard.form);
   app.post("/gard", gard.invoke);
   app.get("/gard/usage", gard.getUsage);
@@ -162,7 +163,7 @@ module.exports = function (app) {
   gard.resubscribePendingJobs();
 
   // HIV-TRACE ROUTES
-  hivtrace = require(path.join(__dirname, "../app/routes/hivtrace"));
+  const hivtrace = require(path.join(__dirname, "../app/routes/hivtrace"));
   app.get("/hivtrace", hivtrace.clusterForm);
   app.get("/hivtrace/usage", hivtrace.getUsage);
   app.post("/hivtrace/:id/uploadfile", hivtrace.uploadFile);
@@ -178,7 +179,7 @@ module.exports = function (app) {
   app.get("/hivtrace/:id/aligned.fasta", hivtrace.aligned_fasta);
 
   // MULTIHIT ROUTES
-  multihit = require(path.join(__dirname, "../app/routes/multihit"));
+  const multihit = require(path.join(__dirname, "../app/routes/multihit"));
   app.get("/multihit", multihit.form);
   app.post("/multihit", multihit.invoke);
   app.get("/multihit/usage", multihit.getUsage);
@@ -192,7 +193,7 @@ module.exports = function (app) {
   multihit.resubscribePendingJobs();
 
   // MEME ROUTES
-  meme = require(path.join(__dirname, "../app/routes/meme"));
+  const meme = require(path.join(__dirname, "../app/routes/meme"));
   app.get("/meme", meme.form);
   app.post("/meme", meme.invoke);
   app.get("/meme/usage", meme.getUsage);
@@ -217,7 +218,7 @@ module.exports = function (app) {
   //prime.resubscribePendingJobs();
 
   // RELAX ROUTES
-  relax = require(path.join(__dirname, "../app/routes/relax"));
+  const relax = require(path.join(__dirname, "../app/routes/relax"));
   app.get("/relax", relax.createForm);
   app.get("/relax/usage", relax.getUsage);
   app.post("/relax/uploadfile", relax.uploadFile);
@@ -235,7 +236,7 @@ module.exports = function (app) {
   relax.resubscribePendingJobs();
 
   // SLAC ROUTES
-  slac = require(path.join(__dirname, "../app/routes/slac"));
+  const slac = require(path.join(__dirname, "../app/routes/slac"));
   app.get("/slac", slac.form);
   app.post("/slac", slac.invoke);
   app.get("/slac/usage", slac.getUsage);
@@ -249,7 +250,7 @@ module.exports = function (app) {
   slac.resubscribePendingJobs();
 
   // BGM ROUTES
-  bgm = require(path.join(__dirname, "../app/routes/bgm"));
+  const bgm = require(path.join(__dirname, "../app/routes/bgm"));
   app.get("/bgm", bgm.form);
   app.post("/bgm", bgm.invoke);
   app.get("/bgm/usage", bgm.getUsage);
@@ -262,14 +263,14 @@ module.exports = function (app) {
   bgm.resubscribePendingJobs();
 
   // API ROUTES
-  app.post("/api/v1/submit", api.checkAPIKey, api.apiSubmit);
-  app.get("/api/v1/status", api.apiStatus);
 
   // API KEY ROUTES
-  api_verify = require(path.join(__dirname, "../app/routes/api"));
-  app.get("/apikey", api_verify.renderApi);
+  const api = require(path.join(__dirname, "../app/routes/api"));
+  app.post("/api/v1/submit", api.checkAPIKey, api.apiSubmit);
+  app.get("/api/v1/status", api.apiStatus);
+  app.get("/apikey", api.renderApi);
   app.post("/api/v1/issueKey", api.checkCapcha, api.issueKey);
-  app.get("/keylookup", api_verify.renderApiKeyLookup); //Ask for ID here
-  app.get("/keysearch/:id", api_verify.renderApiKeyInfo); //Will be used as redirection after key search
-  app.post("/api/v1/keyInfo", api_verify.keyInfo);
+  app.get("/keylookup", api.renderApiKeyLookup); //Ask for ID here
+  app.get("/keysearch/:id", api.renderApiKeyInfo); //Will be used as redirection after key search
+  app.post("/api/v1/keyInfo", api.keyInfo);
 };
