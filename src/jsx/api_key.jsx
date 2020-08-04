@@ -53,7 +53,7 @@ class ApiKey extends React.Component {
 
   handleSubscribe() {
     if (this.state.isVerified) {
-      fetch("http://dev.datamonkey.org/api/v1/issueKey", {
+      fetch("/api/v1/issueKey", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ cap: grecaptcha.getResponse() }),

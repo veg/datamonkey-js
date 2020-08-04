@@ -78,25 +78,25 @@ FEL.statics.spawn = function (fn, options, callback) {
 
   Msa.parseFile(fn, datatype, gencodeid, (err, msa) => {
     if (err) {
-      res.json(500, { error: err });
+      callback(err, null);
       return;
     }
 
     // Check if msa exceeds limitations
     if (msa.sites > fel.max_sites) {
-      var error =
+      let error =
         "Site limit exceeded! Sites must be less than " + fel.max_sites;
       logger.error(error);
-      res.json(500, { error: error });
+      callback(error, null);
       return;
     }
 
     if (msa.sequences > fel.max_sequences) {
-      var error =
+      const error =
         "Sequence limit exceeded! Sequences must be less than " +
         fel.max_sequences;
       logger.error(error);
-      res.json(500, { error: error });
+      callback(error, null);
       return;
     }
 

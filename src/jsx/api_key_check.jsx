@@ -37,7 +37,7 @@ class ApiKeyCheck extends React.Component {
       api_key: api_key_id,
     });
 
-    fetch("http://dev.datamonkey.org/api/v1/keyinfo", {
+    fetch("/api/v1/keyinfo", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ api_key: api_key_id }),

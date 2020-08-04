@@ -15,6 +15,7 @@ const mongoose = require("mongoose"),
 
 const shortid = require("shortid"),
   os = require("os"),
+  path = require("path"),
   request = require("request"),
   setup = require("./../../config/setup"),
   logger = require("../../lib/logger");

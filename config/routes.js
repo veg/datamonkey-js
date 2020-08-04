@@ -263,15 +263,14 @@ module.exports = function (app) {
   bgm.resubscribePendingJobs();
 
   // API ROUTES
-  const api = require("../app/routes/api.js");
-  app.post("/api/v1/submit", api.checkAPIKey, api.apiSubmit);
-  app.get("/api/v1/status", api.apiStatus);
 
   // API KEY ROUTES
-  const api_verify = require(path.join(__dirname, "../app/routes/api"));
-  app.get("/apikey", api_verify.renderApi);
+  const api = require(path.join(__dirname, "../app/routes/api"));
+  app.post("/api/v1/submit", api.checkAPIKey, api.apiSubmit);
+  app.get("/api/v1/status", api.apiStatus);
+  app.get("/apikey", api.renderApi);
   app.post("/api/v1/issueKey", api.checkCapcha, api.issueKey);
-  app.get("/keylookup", api_verify.renderApiKeyLookup); //Ask for ID here
-  app.get("/keysearch/:id", api_verify.renderApiKeyInfo); //Will be used as redirection after key search
-  app.post("/api/v1/keyInfo", api_verify.keyInfo);
+  app.get("/keylookup", api.renderApiKeyLookup); //Ask for ID here
+  app.get("/keysearch/:id", api.renderApiKeyInfo); //Will be used as redirection after key search
+  app.post("/api/v1/keyInfo", api.keyInfo);
 };
