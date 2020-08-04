@@ -20,7 +20,7 @@
     "url": "git://github.com/veg/datamonkey-js.git"
   },
   "dependencies": {
-    "@fortawesome/free-brands-svg-icons": "5.13.0",
+    "@fortawesome/free-brands-svg-icons": "5.14.0",
     "@fortawesome/free-regular-svg-icons": "5.13.0",
     "@fortawesome/free-solid-svg-icons": "5.13.0",
     "alignment.js": "^0.3.0",
@@ -65,7 +65,6 @@
     "react-range": "^1.5.3",
     "react-recaptcha": "^2.3.10",
     "react-router-dom": "^5.1.2",
-    "react-router-hash-link": "^1.2.2",
     "react-scrollchor": "^6.0.0",
     "redis": "^2.0.0",
     "save-svg-as-png": "^1.4.17",
@@ -96,7 +95,7 @@
     "bootstrap-webpack": "^0.0.6",
     "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.5.3",
-    "eslint": "^4.0.0",
+    "eslint": "^7.5.0",
     "eslint-loader": "^4.0.2",
     "eslint-plugin-react": "^7.4.0",
     "exports-loader": "^0.7.0",

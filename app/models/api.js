@@ -1,10 +1,10 @@
-var mongoose = require("mongoose"), //Used for schema
+const mongoose = require("mongoose"), //Used for schema
   setup = require("./../../config/setup.js"); //Used for max per api key
 
-var Schema = mongoose.Schema,
+const Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
-var API = new Schema({
+const API = new Schema({
   id: ObjectId,
   created: { type: Date, default: Date.now },
   expires: {

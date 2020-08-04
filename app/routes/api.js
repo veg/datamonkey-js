@@ -15,6 +15,7 @@ const mongoose = require("mongoose"),
 
 const shortid = require("shortid"),
   os = require("os"),
+  path = require("path"),
   request = require("request"),
   setup = require("./../../config/setup"),
   logger = require("../../lib/logger");
@@ -567,8 +568,6 @@ exports.checkAPIKey = function checkAPIKey(req, res, next) {
       } else {
         info.iterate_job_count;
         info.save();
-        //api.associated_job_ids.push("new job's ID"); <- This will most likely need to go into submit call.
-        //return remaining jobs with reply from API submit
         next();
         return;
       }
@@ -661,15 +660,15 @@ exports.keyInfo = function keyInfo(req, res) {
 };
 
 exports.renderApi = function (req, res) {
-  res.render("api.ejs");
+  res.render("api.ejs", { captchaKey: setup.api_recaptcha_public_key });
 };
 
 exports.renderApiKeyInfo = function (req, res) {
-  res.render("api.ejs");
+  res.render("api.ejs", { captchaKey: setup.api_recaptcha_public_key });
 };
 
 exports.renderApiKeyLookup = function (req, res) {
-  res.render("api.ejs");
+  res.render("api.ejs", { captchaKey: setup.api_recaptcha_public_key });
 };
 
 exports.apiSubmit = apiSubmit;
