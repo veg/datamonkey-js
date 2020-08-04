@@ -1,5 +1,4 @@
 var React = require("react"),
-  Router = "react-router",
   url = require("url"),
   ReactDOM = require("react-dom");
 
