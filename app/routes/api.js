@@ -19,7 +19,7 @@ const shortid = require("shortid"),
   request = require("request"),
   setup = require("./../../config/setup"),
   _ = require("underscore"),
-logger = require("../../lib/logger");
+  logger = require("../../lib/logger");
 
 /*
  * Submit a job via API
