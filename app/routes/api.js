@@ -99,7 +99,17 @@ function apiSubmit(req, res) {
 
     logger.info("File Saved to " + fullFileName);
 
-    switch (postdata.method.toUpperCase()) {
+    var switch_method = "";
+    try {
+      switch_method = postdata.method.toUpperCase();
+    } catch (err) {
+      res.json(400, {
+        error: "Method is null, undefined, or not in correct format",
+      });
+      return;
+    }
+
+    switch (switch_method) {
       case "FEL": {
         /* if FEL */
         /* User must provide branch selection */
