@@ -83,7 +83,7 @@ ContrastFEL.statics.spawn = function (fn, options, callback) {
     }
 
     // Check if msa exceeds limitations
-    if (msa.sites > fel.max_sites) {
+    if (msa.sites > contrast_fel.max_sites) {
       var error =
         "Site limit exceeded! Sites must be less than " +
         contrast_fel.max_sites;
@@ -107,7 +107,7 @@ ContrastFEL.statics.spawn = function (fn, options, callback) {
 
     contrast_fel.save((err, contrast_fel_result) => {
       if (err) {
-        logger.error("fel save failed");
+        logger.error("constrast fel save failed");
         callback(err, null);
         return;
       }
