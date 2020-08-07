@@ -18,7 +18,7 @@ const shortid = require("shortid"),
   path = require("path"),
   request = require("request"),
   setup = require("./../../config/setup"),
-  _ = require("underscore");
+  _ = require("underscore"),
 logger = require("../../lib/logger");
 
 /*
