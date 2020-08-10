@@ -1,6 +1,6 @@
 {
   "name": "datamonkey.js",
-  "version": "1.6.2",
+  "version": "1.7.0",
   "description": "A free public server for comparative analysis of sequence alignments using state-of-the-art statistical models.",
   "private": true,
   "author": {
@@ -20,9 +20,9 @@
     "url": "git://github.com/veg/datamonkey-js.git"
   },
   "dependencies": {
-    "@fortawesome/free-brands-svg-icons": "5.13.0",
-    "@fortawesome/free-regular-svg-icons": "5.13.0",
-    "@fortawesome/free-solid-svg-icons": "5.13.0",
+    "@fortawesome/free-brands-svg-icons": "5.14.0",
+    "@fortawesome/free-regular-svg-icons": "5.14.0",
+    "@fortawesome/free-solid-svg-icons": "5.14.0",
     "alignment.js": "^0.3.0",
     "async": "^0.1.0",
     "blueimp-file-upload": "^9.19.1",
@@ -35,7 +35,7 @@
     "express-busboy": "^2.4.4",
     "express-validator": "^2.21.0",
     "hivtrace-viz": "^0.0.14",
-    "hyphy-vision": "2.8.6",
+    "hyphy-vision": "2.8.8",
     "jade": "^1.0.0",
     "jquery-file-upload": "^4.0.5",
     "jquery-file-upload-middleware": "^0.1.8",
@@ -63,11 +63,12 @@
     "react-markdown": "^4.3.1",
     "react-phylotree": "0.4.1",
     "react-range": "^1.5.3",
+    "react-recaptcha": "^2.3.10",
     "react-router-dom": "^5.1.2",
-    "react-router-hash-link": "^1.2.2",
     "react-scrollchor": "^6.0.0",
     "redis": "^2.0.0",
     "save-svg-as-png": "^1.4.17",
+    "shortid": "^2.2.15",
     "socket.io": "1.4.x",
     "socket.io-client": "1.4.x",
     "socket.io-stream": "0.6.x",
@@ -94,7 +95,7 @@
     "bootstrap-webpack": "^0.0.6",
     "copy-webpack-plugin": "^5.1.1",
     "css-loader": "^3.5.3",
-    "eslint": "^4.0.0",
+    "eslint": "^7.5.0",
     "eslint-loader": "^4.0.2",
     "eslint-plugin-react": "^7.4.0",
     "exports-loader": "^0.7.0",
@@ -119,7 +120,7 @@
     "style-loader": "^1.2.0",
     "url-loader": "^4.1.0",
     "watchify": "^3.6.0",
-    "webpack": "4",
+    "webpack": "^4.43.0",
     "webpack-cli": "^3.2.1",
     "webpack-eslint-plugin": "^1.2.0"
   }

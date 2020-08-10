@@ -6,7 +6,6 @@ function define(name, value) {
 }
 
 const cluster_ip_urls_array = [ 
-    'http://silverback.temple.edu:7014',
     'http://silverback.temple.edu:7015',
     'http://silverback.temple.edu:7016'
   ];
@@ -14,8 +13,8 @@ const cluster_ip_urls_array = [
 const database_path = "mongodb://localhost/";
 const database_name = "datamonkey-dev";
 
-define('host','datamonkey-dev');
-define('port', 4002);
+define('host','new-silverback');
+define('port', 3975);
 define('redisHost', 'localhost');
 define('redisPort', '6379');
 define('database', database_path + database_name);
@@ -26,5 +25,12 @@ define('flea_ip_address', 'http://silverback.temple.edu:7004');
 define('fasta_validator', '/home/sweaver/TN93/validate_fasta');
 define('hyphy', __dirname + '/node_modules/hyphy/HYPHYMP');
 define('cluster_ip_urls_array', cluster_ip_urls_array);
-define('default_url', 'http://silverback.temple.edu:7013');
+define('default_url', 'http://silverback.temple.edu:7015');
 //define('warning_message', "Datamonkey is currently undergoing technical difficulties.");
+define('api_request_limit', 100);
+define('api_expires_in_sec', 1728000); //default 48 hours 172800
+define('api_base_url', 'dev.datamonkey.org');
+define('api_recapcha_pri', "YOUR SECRET"); //Ensure you are using the right private key!
+define('api_recaptcha_public_key', 'YOUR PUBLIC'); 
+define('api_dev_mode', false); //True will ignore recapcha
+define('api_max_file_size', 625000); //Max file size for incoming requests in bytes. default: 625000 (5mb)
