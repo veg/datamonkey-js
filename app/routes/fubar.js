@@ -1,114 +1,53 @@
-var querystring = require("querystring"),
-  error = require(__dirname + " /../../lib/error.js"),
-  globals = require(__dirname + "/../../config/globals.js"),
-  mailer = require(__dirname + "/../../lib/mailer.js"),
-  helpers = require(__dirname + "/../../lib/helpers.js"),
-  hpcsocket = require(__dirname + "/../../lib/hpcsocket.js"),
-  fs = require("fs"),
+var error = require(__dirname + " /../../lib/error.js"),
   logger = require("../../lib/logger"),
   setup = require(__dirname + "/../../config/setup.js");
 
 var mongoose = require("mongoose"),
   Msa = mongoose.model("Msa"),
-  Sequences = mongoose.model("Sequences"),
-  PartitionInfo = mongoose.model("PartitionInfo"),
   FUBAR = mongoose.model("FUBAR");
 
 var redis = require("redis"),
   client = redis.createClient({ host: setup.redisHost, port: setup.redisPort });
 
-exports.form = function(req, res) {
+exports.form = function (req, res) {
   var post_to = "/fubar";
   res.render("fubar/form.ejs", { post_to: post_to });
 };
 
-exports.invoke = function(req, res) {
-  var connect_callback = function(data) {
-    if (data == "connected") {
-      logger.log("connected");
-    }
+exports.invoke = function (req, res) {
+  var fn = req.files.files.file;
+  let postdata = req.body;
+  let options = {
+    datatype: 0,
+    gencodeid: postdata.gencodeid,
+    mail: postdata.mail,
+    number_of_grid_points: postdata.number_of_grid_points,
+    number_of_mcmc_chains: postdata.number_of_mcmc_chains,
+    length_of_each_chain: postdata.length_of_each_chain,
+    number_of_burn_in_samples: postdata.number_of_burn_in_samples,
+    number_of_samples: postdata.number_of_samples,
+    concentration_of_dirichlet_prior: postdata.concentration_of_dirichlet_prior,
   };
 
-  var fn = req.files.files.file,
-    fubar = new FUBAR(),
-    postdata = req.body,
-    datatype = 0,
-    gencodeid = postdata.gencodeid;
-
-  fubar.mail = postdata.mail;
-
-  Msa.parseFile(fn, datatype, gencodeid, function(err, msa) {
+  FUBAR.spawn(fn, options, (err, result) => {
     if (err) {
+      logger.error(err);
+      logger.error("fubar rename failed");
       res.json(500, { error: err });
-      return;
     }
-
-    // Check if msa exceeds limitations
-    if (msa.sites > fubar.max_sites) {
-      var error =
-        "Site limit exceeded! Sites must be less than " + fubar.max_sites;
-      logger.error(error);
-      res.json(500, { error: error });
-      return;
-    }
-
-    if (msa.sequences > fubar.max_sequences) {
-      var error =
-        "Sequence limit exceeded! Sequences must be less than " +
-        fubar.max_sequences;
-      logger.error(error);
-      res.json(500, { error: error });
-      return;
-    }
-
-    fubar.msa = msa;
-
-    fubar.status = fubar.status_stack[0];
-    fubar.number_of_grid_points = postdata.number_of_grid_points;
-    fubar.number_of_mcmc_chains = postdata.number_of_mcmc_chains;
-    fubar.length_of_each_chain = postdata.length_of_each_chain;
-    fubar.number_of_burn_in_samples = postdata.number_of_burn_in_samples;
-    fubar.number_of_samples = postdata.number_of_samples;
-    fubar.concentration_of_dirichlet_prior =
-      postdata.concentration_of_dirichlet_prior;
-
-    fubar.save(function(err, fubar_result) {
-      if (err) {
-        logger.error("fubar save failed");
-        logger.error(err);
-        res.json(500, { error: err });
-        return;
-      }
-
-      function move_cb(err, result) {
-        if (err) {
-          logger.error(err);
-          logger.error("fubar rename failed");
-          res.json(500, { error: err });
-        } else {
-          var to_send = fubar;
-          to_send.upload_redirect_path = fubar.upload_redirect_path;
-          res.json(200, {
-            analysis: fubar,
-            upload_redirect_path: fubar.upload_redirect_path
-          });
-
-          // Send the MSA and analysis type
-          FUBAR.submitJob(fubar_result, connect_callback);
-        }
-      }
-
-      helpers.moveSafely(req.files.files.file, fubar_result.filepath, move_cb);
+    res.json(200, {
+      analysis: result,
+      upload_redirect_path: result.upload_redirect_path,
     });
   });
 };
 
-exports.getPage = function(req, res) {
+exports.getPage = function (req, res) {
   // Find the analysis
   var fubarid = req.params.id;
 
   //Return all results
-  FUBAR.findOne({ _id: fubarid }, function(err, fubar) {
+  FUBAR.findOne({ _id: fubarid }, function (err, fubar) {
     if (err || !fubar) {
       res.json(500, error.errorResponse("Invalid ID : " + fubarid));
     } else {
@@ -122,11 +61,11 @@ exports.getPage = function(req, res) {
  * Returns log txt file
  * app.get('/fubar/:id/log.txt', fubar.getLog);
  */
-exports.getLog = function(req, res) {
+exports.getLog = function (req, res) {
   var id = req.params.id;
 
   //Return all results
-  FUBAR.findOne({ _id: id }, function(err, fubar) {
+  FUBAR.findOne({ _id: id }, function (err, fubar) {
     if (err || !fubar) {
       winston.info(err);
       res.json(500, error.errorResponse("invalid id : " + id));
@@ -142,16 +81,16 @@ exports.getLog = function(req, res) {
  * cancels existing job
  * app.get('/fubar/:id/cancel', fubar.cancel);
  */
-exports.cancel = function(req, res) {
+exports.cancel = function (req, res) {
   var id = req.params.id;
 
   //Return all results
-  FUBAR.findOne({ _id: id }, function(err, fubar) {
+  FUBAR.findOne({ _id: id }, function (err, fubar) {
     if (err || !fubar) {
       winston.info(err);
       res.json(500, error.errorResponse("invalid id : " + id));
     } else {
-      fubar.cancel(function(err, success) {
+      fubar.cancel(function (err, success) {
         if (success) {
           res.json(200, { success: "yes" });
         } else {
@@ -162,18 +101,18 @@ exports.cancel = function(req, res) {
   });
 };
 
-exports.resubscribePendingJobs = function(req, res) {
+exports.resubscribePendingJobs = function (req, res) {
   FUBAR.subscribePendingJobs();
 };
 
-exports.getMSAFile = function(req, res) {
+exports.getMSAFile = function (req, res) {
   var id = req.params.id,
     name = req.params.name;
 
   var options = {};
 
-  FUBAR.findOne({ _id: id }, function(err, fubar) {
-    res.sendFile(fubar.filepath, options, function(err) {
+  FUBAR.findOne({ _id: id }, function (err, fubar) {
+    res.sendFile(fubar.filepath, options, function (err) {
       if (err) {
         res.status(err.status).end();
       }
@@ -181,27 +120,27 @@ exports.getMSAFile = function(req, res) {
   });
 };
 
-exports.fasta = function(req, res) {
+exports.fasta = function (req, res) {
   var id = req.params.id;
 
-  FUBAR.findOne({ _id: id }, function(err, fubar) {
+  FUBAR.findOne({ _id: id }, function (err, fubar) {
     if (err || !fubar) {
       winston.info(err);
       res.json(500, error.errorReponse("invalid id : " + id));
     }
     Msa.deliverFasta(fubar.filepath)
-      .then(value => {
+      .then((value) => {
         res.json(200, { fasta: value });
       })
-      .catch(err => {
+      .catch((err) => {
         winston.info(err);
         res.json(500, { error: "Unable to deliver fasta." });
       });
   });
 };
 
-exports.getUsage = function(req, res) {
-  client.get(FUBAR.cachePath(), function(err, data) {
+exports.getUsage = function (req, res) {
+  client.get(FUBAR.cachePath(), function (err, data) {
     try {
       res.json(200, JSON.parse(data));
     } catch (err) {

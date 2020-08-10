@@ -26,7 +26,6 @@ src/bower-components
 public/assets/fonts
 public/fonts
 
-yarn.lock
 package-lock.json
 
 public/assets/js/*.woff*

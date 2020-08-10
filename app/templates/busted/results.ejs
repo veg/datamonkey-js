@@ -4,23 +4,6 @@
 <canvas id="hyphy-chart-canvas"></canvas>
 
 <script>
-
-  var fasta_ready = false;
-
-  d3.json(window.location.href+"/fasta", (err, data) => {
-    var fasta = data.fasta
-    fasta_ready = true;
-
-    $(document).ready( function () {
-      hyphyVision.busted($("#job-report").data('jobid') + '/results', "content", fasta, true, true)
-    });
-
-  });
-
-  if (fasta_ready == false) {
-    $(document).ready( function () {
-      hyphyVision.busted($("#job-report").data('jobid') + '/results', "content", null, true, true)
-    });
-  }
-
+  var fasta_url = window.location.href+"/fasta";
+  hyphyVision.busted($("#job-report").data('jobid') + '/results', "content", fasta_url, true, true);
 </script>

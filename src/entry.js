@@ -32,6 +32,9 @@ const render_attribute_modal = require("jsx/attribute_table.jsx");
 const render_citations = require("jsx/citations.jsx");
 const render_help = require("jsx/help.jsx");
 const render_stdOut = require("jsx/job_log.jsx");
+const render_api_module = require("jsx/api_key.jsx");
+const render_api_check = require("jsx/api_key_check.jsx");
+const render_api_lookup = require("jsx/api_key_lookup.jsx");
 
 window.gard_form = gard_form;
 window.multihit_form = multihit_form;
@@ -52,3 +55,6 @@ window.render_multibranch_selection = render_multibranch_selection;
 window.render_citations = render_citations;
 window.render_help = render_help;
 window.render_stdOut = render_stdOut;
+window.render_api = render_api_module;
+window.render_api_check = render_api_check;
+window.render_api_lookup = render_api_lookup;
