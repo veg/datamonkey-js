@@ -431,11 +431,18 @@ function apiSubmit(req, res) {
 
       case "GARD": {
         /* if GARD */
+
+        let site_to_site_variation = undefined;
+
+        if (postdata.site_to_site_variation) {
+          site_to_site_variation = postdata.site_to_site_variation.toLowerCase();
+        }
+
         let options = {
           datatype: 0,
           gencodeid: postdata.gencodeid,
           mail: postdata.mail || "",
-          site_to_site_variation: postdata.site_to_site_variation.toLowerCase(),
+          site_to_site_variation: site_to_site_variation,
           rate_classes: postdata.rate_classes,
         };
 
