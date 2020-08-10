@@ -18,6 +18,7 @@ const shortid = require("shortid"),
   path = require("path"),
   request = require("request"),
   setup = require("./../../config/setup"),
+  _ = require("underscore"),
   logger = require("../../lib/logger");
 
 /*
@@ -98,19 +99,43 @@ function apiSubmit(req, res) {
 
     logger.info("File Saved to " + fullFileName);
 
-    switch (postdata.method.toUpperCase()) {
+    var switch_method = "";
+    try {
+      switch_method = postdata.method.toUpperCase();
+    } catch (err) {
+      res.json(400, {
+        error: "Method is null, undefined, or not in correct format",
+      });
+      return;
+    }
+
+    switch (switch_method) {
       case "FEL": {
         /* if FEL */
         /* User must provide branch selection */
         let options = {
           datatype: 0,
           gencodeid: postdata.gencodeid,
-          mail: postdata.mail,
+          mail: postdata.mail || "",
           ds_variation: postdata.ds_variation,
           original_extension: postdata.fileExtension,
           nwk_tree: postdata.nwk_tree, //Requester provides as string
           analysis_type: postdata.analysis_type,
         };
+
+        for (let prop in options) {
+          if (
+            _.propertyOf(options)(prop) == "undefined" ||
+            _.propertyOf(options)(prop) == null
+          ) {
+            res.json(400, {
+              error:
+                "ERROR, NULL OR UNDEFINED PROPERTY IN REQUEST INVALID PROP INCLUDED IN BODY ",
+              prop,
+            });
+            return;
+          }
+        }
 
         FEL.spawn(fullFileName, options, (err, result) => {
           if (err) {
@@ -140,12 +165,26 @@ function apiSubmit(req, res) {
         let options = {
           datatype: 0,
           gencodeid: postdata.gencodeid,
-          mail: postdata.mail,
+          mail: postdata.mail || "",
           ds_variation: postdata.ds_variation,
           original_extension: postdata.fileExtension,
           nwk_tree: postdata.nwk_tree, //Requester provides as string with tags
           analysis_type: postdata.analysis_type,
         };
+
+        for (let prop in options) {
+          if (
+            _.propertyOf(options)(prop) == "undefined" ||
+            _.propertyOf(options)(prop) == null
+          ) {
+            res.json(400, {
+              error:
+                "ERROR, NULL OR UNDEFINED PROPERTY IN REQUEST INVALID PROP INCLUDED IN BODY ",
+              prop,
+            });
+            return;
+          }
+        }
 
         ContrastFEL.spawn(fullFileName, options, (err, result) => {
           if (err) {
@@ -175,12 +214,26 @@ function apiSubmit(req, res) {
         let options = {
           datatype: 0,
           gencodeid: postdata.gencodeid,
-          mail: postdata.mail,
+          mail: postdata.mail || "",
           ds_variation: postdata.ds_variation,
           original_extension: postdata.fileExtension,
           nwk_tree: postdata.nwk_tree, //Requester provides as string with tags
           analysis_type: postdata.analysis_type,
         };
+
+        for (let prop in options) {
+          if (
+            _.propertyOf(options)(prop) == "undefined" ||
+            _.propertyOf(options)(prop) == null
+          ) {
+            res.json(400, {
+              error:
+                "ERROR, NULL OR UNDEFINED PROPERTY IN REQUEST INVALID PROP INCLUDED IN BODY ",
+              prop,
+            });
+            return;
+          }
+        }
 
         ContrastFEL.spawn(fullFileName, options, (err, result) => {
           if (err) {
@@ -205,9 +258,23 @@ function apiSubmit(req, res) {
         let options = {
           datatype: 0,
           gencodeid: postdata.gencodeid,
-          mail: postdata.mail,
+          mail: postdata.mail || "",
           nwk_tree: postdata.nwk_tree, //Requester provides as string
         };
+
+        for (let prop in options) {
+          if (
+            _.propertyOf(options)(prop) == "undefined" ||
+            _.propertyOf(options)(prop) == null
+          ) {
+            res.json(400, {
+              error:
+                "ERROR, NULL OR UNDEFINED PROPERTY IN REQUEST INVALID PROP INCLUDED IN BODY ",
+              prop,
+            });
+            return;
+          }
+        }
 
         aBSREL.spawn(fullFileName, options, (err, result) => {
           if (err) {
@@ -232,10 +299,24 @@ function apiSubmit(req, res) {
         let options = {
           datatype: 0,
           gencodeid: postdata.gencodeid,
-          mail: postdata.mail,
+          mail: postdata.mail || "",
           nwk_tree: postdata.nwk_tree, //Requester provides as string
           ds_variation: postdata.ds_variation,
         };
+
+        for (let prop in options) {
+          if (
+            _.propertyOf(options)(prop) == "undefined" ||
+            _.propertyOf(options)(prop) == null
+          ) {
+            res.json(400, {
+              error:
+                "ERROR, NULL OR UNDEFINED PROPERTY IN REQUEST INVALID PROP INCLUDED IN BODY ",
+              prop,
+            });
+            return;
+          }
+        }
 
         Busted.spawn(fullFileName, options, (err, result) => {
           if (err) {
@@ -260,7 +341,7 @@ function apiSubmit(req, res) {
         let options = {
           datatype: postdata.datatype,
           gencodeid: postdata.gencodeid,
-          mail: postdata.mail,
+          mail: postdata.mail || "",
           length_of_each_chain: postdata.length_of_each_chain,
           substitution_model: postdata.substitution_model,
           number_of_burn_in_samples: postdata.number_of_burn_in_samples,
@@ -268,6 +349,20 @@ function apiSubmit(req, res) {
           maximum_parents_per_node: postdata.maximum_parents_per_node,
           minimum_subs_per_site: postdata.minimum_subs_per_site,
         };
+
+        for (let prop in options) {
+          if (
+            _.propertyOf(options)(prop) == "undefined" ||
+            _.propertyOf(options)(prop) == null
+          ) {
+            res.json(400, {
+              error:
+                "ERROR, NULL OR UNDEFINED PROPERTY IN REQUEST INVALID PROP INCLUDED IN BODY ",
+              prop,
+            });
+            return;
+          }
+        }
 
         BGM.spawn(fullFileName, options, (err, result) => {
           if (err) {
@@ -292,7 +387,7 @@ function apiSubmit(req, res) {
         let options = {
           datatype: 0,
           gencodeid: postdata.gencodeid,
-          mail: postdata.mail,
+          mail: postdata.mail || "",
           number_of_grid_points: postdata.number_of_grid_points,
           number_of_mcmc_chains: postdata.number_of_mcmc_chains,
           length_of_each_chain: postdata.length_of_each_chain,
@@ -301,6 +396,20 @@ function apiSubmit(req, res) {
           concentration_of_dirichlet_prior:
             postdata.concentration_of_dirichlet_prior,
         };
+
+        for (let prop in options) {
+          if (
+            _.propertyOf(options)(prop) == "undefined" ||
+            _.propertyOf(options)(prop) == null
+          ) {
+            res.json(400, {
+              error:
+                "ERROR, NULL OR UNDEFINED PROPERTY IN REQUEST INVALID PROP INCLUDED IN BODY ",
+              prop,
+            });
+            return;
+          }
+        }
 
         FUBAR.spawn(fullFileName, options, (err, result) => {
           if (err) {
@@ -325,10 +434,24 @@ function apiSubmit(req, res) {
         let options = {
           datatype: 0,
           gencodeid: postdata.gencodeid,
-          mail: postdata.mail,
+          mail: postdata.mail || "",
           site_to_site_variation: postdata.site_to_site_variation.toLowerCase(),
           rate_classes: postdata.rate_classes,
         };
+
+        for (let prop in options) {
+          if (
+            _.propertyOf(options)(prop) == "undefined" ||
+            _.propertyOf(options)(prop) == null
+          ) {
+            res.json(400, {
+              error:
+                "ERROR, NULL OR UNDEFINED PROPERTY IN REQUEST INVALID PROP INCLUDED IN BODY ",
+              prop,
+            });
+            return;
+          }
+        }
 
         GARD.spawn(fullFileName, options, (err, result) => {
           if (err) {
@@ -353,8 +476,22 @@ function apiSubmit(req, res) {
         let options = {
           datatype: 0,
           gencodeid: postdata.gencodeid,
-          mail: postdata.mail,
+          mail: postdata.mail || "",
         };
+
+        for (let prop in options) {
+          if (
+            _.propertyOf(options)(prop) == "undefined" ||
+            _.propertyOf(options)(prop) == null
+          ) {
+            res.json(400, {
+              error:
+                "ERROR, NULL OR UNDEFINED PROPERTY IN REQUEST INVALID PROP INCLUDED IN BODY ",
+              prop,
+            });
+            return;
+          }
+        }
 
         MEME.spawn(fullFileName, options, (err, result) => {
           if (err) {
@@ -379,10 +516,24 @@ function apiSubmit(req, res) {
         let options = {
           datatype: 0,
           gencodeid: postdata.gencodeid,
-          mail: postdata.mail,
+          mail: postdata.mail || "",
           rate_classes: postdata.rate_classes,
           triple_islands: postdata.triple_islands,
         };
+
+        for (let prop in options) {
+          if (
+            _.propertyOf(options)(prop) == "undefined" ||
+            _.propertyOf(options)(prop) == null
+          ) {
+            res.json(400, {
+              error:
+                "ERROR, NULL OR UNDEFINED PROPERTY IN REQUEST INVALID PROP INCLUDED IN BODY ",
+              prop,
+            });
+            return;
+          }
+        }
 
         MULTIHIT.spawn(fullFileName, options, (err, result) => {
           if (err) {
@@ -408,11 +559,25 @@ function apiSubmit(req, res) {
         let options = {
           datatype: 0,
           gencodeid: postdata.gencodeid,
-          mail: postdata.mail,
+          mail: postdata.mail || "",
           nwk_tree: postdata.nwk_tree, //Requester provides as string
           analysis_type: postdata.analysis_type, //1 or 2 <-- no 0
           fileExtension: postdata.fileExtension,
         };
+
+        for (let prop in options) {
+          if (
+            _.propertyOf(options)(prop) == "undefined" ||
+            _.propertyOf(options)(prop) == null
+          ) {
+            res.json(400, {
+              error:
+                "ERROR, NULL OR UNDEFINED PROPERTY IN REQUEST INVALID PROP INCLUDED IN BODY ",
+              prop,
+            });
+            return;
+          }
+        }
 
         Relax.spawn(fullFileName, options, (err, result) => {
           if (err) {
@@ -435,7 +600,7 @@ function apiSubmit(req, res) {
       case "FADE": {
         /* if FADE */
         let options = {
-          mail: postdata.mail,
+          mail: postdata.mail || "",
           number_of_grid_points: postdata.number_of_grid_points,
           number_of_mcmc_chains: postdata.number_of_mcmc_chains,
           length_of_each_chain: postdata.length_of_each_chain,
@@ -448,6 +613,20 @@ function apiSubmit(req, res) {
           //datatype: 2, //Hard coded in orignal invoke
           //gencodeid: 1, //Hard coded in original invoke
         };
+
+        for (let prop in options) {
+          if (
+            _.propertyOf(options)(prop) == "undefined" ||
+            _.propertyOf(options)(prop) == null
+          ) {
+            res.json(400, {
+              error:
+                "ERROR, NULL OR UNDEFINED PROPERTY IN REQUEST INVALID PROP INCLUDED IN BODY ",
+              prop,
+            });
+            return;
+          }
+        }
 
         FADE.spawn(fullFileName, options, (err, result) => {
           if (err) {
@@ -472,8 +651,22 @@ function apiSubmit(req, res) {
         let options = {
           datatype: 0,
           gencodeid: postdata.gencodeid,
-          mail: postdata.mail,
+          mail: postdata.mail || "",
         };
+
+        for (let prop in options) {
+          if (
+            _.propertyOf(options)(prop) == "undefined" ||
+            _.propertyOf(options)(prop) == null
+          ) {
+            res.json(400, {
+              error:
+                "ERROR, NULL OR UNDEFINED PROPERTY IN REQUEST INVALID PROP INCLUDED IN BODY ",
+              prop,
+            });
+            return;
+          }
+        }
 
         SLAC.spawn(fullFileName, options, (err, result) => {
           if (err) {

@@ -4131,11 +4131,6 @@ csstype@^2.2.0, csstype@^2.6.7:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.6.10.tgz#e63af50e66d7c266edb6b32909cfd0aabe03928b"
   integrity sha512-D34BqZU4cIlMCY93rZHbrq9pjTAQJ3U8S8rfBqjwHxkGPThWFjzZDQpgMJY0QViLxth6ZKYiwFBo14RdN44U/w==
 
-csvexport@2:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/csvexport/-/csvexport-2.0.0.tgz#0ea68f5ee0f411ad204eb960044403caff699c0e"
-  integrity sha512-fWWdbYV1fcIsle0ITBYDcfXJlZDFFbUNlNeoofqSea6cJDYw+62mlFnVCeeKm9mu1t1CSu1mxX9koW7gNmrj1A==
-
 csvexport@^1.0.2:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/csvexport/-/csvexport-1.1.0.tgz#56ddd414dd5bf874aa1fbd3f87935c27302ea881"
@@ -5676,6 +5671,11 @@ expand-tilde@^2.0.0, expand-tilde@^2.0.2:
   dependencies:
     homedir-polyfill "^1.0.1"
 
+export-to-csv@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/export-to-csv/-/export-to-csv-0.2.1.tgz#8f997156feebc1cf995096da16341aa0100cce4e"
+  integrity sha512-KTbrd3CAZ0cFceJEZr1e5uiMasabeCpXq1/5uvVxDl53o4jXJHnltasQoj2NkzrxD8hU9kdwjnMhoir/7nNx/A==
+
 exports-loader@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/exports-loader/-/exports-loader-0.7.0.tgz#84881c784dea6036b8e1cd1dac3da9b6409e21a5"
@@ -6919,6 +6919,47 @@ husky@^0.14.3:
     normalize-path "^1.0.0"
     strip-indent "^2.0.0"
 
+hyphy-vision@2.8.6:
+  version "2.8.6"
+  resolved "https://registry.yarnpkg.com/hyphy-vision/-/hyphy-vision-2.8.6.tgz#78f4a412b1b446ab9657b86dafadd00ea57ed88f"
+  integrity sha512-KaRWd+dfxpBqJjciw90/CYcipwGs4Njshnv8vNMuvrBnPMY6wAeCsumVuom9+DYpUDdEQIhSTDIpQZAPJyMlCQ==
+  dependencies:
+    "@fortawesome/fontawesome-free" "^5.12.1"
+    alignment.js "0.3.0"
+    bootstrap "4.x"
+    chi-squared "^1.1.0"
+    circos "^2.1.0"
+    create-react-class "^15.6.3"
+    d3 "3.x"
+    d3-save-svg "0.0.2"
+    export-to-csv "^0.2.1"
+    express "^4.16.2"
+    file-saver "^2.0.2"
+    immutable "3.8.2"
+    in-browser-download "^1.0.0"
+    jquery "3.x"
+    jquery-ui "1.x"
+    jquery-ui-bundle "^1.11.4"
+    jquery-ui-dist "^1.12.1"
+    json-loader "^0.5.7"
+    lodash "4.x"
+    lodash.clonedeep "^4.5.0"
+    phylotree "0.1.6"
+    popper.js "^1.14.1"
+    pretty-data "^0.40.0"
+    prop-types "^15.5.10"
+    react "16.12.0"
+    react-copy-to-clipboard "^5.0.0"
+    react-dom "16.12.0"
+    react-json-view "^1.14.0"
+    react-phylotree "0.4.1"
+    react-range "^1.5.3"
+    react-router-dom "^5.1.2"
+    react-router-hash-link "^1.1.1"
+    react-scrollchor "^6.0.0"
+    save-svg-as-png "^1.2.0"
+    underscore "1.9"
+
 hyphy-vision@^1.0.0:
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/hyphy-vision/-/hyphy-vision-1.1.7.tgz#ddd641aa3faff31d17064c50c58beb21c91cb08d"
@@ -6953,45 +6994,6 @@ hyphy-vision@^1.0.0:
     react-json-view "^1.14.0"
     save-svg-as-png "^1.2.0"
     underscore "^1.8.3"
-
-"hyphy-vision@file:.yalc/hyphy-vision":
-  version "2.8.0-3618e772"
-  dependencies:
-    "@fortawesome/fontawesome-free" "^5.12.1"
-    alignment.js "0.3.0"
-    bootstrap "4.x"
-    chi-squared "^1.1.0"
-    circos "^2.1.0"
-    create-react-class "^15.6.3"
-    csvexport "2"
-    d3 "3.x"
-    d3-save-svg "0.0.2"
-    express "^4.16.2"
-    file-saver "^2.0.2"
-    immutable "3.8.2"
-    in-browser-download "^1.0.0"
-    jquery "1.x"
-    jquery-ui "1.x"
-    jquery-ui-bundle "^1.11.4"
-    jquery-ui-dist "^1.12.1"
-    json-loader "^0.5.7"
-    lodash "4.x"
-    lodash.clonedeep "^4.5.0"
-    phylotree "0.1.6"
-    popper.js "^1.14.1"
-    pretty-data "^0.40.0"
-    prop-types "^15.5.10"
-    react "16.12.0"
-    react-copy-to-clipboard "^5.0.0"
-    react-dom "16.12.0"
-    react-json-view "^1.14.0"
-    react-phylotree "0.4.1"
-    react-range "^1.5.3"
-    react-router-dom "^5.1.2"
-    react-router-hash-link "^1.1.1"
-    react-scrollchor "^6.0.0"
-    save-svg-as-png "^1.2.0"
-    underscore "1.9"
 
 iconv-lite@0.4, iconv-lite@0.4.24, iconv-lite@^0.4.13, iconv-lite@^0.4.4, iconv-lite@^0.4.5, iconv-lite@~0.4.13:
   version "0.4.24"
