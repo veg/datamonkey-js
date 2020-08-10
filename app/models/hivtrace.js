@@ -11,6 +11,8 @@ const mongoose = require("mongoose"),
   mailer = require(path.join(__dirname, "/../../lib/mailer.js")),
   winston = require("winston");
 
+require("mongoose-schema-extend");
+
 const Schema = mongoose.Schema;
 
 function notEmptyValidator(val) {

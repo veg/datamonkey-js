@@ -3,6 +3,8 @@ var mongoose = require("mongoose"),
   logger = require("../../lib/logger"),
   helpers = require(__dirname + "/../../lib/helpers.js");
 
+require("mongoose-schema-extend");
+
 var AnalysisSchema = require(__dirname + "/analysis");
 
 var MULTIHIT = AnalysisSchema.extend({

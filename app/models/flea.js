@@ -6,6 +6,8 @@ var mongoose = require("mongoose"),
   winston = require("winston"),
   Msa = require(__dirname + "/msa");
 
+require("mongoose-schema-extend");
+
 var AnalysisSchema = require(__dirname + "/analysis");
 
 var Flea = AnalysisSchema.extend({

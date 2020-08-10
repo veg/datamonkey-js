@@ -3,6 +3,8 @@ var mongoose = require("mongoose"),
   logger = require("../../lib/logger"),
   helpers = require("../../lib/helpers");
 
+require("mongoose-schema-extend");
+
 var AnalysisSchema = require(__dirname + "/analysis");
 
 var GARD = AnalysisSchema.extend({

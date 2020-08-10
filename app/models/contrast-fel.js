@@ -2,6 +2,8 @@ var mongoose = require("mongoose"),
   path = require("path"),
   helpers = require("../../lib/helpers");
 
+require("mongoose-schema-extend");
+
 var AnalysisSchema = require(__dirname + "/analysis");
 
 var ContrastFEL = AnalysisSchema.extend({
