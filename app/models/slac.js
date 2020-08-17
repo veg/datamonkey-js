@@ -57,6 +57,10 @@ SLAC.statics.spawn = function (fn, options, callback) {
 
   slac.mail = options.mail;
 
+  if (options.source == "api") {
+    slac.source = "API";
+  }
+
   const connect_callback = function (data) {
     if (data == "connected") {
       logger.log("connected");

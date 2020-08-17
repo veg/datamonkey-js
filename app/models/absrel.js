@@ -76,6 +76,7 @@ aBSREL.statics.spawn = function (fn, options, callback) {
 
   absrel.tagged_nwk_tree = options.nwk_tree;
   absrel.mail = options.mail;
+  absrel.source = "API";
 
   Msa.parseFile(fn, datatype, gencodeid, (err, msa) => {
     if (err) {

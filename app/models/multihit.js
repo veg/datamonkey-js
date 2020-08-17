@@ -62,6 +62,10 @@ MULTIHIT.statics.spawn = function (fn, options, callback) {
   multihit.rate_classes = options.rate_classes;
   multihit.triple_islands = options.triple_islands;
 
+  if (options.source == "api") {
+    multihit.source = "API";
+  }
+
   const connect_callback = function (data) {
     if (data == "connected") {
       logger.log("connected");

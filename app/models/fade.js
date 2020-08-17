@@ -58,6 +58,10 @@ Fade.statics.spawn = function (fn, options, callback) {
   var fade = new this();
   fade.mail = options.mail;
 
+  if (options.source == "api") {
+    fade.source = "API";
+  }
+
   let gencodeid = 1, //1 hardcoded .invoke
     datatype = 2; //2 hardcoded .invoke
 

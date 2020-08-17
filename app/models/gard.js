@@ -70,6 +70,10 @@ GARD.statics.spawn = function (fn, options, callback) {
   gard.rate_classes = rate_classes;
   gard.mail = options.mail;
 
+  if (options.source == "api") {
+    gard.source = "API";
+  }
+
   const connect_callback = function (data) {
     if (data == "connected") {
       logger.log("connected");
