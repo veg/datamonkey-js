@@ -63,7 +63,7 @@ MULTIHIT.statics.spawn = function (fn, options, callback) {
   multihit.triple_islands = options.triple_islands;
 
   if (options.source == "api") {
-    multihit.source = "API";
+    multihit.source = "api";
   }
 
   const connect_callback = function (data) {

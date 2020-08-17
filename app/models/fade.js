@@ -59,7 +59,7 @@ Fade.statics.spawn = function (fn, options, callback) {
   fade.mail = options.mail;
 
   if (options.source == "api") {
-    fade.source = "API";
+    fade.source = "api";
   }
 
   let gencodeid = 1, //1 hardcoded .invoke

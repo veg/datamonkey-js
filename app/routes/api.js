@@ -747,7 +747,6 @@ exports.apiStatus = function apiSubmit(req, res) {
         id: result._id,
         status: result.status,
         url: website_url + "/" + options.method + "/" + result._id,
-        source: result.source || "not found",
       });
     } catch (err) {
       res.json(400, {

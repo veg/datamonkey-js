@@ -71,7 +71,7 @@ GARD.statics.spawn = function (fn, options, callback) {
   gard.mail = options.mail;
 
   if (options.source == "api") {
-    gard.source = "API";
+    gard.source = "api";
   }
 
   const connect_callback = function (data) {

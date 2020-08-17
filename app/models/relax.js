@@ -71,7 +71,7 @@ Relax.statics.spawn = function (fn, options, callback) {
   relax.original_extension = options.fileExtension;
 
   if (options.source == "api") {
-    relax.source = "API";
+    relax.source = "api";
   }
 
   Msa.parseFile(fn, datatype, gencodeid, (err, msa) => {

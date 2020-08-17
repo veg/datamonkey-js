@@ -61,7 +61,7 @@ BGM.statics.spawn = function (fn, options, callback) {
     datatype = options.datatype;
 
   bgm.mail = options.mail;
-  bgm.source = "API";
+  bgm.source = "api";
 
   const connect_callback = function (data) {
     if (data == "connected") {
