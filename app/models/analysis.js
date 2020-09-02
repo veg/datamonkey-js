@@ -21,6 +21,7 @@ var AnalysisSchema = new Schema({
   created: { type: Date, default: Date.now },
   id: { type: Number, require: true },
   type: { type: String, require: true },
+  datatype: String,
   status: String,
   torque_id: String,
   creation_time: Date,

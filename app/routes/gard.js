@@ -17,7 +17,7 @@ exports.form = function (req, res) {
 
 exports.invoke = function (req, res) {
   let postdata = req.body;
-  var fn = req.files.files.file;
+  let fn = req.files.files.file;
 
   let options = {
     datatype: postdata.datatype,
@@ -59,13 +59,13 @@ exports.getPage = function (req, res) {
  * app.get('/gard/:id/results', gard.getLog);
  */
 exports.getLog = function (req, res) {
-  var id = req.params.id;
+  const gardid = req.params.id;
 
   //Return all results
-  GARD.findOne({ _id: id }, function (err, gard) {
-    if (err || !busted) {
+  GARD.findOne({ _id: gardid }, function (err, gard) {
+    if (err || !gard) {
       winston.info(err);
-      res.json(500, error.errorResponse("invalid id : " + id));
+      res.json(500, error.errorResponse("invalid id : " + gardid));
     } else {
       res.set({ "Content-Disposition": 'attachment; filename="log.txt"' });
       res.set({ "Content-type": "text/plain" });
