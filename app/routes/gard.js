@@ -17,7 +17,7 @@ exports.form = function (req, res) {
 
 exports.invoke = function (req, res) {
   let postdata = req.body;
-  var fn = req.files.files.file;
+  let fn = req.files.files.file;
 
   let options = {
     datatype: postdata.datatype,
