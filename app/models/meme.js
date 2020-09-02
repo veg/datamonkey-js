@@ -55,6 +55,9 @@ MEME.statics.spawn = function (fn, options, callback) {
     datatype = options.datatype;
 
   meme.mail = options.mail;
+  if (options.source == "api") {
+    meme.source = "api";
+  }
 
   const connect_callback = function (data) {
     if (data == "connected") {

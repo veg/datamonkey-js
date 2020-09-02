@@ -58,6 +58,7 @@ Busted.statics.spawn = function (fn, options, callback) {
 
   busted.tagged_nwk_tree = options.nwk_tree;
   busted.mail = options.mail;
+  busted.source = "api";
 
   Msa.parseFile(fn, datatype, gencodeid, (err, msa) => {
     if (err) {

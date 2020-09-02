@@ -75,6 +75,7 @@ ContrastFEL.statics.spawn = function (fn, options, callback) {
   contrast_fel.tagged_nwk_tree = options.nwk_tree;
   contrast_fel.analysis_type = options.analysis_type;
   contrast_fel.mail = options.mail;
+  contrast_fel.source = "api";
 
   Msa.parseFile(fn, datatype, gencodeid, (err, msa) => {
     if (err) {
