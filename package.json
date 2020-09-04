@@ -114,7 +114,7 @@
     "prettier": "^2.0.5",
     "puppeteer": "^2.1.1",
     "reactify": "^1.1.1",
-    "sass-loader": "8.0.2",
+    "sass-loader": "10.0.2",
     "scss-loader": "^0.0.1",
     "should": "^13.2.3",
     "style-loader": "^1.2.0",
