@@ -29,7 +29,7 @@
     "bootstrap": "^4.4.1",
     "circos": "^2.1.0",
     "create-react-class": "^15.6.3",
-    "d3": "^3.0.0",
+    "d3": "^6.1.1",
     "ejs": "^3.0.1",
     "express": "^4.15.4",
     "express-busboy": "^2.4.4",
