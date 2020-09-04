@@ -1903,7 +1903,7 @@ ajv@^5.0.0:
     fast-json-stable-stringify "^2.0.0"
     json-schema-traverse "^0.3.0"
 
-ajv@^6.1.0, ajv@^6.10.0, ajv@^6.10.2, ajv@^6.12.0, ajv@^6.12.3, ajv@^6.12.4:
+ajv@^6.1.0, ajv@^6.10.0, ajv@^6.10.2, ajv@^6.12.3, ajv@^6.12.4:
   version "6.12.4"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.12.4.tgz#0614facc4522127fa713445c6bfd3ebd376e2234"
   integrity sha512-eienB2c9qVQs2KWexhkrdMLVDoIQCz5KSeLxwg9Lzk4DOfBtIK9PQwwufcsn1jjGuf9WZmqPMbGxOzfcuphJCQ==
@@ -5798,13 +5798,14 @@ export-to-csv@^0.2.1:
   resolved "https://registry.yarnpkg.com/export-to-csv/-/export-to-csv-0.2.1.tgz#8f997156feebc1cf995096da16341aa0100cce4e"
   integrity sha512-KTbrd3CAZ0cFceJEZr1e5uiMasabeCpXq1/5uvVxDl53o4jXJHnltasQoj2NkzrxD8hU9kdwjnMhoir/7nNx/A==
 
-exports-loader@^0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/exports-loader/-/exports-loader-0.7.0.tgz#84881c784dea6036b8e1cd1dac3da9b6409e21a5"
-  integrity sha512-RKwCrO4A6IiKm0pG3c9V46JxIHcDplwwGJn6+JJ1RcVnh/WSGJa0xkmk5cRVtgOPzCAtTMGj2F7nluh9L0vpSA==
+exports-loader@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/exports-loader/-/exports-loader-1.1.0.tgz#26a16706e4cf533145de24c1419baf33b624fb5c"
+  integrity sha512-zGB2SujiAyO0Rwn4GQ17/HlT8cwmT8abcBeZpr2R3sItJ5sI5Y9BzNzus3H9tH1iWLAoJLi9N3TP54D2+j859Q==
   dependencies:
-    loader-utils "^1.1.0"
-    source-map "0.5.0"
+    loader-utils "^2.0.0"
+    schema-utils "^2.7.0"
+    source-map "^0.6.1"
 
 expose-loader@^0.7.1:
   version "0.7.5"
@@ -11443,15 +11444,7 @@ schema-utils@^1.0.0:
     ajv-errors "^1.0.0"
     ajv-keywords "^3.1.0"
 
-schema-utils@^2.6.1:
-  version "2.6.6"
-  resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-2.6.6.tgz#299fe6bd4a3365dc23d99fd446caff8f1d6c330c"
-  integrity sha512-wHutF/WPSbIi9x6ctjGGk2Hvl0VOz5l3EKEuKbjPlB30mKZUzb9A5k9yEXRX3pwyqVLPvpfZZEllaFq/M718hA==
-  dependencies:
-    ajv "^6.12.0"
-    ajv-keywords "^3.4.1"
-
-schema-utils@^2.6.5, schema-utils@^2.6.6, schema-utils@^2.7.0, schema-utils@^2.7.1:
+schema-utils@^2.6.1, schema-utils@^2.6.5, schema-utils@^2.6.6, schema-utils@^2.7.0, schema-utils@^2.7.1:
   version "2.7.1"
   resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-2.7.1.tgz#1ca4f32d1b24c590c203b8e7a50bf0ea4cd394d7"
   integrity sha512-SHiNtMOUGWBQJwzISiVYKu82GiV4QYGePp3odlY1tuKO7gPtphAT5R/py0fA6xtbgLL/RvtJZnU9b8s0F1q0Xg==
@@ -11900,11 +11893,6 @@ source-map@0.4.x, source-map@^0.4.2, source-map@~0.4.2:
   integrity sha1-66T12pwNyZneaAMti092FzZSA2s=
   dependencies:
     amdefine ">=0.0.4"
-
-source-map@0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.0.tgz#0fe96503ac86a5adb5de63f4e412ae4872cdbe86"
-  integrity sha1-D+llA6yGpa213mP05BKuSHLNvoY=
 
 source-map@0.5.6:
   version "0.5.6"
