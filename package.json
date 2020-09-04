@@ -54,7 +54,7 @@
     "nvm": "0.0.4",
     "phylotree": "0.1.10",
     "popper.js": "1.16.1",
-    "pretty-quick": "^1.6.0",
+    "pretty-quick": "^3.0.0",
     "q": "^1.4.0",
     "react": "16.12",
     "react-copy-to-clipboard": "^5.0.2",
