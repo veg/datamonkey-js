@@ -10638,10 +10638,10 @@ react-proxy@^1.1.7:
     lodash "^4.6.1"
     react-deep-force-update "^1.0.0"
 
-react-range@^1.5.3:
-  version "1.6.7"
-  resolved "https://registry.yarnpkg.com/react-range/-/react-range-1.6.7.tgz#c3ac608a07899c2f8d420bb985b7fab2690d5168"
-  integrity sha512-CYoykEQMjY00saVEk0qxRpA/SjUyHJbAm8JMq86wjXwuL5l+taz5VXXNax1iVkquOjHnqoGVW2Vge0eK420cBw==
+react-range@^1.5.3, react-range@^1.6.9:
+  version "1.6.9"
+  resolved "https://registry.yarnpkg.com/react-range/-/react-range-1.6.9.tgz#c0af0f4ce367b500c585cbf6b921ed92aa9b401e"
+  integrity sha512-Gp0PMUVKBBSl/3YA+fRf+sMqIN8HlLdi3ypHe7QUluNrTMIix+VpKnCgrn7xoqVxbdJSmg254/G4Z8ZPx5YeqQ==
 
 react-recaptcha@^2.3.10:
   version "2.3.10"
