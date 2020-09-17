@@ -2969,20 +2969,15 @@ bootstrap@3.x:
   resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-3.4.1.tgz#c3a347d419e289ad11f4033e3c4132b87c081d72"
   integrity sha512-yN5oZVmRCwe5aKwzRj6736nSmKDX7pLYwsXiCj/EYmo16hODaBiT4En5btW/jhBF/seV+XMx3aYwukYC3A49DA==
 
-bootstrap@4, bootstrap@4.x, bootstrap@^4.1.1, bootstrap@^4.1.3:
-  version "4.4.1"
-  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.4.1.tgz#8582960eea0c5cd2bede84d8b0baf3789c3e8b01"
-  integrity sha512-tbx5cHubwE6e2ZG7nqM3g/FZ5PQEDMWmMGNrCUBVRPHXTJaH7CBDdsLeu3eCh3B1tzAxTnAbtmrzvWEvT2NNEA==
+bootstrap@4, bootstrap@4.x, bootstrap@^4.1.1, bootstrap@^4.1.3, bootstrap@^4.4.1:
+  version "4.5.2"
+  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.5.2.tgz#a85c4eda59155f0d71186b6e6ad9b875813779ab"
+  integrity sha512-vlGn0bcySYl/iV+BGA544JkkZP5LB3jsmkeKLFQakCOwCM3AOk7VkldBz4jrzSe+Z0Ezn99NVXa1o45cQY4R6A==
 
 bootstrap@4.3.1:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.3.1.tgz#280ca8f610504d99d7b6b4bfc4b68cec601704ac"
   integrity sha512-rXqOmH1VilAt2DyPzluTi2blhk17bO7ef+zLLPlWvG494pDxcM234pJ8wTc/6R40UWizAIIMgxjvxZg5kmsbag==
-
-bootstrap@^4.4.1:
-  version "4.5.2"
-  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.5.2.tgz#a85c4eda59155f0d71186b6e6ad9b875813779ab"
-  integrity sha512-vlGn0bcySYl/iV+BGA544JkkZP5LB3jsmkeKLFQakCOwCM3AOk7VkldBz4jrzSe+Z0Ezn99NVXa1o45cQY4R6A==
 
 brace-expansion@^1.1.7:
   version "1.1.11"
@@ -7035,10 +7030,10 @@ husky@^0.14.3:
     normalize-path "^1.0.0"
     strip-indent "^2.0.0"
 
-hyphy-vision@2.8.8:
-  version "2.8.8"
-  resolved "https://registry.yarnpkg.com/hyphy-vision/-/hyphy-vision-2.8.8.tgz#341448226ae2aab72dd653f3ef18d9ca2b0e200f"
-  integrity sha512-hULJmCWwXDbHERp1qR4EM5kEIBp4qSO7C6G2UD2kV50+ymnZLIQVCccU9Thy2rMfbIUYaQnEZ6MI/PTSbJ/1Rw==
+hyphy-vision@2.8.10:
+  version "2.8.10"
+  resolved "https://registry.yarnpkg.com/hyphy-vision/-/hyphy-vision-2.8.10.tgz#0b1f3698b307dc1664d505a62d36950130484e5b"
+  integrity sha512-KLIt1iR44Ta6aFLAakyfZBRZjoFJ4x/VH26hEpHnxgVGtFJdwUaFNApoLO0vCUYS7OizsVNugN7b1seKQG//5A==
   dependencies:
     "@fortawesome/fontawesome-free" "^5.12.1"
     alignment.js "0.3.0"
@@ -7064,14 +7059,14 @@ hyphy-vision@2.8.8:
     popper.js "^1.14.1"
     pretty-data "^0.40.0"
     prop-types "^15.5.10"
-    react "16.12.0"
+    react "16.13.1"
     react-copy-to-clipboard "^5.0.0"
-    react-dom "16.12.0"
+    react-dom "16.13.1"
     react-json-view "^1.14.0"
-    react-phylotree "0.4.1"
+    react-phylotree "0.4.3"
     react-range "^1.5.3"
     react-router-dom "^5.1.2"
-    react-router-hash-link "^1.1.1"
+    react-router-hash-link "^2.0.0"
     react-scrollchor "^6.0.0"
     save-svg-as-png "^1.2.0"
     underscore "1.9"
@@ -10509,7 +10504,7 @@ react-deep-force-update@^1.0.0:
   resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-1.1.2.tgz#3d2ae45c2c9040cbb1772be52f8ea1ade6ca2ee1"
   integrity sha512-WUSQJ4P/wWcusaH+zZmbECOk7H5N2pOIl0vzheeornkIMhu+qrNdGFm0bDZLCb0hSF0jf/kH1SgkNGfBdTc4wA==
 
-react-dom@16.12, react-dom@16.12.0:
+react-dom@16.12:
   version "16.12.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.12.0.tgz#0da4b714b8d13c2038c9396b54a92baea633fe11"
   integrity sha512-LMxFfAGrcS3kETtQaCkTKjMiifahaMySFDn71fZUNpPHZQEzmk/GiAeIT8JSOrHB23fnuCOMruL2a8NYlw+8Gw==
@@ -10518,6 +10513,16 @@ react-dom@16.12, react-dom@16.12.0:
     object-assign "^4.1.1"
     prop-types "^15.6.2"
     scheduler "^0.18.0"
+
+react-dom@16.13.1, react-dom@^16.13.0, react-dom@^16.6.3:
+  version "16.13.1"
+  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.13.1.tgz#c1bd37331a0486c078ee54c4740720993b2e0e7f"
+  integrity sha512-81PIMmVLnCNLO/fFOQxdQkvEq/+Hfpv24XNJfpyZhTRfO0QcmQIF/PgCa1zCOj2w1hrn12MFLyaJ/G0+Mxtfag==
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.2"
+    scheduler "^0.19.1"
 
 react-dom@^15.4.1:
   version "15.6.2"
@@ -10528,16 +10533,6 @@ react-dom@^15.4.1:
     loose-envify "^1.1.0"
     object-assign "^4.1.0"
     prop-types "^15.5.10"
-
-react-dom@^16.13.0, react-dom@^16.6.3:
-  version "16.13.1"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.13.1.tgz#c1bd37331a0486c078ee54c4740720993b2e0e7f"
-  integrity sha512-81PIMmVLnCNLO/fFOQxdQkvEq/+Hfpv24XNJfpyZhTRfO0QcmQIF/PgCa1zCOj2w1hrn12MFLyaJ/G0+Mxtfag==
-  dependencies:
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
-    prop-types "^15.6.2"
-    scheduler "^0.19.1"
 
 react-is@^16.3.2, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.6:
   version "16.13.1"
@@ -10630,6 +10625,21 @@ react-phylotree@0.4.1:
     react "16.12.0"
     underscore "^1.9.1"
 
+react-phylotree@0.4.3:
+  version "0.4.3"
+  resolved "https://registry.yarnpkg.com/react-phylotree/-/react-phylotree-0.4.3.tgz#6f5698140aa7d8b2b2dec75aaaca3a1a3bb55939"
+  integrity sha512-abWRvsylEeWNmAUBP4iIeSKFvrEWH3I3oV+PCuIoZUbVHylhEhppbugC1vBX5MFZlCJPXOvBfFFZ3QB4ZV6q+w==
+  dependencies:
+    "@fortawesome/fontawesome-svg-core" "^1.2.10"
+    "@fortawesome/free-solid-svg-icons" "^5.6.1"
+    "@fortawesome/react-fontawesome" "^0.1.3"
+    bootstrap "4.3.1"
+    d3 "^5.7.0"
+    d3-react-axis "0.0.3"
+    phylotree "1.0.0-alpha.17"
+    react "^16.13.0"
+    underscore "^1.9.1"
+
 react-proxy@^1.1.7:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/react-proxy/-/react-proxy-1.1.8.tgz#9dbfd9d927528c3aa9f444e4558c37830ab8c26a"
@@ -10673,10 +10683,10 @@ react-router-dom@^5.1.2:
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
 
-react-router-hash-link@^1.1.1:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/react-router-hash-link/-/react-router-hash-link-1.2.2.tgz#7a0ad5e925d49596d19554de8bc6c554ce4f8099"
-  integrity sha512-LBthLVHdqPeKDVt3+cFRhy15Z7veikOvdKRZRfyBR2vjqIE7rxn+tKLjb6DOmLm6JpoQVemVDnxQ35RVnEHdQA==
+react-router-hash-link@^2.0.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-router-hash-link/-/react-router-hash-link-2.1.0.tgz#69cc93df0945480adff14e9e501aea5f356896a8"
+  integrity sha512-U/WizkZwV2IoxLScRJX5CHJWreXjv/kCmjT/LpfYiFdXGnrKgPd0KqcA4KfmQbkwO411OwDmUKKz+bOKoMkzKg==
   dependencies:
     prop-types "^15.6.0"
 
@@ -10774,7 +10784,7 @@ react@16.12, react@16.12.0:
     object-assign "^4.1.1"
     prop-types "^15.6.2"
 
-react@^16.12.0, react@^16.13.0, react@^16.6.3:
+react@16.13.1, react@^16.12.0, react@^16.13.0, react@^16.6.3:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react/-/react-16.13.1.tgz#2e818822f1a9743122c063d6410d85c1e3afe48e"
   integrity sha512-YMZQQq32xHLX0bz5Mnibv1/LHb3Sqzngu7xstSM+vrkE5Kzr9xE0yMByK5kMoTK30YVJE61WfbxIFFvfeDKT1w==
@@ -12774,12 +12784,7 @@ underscore@1.9:
   resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.9.2.tgz#0c8d6f536d6f378a5af264a72f7bec50feb7cf2f"
   integrity sha512-D39qtimx0c1fI3ya1Lnhk3E9nONswSKhnffBI0gME9C99fYOkNi04xs8K6pePLhvl1frbDemkaBQ5ikWllR2HQ==
 
-underscore@1.x, underscore@^1.8.3:
-  version "1.10.2"
-  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.10.2.tgz#73d6aa3668f3188e4adb0f1943bd12cfd7efaaaf"
-  integrity sha512-N4P+Q/BuyuEKFJ43B9gYuOj4TQUHXX+j2FqguVOpjkssLUUrnJofCcBccJSCoeturDoZU6GorDTHSvUDlSQbTg==
-
-underscore@^1.9.1:
+underscore@1.x, underscore@^1.8.3, underscore@^1.9.1:
   version "1.11.0"
   resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.11.0.tgz#dd7c23a195db34267186044649870ff1bab5929e"
   integrity sha512-xY96SsN3NA461qIRKZ/+qox37YXPtSBswMGfiNptr+wrt6ds4HaMw23TP612fEyGekRE6LNRiLYr/aqbHXNedw==
