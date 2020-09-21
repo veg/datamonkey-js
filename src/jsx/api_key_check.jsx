@@ -64,113 +64,131 @@ class ApiKeyCheck extends React.Component {
 
   render() {
     return (
-      <center>
-        <div className="dm-card-header card-header" style={api_top_div}>
+      <div>
+        {this.state.created ? (
           <center>
-            <div className="api_top_div" style={api_top_div}>
-              <h3>API Key Details</h3>
-              <table
-                id="table"
-                className="table table-light table-bordered table-striped table-hover"
-              >
-                <tbody>
-                  <tr>
-                    <td
-                      scope="row"
-                      className="font-weight-bold"
-                      style={text_align}
-                    >
-                      {" "}
-                      Key ID{" "}
-                    </td>
-                    <td
-                      id="api_key_id"
-                      className="font-weight-normal"
-                      style={text_align}
-                    >
-                      {" "}
-                      {this.state.api_key}{" "}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td
-                      scope="row"
-                      className="font-weight-bold"
-                      style={text_align}
-                    >
-                      Remaining Jobs{" "}
-                    </td>
-                    <td
-                      id="api_key_remainig"
-                      className="font-weight-normal"
-                      style={text_align}
-                    >
-                      {" "}
-                      {this.state.remaining}{" "}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td
-                      scope="row"
-                      className="font-weight-bold"
-                      style={text_align}
-                    >
-                      {" "}
-                      Created{" "}
-                    </td>
-                    <td
-                      id="api_key_create"
-                      className="font-weight-normal"
-                      style={text_align}
-                    >
-                      {" "}
-                      {this.state.created}{" "}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td
-                      scope="row"
-                      className="font-weight-bold"
-                      style={text_align}
-                    >
-                      {" "}
-                      Expires{" "}
-                    </td>
-                    <td
-                      id="api_key_expire"
-                      className="font-weight-normal"
-                      style={text_align}
-                    >
-                      {" "}
-                      {this.state.expires}{" "}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td
-                      scope="row"
-                      className="font-weight-bold"
-                      style={text_align}
-                    >
-                      {" "}
-                      Associated Jobs{" "}
-                    </td>
-                    <td
-                      id="api_key_jobs"
-                      className="text-justify font-weight-normal"
-                      style={text_align}
-                    >
-                      {" "}
-                      {this.state.jobs.map((job) => (
-                        <li key={job}> {job} </li>
-                      ))}{" "}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <div className="dm-card-header card-header" style={api_top_div}>
+              <center>
+                <div className="api_top_div" style={api_top_div}>
+                  <h3>API Key Details</h3>
+                  <table
+                    id="table"
+                    className="table table-light table-bordered table-striped table-hover"
+                  >
+                    <tbody>
+                      <tr>
+                        <td
+                          scope="row"
+                          className="font-weight-bold"
+                          style={text_align}
+                        >
+                          {" "}
+                          Key ID{" "}
+                        </td>
+                        <td
+                          id="api_key_id"
+                          className="font-weight-normal"
+                          style={text_align}
+                        >
+                          {" "}
+                          {this.state.api_key}{" "}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          scope="row"
+                          className="font-weight-bold"
+                          style={text_align}
+                        >
+                          Remaining Jobs{" "}
+                        </td>
+                        <td
+                          id="api_key_remainig"
+                          className="font-weight-normal"
+                          style={text_align}
+                        >
+                          {" "}
+                          {this.state.remaining}{" "}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          scope="row"
+                          className="font-weight-bold"
+                          style={text_align}
+                        >
+                          {" "}
+                          Created{" "}
+                        </td>
+                        <td
+                          id="api_key_create"
+                          className="font-weight-normal"
+                          style={text_align}
+                        >
+                          {" "}
+                          {this.state.created}{" "}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          scope="row"
+                          className="font-weight-bold"
+                          style={text_align}
+                        >
+                          {" "}
+                          Expires{" "}
+                        </td>
+                        <td
+                          id="api_key_expire"
+                          className="font-weight-normal"
+                          style={text_align}
+                        >
+                          {" "}
+                          {this.state.expires}{" "}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td
+                          scope="row"
+                          className="font-weight-bold"
+                          style={text_align}
+                        >
+                          {" "}
+                          Associated Jobs{" "}
+                        </td>
+                        <td
+                          id="api_key_jobs"
+                          className="text-justify font-weight-normal"
+                          style={text_align}
+                        >
+                          {" "}
+                          {this.state.jobs.map((job) => (
+                            <li key={job}> {job} </li>
+                          ))}{" "}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </center>
             </div>
           </center>
-        </div>
-      </center>
+        ) : (
+          <center>
+            <div className="row">
+              <div className="dm-card-header card-header" style={api_top_div}>
+                <div className="alert alert-danger">
+                  <p>Cannot find the selected API key.</p>
+                  <p>
+                    This can be because this API key has expired or has exceeded
+                    its usage limits.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </center>
+        )}
+      </div>
     );
   }
 }
