@@ -43,7 +43,7 @@
     "jquery.ui.widget": "^1.10.3",
     "lodash": "^4.17.20",
     "main-bower-files": "^2.9.0",
-    "moment": "^2.8.0",
+    "moment": "^2.29.1",
     "mongodb": "^2.0.0",
     "mongoose": "^4.11.7",
     "mongoose-schema-extend": "^0.1.0",
