@@ -58,7 +58,7 @@ exports.getLog = function (req, res) {
 
   //Return all results
   SLAC.findOne({ _id: id }, function (err, slac) {
-    if (err || !busted) {
+    if (err || !slac) {
       winston.info(err);
       res.json(500, error.errorResponse("invalid id : " + id));
     } else {
@@ -71,14 +71,14 @@ exports.getLog = function (req, res) {
 
 /**
  * cancels existing job
- * app.get('/busted/:id/cancel', slac.cancel);
+ * app.get('/slca/:id/cancel', slac.cancel);
  */
 exports.cancel = function (req, res) {
   var id = req.params.id;
 
   //Return all results
   SLAC.findOne({ _id: id }, function (err, slac) {
-    if (err || !busted) {
+    if (err || !slac) {
       winston.info(err);
       res.json(500, error.errorResponse("invalid id : " + id));
     } else {

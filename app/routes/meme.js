@@ -58,7 +58,7 @@ exports.getLog = function (req, res) {
 
   //Return all results
   MEME.findOne({ _id: id }, function (err, meme) {
-    if (err || !busted) {
+    if (err || !meme) {
       winston.info(err);
       res.json(500, error.errorResponse("invalid id : " + id));
     } else {
@@ -71,14 +71,14 @@ exports.getLog = function (req, res) {
 
 /**
  * cancels existing job
- * app.get('/busted/:id/cancel', meme.cancel);
+ * app.get('/meme/:id/cancel', meme.cancel);
  */
 exports.cancel = function (req, res) {
   var id = req.params.id;
 
   //Return all results
   MEME.findOne({ _id: id }, function (err, meme) {
-    if (err || !busted) {
+    if (err || !meme) {
       winston.info(err);
       res.json(500, error.errorResponse("invalid id : " + id));
     } else {

@@ -76,14 +76,14 @@ exports.getLog = function (req, res) {
 
 /**
  * cancels existing job
- * app.get('/busted/:id/cancel', gard.cancel);
+ * app.get('/gard/:id/cancel', gard.cancel);
  */
 exports.cancel = function (req, res) {
   var id = req.params.id;
 
   //Return all results
   GARD.findOne({ _id: id }, function (err, gard) {
-    if (err || !busted) {
+    if (err || !gard) {
       winston.info(err);
       res.json(500, error.errorResponse("invalid id : " + id));
     } else {

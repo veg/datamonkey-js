@@ -253,7 +253,7 @@ exports.getLog = function (req, res) {
 
   //Return all results
   Relax.findOne({ _id: id }, function (err, relax) {
-    if (err || !busted) {
+    if (err || !relax) {
       winston.info(err);
       res.json(500, error.errorResponse("invalid id : " + id));
     } else {
