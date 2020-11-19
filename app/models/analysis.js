@@ -32,6 +32,7 @@ var AnalysisSchema = new Schema({
   stderr: String,
   stdout: String,
   cpu_time: Number,
+  source: { type: String, default: () => "web" },
 });
 
 AnalysisSchema.virtual("since_created").get(function () {

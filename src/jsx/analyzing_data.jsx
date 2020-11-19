@@ -112,7 +112,7 @@ class AnalyzingData extends React.Component {
 
         <div className="dm-card card-default">
           <div className="dm-card-header card-header">
-            Choosing significance levels
+            Choosing Significance Levels
           </div>
         </div>
 

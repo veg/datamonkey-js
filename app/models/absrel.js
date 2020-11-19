@@ -76,10 +76,11 @@ aBSREL.statics.spawn = function (fn, options, callback) {
 
   absrel.tagged_nwk_tree = options.nwk_tree;
   absrel.mail = options.mail;
+  absrel.source = "api";
 
   Msa.parseFile(fn, datatype, gencodeid, (err, msa) => {
     if (err) {
-      res.json(500, { error: err });
+      callback(err, null);
       return;
     }
 
@@ -88,7 +89,7 @@ aBSREL.statics.spawn = function (fn, options, callback) {
       var error =
         "Site limit exceeded! Sites must be less than " + absrel.max_sites;
       logger.error(error);
-      res.json(500, { error: error });
+      callback(error, null);
       return;
     }
 
@@ -97,7 +98,7 @@ aBSREL.statics.spawn = function (fn, options, callback) {
         "Sequence limit exceeded! Sequences must be less than " +
         absrel.max_sequences;
       logger.error(error);
-      res.json(500, { error: error });
+      callback(error, null);
       return;
     }
 

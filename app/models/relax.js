@@ -72,9 +72,13 @@ Relax.statics.spawn = function (fn, options, callback) {
   relax.analysis_type = options.analysis_type;
   relax.original_extension = options.fileExtension;
 
+  if (options.source == "api") {
+    relax.source = "api";
+  }
+
   Msa.parseFile(fn, datatype, gencodeid, (err, msa) => {
     if (err) {
-      res.json(500, { error: err });
+      callback(err, null);
       return;
     }
 
@@ -82,7 +86,7 @@ Relax.statics.spawn = function (fn, options, callback) {
       var error =
         "Site limit exceeded! Sites must be less than " + relax.max_sites;
       logger.error(error);
-      res.json(500, { error: error });
+      callback(error, null);
       return;
     }
 
@@ -91,7 +95,7 @@ Relax.statics.spawn = function (fn, options, callback) {
         "Sequence limit exceeded! Sequences must be less than " +
         relax.max_sequences;
       logger.error(error);
-      res.json(500, { error: error });
+      callback(error, null);
       return;
     }
 

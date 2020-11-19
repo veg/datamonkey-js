@@ -121,6 +121,7 @@ function apiSubmit(req, res) {
           original_extension: postdata.fileExtension,
           nwk_tree: postdata.nwk_tree, //Requester provides as string
           analysis_type: postdata.analysis_type,
+          source: "api",
         };
 
         for (let prop in options) {
@@ -170,6 +171,7 @@ function apiSubmit(req, res) {
           original_extension: postdata.fileExtension,
           nwk_tree: postdata.nwk_tree, //Requester provides as string with tags
           analysis_type: postdata.analysis_type,
+          source: "api",
         };
 
         for (let prop in options) {
@@ -219,6 +221,7 @@ function apiSubmit(req, res) {
           original_extension: postdata.fileExtension,
           nwk_tree: postdata.nwk_tree, //Requester provides as string with tags
           analysis_type: postdata.analysis_type,
+          source: "api",
         };
 
         for (let prop in options) {
@@ -260,6 +263,7 @@ function apiSubmit(req, res) {
           gencodeid: postdata.gencodeid,
           mail: postdata.mail || "",
           nwk_tree: postdata.nwk_tree, //Requester provides as string
+          source: "api",
         };
 
         for (let prop in options) {
@@ -302,6 +306,7 @@ function apiSubmit(req, res) {
           mail: postdata.mail || "",
           nwk_tree: postdata.nwk_tree, //Requester provides as string
           ds_variation: postdata.ds_variation,
+          source: "api",
         };
 
         for (let prop in options) {
@@ -348,6 +353,7 @@ function apiSubmit(req, res) {
           number_of_samples: postdata.number_of_samples,
           maximum_parents_per_node: postdata.maximum_parents_per_node,
           minimum_subs_per_site: postdata.minimum_subs_per_site,
+          source: "api",
         };
 
         for (let prop in options) {
@@ -395,6 +401,7 @@ function apiSubmit(req, res) {
           number_of_samples: postdata.number_of_samples,
           concentration_of_dirichlet_prior:
             postdata.concentration_of_dirichlet_prior,
+          source: "api",
         };
 
         for (let prop in options) {
@@ -444,6 +451,7 @@ function apiSubmit(req, res) {
           mail: postdata.mail || "",
           site_to_site_variation: site_to_site_variation,
           rate_classes: postdata.rate_classes,
+          source: "api",
         };
 
         for (let prop in options) {
@@ -484,6 +492,7 @@ function apiSubmit(req, res) {
           datatype: 0,
           gencodeid: postdata.gencodeid,
           mail: postdata.mail || "",
+          source: "api",
         };
 
         for (let prop in options) {
@@ -526,6 +535,7 @@ function apiSubmit(req, res) {
           mail: postdata.mail || "",
           rate_classes: postdata.rate_classes,
           triple_islands: postdata.triple_islands,
+          source: "api",
         };
 
         for (let prop in options) {
@@ -570,6 +580,7 @@ function apiSubmit(req, res) {
           nwk_tree: postdata.nwk_tree, //Requester provides as string
           analysis_type: postdata.analysis_type, //1 or 2 <-- no 0
           fileExtension: postdata.fileExtension,
+          source: "api",
         };
 
         for (let prop in options) {
@@ -619,6 +630,7 @@ function apiSubmit(req, res) {
           posterior_estimation_method: postdata.posterior_estimation_method,
           //datatype: 2, //Hard coded in orignal invoke
           //gencodeid: 1, //Hard coded in original invoke
+          source: "api",
         };
 
         for (let prop in options) {
@@ -659,6 +671,7 @@ function apiSubmit(req, res) {
           datatype: 0,
           gencodeid: postdata.gencodeid,
           mail: postdata.mail || "",
+          source: "api",
         };
 
         for (let prop in options) {
@@ -719,6 +732,7 @@ exports.apiStatus = function apiSubmit(req, res) {
   let options = {
     method: postdata.method,
     id: postdata.id,
+    source: "api",
   };
 
   analysis.getInfoApi(options, (err, result) => {

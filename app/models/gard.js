@@ -74,6 +74,10 @@ GARD.statics.spawn = function (fn, options, callback) {
   gard.datatype = datatype;
   gard.mail = options.mail;
 
+  if (options.source == "api") {
+    gard.source = "api";
+  }
+
   const connect_callback = function (data) {
     if (data == "connected") {
       logger.log("connected");
@@ -82,7 +86,6 @@ GARD.statics.spawn = function (fn, options, callback) {
 
   Msa.parseFile(fn, datatype, gencodeid, (err, msa) => {
     if (err) {
-      res.json(500, { error: err });
       callback(err);
       return;
     }
