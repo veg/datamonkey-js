@@ -23,6 +23,10 @@ PRIME.virtual("upload_redirect_path").get(function () {
   return "/prime/" + this._id;
 });
 
+PRIME.virtual("max_sequences").get(function () {
+  return 1000;
+});
+
 /**
  * Complete file path for document's file upload
  */

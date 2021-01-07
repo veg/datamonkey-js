@@ -145,7 +145,7 @@ describe("hyphy friendly", function () {
 
 describe("parse file", function () {
   it("should return a well formed msa", function (done) {
-    this.timeout(5000);
+    this.timeout(50000);
 
     var msa = new Msa();
     var datatype = 0;

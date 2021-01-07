@@ -28,6 +28,10 @@ ContrastFEL.virtual("upload_redirect_path").get(function () {
   return path.join("/contrast_fel/", String(this._id), "/select-foreground");
 });
 
+ContrastFEL.virtual("max_sequences").get(function () {
+  return 2000;
+});
+
 /**
  * Complete file path for document's file upload
  */

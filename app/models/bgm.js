@@ -27,6 +27,10 @@ BGM.virtual("analysistype").get(function () {
   return "bgm";
 });
 
+BGM.virtual("max_sequences").get(function () {
+  return 1000;
+});
+
 BGM.virtual("upload_redirect_path").get(function () {
   return "/bgm/" + this._id;
 });
