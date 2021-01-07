@@ -724,21 +724,28 @@ exports.apiStatus = function apiSubmit(req, res) {
   analysis.getInfoApi(options, (err, result) => {
     var website_url = "datamonkey.org";
     if (err) {
-      logger.warn(
-        "Error with displaying Info for Job ID: " + options.id + " :: " + err
-      );
+      var error =
+        "Error with displaying Info for Job ID: " + options.id + " :: " + err;
+      logger.warn(error);
       res.json(400, {
-        error:
-          "Error with displaying Info for Job ID: " + options.id + " :: " + err,
+        error: error,
+      });
+      return;
+    }
+
+    try {
+      res.json(200, {
+        time_stamp: result.created,
+        completion: result.creation_time,
+        id: result._id,
+        status: result.status,
+        url: website_url + "/" + options.method + "/" + result._id,
+      });
+    } catch (err) {
+      res.json(400, {
+        error: "No results found",
       });
     }
-    res.json(200, {
-      time_stamp: result.created,
-      completion: result.creation_time,
-      id: result._id,
-      status: result.status,
-      url: website_url + "/" + options.method + "/" + result._id,
-    });
   });
 };
 
