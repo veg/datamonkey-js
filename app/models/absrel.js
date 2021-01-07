@@ -30,6 +30,10 @@ aBSREL.virtual("upload_redirect_path").get(function () {
   return path.join("/absrel/", String(this._id), "/select-foreground");
 });
 
+aBSREL.virtual("max_sequences").get(function () {
+  return 1000;
+});
+
 /**
  * Complete file path for document's file upload
  */

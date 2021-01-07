@@ -22,6 +22,10 @@ Busted.virtual("pmid").get(function () {
   return "25701167";
 });
 
+Busted.virtual("max_sequences").get(function () {
+  return 1000;
+});
+
 /**
  * Filename of document's file upload
  */

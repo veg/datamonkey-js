@@ -54,11 +54,11 @@ AnalysisSchema.virtual("original_fn").get(function () {
 });
 
 AnalysisSchema.virtual("max_sites").get(function () {
-  return 12000;
+  return 32000;
 });
 
 AnalysisSchema.virtual("max_sequences").get(function () {
-  return 500;
+  return 5000;
 });
 
 AnalysisSchema.virtual("input_data").get(function () {

@@ -23,6 +23,10 @@ Relax.virtual("pmid").get(function () {
   return "25540451";
 });
 
+Relax.virtual("max_sequences").get(function () {
+  return 1000;
+});
+
 /**
  * Filename of document's file upload
  */
