@@ -10,6 +10,7 @@ var AnalysisSchema = require(__dirname + "/analysis");
 var GARD = AnalysisSchema.extend({
   analysis_type: Number,
   datatype: String,
+  run_mode: String,
   last_status_msg: String,
   results: Object,
   site_to_site_variation: String,
@@ -71,11 +72,13 @@ GARD.statics.spawn = function (fn, options, callback) {
   let gencodeid = options.gencodeid,
     site_to_site_variation = options.site_to_site_variation,
     rate_classes = options.rate_classes,
+    run_mode = options.run_mode,
     datatype = options.datatype;
 
   gard.site_to_site_variation = site_to_site_variation;
   gard.rate_classes = rate_classes;
   gard.datatype = datatype;
+  gard.run_mode = run_mode;
   gard.mail = options.mail;
 
   const connect_callback = function (data) {
