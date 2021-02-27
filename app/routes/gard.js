@@ -22,6 +22,7 @@ exports.invoke = function (req, res) {
   let options = {
     datatype: postdata.datatype,
     gencodeid: postdata.gencodeid,
+    run_mode: postdata.run_mode,
     site_to_site_variation: postdata.site_to_site_variation,
     rate_classes: postdata.rate_classes,
     mail: postdata.mail,
