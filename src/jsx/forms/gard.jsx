@@ -16,6 +16,7 @@ var GARDForm = createReactClass({
     formData.append("files", file);
     formData.append("datatype", $("select[name='datatype']").val());
     formData.append("gencodeid", $("select[name='gencodeid']").val());
+    formData.append("run_mode", $("select[name='run_mode']").val());
 
     formData.append(
       "site_to_site_variation",
@@ -112,9 +113,16 @@ var GARDForm = createReactClass({
             </a>
           </label>
           <select name="datatype">
-            <option value="0">Codon</option>
             <option value="1">Nucleotide (DNA/RNA)</option>
             <option value="2">Protein</option>
+          </select>
+        </div>
+
+        <div className="upload-div">
+          <label id="runmode-content">Run mode</label>
+          <select name="run_mode">
+            <option value="1">Faster</option>
+            <option value="2">Normal</option>
           </select>
         </div>
 
