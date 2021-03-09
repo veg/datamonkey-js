@@ -10,19 +10,19 @@ config = {
   devtool: "source-map",
   mode: "development",
   entry: {
-    datamonkey: ["./src/entry.js"]
+    datamonkey: ["./src/entry.js"],
   },
   output: {
     path: path.resolve(__dirname, "public/assets/js/"),
-    filename: "[name].js"
+    filename: "[name].js",
   },
   optimization: {
     splitChunks: {
-      chunks: "all"
-    }
+      chunks: "all",
+    },
   },
   externals: {
-    jsdom: "window"
+    jsdom: "window",
   },
   module: {
     rules: [
@@ -33,77 +33,77 @@ config = {
           "css-loader",
           {
             loader: "sass-loader",
-            options: { implementation: require("sass") }
-          }
-        ]
+            options: { implementation: require("sass") },
+          },
+        ],
       },
       {
         test: /\.(js|jsx)?$/,
         exclude: /node_modules/,
         loaders: "babel-loader",
         query: {
-          presets: ["@babel/preset-env"]
-        }
+          presets: ["@babel/preset-env"],
+        },
       },
       {
         test: require.resolve("jquery"),
         use: [
           {
             loader: "expose-loader",
-            query: "jQuery"
+            query: "jQuery",
           },
           {
             loader: "expose-loader",
-            query: "$"
-          }
-        ]
+            query: "$",
+          },
+        ],
       },
       {
         test: require.resolve("d3"),
         use: [
           {
             loader: "expose-loader",
-            query: "d3"
-          }
-        ]
+            query: "d3",
+          },
+        ],
       },
       {
         test: require.resolve("underscore"),
         use: [
           {
             loader: "expose-loader",
-            query: "_"
-          }
-        ]
+            query: "_",
+          },
+        ],
       },
       {
         test: /\.(woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
         loader: "url-loader",
-        options: { limit: 10000, mimetype: "application/font-woff" }
+        options: { limit: 10000, mimetype: "application/font-woff" },
       },
       {
         test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
         loader: "url-loader",
-        options: { limit: 10000, mimetype: "application/octet-stream" }
+        options: { limit: 10000, mimetype: "application/octet-stream" },
       },
       { test: /\.eot(\?v=\d+\.\d+\.\d+)?$/, loaders: "file-loader" },
       {
         test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
         loaders: "url-loader",
-        options: { limit: 10000, mimetype: "image/svg+xml" }
+        options: { limit: 10000, mimetype: "image/svg+xml" },
       },
       {
         test: /\.jpg(\?v=\d+\.\d+\.\d+)?$/,
         loaders: "url-loader",
-        options: { limit: 10000, mimetype: "image/jpg" }
+        options: { limit: 10000, mimetype: "image/jpg" },
       },
       {
         test: /\.(js|jsx)?$/,
         exclude: /node_modules/,
         loader: "eslint-loader",
-        options: {}
-      }
-    ]
+        options: {},
+      },
+    ],
   },
   plugins: [
     //new PreloadWebpackPlugin(),
@@ -111,8 +111,9 @@ config = {
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
+      path: path.resolve(__dirname, "public/assets/css/"),
       filename: "[name].css",
-      chunkFilename: "[id].css"
+      chunkFilename: "[id].css",
     }),
     new webpack.ProvidePlugin({
       "window.$": "jquery",
@@ -123,18 +124,18 @@ config = {
       crossfilter: "crossfilter",
       dc: "dc",
       datamonkey: "datamonkey",
-      _: "underscore"
+      _: "underscore",
     }),
     new CopyWebpackPlugin(
       [
         // {output}/file.txt
-        { from: "node_modules/hivtrace-viz/dist/hivtrace.js" }
+        { from: "node_modules/hivtrace-viz/dist/hivtrace.js" },
       ],
       {
         // By default, we only copy modified files during
         // a watch or webpack-dev-server build. Setting this
         // to `true` copies all files.
-        copyUnmodified: true
+        copyUnmodified: true,
       }
     ),
     new CopyWebpackPlugin(
@@ -142,27 +143,27 @@ config = {
         // {output}/file.txt
         {
           from: "node_modules/hivtrace-viz/dist/vendor.js",
-          to: "hivtrace-vendor.js"
-        }
+          to: "hivtrace-vendor.js",
+        },
       ],
       {
         // By default, we only copy modified files during
         // a watch or webpack-dev-server build. Setting this
         // to `true` copies all files.
-        copyUnmodified: true
+        copyUnmodified: true,
       }
     ),
-    new webpack.IgnorePlugin(/jsdom$/)
+    new webpack.IgnorePlugin(/jsdom$/),
   ],
   resolve: {
     alias: {
       dc: __dirname + "/node_modules/dc/dc.min.js",
       "dc.css": __dirname + "/node_modules/dc/dc.min.css",
-      "phylotree.css": __dirname + "/node_modules/phylotree/phylotree.css"
+      "phylotree.css": __dirname + "/node_modules/phylotree/phylotree.css",
     },
     modules: ["src", "node_modules"],
-    extensions: [".json", ".js", ".jsx", ".scss"]
-  }
+    extensions: [".json", ".js", ".jsx", ".scss"],
+  },
 };
 
 if (process.env.NODE_ENV === "production") {
