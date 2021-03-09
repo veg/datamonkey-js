@@ -690,3 +690,16 @@ nav .dm-dropdown-menu {
 .fade_beta_badge {
   background-color: $datamonkey-turquoise;
 }
+
+/* GARD */
+
+.gard h2,
+h3,
+h4 {
+  font-size: 14pt;
+  margin-top: 25px;
+}
+.gard .clearance {
+  display: none;
+  height: 0px;
+}
