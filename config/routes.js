@@ -52,7 +52,7 @@ module.exports = function (app) {
   app.get("/absrel/:id/results", _.partial(analysis.getResults, aBSREL));
   app.get("/absrel/:id/cancel", absrel.cancel);
   app.get("/absrel/:id/log.txt", absrel.getLog);
-  absrel.resubscribePendingJobs();
+  // absrel.resubscribePendingJobs();
 
   // BUSTED ROUTES
   const busted = require(path.join(__dirname, "../app/routes/busted"));
@@ -68,7 +68,7 @@ module.exports = function (app) {
   app.get("/busted/:bustedid/cancel", busted.cancel);
   app.get("/busted/:id/results", _.partial(analysis.getResults, Busted));
   app.get("/busted/:bustedid/log.txt", busted.getLog);
-  busted.resubscribePendingJobs();
+  // busted.resubscribePendingJobs();
 
   // Contrast-FEL ROUTES
   let contrast_fel = require(path.join(
@@ -90,7 +90,7 @@ module.exports = function (app) {
   );
   app.get("/contrast_fel/:id/cancel", contrast_fel.cancel);
   app.get("/contrast_fel/:id/log.txt", contrast_fel.getLog);
-  contrast_fel.resubscribePendingJobs();
+  // contrast_fel.resubscribePendingJobs();
 
   // FADE ROUTES
   const fade = require(path.join(__dirname, "../app/routes/fade"));
@@ -104,7 +104,7 @@ module.exports = function (app) {
   app.get("/fade/:id/results", _.partial(analysis.getResults, FADE));
   app.get("/fade/:id/cancel", fade.cancel);
   app.get("/fade/:id/log.txt", fade.getLog);
-  fade.resubscribePendingJobs();
+  // fade.resubscribePendingJobs();
 
   // FEL ROUTES
   const fel = require(path.join(__dirname, "../app/routes/fel"));
@@ -120,7 +120,7 @@ module.exports = function (app) {
   app.get("/fel/:id/results", _.partial(analysis.getResults, FEL));
   app.get("/fel/:id/cancel", fel.cancel);
   app.get("/fel/:id/log.txt", fel.getLog);
-  fel.resubscribePendingJobs();
+  // fel.resubscribePendingJobs();
 
   // FLEA ROUTES
   const flea = require(path.join(__dirname, "../app/routes/flea"));
@@ -145,7 +145,7 @@ module.exports = function (app) {
   app.get("/fubar/:id/results", _.partial(analysis.getResults, FUBAR));
   app.get("/fubar/:id/cancel", fubar.cancel);
   app.get("/fubar/:id/log.txt", fubar.getLog);
-  fubar.resubscribePendingJobs();
+  // fubar.resubscribePendingJobs();
 
   // GARD ROUTES
   const gard = require(path.join(__dirname, "../app/routes/gard"));
@@ -160,7 +160,7 @@ module.exports = function (app) {
   app.get("/gard/:id/results", _.partial(analysis.getResults, GARD));
   app.get("/gard/:id/cancel", gard.cancel);
   app.get("/gard/:id/log.txt", gard.getLog);
-  gard.resubscribePendingJobs();
+  // gard.resubscribePendingJobs();
 
   // HIV-TRACE ROUTES
   const hivtrace = require(path.join(__dirname, "../app/routes/hivtrace"));
@@ -190,7 +190,7 @@ module.exports = function (app) {
   app.get("/multihit/:id/results", _.partial(analysis.getResults, MULTIHIT));
   app.get("/multihit/:id/cancel", multihit.cancel);
   app.get("/multihit/:id/log.txt", multihit.getLog);
-  multihit.resubscribePendingJobs();
+  // multihit.resubscribePendingJobs();
 
   // MEME ROUTES
   const meme = require(path.join(__dirname, "../app/routes/meme"));
@@ -204,7 +204,7 @@ module.exports = function (app) {
   app.get("/meme/:id/results", _.partial(analysis.getResults, MEME));
   app.get("/meme/:id/cancel", meme.cancel);
   app.get("/meme/:id/log.txt", meme.getLog);
-  meme.resubscribePendingJobs();
+  // meme.resubscribePendingJobs();
 
   // PRIME ROUTES
   //prime = require(path.join(__dirname, '../app/routes/prime'));
@@ -233,7 +233,7 @@ module.exports = function (app) {
   app.get("/relax/:id/results", _.partial(analysis.getResults, Relax));
   app.get("/relax/:id/recheck", relax.getRecheck);
   app.get("/relax/:id/log.txt", relax.getLog);
-  relax.resubscribePendingJobs();
+  // relax.resubscribePendingJobs();
 
   // SLAC ROUTES
   const slac = require(path.join(__dirname, "../app/routes/slac"));
@@ -247,7 +247,7 @@ module.exports = function (app) {
   app.get("/slac/:id/results", _.partial(analysis.getResults, SLAC));
   app.get("/slac/:id/cancel", slac.cancel);
   app.get("/slac/:id/log.txt", slac.getLog);
-  slac.resubscribePendingJobs();
+  // slac.resubscribePendingJobs();
 
   // BGM ROUTES
   const bgm = require(path.join(__dirname, "../app/routes/bgm"));
@@ -260,7 +260,7 @@ module.exports = function (app) {
   app.get("/bgm/:id/results", _.partial(analysis.getResults, BGM));
   app.get("/bgm/:id/cancel", bgm.cancel);
   app.get("/bgm/:id/log.txt", bgm.getLog);
-  bgm.resubscribePendingJobs();
+  // bgm.resubscribePendingJobs();
 
   // API ROUTES
 
