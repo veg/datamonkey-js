@@ -1520,6 +1520,10 @@
   version "916.0.0"
   resolved "https://api.observablehq.com/@hyphy_software/gard-analysis-result-visualization@916.tgz?v=3#c3733c4cb571e92795f8967f909a176f6398c783"
 
+"@hyphy_software/multi-hit-analysis-result-visualization@https://api.observablehq.com/@hyphy_software/multi-hit-analysis-result-visualization.tgz?v=3":
+  version "991.0.0"
+  resolved "https://api.observablehq.com/@hyphy_software/multi-hit-analysis-result-visualization.tgz?v=3#2820864121de428e2dced549380dc2b41aeae76a"
+
 "@observablehq/inspector@^3.2.2":
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/@observablehq/inspector/-/inspector-3.2.2.tgz#df4e9774e2461836a6e09ff22d79a18a9e77ee11"
@@ -7282,13 +7286,14 @@ husky@^0.14.3:
     normalize-path "^1.0.0"
     strip-indent "^2.0.0"
 
-hyphy-vision@2.9.1:
-  version "2.9.1"
-  resolved "https://registry.yarnpkg.com/hyphy-vision/-/hyphy-vision-2.9.1.tgz#c37dff3d4df905901763f9cea468c094e3e59534"
-  integrity sha512-3im9G9kewHioj1Ta2qbpGFKbA3L16emlfYM2imBr0rfQgyGCimni7gRqBpAmfkRyK1ON8oXb4eW4yhVarma59A==
+hyphy-vision@2.9.2:
+  version "2.9.2"
+  resolved "https://registry.yarnpkg.com/hyphy-vision/-/hyphy-vision-2.9.2.tgz#005d33293d4ebe580837a9240d147bdadf2f79a3"
+  integrity sha512-GioS0UIygMHaBxzGSYAm56JQH5WOFkVZBhzItT++UMi8akkYo5GYaamyW09SGfDi7Pccx52QjykJQQX+KAhtpg==
   dependencies:
     "@fortawesome/fontawesome-free" "^5.12.1"
     "@hyphy_software/gard-analysis-result-visualization" "https://api.observablehq.com/@hyphy_software/gard-analysis-result-visualization@916.tgz?v=3"
+    "@hyphy_software/multi-hit-analysis-result-visualization" "https://api.observablehq.com/@hyphy_software/multi-hit-analysis-result-visualization.tgz?v=3"
     "@observablehq/runtime" "4"
     alignment.js "0.3.0"
     bootstrap "4.x"
