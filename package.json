@@ -77,7 +77,7 @@
     "socket.io-stream": "0.6.x",
     "tar-fs": "^1.16.3",
     "tether": "^1.4.0",
-    "underscore": "^1.9.1",
+    "underscore": "^1.13.0",
     "winston": "^3.2.1",
     "yarn": "^1.19.1"
   },
