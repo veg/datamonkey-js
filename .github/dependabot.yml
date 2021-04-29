@@ -1,0 +1,134 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "10:00"
+  open-pull-requests-limit: 10
+  target-branch: develop
+  ignore:
+  - dependency-name: async
+    versions:
+    - "> 0.1.22"
+  - dependency-name: babel-jest
+    versions:
+    - "> 19.0.0"
+  - dependency-name: bl
+    versions:
+    - "> 1.2.2, < 2"
+  - dependency-name: copy-webpack-plugin
+    versions:
+    - "> 5.1.2"
+  - dependency-name: css-loader
+    versions:
+    - "> 3.6.0"
+  - dependency-name: d3
+    versions:
+    - ">= 4.a, < 5"
+  - dependency-name: d3
+    versions:
+    - ">= 5.a, < 6"
+  - dependency-name: d3
+    versions:
+    - ">= 6.a, < 7"
+  - dependency-name: exports-loader
+    versions:
+    - "> 0.7.0"
+  - dependency-name: expose-loader
+    versions:
+    - "> 0.7.5"
+  - dependency-name: express-busboy
+    versions:
+    - "> 2.5.0"
+  - dependency-name: express-validator
+    versions:
+    - "> 2.21.0"
+  - dependency-name: hivtrace-viz
+    versions:
+    - "> 0.0.14"
+  - dependency-name: husky
+    versions:
+    - "> 0.14.3"
+  - dependency-name: mini-css-extract-plugin
+    versions:
+    - "> 0.9.0"
+  - dependency-name: mongodb
+    versions:
+    - ">= 3.a, < 4"
+  - dependency-name: mongoose
+    versions:
+    - ">= 5.a, < 6"
+  - dependency-name: mongoose-schema-extend
+    versions:
+    - "> 0.1.7"
+  - dependency-name: nodemailer
+    versions:
+    - "> 1.11.0"
+  - dependency-name: pretty-quick
+    versions:
+    - ">= 3.a, < 4"
+  - dependency-name: puppeteer
+    versions:
+    - "> 2.1.1"
+  - dependency-name: redis
+    versions:
+    - ">= 3.a, < 4"
+  - dependency-name: sass-loader
+    versions:
+    - "> 8.0.2"
+  - dependency-name: socket.io
+    versions:
+    - ">= 1.7.a, < 1.8"
+  - dependency-name: socket.io
+    versions:
+    - ">= 2.a, < 3"
+  - dependency-name: socket.io-client
+    versions:
+    - "> 1.4.8"
+  - dependency-name: socket.io-client
+    versions:
+    - ">= 2.a, < 3"
+  - dependency-name: socket.io-stream
+    versions:
+    - "> 0.6.1"
+  - dependency-name: tar-fs
+    versions:
+    - "> 1.16.3"
+  - dependency-name: underscore
+    versions:
+    - 1.12.0
+    - 1.12.1
+    - 1.13.0
+  - dependency-name: eslint
+    versions:
+    - 7.18.0
+    - 7.19.0
+    - 7.20.0
+    - 7.21.0
+    - 7.22.0
+    - 7.23.0
+    - 7.24.0
+  - dependency-name: react
+    versions:
+    - 16.14.0
+  - dependency-name: webpack-cli
+    versions:
+    - 4.4.0
+    - 4.5.0
+  - dependency-name: create-react-class
+    versions:
+    - 15.7.0
+  - dependency-name: html-webpack-plugin
+    versions:
+    - 4.5.1
+    - 4.5.2
+  - dependency-name: socket.io
+    versions:
+    - 3.1.0
+  - dependency-name: "@fortawesome/free-regular-svg-icons"
+    versions:
+    - 5.15.2
+  - dependency-name: webpack
+    versions:
+    - 4.46.0
