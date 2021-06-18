@@ -25,7 +25,7 @@ mongoose.connect(setup.database, { useMongoClient: true });
 //Ensure that upload paths exists
 mkdirErrorLogger = error.errorLogger(["EEXIST"]);
 
-fs.mkdir(path.join(__dirname, "/uploads"), "0750", function(e) {
+fs.mkdir(path.join(__dirname, "/uploads"), "0750", function (e) {
   if (e) {
     if (e.code != "EEXIST") {
       throw e;
@@ -46,10 +46,10 @@ fs.mkdir(path.join(__dirname, "/logs"), "0750", mkdirErrorLogger);
 upload.configure({
   //TODO: customize filename
   uploadDir: path.join(__dirname, "/uploads/flea/tmp"),
-  uploadUrl: "/fleaupload"
+  uploadUrl: "/fleaupload",
 });
 
-upload.on("end", function(fileInfo, req, res) {});
+upload.on("end", function (fileInfo, req, res) {});
 
 // END FLEA
 
@@ -70,16 +70,18 @@ app.enable("trust proxy");
 
 bb.extend(app, {
   upload: true,
-  path: "/tmp/express-busboy/"
+  path: "/tmp/express-busboy/",
 });
 
 var models_path = path.join(__dirname, "/app/models");
 
-fs.readdirSync(models_path).forEach(function(file) {
+fs.readdirSync(models_path).forEach(function (file) {
   require(path.join(models_path, "/", file));
 });
 
 var usageStatisticsLooper = require("./lib/usageStatistics.js");
+var checkJobsLooper = require("./lib/checkJobs.js");
+setInterval(checkJobsLooper, 3600000);
 
 app.use(express.static(path.join(__dirname, "/public")));
 app.use("/uploads", express.static(path.join(__dirname + "/uploads")));
@@ -90,7 +92,7 @@ app.use(
   express.static(path.join(__dirname, "/public/assets/lib/flea/dist/"))
 );
 
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   res.json(500, { error: err.message });
 });
 
@@ -102,19 +104,19 @@ module.exports = server;
 // Set up socket.io server
 var jobproxy = require("./lib/hpcsocket.js");
 
-io.sockets.on("connection", function(socket) {
+io.sockets.on("connection", function (socket) {
   socket.emit("connected");
-  socket.on("acknowledged", function(data) {
+  socket.on("acknowledged", function (data) {
     var clientSocket = new jobproxy.ClientSocket(socket, data.id);
   });
 
-  socket.on("fasta_parsing_progress_start", function(data) {
+  socket.on("fasta_parsing_progress_start", function (data) {
     var fasta_listener = redis.createClient({
       host: setup.redisHost,
-      port: setup.redisPort
+      port: setup.redisPort,
     });
     fasta_listener.subscribe("fasta_parsing_progress_" + data.id);
-    fasta_listener.on("message", function(channel, message) {
+    fasta_listener.on("message", function (channel, message) {
       socket.emit("fasta_parsing_update", message);
       if (message == "done") {
         fasta_listener.end();
@@ -122,13 +124,13 @@ io.sockets.on("connection", function(socket) {
     });
   });
 
-  socket.on("attribute_parsing_progress_start", function(data) {
+  socket.on("attribute_parsing_progress_start", function (data) {
     var attr_listener = redis.createClient({
       host: setup.redisHost,
-      port: setup.redisPort
+      port: setup.redisPort,
     });
     attr_listener.subscribe("attribute_parsing_progress_" + data.id);
-    attr_listener.on("message", function(channel, message) {
+    attr_listener.on("message", function (channel, message) {
       socket.emit("attribute_parsing_progress", message);
       if (message == "done") {
         attr_listener.end();
