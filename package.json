@@ -112,7 +112,7 @@
     "mocha": "^7.1.2",
     "mocha-parallel-tests": "^2.2.2",
     "node-inspect": "^1.11.2",
-    "node-sass": "^4.9.3",
+    "node-sass": "^6.0.1",
     "preload-webpack-plugin": "^2.3.0",
     "prettier": "^2.1.2",
     "puppeteer": "^2.1.1",
