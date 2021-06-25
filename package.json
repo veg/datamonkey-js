@@ -114,7 +114,7 @@
     "node-inspect": "^1.11.2",
     "node-sass": "^4.9.3",
     "preload-webpack-plugin": "^2.3.0",
-    "prettier": "^2.1.2",
+    "prettier": "^2.3.1",
     "puppeteer": "^2.1.1",
     "reactify": "^1.1.1",
     "sass-loader": "8.0.2",
