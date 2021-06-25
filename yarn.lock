@@ -9352,10 +9352,10 @@ node-gyp@^3.8.0:
     tar "^2.0.0"
     which "1"
 
-node-inspect@^1.11.2:
-  version "1.11.6"
-  resolved "https://registry.yarnpkg.com/node-inspect/-/node-inspect-1.11.6.tgz#70af7213adb9d19cb423803a6502a473e4a7370c"
-  integrity sha512-FJK0N55yT/U50mlb0l9MOV3a6kvt96CQPn2sqiCaUAt+tggEydVFP9thpDw3abIc0C0fEP1vIIoNVdGx3KrOUQ==
+node-inspect@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/node-inspect/-/node-inspect-2.0.0.tgz#31e6be6e877fb35d4c7bcd4c6e5cd8c5209477fc"
+  integrity sha512-vaDNU6Fa/vt8gv/PV+QoeSIPhcBnHMiNOtInxcojfagspQg5KP9HloUDGJWIacamT8Agiu51eF+fuBjrE25a6w==
 
 node-libs-browser@^2.2.1:
   version "2.2.1"
