@@ -86,6 +86,18 @@ AnalysisSchema.statics.pendingJobs = function (cb) {
     });
 };
 
+AnalysisSchema.statics.oldPendingJobs = function (cb) {
+  // GET RUNNING RECORDS THAT ARE MORE THAN ONE DAY OLD
+  this.find({
+    status: "running",
+    created: {
+      $lt: moment().subtract(1, "days"),
+    },
+  }).exec(function (err, items) {
+    cb(err, items);
+  });
+};
+
 AnalysisSchema.statics.submitJob = function (job, cb) {
   winston.info(
     "submitting " + job.analysistype + " : " + job._id + " to cluster"
@@ -108,6 +120,15 @@ AnalysisSchema.statics.subscribePendingJobs = function () {
   this.pendingJobs(function (err, items) {
     _.each(items, function (item) {
       item.resubscribe();
+    });
+  });
+};
+
+AnalysisSchema.statics.checkPendingJobs = function () {
+  // Only get jobs that are three days or older
+  this.oldPendingJobs(function (err, items) {
+    _.each(items, function (item) {
+      item.check();
     });
   });
 };
@@ -180,6 +201,20 @@ AnalysisSchema.methods.resubscribe = function () {
       type: this.analysistype,
     },
     "resubscribe"
+  );
+};
+
+AnalysisSchema.methods.check = function () {
+  var jobproxy = new hpcsocket.HPCSocket(
+    {
+      filepath: this.filepath,
+      msa: this.msa,
+      torque_id: this.torque_id,
+      analysis: this,
+      status_stack: this.status_stack,
+      type: this.analysistype,
+    },
+    "check"
   );
 };
 
