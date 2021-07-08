@@ -1,4 +1,6 @@
+NORMALIZE_SEQUENCE_NAMES = 0;
 internalRenames = 0;
+
 
 function notify(type, msg) {
   // Print to log
