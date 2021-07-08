@@ -26,6 +26,11 @@ exports.invoke = function (req, res) {
   SLAC.spawn(fn, options, (err, result) => {
     if (err) {
       logger.warn("Error with spawning SLAC job from browser :: " + err);
+      res.json(200, {
+        analysis: { error: err },
+        error: err,
+      });
+      return;
     }
     res.json(200, {
       analysis: result,

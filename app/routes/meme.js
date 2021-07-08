@@ -26,10 +26,22 @@ exports.invoke = function (req, res) {
   MEME.spawn(fn, options, function (err, result) {
     if (err) {
       logger.warn("Error with spawning job from browser :: " + err);
+      res.json(200, {
+        analysis: { error: err },
+        error: err,
+      });
+      return;
     }
+
+    let upload_redirect_path = "";
+
+    if (!result) {
+      upload_redirect_path = result.upload_redirect_path;
+    }
+
     res.json(200, {
       analysis: result,
-      upload_redirect_path: result.upload_redirect_path,
+      upload_redirect_path: upload_redirect_path,
     });
   });
 };

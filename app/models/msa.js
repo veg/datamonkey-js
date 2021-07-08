@@ -274,19 +274,20 @@ Msa.methods.dataReader = function (file, datatype, cb) {
     try {
       results = JSON.parse(result);
     } catch (e) {
+      results = {
+        error:
+          "An unexpected error occured when parsing the sequence alignment!",
+      };
       cb(
-        "An unexpected error occured when parsing the sequence alignment! Here is the full traceback : " +
-          result,
-        {}
+        "An unexpected error occured when parsing the sequence alignment!",
+        results
       );
     }
 
-    if (results != undefined) {
-      if ("error" in results) {
-        cb(results.error, "");
-      } else {
-        cb("", results);
-      }
+    if ("error" in results) {
+      cb(results.error, "");
+    } else {
+      cb("", results);
     }
   });
 
@@ -363,7 +364,7 @@ Msa.statics.parseFile = function (fn, datatype, gencodeid, cb) {
   msa.dataReader(fn, datatype, function (err, result) {
     if (err) {
       logger.error(err);
-      cb(err, null);
+      cb(err, result);
       return;
     }
 

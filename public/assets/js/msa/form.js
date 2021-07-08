@@ -1,5 +1,5 @@
-$(function() {
-  $("form").submit(function(e) {
+$(function () {
+  $("form").submit(function (e) {
     e.preventDefault();
 
     $("#file-progress").removeClass("hidden");
@@ -19,7 +19,7 @@ $(function() {
 
     xhr.open("post", action_url, true);
 
-    xhr.upload.onprogress = function(e) {
+    xhr.upload.onprogress = function (e) {
       if (e.lengthComputable) {
         var percentage = (e.loaded / e.total) * 100;
 
@@ -28,13 +28,14 @@ $(function() {
       }
     };
 
-    xhr.onerror = function(e) {
+    xhr.onerror = function (e) {
       $("#file-progress").html(e);
     };
 
-    xhr.onload = function(res) {
+    xhr.onload = function (res) {
       // Replace field with green text, name of file
       var result = JSON.parse(this.responseText);
+      console.log(result);
 
       if (_.has(result, "error")) {
         $("#modal-error-msg").text(result.error);
@@ -43,7 +44,7 @@ $(function() {
         $("#seq-file").css("display", "block");
         $(".progress .progress-bar").css("width", "0%");
       } else if ("error" in result.analysis) {
-        $("#modal-error-msg").text(result.error);
+        $("#modal-error-msg").text(result.analysis.error);
         $("#errorModal").modal();
         $("#file-progress").css("display", "none");
         $("#seq-file").css("display", "block");
