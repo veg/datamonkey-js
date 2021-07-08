@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
   setupJob();
 });
 
@@ -29,12 +29,9 @@ function setupJob() {
 
   var socket_address = document.location.origin;
 
-  var socket = io.connect(
-    socket_address,
-    {
-      reconnect: true
-    }
-  );
+  var socket = io.connect(socket_address, {
+    reconnect: true,
+  });
 
   var was_error = false;
 
@@ -42,7 +39,7 @@ function setupJob() {
   var stdOut = $("#stdOut-placeholder").text();
   render_stdOut("stdOut-container", stdOut, socket);
 
-  d3.json(jobid + "/info", function(data) {
+  d3.json(jobid + "/info", function (data) {
     if (data.status == "aborted") {
       d3.select("#job-status-text").html("aborted");
       job_creation_time = moment(data.creation_time);
@@ -59,7 +56,7 @@ function setupJob() {
         }
 
         d3.select("#job-info-pane").classed({
-          "bs-callout-danger bs-callout-warning bs-callout-success": false
+          "bs-callout-danger bs-callout-warning bs-callout-success": false,
         });
         d3.select("#job-info-pane").classed({ "bs-callout-warning": true });
       }
@@ -70,7 +67,7 @@ function setupJob() {
     }
   });
 
-  var changeStatus = function(data) {
+  var changeStatus = function (data) {
     if (data.creation_time && !job_creation_time) {
       job_creation_time = moment(data.creation_time);
 
@@ -89,35 +86,35 @@ function setupJob() {
     if (job_start_time) {
       d3.select("#job-status-text").html("running");
       d3.select("#job-info-pane").classed({
-        "bs-callout-danger bs-callout-warning bs-callout-success": false
+        "bs-callout-danger bs-callout-warning bs-callout-success": false,
       });
       d3.select("#job-info-pane").classed({ "bs-callout-warning": true });
     }
   };
 
-  var updateQueueWithTorqueId = function(torque_id) {
+  var updateQueueWithTorqueId = function (torque_id) {
     d3.select("#torque_id").classed({ hidden: false });
     $("#torque_id").text(torque_id);
   };
 
-  socket.on("connect_error", function() {
+  socket.on("connect_error", function () {
     if (!was_error) {
       was_error = true;
       datamonkey.errorModal("Could not contact server for job status updates");
     }
   });
 
-  socket.on("connect_timeout", function() {
+  socket.on("connect_timeout", function () {
     datamonkey.errorModal("Could not contact server for job status updates");
   });
 
-  socket.on("connected", function() {
+  socket.on("connected", function () {
     // Start job
     socket.emit("acknowledged", { id: jobid });
   });
 
   // Status update
-  socket.on("status update", function(data) {
+  socket.on("status update", function (data) {
     if (data) {
       changeStatus(data);
       if ("torque_id" in data) {
@@ -127,19 +124,19 @@ function setupJob() {
   });
 
   // Torque id
-  socket.on("job created", function(data) {
+  socket.on("job created", function (data) {
     updateQueueWithTorqueId(data.msg);
   });
 
   // Completed
-  socket.on("completed", function(data) {
+  socket.on("completed", function (data) {
     $(".progress .progress-bar").width("100%");
 
-    $(".job-status").each(function(index) {
+    $(".job-status").each(function (index) {
       $(this).attr("class", "job-status panel panel-success");
     });
 
-    $.get(jobid, function(results) {
+    $.get(jobid, function (results) {
       //Do an AJAX request to get results
       location.reload();
     });
@@ -147,16 +144,16 @@ function setupJob() {
     socket.disconnect();
   });
 
-  socket.on("script error", function(data) {
+  socket.on("script error", function (data) {
     $("#modal-error-msg").html(data.msg);
     $("#errorModal").modal();
     location.reload();
   });
 
-  $("#job-cancel-button").on("click", function() {
+  $("#job-cancel-button").on("click", function () {
     d3.select(this).classed({ disabled: true });
 
-    d3.json($("#job-report").data("jobid") + "/cancel", function(error, json) {
+    d3.json($("#job-report").data("jobid") + "/cancel", function (error, json) {
       if (error) {
         return console.warn(error);
         datamonkey.errorModal("job could not be cancelled");
@@ -165,7 +162,7 @@ function setupJob() {
         d3.select("#job-status-text").html("aborted");
         d3.select("#job-run-time").classed({ hidden: true });
         d3.select("#job-info-pane").classed({
-          "bs-callout-danger bs-callout-warning bs-callout-success": false
+          "bs-callout-danger bs-callout-warning bs-callout-success": false,
         });
         d3.select("#job-info-pane").classed({ "bs-callout-danger": true });
       }
