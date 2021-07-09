@@ -29,6 +29,11 @@ exports.invoke = function (req, res) {
   MULTIHIT.spawn(fn, options, (err, result) => {
     if (err) {
       logger.warn("Error with spawning MULTIHIT job from browser :: " + err);
+      res.json(200, {
+        analysis: { error: err },
+        error: err,
+      });
+      return;
     }
 
     res.json(200, {
