@@ -120,7 +120,7 @@
     "sass-loader": "8.0.2",
     "scss-loader": "^0.0.1",
     "should": "^13.2.3",
-    "style-loader": "^2.0.0",
+    "style-loader": "^3.1.0",
     "url-loader": "^4.1.0",
     "watchify": "^3.6.0",
     "webpack": "^4.43.0",
