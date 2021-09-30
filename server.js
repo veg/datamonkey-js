@@ -59,7 +59,7 @@ app.engine(".ejs", require("ejs").__express);
 app.set("views", path.join(__dirname, "/app/templates"));
 
 var server = app.listen(setup.port);
-var io = require("socket.io")(server);
+var io = require("socket.io").listen(server);
 
 //app.use(express.compress());
 app.use(require("morgan")("combined", { stream: logger.stream }));
@@ -80,8 +80,6 @@ fs.readdirSync(models_path).forEach(function (file) {
 });
 
 var usageStatisticsLooper = require("./lib/usageStatistics.js");
-var checkJobsLooper = require("./lib/checkJobs.js");
-setInterval(checkJobsLooper, 3600000);
 
 app.use(express.static(path.join(__dirname, "/public")));
 app.use("/uploads", express.static(path.join(__dirname + "/uploads")));
@@ -106,7 +104,6 @@ var jobproxy = require("./lib/hpcsocket.js");
 
 io.sockets.on("connection", function (socket) {
   socket.emit("connected");
-
   socket.on("acknowledged", function (data) {
     var clientSocket = new jobproxy.ClientSocket(socket, data.id);
   });
@@ -116,9 +113,7 @@ io.sockets.on("connection", function (socket) {
       host: setup.redisHost,
       port: setup.redisPort,
     });
-
     fasta_listener.subscribe("fasta_parsing_progress_" + data.id);
-
     fasta_listener.on("message", function (channel, message) {
       socket.emit("fasta_parsing_update", message);
       if (message == "done") {
@@ -132,7 +127,6 @@ io.sockets.on("connection", function (socket) {
       host: setup.redisHost,
       port: setup.redisPort,
     });
-
     attr_listener.subscribe("attribute_parsing_progress_" + data.id);
     attr_listener.on("message", function (channel, message) {
       socket.emit("attribute_parsing_progress", message);
