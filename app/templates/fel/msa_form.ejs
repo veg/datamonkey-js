@@ -4,6 +4,7 @@
   <%- include("header.ejs") %>
 
   <div class="nav nav-list float-right span4i"><a href="/help" target="_blank"><span class="glyphicon glyphicon-info-sign"></span></a></div>
+
   <div class="row">  
 
     <form id="msa-form" class="form-horizontal upload-form col-12" name="uploadform" enctype="multipart/form-data" method="post" action=<%= post_to %>>
@@ -18,7 +19,9 @@
       </div>
 
       <div class="upload-div">
+
         <label id="geneticcode-content">Genetic Code<a href="/help#genetic-code" target="_blank"><sup>?</sup></a></label>
+
         <select name="gencodeid">
 
           <option value="0">
@@ -85,6 +88,7 @@
         </select>
       </div>
 
+
       <div class="form-group <%if (typeof errors != "undefined" && typeof errors.mail != "undefined") { %>has-error<% } %>">
         <label id="datatype-content" class="control-label">Notify When Completed?</label>
         <div class="input-group mail-group">
@@ -92,9 +96,32 @@
         </div>
       </div><!-- /form-group -->
 
-        <button type="submit" id="submit-button" class="dm-continue-btn btn float-right">
-          Run Analysis
-        <span class="fa fa-play"></span></button>
+      <div class="accordion" id="accordionExample">
+        <div class="card">
+          <div class="card-header" id="headingOne">
+            <h5 class="mb-0">
+              <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Advanced Options
+              </button>
+            </h5>
+          </div>
+
+          <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div class="card-body">
+              <div class="resample">
+                <p>[Advanced setting, will result in MUCH SLOWER run time] Perform parametric bootstrap resampling to derive site-level null LRT distributions up to this many replicates per site. Recommended use for small to medium (<30 sequences) datasets.</p>
+                <label>Resample?</label>
+                <input type="number" id="resample" name="resample" placeholder="50" min="0" max="1000">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <button type="submit" id="submit-button" class="dm-continue-btn btn float-right mt-3">
+        Run Analysis <span class="fa fa-play"></span>
+      </button>
 
     </form>
   </div>

@@ -8,7 +8,7 @@ const PreloadWebpackPlugin = require("preload-webpack-plugin");
 
 config = {
   devtool: "source-map",
-  mode: "development",
+  mode: "production",
   entry: {
     datamonkey: ["./src/entry.js"],
   },
