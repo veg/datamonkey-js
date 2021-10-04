@@ -167,6 +167,7 @@ AnalysisSchema.statics.usageStatistics = function (cb) {
             JSON.stringify(items),
             (err, reply) => {}
           );
+
           cb(err, items);
         });
     });
