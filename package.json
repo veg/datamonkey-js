@@ -46,7 +46,7 @@
     "lodash": "^4.17.20",
     "main-bower-files": "^2.9.0",
     "moment": "^2.8.0",
-    "mongodb": "^2.0.0",
+    "mongodb": "^4.1.3",
     "mongoose": "^4.11.7",
     "mongoose-schema-extend": "^0.1.0",
     "morgan": "x.x.x",
