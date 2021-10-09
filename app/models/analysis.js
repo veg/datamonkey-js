@@ -167,6 +167,7 @@ AnalysisSchema.statics.usageStatistics = function (cb) {
             JSON.stringify(items),
             (err, reply) => {}
           );
+
           cb(err, items);
         });
     });
@@ -180,7 +181,7 @@ AnalysisSchema.virtual("timestamp").get(function () {
 
 AnalysisSchema.virtual("generic_error_msg").get(function () {
   var error_msg =
-    'We\'re sorry, there was an error processing your job. Please try again, or visit <a href="http://github.com/veg/hyphy/issues/">our GitHub issues</a> and create an issue if the issue persists.';
+    'We\'re sorry, there was an error processing your job. Please try again, or visit <a href="http://github.com/veg/hyphy/issues/"> our GitHub issues page </a> and create an issue if the issue persists.';
 
   return error_msg;
 });

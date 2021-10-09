@@ -1,5 +1,6 @@
 var mongoose = require("mongoose"),
   path = require("path"),
+  _ = require("lodash"),
   logger = require("../../lib/logger"),
   helpers = require("../../lib/helpers");
 
@@ -11,6 +12,8 @@ var MEME = AnalysisSchema.extend({
   analysis_type: Number,
   last_status_msg: String,
   results: Object,
+  resample: Number,
+  bootstrap: Boolean,
 });
 
 MEME.virtual("pmid").get(function () {
@@ -57,6 +60,14 @@ MEME.statics.spawn = function (fn, options, callback) {
     datatype = options.datatype;
 
   meme.mail = options.mail;
+
+  // Check advanced options
+  if (!_.isNaN(options.resample)) {
+    meme.resample = options.resample;
+    meme.bootstrap = true;
+  } else {
+    meme.bootstrap = false;
+  }
 
   const connect_callback = function (data) {
     if (data == "connected") {

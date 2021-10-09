@@ -106,7 +106,6 @@ var jobproxy = require("./lib/hpcsocket.js");
 
 io.sockets.on("connection", function (socket) {
   socket.emit("connected");
-
   socket.on("acknowledged", function (data) {
     var clientSocket = new jobproxy.ClientSocket(socket, data.id);
   });
@@ -116,9 +115,7 @@ io.sockets.on("connection", function (socket) {
       host: setup.redisHost,
       port: setup.redisPort,
     });
-
     fasta_listener.subscribe("fasta_parsing_progress_" + data.id);
-
     fasta_listener.on("message", function (channel, message) {
       socket.emit("fasta_parsing_update", message);
       if (message == "done") {
@@ -132,7 +129,6 @@ io.sockets.on("connection", function (socket) {
       host: setup.redisHost,
       port: setup.redisPort,
     });
-
     attr_listener.subscribe("attribute_parsing_progress_" + data.id);
     attr_listener.on("message", function (channel, message) {
       socket.emit("attribute_parsing_progress", message);

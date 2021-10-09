@@ -27,13 +27,6 @@ exports.getResults = function (model_up, req, res) {
     if (err || !model_var) {
       res.json(500, error.errorResponse("invalid id : " + req.params.id));
     } else {
-      //var options = {};
-      //res.sendFile(model_var.results_path, options, function(err) {
-      //  if (err) {
-      //    res.status(err.status).end();
-      //  }
-      //});
-
       // Append PMID to results
       fs.readFile(model_var.results_path, "utf8", (err, results) => {
         if (err) winston.warn(err);

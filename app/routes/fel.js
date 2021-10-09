@@ -1,6 +1,7 @@
 var error = require(__dirname + " /../../lib/error.js"),
   helpers = require(__dirname + "/../../lib/helpers.js"),
   fs = require("fs"),
+  _ = require("lodash"),
   path = require("path"),
   logger = require("../../lib/logger"),
   setup = require(__dirname + "/../../config/setup.js");
@@ -13,7 +14,7 @@ var redis = require("redis"),
   client = redis.createClient({ host: setup.redisHost, port: setup.redisPort });
 
 exports.form = function (req, res) {
-  var post_to = "/fel";
+  const post_to = "/fel";
   res.render("fel/msa_form.ejs", { post_to: post_to });
 };
 
@@ -29,10 +30,19 @@ exports.uploadFile = function (req, res) {
     postdata = req.body,
     datatype = 0,
     gencodeid = postdata.gencodeid,
-    ds_variation = postdata.ds_variation;
+    ds_variation = postdata.ds_variation,
+    resample = parseInt(postdata.resample);
 
   fel.original_extension = path.basename(fn).split(".")[1];
   fel.mail = postdata.mail;
+
+  // Check advanced options
+  if (!_.isNaN(resample)) {
+    fel.resample = resample;
+    fel.bootstrap = true;
+  } else {
+    fel.bootstrap = false;
+  }
 
   Msa.parseFile(fn, datatype, gencodeid, function (err, msa) {
     if (err) {

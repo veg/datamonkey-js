@@ -4,20 +4,15 @@ var React = require("react"),
   moment = require("moment");
 
 var UsageChart = createReactClass({
-  initialize: function() {
+  initialize: function () {
     var margin = { top: 20, right: 40, bottom: 20, left: 40 },
       width = 1100 - margin.left - margin.right,
       height = 300 - margin.top - margin.bottom,
-      first_date = moment()
-        .subtract(1, "years")
-        .toDate(),
+      first_date = moment().subtract(1, "years").toDate(),
       last_date = moment().toDate(),
-      x = d3.time
-        .scale()
-        .domain([first_date, last_date])
-        .range([0, width]),
+      x = d3.time.scale().domain([first_date, last_date]).range([0, width]),
       binned_data = d3.layout.histogram().bins(
-        d3.range(53).map(i => {
+        d3.range(53).map((i) => {
           return x(
             moment(first_date)
               .add(7 * i, "days")
@@ -25,7 +20,7 @@ var UsageChart = createReactClass({
           );
         })
       )(
-        this.props.data.map(function(d) {
+        this.props.data.map(function (d) {
           return x(d.created);
         })
       ),
@@ -33,9 +28,9 @@ var UsageChart = createReactClass({
         .linear()
         .domain([
           0,
-          d3.max(binned_data, function(d) {
+          d3.max(binned_data, function (d) {
             return d.y;
-          })
+          }),
         ])
         .range([height, 0]);
     (xAxis = d3.svg
@@ -43,11 +38,7 @@ var UsageChart = createReactClass({
       .scale(x)
       .orient("bottom")
       .tickFormat(d3.time.format("%m/%d/%Y"))),
-      (yAxis = d3.svg
-        .axis()
-        .scale(y)
-        .orient("left")
-        .ticks(10));
+      (yAxis = d3.svg.axis().scale(y).orient("left").ticks(10));
 
     var svg = d3
       .select("#usage-chart")
@@ -63,7 +54,7 @@ var UsageChart = createReactClass({
       .enter()
       .append("g")
       .attr("class", "bar")
-      .attr("transform", function(d) {
+      .attr("transform", function (d) {
         return "translate(" + d.x + "," + y(d.y) + ")";
       });
 
@@ -71,20 +62,20 @@ var UsageChart = createReactClass({
       .append("rect")
       .attr("x", 1)
       .attr("width", binned_data[0].dx - 1)
-      .attr("height", function(d) {
+      .attr("height", function (d) {
         return height - y(d.y);
       })
       .attr("fill", "#4BA69C");
 
     bar
       .append("text")
-      .attr("x", function(d) {
+      .attr("x", function (d) {
         return d.dx / 2;
       })
       .attr("y", -2)
       .attr("text-anchor", "middle")
       .attr("font-size", 12)
-      .text(function(d) {
+      .text(function (d) {
         return d.y;
       });
 
@@ -104,26 +95,26 @@ var UsageChart = createReactClass({
       .style("text-anchor", "end")
       .text("Jobs");
   },
-  componentWillUpdate: function() {
+  componentWillUpdate: function () {
     d3.select("#usage-chart").html("<h4>Weekly completed jobs</h4>");
   },
-  componentDidMount: function() {
+  componentDidMount: function () {
     this.initialize();
   },
-  componentDidUpdate: function() {
+  componentDidUpdate: function () {
     this.initialize();
   },
-  render: function() {
+  render: function () {
     return (
       <div id="usage-chart" style={{ "margin-bottom": "50px" }}>
         <h4>Weekly completed jobs</h4>
       </div>
     );
-  }
+  },
 });
 
 var Histogram = createReactClass({
-  initialize: function() {
+  initialize: function () {
     var margin = { top: 20, right: 40, bottom: 40, left: 40 },
       width = 500 - margin.left - margin.right,
       height = 200 - margin.top - margin.bottom,
@@ -136,20 +127,13 @@ var Histogram = createReactClass({
         .linear()
         .domain([
           0,
-          d3.max(binned_data, function(d) {
+          d3.max(binned_data, function (d) {
             return d.y;
-          })
+          }),
         ])
         .range([height, 0]);
-    xAxis = d3.svg
-      .axis()
-      .scale(x)
-      .orient("bottom");
-    yAxis = d3.svg
-      .axis()
-      .scale(y)
-      .orient("left")
-      .ticks(10);
+    xAxis = d3.svg.axis().scale(x).orient("bottom");
+    yAxis = d3.svg.axis().scale(y).orient("left").ticks(10);
 
     var svg = d3
       .select("#" + this.props.kind_of_data)
@@ -165,14 +149,14 @@ var Histogram = createReactClass({
       .enter()
       .append("g")
       .attr("class", "bar")
-      .attr("transform", function(d) {
+      .attr("transform", function (d) {
         return "translate(" + x(d.x) + "," + y(d.y) + ")";
       });
     bar
       .append("rect")
       .attr("x", 1)
       .attr("width", x(binned_data[0].dx) - 1)
-      .attr("height", function(d) {
+      .attr("height", function (d) {
         return height - y(d.y);
       })
       .attr("fill", "#4BA69C");
@@ -198,28 +182,28 @@ var Histogram = createReactClass({
       .text("Jobs");
   },
 
-  componentDidUpdate: function() {
+  componentDidUpdate: function () {
     d3.select("#" + this.props.kind_of_data).html(
       "<h4>" + this.props.kind_of_data + "</h4>"
     );
     this.initialize();
   },
 
-  componentDidMount: function() {
+  componentDidMount: function () {
     this.initialize();
   },
 
-  render: function() {
+  render: function () {
     return (
       <div id={this.props.kind_of_data}>
         <h4>{this.props.kind_of_data}</h4>
       </div>
     );
-  }
+  },
 });
 
 var SitesAndSequencesScatterPlot = createReactClass({
-  initialize: function() {
+  initialize: function () {
     var margin = { top: 50, bottom: 50, right: 50, left: 50 },
       width = 500 - margin.right - margin.left,
       height = 500 - margin.top - margin.bottom,
@@ -228,7 +212,7 @@ var SitesAndSequencesScatterPlot = createReactClass({
         .domain(
           d3.extent(
             this.props.data
-              .map(function(d) {
+              .map(function (d) {
                 return d.msa[0].sequences;
               })
               .concat(0)
@@ -240,7 +224,7 @@ var SitesAndSequencesScatterPlot = createReactClass({
         .domain(
           d3.extent(
             this.props.data
-              .map(function(d) {
+              .map(function (d) {
                 return d.msa[0].sites;
               })
               .concat(0)
@@ -254,14 +238,8 @@ var SitesAndSequencesScatterPlot = createReactClass({
       .attr("height", height + margin.top + margin.bottom)
       .append("g")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")")),
-      (xAxis = d3.svg
-        .axis()
-        .scale(x)
-        .orient("bottom")),
-      (yAxis = d3.svg
-        .axis()
-        .scale(y)
-        .orient("left"));
+      (xAxis = d3.svg.axis().scale(x).orient("bottom")),
+      (yAxis = d3.svg.axis().scale(y).orient("left"));
 
     svg
       .append("g")
@@ -290,10 +268,10 @@ var SitesAndSequencesScatterPlot = createReactClass({
       .append("circle")
       .attr("class", "dot")
       .attr("r", 3.5)
-      .attr("cx", function(d) {
+      .attr("cx", function (d) {
         return x(+d.msa[0].sequences);
       })
-      .attr("cy", function(d) {
+      .attr("cy", function (d) {
         return y(+d.msa[0].sites);
       })
       .attr("fill", "#4BA69C")
@@ -301,51 +279,51 @@ var SitesAndSequencesScatterPlot = createReactClass({
       .attr("opacity", 0.5);
   },
 
-  componentDidUpdate: function() {
+  componentDidUpdate: function () {
     d3.select("#sites-sequences").html("<h4>Sites and sequences</h4>");
     this.initialize();
   },
 
-  componentDidMount: function() {
+  componentDidMount: function () {
     this.initialize();
   },
 
-  render: function() {
+  render: function () {
     return (
       <div id="sites-sequences">
         <h4>Sites and sequences</h4>
       </div>
     );
-  }
+  },
 });
 
 var UsageInformation = createReactClass({
-  fetchData: function(method) {
+  fetchData: function (method) {
     var self = this;
-    self.setState({ data: null }, function() {
-      d3.json("/" + method + "/usage", function(data) {
-        data.forEach(function(d) {
+    self.setState({ data: null }, function () {
+      d3.json("/" + method + "/usage", function (data) {
+        data.forEach(function (d) {
           d.created = new Date(d.created);
         });
-        data.sort(function(a, b) {
+        data.sort(function (a, b) {
           return a.created - b.created;
         });
         self.setState({
-          data: data
+          data: data,
         });
       });
     });
   },
-  componentDidMount: function() {
+  componentDidMount: function () {
     this.fetchData(this.props.active);
   },
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps: function (nextProps) {
     this.fetchData(nextProps.active);
   },
-  getInitialState: function() {
+  getInitialState: function () {
     return { data: null };
   },
-  render: function() {
+  render: function () {
     var content;
     if (this.state.data) {
       var last_date_object = moment(
@@ -358,7 +336,7 @@ var UsageInformation = createReactClass({
         </div>,
         <div className="col-md-12">
           <UsageChart data={this.state.data} />
-        </div>
+        </div>,
       ];
       if (this.state.data[0].msa) {
         content.push(
@@ -370,13 +348,13 @@ var UsageInformation = createReactClass({
           <div className="col-md-6">
             <Histogram
               kind_of_data="Sites"
-              data={this.state.data.map(function(d) {
+              data={this.state.data.map(function (d) {
                 return d.msa[0].sites;
               })}
             />
             <Histogram
               kind_of_data="Sequences"
-              data={this.state.data.map(function(d) {
+              data={this.state.data.map(function (d) {
                 return d.msa[0].sequences;
               })}
             />
@@ -394,20 +372,20 @@ var UsageInformation = createReactClass({
       );
     }
     return <div className="row">{content}</div>;
-  }
+  },
 });
 
 var UsageDashboard = createReactClass({
-  tabClick: function(selection) {
+  tabClick: function (selection) {
     var self = this;
-    return function() {
+    return function () {
       self.setState({ active: selection });
     };
   },
-  getInitialState: function() {
+  getInitialState: function () {
     return { active: "absrel" };
   },
-  render: function() {
+  render: function () {
     var self = this,
       methods = [
         "absrel",
@@ -417,12 +395,13 @@ var UsageDashboard = createReactClass({
         "fade",
         "fel",
         "meme",
+        "multihit",
+        "contrast_fel",
         "fubar",
         "slac",
-        "hivtrace",
-        "gard"
+        "gard",
       ],
-      tabs = methods.map(function(method) {
+      tabs = methods.map(function (method) {
         return (
           <a
             href="#"
@@ -446,7 +425,7 @@ var UsageDashboard = createReactClass({
         <UsageInformation active={this.state.active} />
       </div>
     );
-  }
+  },
 });
 
 function render_usage() {

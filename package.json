@@ -1,6 +1,6 @@
 {
   "name": "datamonkey.js",
-  "version": "1.8.1",
+  "version": "1.9.0",
   "description": "A free public server for comparative analysis of sequence alignments using state-of-the-art statistical models.",
   "private": true,
   "author": {
@@ -72,7 +72,7 @@
     "redis": "^2.0.0",
     "save-svg-as-png": "^1.4.17",
     "shortid": "^2.2.15",
-    "socket.io": "4.1.2",
+    "socket.io": "4",
     "socket.io-client": "4.1.2",
     "socket.io-stream": "0.6.x",
     "tar-fs": "^1.16.3",
