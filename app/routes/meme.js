@@ -1,5 +1,6 @@
 var error = require(__dirname + " /../../lib/error.js"),
   logger = require("../../lib/logger"),
+  _ = require("lodash"),
   setup = require(__dirname + "/../../config/setup.js");
 
 var mongoose = require("mongoose"),
@@ -17,11 +18,21 @@ exports.form = function (req, res) {
 exports.invoke = function (req, res) {
   var fn = req.files.files.file;
   let postdata = req.body;
+  let resample = parseInt(postdata.resample);
+
   let options = {
     datatype: 0,
     gencodeid: postdata.gencodeid,
     mail: postdata.mail,
   };
+
+  // Check advanced options
+  if (!_.isNaN(resample)) {
+    options.resample = resample;
+    options.bootstrap = true;
+  } else {
+    options.bootstrap = false;
+  }
 
   MEME.spawn(fn, options, function (err, result) {
     if (err) {

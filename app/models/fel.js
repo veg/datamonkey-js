@@ -14,6 +14,8 @@ var FEL = AnalysisSchema.extend({
   last_status_msg: String,
   results: Object,
   ds_variation: Number,
+  resample: Number,
+  bootstrap: Boolean,
 });
 
 FEL.virtual("pmid").get(function () {

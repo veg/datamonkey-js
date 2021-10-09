@@ -59,7 +59,7 @@ app.engine(".ejs", require("ejs").__express);
 app.set("views", path.join(__dirname, "/app/templates"));
 
 var server = app.listen(setup.port);
-var io = require("socket.io").listen(server);
+var io = require("socket.io")(server);
 
 //app.use(express.compress());
 app.use(require("morgan")("combined", { stream: logger.stream }));
@@ -80,6 +80,8 @@ fs.readdirSync(models_path).forEach(function (file) {
 });
 
 var usageStatisticsLooper = require("./lib/usageStatistics.js");
+var checkJobsLooper = require("./lib/checkJobs.js");
+setInterval(checkJobsLooper, 3600000);
 
 app.use(express.static(path.join(__dirname, "/public")));
 app.use("/uploads", express.static(path.join(__dirname + "/uploads")));
