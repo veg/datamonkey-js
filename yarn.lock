@@ -11405,12 +11405,7 @@ react-proxy@^1.1.7:
     lodash "^4.6.1"
     react-deep-force-update "^1.0.0"
 
-react-range@^1.8.5:
-  version "1.8.7"
-  resolved "https://registry.yarnpkg.com/react-range/-/react-range-1.8.7.tgz#a890bc614517b5579179f6a2b44e642786f8d96e"
-  integrity sha512-M8vaKB2vCU04BWq/kae/e5xu5WWm/lfFHXWkSiFWWm00+fqNvhYAeNYmiXR82WgwQAwRmew7Wcy7HC9pZj5QcA==
-
-react-range@^1.8.9:
+react-range@^1.8.11, react-range@^1.8.9:
   version "1.8.11"
   resolved "https://registry.yarnpkg.com/react-range/-/react-range-1.8.11.tgz#7d9ae1e4a263108566897acee2dde8d5b78901e1"
   integrity sha512-LaF5xwYy6u0Rnp0hRBBLKqJx0DmNpW2GqMSoj8OJ0IYiCM7GmSNf0UKxmN4cN0BCb2EwzD3zA9nw6Fkug2c3mg==
