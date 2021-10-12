@@ -7634,8 +7634,10 @@ hyphy-vision@^1.0.0:
     save-svg-as-png "^1.2.0"
     underscore "^1.8.3"
 
-"hyphy-vision@file:.yalc/hyphy-vision":
-  version "2.11.0-95a71f98"
+hyphy-vision@^2.11.1:
+  version "2.11.1"
+  resolved "https://registry.yarnpkg.com/hyphy-vision/-/hyphy-vision-2.11.1.tgz#d396b89a9f6b21e877a8e1fc3e14bd0627019749"
+  integrity sha512-jH3d9R417gVuuezf3LLGfar9DgOrUYBuzuoj8A2fbduKwlrAvoiFbEtnlVtieKIHM3uvt4XD5REmGIregOx4wA==
   dependencies:
     "@fortawesome/fontawesome-free" "^5.15.3"
     "@hyphy_software/fel-analysis-result-visualization" "https://api.observablehq.com/@hyphy_software/fel-analysis-result-visualization@2297.tgz?v=3"
