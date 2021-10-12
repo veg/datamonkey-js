@@ -79,7 +79,7 @@
     "tether": "^1.4.0",
     "underscore": "^1.9.1",
     "winston": "^3.2.1",
-    "yarn": "^1.19.1"
+    "yarn": "^1.22.15"
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",
