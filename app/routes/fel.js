@@ -35,6 +35,7 @@ exports.uploadFile = function (req, res) {
 
   fel.original_extension = path.basename(fn).split(".")[1];
   fel.mail = postdata.mail;
+  fel.ci = postdata.confidence_interval == "true";
 
   // Check advanced options
   if (!_.isNaN(resample)) {

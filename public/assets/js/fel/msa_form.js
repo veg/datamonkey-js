@@ -21,6 +21,11 @@ $(function () {
 
     formData.append("mail", $("input[name='mail']").val());
 
+    formData.append(
+      "confidence_interval",
+      $("input[name='confidence-interval']").prop("checked")
+    );
+
     var action_url = $("#msa-form").attr("action");
 
     var xhr = new XMLHttpRequest();
