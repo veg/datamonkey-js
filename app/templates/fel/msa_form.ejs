@@ -108,11 +108,19 @@
 
           <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
             <div class="card-body">
+
               <div class="resample">
                 <p>[Advanced setting, will result in MUCH SLOWER run time] Perform parametric bootstrap resampling to derive site-level null LRT distributions up to this many replicates per site. Recommended use for small to medium (<30 sequences) datasets.</p>
                 <label>Resample?</label>
                 <input type="number" id="resample" name="resample" placeholder="50" min="0" max="1000">
               </div>
+
+              <div class="confidence-intervals">
+                <p>Compute profile likelihood confidence intervals for each variable site</p>
+                <label>Yes?</label>
+                <input type="checkbox" id="confidence-interval" name="confidence-interval">
+              </div>
+
             </div>
           </div>
         </div>
