@@ -28,6 +28,7 @@ var AnalysisSchema = new Schema({
   start_time: Date,
   sendmail: Boolean,
   mail: String,
+  notified: { type: Boolean, default: false },
   error_message: String,
   stderr: String,
   stdout: String,
