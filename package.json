@@ -62,7 +62,7 @@
     "react-copy-to-clipboard": "^5.0.2",
     "react-dom": "16.13.1",
     "react-json-view": "^1.19.1",
-    "react-markdown": "^4.3.1",
+    "react-markdown": "^7.1.1",
     "react-phylotree": "0.4.3",
     "react-range": "^1.8.5",
     "react-recaptcha": "^2.3.10",
