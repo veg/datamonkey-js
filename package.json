@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@fortawesome/free-brands-svg-icons": "5.15.3",
-    "@fortawesome/free-regular-svg-icons": "5.15.3",
+    "@fortawesome/free-regular-svg-icons": "6.1.1",
     "@fortawesome/free-solid-svg-icons": "5.15.3",
     "alignment.js": "^0.3.0",
     "async": "^0.1.0",
