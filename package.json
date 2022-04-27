@@ -24,7 +24,7 @@
     "@fortawesome/free-regular-svg-icons": "5.15.3",
     "@fortawesome/free-solid-svg-icons": "5.15.3",
     "alignment.js": "^0.3.0",
-    "async": "^0.1.0",
+    "async": "^2.6.4",
     "blueimp-file-upload": "^9.19.1",
     "bootstrap": "^4.4.1",
     "circos": "^2.1.0",
