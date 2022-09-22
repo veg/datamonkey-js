@@ -15,6 +15,7 @@ var FEL = AnalysisSchema.extend({
   results: Object,
   ds_variation: Number,
   resample: Number,
+  ci: Boolean,
   bootstrap: Boolean,
 });
 

@@ -18,7 +18,7 @@ exports.form = function (req, res) {
 exports.invoke = function (req, res) {
   var fn = req.files.files.file;
   let postdata = req.body;
-  let resample = parseInt(postdata.resample);
+  //let resample = parseInt(postdata.resample);
 
   let options = {
     datatype: 0,
@@ -26,13 +26,13 @@ exports.invoke = function (req, res) {
     mail: postdata.mail,
   };
 
-  // Check advanced options
-  if (!_.isNaN(resample)) {
-    options.resample = resample;
-    options.bootstrap = true;
-  } else {
-    options.bootstrap = false;
-  }
+  //// Check advanced options
+  //if (!_.isNaN(resample)) {
+  //  options.resample = resample;
+  //  options.bootstrap = true;
+  //} else {
+  //  options.bootstrap = false;
+  //}
 
   MEME.spawn(fn, options, function (err, result) {
     if (err) {
@@ -46,7 +46,7 @@ exports.invoke = function (req, res) {
 
     let upload_redirect_path = "";
 
-    if (!result) {
+    if (result) {
       upload_redirect_path = result.upload_redirect_path;
     }
 

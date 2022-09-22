@@ -35,7 +35,6 @@ $(function () {
     xhr.onload = function (res) {
       // Replace field with green text, name of file
       var result = JSON.parse(this.responseText);
-      console.log(result);
 
       if (_.has(result, "error")) {
         $("#modal-error-msg").text(result.error);

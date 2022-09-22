@@ -7599,6 +7599,52 @@ husky@^7.0.1:
   resolved "https://registry.yarnpkg.com/husky/-/husky-7.0.2.tgz#21900da0f30199acca43a46c043c4ad84ae88dff"
   integrity sha512-8yKEWNX4z2YsofXAMT7KvA1g8p+GxtB1ffV8XtpAEGuXNAbCV5wdNKH+qTpw8SM9fh4aMPDR+yQuKfgnreyZlg==
 
+hyphy-vision@2.11.4:
+  version "2.11.4"
+  resolved "https://registry.yarnpkg.com/hyphy-vision/-/hyphy-vision-2.11.4.tgz#438382da74e9a0ad9aceb2040cd44ab5a7ff416b"
+  integrity sha512-wjidR6RC4wGFtIo65Bpker7nYDqrxYoTPVjQDiWY50oiQGU+M2J7JU2/3KLCUxLpsVWeZgrijtZqaIKmmWOXDQ==
+  dependencies:
+    "@fortawesome/fontawesome-free" "^5.15.3"
+    "@hyphy_software/fel-analysis-result-visualization" "https://api.observablehq.com/@hyphy_software/fel-analysis-result-visualization@2297.tgz?v=3"
+    "@hyphy_software/gard-analysis-result-visualization" "https://api.observablehq.com/@hyphy_software/gard-analysis-result-visualization@916.tgz?v=3"
+    "@hyphy_software/multi-hit-analysis-result-visualization" "https://api.observablehq.com/@hyphy_software/multi-hit-analysis-result-visualization.tgz?v=3"
+    "@observablehq/runtime" "4"
+    alignment.js "^0.3.0"
+    bootstrap "4.x"
+    chi-squared "^1.1.0"
+    circos "^2.1.0"
+    create-react-class "^15.6.3"
+    d3 "3.x"
+    d3-save-svg "0.0.2"
+    export-to-csv "^0.2.1"
+    express "^4.16.2"
+    file-saver "^2.0.2"
+    immutable "3.8.2"
+    in-browser-download "^1.0.0"
+    jquery "3.x"
+    jquery-ui "1.x"
+    jquery-ui-bundle "^1.11.4"
+    jquery-ui-dist "^1.12.1"
+    json-loader "^0.5.7"
+    lodash "4.x"
+    lodash.clonedeep "^4.5.0"
+    phylotree "0.1.6"
+    popper.js "^1.14.1"
+    pretty-data "^0.40.0"
+    prop-types "^15.5.10"
+    react "^16.13.0"
+    react-copy-to-clipboard "^5.0.0"
+    react-dom "^16.13.0"
+    react-json-view "^1.14.0"
+    react-phylotree "0.4.3"
+    react-range "^1.8.9"
+    react-router-dom "5.1.2"
+    react-router-hash-link "^2.4.3"
+    react-scrollchor "^6.0.0"
+    save-svg-as-png "^1.2.0"
+    text-width "^1.2.0"
+    underscore "1.9"
+
 hyphy-vision@^1.0.0:
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/hyphy-vision/-/hyphy-vision-1.1.7.tgz#ddd641aa3faff31d17064c50c58beb21c91cb08d"
@@ -7633,52 +7679,6 @@ hyphy-vision@^1.0.0:
     react-json-view "^1.14.0"
     save-svg-as-png "^1.2.0"
     underscore "^1.8.3"
-
-hyphy-vision@^2.11.1:
-  version "2.11.1"
-  resolved "https://registry.yarnpkg.com/hyphy-vision/-/hyphy-vision-2.11.1.tgz#d396b89a9f6b21e877a8e1fc3e14bd0627019749"
-  integrity sha512-jH3d9R417gVuuezf3LLGfar9DgOrUYBuzuoj8A2fbduKwlrAvoiFbEtnlVtieKIHM3uvt4XD5REmGIregOx4wA==
-  dependencies:
-    "@fortawesome/fontawesome-free" "^5.15.3"
-    "@hyphy_software/fel-analysis-result-visualization" "https://api.observablehq.com/@hyphy_software/fel-analysis-result-visualization@2297.tgz?v=3"
-    "@hyphy_software/gard-analysis-result-visualization" "https://api.observablehq.com/@hyphy_software/gard-analysis-result-visualization@916.tgz?v=3"
-    "@hyphy_software/multi-hit-analysis-result-visualization" "https://api.observablehq.com/@hyphy_software/multi-hit-analysis-result-visualization.tgz?v=3"
-    "@observablehq/runtime" "4"
-    alignment.js "^0.3.0"
-    bootstrap "4.x"
-    chi-squared "^1.1.0"
-    circos "^2.1.0"
-    create-react-class "^15.6.3"
-    d3 "3.x"
-    d3-save-svg "0.0.2"
-    export-to-csv "^0.2.1"
-    express "^4.16.2"
-    file-saver "^2.0.2"
-    immutable "3.8.2"
-    in-browser-download "^1.0.0"
-    jquery "3.x"
-    jquery-ui "1.x"
-    jquery-ui-bundle "^1.11.4"
-    jquery-ui-dist "^1.12.1"
-    json-loader "^0.5.7"
-    lodash "4.x"
-    lodash.clonedeep "^4.5.0"
-    phylotree "0.1.6"
-    popper.js "^1.14.1"
-    pretty-data "^0.40.0"
-    prop-types "^15.5.10"
-    react "16.14.0"
-    react-copy-to-clipboard "^5.0.0"
-    react-dom "16.14"
-    react-json-view "^1.14.0"
-    react-phylotree "0.4.3"
-    react-range "^1.8.9"
-    react-router-dom "5.1.2"
-    react-router-hash-link "^2.4.3"
-    react-scrollchor "^6.0.0"
-    save-svg-as-png "^1.2.0"
-    text-width "^1.2.0"
-    underscore "1.9"
 
 iconv-lite@0.4, iconv-lite@0.4.24, iconv-lite@^0.4.13, iconv-lite@^0.4.4, iconv-lite@^0.4.5:
   version "0.4.24"
@@ -11278,16 +11278,6 @@ react-dom@16.13.1, react-dom@^16.13.0, react-dom@^16.6.3:
     prop-types "^15.6.2"
     scheduler "^0.19.1"
 
-react-dom@16.14:
-  version "16.14.0"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-16.14.0.tgz#7ad838ec29a777fb3c75c3a190f661cf92ab8b89"
-  integrity sha512-1gCeQXDLoIqMgqD3IO2Ah9bnf0w9kzhwN5q4FGnHZ67hBm9yePzB5JJAIQCc8x3pFnNlwFq4RidZggNAAkzWWw==
-  dependencies:
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
-    prop-types "^15.6.2"
-    scheduler "^0.19.1"
-
 react-dom@^15.4.1:
   version "15.6.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-15.6.2.tgz#41cfadf693b757faf2708443a1d1fd5a02bef730"
@@ -11588,15 +11578,6 @@ react@16.13.1, react@^16.12.0, react@^16.13.0, react@^16.6.3:
   version "16.13.1"
   resolved "https://registry.yarnpkg.com/react/-/react-16.13.1.tgz#2e818822f1a9743122c063d6410d85c1e3afe48e"
   integrity sha512-YMZQQq32xHLX0bz5Mnibv1/LHb3Sqzngu7xstSM+vrkE5Kzr9xE0yMByK5kMoTK30YVJE61WfbxIFFvfeDKT1w==
-  dependencies:
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
-    prop-types "^15.6.2"
-
-react@16.14.0:
-  version "16.14.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-16.14.0.tgz#94d776ddd0aaa37da3eda8fc5b6b18a4c9a3114d"
-  integrity sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
