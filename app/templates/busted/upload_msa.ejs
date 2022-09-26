@@ -1,7 +1,9 @@
 <%- include("../includes/header.ejs") %>
 
 <div id="container" class="container">
+
   <%- include("header.ejs") %>
+
   <div class="row">
 
     <form id="msa-form" class="form-horizontal upload-form col-12" name="uploadform" enctype="multipart/form-data" method="post" action=<%= post_to %>>
@@ -15,7 +17,8 @@
           </div>
       </div>
 
-      <div class="upload-div">
+      <div class="pt-2 pb-2">
+
         <label id="geneticcode-content">Genetic Code<a href="/help#genetic-code" target="_blank"><sup>?</sup></a></label>
         <select name="gencodeid">
 
@@ -71,7 +74,7 @@
         </select>
       </div>
 
-      <div class="ds-variation-div">
+      <div class="ds-variation-div pt-2 pb-2">
         <label>Synonymous rate variation (recommended)?</label>
         <select id="ds-variation">
           <option value="1">
@@ -83,17 +86,35 @@
         </select>
       </div>
 
-      <div class="form-group <%if (typeof errors != "undefined" && typeof errors.mail != "undefined") { %>has-error<% } %>">
+      <div class="multihit-div pt-3 pb-3 pl-2 bg-light rounded">
+        <label><span class="badge rounded-pill text-bg-info">Advanced</span> Include support for multiple nucleotide substitutions? </label>
+        <select id="multihit">
+          <option value="Default">
+            Use standard models which permit only single nucleotide changes to occur instantly (Default) 
+          </option>
+          <option value="Double">
+            Include branch-specific rates for double nucleotide substitutions
+          </option>
+          <option value="Double+Triple">
+            Include branch-specific rates for double and triple nucleotide substitutions
+          </option>
+        </select>
+      </div>
+
+
+      <div class="pt-3 pb-3 form-group <%if (typeof errors != "undefined" && typeof errors.mail != "undefined") { %>has-error<% } %>">
         <label id="datatype-content">Notify When Completed</label>
         <input name="mail" type="text" class="form-control" placeholder="Email Address">
       </div><!-- /form-group -->
+
+
 
       <button id="submit-button" type="submit" class="dm-continue-btn btn float-right">
         Run Analysis
         <span class="fa fa-play"></span></button>
       </button>
-
     </form>
+
   </div>
 
 </div>
@@ -117,4 +138,6 @@
 </div>
 
 <script src="/assets/js/busted/form.js"></script>
+
 <%- include("../includes/footer.ejs") %>
+

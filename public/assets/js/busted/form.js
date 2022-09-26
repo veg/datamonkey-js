@@ -1,5 +1,5 @@
-$(function() {
-  $("form").submit(function(e) {
+$(function () {
+  $("form").submit(function (e) {
     e.preventDefault();
 
     $("#file-progress").removeClass("hidden");
@@ -13,6 +13,7 @@ $(function() {
     formData.append("gencodeid", $("select[name='gencodeid']").val());
     formData.append("ds_variation", $("#ds-variation").val());
     formData.append("mail", $("input[name='mail']").val());
+    formData.append("multihit", $("#multihit").val());
 
     var action_url = $("#msa-form").attr("action");
 
@@ -20,7 +21,7 @@ $(function() {
 
     xhr.open("post", action_url, true);
 
-    xhr.upload.onprogress = function(e) {
+    xhr.upload.onprogress = function (e) {
       if (e.lengthComputable) {
         var percentage = (e.loaded / e.total) * 100;
 
@@ -29,11 +30,11 @@ $(function() {
       }
     };
 
-    xhr.onerror = function(e) {
+    xhr.onerror = function (e) {
       $("#file-progress").html(e);
     };
 
-    xhr.onload = function(res) {
+    xhr.onload = function (res) {
       // Replace field with green text, name of file
       var result = JSON.parse(this.responseText);
 
