@@ -1743,12 +1743,8 @@
 
 "@hyphy_software/busted@https://api.observablehq.com/@hyphy_software/busted@3486.tgz?v=3":
   version "3486.0.0"
-<<<<<<< HEAD
-  resolved "https://api.observablehq.com/@hyphy_software/busted@3486.tgz?v=3#d24844dec0886194dcaa9e85932b7d2a521526d4"
-=======
   uid "3c4f51df579e4307a117ca12a8d5ab8f715798b4"
   resolved "https://api.observablehq.com/@hyphy_software/busted@3486.tgz?v=3#3c4f51df579e4307a117ca12a8d5ab8f715798b4"
->>>>>>> 49c379b23858565601ce9e0e0284a6bb20aec3af
 
 "@hyphy_software/fel-analysis-result-visualization@https://api.observablehq.com/@hyphy_software/fel-analysis-result-visualization@2297.tgz?v=3":
   version "2297.0.0"
@@ -2640,11 +2636,6 @@ async@^2.1.2, async@^2.4.1:
   dependencies:
     lodash "^4.17.14"
 
-async@^3.2.3:
-  version "3.2.4"
-  resolved "https://registry.yarnpkg.com/async/-/async-3.2.4.tgz#2d22e00f8cddeb5fde5dd33522b56d1cf569a81c"
-  integrity sha512-iAB+JbDEGXhyIUavoDl9WP/Jj106Kz9DEn1DPgYw5ruDn0e3Wgi3sKFm55sASdGBNOQB8F59d9qQ7deqrHA8wQ==
-
 asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
@@ -2819,13 +2810,13 @@ babel-jest@^19.0.0:
     babel-plugin-istanbul "^4.0.0"
     babel-preset-jest "^19.0.0"
 
-babel-loader@^8.1.0:
-  version "8.2.2"
-  resolved "https://registry.yarnpkg.com/babel-loader/-/babel-loader-8.2.2.tgz#9363ce84c10c9a40e6c753748e1441b60c8a0b81"
-  integrity sha512-JvTd0/D889PQBtUXJ2PXaKU/pjZDMtHA9V2ecm+eNRmmBCMR09a+fmpGTNwnJtFmFl5Ei7Vy47LjBb+L0wQ99g==
+babel-loader@^8.2.5:
+  version "8.2.5"
+  resolved "https://registry.yarnpkg.com/babel-loader/-/babel-loader-8.2.5.tgz#d45f585e654d5a5d90f5350a779d7647c5ed512e"
+  integrity sha512-OSiFfH89LrEMiWd4pLNqGz4CwJDtbs2ZVc+iGu2HrkRfPxId9F2anQj38IxWpmRfsUY0aBZYi1EFcd3mhtRMLQ==
   dependencies:
     find-cache-dir "^3.3.1"
-    loader-utils "^1.4.0"
+    loader-utils "^2.0.0"
     make-dir "^3.1.0"
     schema-utils "^2.6.5"
 
@@ -7608,7 +7599,6 @@ husky@^7.0.1:
   resolved "https://registry.yarnpkg.com/husky/-/husky-7.0.2.tgz#21900da0f30199acca43a46c043c4ad84ae88dff"
   integrity sha512-8yKEWNX4z2YsofXAMT7KvA1g8p+GxtB1ffV8XtpAEGuXNAbCV5wdNKH+qTpw8SM9fh4aMPDR+yQuKfgnreyZlg==
 
-<<<<<<< HEAD
 hyphy-vision@^1.0.0:
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/hyphy-vision/-/hyphy-vision-1.1.7.tgz#ddd641aa3faff31d17064c50c58beb21c91cb08d"
@@ -7648,12 +7638,6 @@ hyphy-vision@^2.12.6:
   version "2.12.6"
   resolved "https://registry.yarnpkg.com/hyphy-vision/-/hyphy-vision-2.12.6.tgz#ac90522d320693d06006b71b4425aa89d46eec5e"
   integrity sha512-EhPaUsBwYXpB3a+a+UPb/Punn9ixVSDC9RhFrK3/Oc9QpXQK7ef2cxSAgKBhJIGLY0nfr8l+kiOXSLJTXsqCLw==
-=======
-hyphy-vision@2.12.4:
-  version "2.12.4"
-  resolved "https://registry.yarnpkg.com/hyphy-vision/-/hyphy-vision-2.12.4.tgz#7e333c1ef5581c2c3d781c304ee8f34cc1540aca"
-  integrity sha512-r+S+RXu4Sc1KPrRmalzZF8r/jk5Q2tXkQeHerUyoCzuul4t9QxYpJtyaHDo5JvPt3wc3WAldna3twakBdvzMHw==
->>>>>>> 49c379b23858565601ce9e0e0284a6bb20aec3af
   dependencies:
     "@fortawesome/fontawesome-free" "^5.15.3"
     "@hyphy_software/busted" "https://api.observablehq.com/@hyphy_software/busted@3486.tgz?v=3"
