@@ -59,7 +59,7 @@
     "pretty-quick": "^2.0.2",
     "q": "^1.4.0",
     "react": "16.13.1",
-    "react-copy-to-clipboard": "^5.0.2",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "16.13.1",
     "react-json-view": "^1.19.1",
     "react-markdown": "^4.3.1",
