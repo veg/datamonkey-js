@@ -1743,7 +1743,12 @@
 
 "@hyphy_software/busted@https://api.observablehq.com/@hyphy_software/busted@3486.tgz?v=3":
   version "3486.0.0"
+<<<<<<< HEAD
   resolved "https://api.observablehq.com/@hyphy_software/busted@3486.tgz?v=3#d24844dec0886194dcaa9e85932b7d2a521526d4"
+=======
+  uid "3c4f51df579e4307a117ca12a8d5ab8f715798b4"
+  resolved "https://api.observablehq.com/@hyphy_software/busted@3486.tgz?v=3#3c4f51df579e4307a117ca12a8d5ab8f715798b4"
+>>>>>>> 49c379b23858565601ce9e0e0284a6bb20aec3af
 
 "@hyphy_software/fel-analysis-result-visualization@https://api.observablehq.com/@hyphy_software/fel-analysis-result-visualization@2297.tgz?v=3":
   version "2297.0.0"
@@ -7603,6 +7608,7 @@ husky@^7.0.1:
   resolved "https://registry.yarnpkg.com/husky/-/husky-7.0.2.tgz#21900da0f30199acca43a46c043c4ad84ae88dff"
   integrity sha512-8yKEWNX4z2YsofXAMT7KvA1g8p+GxtB1ffV8XtpAEGuXNAbCV5wdNKH+qTpw8SM9fh4aMPDR+yQuKfgnreyZlg==
 
+<<<<<<< HEAD
 hyphy-vision@^1.0.0:
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/hyphy-vision/-/hyphy-vision-1.1.7.tgz#ddd641aa3faff31d17064c50c58beb21c91cb08d"
@@ -7642,6 +7648,12 @@ hyphy-vision@^2.12.6:
   version "2.12.6"
   resolved "https://registry.yarnpkg.com/hyphy-vision/-/hyphy-vision-2.12.6.tgz#ac90522d320693d06006b71b4425aa89d46eec5e"
   integrity sha512-EhPaUsBwYXpB3a+a+UPb/Punn9ixVSDC9RhFrK3/Oc9QpXQK7ef2cxSAgKBhJIGLY0nfr8l+kiOXSLJTXsqCLw==
+=======
+hyphy-vision@2.12.4:
+  version "2.12.4"
+  resolved "https://registry.yarnpkg.com/hyphy-vision/-/hyphy-vision-2.12.4.tgz#7e333c1ef5581c2c3d781c304ee8f34cc1540aca"
+  integrity sha512-r+S+RXu4Sc1KPrRmalzZF8r/jk5Q2tXkQeHerUyoCzuul4t9QxYpJtyaHDo5JvPt3wc3WAldna3twakBdvzMHw==
+>>>>>>> 49c379b23858565601ce9e0e0284a6bb20aec3af
   dependencies:
     "@fortawesome/fontawesome-free" "^5.15.3"
     "@hyphy_software/busted" "https://api.observablehq.com/@hyphy_software/busted@3486.tgz?v=3"
@@ -9415,10 +9427,10 @@ module-deps@^6.0.0:
     through2 "^2.0.0"
     xtend "^4.0.0"
 
-moment@^2.8.0:
-  version "2.29.1"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
-  integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
+moment@^2.29.4:
+  version "2.29.4"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.4.tgz#3dbe052889fe7c1b2ed966fcb3a77328964ef108"
+  integrity sha512-5LC9SOxjSc2HF6vO2CyuTDNivEdoz2IvyJJGj6X8DJ0eFyfszE0QiEd+iXmBvUP3WHxSjFH/vIsA0EN00cgr8w==
 
 mongodb-core@2.1.18:
   version "2.1.18"
