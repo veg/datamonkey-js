@@ -10,6 +10,7 @@ var AnalysisSchema = require(__dirname + "/analysis");
 var Busted = AnalysisSchema.extend({
   tagged_nwk_tree: String,
   last_status_msg: String,
+  multihit: String,
   results: Object,
   ds_variation: Number,
 });
@@ -60,7 +61,8 @@ Busted.statics.spawn = function (fn, options, callback) {
   var busted = new this(),
     datatype = 0,
     gencodeid = options.gencodeid,
-    ds_variation = options.ds_variation;
+    ds_variation = options.ds_variation,
+    multihit = options.multihit;
 
   busted.tagged_nwk_tree = options.nwk_tree;
   busted.mail = options.mail;
@@ -91,6 +93,7 @@ Busted.statics.spawn = function (fn, options, callback) {
 
     busted.msa = msa;
     busted.ds_variation = ds_variation;
+    busted.multihit = multihit;
 
     busted.save((err, busted_result) => {
       if (err) {

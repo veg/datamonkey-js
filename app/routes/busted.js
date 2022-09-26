@@ -25,6 +25,7 @@ exports.uploadFile = function (req, res) {
     datatype = 0,
     gencodeid = data.gencodeid,
     ds_variation = postdata.ds_variation;
+  multihit = postdata.multihit;
 
   busted.mail = postdata.mail;
 
@@ -53,6 +54,7 @@ exports.uploadFile = function (req, res) {
 
     busted.msa = msa;
     busted.ds_variation = ds_variation;
+    busted.multihit = multihit;
 
     busted.save(function (err, busted_result) {
       if (err) {
