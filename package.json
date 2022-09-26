@@ -1,6 +1,6 @@
 {
   "name": "datamonkey.js",
-  "version": "1.9.0",
+  "version": "1.10.5",
   "description": "A free public server for comparative analysis of sequence alignments using state-of-the-art statistical models.",
   "private": true,
   "author": {
@@ -37,7 +37,7 @@
     "express-busboy": "^2.4.4",
     "express-validator": "^2.21.0",
     "hivtrace-viz": "^0.0.14",
-    "hyphy-vision": "^2.11.1",
+    "hyphy-vision": "^2.12.6",
     "jade": "^1.0.0",
     "jquery-file-upload": "^4.0.5",
     "jquery-file-upload-middleware": "^0.1.8",
@@ -78,7 +78,7 @@
     "tar-fs": "^1.16.3",
     "tether": "^1.4.0",
     "underscore": "^1.9.1",
-    "winston": "^3.2.1",
+    "winston": "^3.8.2",
     "yarn": "^1.19.1"
   },
   "devDependencies": {
