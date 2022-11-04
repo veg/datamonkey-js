@@ -90,7 +90,7 @@
     "@fortawesome/fontawesome-free": "^5.15.3",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^19.0.0",
-    "babel-loader": "^8.1.0",
+    "babel-loader": "^9.1.0",
     "babel-plugin-transform-remove-strict-mode": "^0.0.2",
     "babel-plugin-transform-strict-mode": "^6.24.1",
     "babel-preset-react-hmre": "^1.1.1",
