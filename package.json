@@ -41,7 +41,7 @@
     "jade": "^1.0.0",
     "jquery-file-upload": "^4.0.5",
     "jquery-file-upload-middleware": "^0.1.8",
-    "jquery-ui": "^1.11.0",
+    "jquery-ui": "^1.13.2",
     "jquery.ui.widget": "^1.10.3",
     "lodash": "^4.17.20",
     "main-bower-files": "^2.9.0",
