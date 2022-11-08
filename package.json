@@ -20,7 +20,7 @@
     "url": "git://github.com/veg/datamonkey-js.git"
   },
   "dependencies": {
-    "@fortawesome/free-brands-svg-icons": "5.15.3",
+    "@fortawesome/free-brands-svg-icons": "6.2.0",
     "@fortawesome/free-regular-svg-icons": "5.15.3",
     "@fortawesome/free-solid-svg-icons": "5.15.3",
     "alignment.js": "^0.3.0",
