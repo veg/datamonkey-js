@@ -69,7 +69,7 @@
     "react-router-dom": "^5.1.2",
     "react-router-hash-link": "^2.4.0",
     "react-scrollchor": "^6.0.0",
-    "redis": "^2.0.0",
+    "redis": "^4.5.0",
     "save-svg-as-png": "^1.4.17",
     "shortid": "^2.2.15",
     "socket.io": "4",
