@@ -87,7 +87,7 @@
     "@babel/preset-env": "^7.14.7",
     "@babel/preset-es2015": "^7.0.0-beta.53",
     "@babel/preset-react": "^7.14.5",
-    "@fortawesome/fontawesome-free": "^5.15.3",
+    "@fortawesome/fontawesome-free": "^6.2.1",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^19.0.0",
     "babel-loader": "^8.1.0",
