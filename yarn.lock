@@ -1929,9 +1929,9 @@
   version "991.0.0"
   resolved "https://api.observablehq.com/@hyphy_software/multi-hit-analysis-result-visualization.tgz?v=3#2820864121de428e2dced549380dc2b41aeae76a"
 
-"@hyphy_software/nrm@https://api.observablehq.com/@hyphy_software/nrm@1568.tgz?v=3":
-  version "1568.0.0"
-  resolved "https://api.observablehq.com/@hyphy_software/nrm@1568.tgz?v=3#b4cec5fd0e0c4dd633716c92d9740bc04308436c"
+"@hyphy_software/nrm@https://api.observablehq.com/@hyphy_software/nrm@1578.tgz?v=3":
+  version "1578.0.0"
+  resolved "https://api.observablehq.com/@hyphy_software/nrm@1578.tgz?v=3#5d2cb59f7771ec1ede48f62d9e25e41f526bdd4f"
 
 "@jridgewell/gen-mapping@^0.1.0":
   version "0.1.1"
@@ -7826,17 +7826,17 @@ hyphy-vision@^1.0.0:
     save-svg-as-png "^1.2.0"
     underscore "^1.8.3"
 
-hyphy-vision@^2.13.4:
-  version "2.13.4"
-  resolved "https://registry.yarnpkg.com/hyphy-vision/-/hyphy-vision-2.13.4.tgz#2aa1654516cf12f8120a6867b87e0fe5708e4854"
-  integrity sha512-Sxl1enk/WaX0yjScy6p8C1ZptVox6JRyaqLJPQoTFUtk89RGP+9xI6SiXWLoHxeyUkJNnDlUS8OPdqx6kvtgAQ==
+hyphy-vision@^2.13.5:
+  version "2.13.5"
+  resolved "https://registry.yarnpkg.com/hyphy-vision/-/hyphy-vision-2.13.5.tgz#e9903b8a733c71b96bc63c777ba2ab29e3fe11d9"
+  integrity sha512-GMsplKhj6E5lE6IvBc//Wg/EDTz9sqLAFZPkHlf7bgS6XJKe4KIrSlUxlr1wwTkhE3o1s0ZAjZi82N4RhrAKGg==
   dependencies:
     "@fortawesome/fontawesome-free" "^5.15.3"
     "@hyphy_software/busted" "https://api.observablehq.com/@hyphy_software/busted@3486.tgz?v=3"
     "@hyphy_software/fel-analysis-result-visualization" "https://api.observablehq.com/@hyphy_software/fel-analysis-result-visualization@2297.tgz?v=3"
     "@hyphy_software/gard-analysis-result-visualization" "https://api.observablehq.com/@hyphy_software/gard-analysis-result-visualization@916.tgz?v=3"
     "@hyphy_software/multi-hit-analysis-result-visualization" "https://api.observablehq.com/@hyphy_software/multi-hit-analysis-result-visualization.tgz?v=3"
-    "@hyphy_software/nrm" "https://api.observablehq.com/@hyphy_software/nrm@1568.tgz?v=3"
+    "@hyphy_software/nrm" "https://api.observablehq.com/@hyphy_software/nrm@1578.tgz?v=3"
     "@observablehq/runtime" "4.25"
     alignment.js "0.3.0"
     bootstrap "4.x"
