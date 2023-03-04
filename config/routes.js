@@ -14,6 +14,7 @@ const mongoose = require("mongoose"),
   GARD = mongoose.model("GARD"),
   MEME = mongoose.model("MEME"),
   MULTIHIT = mongoose.model("MULTIHIT"),
+  NRM = mongoose.model("NRM"),
   Relax = mongoose.model("Relax"),
   HivTrace = mongoose.model("HivTrace"),
   FADE = mongoose.model("Fade"),
@@ -178,6 +179,21 @@ module.exports = function (app) {
   app.get("/hivtrace/:id/attributes", hivtrace.attributeMap);
   app.get("/hivtrace/:id/aligned.fasta", hivtrace.aligned_fasta);
 
+  // MEME ROUTES
+  const meme = require(path.join(__dirname, "../app/routes/meme"));
+  app.get("/meme", meme.form);
+  app.post("/meme", meme.invoke);
+  app.get("/meme/usage", meme.getUsage);
+  app.get("/meme/:id", meme.getPage);
+  app.get("/meme/:id/original_file/:name", meme.getMSAFile);
+  app.get("/meme/:id/fasta", meme.fasta);
+  app.get("/meme/:id/info", _.partial(analysis.getInfo, MEME));
+  app.get("/meme/:id/results", _.partial(analysis.getResults, MEME));
+  app.get("/meme/:id/cancel", meme.cancel);
+  app.get("/meme/:id/log.txt", meme.getLog);
+  // meme.resubscribePendingJobs();
+  
+
   // MULTIHIT ROUTES
   const multihit = require(path.join(__dirname, "../app/routes/multihit"));
   app.get("/multihit", multihit.form);
@@ -192,19 +208,21 @@ module.exports = function (app) {
   app.get("/multihit/:id/log.txt", multihit.getLog);
   // multihit.resubscribePendingJobs();
 
-  // MEME ROUTES
-  const meme = require(path.join(__dirname, "../app/routes/meme"));
-  app.get("/meme", meme.form);
-  app.post("/meme", meme.invoke);
-  app.get("/meme/usage", meme.getUsage);
-  app.get("/meme/:id", meme.getPage);
-  app.get("/meme/:id/original_file/:name", meme.getMSAFile);
-  app.get("/meme/:id/fasta", meme.fasta);
-  app.get("/meme/:id/info", _.partial(analysis.getInfo, MEME));
-  app.get("/meme/:id/results", _.partial(analysis.getResults, MEME));
-  app.get("/meme/:id/cancel", meme.cancel);
-  app.get("/meme/:id/log.txt", meme.getLog);
-  // meme.resubscribePendingJobs();
+
+  // NRM ROUTES
+  const nrm = require(path.join(__dirname, "../app/routes/nrm"));
+  app.get("/nrm", nrm.form);
+  app.post("/nrm", nrm.invoke);
+  app.get("/nrm/usage", nrm.getUsage);
+  app.get("/nrm/:id", nrm.getPage);
+  app.get("/nrm/:id/original_file/:name", nrm.getMSAFile);
+  app.get("/nrm/:id/fasta", nrm.fasta);
+  app.get("/nrm/:id/info", _.partial(analysis.getInfo, NRM));
+  app.get("/nrm/:id/results", _.partial(analysis.getResults, NRM));
+  app.get("/nrm/:id/cancel", nrm.cancel);
+  app.get("/nrm/:id/log.txt", nrm.getLog);
+  // nrm.resubscribePendingJobs();
+
 
   // PRIME ROUTES
   //prime = require(path.join(__dirname, '../app/routes/prime'));
