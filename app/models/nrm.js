@@ -9,7 +9,7 @@ var AnalysisSchema = require(__dirname + "/analysis");
 
 var NRM = AnalysisSchema.extend({
   last_status_msg: String,
-  results: Object
+  results: Object,
 });
 
 NRM.virtual("analysistype").get(function () {

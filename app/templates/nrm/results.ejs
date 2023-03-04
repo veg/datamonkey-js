@@ -14,14 +14,14 @@ Welcome to NRM
     fasta_ready = true;
 
     $(document).ready( function () {
-      hyphyVision.MultiHit($("#job-report").data('jobid') + '/results', "content", fasta, true, true)
+      hyphyVision.NRM($("#job-report").data('jobid') + '/results', "content", fasta, true, true)
     });
 
   });
 
   if (fasta_ready == false) {
     $(document).ready( function () {
-      hyphyVision.MultiHit($("#job-report").data('jobid') + '/results', "content", null, true, true)
+      hyphyVision.NRM($("#job-report").data('jobid') + '/results', "content", null, true, true)
     });
   }
 

@@ -18,12 +18,13 @@ function ErrorMessage(props) {
 class FADEForm extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       showAdvanced: false,
       length_of_each_chain: 2000000,
       number_of_burn_in_samples: 1000000,
       number_of_samples: 100,
-      message: null
+      message: null,
     };
 
     this.toggleShow = this.toggleShow.bind(this);
@@ -40,7 +41,7 @@ class FADEForm extends React.Component {
     var self = this;
     var showAdvanced = !self.state.showAdvanced;
     self.setState({
-      showAdvanced: showAdvanced
+      showAdvanced: showAdvanced,
     });
   }
 
@@ -48,16 +49,16 @@ class FADEForm extends React.Component {
     var value = event.target.value;
     if (value < 500000) {
       this.setState({
-        message: "Please enter a length that is at least 500000."
+        message: "Please enter a length that is at least 500000.",
       });
     } else if (value > 50000000) {
       this.setState({
-        message: "Please enter a length that is no more than 50000000."
+        message: "Please enter a length that is no more than 50000000.",
       });
     } else {
       this.setState({
         length_of_each_chain: value,
-        message: null
+        message: null,
       });
     }
   }
@@ -68,17 +69,17 @@ class FADEForm extends React.Component {
     if (value < Math.ceil(0.05 * length)) {
       this.setState({
         message:
-          "Please enter a burn in that is at least 5% of the chain length."
+          "Please enter a burn in that is at least 5% of the chain length.",
       });
     } else if (value > Math.ceil(0.95 * length)) {
       this.setState({
         message:
-          "Please enter a burn in that is no more than 95% of the chain length."
+          "Please enter a burn in that is no more than 95% of the chain length.",
       });
     } else {
       this.setState({
         number_of_burn_in_samples: value,
-        message: null
+        message: null,
       });
     }
   }
@@ -88,7 +89,7 @@ class FADEForm extends React.Component {
     if (value < 50) {
       this.setState({
         message:
-          "Please enter an amount of samples to be drawn that is more than 50."
+          "Please enter an amount of samples to be drawn that is more than 50.",
       });
     } else if (
       value >
@@ -96,12 +97,12 @@ class FADEForm extends React.Component {
     ) {
       this.setState({
         message:
-          "Please enter an amount of samples that is no more than the chain length minus the amount of burn in."
+          "Please enter an amount of samples that is no more than the chain length minus the amount of burn in.",
       });
     } else {
       this.setState({
         number_of_samples: value,
-        message: null
+        message: null,
       });
     }
   }
@@ -144,7 +145,7 @@ class FADEForm extends React.Component {
 
     xhr.open("post", "/fade", true);
 
-    xhr.upload.onprogress = function(e) {
+    xhr.upload.onprogress = function (e) {
       if (e.lengthComputable) {
         var percentage = (e.loaded / e.total) * 100;
         $("#file-progress").css("display", "block");
@@ -153,11 +154,11 @@ class FADEForm extends React.Component {
       }
     };
 
-    xhr.onerror = function(e) {
+    xhr.onerror = function (e) {
       $("#file-progress").html(e);
     };
 
-    xhr.onload = function(res) {
+    xhr.onload = function (res) {
       // Replace field with green text, name of file
       var result = JSON.parse(this.responseText);
 

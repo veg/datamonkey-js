@@ -3,11 +3,9 @@ var React = require("react"),
   createReactClass = require("create-react-class");
 
 var NRMForm = createReactClass({
-
   onMailChange: function () {},
 
   submit: function (e) {
-
     e.preventDefault();
 
     $("#file-progress").removeClass("hidden");
@@ -16,11 +14,6 @@ var NRMForm = createReactClass({
     var file = document.getElementById("seq-file").files[0];
 
     formData.append("files", file);
-    formData.append("gencodeid", $("select[name='gencodeid']").val());
-
-    formData.append("triple_islands", $("select[name='triple_islands']").val());
-
-    formData.append("rate_classes", $("input[name='rate_classes']").val());
 
     formData.append("receive_mail", $("input[name='mail']").val().length > 0);
     formData.append("mail", $("input[name='mail']").val());
@@ -81,7 +74,7 @@ var NRMForm = createReactClass({
         id="msa-form"
         className="form-horizontal upload-form"
         name="uploadform"
-        enctype="multipart/form-data"
+        encType="multipart/form-data"
         method="post"
         action={this.props.post_to}
       >
@@ -101,59 +94,6 @@ var NRMForm = createReactClass({
               <span className="sr-only">0% Complete</span>
             </div>
           </div>
-        </div>
-
-        <div className="upload-div">
-          <label id="geneticcode-content">
-            Genetic Code
-            <a href="/help#genetic-code" target="_blank">
-              <sup>?</sup>
-            </a>
-          </label>
-          <select name="gencodeid">
-            <option value="0">Universal code</option>
-
-            <option value="1">Vertebrate mitochondrial DNA code</option>
-
-            <option value="2">Yeast mitochondrial DNA code</option>
-
-            <option value="3">
-              Mold, Protozoan and Coelenterate mt; Mycloplasma/Spiroplasma
-            </option>
-
-            <option value="4">Invertebrate mitochondrial DNA code</option>
-
-            <option value="5">
-              Ciliate, Dasycladacean and Hexamita Nuclear code
-            </option>
-
-            <option value="6">Echinoderm mitochondrial DNA code</option>
-
-            <option value="7">Euplotid Nuclear code</option>
-
-            <option value="8">Alternative Yeast Nuclear code</option>
-
-            <option value="9">Ascidian mitochondrial DNA code</option>
-
-            <option value="10">Flatworm mitochondrial DNA code</option>
-
-            <option value="11">Blepharisma Nuclear code</option>
-          </select>
-        </div>
-
-        <div className="upload-div">
-          <label
-            id="datatype-content"
-            data-toggle="tooltip"
-            data-placement="top"
-            title="Use a separate rate parameter for synonymous triple-hit substitutions"
-          >
-            Triple Islands
-          </label>
-          <select name="triple_islands">
-            <option value="No">No</option>
-            <option value="Yes">Yes</option>
-          </select>
         </div>
 
         <div className="form-group">

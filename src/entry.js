@@ -17,6 +17,7 @@ datamonkey.helpers = require("./js/datamonkey_helpers.js");
 const hyphyVision = require("hyphy-vision");
 const gard_form = require("jsx/forms/gard.jsx");
 const multihit_form = require("jsx/forms/multihit.jsx");
+const nrm_form = require("jsx/forms/nrm.jsx");
 const slac_form = require("jsx/forms/slac.jsx");
 const contrast_fel_form = require("jsx/forms/contrast-fel.jsx");
 const fubar_form = require("jsx/forms/fubar.jsx");
@@ -38,6 +39,7 @@ const render_api_lookup = require("jsx/api_key_lookup.jsx");
 
 window.gard_form = gard_form;
 window.multihit_form = multihit_form;
+window.nrm_form = nrm_form;
 window.slac_form = slac_form;
 window.contrast_fel_form = contrast_fel_form;
 window.fubar_form = fubar_form;
