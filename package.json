@@ -86,7 +86,7 @@
     "@babel/compat-data": "7.19.4",
     "@babel/core": "7.19.6",
     "@babel/generator": "7.19.6",
-    "@babel/helper-compilation-targets": "7.19.3",
+    "@babel/helper-compilation-targets": "7.20.7",
     "@babel/helper-create-class-features-plugin": "7.19.0",
     "@babel/helper-module-transforms": "7.19.6",
     "@babel/plugin-proposal-class-properties": "^7.14.5",
