@@ -83,7 +83,7 @@
     "yarn": "^1.19.1"
   },
   "devDependencies": {
-    "@babel/compat-data": "7.19.4",
+    "@babel/compat-data": "7.21.4",
     "@babel/core": "7.19.6",
     "@babel/generator": "7.19.6",
     "@babel/helper-compilation-targets": "7.19.3",
