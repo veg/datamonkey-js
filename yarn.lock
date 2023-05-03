@@ -1917,9 +1917,10 @@
   version "3486.0.0"
   resolved "https://api.observablehq.com/@hyphy_software/busted@3486.tgz?v=3#d24844dec0886194dcaa9e85932b7d2a521526d4"
 
-"@hyphy_software/fel-analysis-result-visualization@https://api.observablehq.com/@hyphy_software/fel-analysis-result-visualization@2297.tgz?v=3":
-  version "2297.0.0"
-  resolved "https://api.observablehq.com/@hyphy_software/fel-analysis-result-visualization@2297.tgz?v=3#b3aa9c4f3b8b4677faeff27e63baa99a134dcd21"
+"@hyphy_software/fel-analysis-result-visualization@https://api.observablehq.com/@hyphy_software/fel-analysis-result-visualization@2311.tgz?v=3":
+  version "2311.0.0"
+  uid "04c56ee58e9275a64c9cbd1b8df924dd89cab1d8"
+  resolved "https://api.observablehq.com/@hyphy_software/fel-analysis-result-visualization@2311.tgz?v=3#04c56ee58e9275a64c9cbd1b8df924dd89cab1d8"
 
 "@hyphy_software/gard-analysis-result-visualization@https://api.observablehq.com/@hyphy_software/gard-analysis-result-visualization@916.tgz?v=3":
   version "916.0.0"
@@ -7798,14 +7799,14 @@ hyphy-vision@^1.0.0:
     save-svg-as-png "^1.2.0"
     underscore "^1.8.3"
 
-hyphy-vision@^2.13.5:
-  version "2.13.5"
-  resolved "https://registry.yarnpkg.com/hyphy-vision/-/hyphy-vision-2.13.5.tgz#e9903b8a733c71b96bc63c777ba2ab29e3fe11d9"
-  integrity sha512-GMsplKhj6E5lE6IvBc//Wg/EDTz9sqLAFZPkHlf7bgS6XJKe4KIrSlUxlr1wwTkhE3o1s0ZAjZi82N4RhrAKGg==
+hyphy-vision@^2.13.6:
+  version "2.13.6"
+  resolved "https://registry.yarnpkg.com/hyphy-vision/-/hyphy-vision-2.13.6.tgz#0ab1e79304ba94d4c05fa9eb09a815b42a90919a"
+  integrity sha512-0uVBC8amTvwILExIkIHlE+85Ag59lrVNMerXzDvcqV4yGqpG0n6funSuM9X3928YZWk97MwaHJp5fBJ8FTN45Q==
   dependencies:
     "@fortawesome/fontawesome-free" "^5.15.3"
     "@hyphy_software/busted" "https://api.observablehq.com/@hyphy_software/busted@3486.tgz?v=3"
-    "@hyphy_software/fel-analysis-result-visualization" "https://api.observablehq.com/@hyphy_software/fel-analysis-result-visualization@2297.tgz?v=3"
+    "@hyphy_software/fel-analysis-result-visualization" "https://api.observablehq.com/@hyphy_software/fel-analysis-result-visualization@2311.tgz?v=3"
     "@hyphy_software/gard-analysis-result-visualization" "https://api.observablehq.com/@hyphy_software/gard-analysis-result-visualization@916.tgz?v=3"
     "@hyphy_software/multi-hit-analysis-result-visualization" "https://api.observablehq.com/@hyphy_software/multi-hit-analysis-result-visualization.tgz?v=3"
     "@hyphy_software/nrm" "https://api.observablehq.com/@hyphy_software/nrm@1578.tgz?v=3"
