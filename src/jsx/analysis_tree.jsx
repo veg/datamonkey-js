@@ -823,18 +823,20 @@ function BUSTEDMH(props) {
   return (
     <Method
       title="BUSTED-MH"
-      href="bustedmh"
+      href="busted"
       datamonkey={props.datamonkey}
       changeAppState={props.changeAppState}
     >
       <p>
         BUSTED-MH is a sophisticated extension that incorporates Multinucleotide
-        Substitutions (MH) into evolutionary analyses. By simultaneously
-        accommodating these sources of evolutionary complexity, this method
-        enhances the accuracy of natural selection detection and minimizes the
-        risk of false-positive inferences of diversifying episodic selection. It
-        is especially suitable for scenarios where traditional models fail due
-        to their inability to consider such evolutionary complexities.
+        Substitutions (MH) into evolutionary analyses. By accommodating this
+        source of evolutionary complexity, this method can enhance the accuracy
+        of natural selection detection and minimize the risk of false-positive
+        inferences of diversifying episodic selection. It is especially suitable
+        for scenarios where traditional models fail due to their inability to
+        consider such evolutionary complexities. It can be enabled by selecting
+        it via the BUSTED method under "Include support for multiple nucleotide
+        substitutions?".
       </p>
 
       <p>
