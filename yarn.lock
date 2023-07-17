@@ -1917,9 +1917,10 @@
   version "3486.0.0"
   resolved "https://api.observablehq.com/@hyphy_software/busted@3486.tgz?v=3#d24844dec0886194dcaa9e85932b7d2a521526d4"
 
-"@hyphy_software/fel-analysis-result-visualization@https://api.observablehq.com/@hyphy_software/fel-analysis-result-visualization@2297.tgz?v=3":
-  version "2297.0.0"
-  resolved "https://api.observablehq.com/@hyphy_software/fel-analysis-result-visualization@2297.tgz?v=3#b3aa9c4f3b8b4677faeff27e63baa99a134dcd21"
+"@hyphy_software/fel-analysis-result-visualization@https://api.observablehq.com/@hyphy_software/fel-analysis-result-visualization@2311.tgz?v=3":
+  version "2311.0.0"
+  uid "04c56ee58e9275a64c9cbd1b8df924dd89cab1d8"
+  resolved "https://api.observablehq.com/@hyphy_software/fel-analysis-result-visualization@2311.tgz?v=3#04c56ee58e9275a64c9cbd1b8df924dd89cab1d8"
 
 "@hyphy_software/gard-analysis-result-visualization@https://api.observablehq.com/@hyphy_software/gard-analysis-result-visualization@916.tgz?v=3":
   version "916.0.0"
@@ -1931,6 +1932,7 @@
 
 "@hyphy_software/nrm@https://api.observablehq.com/@hyphy_software/nrm@1578.tgz?v=3":
   version "1578.0.0"
+  uid "5d2cb59f7771ec1ede48f62d9e25e41f526bdd4f"
   resolved "https://api.observablehq.com/@hyphy_software/nrm@1578.tgz?v=3#5d2cb59f7771ec1ede48f62d9e25e41f526bdd4f"
 
 "@jridgewell/gen-mapping@^0.1.0":
@@ -4639,16 +4641,7 @@ create-hmac@^1.1.0, create-hmac@^1.1.4, create-hmac@^1.1.7:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-create-react-class@^15.6.0:
-  version "15.6.3"
-  resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.6.3.tgz#2d73237fb3f970ae6ebe011a9e66f46dbca80036"
-  integrity sha512-M+/3Q6E6DLO6Yx3OwrWjwHBnvfXXYA7W+dFjt/ZDBemHO1DDZhsalX/NUtnTYclN6GfnBDRh4qRHjcDHmlJBJg==
-  dependencies:
-    fbjs "^0.8.9"
-    loose-envify "^1.3.1"
-    object-assign "^4.1.1"
-
-create-react-class@^15.6.3:
+create-react-class@^15.6.0, create-react-class@^15.6.3:
   version "15.7.0"
   resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.7.0.tgz#7499d7ca2e69bb51d13faf59bd04f0c65a1d6c1e"
   integrity sha512-QZv4sFWG9S5RUvkTYWbflxeZX+JG7Cz0Tn33rQBJ+WFQTqTfUTjMjiv9tnfXazjsO5r0KhPs+AqCjyrQX6h2ng==
@@ -6682,13 +6675,6 @@ fastparse@^1.1.1:
   resolved "https://registry.yarnpkg.com/fastparse/-/fastparse-1.1.2.tgz#91728c5a5942eced8531283c79441ee4122c35a9"
   integrity sha512-483XLLxTVIwWK3QTrMGRqUfUpoOs/0hbQrl2oz4J0pAcm3A3bu84wxTFqGqkJzewCLdME38xJLJAxBABfQT8sQ==
 
-fbemitter@^2.0.0:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/fbemitter/-/fbemitter-2.1.1.tgz#523e14fdaf5248805bb02f62efc33be703f51865"
-  integrity sha1-Uj4U/a9SSIBbsC9i78M75wP1GGU=
-  dependencies:
-    fbjs "^0.8.4"
-
 fbemitter@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/fbemitter/-/fbemitter-3.0.0.tgz#00b2a1af5411254aab416cd75f9e6289bee4bff3"
@@ -6701,7 +6687,7 @@ fbjs-css-vars@^1.0.0:
   resolved "https://registry.yarnpkg.com/fbjs-css-vars/-/fbjs-css-vars-1.0.2.tgz#216551136ae02fe255932c3ec8775f18e2c078b8"
   integrity sha512-b2XGFAFdWZWg0phtAWLHCk836A1Xann+I+Dgd3Gk64MHKZO44FfoD1KxyvbSh0qZsIoXQGGlVztIY+oitJPpRQ==
 
-fbjs@^0.8.0, fbjs@^0.8.4, fbjs@^0.8.9:
+fbjs@^0.8.9:
   version "0.8.17"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.17.tgz#c4d598ead6949112653d6588b01a5cdcd9f90fdd"
   integrity sha1-xNWY6taUkRJlPWWIsBpc3Nn5D90=
@@ -6780,12 +6766,7 @@ file-saver@^1.3.3:
   resolved "https://registry.yarnpkg.com/file-saver/-/file-saver-1.3.8.tgz#e68a30c7cb044e2fb362b428469feb291c2e09d8"
   integrity sha512-spKHSBQIxxS81N/O21WmuXA2F6wppUCsutpzenOeZzOCCJ5gEfcbqJP983IrpLXzYmXnMUa6J03SubcNPdKrlg==
 
-file-saver@^2.0.0:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/file-saver/-/file-saver-2.0.2.tgz#06d6e728a9ea2df2cce2f8d9e84dfcdc338ec17a"
-  integrity sha512-Wz3c3XQ5xroCxd1G8b7yL0Ehkf0TC9oYC6buPFkNnU9EnaPlifeAFCyCh+iewXTyFRcg0a6j3J7FmJsIhlhBdw==
-
-file-saver@^2.0.2:
+file-saver@^2.0.0, file-saver@^2.0.2:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/file-saver/-/file-saver-2.0.5.tgz#d61cfe2ce059f414d899e9dd6d4107ee25670c38"
   integrity sha512-P9bmyZ3h/PRG+Nzga+rbdI4OEpNDzAVyy74uVO9ATgzLK6VtAsYybF/+TOCvrc0MO793d6+42lLyZTw7/ArVzA==
@@ -6964,14 +6945,6 @@ flush-write-stream@^1.0.0, flush-write-stream@^1.0.2:
   dependencies:
     inherits "^2.0.3"
     readable-stream "^2.3.6"
-
-flux@^3.1.3:
-  version "3.1.3"
-  resolved "https://registry.yarnpkg.com/flux/-/flux-3.1.3.tgz#d23bed515a79a22d933ab53ab4ada19d05b2f08a"
-  integrity sha1-0jvtUVp5oi2TOrU6tK2hnQWy8Io=
-  dependencies:
-    fbemitter "^2.0.0"
-    fbjs "^0.8.0"
 
 flux@^4.0.1:
   version "4.0.1"
@@ -7826,14 +7799,14 @@ hyphy-vision@^1.0.0:
     save-svg-as-png "^1.2.0"
     underscore "^1.8.3"
 
-hyphy-vision@^2.13.5:
-  version "2.13.5"
-  resolved "https://registry.yarnpkg.com/hyphy-vision/-/hyphy-vision-2.13.5.tgz#e9903b8a733c71b96bc63c777ba2ab29e3fe11d9"
-  integrity sha512-GMsplKhj6E5lE6IvBc//Wg/EDTz9sqLAFZPkHlf7bgS6XJKe4KIrSlUxlr1wwTkhE3o1s0ZAjZi82N4RhrAKGg==
+hyphy-vision@^2.13.6:
+  version "2.13.6"
+  resolved "https://registry.yarnpkg.com/hyphy-vision/-/hyphy-vision-2.13.6.tgz#0ab1e79304ba94d4c05fa9eb09a815b42a90919a"
+  integrity sha512-0uVBC8amTvwILExIkIHlE+85Ag59lrVNMerXzDvcqV4yGqpG0n6funSuM9X3928YZWk97MwaHJp5fBJ8FTN45Q==
   dependencies:
     "@fortawesome/fontawesome-free" "^5.15.3"
     "@hyphy_software/busted" "https://api.observablehq.com/@hyphy_software/busted@3486.tgz?v=3"
-    "@hyphy_software/fel-analysis-result-visualization" "https://api.observablehq.com/@hyphy_software/fel-analysis-result-visualization@2297.tgz?v=3"
+    "@hyphy_software/fel-analysis-result-visualization" "https://api.observablehq.com/@hyphy_software/fel-analysis-result-visualization@2311.tgz?v=3"
     "@hyphy_software/gard-analysis-result-visualization" "https://api.observablehq.com/@hyphy_software/gard-analysis-result-visualization@916.tgz?v=3"
     "@hyphy_software/multi-hit-analysis-result-visualization" "https://api.observablehq.com/@hyphy_software/multi-hit-analysis-result-visualization.tgz?v=3"
     "@hyphy_software/nrm" "https://api.observablehq.com/@hyphy_software/nrm@1578.tgz?v=3"
@@ -9140,15 +9113,10 @@ lodash@4.16.x:
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.16.6.tgz#d22c9ac660288f3843e16ba7d2b5d06cca27d777"
   integrity sha1-0iyaxmAojzhD4Wun0rXQbMon13c=
 
-lodash@4.x, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.5:
+lodash@4.x, "lodash@>= 0.9.2", lodash@^4.0.0, lodash@^4.14.0, lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.3.0, lodash@^4.6.1, lodash@~4.17.10:
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
-
-"lodash@>= 0.9.2", lodash@^4.0.0, lodash@^4.14.0, lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.3.0, lodash@^4.6.1, lodash@~4.17.10:
-  version "4.17.20"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
-  integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
 
 log-symbols@4.1.0:
   version "4.1.0"
@@ -11176,7 +11144,7 @@ prop-types-extra@^1.0.1, prop-types-extra@^1.1.0:
     react-is "^16.3.2"
     warning "^4.0.0"
 
-prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.8, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -11441,15 +11409,7 @@ react-bootstrap@^1.0.0-beta.9:
     uncontrollable "^7.0.0"
     warning "^4.0.3"
 
-react-copy-to-clipboard@^5.0.0:
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/react-copy-to-clipboard/-/react-copy-to-clipboard-5.0.2.tgz#d82a437e081e68dfca3761fbd57dbf2abdda1316"
-  integrity sha512-/2t5mLMMPuN5GmdXo6TebFa8IoFxZ+KTDDqYhcDm0PhkgEzSxVvIX26G20s1EB02A4h2UZgwtfymZ3lGJm0OLg==
-  dependencies:
-    copy-to-clipboard "^3"
-    prop-types "^15.5.8"
-
-react-copy-to-clipboard@^5.0.2:
+react-copy-to-clipboard@^5.0.0, react-copy-to-clipboard@^5.0.2:
   version "5.0.3"
   resolved "https://registry.yarnpkg.com/react-copy-to-clipboard/-/react-copy-to-clipboard-5.0.3.tgz#2a0623b1115a1d8c84144e9434d3342b5af41ab4"
   integrity sha512-9S3j+m+UxDZOM0Qb8mhnT/rMR0NGSrj9A/073yz2DSxPMYhmYFBMYIdI2X4o8AjOjyFsSNxDRnCX6s/gRxpriw==
@@ -11487,17 +11447,7 @@ react-is@^16.3.2, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
-react-json-view@^1.14.0:
-  version "1.19.1"
-  resolved "https://registry.yarnpkg.com/react-json-view/-/react-json-view-1.19.1.tgz#95d8e59e024f08a25e5dc8f076ae304eed97cf5c"
-  integrity sha512-u5e0XDLIs9Rj43vWkKvwL8G3JzvXSl6etuS5G42a8klMohZuYFQzSN6ri+/GiBptDqlrXPTdExJVU7x9rrlXhg==
-  dependencies:
-    flux "^3.1.3"
-    react-base16-styling "^0.6.0"
-    react-lifecycles-compat "^3.0.4"
-    react-textarea-autosize "^6.1.0"
-
-react-json-view@^1.19.1:
+react-json-view@^1.14.0, react-json-view@^1.19.1:
   version "1.21.2"
   resolved "https://registry.yarnpkg.com/react-json-view/-/react-json-view-1.21.2.tgz#647d3eb3db79f570f1f3b9c02e29dd3816f9bb05"
   integrity sha512-Tj7qfsN1FIZ1RxqTsUJgixFwug+lIaiNjritpr11XkJE6FLzojlA018Wq7FcbKlVGl1Y4aeKLYUOULfIKbqp7g==
@@ -11591,12 +11541,7 @@ react-proxy@^1.1.7:
     lodash "^4.6.1"
     react-deep-force-update "^1.0.0"
 
-react-range@^1.8.5:
-  version "1.8.7"
-  resolved "https://registry.yarnpkg.com/react-range/-/react-range-1.8.7.tgz#a890bc614517b5579179f6a2b44e642786f8d96e"
-  integrity sha512-M8vaKB2vCU04BWq/kae/e5xu5WWm/lfFHXWkSiFWWm00+fqNvhYAeNYmiXR82WgwQAwRmew7Wcy7HC9pZj5QcA==
-
-react-range@^1.8.9:
+react-range@^1.8.5, react-range@^1.8.9:
   version "1.8.11"
   resolved "https://registry.yarnpkg.com/react-range/-/react-range-1.8.11.tgz#7d9ae1e4a263108566897acee2dde8d5b78901e1"
   integrity sha512-LaF5xwYy6u0Rnp0hRBBLKqJx0DmNpW2GqMSoj8OJ0IYiCM7GmSNf0UKxmN4cN0BCb2EwzD3zA9nw6Fkug2c3mg==
@@ -11644,14 +11589,7 @@ react-router-dom@^5.1.2:
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
 
-react-router-hash-link@^2.4.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/react-router-hash-link/-/react-router-hash-link-2.4.0.tgz#216045d9bb826e5f36f873dea8b04874a0708f83"
-  integrity sha512-HGbB9kfODHKsHvMVsPbqDr057V4xg4TNNRaQcezsFMKitwHaaU51cM2+gDyX45y9YLLPbovELz2rpNx2C3Frng==
-  dependencies:
-    prop-types "^15.7.2"
-
-react-router-hash-link@^2.4.3:
+react-router-hash-link@^2.4.0, react-router-hash-link@^2.4.3:
   version "2.4.3"
   resolved "https://registry.yarnpkg.com/react-router-hash-link/-/react-router-hash-link-2.4.3.tgz#570824d53d6c35ce94d73a46c8e98673a127bf08"
   integrity sha512-NU7GWc265m92xh/aYD79Vr1W+zAIXDWp3L2YZOYP4rCqPnJ6LI6vh3+rKgkidtYijozHclaEQTAHaAaMWPVI4A==
@@ -11709,13 +11647,6 @@ react-scrollchor@^6.0.0:
   integrity sha512-Ryc3SoxG/urLrqQ4rFIsj1nWfW9pPGZK30CSlJ670zJWpPFQtVfYOmiZmQUwY96P8L+LcCVmV4q1ZdBlZsuW/Q==
   dependencies:
     requestanimationframe-timer "1.x.x"
-
-react-textarea-autosize@^6.1.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/react-textarea-autosize/-/react-textarea-autosize-6.1.0.tgz#df91387f8a8f22020b77e3833c09829d706a09a5"
-  integrity sha512-F6bI1dgib6fSvG8so1HuArPUv+iVEfPliuLWusLF+gAKz0FbB4jLrWUrTAeq1afnPT2c9toEZYUdz/y1uKMy4A==
-  dependencies:
-    prop-types "^15.6.0"
 
 react-textarea-autosize@^8.3.2:
   version "8.3.2"
@@ -13924,12 +13855,7 @@ underscore@1.9:
   resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.9.2.tgz#0c8d6f536d6f378a5af264a72f7bec50feb7cf2f"
   integrity sha512-D39qtimx0c1fI3ya1Lnhk3E9nONswSKhnffBI0gME9C99fYOkNi04xs8K6pePLhvl1frbDemkaBQ5ikWllR2HQ==
 
-underscore@1.x, underscore@^1.8.3:
-  version "1.10.2"
-  resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.10.2.tgz#73d6aa3668f3188e4adb0f1943bd12cfd7efaaaf"
-  integrity sha512-N4P+Q/BuyuEKFJ43B9gYuOj4TQUHXX+j2FqguVOpjkssLUUrnJofCcBccJSCoeturDoZU6GorDTHSvUDlSQbTg==
-
-underscore@^1.9.1:
+underscore@1.x, underscore@^1.8.3, underscore@^1.9.1:
   version "1.12.0"
   resolved "https://registry.yarnpkg.com/underscore/-/underscore-1.12.0.tgz#4814940551fc80587cef7840d1ebb0f16453be97"
   integrity sha512-21rQzss/XPMjolTiIezSu3JAjgagXKROtNrYFEOWK109qY1Uv2tVjPTZ1ci2HgvQDA16gHYSthQIJfB+XId/rQ==
