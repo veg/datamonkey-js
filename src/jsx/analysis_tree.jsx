@@ -10,19 +10,19 @@ var h2Style = {
   color: "#009BA1",
   marginTop: "0px",
   marginBottom: "10px",
-  textAlign: "center"
+  textAlign: "center",
 };
 
 var borderStyle = {
   padding: "5px",
   border: "2px #AEDBDA solid",
-  marginBottom: "40px"
+  marginBottom: "40px",
 };
 
 var analysisBorder = {
   padding: "30px 5%",
   border: "2px #AEDBDA solid",
-  marginBottom: "40px"
+  marginBottom: "40px",
 };
 
 var analysisName = {
@@ -32,13 +32,13 @@ var analysisName = {
   color: "#00a99d",
   textAlign: "center",
   backgroundColor: "#F5F5F5",
-  padding: "15px 0"
+  padding: "15px 0",
 };
 
 var analysisText = {
   fontFamily: "montserrat",
   fontWeight: "500",
-  color: "#484D56"
+  color: "#484D56",
 };
 
 // Decision Tree
@@ -60,7 +60,7 @@ class DecisionBranch extends React.Component {
             aria-label="..."
             style={borderStyle}
           >
-            {this.props.choices.map(choice => {
+            {this.props.choices.map((choice) => {
               return (
                 <a
                   role="button"
@@ -81,7 +81,7 @@ class DecisionBranch extends React.Component {
     );
     if (self.state.choice) {
       var index = self.props.choices
-        .map(choice => choice.name)
+        .map((choice) => choice.name)
         .indexOf(self.state.choice);
       return (
         <div>
@@ -105,7 +105,7 @@ function DecisionTreeRoot(props) {
           datamonkey={props.datamonkey}
           changeAppState={props.changeAppState}
         />
-      )
+      ),
     },
     {
       displayName: "Recombination",
@@ -115,8 +115,8 @@ function DecisionTreeRoot(props) {
           datamonkey={props.datamonkey}
           changeAppState={props.changeAppState}
         />
-      )
-    }
+      ),
+    },
   ];
   return (
     <div>
@@ -150,7 +150,7 @@ function SelectionBranch(props) {
           datamonkey={props.datamonkey}
           changeAppState={props.changeAppState}
         />
-      )
+      ),
     },
     {
       displayName: "Sites",
@@ -160,18 +160,18 @@ function SelectionBranch(props) {
           datamonkey={props.datamonkey}
           changeAppState={props.changeAppState}
         />
-      )
+      ),
     },
     {
       displayName: "Gene",
       name: "gene",
       child: (
-        <BUSTED
+        <BustedMHBranch
           datamonkey={props.datamonkey}
           changeAppState={props.changeAppState}
         />
-      )
-    }
+      ),
+    },
   ];
   return (
     <DecisionBranch
@@ -193,7 +193,7 @@ function BranchesBranch(props) {
           datamonkey={props.datamonkey}
           changeAppState={props.changeAppState}
         />
-      )
+      ),
     },
     {
       displayName: "Relaxed",
@@ -203,8 +203,8 @@ function BranchesBranch(props) {
           datamonkey={props.datamonkey}
           changeAppState={props.changeAppState}
         />
-      )
-    }
+      ),
+    },
   ];
   return (
     <DecisionBranch
@@ -226,7 +226,7 @@ function SitesBranch(props) {
           datamonkey={props.datamonkey}
           changeAppState={props.changeAppState}
         />
-      )
+      ),
     },
     {
       displayName: "Pervasive",
@@ -236,8 +236,8 @@ function SitesBranch(props) {
           datamonkey={props.datamonkey}
           changeAppState={props.changeAppState}
         />
-      )
-    }
+      ),
+    },
   ];
   return (
     <DecisionBranch
@@ -255,11 +255,11 @@ function PervasiveSitesBranch(props) {
       displayName: "Small",
       name: "small",
       child: (
-        <FEL
+        <ContrastSitesBranch
           datamonkey={props.datamonkey}
           changeAppState={props.changeAppState}
         />
-      )
+      ),
     },
     {
       displayName: "Large",
@@ -269,12 +269,78 @@ function PervasiveSitesBranch(props) {
           datamonkey={props.datamonkey}
           changeAppState={props.changeAppState}
         />
-      )
-    }
+      ),
+    },
   ];
   return (
     <DecisionBranch
       text="Is your dataset small (less than this many sequences/sizes) or large?"
+      choices={choices}
+      datamonkey={props.datamonkey}
+      changeAppState={props.changeAppState}
+    />
+  );
+}
+
+function ContrastSitesBranch(props) {
+  var choices = [
+    {
+      displayName: "No",
+      name: "noContrast",
+      child: (
+        <FEL
+          datamonkey={props.datamonkey}
+          changeAppState={props.changeAppState}
+        />
+      ),
+    },
+    {
+      displayName: "Yes",
+      name: "yesContrast",
+      child: (
+        <ContrastFEL
+          datamonkey={props.datamonkey}
+          changeAppState={props.changeAppState}
+        />
+      ),
+    },
+  ];
+  return (
+    <DecisionBranch
+      text="Do you want to contrast selection pressures between two or more groups of branches?"
+      choices={choices}
+      datamonkey={props.datamonkey}
+      changeAppState={props.changeAppState}
+    />
+  );
+}
+
+function BustedMHBranch(props) {
+  var choices = [
+    {
+      displayName: "No",
+      name: "noMH",
+      child: (
+        <BUSTED
+          datamonkey={props.datamonkey}
+          changeAppState={props.changeAppState}
+        />
+      ),
+    },
+    {
+      displayName: "Yes",
+      name: "yesMH",
+      child: (
+        <BUSTEDMH
+          datamonkey={props.datamonkey}
+          changeAppState={props.changeAppState}
+        />
+      ),
+    },
+  ];
+  return (
+    <DecisionBranch
+      text="Are you concerned about biases introduced by multinucleotide substitutions and variation in synonymous substitution rates?"
       choices={choices}
       datamonkey={props.datamonkey}
       changeAppState={props.changeAppState}
@@ -292,7 +358,7 @@ function LargeBranch(props) {
           datamonkey={props.datamonkey}
           changeAppState={props.changeAppState}
         />
-      )
+      ),
     },
     {
       displayName: "Counting",
@@ -302,8 +368,8 @@ function LargeBranch(props) {
           datamonkey={props.datamonkey}
           changeAppState={props.changeAppState}
         />
-      )
-    }
+      ),
+    },
   ];
   return (
     <DecisionBranch
@@ -707,6 +773,87 @@ function SLAC(props) {
           Kosakovsky Pond, SL and Frost, SDW. "Not So Different After All: A
           Comparison of Methods for Detecting Amino Acid Sites Under Selection."
           Mol. Biol. Evol. 22, 1208--1222 (2005).
+        </a>
+      </p>
+    </Method>
+  );
+}
+
+function ContrastFEL(props) {
+  return (
+    <Method
+      title="Contrast-FEL"
+      href="contrastfel"
+      datamonkey={props.datamonkey}
+      changeAppState={props.changeAppState}
+    >
+      <p>
+        Contrast-FEL is a simple extension of the popular fixed effects
+        likelihood method. It is suitable for identifying individual alignment
+        sites where any among the K≥2 sets of branches in a phylogenetic tree
+        have detectably different ω ratios, indicative of different selective
+        regimes. This method is particularly useful when comparing selective
+        pressures among sets of branches in a phylogenetic tree and identifying
+        specific sites within genes that may be evolving differently.
+      </p>
+
+      <p>
+        For more information, please see the{" "}
+        <a
+          className="hyphy-anchor"
+          href="http://hyphy.org/methods/selection-methods/#contrastfel"
+        >
+          summary on hyphy.org
+        </a>{" "}
+        or see{" "}
+        <a
+          className="hyphy-anchor"
+          href="https://doi.org/10.1093/molbev/msaa263" // Replace with correct DOI
+        >
+          Sergei L Kosakovsky Pond, Sadie R Wisotsky, Ananias Escalante,
+          Brittany Rife Magalis, Steven Weaver Molecular Biology and Evolution,
+          Volume 38, Issue 3, March 2021, Pages 1184–1198
+        </a>
+      </p>
+    </Method>
+  );
+}
+
+function BUSTEDMH(props) {
+  return (
+    <Method
+      title="BUSTED-MH"
+      href="bustedmh"
+      datamonkey={props.datamonkey}
+      changeAppState={props.changeAppState}
+    >
+      <p>
+        BUSTED-MH is a sophisticated extension that incorporates Multinucleotide
+        Substitutions (MH) into evolutionary analyses. By simultaneously
+        accommodating these sources of evolutionary complexity, this method
+        enhances the accuracy of natural selection detection and minimizes the
+        risk of false-positive inferences of diversifying episodic selection. It
+        is especially suitable for scenarios where traditional models fail due
+        to their inability to consider such evolutionary complexities.
+      </p>
+
+      <p>
+        For more information, please see the{" "}
+        <a
+          className="hyphy-anchor"
+          href="http://hyphy.org/methods/selection-methods/" // Replace with the correct link
+        >
+          summary on hyphy.org
+        </a>{" "}
+        or see{" "}
+        <a
+          className="hyphy-anchor"
+          href="https://doi.org/10.1093/molbev/msad150"
+        >
+          Alexander G Lucaci, Jordan D Zehr, David Enard, Joseph W Thornton,
+          Sergei L Kosakovsky Pond. "Evolutionary Shortcuts via Multinucleotide
+          Substitutions and Their Impact on Natural Selection Analyses."
+          Molecular Biology and Evolution, Volume 40, Issue 7, July 2023.
         </a>
       </p>
     </Method>
