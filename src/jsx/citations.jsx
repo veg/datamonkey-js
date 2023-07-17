@@ -4,7 +4,7 @@ var ReactDOM = require("react-dom");
 var dmCard = {
   boxShadow: "none",
   border: "none",
-  marginBottom: "20px"
+  marginBottom: "20px",
 };
 
 var dmCardHeader = {
@@ -14,13 +14,13 @@ var dmCardHeader = {
   borderBottom: "8px solid #00a99d",
   textAlign: "left",
   fontSize: "1.714em",
-  fontWeight: "600"
+  fontWeight: "600",
 };
 
 var dmCardBody = {};
 
 var dmCardTitle = {
-  fontSize: "1.286em"
+  fontSize: "1.286em",
 };
 
 var dmFa = {
@@ -30,11 +30,11 @@ var dmFa = {
   fontStyle: "normal",
   fontWeight: "900",
   marginRight: "5px",
-  verticalAlign: "text-top"
+  verticalAlign: "text-top",
 };
 
 var dmLink = {
-  color: "#484d56"
+  color: "#484d56",
 };
 
 class Citations extends React.Component {
@@ -338,6 +338,76 @@ class Citations extends React.Component {
           <div className="col">
             <div style={dmCard} className="dm-card card">
               <div style={dmCardHeader} className="dm-card-header card-header">
+                BUSTED-MH
+              </div>
+              <div style={dmCardBody} className="dm-card-body card-body">
+                <div style={dmCardTitle} className="dm-card-title card-title">
+                  Alexander G Lucaci, Jordan D Zehr, David Enard, Joseph W
+                  Thornton, Sergei L Kosakovsky Pond
+                </div>
+                <div>
+                  <a
+                    style={dmLink}
+                    target="_blank"
+                    href="https://doi.org/10.1093/molbev/msad150"
+                  >
+                    <i
+                      style={dmFa}
+                      className="dm-fa fa-external-link-alt"
+                      aria-hidden="true"
+                    />
+                    Evolutionary Shortcuts via Multinucleotide Substitutions and
+                    Their Impact on Natural Selection Analyses
+                  </a>
+                  <p>
+                    Molecular Biology and Evolution, Volume 40, Issue 7, July
+                    2023, msad150
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col">
+            <div style={dmCard} className="dm-card card">
+              <div style={dmCardHeader} className="dm-card-header card-header">
+                Contrast-FEL
+              </div>
+              <div style={dmCardBody} className="dm-card-body card-body">
+                <div style={dmCardTitle} className="dm-card-title card-title">
+                  Sergei L Kosakovsky Pond, Sadie R Wisotsky, Ananias Escalante,
+                  Brittany Rife Magalis, Steven Weaver
+                </div>
+                <div>
+                  <a
+                    style={dmLink}
+                    target="_blank"
+                    href="https://doi.org/10.1093/molbev/msaa263"
+                  >
+                    <i
+                      style={dmFa}
+                      className="dm-fa fa-external-link-alt"
+                      aria-hidden="true"
+                    />
+                    Contrast-FEL—A Test for Differences in Selective Pressures
+                    at Individual Sites among Clades and Sets of Branches
+                  </a>
+                  <p>
+                    Molecular Biology and Evolution, Volume 38, Issue 3, March
+                    2021, Pages 1184–1198
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col">
+            <div style={dmCard} className="dm-card card">
+              <div style={dmCardHeader} className="dm-card-header card-header">
                 FEL
               </div>
               <div style={dmCardBody} className="dm-card-body card-body">
@@ -455,6 +525,38 @@ class Citations extends React.Component {
                     Selection
                   </a>
                   <p>PLoS Genetics 8(7): e1002764</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col">
+            <div style={dmCard} className="dm-card card">
+              <div style={dmCardHeader} className="dm-card-header card-header">
+                MULTI-HIT
+              </div>
+              <div style={dmCardBody} className="dm-card-body card-body">
+                <div style={dmCardTitle} className="dm-card-title card-title">
+                  Alexander G Lucaci, Sadie R Wisotsky, Stephen D Shank, Steven
+                  Weaver, Sergei L Kosakovsky Pond
+                </div>
+                <div>
+                  <a
+                    style={dmLink}
+                    target="_blank"
+                    href="https://doi.org/10.1371/journal.pone.0248337"
+                  >
+                    <i
+                      style={dmFa}
+                      className="dm-fa fa-external-link-alt"
+                      aria-hidden="true"
+                    />
+                    Extra base hits: Widespread empirical support for
+                    instantaneous multiple-nucleotide changes
+                  </a>
+                  <p>PLOS ONE 16(3): e0248337</p>
                 </div>
               </div>
             </div>
