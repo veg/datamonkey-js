@@ -783,7 +783,7 @@ function ContrastFEL(props) {
   return (
     <Method
       title="Contrast-FEL"
-      href="contrastfel"
+      href="contrast_fel"
       datamonkey={props.datamonkey}
       changeAppState={props.changeAppState}
     >
