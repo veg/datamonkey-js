@@ -6458,6 +6458,11 @@ export-to-csv@^0.2.1:
   resolved "https://registry.yarnpkg.com/export-to-csv/-/export-to-csv-0.2.1.tgz#8f997156feebc1cf995096da16341aa0100cce4e"
   integrity sha512-KTbrd3CAZ0cFceJEZr1e5uiMasabeCpXq1/5uvVxDl53o4jXJHnltasQoj2NkzrxD8hU9kdwjnMhoir/7nNx/A==
 
+export-to-csv@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/export-to-csv/-/export-to-csv-1.0.0.tgz#be2b8d2fa7d92a03012129639f2a7b735fff82a4"
+  integrity sha512-PMwskctJEbZMXZ3sRWcJHlaobY5b9JvbpB7+jpJF5FGrIh1ASWWI0IB4JrooIK9Kv+7GE+czp+gHKFFGkk8/ig==
+
 exports-loader@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/exports-loader/-/exports-loader-0.7.0.tgz#84881c784dea6036b8e1cd1dac3da9b6409e21a5"
