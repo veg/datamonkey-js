@@ -33,7 +33,7 @@
     "d3": "^3.0.0",
     "d3-require": "^1.2.4",
     "ejs": "^3.1.8",
-    "export-to-csv": "^1.1.0",
+    "export-to-csv": "^1.2.0",
     "express": "^4.15.4",
     "express-busboy": "^2.4.4",
     "express-validator": "^2.21.0",
