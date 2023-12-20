@@ -2016,6 +2016,11 @@
     lodash "^4.17.15"
     lodash-es "^4.17.15"
 
+"@spond/absrel@https://api.observablehq.com/@spond/absrel@5186.tgz?v=3":
+  version "5186.0.0"
+  uid "455828d91f541374414d110798ebd485511a8280"
+  resolved "https://api.observablehq.com/@spond/absrel@5186.tgz?v=3#455828d91f541374414d110798ebd485511a8280"
+
 "@types/anymatch@*":
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/@types/anymatch/-/anymatch-1.3.1.tgz#336badc1beecb9dacc38bea2cf32adf627a8421a"
@@ -6453,12 +6458,7 @@ expand-tilde@^2.0.0, expand-tilde@^2.0.2:
   dependencies:
     homedir-polyfill "^1.0.1"
 
-export-to-csv@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/export-to-csv/-/export-to-csv-0.2.1.tgz#8f997156feebc1cf995096da16341aa0100cce4e"
-  integrity sha512-KTbrd3CAZ0cFceJEZr1e5uiMasabeCpXq1/5uvVxDl53o4jXJHnltasQoj2NkzrxD8hU9kdwjnMhoir/7nNx/A==
-
-export-to-csv@^1.2.2:
+export-to-csv@^1.2.0, export-to-csv@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/export-to-csv/-/export-to-csv-1.2.2.tgz#24f09a2dba34aff65f8f97402a869e88232b8f58"
   integrity sha512-d9BxkLlyxeyFU1yhQKGjnnEQj2fh6PjyDVGyiI/uj7PD/oe7Lo1551B1lTaQeXHGPRX2DHuk6i3JMZB6ncJApQ==
@@ -7804,10 +7804,10 @@ hyphy-vision@^1.0.0:
     save-svg-as-png "^1.2.0"
     underscore "^1.8.3"
 
-hyphy-vision@^2.13.6:
-  version "2.13.6"
-  resolved "https://registry.yarnpkg.com/hyphy-vision/-/hyphy-vision-2.13.6.tgz#0ab1e79304ba94d4c05fa9eb09a815b42a90919a"
-  integrity sha512-0uVBC8amTvwILExIkIHlE+85Ag59lrVNMerXzDvcqV4yGqpG0n6funSuM9X3928YZWk97MwaHJp5fBJ8FTN45Q==
+hyphy-vision@^2.14.0:
+  version "2.14.0"
+  resolved "https://registry.yarnpkg.com/hyphy-vision/-/hyphy-vision-2.14.0.tgz#3a9ff02132434e03e778c6566f473716ad94fe49"
+  integrity sha512-sTTJl2wZ3+ELkzXuao4ORjA1K27tQnTpmiyX8a4epC0Sd4iJSaayqCV/o+oc8gK1KaSNGhar3TuOJc0TCRecvA==
   dependencies:
     "@fortawesome/fontawesome-free" "^5.15.3"
     "@hyphy_software/busted" "https://api.observablehq.com/@hyphy_software/busted@3486.tgz?v=3"
@@ -7816,6 +7816,7 @@ hyphy-vision@^2.13.6:
     "@hyphy_software/multi-hit-analysis-result-visualization" "https://api.observablehq.com/@hyphy_software/multi-hit-analysis-result-visualization.tgz?v=3"
     "@hyphy_software/nrm" "https://api.observablehq.com/@hyphy_software/nrm@1578.tgz?v=3"
     "@observablehq/runtime" "4.25"
+    "@spond/absrel" "https://api.observablehq.com/@spond/absrel@5186.tgz?v=3"
     alignment.js "0.3.0"
     bootstrap "4.x"
     chi-squared "^1.1.0"
@@ -7823,7 +7824,7 @@ hyphy-vision@^2.13.6:
     create-react-class "^15.6.3"
     d3 "3.x"
     d3-save-svg "0.0.2"
-    export-to-csv "^0.2.1"
+    export-to-csv "^1.2.0"
     express "^4.16.2"
     file-saver "^2.0.2"
     immutable "3.8.2"
