@@ -80,7 +80,7 @@
     "tether": "^1.4.0",
     "underscore": "^1.9.1",
     "winston": "^3.8.2",
-    "yarn": "^1.19.1"
+    "yarn": "^1.22.13"
   },
   "devDependencies": {
     "@babel/compat-data": "7.19.4",
