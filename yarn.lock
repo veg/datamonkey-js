@@ -1919,8 +1919,7 @@
 
 "@hyphy_software/fel-analysis-result-visualization@https://api.observablehq.com/@hyphy_software/fel-analysis-result-visualization@2311.tgz?v=3":
   version "2311.0.0"
-  uid "04c56ee58e9275a64c9cbd1b8df924dd89cab1d8"
-  resolved "https://api.observablehq.com/@hyphy_software/fel-analysis-result-visualization@2311.tgz?v=3#04c56ee58e9275a64c9cbd1b8df924dd89cab1d8"
+  resolved "https://api.observablehq.com/@hyphy_software/fel-analysis-result-visualization@2311.tgz?v=3#eb9fd472c992df7a2cd575c383ff640292efda20"
 
 "@hyphy_software/gard-analysis-result-visualization@https://api.observablehq.com/@hyphy_software/gard-analysis-result-visualization@916.tgz?v=3":
   version "916.0.0"
@@ -1932,7 +1931,6 @@
 
 "@hyphy_software/nrm@https://api.observablehq.com/@hyphy_software/nrm@1578.tgz?v=3":
   version "1578.0.0"
-  uid "5d2cb59f7771ec1ede48f62d9e25e41f526bdd4f"
   resolved "https://api.observablehq.com/@hyphy_software/nrm@1578.tgz?v=3#5d2cb59f7771ec1ede48f62d9e25e41f526bdd4f"
 
 "@jridgewell/gen-mapping@^0.1.0":
