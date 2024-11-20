@@ -3,14 +3,14 @@ var mongoose = require("mongoose"),
   logger = require("../../lib/logger"),
   helpers = require(__dirname + "/../../lib/helpers.js");
 
-require("mongoose-schema-extend");
-
 var AnalysisSchema = require(__dirname + "/analysis");
 
-var NRM = AnalysisSchema.extend({
+var NRM = mongoose.Schema({
   last_status_msg: String,
   results: Object,
 });
+
+NRM.add(AnalysisSchema);
 
 NRM.virtual("analysistype").get(function () {
   return "nrm";

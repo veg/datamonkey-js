@@ -3,16 +3,17 @@ var mongoose = require("mongoose"),
   logger = require("../../lib/logger"),
   helpers = require(__dirname + "/../../lib/helpers.js");
 
-require("mongoose-schema-extend");
-
 var AnalysisSchema = require(__dirname + "/analysis");
 
-var aBSREL = AnalysisSchema.extend({
+var aBSREL = new mongoose.Schema({
   tagged_nwk_tree: String,
   analysis_type: Number,
   last_status_msg: String,
   results: Object,
 });
+
+// Inherit fields from BaseSchema
+aBSREL.add(AnalysisSchema);
 
 aBSREL.virtual("max_sequences").get(function () {
   return 75;
