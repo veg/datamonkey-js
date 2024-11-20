@@ -2,15 +2,15 @@ const mongoose = require("mongoose"),
   path = require("path"),
   helpers = require("../../lib/helpers");
 
-require("mongoose-schema-extend");
-
 const AnalysisSchema = require(__dirname + "/analysis");
 
-const SLAC = AnalysisSchema.extend({
+const SLAC = mongoose.Schema({
   analysis_type: Number,
   last_status_msg: String,
   results: Object,
 });
+
+SLAC.add(AnalysisSchema);
 
 SLAC.virtual("pmid").get(function () {
   return "22807683";

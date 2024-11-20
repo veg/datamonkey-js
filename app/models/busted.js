@@ -7,13 +7,15 @@ require("mongoose-schema-extend");
 
 var AnalysisSchema = require(__dirname + "/analysis");
 
-var Busted = AnalysisSchema.extend({
+var Busted = new mongoose.Schema({
   tagged_nwk_tree: String,
   last_status_msg: String,
   multihit: String,
   results: Object,
   ds_variation: Number,
 });
+
+Busted.add(AnalysisSchema);
 
 Busted.virtual("analysistype").get(function () {
   return "busted";

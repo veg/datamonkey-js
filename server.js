@@ -20,7 +20,10 @@ var express = require("express"),
   bb = require("express-busboy");
 
 // Connect to database
-mongoose.connect(setup.database, { useMongoClient: true });
+mongoose.connect(setup.database, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 //Ensure that upload paths exists
 mkdirErrorLogger = error.errorLogger(["EEXIST"]);

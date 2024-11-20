@@ -4,17 +4,17 @@ var mongoose = require("mongoose"),
   logger = require("../../lib/logger"),
   helpers = require("../../lib/helpers");
 
-require("mongoose-schema-extend");
-
 var AnalysisSchema = require(__dirname + "/analysis");
 
-var MEME = AnalysisSchema.extend({
+var MEME = mongoose.Schema({
   analysis_type: Number,
   last_status_msg: String,
   results: Object,
   resample: Number,
   bootstrap: Boolean,
 });
+
+MEME.add(AnalysisSchema);
 
 MEME.virtual("pmid").get(function () {
   return "22807683";

@@ -11,8 +11,6 @@ const mongoose = require("mongoose"),
   mailer = require(path.join(__dirname, "/../../lib/mailer.js")),
   winston = require("winston");
 
-require("mongoose-schema-extend");
-
 const Schema = mongoose.Schema;
 
 function notEmptyValidator(val) {
@@ -325,9 +323,8 @@ HivTrace.methods.addAttributesToResults = function (cb) {
     try {
       let json_results = JSON.parse(results);
 
-      json_results["trace_results"][
-        "patient_attribute_schema"
-      ] = patient_schema;
+      json_results["trace_results"]["patient_attribute_schema"] =
+        patient_schema;
 
       // annotate each node with the attributes
       _.each(json_results["trace_results"].Nodes, function (node) {
@@ -362,22 +359,24 @@ HivTrace.methods.onComplete = function (data, publisher, channel) {
   if (data) {
     // save results to file
     //self.results = data.results;
-    fs.writeFile(self.trace_results, JSON.stringify(data.results), function (
-      err
-    ) {
-      if (err) throw err;
-      winston.info("saved results file");
-
-      if (self.mail) {
-        mailer.sendJobComplete(self);
-      }
-
-      //Update the status for the analysis
-      self.save(function (err, result) {
+    fs.writeFile(
+      self.trace_results,
+      JSON.stringify(data.results),
+      function (err) {
         if (err) throw err;
-        publisher.publish(channel, JSON.stringify(redis_packet));
-      });
-    });
+        winston.info("saved results file");
+
+        if (self.mail) {
+          mailer.sendJobComplete(self);
+        }
+
+        //Update the status for the analysis
+        self.save(function (err, result) {
+          if (err) throw err;
+          publisher.publish(channel, JSON.stringify(redis_packet));
+        });
+      }
+    );
     winston.info("job complete; got results");
   } else {
     winston.error("job complete, but no data received");

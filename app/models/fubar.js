@@ -2,17 +2,17 @@ var mongoose = require("mongoose"),
   path = require("path"),
   helpers = require("../../lib/helpers");
 
-require("mongoose-schema-extend");
-
 var AnalysisSchema = require(__dirname + "/analysis");
 
-var FUBAR = AnalysisSchema.extend({
+var FUBAR = mongoose.Schema({
   analysis_type: Number,
   last_status_msg: String,
   results: Object,
   number_of_grid_points: Number,
   concentration_of_dirichlet_prior: Number,
 });
+
+FUBAR.add(AnalysisSchema);
 
 FUBAR.virtual("pmid").get(function () {
   return "22807683";

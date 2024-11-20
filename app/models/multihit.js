@@ -3,16 +3,16 @@ var mongoose = require("mongoose"),
   logger = require("../../lib/logger"),
   helpers = require(__dirname + "/../../lib/helpers.js");
 
-require("mongoose-schema-extend");
-
 var AnalysisSchema = require(__dirname + "/analysis");
 
-var MULTIHIT = AnalysisSchema.extend({
+var MULTIHIT = mongoose.Schema({
   last_status_msg: String,
   results: Object,
   triple_islands: String,
   rate_classes: Number,
 });
+
+MULTIHIT.add(AnalysisSchema);
 
 MULTIHIT.virtual("analysistype").get(function () {
   return "multihit";

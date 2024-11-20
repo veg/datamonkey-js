@@ -3,11 +3,9 @@ var mongoose = require("mongoose"),
   logger = require("../../lib/logger"),
   helpers = require("../../lib/helpers");
 
-require("mongoose-schema-extend");
-
 var AnalysisSchema = require(__dirname + "/analysis");
 
-var GARD = AnalysisSchema.extend({
+var GARD = mongoose.Schema({
   analysis_type: Number,
   datatype: String,
   run_mode: String,
@@ -16,6 +14,8 @@ var GARD = AnalysisSchema.extend({
   site_to_site_variation: String,
   rate_classes: Number,
 });
+
+GARD.add(AnalysisSchema);
 
 GARD.virtual("pmid").get(function () {
   return "22807683";

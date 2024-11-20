@@ -3,11 +3,9 @@ var mongoose = require("mongoose"),
   logger = require("../../lib/logger"),
   helpers = require(__dirname + "/../../lib/helpers.js");
 
-require("mongoose-schema-extend");
-
 var AnalysisSchema = require(__dirname + "/analysis");
 
-var Fade = AnalysisSchema.extend({
+var Fade = mongoose.Schema({
   analysis_type: Number,
   last_status_msg: String,
   results: Object,
@@ -20,6 +18,8 @@ var Fade = AnalysisSchema.extend({
   substitution_model: Number,
   posterior_estimation_method: Number,
 });
+
+Fade.add(AnalysisSchema);
 
 Fade.virtual("pmid").get(function () {
   return "22807683";

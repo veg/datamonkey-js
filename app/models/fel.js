@@ -3,11 +3,9 @@ var mongoose = require("mongoose"),
   logger = require("../../lib/logger"),
   helpers = require("../../lib/helpers");
 
-require("mongoose-schema-extend");
-
 var AnalysisSchema = require(__dirname + "/analysis");
 
-var FEL = AnalysisSchema.extend({
+var FEL = mongoose.Schema({
   tagged_nwk_tree: String,
   analysis_type: Number,
   original_extension: String,
@@ -18,6 +16,8 @@ var FEL = AnalysisSchema.extend({
   ci: Boolean,
   bootstrap: Boolean,
 });
+
+FEL.add(AnalysisSchema);
 
 FEL.virtual("pmid").get(function () {
   return "22807683";
