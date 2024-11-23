@@ -11,6 +11,7 @@ var Busted = new mongoose.Schema({
   multihit: String,
   results: Object,
   ds_variation: Number,
+  error_protection: String,
 });
 
 Busted.add(AnalysisSchema);
@@ -62,6 +63,7 @@ Busted.statics.spawn = function (fn, options, callback) {
     datatype = 0,
     gencodeid = options.gencodeid,
     ds_variation = options.ds_variation,
+    error_protection = options.error_protection,
     multihit = options.multihit;
 
   busted.tagged_nwk_tree = options.nwk_tree;
@@ -93,6 +95,8 @@ Busted.statics.spawn = function (fn, options, callback) {
 
     busted.msa = msa;
     busted.ds_variation = ds_variation;
+    busted.error_protection = error_protection;
+
     busted.multihit = multihit;
 
     busted.save((err, busted_result) => {
