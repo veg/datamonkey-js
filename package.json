@@ -30,7 +30,7 @@
     "alignment.js": "^0.3.0",
     "async": "^0.1.0",
     "blueimp-file-upload": "^9.19.1",
-    "bootstrap": "^4.6.2",
+    "bootstrap": "^5.0.0",
     "circos": "^2.1.0",
     "create-react-class": "^15.6.3",
     "d3": "^3.0.0",
