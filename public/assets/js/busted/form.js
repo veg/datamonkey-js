@@ -12,6 +12,7 @@ $(function () {
     formData.append("datatype", $("select[name='datatype']").val());
     formData.append("gencodeid", $("select[name='gencodeid']").val());
     formData.append("ds_variation", $("#ds-variation").val());
+    formData.append("error_protection", $("#error-protection").val());
     formData.append("mail", $("input[name='mail']").val());
     formData.append("multihit", $("#multihit").val());
 
