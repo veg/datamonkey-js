@@ -6774,11 +6774,6 @@ expand-range@^1.8.1:
   dependencies:
     fill-range "^2.1.0"
 
-export-to-csv@^0.2.1:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/export-to-csv/-/export-to-csv-0.2.2.tgz#201ee08453dfb0d07792ee5e01fda48e4ff472ce"
-  integrity sha512-KHExLOjF2yvo8JU8Sv+5RuJAHzP1TpFvUgnWn8ex7zBrv1ZsABJAOpvG1RNRRWr1spYpDJmBBaR5/cV/8aBQSw==
-
 export-to-csv@^1.2.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/export-to-csv/-/export-to-csv-1.4.0.tgz#03fb42a4a4262cd03bde57a7b9bcad115149cf4b"
@@ -9612,12 +9607,6 @@ locate-path@^7.1.0:
   dependencies:
     p-locate "^6.0.0"
 
-lodash-es@^4.17.15:
-  version "4.17.21"
-  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.21.tgz#43e626c46e6591b7750beb2b50117390c609e3ee"
-  integrity sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==
-
-
 lodash.camelcase@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/lodash.camelcase/-/lodash.camelcase-4.3.0.tgz#b28aa6288a2b9fc651035c7711f65ab6190331a6"
@@ -10208,8 +10197,7 @@ module-deps@^6.2.3:
     through2 "^2.0.0"
     xtend "^4.0.0"
 
-
-moment@^2.30.1:
+moment@^2.29.4, moment@^2.30.1:
   version "2.30.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.30.1.tgz#f8c91c07b7a786e30c59926df530b4eac96974ae"
   integrity sha512-uEmtNhbDOrWPFS+hdjFCBfy9f2YoyzRpwcl+DqpC6taX21FzsTLQVbMV/W7PzNSX6x/bhC1zA3c2UQ5NzH6how==

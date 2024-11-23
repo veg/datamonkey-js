@@ -1,6 +1,6 @@
 {
   "name": "datamonkey.js",
-  "version": "1.11.6",
+  "version": "1.12.0",
   "description": "A free public server for comparative analysis of sequence alignments using state-of-the-art statistical models.",
   "private": true,
   "author": {
@@ -14,6 +14,9 @@
     "lint": "./node_modules/.bin/eslint",
     "format": "prettier 'src/**/*.{js,jsx}' 'app/**/*.{js,jsx}' 'lib/**/*.{js,jsx}' 'config/**/*.{js,jsx}' 'test/**/*.{js,jsx}' --write",
     "precommit": "pretty-quick --staged"
+  },
+  "engines": {
+    "node": ">=23.0.0"
   },
   "repository": {
     "type": "git",
