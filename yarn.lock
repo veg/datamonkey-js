@@ -1913,10 +1913,6 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.0.tgz#87de7af9c231826fdd68ac7258f77c429e0e5fcf"
   integrity sha512-wdppn25U8z/2yiaT6YGquE6X8sSv7hNMWSXYSSU1jGv/yd6XqjXgTDJ8KP4NgjTXfJ3GbRjeeb8RTV7a/VpM+w==
 
-"@hyphy_software/busted@https://api.observablehq.com/@hyphy_software/busted@3486.tgz?v=3":
-  version "3486.0.0"
-  resolved "https://api.observablehq.com/@hyphy_software/busted@3486.tgz?v=3#1f904394320baad5f976e5434be7be88ccf95a3d"
-
 "@hyphy_software/fel-analysis-result-visualization@https://api.observablehq.com/@hyphy_software/fel-analysis-result-visualization@2311.tgz?v=3":
   version "2311.0.0"
   resolved "https://api.observablehq.com/@hyphy_software/fel-analysis-result-visualization@2311.tgz?v=3#04c56ee58e9275a64c9cbd1b8df924dd89cab1d8"
@@ -2013,6 +2009,16 @@
   dependencies:
     lodash "^4.17.15"
     lodash-es "^4.17.15"
+
+"@spond/absrel@https://api.observablehq.com/@spond/absrel@5186.tgz?v=3":
+  version "5186.0.0"
+  uid "757531cb9c9d2e4fd8c6e48925391725b4e10cb0"
+  resolved "https://api.observablehq.com/@spond/absrel@5186.tgz?v=3#757531cb9c9d2e4fd8c6e48925391725b4e10cb0"
+
+"@spond/busted@https://api.observablehq.com/@spond/busted@4691.tgz?v=3":
+  version "4691.0.0"
+  uid "2d339e407c3285255fd3190f6da652b0f1d5ca24"
+  resolved "https://api.observablehq.com/@spond/busted@4691.tgz?v=3#2d339e407c3285255fd3190f6da652b0f1d5ca24"
 
 "@types/anymatch@*":
   version "1.3.1"
@@ -6496,15 +6502,10 @@ expand-tilde@^2.0.0, expand-tilde@^2.0.2:
   dependencies:
     homedir-polyfill "^1.0.1"
 
-export-to-csv@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/export-to-csv/-/export-to-csv-0.2.1.tgz#8f997156feebc1cf995096da16341aa0100cce4e"
-  integrity sha512-KTbrd3CAZ0cFceJEZr1e5uiMasabeCpXq1/5uvVxDl53o4jXJHnltasQoj2NkzrxD8hU9kdwjnMhoir/7nNx/A==
-
-export-to-csv@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/export-to-csv/-/export-to-csv-1.3.0.tgz#9f53cf61fcd6bed836683ed7d611767022d49919"
-  integrity sha512-msPjbfozZdYzDghAEKmCVH5veMeKHNacplE6noXvGiA8AeV1qa/SOxp6JXDjF9R8Kf6v3ypI6jskiY19dkhZeA==
+export-to-csv@^1.2.0, export-to-csv@^1.3.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/export-to-csv/-/export-to-csv-1.4.0.tgz#03fb42a4a4262cd03bde57a7b9bcad115149cf4b"
+  integrity sha512-6CX17Cu+rC2Fi2CyZ4CkgVG3hLl6BFsdAxfXiZkmDFIDY4mRx2y2spdeH6dqPHI9rP+AsHEfGeKz84Uuw7+Pmg==
 
 exports-loader@^0.7.0:
   version "0.7.0"
@@ -7842,18 +7843,19 @@ hyphy-vision@^1.0.0:
     save-svg-as-png "^1.2.0"
     underscore "^1.8.3"
 
-hyphy-vision@^2.13.6:
-  version "2.13.6"
-  resolved "https://registry.yarnpkg.com/hyphy-vision/-/hyphy-vision-2.13.6.tgz#0ab1e79304ba94d4c05fa9eb09a815b42a90919a"
-  integrity sha512-0uVBC8amTvwILExIkIHlE+85Ag59lrVNMerXzDvcqV4yGqpG0n6funSuM9X3928YZWk97MwaHJp5fBJ8FTN45Q==
+hyphy-vision@^2.15.6:
+  version "2.15.6"
+  resolved "https://registry.yarnpkg.com/hyphy-vision/-/hyphy-vision-2.15.6.tgz#ac436526b71aafcd46c57729def75d25cc722a5b"
+  integrity sha512-wixzlQYwFqv/xDY3GSkg2TSGhqra7I0WIREftch9AWaDD8RVaku5Bpx+YvOZmLg6UvyUL6RrnYxRBtchu1GRkQ==
   dependencies:
     "@fortawesome/fontawesome-free" "^5.15.3"
-    "@hyphy_software/busted" "https://api.observablehq.com/@hyphy_software/busted@3486.tgz?v=3"
     "@hyphy_software/fel-analysis-result-visualization" "https://api.observablehq.com/@hyphy_software/fel-analysis-result-visualization@2311.tgz?v=3"
     "@hyphy_software/gard-analysis-result-visualization" "https://api.observablehq.com/@hyphy_software/gard-analysis-result-visualization@916.tgz?v=3"
     "@hyphy_software/multi-hit-analysis-result-visualization" "https://api.observablehq.com/@hyphy_software/multi-hit-analysis-result-visualization.tgz?v=3"
     "@hyphy_software/nrm" "https://api.observablehq.com/@hyphy_software/nrm@1578.tgz?v=3"
     "@observablehq/runtime" "4.25"
+    "@spond/absrel" "https://api.observablehq.com/@spond/absrel@5186.tgz?v=3"
+    "@spond/busted" "https://api.observablehq.com/@spond/busted@4691.tgz?v=3"
     alignment.js "0.3.0"
     bootstrap "4.x"
     chi-squared "^1.1.0"
@@ -7861,7 +7863,7 @@ hyphy-vision@^2.13.6:
     create-react-class "^15.6.3"
     d3 "3.x"
     d3-save-svg "0.0.2"
-    export-to-csv "^0.2.1"
+    export-to-csv "^1.2.0"
     express "^4.16.2"
     file-saver "^2.0.2"
     immutable "3.8.2"
@@ -7873,6 +7875,7 @@ hyphy-vision@^2.13.6:
     json-loader "^0.5.7"
     lodash "4.x"
     lodash.clonedeep "^4.5.0"
+    parse-svg-path "^0.1.2"
     phylotree "0.1.6"
     popper.js "^1.14.1"
     pretty-data "^0.40.0"
@@ -10535,6 +10538,11 @@ parse-passwd@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/parse-passwd/-/parse-passwd-1.0.0.tgz#6d5b934a456993b23d37f40a382d6f1666a8e5c6"
   integrity sha1-bVuTSkVpk7I9N/QKOC1vFmao5cY=
+
+parse-svg-path@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/parse-svg-path/-/parse-svg-path-0.1.2.tgz#7a7ec0d1eb06fa5325c7d3e009b859a09b5d49eb"
+  integrity sha512-JyPSBnkTJ0AI8GGJLfMXvKq42cj5c006fnLz6fXy6zfoVjJizi8BNTpu8on8ziI1cKy9d9DGNuY17Ce7wuejpQ==
 
 parseqs@0.0.6:
   version "0.0.6"
