@@ -1,4 +1,4 @@
-@import "variables";
+@import "./variables";
 //@import "~bootstrap/scss/bootstrap";
 @import "~hyphy-vision/dist/application.scss";
 @import "~@fortawesome/fontawesome-free/scss/fontawesome";
@@ -11,6 +11,7 @@ $datamonkey-turquoise: #00a99d;
 
 //Datamonkey Logo
 .navbar-brand #datamonkey-logo {
+  width: 230px;
 }
 
 html,
@@ -418,7 +419,7 @@ nav .dm-dropdown-menu {
 
 //// Homepage Jumbotron
 .dm-jumbotron {
-  background-image: url("/assets/img/jumbotron.jpg");
+  background-image: url("./img/jumbotron.jpg");
   border-radius: 0;
   margin-bottom: 50px;
   padding: 58px 15px;
