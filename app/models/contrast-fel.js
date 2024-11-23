@@ -2,11 +2,9 @@ var mongoose = require("mongoose"),
   path = require("path"),
   helpers = require("../../lib/helpers");
 
-require("mongoose-schema-extend");
-
 var AnalysisSchema = require(__dirname + "/analysis");
 
-var ContrastFEL = AnalysisSchema.extend({
+var ContrastFEL = mongoose.Schema({
   tagged_nwk_tree: String,
   analysis_type: Number,
   original_extension: String,
@@ -15,6 +13,8 @@ var ContrastFEL = AnalysisSchema.extend({
   results: Object,
   ds_variation: Number,
 });
+
+ContrastFEL.add(AnalysisSchema);
 
 ContrastFEL.virtual("pmid").get(function () {
   return "22807683";
