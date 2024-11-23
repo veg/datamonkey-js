@@ -4,17 +4,17 @@ var mongoose = require("mongoose"),
   logger = require("../../lib/logger"),
   helpers = require("../../lib/helpers");
 
-require("mongoose-schema-extend");
-
 var AnalysisSchema = require(__dirname + "/analysis");
 
-var MEME = AnalysisSchema.extend({
+var MEME = mongoose.Schema({
   analysis_type: Number,
   last_status_msg: String,
   results: Object,
   resample: Number,
   bootstrap: Boolean,
 });
+
+MEME.add(AnalysisSchema);
 
 MEME.virtual("pmid").get(function () {
   return "22807683";
@@ -117,10 +117,21 @@ MEME.statics.spawn = function (fn, options, callback) {
           );
           callback(err, null);
         } else {
-          var to_send = meme;
-          to_send.upload_redirect_path = meme.upload_redirect_path;
-          this.submitJob(meme_result, connect_callback);
-          callback(null, meme);
+          var move = Msa.removeTreeFromFile(
+            meme_result.filepath,
+            meme_result.filepath
+          );
+          move.then(
+            (val) => {
+              let to_send = meme;
+              to_send.upload_redirect_path = meme.upload_redirect_path;
+              this.submitJob(meme_result, connect_callback);
+              callback(null, meme);
+            },
+            (reason) => {
+              res.json(500, { error: "issue removing tree from file" });
+            }
+          );
         }
       }
       helpers.moveSafely(fn, meme_result.filepath, move_cb.bind(this));

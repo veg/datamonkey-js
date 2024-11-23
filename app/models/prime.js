@@ -1,15 +1,15 @@
 var mongoose = require("mongoose"),
   Msa = require(__dirname + "/msa");
 
-require("mongoose-schema-extend");
-
 var AnalysisSchema = require(__dirname + "/analysis");
 
-var PRIME = AnalysisSchema.extend({
+var PRIME = mongoose.Schema({
   analysis_type: Number,
   last_status_msg: String,
   results: Object,
 });
+
+PRIME.add(AnalysisSchema);
 
 PRIME.virtual("pmid").get(function () {
   return "22807683";

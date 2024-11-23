@@ -6,16 +6,16 @@ var mongoose = require("mongoose"),
   winston = require("winston"),
   Msa = require(__dirname + "/msa");
 
-require("mongoose-schema-extend");
-
 var AnalysisSchema = require(__dirname + "/analysis");
 
-var Flea = AnalysisSchema.extend({
+var Flea = mongoose.Schema({
   msas: [Msa.MsaSchema],
   last_status_msg: String,
   mail: String,
   results: Object,
 });
+
+Flea.add(AnalysisSchema);
 
 Flea.virtual("analysistype").get(function () {
   return "flea";

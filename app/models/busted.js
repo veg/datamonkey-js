@@ -3,11 +3,9 @@ var mongoose = require("mongoose"),
   logger = require("../../lib/logger"),
   helpers = require(__dirname + "/../../lib/helpers.js");
 
-require("mongoose-schema-extend");
-
 var AnalysisSchema = require(__dirname + "/analysis");
 
-var Busted = AnalysisSchema.extend({
+var Busted = new mongoose.Schema({
   tagged_nwk_tree: String,
   last_status_msg: String,
   multihit: String,
@@ -15,6 +13,8 @@ var Busted = AnalysisSchema.extend({
   ds_variation: Number,
   error_protection: String,
 });
+
+Busted.add(AnalysisSchema);
 
 Busted.virtual("analysistype").get(function () {
   return "busted";

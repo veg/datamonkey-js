@@ -3,11 +3,9 @@ var mongoose = require("mongoose"),
   logger = require("../../lib/logger"),
   helpers = require(__dirname + "/../../lib/helpers.js");
 
-require("mongoose-schema-extend");
-
 var AnalysisSchema = require(__dirname + "/analysis");
 
-var BGM = AnalysisSchema.extend({
+var BGM = new mongoose.Schema({
   analysis_type: Number,
   substitution_model: Number,
   last_status_msg: String,
@@ -18,6 +16,8 @@ var BGM = AnalysisSchema.extend({
   minimum_subs_per_site: Number,
   results: Object,
 });
+
+BGM.add(AnalysisSchema);
 
 BGM.virtual("pmid").get(function () {
   return "18562270";

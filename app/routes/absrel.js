@@ -66,6 +66,7 @@ exports.uploadFile = function (req, res) {
     absrel.save(function (err, absrel_result) {
       if (err) {
         logger.error("absrel save failed");
+        console.log(err);
         res.json(500, { error: err });
         return;
       }

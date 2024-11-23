@@ -3,17 +3,17 @@ var mongoose = require("mongoose"),
   logger = require("../../lib/logger"),
   helpers = require(__dirname + "/../../lib/helpers.js");
 
-require("mongoose-schema-extend");
-
 var AnalysisSchema = require(__dirname + "/analysis");
 
-var Relax = AnalysisSchema.extend({
+var Relax = mongoose.Schema({
   tagged_nwk_tree: String,
   analysis_type: Number,
   original_extension: String,
   last_status_msg: String,
   results: Object,
 });
+
+Relax.add(AnalysisSchema);
 
 Relax.virtual("analysistype").get(function () {
   return "relax";
