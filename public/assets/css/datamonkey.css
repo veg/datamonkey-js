@@ -29159,6 +29159,60 @@ h4 {
   display: none;
   height: 0px;
 }
+
+footer {
+  text-align: center;
+  padding: 20px 10px;
+  background-color: #f7f7f7;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Add space between form elements */
+  padding: 10px 0; /* Add padding to the form container */
+}
+
+.upload-form .upload-div,
+.upload-form .form-group {
+  margin: 0; /* Remove default spacing for consistency */
+}
+
+.upload-form label {
+  margin-bottom: 4px; /* Space between label and input */
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333; /* Neutral text color */
+}
+
+.upload-form input[type=file],
+.upload-form input[type=text],
+.upload-form select {
+  width: 100%;
+  padding: 6px 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.upload-form button {
+  margin-top: 12px; /* Slight spacing above the button */
+  padding: 8px 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: #479167; /* Neutral green */
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  align-self: flex-end;
+}
+
+.upload-form button:hover {
+  background-color: #36c9b7; /* Slightly lighter green on hover */
+}
 /*!***********************************************************************************************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[0].use[2]!./node_modules/phylotree/phylotree.css ***!
   \***********************************************************************************************************************************************************/
