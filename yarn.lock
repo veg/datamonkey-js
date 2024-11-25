@@ -6774,15 +6774,10 @@ expand-range@^1.8.1:
   dependencies:
     fill-range "^2.1.0"
 
-export-to-csv@^1.2.0:
+export-to-csv@^1.2.0, export-to-csv@^1.3.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/export-to-csv/-/export-to-csv-1.4.0.tgz#03fb42a4a4262cd03bde57a7b9bcad115149cf4b"
   integrity sha512-6CX17Cu+rC2Fi2CyZ4CkgVG3hLl6BFsdAxfXiZkmDFIDY4mRx2y2spdeH6dqPHI9rP+AsHEfGeKz84Uuw7+Pmg==
-
-export-to-csv@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/export-to-csv/-/export-to-csv-1.3.0.tgz#9f53cf61fcd6bed836683ed7d611767022d49919"
-  integrity sha512-msPjbfozZdYzDghAEKmCVH5veMeKHNacplE6noXvGiA8AeV1qa/SOxp6JXDjF9R8Kf6v3ypI6jskiY19dkhZeA==
 
 exports-loader@^0.7.0:
   version "0.7.0"
@@ -8237,10 +8232,10 @@ hyphy-vision@^1.0.0:
     save-svg-as-png "^1.2.0"
     underscore "^1.8.3"
 
-hyphy-vision@^2.15.7-alpha.1:
-  version "2.15.7-alpha.1"
-  resolved "https://registry.yarnpkg.com/hyphy-vision/-/hyphy-vision-2.15.7-alpha.1.tgz#525682211d61766f3aed7abde126de1023fbcb18"
-  integrity sha512-EBw43AKlPkGqnOEGGDSgToaIhr57Wfcl5HWhBIIK8QN1f8+/MGVzh8sxlHqwGZIqof5OGxqXAclBNlDBw/TWCg==
+hyphy-vision@^2.15.9:
+  version "2.15.9"
+  resolved "https://registry.yarnpkg.com/hyphy-vision/-/hyphy-vision-2.15.9.tgz#deaf4a8c1662aefde99d59fe0c7b877e42f01281"
+  integrity sha512-qmffake1gorB1qsmcU1slTvpdTe38D26iocq6x5AiMWRWi0r50d4/SLSvLptBWG956hp9SbhxpZrx7dm6BZdmg==
   dependencies:
     "@fortawesome/fontawesome-free" "^5.15.3"
     "@hyphy_software/fel-analysis-result-visualization" "https://api.observablehq.com/@hyphy_software/fel-analysis-result-visualization@2311.tgz?v=3"
