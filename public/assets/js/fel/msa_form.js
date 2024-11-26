@@ -13,17 +13,19 @@ $(function () {
     formData.append("gencodeid", $("select[name='gencodeid']").val());
     formData.append("ds_variation", $("#ds-variation").val());
     formData.append("resample", $("#resample").val());
+    formData.append("multiple_hits", $("select[name='multiple_hits']").val());
+    formData.append("site_multihit", $("select[name='site_multihit']").val());
 
     formData.append(
       "receive_mail",
-      $("input[name='receive_mail']").prop("checked")
+      $("input[name='receive_mail']").prop("checked"),
     );
 
     formData.append("mail", $("input[name='mail']").val());
 
     formData.append(
       "confidence_interval",
-      $("input[name='confidence-interval']").prop("checked")
+      $("input[name='confidence-interval']").prop("checked"),
     );
 
     var action_url = $("#msa-form").attr("action");
@@ -64,7 +66,7 @@ $(function () {
         window.location.href = result.upload_redirect_path;
       } else {
         $("#modal-error-msg").text(
-          "We received data in an unexpected format from the server."
+          "We received data in an unexpected format from the server.",
         );
         $("#errorModal").modal();
         $("#file-progress").css("display", "none");

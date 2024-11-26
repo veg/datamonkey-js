@@ -15,6 +15,16 @@ var FEL = mongoose.Schema({
   resample: Number,
   ci: Boolean,
   bootstrap: Boolean,
+  multiple_hits: {
+    type: String,
+    enum: ["None", "Double", "Double+Triple"],
+    default: "None",
+  },
+  site_multihit: {
+    type: String,
+    enum: ["Estimate", "Global"],
+    default: "Estimate",
+  },
 });
 
 FEL.add(AnalysisSchema);
@@ -47,7 +57,7 @@ FEL.virtual("original_fn").get(function () {
       "/../../uploads/msa/" +
       this._id +
       "-original." +
-      this.original_extension
+      this.original_extension,
   );
 });
 
@@ -123,7 +133,7 @@ FEL.statics.spawn = function (fn, options, callback) {
         } else {
           var move = Msa.removeTreeFromFile(
             fel_result.filepath,
-            fel_result.filepath
+            fel_result.filepath,
           );
           move.then(
             (val) => {
@@ -137,7 +147,7 @@ FEL.statics.spawn = function (fn, options, callback) {
             },
             (reason) => {
               callback(err, "issue removing tree from file");
-            }
+            },
           );
         }
       }

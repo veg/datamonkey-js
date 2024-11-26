@@ -36,6 +36,8 @@ exports.uploadFile = function (req, res) {
   fel.original_extension = path.basename(fn).split(".")[1];
   fel.mail = postdata.mail;
   fel.ci = postdata.confidence_interval == "true";
+  fel.multiple_hits = postdata.multiple_hits;
+  fel.site_multihit = postdata.site_multihit;
 
   // Check advanced options
   if (!_.isNaN(resample)) {
@@ -87,7 +89,7 @@ exports.uploadFile = function (req, res) {
         } else {
           var move = Msa.removeTreeFromFile(
             fel_result.filepath,
-            fel_result.filepath
+            fel_result.filepath,
           );
           move.then(
             (val) => {
@@ -98,7 +100,7 @@ exports.uploadFile = function (req, res) {
             },
             (reason) => {
               res.json(500, { error: "issue removing tree from file" });
-            }
+            },
           );
         }
       }
@@ -116,7 +118,7 @@ exports.uploadFile = function (req, res) {
           helpers.moveSafely(
             req.files.files.file,
             fel_result.filepath,
-            move_cb
+            move_cb,
           );
         });
       });
@@ -148,6 +150,8 @@ exports.invoke = function (req, res) {
     // User Parameters
     fel.tagged_nwk_tree = postdata.nwk_tree;
     fel.analysis_type = postdata.analysis_type;
+    fel.multiple_hits = postdata.multiple_hits; // new
+    fel.site_multihit = postdata.site_multihit; // new
     fel.status = fel.status_stack[0];
 
     fel.save(function (err, result) {
