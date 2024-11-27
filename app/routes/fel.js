@@ -25,6 +25,7 @@ exports.uploadFile = function (req, res) {
     }
   };
 
+
   var fn = req.files.files.file,
     fel = new FEL(),
     postdata = req.body,
@@ -32,6 +33,7 @@ exports.uploadFile = function (req, res) {
     gencodeid = postdata.gencodeid,
     ds_variation = postdata.ds_variation,
     resample = parseInt(postdata.resample);
+
 
   fel.original_extension = path.basename(fn).split(".")[1];
   fel.mail = postdata.mail;
@@ -150,8 +152,6 @@ exports.invoke = function (req, res) {
     // User Parameters
     fel.tagged_nwk_tree = postdata.nwk_tree;
     fel.analysis_type = postdata.analysis_type;
-    fel.multiple_hits = postdata.multiple_hits; // new
-    fel.site_multihit = postdata.site_multihit; // new
     fel.status = fel.status_stack[0];
 
     fel.save(function (err, result) {
