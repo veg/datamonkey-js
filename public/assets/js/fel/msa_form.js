@@ -1,4 +1,24 @@
 $(function () {
+  function toggleSiteMultihit() {
+    const multipleHitsValue = $("#multiple-hits").val();
+    const siteMultihitDropdown = $("#site-multihit");
+
+    if (multipleHitsValue === "None") {
+      siteMultihitDropdown.prop("disabled", true);
+      siteMultihitDropdown.val("Estimate"); // Set to default value if disabled
+    } else {
+      siteMultihitDropdown.prop("disabled", false);
+    }
+  }
+
+  // Initial check on page load
+  toggleSiteMultihit();
+
+  // Bind change event to multiple_hits dropdown
+  $("#multiple-hits").change(function () {
+    toggleSiteMultihit();
+  });
+
   $("form").submit(function (e) {
     e.preventDefault();
 
@@ -13,19 +33,19 @@ $(function () {
     formData.append("gencodeid", $("select[name='gencodeid']").val());
     formData.append("ds_variation", $("#ds-variation").val());
     formData.append("resample", $("#resample").val());
-    formData.append("multiple_hits", $("select[name='multiple_hits']").val());
-    formData.append("site_multihit", $("select[name='site_multihit']").val());
+    formData.append("multiple_hits", $("#multiple-hits").val());
+    formData.append("site_multihit", $("#site-multihit").val());
 
     formData.append(
       "receive_mail",
-      $("input[name='receive_mail']").prop("checked"),
+      $("input[name='receive_mail']").prop("checked")
     );
 
     formData.append("mail", $("input[name='mail']").val());
 
     formData.append(
       "confidence_interval",
-      $("input[name='confidence-interval']").prop("checked"),
+      $("input[name='confidence-interval']").prop("checked")
     );
 
     var action_url = $("#msa-form").attr("action");
@@ -66,7 +86,7 @@ $(function () {
         window.location.href = result.upload_redirect_path;
       } else {
         $("#modal-error-msg").text(
-          "We received data in an unexpected format from the server.",
+          "We received data in an unexpected format from the server."
         );
         $("#errorModal").modal();
         $("#file-progress").css("display", "none");
