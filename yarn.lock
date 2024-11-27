@@ -1740,6 +1740,11 @@
   version "4691.0.0"
   resolved "https://api.observablehq.com/@spond/busted@4691.tgz?v=3#2d339e407c3285255fd3190f6da652b0f1d5ca24"
 
+"@spond/meme@https://api.observablehq.com/@spond/meme@4335.tgz?v=3":
+  version "4335.0.0"
+  uid "1ab18c47fa1e9963a69cc9161d6da989fddeeb57"
+  resolved "https://api.observablehq.com/@spond/meme@4335.tgz?v=3#1ab18c47fa1e9963a69cc9161d6da989fddeeb57"
+
 "@tootallnate/once@1":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
@@ -8232,10 +8237,10 @@ hyphy-vision@^1.0.0:
     save-svg-as-png "^1.2.0"
     underscore "^1.8.3"
 
-hyphy-vision@^2.15.9:
-  version "2.15.9"
-  resolved "https://registry.yarnpkg.com/hyphy-vision/-/hyphy-vision-2.15.9.tgz#deaf4a8c1662aefde99d59fe0c7b877e42f01281"
-  integrity sha512-qmffake1gorB1qsmcU1slTvpdTe38D26iocq6x5AiMWRWi0r50d4/SLSvLptBWG956hp9SbhxpZrx7dm6BZdmg==
+hyphy-vision@^2.15.10:
+  version "2.15.10"
+  resolved "https://registry.yarnpkg.com/hyphy-vision/-/hyphy-vision-2.15.10.tgz#513ac1f3fe212bab8db7a6e74cf210902f77c4a6"
+  integrity sha512-94z4195XNN8iCK6qCZwTMVJEXcB5Gc5Dq6Tny3494mitybE8/HO7th0wcvq0vzG9Pzx65u2EM4upAaGfYxvp6g==
   dependencies:
     "@fortawesome/fontawesome-free" "^5.15.3"
     "@hyphy_software/fel-analysis-result-visualization" "https://api.observablehq.com/@hyphy_software/fel-analysis-result-visualization@2311.tgz?v=3"
@@ -8245,6 +8250,7 @@ hyphy-vision@^2.15.9:
     "@observablehq/runtime" "4.25"
     "@spond/absrel" "https://api.observablehq.com/@spond/absrel@5186.tgz?v=3"
     "@spond/busted" "https://api.observablehq.com/@spond/busted@4691.tgz?v=3"
+    "@spond/meme" "https://api.observablehq.com/@spond/meme@4335.tgz?v=3"
     bootstrap "4.x"
     chi-squared "^1.1.0"
     circos "^2.1.0"
