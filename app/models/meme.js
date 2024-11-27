@@ -12,6 +12,10 @@ var MEME = mongoose.Schema({
   results: Object,
   resample: Number,
   bootstrap: Boolean,
+  multiple_hits: String,
+  site_multihit: String,
+  rates: Number,
+  impute_states: String,
 });
 
 MEME.add(AnalysisSchema);
@@ -113,13 +117,13 @@ MEME.statics.spawn = function (fn, options, callback) {
           logger.error(
             "meme rename failed" +
               " Errored on line 113~ within models/meme.js :: move_cb " +
-              err
+              err,
           );
           callback(err, null);
         } else {
           var move = Msa.removeTreeFromFile(
             meme_result.filepath,
-            meme_result.filepath
+            meme_result.filepath,
           );
           move.then(
             (val) => {
@@ -130,7 +134,7 @@ MEME.statics.spawn = function (fn, options, callback) {
             },
             (reason) => {
               res.json(500, { error: "issue removing tree from file" });
-            }
+            },
           );
         }
       }

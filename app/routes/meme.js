@@ -24,6 +24,11 @@ exports.invoke = function (req, res) {
     datatype: 0,
     gencodeid: postdata.gencodeid,
     mail: postdata.mail,
+    multiple_hits: postdata.multiple_hits,
+    site_multihit: postdata.site_multihit,
+    rates: parseInt(postdata.rates),
+    resample: parseInt(postdata.resample || 0),
+    impute_states: postdata.impute_states,
   };
 
   //// Check advanced options
