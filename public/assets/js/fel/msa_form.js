@@ -1,4 +1,24 @@
 $(function () {
+  function toggleSiteMultihit() {
+    const multipleHitsValue = $("#multiple-hits").val();
+    const siteMultihitDropdown = $("#site-multihit");
+
+    if (multipleHitsValue === "None") {
+      siteMultihitDropdown.prop("disabled", true);
+      siteMultihitDropdown.val("Estimate"); // Set to default value if disabled
+    } else {
+      siteMultihitDropdown.prop("disabled", false);
+    }
+  }
+
+  // Initial check on page load
+  toggleSiteMultihit();
+
+  // Bind change event to multiple_hits dropdown
+  $("#multiple-hits").change(function () {
+    toggleSiteMultihit();
+  });
+
   $("form").submit(function (e) {
     e.preventDefault();
 
@@ -13,6 +33,8 @@ $(function () {
     formData.append("gencodeid", $("select[name='gencodeid']").val());
     formData.append("ds_variation", $("#ds-variation").val());
     formData.append("resample", $("#resample").val());
+    formData.append("multiple_hits", $("#multiple-hits").val());
+    formData.append("site_multihit", $("#site-multihit").val());
 
     formData.append(
       "receive_mail",
