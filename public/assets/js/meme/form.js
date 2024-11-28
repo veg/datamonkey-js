@@ -1,68 +1,114 @@
 $(function () {
+  function toggleSiteMultihit() {
+    const multipleHitsValue = $("#multiple-hits").val();
+    const siteMultihitDropdown = $("#site-multihit");
+
+    if (multipleHitsValue === "None") {
+      siteMultihitDropdown.prop("disabled", true);
+      siteMultihitDropdown.val("Estimate"); // Default value when disabled
+    } else {
+      siteMultihitDropdown.prop("disabled", false);
+    }
+  }
+
+  // Initialize dependent dropdown states on page load
+  toggleSiteMultihit();
+
+  // Handle changes in multiple hits selection
+  $("#multiple-hits").change(function () {
+    toggleSiteMultihit();
+  });
+
+  // Handle form submission
   $("form").submit(function (e) {
     e.preventDefault();
 
     $("#file-progress").removeClass("hidden");
 
-    var formData = new FormData();
-    var file = document.getElementById("seq-file").files[0];
-    var filename = document.getElementById("seq-file").files[0].name;
+    const formData = new FormData();
 
+    // File validation
+    const fileInput = document.getElementById("seq-file");
+    const file = fileInput.files[0];
+
+    if (!file) {
+      $("#modal-error-msg").text("Please select a file to upload.");
+      $("#errorModal").modal();
+      return;
+    }
     formData.append("files", file);
-    formData.append("datatype", $("select[name='datatype']").val());
+
+    // Gather and validate form data
     formData.append("gencodeid", $("select[name='gencodeid']").val());
-    formData.append("mail", $("input[name='mail']").val());
+    formData.append("multiple_hits", $("#multiple-hits").val());
+    formData.append("site_multihit", $("#site-multihit").val());
+    formData.append("rates", $("#rates").val());
+    formData.append("resample", $("#resample").val());
+    formData.append("impute_states", $("#impute-states").val());
 
-    var action_url = $("#msa-form").attr("action");
+    const email = $("input[name='mail']").val();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (email && !emailRegex.test(email)) {
+      $("#modal-error-msg").text("Please enter a valid email address.");
+      $("#errorModal").modal();
+      return;
+    }
+    formData.append("mail", email);
 
-    var xhr = new XMLHttpRequest();
+    const actionUrl = $("#msa-form").attr("action");
 
-    xhr.open("post", action_url, true);
+    // Create XMLHttpRequest
+    const xhr = new XMLHttpRequest();
+    xhr.open("post", actionUrl, true);
 
     xhr.upload.onprogress = function (e) {
       if (e.lengthComputable) {
-        var percentage = (e.loaded / e.total) * 100;
-
-        $("#seq-file").css("display", "none");
+        const percentage = (e.loaded / e.total) * 100;
         $(".progress .progress-bar").css("width", percentage + "%");
       }
     };
 
-    xhr.onerror = function (e) {
-      $("#file-progress").html(e);
+    xhr.onerror = function () {
+      $("#modal-error-msg").text("An error occurred during the upload.");
+      $("#errorModal").modal();
     };
 
-    xhr.onload = function (res) {
-      // Replace field with green text, name of file
-      var result = JSON.parse(this.responseText);
+    xhr.onload = function () {
+      try {
+        const result = JSON.parse(this.responseText);
 
-      if (_.has(result, "error")) {
-        $("#modal-error-msg").text(result.error);
+        if (result.error) {
+          $("#modal-error-msg").text(result.error);
+          $("#errorModal").modal();
+        } else if (result.upload_redirect_path) {
+          window.location.href = result.upload_redirect_path;
+        } else {
+          $("#modal-error-msg").text(
+            "Unexpected response format from the server."
+          );
+          $("#errorModal").modal();
+        }
+      } catch (err) {
+        $("#modal-error-msg").text("Error parsing server response.");
         $("#errorModal").modal();
-        $("#file-progress").css("display", "none");
-        $("#seq-file").css("display", "block");
+      } finally {
         $(".progress .progress-bar").css("width", "0%");
-      } else if ("error" in result.analysis) {
-        $("#modal-error-msg").text(result.analysis.error);
-        $("#errorModal").modal();
-        $("#file-progress").css("display", "none");
-        $("#seq-file").css("display", "block");
-        $(".progress .progress-bar").css("width", "0%");
-      } else if ("upload_redirect_path" in result) {
-        window.location.href = result.upload_redirect_path;
-      } else {
-        $("#modal-error-msg").text(
-          "We received data in an unexpected format from the server."
-        );
-        $("#errorModal").modal();
-        $("#file-progress").css("display", "none");
-        $("#seq-file").css("display", "block");
-        $(".progress .progress-bar").css("width", "0%");
+        $("#file-progress").addClass("hidden");
       }
     };
 
     xhr.send(formData);
   });
 
-  $(".mail-group").change(datamonkey.helpers.validate_email);
+  // Email validation on input
+  $("input[name='mail']").on("input", function () {
+    const email = $(this).val();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (email && !emailRegex.test(email)) {
+      $(this).addClass("is-invalid");
+    } else {
+      $(this).removeClass("is-invalid");
+    }
+  });
 });
