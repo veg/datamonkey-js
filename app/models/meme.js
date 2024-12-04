@@ -12,6 +12,10 @@ var MEME = mongoose.Schema({
   results: Object,
   resample: Number,
   bootstrap: Boolean,
+  multiple_hits: String,
+  site_multihit: String,
+  rates: Number,
+  impute_states: String,
 });
 
 MEME.add(AnalysisSchema);
@@ -49,50 +53,41 @@ MEME.virtual("url").get(function () {
   return "http://" + setup.host + "/meme/" + this._id;
 });
 
-/**
- * Shared API / Web request job spawn
- */
+
 MEME.statics.spawn = function (fn, options, callback) {
   const Msa = mongoose.model("Msa");
-  var meme = new this();
+  const meme = new this();
 
-  let gencodeid = options.gencodeid,
-    datatype = options.datatype;
-
-  meme.mail = options.mail;
+  // Dynamically add all options to the meme object
+  Object.keys(options).forEach((key) => {
+    meme[key] = options[key];
+  });
 
   // Check advanced options
-  if (!_.isNaN(options.resample)) {
-    meme.resample = options.resample;
-    meme.bootstrap = true;
-  } else {
-    meme.bootstrap = false;
-  }
+  meme.bootstrap = !_.isNaN(options.resample);
 
   const connect_callback = function (data) {
-    if (data == "connected") {
+    if (data === "connected") {
       logger.log("connected");
     }
   };
 
-  Msa.parseFile(fn, datatype, gencodeid, (err, msa) => {
+  Msa.parseFile(fn, options.datatype, options.gencodeid, (err, msa) => {
     if (err) {
       callback(err);
       return;
     }
+
     // Check if msa exceeds limitations
     if (msa.sites > meme.max_sites) {
-      const error =
-        "Site limit exceeded! Sites must be less than " + meme.max_sites;
+      const error = `Site limit exceeded! Sites must be less than ${meme.max_sites}`;
       logger.error(error);
       callback(error);
       return;
     }
 
     if (msa.sequences > meme.max_sequences) {
-      var error =
-        "Sequence limit exceeded! Sequences must be less than " +
-        meme.max_sequences;
+      const error = `Sequence limit exceeded! Sequences must be less than ${meme.max_sequences}`;
       logger.error(error);
       callback(error);
       return;
@@ -108,32 +103,24 @@ MEME.statics.spawn = function (fn, options, callback) {
         return;
       }
 
-      function move_cb(err, result) {
+      function move_cb(err) {
         if (err) {
           logger.error(
-            "meme rename failed" +
-              " Errored on line 113~ within models/meme.js :: move_cb " +
-              err
+            `meme rename failed. Error on line 113~ within models/meme.js :: move_cb ${err}`,
           );
           callback(err, null);
         } else {
-          var move = Msa.removeTreeFromFile(
-            meme_result.filepath,
-            meme_result.filepath
-          );
-          move.then(
-            (val) => {
-              let to_send = meme;
-              to_send.upload_redirect_path = meme.upload_redirect_path;
+          Msa.removeTreeFromFile(meme_result.filepath, meme_result.filepath)
+            .then(() => {
               this.submitJob(meme_result, connect_callback);
               callback(null, meme);
-            },
-            (reason) => {
-              res.json(500, { error: "issue removing tree from file" });
-            }
-          );
+            })
+            .catch(() => {
+              callback(new Error("issue removing tree from file"));
+            });
         }
       }
+
       helpers.moveSafely(fn, meme_result.filepath, move_cb.bind(this));
     });
   });

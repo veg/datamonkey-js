@@ -65,12 +65,12 @@ Msa.virtual("genetic_code").get(function () {
 });
 
 Msa.virtual("day_created_on").get(function () {
-  var time = moment(this.timestamp);
+  var time = moment.unix(this.timestamp);
   return time.format("YYYY-MMM-DD");
 });
 
 Msa.virtual("time_created_on").get(function () {
-  var time = moment(this.timestamp);
+  var time = moment.unix(this.timestamp);
   return time.format("HH:mm");
 });
 

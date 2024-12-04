@@ -18,12 +18,16 @@ exports.form = function (req, res) {
 exports.invoke = function (req, res) {
   var fn = req.files.files.file;
   let postdata = req.body;
-  //let resample = parseInt(postdata.resample);
 
   let options = {
     datatype: 0,
     gencodeid: postdata.gencodeid,
     mail: postdata.mail,
+    multiple_hits: postdata.multiple_hits,
+    site_multihit: postdata.site_multihit,
+    rates: parseInt(postdata.rates),
+    resample: parseInt(postdata.resample || 0),
+    impute_states: postdata.impute_states,
   };
 
   //// Check advanced options
