@@ -88,6 +88,22 @@
         </select>
       </div>
 
+      <div class="form-group">
+        <label for="multiple-hits">Multiple Hits</label>
+        <select name="multiple_hits" id="multiple-hits">
+          <option value="None">None (Single mutations only)</option>
+          <option value="Double">Double (Branch-specific rates for double substitutions)</option>
+          <option value="Double+Triple">Double+Triple (Branch-specific rates for double and triple substitutions)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="estimated-rates">Site Multihit</label>
+        <select name="site_multihit" id="site-multihit">
+          <option value="Estimate">Estimate (Branch-specific rates for substitutions based on model fit)</option>
+          <option value="Global">Global (Rates derived from global model fit)</option>
+        </select>
+      </div>
 
       <div class="form-group <%if (typeof errors != "undefined" && typeof errors.mail != "undefined") { %>has-error<% } %>">
         <label id="datatype-content" class="control-label">Notify When Completed?</label>
