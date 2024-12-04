@@ -18,8 +18,6 @@ exports.form = function (req, res) {
 exports.invoke = function (req, res) {
   var fn = req.files.files.file;
   let postdata = req.body;
-  //let resample = parseInt(postdata.resample);
-  console.log(postdata)
 
   let options = {
     datatype: 0,

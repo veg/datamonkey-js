@@ -112,7 +112,6 @@ MEME.statics.spawn = function (fn, options, callback) {
         } else {
           Msa.removeTreeFromFile(meme_result.filepath, meme_result.filepath)
             .then(() => {
-              meme.upload_redirect_path = meme.upload_redirect_path;
               this.submitJob(meme_result, connect_callback);
               callback(null, meme);
             })
