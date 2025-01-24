@@ -76,7 +76,7 @@
     "react-scrollchor": "^6.0.0",
     "redis": "^2.0.0",
     "save-svg-as-png": "^1.4.17",
-    "shortid": "^2.2.15",
+    "shortid": "^2.2.17",
     "socket.io": "4",
     "socket.io-client": "4.1.2",
     "socket.io-stream": "0.6.x",
