@@ -1,0 +1,201 @@
+<%- include("header.ejs") %>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="alert alert-success">
+      <h4><i class="fa fa-check-circle"></i> difFUBAR Analysis Complete</h4>
+      <p>Your differential FUBAR analysis has completed successfully. Download the results and visualizations below.</p>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <h5><i class="fa fa-download"></i> Results Data</h5>
+      </div>
+      <div class="card-body">
+        <p>Download the analysis results in JSON format:</p>
+        <div class="mb-3">
+          <a href="/difFubar/<%= job._id %>/results" 
+             class="btn btn-primary" 
+             download="difFubar_<%= job._id %>_results.json">
+            <i class="fa fa-file-code"></i> Download JSON Results
+          </a>
+        </div>
+        
+        <p>Download the original sequence alignment:</p>
+        <div class="mb-3">
+          <a href="/difFubar/<%= job._id %>/fasta" 
+             class="btn btn-secondary"
+             target="_blank">
+            <i class="fa fa-file-text"></i> View FASTA
+          </a>
+        </div>
+
+        <p>View analysis log:</p>
+        <div class="mb-3">
+          <a href="/difFubar/<%= job._id %>/log.txt" 
+             class="btn btn-info"
+             target="_blank">
+            <i class="fa fa-file-alt"></i> View Log
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <h5><i class="fa fa-chart-line"></i> Visualizations</h5>
+      </div>
+      <div class="card-body">
+        <p>Download or view the generated plot files:</p>
+        
+        <div class="mb-4">
+          <h6><strong>Overview Plot</strong></h6>
+          <p class="text-muted small">Differential selection across codon sites</p>
+          <div class="btn-group" role="group">
+            <a href="/difFubar/<%= job._id %>/plots/overview.png" 
+               class="btn btn-outline-primary btn-sm"
+               target="_blank">
+              <i class="fa fa-image"></i> PNG
+            </a>
+            <a href="/difFubar/<%= job._id %>/plots/overview.svg" 
+               class="btn btn-outline-primary btn-sm"
+               target="_blank">
+              <i class="fa fa-vector-square"></i> SVG
+            </a>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <h6><strong>Posterior Distributions</strong></h6>
+          <p class="text-muted small">Parameter distributions for α and ω</p>
+          <div class="btn-group" role="group">
+            <a href="/difFubar/<%= job._id %>/plots/posteriors.png" 
+               class="btn btn-outline-success btn-sm"
+               target="_blank">
+              <i class="fa fa-image"></i> PNG
+            </a>
+            <a href="/difFubar/<%= job._id %>/plots/posteriors.svg" 
+               class="btn btn-outline-success btn-sm"
+               target="_blank">
+              <i class="fa fa-vector-square"></i> SVG
+            </a>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <h6><strong>Detection Summary</strong></h6>
+          <p class="text-muted small">Sites with differential selection</p>
+          <div class="btn-group" role="group">
+            <a href="/difFubar/<%= job._id %>/plots/detections.png" 
+               class="btn btn-outline-warning btn-sm"
+               target="_blank">
+              <i class="fa fa-image"></i> PNG
+            </a>
+            <a href="/difFubar/<%= job._id %>/plots/detections.svg" 
+               class="btn btn-outline-warning btn-sm"
+               target="_blank">
+              <i class="fa fa-vector-square"></i> SVG
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-4">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header">
+        <h5><i class="fa fa-info-circle"></i> Analysis Summary</h5>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-4">
+            <strong>Job ID:</strong><br>
+            <code><%= job._id %></code>
+          </div>
+          <div class="col-md-4">
+            <strong>Analysis Type:</strong><br>
+            Differential FUBAR
+          </div>
+          <div class="col-md-4">
+            <strong>Status:</strong><br>
+            <span class="badge badge-success">Completed</span>
+          </div>
+        </div>
+        
+        <hr>
+        
+        <div class="row">
+          <div class="col-md-3">
+            <strong>Sequences:</strong><br>
+            <%= job.msa[0].sequences %>
+          </div>
+          <div class="col-md-3">
+            <strong>Sites:</strong><br>
+            <%= job.msa[0].sites %>
+          </div>
+          <div class="col-md-3">
+            <strong>MCMC Iterations:</strong><br>
+            <%= job.mcmc_iterations || 'Default' %>
+          </div>
+          <div class="col-md-3">
+            <strong>Grid Points:</strong><br>
+            <%= job.number_of_grid_points || 'Default' %>
+          </div>
+        </div>
+
+        <% if (job.branch_sets && job.branch_sets.length > 0) { %>
+        <hr>
+        <div class="row">
+          <div class="col-md-12">
+            <strong>Branch Groups:</strong><br>
+            <% job.branch_sets.forEach(function(group, index) { %>
+              <span class="badge badge-primary mr-1"><%= group %></span>
+            <% }); %>
+          </div>
+        </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-4">
+  <div class="col-md-12">
+    <div class="alert alert-info">
+      <h6><i class="fa fa-lightbulb"></i> How to Interpret Results</h6>
+      <ul class="mb-0">
+        <li><strong>JSON Results:</strong> Contains detailed posterior probabilities for each site</li>
+        <li><strong>Overview Plot:</strong> Shows differential selection signals across all codon sites</li>
+        <li><strong>Posterior Distributions:</strong> Displays parameter estimates for both branch groups</li>
+        <li><strong>Detection Summary:</strong> Highlights sites with significant differential selection</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<style>
+.card {
+  margin-bottom: 1rem;
+}
+
+.btn-group .btn {
+  margin-right: 0;
+}
+
+.badge {
+  font-size: 0.875em;
+}
+
+.text-muted.small {
+  font-size: 0.825em;
+}
+</style>

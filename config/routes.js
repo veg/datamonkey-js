@@ -18,7 +18,8 @@ const mongoose = require("mongoose"),
   Relax = mongoose.model("Relax"),
   HivTrace = mongoose.model("HivTrace"),
   FADE = mongoose.model("Fade"),
-  SLAC = mongoose.model("SLAC");
+  SLAC = mongoose.model("SLAC"),
+  DifFUBAR = mongoose.model("DifFUBAR");
 
 module.exports = function (app) {
   const analysis = require("../app/routes/analysis.js");
@@ -147,6 +148,23 @@ module.exports = function (app) {
   app.get("/fubar/:id/cancel", fubar.cancel);
   app.get("/fubar/:id/log.txt", fubar.getLog);
   // fubar.resubscribePendingJobs();
+
+  // difFUBAR ROUTES
+  const difFubar = require(path.join(__dirname, "../app/routes/difFubar"));
+  app.get("/difFubar", difFubar.form);
+  app.post("/difFubar", difFubar.invoke);
+  app.get("/difFubar/usage", difFubar.getUsage);
+  app.get("/difFubar/:id/select-foreground", difFubar.selectForeground);
+  app.post("/difFubar/:id/select-foreground", difFubar.annotateForeground);
+  app.get("/difFubar/:id", difFubar.getPage);
+  app.get("/difFubar/:id/original_file/:name", difFubar.getMSAFile);
+  app.get("/difFubar/:id/fasta", difFubar.fasta);
+  app.get("/difFubar/:id/plots/:plotType.:format", difFubar.getPlotFile);
+  app.get("/difFubar/:id/info", _.partial(analysis.getInfo, DifFUBAR));
+  app.get("/difFubar/:id/results", _.partial(analysis.getResults, DifFUBAR));
+  app.get("/difFubar/:id/cancel", difFubar.cancel);
+  app.get("/difFubar/:id/log.txt", difFubar.getLog);
+  // difFubar.resubscribePendingJobs();
 
   // GARD ROUTES
   const gard = require(path.join(__dirname, "../app/routes/gard"));
