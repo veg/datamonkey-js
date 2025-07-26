@@ -154,6 +154,8 @@ module.exports = function (app) {
   app.get("/difFubar", difFubar.form);
   app.post("/difFubar", difFubar.invoke);
   app.get("/difFubar/usage", difFubar.getUsage);
+  app.get("/difFubar/:id/select-foreground", difFubar.selectForeground);
+  app.post("/difFubar/:id/select-foreground", difFubar.annotateForeground);
   app.get("/difFubar/:id", difFubar.getPage);
   app.get("/difFubar/:id/original_file/:name", difFubar.getMSAFile);
   app.get("/difFubar/:id/fasta", difFubar.fasta);

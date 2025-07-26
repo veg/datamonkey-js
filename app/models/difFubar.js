@@ -138,12 +138,33 @@ DifFUBAR.statics.spawn = function (fn, options, callback) {
         } else {
           var to_send = difFubar;
           to_send.upload_redirect_path = difFubar.upload_redirect_path;
-          this.submitJob(difFubar_result, connect_callback);
+          // Don't submit job here - wait for tree tagging first
           callback(null, difFubar);
         }
       }
       helpers.moveSafely(fn, difFubar_result.filepath, move_cb.bind(this));
     });
+  });
+};
+
+/**
+ * Start the analysis job after tree tagging is complete
+ */
+DifFUBAR.methods.start = function (callback) {
+  var self = this;
+  
+  // Submit the job to the cluster
+  DifFUBAR.submitJob(self, function(err, result) {
+    if (err) {
+      self.status = "error";
+      self.error_message = err.message || err;
+      self.save();
+      callback(err);
+    } else {
+      self.status = "running";
+      self.save();
+      callback(null, result);
+    }
   });
 };
 

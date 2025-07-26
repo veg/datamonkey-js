@@ -34,10 +34,60 @@ exports.invoke = function (req, res) {
       logger.error("difFubar spawn failed");
       res.json(500, { error: err });
     }
+    // Redirect to tree tagging form instead of job page
     res.json(200, {
       analysis: result,
-      upload_redirect_path: result.upload_redirect_path,
+      upload_redirect_path: "/difFubar/" + result._id + "/select-foreground",
     });
+  });
+};
+
+exports.selectForeground = function (req, res) {
+  var difFubarid = req.params.id;
+
+  // Find the analysis and show tree tagging form
+  DifFUBAR.findOne({ _id: difFubarid }, function (err, difFubar) {
+    if (err || !difFubar) {
+      res.json(500, error.errorResponse("Invalid ID : " + difFubarid));
+    } else {
+      // Show tree tagging form
+      res.render("difFubar/tree_form.ejs", { difFubar: difFubar });
+    }
+  });
+};
+
+exports.annotateForeground = function (req, res) {
+  var difFubarid = req.params.id;
+  var nwk_tree = req.body.nwk_tree;
+  var branch_sets = JSON.parse(req.body.branch_sets);
+
+  // Find the analysis and update with tagged tree
+  DifFUBAR.findOne({ _id: difFubarid }, function (err, difFubar) {
+    if (err || !difFubar) {
+      res.json(500, error.errorResponse("Invalid ID : " + difFubarid));
+    } else {
+      // Update analysis with tagged tree and branch sets
+      difFubar.tagged_nwk_tree = nwk_tree;
+      difFubar.branch_sets = branch_sets;
+      difFubar.status = "tree_tagged";
+      
+      difFubar.save(function (err) {
+        if (err) {
+          logger.error(err);
+          res.json(500, { error: "Failed to save tagged tree" });
+        } else {
+          // Start the analysis with tagged tree
+          difFubar.start(function (err, result) {
+            if (err) {
+              logger.error(err);
+              res.json(500, { error: "Failed to start analysis" });
+            } else {
+              res.json(200, { difFubar: difFubar });
+            }
+          });
+        }
+      });
+    }
   });
 };
 
