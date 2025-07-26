@@ -10,7 +10,12 @@
   "scripts": {
     "prod": "webpack --mode production",
     "test": "mocha --exit",
+    "test:difFubar": "mocha --exit test/difFubar.js",
+    "test:difFubar-api": "mocha --exit test/api/difFubar.js",
+    "test:difFubar-performance": "mocha --exit test/performance/difFubar.js",
     "ui-tests": "mocha-parallel-tests -t 86400000 --max-parallel 10 test/ui/",
+    "ui-tests:difFubar": "mocha-parallel-tests -t 86400000 --max-parallel 10 test/ui/difFubar.js",
+    "test:all-difFubar": "npm run test:difFubar && npm run test:difFubar-api && npm run test:difFubar-performance && npm run ui-tests:difFubar",
     "lint": "./node_modules/.bin/eslint",
     "format": "prettier 'src/**/*.{js,jsx}' 'app/**/*.{js,jsx}' 'lib/**/*.{js,jsx}' 'config/**/*.{js,jsx}' 'test/**/*.{js,jsx}' --write",
     "precommit": "pretty-quick --staged"
@@ -131,6 +136,7 @@
     "scss-loader": "^0.0.1",
     "should": "^13.2.3",
     "style-loader": "^4.0.0",
+    "supertest": "^6.3.3",
     "url-loader": "^4.1.0",
     "watchify": "^3.6.0",
     "webpack": "^5.96.1",
