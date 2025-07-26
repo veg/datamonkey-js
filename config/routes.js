@@ -159,6 +159,7 @@ module.exports = function (app) {
   app.get("/difFubar/:id", difFubar.getPage);
   app.get("/difFubar/:id/original_file/:name", difFubar.getMSAFile);
   app.get("/difFubar/:id/fasta", difFubar.fasta);
+  app.get("/difFubar/:id/plots/:plotType.:format", difFubar.getPlotFile);
   app.get("/difFubar/:id/info", _.partial(analysis.getInfo, DifFUBAR));
   app.get("/difFubar/:id/results", _.partial(analysis.getResults, DifFUBAR));
   app.get("/difFubar/:id/cancel", difFubar.cancel);

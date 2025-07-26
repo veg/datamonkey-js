@@ -190,6 +190,48 @@ describe('DifFUBAR API Integration Tests', () => {
     });
   });
 
+  describe('GET /difFubar/:id/plots/:plotType.:format', () => {
+    it('should handle requests for plot files gracefully', (done) => {
+      if (!testJobId) {
+        return done(new Error('No test job ID available'));
+      }
+      
+      request(app)
+        .get(`/difFubar/${testJobId}/plots/overview.png`)
+        .expect((res) => {
+          // Should either return the file (200) or not found (404)
+          // but not crash the server
+          [200, 404].should.containEql(res.status);
+        })
+        .end(done);
+    });
+
+    it('should set correct content types for different formats', (done) => {
+      if (!testJobId) {
+        return done(new Error('No test job ID available'));
+      }
+      
+      request(app)
+        .get(`/difFubar/${testJobId}/plots/overview.svg`)
+        .expect((res) => {
+          if (res.status === 200) {
+            res.headers['content-type'].should.match(/image\/svg\+xml/);
+          }
+        })
+        .end(done);
+    });
+
+    it('should return 404 for invalid plot types', (done) => {
+      if (!testJobId) {
+        return done(new Error('No test job ID available'));
+      }
+      
+      request(app)
+        .get(`/difFubar/${testJobId}/plots/invalid.png`)
+        .expect(404, done);
+    });
+  });
+
   describe('GET /difFubar/:id/cancel', () => {
     it('should cancel a running job', (done) => {
       if (!testJobId) {

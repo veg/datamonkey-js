@@ -1,6 +1,7 @@
 var error = require(__dirname + "/../../lib/error.js"),
   logger = require("../../lib/logger"),
-  setup = require(__dirname + "/../../config/setup.js");
+  setup = require(__dirname + "/../../config/setup.js"),
+  path = require("path");
 
 var mongoose = require("mongoose"),
   Msa = mongoose.model("Msa"),
@@ -195,5 +196,38 @@ exports.getUsage = function (req, res) {
     } catch (err) {
       winston.info(err);
     }
+  });
+};
+
+// Serve plot files (PNG and SVG)
+exports.getPlotFile = function (req, res) {
+  var id = req.params.id;
+  var plotType = req.params.plotType; // overview, posteriors, detections
+  var format = req.params.format; // png, svg
+
+  DifFUBAR.findOne({ _id: id }, function (err, difFubar) {
+    if (err || !difFubar) {
+      logger.error(err);
+      res.status(404).send("Job not found");
+      return;
+    }
+
+    // Construct the plot file path based on the server-side naming convention
+    // Server saves files as: results_short_fn + '_' + plotType + '.' + format  
+    const plotFileName = difFubar._id + ".difFubar_" + plotType + "." + format;
+    const plotFilePath = path.join(__dirname, "../../uploads/msa/", plotFileName);
+
+    // Set appropriate content type
+    const contentType = format === 'svg' ? 'image/svg+xml' : 'image/png';
+    res.setHeader('Content-Type', contentType);
+    res.setHeader('Content-Disposition', `inline; filename="${plotFileName}"`);
+
+    // Send the file
+    res.sendFile(path.resolve(plotFilePath), function (err) {
+      if (err) {
+        logger.error("Plot file not found: " + plotFilePath);
+        res.status(404).send("Plot file not found");
+      }
+    });
   });
 };
