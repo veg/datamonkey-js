@@ -1,6 +1,8 @@
 var mongoose = require("mongoose"),
   path = require("path"),
-  helpers = require("../../lib/helpers");
+  helpers = require("../../lib/helpers"),
+  logger = require("../../lib/logger"),
+  setup = require("../../config/setup");
 
 var AnalysisSchema = require(__dirname + "/analysis");
 
@@ -154,7 +156,7 @@ DifFUBAR.methods.start = function (callback) {
   var self = this;
   
   // Submit the job to the cluster
-  DifFUBAR.submitJob(self, function(err, result) {
+  this.constructor.submitJob(self, function(err, result) {
     if (err) {
       self.status = "error";
       self.error_message = err.message || err;
