@@ -16,31 +16,56 @@ exports.form = function (req, res) {
 };
 
 exports.invoke = function (req, res) {
-  var fn = req.files.files.file;
-  let postdata = req.body;
-  let options = {
-    datatype: 0,
-    gencodeid: postdata.gencodeid,
-    mail: postdata.mail,
-    number_of_grid_points: postdata.number_of_grid_points,
-    concentration_of_dirichlet_prior: postdata.concentration_of_dirichlet_prior,
-    mcmc_iterations: postdata.mcmc_iterations,
-    burnin_samples: postdata.burnin_samples,
-    pos_threshold: postdata.pos_threshold,
-  };
-
-  DifFUBAR.spawn(fn, options, (err, result) => {
-    if (err) {
-      logger.error(err);
-      logger.error("difFubar spawn failed");
-      res.json(500, { error: err });
+  try {
+    // Debug logging for file upload
+    logger.info("difFUBAR upload request received");
+    logger.info("req.files:", JSON.stringify(req.files));
+    logger.info("req.body:", JSON.stringify(req.body));
+    
+    if (!req.files || !req.files.files || !req.files.files.file) {
+      const error = "No file uploaded or invalid file structure";
+      logger.error(error);
+      return res.status(500).json({ error: error });
     }
-    // Redirect to tree tagging form instead of job page
-    res.json(200, {
-      analysis: result,
-      upload_redirect_path: "/difFubar/" + result._id + "/select-foreground",
+
+    var fn = req.files.files.file;
+    let postdata = req.body;
+    
+    // Validate required parameters
+    if (!postdata.gencodeid) {
+      const error = "Missing genetic code parameter";
+      logger.error(error);
+      return res.status(500).json({ error: error });
+    }
+    
+    let options = {
+      datatype: 0,
+      gencodeid: postdata.gencodeid,
+      mail: postdata.mail,
+      number_of_grid_points: postdata.number_of_grid_points || 20,
+      concentration_of_dirichlet_prior: postdata.concentration_of_dirichlet_prior || 0.5,
+      mcmc_iterations: postdata.mcmc_iterations || 2500,
+      burnin_samples: postdata.burnin_samples || 500,
+      pos_threshold: postdata.pos_threshold || 0.95,
+    };
+
+    logger.info("difFUBAR options:", JSON.stringify(options));
+
+    DifFUBAR.spawn(fn, options, (err, result) => {
+      if (err) {
+        logger.error("difFubar spawn failed:", err);
+        return res.status(500).json({ error: err.message || err });
+      }
+      // Redirect to tree tagging form instead of job page
+      return res.status(200).json({
+        analysis: result,
+        upload_redirect_path: "/difFubar/" + result._id + "/select-foreground",
+      });
     });
-  });
+  } catch (error) {
+    logger.error("difFUBAR route error:", error);
+    return res.status(500).json({ error: "An unexpected error occurred: " + error.message });
+  }
 };
 
 exports.selectForeground = function (req, res) {
@@ -49,9 +74,8 @@ exports.selectForeground = function (req, res) {
   // Find the analysis and show tree tagging form
   DifFUBAR.findOne({ _id: difFubarid }, function (err, difFubar) {
     if (err || !difFubar) {
-      res.json(500, error.errorResponse("Invalid ID : " + difFubarid));
+      return res.status(500).json(error.errorResponse("Invalid ID : " + difFubarid));
     } else {
-      // Show tree tagging form
       res.render("difFubar/tree_form.ejs", { difFubar: difFubar });
     }
   });
@@ -65,7 +89,7 @@ exports.annotateForeground = function (req, res) {
   // Find the analysis and update with tagged tree
   DifFUBAR.findOne({ _id: difFubarid }, function (err, difFubar) {
     if (err || !difFubar) {
-      res.json(500, error.errorResponse("Invalid ID : " + difFubarid));
+      return res.status(500).json(error.errorResponse("Invalid ID : " + difFubarid));
     } else {
       // Update analysis with tagged tree and branch sets
       difFubar.tagged_nwk_tree = nwk_tree;
@@ -75,15 +99,15 @@ exports.annotateForeground = function (req, res) {
       difFubar.save(function (err) {
         if (err) {
           logger.error(err);
-          res.json(500, { error: "Failed to save tagged tree" });
+          return res.status(500).json({ error: "Failed to save tagged tree" });
         } else {
           // Start the analysis with tagged tree
           difFubar.start(function (err, result) {
             if (err) {
               logger.error(err);
-              res.json(500, { error: "Failed to start analysis" });
+              return res.status(500).json({ error: "Failed to start analysis" });
             } else {
-              res.json(200, { difFubar: difFubar });
+              return res.status(200).json({ difFubar: difFubar });
             }
           });
         }
@@ -99,7 +123,7 @@ exports.getPage = function (req, res) {
   //Return all results
   DifFUBAR.findOne({ _id: difFubarid }, function (err, difFubar) {
     if (err || !difFubar) {
-      res.json(500, error.errorResponse("Invalid ID : " + difFubarid));
+      return res.status(500).json(error.errorResponse("Invalid ID : " + difFubarid));
     } else {
       // Should return results page
       res.render("difFubar/jobpage.ejs", { job: difFubar });
@@ -118,7 +142,7 @@ exports.getLog = function (req, res) {
   DifFUBAR.findOne({ _id: id }, function (err, difFubar) {
     if (err || !difFubar) {
       winston.info(err);
-      res.json(500, error.errorResponse("invalid id : " + id));
+      return res.status(500).json(error.errorResponse("invalid id : " + id));
     } else {
       res.set({ "Content-Disposition": 'attachment; filename="log.txt"' });
       res.set({ "Content-type": "text/plain" });
@@ -138,13 +162,13 @@ exports.cancel = function (req, res) {
   DifFUBAR.findOne({ _id: id }, function (err, difFubar) {
     if (err || !difFubar) {
       winston.info(err);
-      res.json(500, error.errorResponse("invalid id : " + id));
+      return res.status(500).json(error.errorResponse("invalid id : " + id));
     } else {
       difFubar.cancel(function (err, success) {
         if (success) {
-          res.json(200, { success: "yes" });
+          return res.status(200).json({ success: "yes" });
         } else {
-          res.json(500, { success: "no" });
+          return res.status(500).json({ success: "no" });
         }
       });
     }
@@ -176,15 +200,15 @@ exports.fasta = function (req, res) {
   DifFUBAR.findOne({ _id: id }, function (err, difFubar) {
     if (err || !difFubar) {
       winston.info(err);
-      res.json(500, error.errorReponse("invalid id : " + id));
+      return res.status(500).json(error.errorResponse("invalid id : " + id));
     }
     Msa.deliverFasta(difFubar.filepath)
       .then((value) => {
-        res.json(200, { fasta: value });
+        return res.status(200).json({ fasta: value });
       })
       .catch((err) => {
         winston.info(err);
-        res.json(500, { error: "Unable to deliver fasta." });
+        return res.status(500).json({ error: "Unable to deliver fasta." });
       });
   });
 };
@@ -192,9 +216,10 @@ exports.fasta = function (req, res) {
 exports.getUsage = function (req, res) {
   client.get(DifFUBAR.cachePath(), function (err, data) {
     try {
-      res.json(200, JSON.parse(data));
+      return res.status(200).json(JSON.parse(data));
     } catch (err) {
       winston.info(err);
+      return res.status(500).json({ error: "Unable to get usage data." });
     }
   });
 };

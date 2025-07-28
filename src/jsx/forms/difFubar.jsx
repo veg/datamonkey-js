@@ -218,8 +218,11 @@ class DifFUBARForm extends React.Component {
                 required
               />
               <small className="form-text text-muted">
-                Please select a FASTA file containing a multiple sequence
-                alignment with tagged trees for branch groups
+                Please select a NEXUS file containing a multiple sequence
+                alignment with an embedded phylogenetic tree.{" "}
+                <a href="/assets/CD2-difFUBAR.nex" download="CD2-difFUBAR.nex">
+                  Download example file
+                </a>
               </small>
             </div>
 
@@ -441,7 +444,4 @@ function difFubar_form() {
   ReactDOM.render(<DifFUBARForm />, document.getElementById("upload-form"));
 }
 
-// Make sure the function is available globally
-if (typeof window !== "undefined") {
-  window.difFubar_form = difFubar_form;
-}
+module.exports = difFubar_form;
