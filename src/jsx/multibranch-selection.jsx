@@ -20,16 +20,14 @@ class MultiBranchSelection extends React.Component {
     var phylotreeObject = d3.layout
       .phylotree(tree_container)
       .size([this.props.height, this.props.width])
-      .separation(function(a, b) {
+      .separation(function (a, b) {
         return 0;
       });
 
     phylotreeObject.style_edges((element, data) => {
       this.edgeColorizer(element, data);
 
-      var m = this.state.tree
-        .branch_name()(data.target)
-        .split(" ");
+      var m = this.state.tree.branch_name()(data.target).split(" ");
       if (m.length > 1) {
         element.style("stroke", color_scale(m[0]));
       }
@@ -42,7 +40,7 @@ class MultiBranchSelection extends React.Component {
       selectionType: "Foreground",
       multipleTrees: false,
       selectionSet: ["Foreground"],
-      currentSelectionIndex: 0
+      currentSelectionIndex: 0,
     };
   }
 
@@ -107,7 +105,7 @@ class MultiBranchSelection extends React.Component {
 
   makeSelection(e) {
     this.setState({
-      currentSelectionIndex: parseInt(e.target.dataset.id)
+      currentSelectionIndex: parseInt(e.target.dataset.id),
     });
 
     this.state.tree.selection_label(
@@ -127,7 +125,7 @@ class MultiBranchSelection extends React.Component {
 
     this.setState({
       selectionSet: selectionSet,
-      currentSelectionIndex: id
+      currentSelectionIndex: id,
     });
   }
 
@@ -148,7 +146,7 @@ class MultiBranchSelection extends React.Component {
     );
 
     this.setState({
-      selectionSet: newSet
+      selectionSet: newSet,
     });
   }
 
@@ -165,7 +163,7 @@ class MultiBranchSelection extends React.Component {
     // delete current id and set state
     this.setState({
       selectionSet: newSet,
-      currentSelectionIndex: 0
+      currentSelectionIndex: 0,
     });
   }
 
@@ -215,7 +213,7 @@ class MultiBranchSelection extends React.Component {
             type="text"
             className="form-control"
             style={{
-              color: this.props.colorScheme(this.state.currentSelectionIndex)
+              color: this.props.colorScheme(this.state.currentSelectionIndex),
             }}
             value={this.state.selectionSet[this.state.currentSelectionIndex]}
             onChange={this.selectRename.bind(this)}
@@ -227,7 +225,8 @@ class MultiBranchSelection extends React.Component {
   }
 
   createTree(nwk) {
-    var default_tree_settings = function(tree) {
+    console.log(nwk);
+    var default_tree_settings = function (tree) {
       tree.branch_length(null);
       tree.branch_name(null);
       tree.node_span("equal");
@@ -239,9 +238,7 @@ class MultiBranchSelection extends React.Component {
     var container_id = "#tree_container";
 
     // clear all svgs under container_id first
-    d3.select(container_id)
-      .select("svg")
-      .remove();
+    d3.select(container_id).select("svg").remove();
 
     var svg = d3
       .select(container_id)
@@ -250,10 +247,7 @@ class MultiBranchSelection extends React.Component {
       .attr("height", this.props.height);
 
     default_tree_settings(this.state.tree);
-    this.state
-      .tree(this.state.selectedTree)
-      .svg(svg)
-      .layout();
+    this.state.tree(this.state.selectedTree).svg(svg).layout();
 
     _.delay(this.state.tree.placenodes().update, 100);
 
@@ -264,7 +258,7 @@ class MultiBranchSelection extends React.Component {
     var self = this;
 
     function exportNewick(tree) {
-      return tree.get_newick(node => {
+      return tree.get_newick((node) => {
         let tags = _.compact(
           _.map(node, (v, k) => {
             if (v === true && _.contains(self.state.selectionSet, k)) {
@@ -285,6 +279,7 @@ class MultiBranchSelection extends React.Component {
     function validate_selection(tree, callback) {
       var nwkToReturn = exportNewick(tree);
       if (tree.nodes.get_selection().length) {
+        console.log(nwkToReturn);
         callback(nwkToReturn, self.state.selectionSet);
       } else {
         alert(
@@ -328,7 +323,7 @@ class MultiBranchSelection extends React.Component {
 }
 
 MultiBranchSelection.defaultProps = {
-  colorScheme: d3.scale.category10()
+  colorScheme: d3.scale.category10(),
 };
 
 function MultiBranchSelectionTypeBtnGroup(props) {
@@ -340,7 +335,7 @@ function MultiBranchSelectionTypeBtnGroup(props) {
         paddingTop: "1rem",
         paddingRight: "2rem",
         paddingBottom: "1rem",
-        float: "right"
+        float: "right",
       }}
     />
   );

@@ -156,7 +156,9 @@ DifFUBAR.methods.start = function (callback) {
   var self = this;
   
   // Submit the job to the cluster
-  this.constructor.submitJob(self, function(err, result) {
+  var mongoose = require('mongoose');
+  var DifFUBAR = mongoose.model('DifFUBAR');
+  DifFUBAR.submitJob(self, function(err, result) {
     if (err) {
       self.status = "error";
       self.error_message = err.message || err;
