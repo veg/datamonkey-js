@@ -76,6 +76,10 @@ DifFUBAR.virtual("url").get(function () {
  * Shared API / Web request job spawn
  */
 DifFUBAR.statics.spawn = function (fn, options, callback) {
+  logger.info("=== START DifFUBAR.spawn ===");
+  logger.info("File name:", fn ? fn.name || fn : "null");
+  logger.info("Options:", JSON.stringify(options));
+  
   const Msa = mongoose.model("Msa");
   var difFubar = new this();
 
@@ -83,6 +87,7 @@ DifFUBAR.statics.spawn = function (fn, options, callback) {
     datatype = options.datatype;
 
   difFubar.mail = options.mail;
+  logger.info("Created new DifFUBAR instance, mail:", difFubar.mail);
 
   const connect_callback = function (data) {
     if (data == "connected") {
@@ -90,11 +95,20 @@ DifFUBAR.statics.spawn = function (fn, options, callback) {
     }
   };
 
+  logger.info("Calling Msa.parseFile...");
   Msa.parseFile(fn, datatype, gencodeid, (err, msa) => {
+    logger.info("=== Msa.parseFile callback called ===");
     if (err) {
+      logger.error("Msa.parseFile failed:", err);
       callback(err);
       return;
     }
+    
+    logger.info("MSA parsed successfully:");
+    logger.info("- Sites:", msa.sites);
+    logger.info("- Sequences:", msa.sequences);
+    logger.info("- Max sites allowed:", difFubar.max_sites);
+    logger.info("- Max sequences allowed:", difFubar.max_sequences);
     
     // Check if msa exceeds limitations
     if (msa.sites > difFubar.max_sites) {
@@ -114,6 +128,7 @@ DifFUBAR.statics.spawn = function (fn, options, callback) {
       return;
     }
 
+    logger.info("Setting difFubar properties...");
     difFubar.msa = msa;
     difFubar.status = difFubar.status_stack[0];
     difFubar.number_of_grid_points = options.number_of_grid_points;
@@ -121,15 +136,25 @@ DifFUBAR.statics.spawn = function (fn, options, callback) {
     difFubar.mcmc_iterations = options.mcmc_iterations;
     difFubar.burnin_samples = options.burnin_samples;
     difFubar.pos_threshold = options.pos_threshold;
+    
+    logger.info("difFubar status set to:", difFubar.status);
+    logger.info("Saving difFubar to database...");
 
     difFubar.save((err, difFubar_result) => {
+      logger.info("=== difFubar.save callback called ===");
       if (err) {
-        logger.error("difFubar save failed");
+        logger.error("difFubar save failed:", err);
         callback(err);
         return;
       }
+      
+      logger.info("difFubar saved successfully:");
+      logger.info("- ID:", difFubar_result._id);
+      logger.info("- Status:", difFubar_result.status);
+      logger.info("- Filepath:", difFubar_result.filepath);
 
       function move_cb(err, result) {
+        logger.info("=== move_cb callback called ===");
         if (err) {
           logger.error(
             "difFubar rename failed" +
@@ -138,12 +163,17 @@ DifFUBAR.statics.spawn = function (fn, options, callback) {
           );
           callback(err, null);
         } else {
+          logger.info("File moved successfully, preparing response");
           var to_send = difFubar;
           to_send.upload_redirect_path = difFubar.upload_redirect_path;
+          logger.info("Upload redirect path:", to_send.upload_redirect_path);
           // Don't submit job here - wait for tree tagging first
+          logger.info("=== CALLING SPAWN CALLBACK ===");
           callback(null, difFubar);
         }
       }
+      
+      logger.info("Moving file from", fn, "to", difFubar_result.filepath);
       helpers.moveSafely(fn, difFubar_result.filepath, move_cb.bind(this));
     });
   });
@@ -153,23 +183,38 @@ DifFUBAR.statics.spawn = function (fn, options, callback) {
  * Start the analysis job after tree tagging is complete
  */
 DifFUBAR.methods.start = function (callback) {
+  logger.info("=== START DifFUBAR.start method ===");
   var self = this;
+  
+  logger.info("Starting analysis for DifFUBAR:");
+  logger.info("- ID:", self._id);
+  logger.info("- Current status:", self.status);
+  logger.info("- Tagged tree exists:", !!self.tagged_nwk_tree);
+  logger.info("- Branch sets exists:", !!self.branch_sets);
+  logger.info("- Branch sets length:", self.branch_sets ? self.branch_sets.length : 0);
   
   // Submit the job to the cluster
   var mongoose = require("mongoose");
   var DifFUBAR = mongoose.model("DifFUBAR");
-  DifFUBAR.submitJob(self, function (err, result) {
-    if (err) {
-      self.status = "error";
-      self.error_message = err.message || err;
-      self.save();
-      callback(err);
-    } else {
-      self.status = "running";
-      self.save();
-      callback(null, result);
+  
+  // Update status to running and save
+  self.status = "running";
+  logger.info("Setting status to running, saving...");
+  self.save();
+  
+  const connect_callback = function (data) {
+    if (data == "connected") {
+      logger.log("connected");
     }
-  });
+  };
+  
+  logger.info("=== CALLING START CALLBACK IMMEDIATELY ===");
+  // Follow the same pattern as other models - call callback immediately
+  callback(null, self);
+  
+  logger.info("Calling DifFUBAR.submitJob (fire-and-forget)...");
+  // Then submit job without waiting for callback (fire-and-forget like other models)
+  DifFUBAR.submitJob(self, connect_callback);
 };
 
 module.exports = mongoose.model("DifFUBAR", DifFUBAR);
