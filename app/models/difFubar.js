@@ -95,6 +95,7 @@ DifFUBAR.statics.spawn = function (fn, options, callback) {
       callback(err);
       return;
     }
+    
     // Check if msa exceeds limitations
     if (msa.sites > difFubar.max_sites) {
       const error =
@@ -116,8 +117,7 @@ DifFUBAR.statics.spawn = function (fn, options, callback) {
     difFubar.msa = msa;
     difFubar.status = difFubar.status_stack[0];
     difFubar.number_of_grid_points = options.number_of_grid_points;
-    difFubar.concentration_of_dirichlet_prior =
-      options.concentration_of_dirichlet_prior;
+    difFubar.concentration_of_dirichlet_prior = options.concentration_of_dirichlet_prior;
     difFubar.mcmc_iterations = options.mcmc_iterations;
     difFubar.burnin_samples = options.burnin_samples;
     difFubar.pos_threshold = options.pos_threshold;
@@ -156,9 +156,9 @@ DifFUBAR.methods.start = function (callback) {
   var self = this;
   
   // Submit the job to the cluster
-  var mongoose = require('mongoose');
-  var DifFUBAR = mongoose.model('DifFUBAR');
-  DifFUBAR.submitJob(self, function(err, result) {
+  var mongoose = require("mongoose");
+  var DifFUBAR = mongoose.model("DifFUBAR");
+  DifFUBAR.submitJob(self, function (err, result) {
     if (err) {
       self.status = "error";
       self.error_message = err.message || err;

@@ -225,7 +225,6 @@ class MultiBranchSelection extends React.Component {
   }
 
   createTree(nwk) {
-    console.log(nwk);
     var default_tree_settings = function (tree) {
       tree.branch_length(null);
       tree.branch_name(null);

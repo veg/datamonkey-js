@@ -42,11 +42,11 @@ exports.invoke = function (req, res) {
       datatype: 0,
       gencodeid: postdata.gencodeid,
       mail: postdata.mail,
-      number_of_grid_points: postdata.number_of_grid_points || 20,
-      concentration_of_dirichlet_prior: postdata.concentration_of_dirichlet_prior || 0.5,
-      mcmc_iterations: postdata.mcmc_iterations || 2500,
-      burnin_samples: postdata.burnin_samples || 500,
-      pos_threshold: postdata.pos_threshold || 0.95,
+      number_of_grid_points: parseInt(postdata.number_of_grid_points) || 20,
+      concentration_of_dirichlet_prior: parseFloat(postdata.concentration_of_dirichlet_prior) || 0.5,
+      mcmc_iterations: parseInt(postdata.mcmc_iterations) || 2500,
+      burnin_samples: parseInt(postdata.burnin_samples) || 500,
+      pos_threshold: parseFloat(postdata.pos_threshold) || 0.95,
     };
 
     logger.info("difFUBAR options:", JSON.stringify(options));
