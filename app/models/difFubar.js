@@ -73,6 +73,48 @@ DifFUBAR.virtual("url").get(function () {
 });
 
 /**
+ * Overview plot PNG file path
+ */
+DifFUBAR.virtual("overview_plot_png_fn").get(function () {
+  return path.resolve(__dirname + "/../../results/jobs/" + this._id + "-overview.png");
+});
+
+/**
+ * Overview plot SVG file path
+ */
+DifFUBAR.virtual("overview_plot_svg_fn").get(function () {
+  return path.resolve(__dirname + "/../../results/jobs/" + this._id + "-overview.svg");
+});
+
+/**
+ * Posterior plots PNG file path
+ */
+DifFUBAR.virtual("posterior_plots_png_fn").get(function () {
+  return path.resolve(__dirname + "/../../results/jobs/" + this._id + "-posteriors.png");
+});
+
+/**
+ * Posterior plots SVG file path
+ */
+DifFUBAR.virtual("posterior_plots_svg_fn").get(function () {
+  return path.resolve(__dirname + "/../../results/jobs/" + this._id + "-posteriors.svg");
+});
+
+/**
+ * Detection plots PNG file path
+ */
+DifFUBAR.virtual("detection_plots_png_fn").get(function () {
+  return path.resolve(__dirname + "/../../results/jobs/" + this._id + "-detections.png");
+});
+
+/**
+ * Detection plots SVG file path
+ */
+DifFUBAR.virtual("detection_plots_svg_fn").get(function () {
+  return path.resolve(__dirname + "/../../results/jobs/" + this._id + "-detections.svg");
+});
+
+/**
  * Shared API / Web request job spawn
  */
 DifFUBAR.statics.spawn = function (fn, options, callback) {
@@ -215,6 +257,52 @@ DifFUBAR.methods.start = function (callback) {
   logger.info("Calling DifFUBAR.submitJob (fire-and-forget)...");
   // Then submit job without waiting for callback (fire-and-forget like other models)
   DifFUBAR.submitJob(self, connect_callback);
+};
+
+/**
+ * Custom completion handler for difFUBAR
+ * Results are already handled via 'difFubar results file' socket event
+ * This just sends completion metadata
+ */
+DifFUBAR.methods.onComplete = function (data, publisher, channel) {
+  logger.info("=== DifFUBAR Custom onComplete handler ===");
+  var self = this;
+  
+  // Update status to completed
+  self.status = "completed";
+  self.save();
+  
+  // Send completion notification with metadata only
+  var redis_packet = {
+    type: "completed",
+    analysis_complete: true,
+    transmitted_via: "socket"
+  };
+  
+  logger.info("Publishing completion notification to Redis channel:", channel);
+  publisher.publish(channel, JSON.stringify(redis_packet));
+  
+  // Send email notification if requested
+  if (self.mail && !self.notified) {
+    var mailer = require("../../../lib/mailer");
+    var mail_options = {
+      to: self.mail,
+      subject: "difFUBAR analysis completed",
+      html: "Your difFUBAR analysis has completed. <br><br> View results at " + self.url + "<br><br>Best,<br>The datamonkey team"
+    };
+    
+    mailer.sendMail(mail_options, function (err, info) {
+      if (err) {
+        logger.error("difFUBAR mail error:", err);
+      } else {
+        logger.info("difFUBAR completion email sent successfully");
+        self.notified = true;
+        self.save();
+      }
+    });
+  }
+  
+  logger.info("=== DifFUBAR onComplete handler finished ===");
 };
 
 module.exports = mongoose.model("DifFUBAR", DifFUBAR);

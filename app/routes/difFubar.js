@@ -283,15 +283,32 @@ exports.getPlotFile = function (req, res) {
       return;
     }
 
-    // Construct the plot file path based on the server-side naming convention
-    // Server saves files as: results_short_fn + '_' + plotType + '.' + format  
-    const plotFileName = difFubar._id + ".difFubar_" + plotType + "." + format;
-    const plotFilePath = path.join(__dirname, "../../uploads/msa/", plotFileName);
+    // Get the appropriate file path from the model's virtual properties
+    let plotFilePath;
+    if (plotType === 'overview' && format === 'png') {
+      plotFilePath = difFubar.overview_plot_png_fn;
+    } else if (plotType === 'overview' && format === 'svg') {
+      plotFilePath = difFubar.overview_plot_svg_fn;
+    } else if (plotType === 'posteriors' && format === 'png') {
+      plotFilePath = difFubar.posterior_plots_png_fn;
+    } else if (plotType === 'posteriors' && format === 'svg') {
+      plotFilePath = difFubar.posterior_plots_svg_fn;
+    } else if (plotType === 'detections' && format === 'png') {
+      plotFilePath = difFubar.detection_plots_png_fn;
+    } else if (plotType === 'detections' && format === 'svg') {
+      plotFilePath = difFubar.detection_plots_svg_fn;
+    } else {
+      return res.status(404).send("Invalid plot type or format");
+    }
+
+    if (!plotFilePath) {
+      return res.status(404).send("Plot file path not available");
+    }
 
     // Set appropriate content type
     const contentType = format === 'svg' ? 'image/svg+xml' : 'image/png';
     res.setHeader('Content-Type', contentType);
-    res.setHeader('Content-Disposition', `inline; filename="${plotFileName}"`);
+    res.setHeader('Content-Disposition', `inline; filename="${id}-${plotType}.${format}"`);
 
     // Send the file
     res.sendFile(path.resolve(plotFilePath), function (err) {
