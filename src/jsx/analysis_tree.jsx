@@ -354,7 +354,7 @@ function LargeBranch(props) {
       displayName: "Bayesian",
       name: "bayesian",
       child: (
-        <FUBAR
+        <BayesianContrastBranch
           datamonkey={props.datamonkey}
           changeAppState={props.changeAppState}
         />
@@ -374,6 +374,39 @@ function LargeBranch(props) {
   return (
     <DecisionBranch
       text="Do you want to use a Bayesian (recommended) or counting based approach?"
+      choices={choices}
+      datamonkey={props.datamonkey}
+      changeAppState={props.changeAppState}
+    />
+  );
+}
+
+function BayesianContrastBranch(props) {
+  var choices = [
+    {
+      displayName: "No",
+      name: "noContrast",
+      child: (
+        <FUBAR
+          datamonkey={props.datamonkey}
+          changeAppState={props.changeAppState}
+        />
+      ),
+    },
+    {
+      displayName: "Yes",
+      name: "yesContrast",
+      child: (
+        <difFUBAR
+          datamonkey={props.datamonkey}
+          changeAppState={props.changeAppState}
+        />
+      ),
+    },
+  ];
+  return (
+    <DecisionBranch
+      text="Do you want to contrast selection pressures between two or more groups of branches?"
       choices={choices}
       datamonkey={props.datamonkey}
       changeAppState={props.changeAppState}
@@ -675,6 +708,39 @@ function FUBAR(props) {
           Murrell, B et al. "FUBAR: A Fast, Unconstrained Bayesian AppRoximation
           for inferring selection." Mol. Biol. Evol. 30, 1196–1205 (2013).
         </a>
+      </p>
+    </Method>
+  );
+}
+
+function difFUBAR(props) {
+  return (
+    <Method
+      title="difFUBAR"
+      href="difFubar"
+      datamonkey={props.datamonkey}
+      changeAppState={props.changeAppState}
+    >
+      <p>
+        difFUBAR (<strong>Differential</strong> <strong>F</strong>ast, <strong>U</strong>
+        nconstrained <strong>B</strong>ayesian <strong>A</strong>pp<strong>R</strong>
+        oximation) extends FUBAR to detect sites under differential positive
+        selection between tagged branch groups in a phylogeny. This method 
+        identifies sites where the selective pressure differs significantly 
+        between predefined groups of branches.
+      </p>
+
+      <p>
+        difFUBAR is particularly useful for comparing selective pressures 
+        between different evolutionary lineages, experimental conditions, 
+        or functional domains within your phylogeny. It provides a Bayesian 
+        framework for identifying sites experiencing different selection 
+        regimes across branch groups.
+      </p>
+
+      <p>
+        <strong>Input Requirements:</strong> Multiple sequence alignment in NEXUS format
+        with an embedded phylogenetic tree containing tagged branch groups.
       </p>
     </Method>
   );
