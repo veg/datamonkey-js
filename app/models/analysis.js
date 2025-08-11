@@ -100,10 +100,23 @@ AnalysisSchema.statics.oldPendingJobs = function (cb) {
 };
 
 AnalysisSchema.statics.submitJob = function (job, cb) {
+  winston.info("=== START AnalysisSchema.submitJob ===");
   winston.info(
     "submitting " + job.analysistype + " : " + job._id + " to cluster"
   );
+  
+  winston.info("Job details:");
+  winston.info("- ID:", job._id);
+  winston.info("- Analysis type:", job.analysistype);
+  winston.info("- Filepath:", job.filepath);
+  winston.info("- Status:", job.status);
+  winston.info("- Status stack:", JSON.stringify(job.status_stack));
+  winston.info("- MSA sites:", job.msa ? job.msa[0]?.sites : "no msa");
+  winston.info("- MSA sequences:", job.msa ? job.msa[0]?.sequences : "no msa");
+  winston.info("- Tagged tree exists:", !!job.tagged_nwk_tree);
+  winston.info("- Branch sets exists:", !!job.branch_sets);
 
+  winston.info("Creating HPCSocket...");
   var jobproxy = new hpcsocket.HPCSocket(
     {
       filepath: job.filepath,
@@ -113,8 +126,18 @@ AnalysisSchema.statics.submitJob = function (job, cb) {
       type: job.analysistype,
     },
     "spawn",
-    cb
+    function(err, result) {
+      winston.info("=== HPCSocket callback called ===");
+      if (err) {
+        winston.error("HPCSocket failed:", err);
+      } else {
+        winston.info("HPCSocket succeeded:", result ? "result exists" : "no result");
+      }
+      winston.info("=== CALLING SUBMITJOB CALLBACK ===");
+      cb(err, result);
+    }
   );
+  winston.info("HPCSocket created, waiting for callback...");
 };
 
 AnalysisSchema.statics.subscribePendingJobs = function () {

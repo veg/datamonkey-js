@@ -121,7 +121,8 @@ function checkTreeString (treeS, treeID) {
 						internalRenames = (seqName!=(tAVL[k])["Name"]);
 					}
 				}
-				(tAVL[k])["Length"] = -1;
+				// Preserve branch lengths - don't set them to -1
+				// (tAVL[k])["Length"] = -1;
 			}
 			
 			
