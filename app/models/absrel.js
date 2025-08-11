@@ -15,10 +15,6 @@ var aBSREL = new mongoose.Schema({
 // Inherit fields from BaseSchema
 aBSREL.add(AnalysisSchema);
 
-aBSREL.virtual("max_sequences").get(function () {
-  return 75;
-});
-
 aBSREL.virtual("pmid").get(function () {
   return "25540451";
 });
