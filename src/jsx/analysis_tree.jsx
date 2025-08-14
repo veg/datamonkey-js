@@ -397,7 +397,7 @@ function BayesianContrastBranch(props) {
       displayName: "Yes",
       name: "yesContrast",
       child: (
-        <difFUBAR
+        <DifFUBAR
           datamonkey={props.datamonkey}
           changeAppState={props.changeAppState}
         />
@@ -713,10 +713,10 @@ function FUBAR(props) {
   );
 }
 
-function difFUBAR(props) {
+function DifFUBAR(props) {
   return (
     <Method
-      title="difFUBAR"
+      title="difFUBAR (Beta)"
       href="difFubar"
       datamonkey={props.datamonkey}
       changeAppState={props.changeAppState}
