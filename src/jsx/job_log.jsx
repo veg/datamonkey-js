@@ -27,6 +27,8 @@ class LogFile extends React.Component {
   }
 
   render() {
+    const useMarkdown = this.props.useMarkdown !== false; // Default to true for backward compatibility
+    
     return (
       <div
         style={{
@@ -35,15 +37,21 @@ class LogFile extends React.Component {
           overflow: "scroll"
         }}
       >
-        <ReactMarkdown source={this.state.job_log} renders={{ table: Table }} />
+        {useMarkdown ? (
+          <ReactMarkdown source={this.state.job_log} renders={{ table: Table }} />
+        ) : (
+          <pre style={{ whiteSpace: "pre-wrap", fontFamily: "monospace" }}>
+            {this.state.job_log}
+          </pre>
+        )}
       </div>
     );
   }
 }
 
-function render_stdOut(element, stdOut, socket) {
+function render_stdOut(element, stdOut, socket, useMarkdown) {
   ReactDOM.render(
-    <LogFile initialStdOut={stdOut} socket={socket} />,
+    <LogFile initialStdOut={stdOut} socket={socket} useMarkdown={useMarkdown} />,
     document.getElementById(element)
   );
 }

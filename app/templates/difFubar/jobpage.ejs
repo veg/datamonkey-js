@@ -1,6 +1,6 @@
 <%- include("../includes/header.ejs") %>
 
-<div class="container" id="job-report" data-jobid="<%= job._id %>">
+<div class="container" id="job-report" data-jobid="<%= job._id %>" data-analysis-type="difFUBAR">
   <% if (job.status != 'completed') { %>
     <%- include("header.ejs") %>
     <%- include("../partials/jobs/jobpage.ejs") %>
