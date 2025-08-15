@@ -29,6 +29,7 @@ exports.invoke = function (req, res) {
     }
 
     var fn = req.files.files.file;
+    var treeFile = req.files["tree-file"] ? req.files["tree-file"].file : null;
     let postdata = req.body;
     
     // Validate required parameters
@@ -47,9 +48,11 @@ exports.invoke = function (req, res) {
       mcmc_iterations: parseInt(postdata.mcmc_iterations) || 2500,
       burnin_samples: parseInt(postdata.burnin_samples) || 500,
       pos_threshold: parseFloat(postdata.pos_threshold) || 0.95,
+      treeFile: treeFile
     };
 
     logger.info("difFUBAR options:", JSON.stringify(options));
+    logger.info("Tree file provided:", !!treeFile);
 
     logger.info("Calling DifFUBAR.spawn()...");
     DifFUBAR.spawn(fn, options, (err, result) => {

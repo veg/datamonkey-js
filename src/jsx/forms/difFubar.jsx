@@ -24,11 +24,14 @@ class DifFUBARForm extends React.Component {
       mcmc_iterations: 2500,
       burnin_samples: 500,
       pos_threshold: 0.95,
+      sequenceCount: 0,
+      showTreeUpload: false,
       message: null
     };
 
     this.toggleShow = this.toggleShow.bind(this);
     this.onConcentrationChange = this.onConcentrationChange.bind(this);
+    this.onSequenceFileChange = this.onSequenceFileChange.bind(this);
     this.onMCMCIterationsChange = this.onMCMCIterationsChange.bind(this);
     this.onBurninSamplesChange = this.onBurninSamplesChange.bind(this);
     this.onPosThresholdChange = this.onPosThresholdChange.bind(this);
@@ -115,6 +118,21 @@ class DifFUBARForm extends React.Component {
     }
   }
 
+  onSequenceFileChange(event) {
+    const file = event.target.files[0];
+    if (file) {
+      // Estimate sequence count from file size (rough estimate)
+      // This is a heuristic - for more accuracy we'd need to parse the file
+      const estimatedSeqCount = Math.floor(file.size / 1000); // rough estimate
+      const showTreeUpload = estimatedSeqCount > 500;
+      
+      this.setState({
+        sequenceCount: estimatedSeqCount,
+        showTreeUpload: showTreeUpload
+      });
+    }
+  }
+
   submit(e) {
     e.preventDefault();
 
@@ -122,8 +140,12 @@ class DifFUBARForm extends React.Component {
 
     var formData = new FormData();
     var file = document.getElementById("seq-file").files[0];
+    var treeFile = document.getElementById("tree-file");
 
     formData.append("files", file);
+    if (treeFile && treeFile.files[0]) {
+      formData.append("tree-file", treeFile.files[0]);
+    }
     formData.append("datatype", $("select[name='datatype']").val());
     formData.append("gencodeid", $("select[name='gencodeid']").val());
     formData.append("receive_mail", $("input[name='mail']").val().length > 0);
@@ -195,16 +217,33 @@ class DifFUBARForm extends React.Component {
                 className="form-control"
                 id="seq-file"
                 name="files"
+                onChange={this.onSequenceFileChange}
                 required
               />
               <small className="form-text text-muted">
                 Please select a NEXUS file containing a multiple sequence
-                alignment with an embedded phylogenetic tree.{" "}
+                alignment{this.state.showTreeUpload ? " (tree upload will be required below)" : " with an embedded phylogenetic tree"}.{" "}
                 <a href="/assets/CD2-difFUBAR.nex" download="CD2-difFUBAR.nex">
                   Download example file
                 </a>
               </small>
             </div>
+
+            {this.state.showTreeUpload && (
+              <div className="form-group">
+                <label htmlFor="tree-file">Phylogenetic tree file <span className="text-danger">*</span></label>
+                <input
+                  type="file"
+                  className="form-control"
+                  id="tree-file"
+                  name="tree-file"
+                  required
+                />
+                <small className="form-text text-muted">
+                  Required for datasets with >500 sequences. Please upload a phylogenetic tree in Newick or NEXUS format.
+                </small>
+              </div>
+            )}
 
             <div className="row">
               <div className="col-lg-6">
