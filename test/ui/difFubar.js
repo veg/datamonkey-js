@@ -35,11 +35,6 @@ const difFubarWorkflow = async (dataset, page, advancedOptions = {}) => {
     // Click advanced options
     await page.click('button:contains("Advanced Options")');
     
-    if (advancedOptions.grid_points) {
-      await page.evaluate((value) => {
-        document.getElementById('number_of_grid_points').value = value;
-      }, advancedOptions.grid_points);
-    }
     
     if (advancedOptions.mcmc_iterations) {
       await page.evaluate((value) => {
@@ -240,7 +235,6 @@ describe("DifFUBAR UI Integration Tests", () => {
       this.timeout(300000); // 5 minutes timeout
       
       const advancedOptions = {
-        grid_points: 15,
         mcmc_iterations: 1000,
         pos_threshold: 0.9
       };

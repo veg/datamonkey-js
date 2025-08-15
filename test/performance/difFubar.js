@@ -104,7 +104,6 @@ describe('DifFUBAR Performance Tests', () => {
           request(app)
             .post('/difFubar')
             .field('gencodeid', '0')
-            .field('number_of_grid_points', '10') // Reduced for performance
             .field('concentration_of_dirichlet_prior', '0.5')
             .field('mcmc_iterations', '250')
             .field('burnin_samples', '50')

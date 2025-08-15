@@ -20,7 +20,6 @@ class DifFUBARForm extends React.Component {
     super(props);
     this.state = {
       showAdvanced: false,
-      grid_points: 20,
       concentration: 0.5,
       mcmc_iterations: 2500,
       burnin_samples: 500,
@@ -29,7 +28,6 @@ class DifFUBARForm extends React.Component {
     };
 
     this.toggleShow = this.toggleShow.bind(this);
-    this.onGridPointChange = this.onGridPointChange.bind(this);
     this.onConcentrationChange = this.onConcentrationChange.bind(this);
     this.onMCMCIterationsChange = this.onMCMCIterationsChange.bind(this);
     this.onBurninSamplesChange = this.onBurninSamplesChange.bind(this);
@@ -44,23 +42,6 @@ class DifFUBARForm extends React.Component {
     });
   }
 
-  onGridPointChange(event) {
-    var value = event.target.value;
-    if (value < 5) {
-      this.setState({
-        message: "Please enter an amount of grid points that is more than 5."
-      });
-    } else if (value > 50) {
-      this.setState({
-        message: "Please enter an amount of grid points that is less than 50."
-      });
-    } else {
-      this.setState({
-        grid_points: value,
-        message: null
-      });
-    }
-  }
 
   onConcentrationChange(event) {
     var value = event.target.value;
@@ -147,7 +128,6 @@ class DifFUBARForm extends React.Component {
     formData.append("gencodeid", $("select[name='gencodeid']").val());
     formData.append("receive_mail", $("input[name='mail']").val().length > 0);
     formData.append("mail", $("input[name='mail']").val());
-    formData.append("number_of_grid_points", $("#number_of_grid_points").val());
     formData.append("concentration_of_dirichlet_prior", $("#concentration_of_dirichlet_prior").val());
     formData.append("mcmc_iterations", $("#mcmc_iterations").val());
     formData.append("burnin_samples", $("#burnin_samples").val());
@@ -294,22 +274,6 @@ class DifFUBARForm extends React.Component {
 
             {this.state.showAdvanced && (
               <div>
-                <div className="form-group">
-                  <label htmlFor="number_of_grid_points">Grid points</label>
-                  <input
-                    type="number"
-                    className="form-control"
-                    id="number_of_grid_points"
-                    name="number_of_grid_points"
-                    value={this.state.grid_points}
-                    onChange={this.onGridPointChange}
-                    min="5"
-                    max="50"
-                  />
-                  <small className="form-text text-muted">
-                    Number of grid points for the omega values (5-50)
-                  </small>
-                </div>
 
                 <div className="form-group">
                   <label htmlFor="concentration_of_dirichlet_prior">
