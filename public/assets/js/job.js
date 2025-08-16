@@ -38,7 +38,7 @@ function setupJob() {
   // initialize stdout renderer
   var stdOut = $("#stdOut-placeholder").text();
   var analysisType = $("#job-report").data("analysis-type");
-  var useMarkdown = analysisType !== "difFUBAR"; // Use plain text for difFUBAR
+  var useMarkdown = true; // Use markdown for all analyses including difFUBAR
   render_stdOut("stdOut-container", stdOut, socket, useMarkdown);
 
   d3.json(jobid + "/info", function (data) {
