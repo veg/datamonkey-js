@@ -38,11 +38,11 @@ exports.invoke = function (req, res) {
       return res.status(500).json({ error: error });
     }
     
-    // Grid points default: 20
-    // This matches the original datamonkey-js implementation default
-    // TODO: Verify against original Julia CodonMolecularEvolution.jl package
-    // As of 2024, the original Julia implementation could not be verified
-    const DIFFUBAR_GRID_POINTS_DEFAULT = 20;
+    // Grid points default: 6
+    // This matches the original Julia CodonMolecularEvolution.jl implementation
+    // Verified in difFUBAR.jl line 320: foreground_grid=6
+    // The Julia implementation uses 6 foreground grid points and 4 background grid points
+    const DIFFUBAR_GRID_POINTS_DEFAULT = 6;
     
     let options = {
       datatype: 0,
