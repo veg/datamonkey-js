@@ -38,11 +38,17 @@ exports.invoke = function (req, res) {
       return res.status(500).json({ error: error });
     }
     
+    // Grid points default: 6
+    // This matches the original Julia CodonMolecularEvolution.jl implementation
+    // Verified in difFUBAR.jl line 320: foreground_grid=6
+    // The Julia implementation uses 6 foreground grid points and 4 background grid points
+    const DIFFUBAR_GRID_POINTS_DEFAULT = 6;
+    
     let options = {
       datatype: 0,
       gencodeid: postdata.gencodeid,
       mail: postdata.mail,
-      number_of_grid_points: parseInt(postdata.number_of_grid_points) || 20,
+      number_of_grid_points: parseInt(postdata.number_of_grid_points) || DIFFUBAR_GRID_POINTS_DEFAULT,
       concentration_of_dirichlet_prior: parseFloat(postdata.concentration_of_dirichlet_prior) || 0.5,
       mcmc_iterations: parseInt(postdata.mcmc_iterations) || 2500,
       burnin_samples: parseInt(postdata.burnin_samples) || 500,
