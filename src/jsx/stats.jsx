@@ -398,6 +398,7 @@ var UsageDashboard = createReactClass({
         "multihit",
         "contrast_fel",
         "fubar",
+        "difFubar",
         "slac",
         "gard",
       ],
