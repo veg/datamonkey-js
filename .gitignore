@@ -35,6 +35,10 @@ public/assets/js/*.ttf
 public/assets/js/vendor.js*
 public/assets/js/datamonkey.css*
 public/assets/js/datamonkey.js*
+public/assets/css/datamonkey.css.map
+public/assets/js/*.json
+public/assets/js/*.bin
+public/assets/js/assets/
 *vendor*
 *.aa
 dump.rdb
