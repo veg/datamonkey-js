@@ -46,7 +46,7 @@
     "express-busboy": "^2.4.4",
     "express-validator": "^2.21.0",
     "hivtrace-viz": "^0.0.14",
-    "hyphy-vision": "^2.15.7-alpha.1",
+    "hyphy-vision": "^2.15.10",
     "jade": "^1.0.0",
     "jquery-file-upload": "^4.0.5",
     "jquery-file-upload-middleware": "^0.1.8",
