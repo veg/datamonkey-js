@@ -52,7 +52,7 @@
     "jquery-file-upload-middleware": "^0.1.8",
     "jquery-ui": "^1.11.0",
     "jquery.ui.widget": "^1.10.3",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.23",
     "main-bower-files": "^2.9.0",
     "moment": "^2.30.1",
     "mongodb": "^2.0.0",
