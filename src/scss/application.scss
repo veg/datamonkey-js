@@ -759,3 +759,120 @@ footer {
 .upload-form button:hover {
   background-color: #36c9b7; /* Slightly lighter green on hover */
 }
+
+/* PRIME Promotional Banner (top bar) */
+.prime-banner {
+  background: linear-gradient(135deg, #1a365d 0%, #2c5282 50%, #2b6cb0 100%);
+  color: #fff;
+  border: none;
+  border-radius: 0;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 8px 16px;
+
+  a.alert-link {
+    color: #90cdf4;
+    font-weight: 600;
+    text-decoration: underline;
+
+    &:hover {
+      color: #fff;
+    }
+  }
+}
+
+/* PRIME Splash Card (homepage) */
+.prime-splash-card {
+  background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%);
+  border-radius: 8px;
+  padding: 30px 35px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(26, 54, 93, 0.3);
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+}
+
+.prime-splash-badge {
+  display: inline-block;
+  background-color: $datamonkey-turquoise;
+  color: #fff;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 4px 12px;
+  border-radius: 3px;
+  margin-bottom: 12px;
+}
+
+.prime-splash-title {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.prime-splash-text {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 400;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #cbd5e0;
+  margin-bottom: 20px;
+  max-width: 700px;
+}
+
+.prime-splash-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.prime-splash-btn-primary {
+  background-color: $datamonkey-turquoise;
+  color: #fff !important;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 10px 24px;
+  border-radius: 4px;
+  text-decoration: none;
+
+  &:hover {
+    background-color: darken($datamonkey-turquoise, 8%);
+    color: #fff !important;
+    text-decoration: none;
+  }
+}
+
+.prime-splash-btn-secondary {
+  background-color: transparent;
+  color: #90cdf4 !important;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 10px 24px;
+  border: 2px solid #90cdf4;
+  border-radius: 4px;
+  text-decoration: none;
+
+  &:hover {
+    background-color: rgba(144, 205, 244, 0.15);
+    color: #fff !important;
+    text-decoration: none;
+  }
+}
