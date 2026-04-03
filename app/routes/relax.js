@@ -129,6 +129,13 @@ exports.invokeRelax = function (req, res) {
   // Find the correct multiple sequence alignment to act upon
   Relax.findOne({ _id: id }, function (err, relax) {
     // User Parameters
+    if (!postdata.nwk_tree || !(/\{(TEST|Test)/.test(postdata.nwk_tree))) {
+      return res.json(400, {
+        error: "RELAX requires at least one set of branches labeled {TEST} in the tree. " +
+               "Please select test branches before submitting."
+      });
+    }
+
     relax.tagged_nwk_tree = postdata.nwk_tree;
     relax.status = relax.status_stack[0];
 
