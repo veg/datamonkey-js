@@ -110,6 +110,17 @@ GARD.statics.spawn = function (fn, options, callback) {
       return;
     }
 
+    if (msa.sites < 4 * msa.sequences) {
+      var error =
+        "Alignment is too short for GARD analysis. Need at least " +
+        (4 * msa.sequences) + " sites for " + msa.sequences +
+        " sequences (have " + msa.sites + "). " +
+        "Please provide a longer alignment or fewer sequences.";
+      logger.error(error);
+      callback(error);
+      return;
+    }
+
     gard.msa = msa;
     gard.status = gard.status_stack[0];
 
