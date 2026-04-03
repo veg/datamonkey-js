@@ -72,6 +72,12 @@ Relax.statics.spawn = function (fn, options, callback) {
     gencodeid = options.gencodeid;
 
   relax.mail = options.mail;
+  if (!options.nwk_tree || !(/\{(TEST|Test)/.test(options.nwk_tree))) {
+    callback("RELAX requires at least one set of branches labeled {TEST} in the tree. " +
+             "Please select test branches before submitting.", null);
+    return;
+  }
+
   relax.tagged_nwk_tree = options.nwk_tree;
   relax.analysis_type = options.analysis_type;
   relax.original_extension = options.fileExtension;
