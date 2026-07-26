@@ -28,7 +28,7 @@ aBSREL.virtual("upload_redirect_path").get(function () {
 });
 
 aBSREL.virtual("max_sequences").get(function () {
-  return 1000;
+  return 2500;
 });
 
 /**

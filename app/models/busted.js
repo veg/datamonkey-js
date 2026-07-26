@@ -25,7 +25,7 @@ Busted.virtual("pmid").get(function () {
 });
 
 Busted.virtual("max_sequences").get(function () {
-  return 1000;
+  return 2000;
 });
 
 /**

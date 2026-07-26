@@ -27,7 +27,7 @@ FUBAR.virtual("upload_redirect_path").get(function () {
 });
 
 FUBAR.virtual("max_sequences").get(function () {
-  return 10000;
+  return 25000;
 });
 
 /**

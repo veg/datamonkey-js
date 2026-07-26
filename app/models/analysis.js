@@ -59,7 +59,7 @@ AnalysisSchema.virtual("max_sites").get(function () {
 });
 
 AnalysisSchema.virtual("max_sequences").get(function () {
-  return 5000;
+  return 10000;
 });
 
 AnalysisSchema.virtual("input_data").get(function () {
