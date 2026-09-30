@@ -165,6 +165,7 @@ AnalysisSchema.statics.usageStatistics = function (cb) {
     .find({ status: "completed" }, { created: 1 })
     .sort({ created: -1 })
     .limit(1)
+    .lean()
     .exec(function (err1, items1) {
       if (err1 || items1.length == 0) {
         cb(err1, null);
@@ -185,6 +186,7 @@ AnalysisSchema.statics.usageStatistics = function (cb) {
             "msa.sequences": 1,
           }
         )
+        .lean()
         .exec(function (err, items) {
           client.set(
             setup.database_name + "_" + self.collection.name + "_job_stats",
