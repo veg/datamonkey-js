@@ -1,6 +1,5 @@
 const path = require("path");
 const webpack = require("webpack");
-const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
@@ -97,12 +96,6 @@ const config = {
       jQuery: "jquery",
       d3: "d3",
       _: "underscore",
-    }),
-    new CopyWebpackPlugin({
-      patterns: [
-        { from: "node_modules/hivtrace-viz/dist/hivtrace.js" },
-        { from: "node_modules/hivtrace-viz/dist/vendor.js", to: "hivtrace-vendor.js" },
-      ],
     }),
   ],
   resolve: {
