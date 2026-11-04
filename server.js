@@ -36,7 +36,6 @@ fs.mkdir(path.join(__dirname, "/uploads"), "0750", function (e) {
   }
   // need to do this in the callback to ensure uploads
   // directory exists first
-  fs.mkdir(path.join(__dirname, "/uploads/hivtrace"), "0750", mkdirErrorLogger);
   fs.mkdir(path.join(__dirname, "/uploads/msa"), "0750", mkdirErrorLogger);
 });
 

@@ -294,7 +294,7 @@ var UsageDashboard = React.createClass({displayName: "UsageDashboard",
   },
   render: function(){
     var self = this,
-        methods = ["absrel", "busted", "relax", "hivtrace"],
+        methods = ["absrel", "busted", "relax"],
         tabs = methods.map(function(method){
           return (React.createElement("li", {role: "presentation", className: method == self.state.active ? "active" : ""}, 
             React.createElement("a", {href: "#", onClick: self.tabClick(method)}, method)

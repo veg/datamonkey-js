@@ -378,9 +378,6 @@ var jobproxy = new hpcsocket.HPCSocket({'filepath'    : absrel_result.filepath,
     <pre>
       switch(params.job.type) {
 
-        case 'hivtrace':
-          new hivtrace.HIVTraceAnalysis(socket, stream, params.job.analysis);
-          break;
         case 'prime':
           new prime.PrimeAnalysis(socket, stream, params);
           break;

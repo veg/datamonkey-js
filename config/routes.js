@@ -16,7 +16,6 @@ const mongoose = require("mongoose"),
   MULTIHIT = mongoose.model("MULTIHIT"),
   NRM = mongoose.model("NRM"),
   Relax = mongoose.model("Relax"),
-  HivTrace = mongoose.model("HivTrace"),
   FADE = mongoose.model("Fade"),
   SLAC = mongoose.model("SLAC"),
   DifFUBAR = mongoose.model("DifFUBAR");
@@ -180,22 +179,6 @@ module.exports = function (app) {
   app.get("/gard/:id/cancel", gard.cancel);
   app.get("/gard/:id/log.txt", gard.getLog);
   // gard.resubscribePendingJobs();
-
-  // HIV-TRACE ROUTES
-  const hivtrace = require(path.join(__dirname, "../app/routes/hivtrace"));
-  app.get("/hivtrace", hivtrace.clusterForm);
-  app.get("/hivtrace/usage", hivtrace.getUsage);
-  app.post("/hivtrace/:id/uploadfile", hivtrace.uploadFile);
-  app.get("/hivtrace/request-job-id", hivtrace.requestID);
-  app.get("/hivtrace/:id/map-attributes", hivtrace.mapAttributes);
-  app.post("/hivtrace/:id/save-attributes", hivtrace.saveAttributes);
-  app.post("/hivtrace/invoke/:id", hivtrace.invokeClusterAnalysis);
-  app.get("/hivtrace/:id", hivtrace.jobPage);
-  app.get("/hivtrace/:id/results", hivtrace.results);
-  app.get("/hivtrace/:id/trace_results", hivtrace.trace_results);
-  app.get("/hivtrace/:id/settings", hivtrace.settings);
-  app.get("/hivtrace/:id/attributes", hivtrace.attributeMap);
-  app.get("/hivtrace/:id/aligned.fasta", hivtrace.aligned_fasta);
 
   // MEME ROUTES
   const meme = require(path.join(__dirname, "../app/routes/meme"));

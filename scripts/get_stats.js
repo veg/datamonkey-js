@@ -10,7 +10,6 @@ require("../app/models/fade.js");
 require("../app/models/fel.js");
 require("../app/models/fubar.js");
 require("../app/models/gard.js");
-require("../app/models/hivtrace.js");
 require("../app/models/meme.js");
 require("../app/models/msa.js");
 require("../app/models/multihit.js");
