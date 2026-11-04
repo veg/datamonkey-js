@@ -34,6 +34,7 @@ exports.invoke = function (req, res) {
       logger.error(err);
       logger.error("fubar rename failed");
       res.json(500, { error: err });
+      return;
     }
     res.json(200, {
       analysis: result,
