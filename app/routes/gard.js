@@ -31,6 +31,8 @@ exports.invoke = function (req, res) {
   GARD.spawn(fn, options, (err, result) => {
     if (err) {
       logger.warn("Error with spawning GARD job from browser :: " + err);
+      res.json(500, { error: String(err) });
+      return;
     }
 
     res.json(200, {
