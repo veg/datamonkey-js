@@ -2976,7 +2976,7 @@ body-parser@~1.20.5:
     type-is "~1.6.18"
     unpipe "~1.0.0"
 
-body@~5.1.0:
+body@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/body/-/body-5.1.0.tgz#e4ba0ce410a46936323367609ecb4e6553125069"
   integrity sha512-chUsBxGRtuElD6fmw1gHLpvnKdVLK302peeFa9ZqAEk8TyzZ3fygLyUEDDPTJvL9+Bor0dIwn6ePOsRM2y0zQQ==
@@ -3316,19 +3316,12 @@ bundle-name@^4.1.0:
   dependencies:
     run-applescript "^7.0.0"
 
-busboy@^1.6.0:
+busboy@^1.0.0, busboy@^1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/busboy/-/busboy-1.6.0.tgz#966ea36a9502e43cdb9146962523b92f531f6893"
   integrity sha512-8SFQbg/0hQ9xy3UNTB0YEnsNBbWfhf7RtnzpL7TkBiTBRfrQ9Fxcnz7VJsleJpyp6rVLvXiuORqjlHi5q+PYuA==
   dependencies:
     streamsearch "^1.1.0"
-
-busboy@~0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/busboy/-/busboy-0.3.1.tgz#170899274c5bf38aae27d5c62b71268cd585fd1b"
-  integrity sha512-y7tTxhGKXcyBxRKAni+awqx8uqaJKrSFSNFSeRG5CsWNdmy2BIK+6VGWEW7TZnIO/533mtMEA4rOevQV815YJw==
-  dependencies:
-    dicer "0.3.0"
 
 bytes@1:
   version "1.0.0"
@@ -3940,12 +3933,12 @@ concat-stream@^1.5.2, concat-stream@^1.6.0, concat-stream@^1.6.1, concat-stream@
     readable-stream "^2.2.2"
     typedarray "^0.0.6"
 
-connect-busboy@~0.0.1:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/connect-busboy/-/connect-busboy-0.0.3.tgz#b8c23dcc24415b6e0d299f793057b583b201ce51"
-  integrity sha512-a4o+Jp3e+sh9qYGaqIHb9dodQRHNnV3xVgZkcb5mRmeL3qyS+JxyUVGpZJoVEd9daInfW1wpJ8ndw7wo/cv+gA==
+connect-busboy@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/connect-busboy/-/connect-busboy-1.0.0.tgz#7ac826e4c60e09934e049c406866f235efdc3d59"
+  integrity sha512-dKON178N/CpPSeJ8E+kfOekSUBx0nQo5kyIekry7YpM+qRhgHmSRVUN5D2hpLA8SQBV0ZNMF/aG7njDzE8Gl2A==
   dependencies:
-    busboy "~0.3.1"
+    busboy "^1.0.0"
 
 connect-history-api-fallback@^2.0.0:
   version "2.0.0"
@@ -5251,13 +5244,6 @@ dezalgo@^1.0.4:
     asap "^2.0.0"
     wrappy "1"
 
-dicer@0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/dicer/-/dicer-0.3.0.tgz#eacd98b3bfbf92e8ab5c2fdb71aaac44bb06b872"
-  integrity sha512-MdceRRWqltEG2dZqO769g27N/3PXfcKl04VhYnBlo2YhH7zPi88VebsjTKclaOyiuMaGU72hTfw3VkUitGcVCA==
-  dependencies:
-    streamsearch "0.1.2"
-
 diff@5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/diff/-/diff-5.0.0.tgz#7ed6ad76d859d030787ec35855f5b1daf31d852b"
@@ -6159,16 +6145,16 @@ expose-loader@^5.0.0:
   resolved "https://registry.yarnpkg.com/expose-loader/-/expose-loader-5.0.0.tgz#41368903eb1246b7c09fecf32c5cb3f67d0260e6"
   integrity sha512-BtUqYRmvx1bEY5HN6eK2I9URUZgNmN0x5UANuocaNjXSgfoDlkXt+wyEMe7i5DzDNh2BKJHPc5F4rBwEdSQX6w==
 
-express-busboy@^2.4.4:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/express-busboy/-/express-busboy-2.5.0.tgz#7b6f85f00e043df975537fee0a763122b9a3bb2c"
-  integrity sha512-kQlLaALvkVieI19LfNY5PkT11vQ7NptsRIdlCWZ06DFMJ5+GFPLMyQADUAeeuBODnLqTigzMd440DmDTBSsv0g==
+express-busboy@^10.1.0:
+  version "10.1.0"
+  resolved "https://registry.yarnpkg.com/express-busboy/-/express-busboy-10.1.0.tgz#a894400fae5dda1f0643d61bd29e824f478f207d"
+  integrity sha512-qVhJ3uob7LY+EE+kpfhI6eBqJDGW7wK2MZrvQew35vyNnhwAqrelLcKXgg5lXT8Yh10aFI+vn5ycZbYP2TGS2g==
   dependencies:
-    body "~5.1.0"
-    connect-busboy "~0.0.1"
-    mkdirp "~0.5.0"
-    qs "^5.0.0"
-    uuid "~1.4.1"
+    body "^5.1.0"
+    connect-busboy "^1.0.0"
+    mkdirp "^1.0.4"
+    qs "^6.10.3"
+    uuid "^8.3.2"
 
 express-validator@^2.21.0:
   version "2.21.0"
@@ -10709,10 +10695,13 @@ q@^1.1.2, q@^1.4.0:
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
   integrity sha512-kV/CThkXo6xyFEZUugw/+pIOywXcDbFYgSct5cT3gqlbkBE1SJdwy6UQoZvodiWF/ckQLZyDE/Bu1M6gVu5lVw==
 
-qs@^5.0.0:
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/qs/-/qs-5.2.1.tgz#801fee030e0b9450d6385adc48a4cc55b44aedfc"
-  integrity sha512-sh/hmLUTLEiYFhSbRvkM4zj6fMWnbqQt9wrppR2LJA/U/u4xS2eWN8LBE1xc79ExYZJBVZYSMBv/INC7wpE+fw==
+qs@^6.10.3:
+  version "6.17.1"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.17.1.tgz#43ac71d29ca0e9d0eed16a218e35b6cde5628e81"
+  integrity sha512-jd3COkaKVgGUW+ZHyEHCG9bH7RoaaiWuMgzsIBjUMVjLAaWGWpoUAVwljVvBHxRu/2qEHnadLGZrkutYUBPQJA==
+  dependencies:
+    es-define-property "^1.0.1"
+    side-channel "^1.1.1"
 
 qs@^6.11.0:
   version "6.15.0"
@@ -12593,11 +12582,6 @@ stream-splicer@^2.0.0:
     inherits "^2.0.1"
     readable-stream "^2.0.2"
 
-streamsearch@0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/streamsearch/-/streamsearch-0.1.2.tgz#808b9d0e56fc273d809ba57338e929919a1a9f1a"
-  integrity sha512-jos8u++JKm0ARcSUTAZXOVC0mSox7Bhn6sBgty73P1f3JGf7yG2clTbBNHUdde/kdvP2FESam+vM6l8jBrNxHA==
-
 streamsearch@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/streamsearch/-/streamsearch-1.1.0.tgz#404dd1e2247ca94af554e841a8ef0eaa238da764"
@@ -13584,11 +13568,6 @@ uuid@^8.3.2:
   version "8.3.2"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-8.3.2.tgz#80d5b5ced271bb9af6c445f21a1a04c606cefbe2"
   integrity sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==
-
-uuid@~1.4.1:
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/uuid/-/uuid-1.4.2.tgz#453019f686966a6df83cdc5244e7c990ecc332fc"
-  integrity sha512-woV5Ei+GBJyrqMXt0mJ9p8/I+47LYKp/4urH76FNTMjl22EhLPz1tNrQufTsrFf/PYV/7ctSZYAK7fKPWQKg+Q==
 
 v8-compile-cache@^2.0.3:
   version "2.4.0"
