@@ -78,13 +78,13 @@ AnalysisSchema.virtual("valid_statuses").get(function () {
 });
 
 AnalysisSchema.statics.pendingJobs = function (cb) {
+  // upload_id is not a path in any schema; Mongoose 5 silently ignored the
+  // populate, Mongoose 6 rejects it (strictPopulate), so it is not requested.
   this.find({
     $or: [{ status: "running" }],
-  })
-    .populate("upload_id")
-    .exec(function (err, items) {
-      cb(err, items);
-    });
+  }).exec(function (err, items) {
+    cb(err, items);
+  });
 };
 
 AnalysisSchema.statics.oldPendingJobs = function (cb) {

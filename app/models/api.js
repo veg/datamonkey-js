@@ -1,4 +1,4 @@
-const mongoose = require("mongoose"), //Used for schema
+const mongoose = require("../../lib/mongooseDefaults"), //Used for schema
   setup = require("./../../config/setup.js"); //Used for max per api key
 
 const Schema = mongoose.Schema,
