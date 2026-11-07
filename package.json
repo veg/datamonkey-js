@@ -135,6 +135,7 @@
     "webpack-eslint-plugin": "^1.2.0"
   },
   "resolutions": {
-    "hyphy-vision/underscore": "^1.13.7"
+    "hyphy-vision/underscore": "^1.13.7",
+    "serialize-javascript": "^7.1.3"
   }
 }
