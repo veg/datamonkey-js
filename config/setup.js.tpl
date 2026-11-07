@@ -17,6 +17,7 @@ define('host','new-silverback');
 define('port', 3975);
 define('redisHost', 'localhost');
 define('redisPort', '6379');
+define('sendmail_path', '/usr/sbin/sendmail');
 define('database', database_path + database_name);
 define('database_name', database_name);
 define('log_level', 'warn');

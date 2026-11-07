@@ -284,7 +284,7 @@ DifFUBAR.methods.onComplete = function (data, publisher, channel) {
   
   // Send email notification if requested
   if (self.mail && !self.notified) {
-    var mailer = require("../../../lib/mailer");
+    var mailer = require("../../lib/mailer");
     var mail_options = {
       to: self.mail,
       subject: "difFUBAR analysis completed",
