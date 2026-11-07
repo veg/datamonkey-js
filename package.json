@@ -133,5 +133,8 @@
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^5.1.0",
     "webpack-eslint-plugin": "^1.2.0"
+  },
+  "resolutions": {
+    "hyphy-vision/underscore": "^1.13.7"
   }
 }
