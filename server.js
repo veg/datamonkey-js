@@ -8,7 +8,6 @@ HOST = setup.host;
 
 // Necessary packages
 var express = require("express"),
-  expressValidator = require("express-validator"),
   mongoose = require("mongoose"),
   upload = require("jquery-file-upload-middleware"),
   helpers = require("./lib/helpers"),
@@ -65,7 +64,6 @@ var io = require("socket.io")(server);
 
 //app.use(express.compress());
 app.use(require("morgan")("combined", { stream: logger.stream }));
-app.use(expressValidator());
 app.use("/fleaupload", upload.fileHandler());
 app.set("json spaces", 0);
 app.enable("trust proxy");
