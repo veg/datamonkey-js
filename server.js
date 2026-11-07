@@ -1,3 +1,4 @@
+require("./lib/mongooseDefaults");
 const logger = require("./lib/logger");
 var setup = require("./config/setup");
 var error = require("./lib/error");
@@ -19,10 +20,7 @@ var express = require("express"),
   bb = require("express-busboy");
 
 // Connect to database
-mongoose.connect(setup.database, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(setup.database);
 
 //Ensure that upload paths exists
 mkdirErrorLogger = error.errorLogger(["EEXIST"]);

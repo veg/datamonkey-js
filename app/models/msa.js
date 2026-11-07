@@ -1,4 +1,4 @@
-var mongoose = require("mongoose"),
+var mongoose = require("../../lib/mongooseDefaults"),
   moment = require("moment"),
   globals = require("../../config/globals.js"),
   spawn = require("child_process").spawn,
