@@ -1,6 +1,8 @@
 var React = require("react"),
   ReactDOM = require("react-dom");
 
+const WALRUS_URL = "https://veg.github.io/hyphy-3/";
+
 var selected_style = { backgroundColor: "#00A99D", color: "white" };
 
 var h2Style = {
@@ -95,6 +97,35 @@ class DecisionBranch extends React.Component {
   }
 }
 
+function WALRUSBanner() {
+  return (
+    <div className="container" style={{ marginTop: "-20px", marginBottom: "30px" }}>
+      <div className="row">
+        <div className="col">
+          <div className="prime-splash-card">
+            <div className="prime-splash-badge">New</div>
+            <h3 className="prime-splash-title">WALRUS: a HyPhy 3 workbench</h3>
+            <p className="prime-splash-text">
+              Go from raw coding sequences to alignment, phylogeny and selection
+              analysis in one flow, in your browser.
+            </p>
+            <div className="prime-splash-actions">
+              <a
+                href={WALRUS_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn prime-splash-btn-primary"
+              >
+                Open WALRUS
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function PRIMEBanner() {
   return (
     <div className="container" style={{ marginTop: "-20px", marginBottom: "30px" }}>
@@ -166,6 +197,7 @@ function DecisionTreeRoot(props) {
           Tools
         </p>
       </div>
+      {props.datamonkey ? <WALRUSBanner /> : null}
       {props.datamonkey ? <PRIMEBanner /> : null}
       <div className="container">
         <DecisionBranch
