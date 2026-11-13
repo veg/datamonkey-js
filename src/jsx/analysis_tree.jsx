@@ -102,59 +102,21 @@ function WALRUSBanner() {
     <div className="container" style={{ marginTop: "-20px", marginBottom: "30px" }}>
       <div className="row">
         <div className="col">
-          <div className="prime-splash-card">
-            <div className="prime-splash-badge">New</div>
-            <h3 className="prime-splash-title">WALRUS: a HyPhy 3 workbench</h3>
-            <p className="prime-splash-text">
+          <div className="promo-splash-card">
+            <div className="promo-splash-badge">New</div>
+            <h3 className="promo-splash-title">WALRUS: a HyPhy 3 workbench</h3>
+            <p className="promo-splash-text">
               Go from raw coding sequences to alignment, phylogeny and selection
               analysis in one flow, in your browser.
             </p>
-            <div className="prime-splash-actions">
+            <div className="promo-splash-actions">
               <a
                 href={WALRUS_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn prime-splash-btn-primary"
+                className="btn promo-splash-btn-primary"
               >
                 Open WALRUS
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function PRIMEBanner() {
-  return (
-    <div className="container" style={{ marginTop: "-20px", marginBottom: "30px" }}>
-      <div className="row">
-        <div className="col">
-          <div className="prime-splash-card">
-            <div className="prime-splash-badge">New Method</div>
-            <h3 className="prime-splash-title">
-              PRIME &mdash; PRoperty Informed Models of Evolution
-            </h3>
-            <p className="prime-splash-text">
-              Go beyond dN/dS. PRIME uses a codon-level maximum likelihood framework to
-              explicitly model amino acid exchangeability as a function of physicochemical
-              properties, revealing the biophysical mechanisms driving protein evolution.
-            </p>
-            <div className="prime-splash-actions">
-              <a
-                href="https://v3.datamonkey.org"
-                target="_blank"
-                className="btn prime-splash-btn-primary"
-              >
-                Run PRIME on Datamonkey v3
-              </a>
-              <a
-                href="https://www.biorxiv.org/content/10.64898/2026.03.09.710461v1"
-                target="_blank"
-                className="btn prime-splash-btn-secondary"
-              >
-                Read the Preprint
               </a>
             </div>
           </div>
@@ -198,7 +160,6 @@ function DecisionTreeRoot(props) {
         </p>
       </div>
       {props.datamonkey ? <WALRUSBanner /> : null}
-      {props.datamonkey ? <PRIMEBanner /> : null}
       <div className="container">
         <DecisionBranch
           text="What evolutionary process would you like to detect?"
