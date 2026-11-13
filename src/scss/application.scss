@@ -760,8 +760,8 @@ footer {
   background-color: #36c9b7; /* Slightly lighter green on hover */
 }
 
-/* PRIME Promotional Banner (top bar) */
-.prime-banner {
+/* Promotional Banner (top bar) */
+.promo-banner {
   background: linear-gradient(135deg, #1a365d 0%, #2c5282 50%, #2b6cb0 100%);
   color: #fff;
   border: none;
@@ -782,8 +782,8 @@ footer {
   }
 }
 
-/* PRIME Splash Card (homepage) */
-.prime-splash-card {
+/* Promotional Splash Card (homepage) */
+.promo-splash-card {
   background: linear-gradient(135deg, #1a365d 0%, #2c5282 100%);
   border-radius: 8px;
   padding: 30px 35px;
@@ -804,7 +804,7 @@ footer {
   }
 }
 
-.prime-splash-badge {
+.promo-splash-badge {
   display: inline-block;
   background-color: $datamonkey-turquoise;
   color: #fff;
@@ -818,7 +818,7 @@ footer {
   margin-bottom: 12px;
 }
 
-.prime-splash-title {
+.promo-splash-title {
   font-family: "Montserrat", sans-serif;
   font-weight: 700;
   font-size: 1.4rem;
@@ -826,7 +826,7 @@ footer {
   color: #fff;
 }
 
-.prime-splash-text {
+.promo-splash-text {
   font-family: "Montserrat", sans-serif;
   font-weight: 400;
   font-size: 0.95rem;
@@ -836,13 +836,13 @@ footer {
   max-width: 700px;
 }
 
-.prime-splash-actions {
+.promo-splash-actions {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
 }
 
-.prime-splash-btn-primary {
+.promo-splash-btn-primary {
   background-color: $datamonkey-turquoise;
   color: #fff !important;
   font-family: "Montserrat", sans-serif;
@@ -859,7 +859,7 @@ footer {
   }
 }
 
-.prime-splash-btn-secondary {
+.promo-splash-btn-secondary {
   background-color: transparent;
   color: #90cdf4 !important;
   font-family: "Montserrat", sans-serif;
