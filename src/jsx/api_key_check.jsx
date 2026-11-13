@@ -1,5 +1,4 @@
 var React = require("react"),
-  url = require("url"),
   ReactDOM = require("react-dom");
 
 var api_top_div = {
@@ -31,7 +30,7 @@ class ApiKeyCheck extends React.Component {
   }
 
   componentDidMount() {
-    var api_key_id = url.parse(window.location.href).pathname.substr(11);
+    var api_key_id = new URL(window.location.href).pathname.substr(11);
 
     this.setState({
       api_key: api_key_id,
