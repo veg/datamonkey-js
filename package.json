@@ -21,7 +21,7 @@
     "precommit": "pretty-quick --staged"
   },
   "engines": {
-    "node": ">=23.0.0"
+    "node": "^22.12.0"
   },
   "repository": {
     "type": "git",
