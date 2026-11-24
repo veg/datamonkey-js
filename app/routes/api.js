@@ -13,7 +13,7 @@ const mongoose = require("mongoose"),
   API = mongoose.model("API"),
   SLAC = mongoose.model("SLAC");
 
-const shortid = require("shortid"),
+const crypto = require("crypto"),
   os = require("os"),
   path = require("path"),
   request = require("request"),
@@ -27,17 +27,13 @@ const shortid = require("shortid"),
 function apiSubmit(req, res) {
   logger.info("Incoming request recieved REQ = " + JSON.stringify(req.body));
 
-  shortid.characters(
-    "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_"
-  );
-
   var website_url = setup.api_base_url, //Used to build reply URL
     postdata = req.body,
     url_fasta = postdata.fastaLoc,
     today = new Date(),
     fileName =
       "api_" +
-      shortid.generate() +
+      crypto.randomBytes(9).toString("base64url") +
       today.getMilliseconds() +
       "." +
       postdata.fileExtension,
